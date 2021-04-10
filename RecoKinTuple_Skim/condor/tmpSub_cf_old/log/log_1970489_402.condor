@@ -1,0 +1,48 @@
+000 (1970489.402.000) 02/24 04:48:58 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1970489.402.000) 02/24 06:43:00 Started transferring input files
+	Transferring to host: <188.184.133.98:9618?addrs=188.184.133.98-9618&noUDP&sock=2144_6450_91956>
+...
+040 (1970489.402.000) 02/24 06:43:00 Finished transferring input files
+...
+001 (1970489.402.000) 02/24 06:43:01 Job executing on host: <188.184.133.98:9618?addrs=188.184.133.98-9618&noUDP&sock=1815_847b_3>
+...
+006 (1970489.402.000) 02/24 06:43:10 Image size of job updated: 130476
+	74  -  MemoryUsage of job (MB)
+	74980  -  ResidentSetSize of job (KB)
+...
+006 (1970489.402.000) 02/24 06:48:10 Image size of job updated: 312772
+	233  -  MemoryUsage of job (MB)
+	237580  -  ResidentSetSize of job (KB)
+...
+006 (1970489.402.000) 02/24 06:53:11 Image size of job updated: 334436
+	255  -  MemoryUsage of job (MB)
+	260920  -  ResidentSetSize of job (KB)
+...
+006 (1970489.402.000) 02/24 06:58:11 Image size of job updated: 354616
+	275  -  MemoryUsage of job (MB)
+	281100  -  ResidentSetSize of job (KB)
+...
+006 (1970489.402.000) 02/24 06:58:36 Image size of job updated: 357404
+	275  -  MemoryUsage of job (MB)
+	281100  -  ResidentSetSize of job (KB)
+...
+040 (1970489.402.000) 02/24 06:58:36 Started transferring output files
+...
+040 (1970489.402.000) 02/24 06:58:37 Finished transferring output files
+...
+005 (1970489.402.000) 02/24 06:58:37 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:07:42, Sys 0 00:00:04  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:07:42, Sys 0 00:00:04  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7984240  -  Run Bytes Sent By Job
+	11691437  -  Run Bytes Received By Job
+	7984240  -  Total Bytes Sent By Job
+	11691437  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.37        1         1 
+	   Disk (KB)            : 67879       12500    194187 
+	   Memory (MB)          :   275        2000      2000 
+...

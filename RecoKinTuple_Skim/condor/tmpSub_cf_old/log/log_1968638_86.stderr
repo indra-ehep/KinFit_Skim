@@ -1,0 +1,104 @@
+WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565470, badread=0, nerrors=1, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565471, badread=0, nerrors=2, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565472, badread=0, nerrors=3, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565473, badread=0, nerrors=4, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565474, badread=0, nerrors=5, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565475, badread=0, nerrors=6, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565476, badread=0, nerrors=7, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565477, badread=0, nerrors=8, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565478, badread=0, nerrors=9, basketnumber=30
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_10of35.root at byte:0, branch:Flag_ecalBadCalibFilterV2, entry:565479, badread=0, nerrors=10, basketnumber=30
+Error in <TBasket::Streamer>: The value of fNbytes is incorrect (-2137025998) ; trying to recover by setting it to zero
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+
+Thread 6 (Thread 0x2b1c0efab700 (LWP 225)):
+#0  0x00002b1c008ffd19 in syscall () from /lib64/libc.so.6
+#1  0x00002b1c0e54e79e in XrdSys::LinuxSemaphore::Wait (this=0x4887c40) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x48bcf18) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x48bcf00) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00002b1c0e54e989 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00002b1c005f2ea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00002b1c009059fd in clone () from /lib64/libc.so.6
+
+Thread 5 (Thread 0x2b1c0edaa700 (LWP 224)):
+#0  0x00002b1c008ffd19 in syscall () from /lib64/libc.so.6
+#1  0x00002b1c0e54e79e in XrdSys::LinuxSemaphore::Wait (this=0x4887c40) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x48bcf18) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x48bcf00) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00002b1c0e54e989 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00002b1c005f2ea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00002b1c009059fd in clone () from /lib64/libc.so.6
+
+Thread 4 (Thread 0x2b1c0eba9700 (LWP 223)):
+#0  0x00002b1c008ffd19 in syscall () from /lib64/libc.so.6
+#1  0x00002b1c0e54e79e in XrdSys::LinuxSemaphore::Wait (this=0x4887c40) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x48bcf18) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x48bcf00) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00002b1c0e54e989 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00002b1c005f2ea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00002b1c009059fd in clone () from /lib64/libc.so.6
+
+Thread 3 (Thread 0x2b1c0e9a8700 (LWP 222)):
+#0  0x00002b1c005f9e9d in nanosleep () from /lib64/libpthread.so.0
+#1  0x00002b1c0e386ded in XrdSysTimer::Wait (mills=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdSys/XrdSysTimer.cc:239
+#2  0x00002b1c0e4f2118 in XrdCl::TaskManager::RunTasks (this=0x4884b00) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClTaskManager.cc:244
+#3  0x00002b1c0e4f2269 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClTaskManager.cc:37
+#4  0x00002b1c005f2ea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00002b1c009059fd in clone () from /lib64/libc.so.6
+
+Thread 2 (Thread 0x2b1c0e7a7700 (LWP 221)):
+#0  0x00002b1c00905fd3 in epoll_wait () from /lib64/libc.so.6
+#1  0x00002b1c0e38bc17 in XrdSys::IOEvents::PollE::Begin (this=0x4883840, syncsem=<optimized out>, retcode=<optimized out>, eTxt=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysIOEventsPollE.icc:213
+#2  0x00002b1c0e3884f5 in XrdSys::IOEvents::BootStrap::Start (parg=0x7ffce79b2830) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdSys/XrdSysIOEvents.cc:131
+#3  0x00002b1c0e3865e8 in XrdSysThread_Xeq (myargs=0x48af640) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdSys/XrdSysPthread.cc:86
+#4  0x00002b1c005f2ea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00002b1c009059fd in clone () from /lib64/libc.so.6
+
+Thread 1 (Thread 0x2b1c02798c40 (LWP 197)):
+#0  0x00002b1c008cc549 in waitpid () from /lib64/libc.so.6
+#1  0x00002b1c00849fb2 in do_system () from /lib64/libc.so.6
+#2  0x00002b1c0084a361 in system () from /lib64/libc.so.6
+#3  0x00002b1bfed85a8b in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libCore.so
+#4  0x00002b1bfed880cc in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libCore.so
+#5  <signal handler called>
+#6  0x00002b1bff871850 in TBasket::Streamer(TBuffer&) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#7  0x00002b1bff86fe24 in TBasket::ReadBasketBuffers(long long, int, TFile*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#8  0x00002b1bff87474b in TBranch::GetBasket(int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#9  0x00002b1bff874dd5 in TBranch::GetEntry(long long, int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#10 0x00002b1bff8d3801 in TTree::GetEntry(long long, int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#11 0x000000000042cbb7 in EventTree::GetEntry (this=0x183cc60, entry=entry
+entry=570486) at src/EventTree.cpp:477
+#12 0x00000000004240d8 in makeRecoNtuple::makeRecoNtuple (this=0x7ffce79b3e20, ac=<optimized out>, av=<optimized out>) at makeRecoNtuple.C:503
+#13 0x0000000000427d63 in main (ac=<optimized out>, av=<optimized out>) at makeRecoNtuple.C:1338
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum.
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs. Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#6  0x00002b1bff871850 in TBasket::Streamer(TBuffer&) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#7  0x00002b1bff86fe24 in TBasket::ReadBasketBuffers(long long, int, TFile*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#8  0x00002b1bff87474b in TBranch::GetBasket(int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#9  0x00002b1bff874dd5 in TBranch::GetEntry(long long, int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#10 0x00002b1bff8d3801 in TTree::GetEntry(long long, int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libTree.so
+#11 0x000000000042cbb7 in EventTree::GetEntry (this=0x183cc60, entry=entry
+entry=570486) at src/EventTree.cpp:477
+#12 0x00000000004240d8 in makeRecoNtuple::makeRecoNtuple (this=0x7ffce79b3e20, ac=<optimized out>, av=<optimized out>) at makeRecoNtuple.C:503
+#13 0x0000000000427d63 in main (ac=<optimized out>, av=<optimized out>) at makeRecoNtuple.C:1338
+===========================================================
+
+
+[543B/543B][100%][==================================================][543B/s]  [543B/543B][100%][==================================================][543B/s]  

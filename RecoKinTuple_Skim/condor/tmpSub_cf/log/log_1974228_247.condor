@@ -1,0 +1,44 @@
+000 (1974228.247.000) 02/25 07:40:33 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1974228.247.000) 02/25 08:35:06 Started transferring input files
+	Transferring to host: <188.184.207.146:9618?addrs=188.184.207.146-9618&noUDP&sock=3048_5775_110902>
+...
+040 (1974228.247.000) 02/25 08:35:07 Finished transferring input files
+...
+001 (1974228.247.000) 02/25 08:35:08 Job executing on host: <188.184.207.146:9618?addrs=188.184.207.146-9618&noUDP&sock=1978_526b_3>
+...
+006 (1974228.247.000) 02/25 08:35:17 Image size of job updated: 143124
+	77  -  MemoryUsage of job (MB)
+	78500  -  ResidentSetSize of job (KB)
+...
+006 (1974228.247.000) 02/25 08:40:18 Image size of job updated: 393440
+	311  -  MemoryUsage of job (MB)
+	317940  -  ResidentSetSize of job (KB)
+...
+006 (1974228.247.000) 02/25 08:45:19 Image size of job updated: 393440
+	330  -  MemoryUsage of job (MB)
+	337056  -  ResidentSetSize of job (KB)
+...
+006 (1974228.247.000) 02/25 08:50:19 Image size of job updated: 393440
+	343  -  MemoryUsage of job (MB)
+	350284  -  ResidentSetSize of job (KB)
+...
+040 (1974228.247.000) 02/25 08:52:32 Started transferring output files
+...
+040 (1974228.247.000) 02/25 08:52:33 Finished transferring output files
+...
+005 (1974228.247.000) 02/25 08:52:34 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:05:49, Sys 0 00:00:05  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:05:49, Sys 0 00:00:05  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	8001740  -  Run Bytes Sent By Job
+	11694051  -  Run Bytes Received By Job
+	8001740  -  Total Bytes Sent By Job
+	11694051  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.36        1         1 
+	   Disk (KB)            : 67898       12500    205636 
+	   Memory (MB)          :   343        2000      2000 
+...

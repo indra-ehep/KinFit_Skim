@@ -1,0 +1,44 @@
+000 (1968644.011.000) 02/23 15:23:36 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1968644.011.000) 02/23 21:25:54 Started transferring input files
+	Transferring to host: <188.184.133.98:9618?addrs=188.184.133.98-9618&noUDP&sock=2144_6450_91653>
+...
+040 (1968644.011.000) 02/23 21:25:55 Finished transferring input files
+...
+001 (1968644.011.000) 02/23 21:25:56 Job executing on host: <188.184.133.98:9618?addrs=188.184.133.98-9618&noUDP&sock=1815_847b_3>
+...
+006 (1968644.011.000) 02/23 21:26:05 Image size of job updated: 117708
+	53  -  MemoryUsage of job (MB)
+	54200  -  ResidentSetSize of job (KB)
+...
+006 (1968644.011.000) 02/23 21:31:05 Image size of job updated: 308820
+	228  -  MemoryUsage of job (MB)
+	232552  -  ResidentSetSize of job (KB)
+...
+006 (1968644.011.000) 02/23 21:36:05 Image size of job updated: 438920
+	354  -  MemoryUsage of job (MB)
+	361504  -  ResidentSetSize of job (KB)
+...
+006 (1968644.011.000) 02/23 21:41:06 Image size of job updated: 454672
+	369  -  MemoryUsage of job (MB)
+	377256  -  ResidentSetSize of job (KB)
+...
+040 (1968644.011.000) 02/23 21:43:35 Started transferring output files
+...
+040 (1968644.011.000) 02/23 21:43:37 Finished transferring output files
+...
+005 (1968644.011.000) 02/23 21:43:37 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:09:56, Sys 0 00:00:04  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:09:56, Sys 0 00:00:04  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7980920  -  Run Bytes Sent By Job
+	11691357  -  Run Bytes Received By Job
+	7980920  -  Total Bytes Sent By Job
+	11691357  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.07        1         1 
+	   Disk (KB)            : 67876       12500    139424 
+	   Memory (MB)          :   369        2000      2000 
+...

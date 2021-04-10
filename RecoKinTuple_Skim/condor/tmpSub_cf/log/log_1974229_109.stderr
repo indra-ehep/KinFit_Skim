@@ -1,0 +1,83 @@
+WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
+Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3010] Unable to open /cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/Data_SingleEle_a_Skim_NanoAOD_22of35.root; permission denied
+
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+
+Thread 6 (Thread 0x2b577761a700 (LWP 225)):
+#0  0x00002b5768f6cd19 in syscall () from /lib64/libc.so.6
+#1  0x00002b5776bbd79e in XrdSys::LinuxSemaphore::Wait (this=0x522e580) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x5221798) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x5221780) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00002b5776bbd989 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00002b5768c5fea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00002b5768f729fd in clone () from /lib64/libc.so.6
+
+Thread 5 (Thread 0x2b5777419700 (LWP 224)):
+#0  0x00002b5768f6cd19 in syscall () from /lib64/libc.so.6
+#1  0x00002b5776bbd79e in XrdSys::LinuxSemaphore::Wait (this=0x522e580) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x5221798) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x5221780) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00002b5776bbd989 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00002b5768c5fea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00002b5768f729fd in clone () from /lib64/libc.so.6
+
+Thread 4 (Thread 0x2b5777218700 (LWP 223)):
+#0  0x00002b5768f6cd19 in syscall () from /lib64/libc.so.6
+#1  0x00002b5776bbd79e in XrdSys::LinuxSemaphore::Wait (this=0x522e580) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x5221798) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x5221780) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00002b5776bbd989 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00002b5768c5fea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00002b5768f729fd in clone () from /lib64/libc.so.6
+
+Thread 3 (Thread 0x2b5777017700 (LWP 222)):
+#0  0x00002b5768c66e9d in nanosleep () from /lib64/libpthread.so.0
+#1  0x00002b57769f5ded in XrdSysTimer::Wait (mills=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdSys/XrdSysTimer.cc:239
+#2  0x00002b5776b61118 in XrdCl::TaskManager::RunTasks (this=0x525be10) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClTaskManager.cc:244
+#3  0x00002b5776b61269 in RunRunnerThread (arg=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdCl/XrdClTaskManager.cc:37
+#4  0x00002b5768c5fea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00002b5768f729fd in clone () from /lib64/libc.so.6
+
+Thread 2 (Thread 0x2b5776e16700 (LWP 221)):
+#0  0x00002b5768f72fd3 in epoll_wait () from /lib64/libc.so.6
+#1  0x00002b57769fac17 in XrdSys::IOEvents::PollE::Begin (this=0x5228010, syncsem=<optimized out>, retcode=<optimized out>, eTxt=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/./XrdSys/XrdSysIOEventsPollE.icc:213
+#2  0x00002b57769f74f5 in XrdSys::IOEvents::BootStrap::Start (parg=0x7ffe65c53c90) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdSys/XrdSysIOEvents.cc:131
+#3  0x00002b57769f55e8 in XrdSysThread_Xeq (myargs=0x5255f80) at /build/cmsbld/auto-builds/CMSSW_10_2_0_pre6-slc7_amd64_gcc700/build/CMSSW_10_2_0_pre6-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.3-gnimlf/xrootd-4.8.3/src/XrdSys/XrdSysPthread.cc:86
+#4  0x00002b5768c5fea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00002b5768f729fd in clone () from /lib64/libc.so.6
+
+Thread 1 (Thread 0x2b576ae05c40 (LWP 197)):
+#0  0x00002b5768f39549 in waitpid () from /lib64/libc.so.6
+#1  0x00002b5768eb6fb2 in do_system () from /lib64/libc.so.6
+#2  0x00002b5768eb7361 in system () from /lib64/libc.so.6
+#3  0x00002b57673f2a8b in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libCore.so
+#4  0x00002b57673f50cc in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_2_14/external/slc7_amd64_gcc700/lib/libCore.so
+#5  <signal handler called>
+#6  PUReweight::PUReweight (this=0x4ee7170, nFiles=<optimized out>, fileNames=<optimized out>, PUfilename=...) at src/PUReweight.cpp:32
+#7  0x00000000004230a3 in makeRecoNtuple::makeRecoNtuple (this=0x7ffe65c55280, ac=<optimized out>, av=0x7ffe65c56008) at makeRecoNtuple.C:338
+#8  0x0000000000428105 in main (ac=<optimized out>, av=<optimized out>) at makeRecoNtuple.C:1338
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum.
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs. Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#6  PUReweight::PUReweight (this=0x4ee7170, nFiles=<optimized out>, fileNames=<optimized out>, PUfilename=...) at src/PUReweight.cpp:32
+#7  0x00000000004230a3 in makeRecoNtuple::makeRecoNtuple (this=0x7ffe65c55280, ac=<optimized out>, av=0x7ffe65c56008) at makeRecoNtuple.C:338
+#8  0x0000000000428105 in main (ac=<optimized out>, av=<optimized out>) at makeRecoNtuple.C:1338
+===========================================================
+
+
+[547B/547B][100%][==================================================][547B/s]  [547B/547B][100%][==================================================][547B/s]  

@@ -1,0 +1,44 @@
+000 (1968638.368.000) 02/23 15:21:35 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1968638.368.000) 02/23 16:50:58 Started transferring input files
+	Transferring to host: <188.184.186.114:9618?addrs=188.184.186.114-9618+[2001-1458-301-f8--100-7b]-9618&noUDP&sock=11599_4b71_159497>
+...
+040 (1968638.368.000) 02/23 16:50:59 Finished transferring input files
+...
+001 (1968638.368.000) 02/23 16:51:00 Job executing on host: <188.184.186.114:9618?addrs=188.184.186.114-9618+[2001-1458-301-f8--100-7b]-9618&noUDP&sock=2317_d906_3>
+...
+006 (1968638.368.000) 02/23 16:51:09 Image size of job updated: 129668
+	75  -  MemoryUsage of job (MB)
+	75892  -  ResidentSetSize of job (KB)
+...
+006 (1968638.368.000) 02/23 16:56:10 Image size of job updated: 238172
+	164  -  MemoryUsage of job (MB)
+	167468  -  ResidentSetSize of job (KB)
+...
+006 (1968638.368.000) 02/23 17:01:10 Image size of job updated: 299596
+	293  -  MemoryUsage of job (MB)
+	299132  -  ResidentSetSize of job (KB)
+...
+006 (1968638.368.000) 02/23 17:06:10 Image size of job updated: 331416
+	324  -  MemoryUsage of job (MB)
+	330952  -  ResidentSetSize of job (KB)
+...
+040 (1968638.368.000) 02/23 17:06:36 Started transferring output files
+...
+040 (1968638.368.000) 02/23 17:06:37 Finished transferring output files
+...
+005 (1968638.368.000) 02/23 17:06:37 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:06:22, Sys 0 00:00:04  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:06:22, Sys 0 00:00:04  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7987687  -  Run Bytes Sent By Job
+	11691465  -  Run Bytes Received By Job
+	7987687  -  Total Bytes Sent By Job
+	11691465  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.42        1         1 
+	   Disk (KB)            : 67883       12500    211271 
+	   Memory (MB)          :   324        2000      2000 
+...

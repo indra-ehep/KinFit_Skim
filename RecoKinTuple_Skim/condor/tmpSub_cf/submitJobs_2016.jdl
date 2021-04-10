@@ -1,0 +1,336 @@
+Executable =  runMakeRecoNtuple_cutflow.sh 
+Universe   = vanilla
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+Transfer_Input_Files = RecoNtuple_Skim.tar.gz, runMakeRecoNtuple_cutflow.sh
+x509userproxy = $ENV(X509_USER_PROXY)
+use_x509userproxy = true
++BenchmarkJob = True
+#+JobFlavour = "workday"
++MaxRuntime = 28000
+Output = log/log_$(cluster)_$(process).stdout
+Error  = log/log_$(cluster)_$(process).stderr
+Log    = log/log_$(cluster)_$(process).condor
+
+X=$(step)+1
+Arguments  = 2016 TTWtoQQ 
+Queue 1
+
+Arguments  = 2016 ZZTo2Q2Nu_powheg 
+Queue 1
+
+Arguments  = 2016 W2jets_ext1 $INT(X) 3
+Queue 3
+
+Arguments  = 2016 QCD_Pt20to30_Ele 
+Queue 1
+
+Arguments  = 2016 WW 
+Queue 1
+
+Arguments  = 2016 QCD_Pt50to80_Ele $INT(X) 3
+Queue 3
+
+Arguments  = 2016 HplusM100 
+Queue 1
+
+Arguments  = 2016 TTZtoQQ 
+Queue 1
+
+Arguments  = 2016 WWTo2L2Nu_powheg 
+Queue 1
+
+Arguments  = 2016 WZTo1L3Nu_amcatnlo 
+Queue 1
+
+Arguments  = 2016 QCD_Pt15to20_Mu 
+Queue 1
+
+Arguments  = 2016 W4jets_ext1 
+Queue 1
+
+Arguments  = 2016 W4jets_ext2 $INT(X) 4
+Queue 4
+
+Arguments  = 2016 WZTo3LNu_powheg_ext1 $INT(X) 3
+Queue 3
+
+Arguments  = 2016 WZTo2L2Q_amcatnlo $INT(X) 3
+Queue 3
+
+Arguments  = 2016 ST_tbarW_channel $INT(X) 2
+Queue 2
+
+Arguments  = 2016 WWTo4Q_powheg 
+Queue 1
+
+Arguments  = 2016 TTWtoLNu_ext1 
+Queue 1
+
+Arguments  = 2016 TTWtoLNu_ext2 
+Queue 1
+
+Arguments  = 2016 QCD_Pt20to30_Mu $INT(X) 3
+Queue 3
+
+Arguments  = 2016 ST_s_channel $INT(X) 2
+Queue 2
+
+Arguments  = 2016 ZZTo2L2Nu_powheg_ext1 $INT(X) 6
+Queue 6
+
+Arguments  = 2016 QCD_Pt30to50_Mu $INT(X) 4
+Queue 4
+
+Arguments  = 2016 WWToLNuQQ_powheg_ext1 
+Queue 1
+
+Arguments  = 2016 HplusM160 
+Queue 1
+
+Arguments  = 2016 QCD_Pt50to80_Mu $INT(X) 3
+Queue 3
+
+Arguments  = 2016 TTZtoLL_M1to10 
+Queue 1
+
+Arguments  = 2016 QCD_Pt300toInf_Ele $INT(X) 2
+Queue 2
+
+Arguments  = 2016 W1jets $INT(X) 5
+Queue 5
+
+Arguments  = 2016 QCD_Pt30to50_Ele 
+Queue 1
+
+Arguments  = 2016 TTbarPowheg_Hadronic $INT(X) 15
+Queue 15
+
+Arguments  = 2016 QCD_Pt120to170_Ele $INT(X) 6
+Queue 6
+
+Arguments  = 2016 Data_SingleEle_b $INT(X) 23
+Queue 23
+
+Arguments  = 2016 Data_SingleEle_c $INT(X) 11
+Queue 11
+
+Arguments  = 2016 Data_SingleEle_d $INT(X) 16
+Queue 16
+
+Arguments  = 2016 Data_SingleEle_e $INT(X) 12
+Queue 12
+
+Arguments  = 2016 Data_SingleEle_f $INT(X) 8
+Queue 8
+
+Arguments  = 2016 Data_SingleEle_g $INT(X) 20
+Queue 20
+
+Arguments  = 2016 QCD_Pt30to50_Ele_ext1 
+Queue 1
+
+Arguments  = 2016 WZ 
+Queue 1
+
+Arguments  = 2016 WZTo1L1Nu2Q_amcatnlo $INT(X) 3
+Queue 3
+
+Arguments  = 2016 WJetsToQQ $INT(X) 3
+Queue 3
+
+Arguments  = 2016 QCD_Pt170to300_Mu $INT(X) 2
+Queue 2
+
+Arguments  = 2016 ZZTo2L2Q_powheg 
+Queue 1
+
+Arguments  = 2016 QCD_Pt300to470_Mu_ext2 $INT(X) 6
+Queue 6
+
+Arguments  = 2016 QCD_Pt300to470_Mu_ext1 $INT(X) 3
+Queue 3
+
+Arguments  = 2016 QCD_Pt50to80_Ele_ext1 $INT(X) 3
+Queue 3
+
+Arguments  = 2016 W3jets_ext1 $INT(X) 6
+Queue 6
+
+Arguments  = 2016 ZZ_ext1 
+Queue 1
+
+Arguments  = 2016 ZZTo2L2Nu_powheg 
+Queue 1
+
+Arguments  = 2016 ST_t_channel $INT(X) 6
+Queue 6
+
+Arguments  = 2016 QCD_Pt800to1000_Mu 
+Queue 1
+
+Arguments  = 2016 WZTo3LNu_powheg 
+Queue 1
+
+Arguments  = 2016 DYjetsM50_ext2 $INT(X) 11
+Queue 11
+
+Arguments  = 2016 QCD_Pt170to300_Ele $INT(X) 2
+Queue 2
+
+Arguments  = 2016 W2jets $INT(X) 4
+Queue 4
+
+Arguments  = 2016 W3jets $INT(X) 3
+Queue 3
+
+Arguments  = 2016 WW_ext1 
+Queue 1
+
+Arguments  = 2016 WWTo1L1Nu2Q_amcatnlo 
+Queue 1
+
+Arguments  = 2016 HplusM140 
+Queue 1
+
+Arguments  = 2016 ZZ 
+Queue 1
+
+Arguments  = 2016 QCD_Pt80to120_Mu_ext1 
+Queue 1
+
+Arguments  = 2016 QCD_Pt470to600_Mu 
+Queue 1
+
+Arguments  = 2016 VVTo2L2Nu_amcatnlo_ext1 
+Queue 1
+
+Arguments  = 2016 QCD_Pt80to120_Mu $INT(X) 2
+Queue 2
+
+Arguments  = 2016 TTZtoLL_ext3 
+Queue 1
+
+Arguments  = 2016 TTZtoLL_ext2 
+Queue 1
+
+Arguments  = 2016 TTZtoLL_ext1 
+Queue 1
+
+Arguments  = 2016 DYjetsM50_ext1 $INT(X) 6
+Queue 6
+
+Arguments  = 2016 HplusM150 
+Queue 1
+
+Arguments  = 2016 QCD_Pt800to1000_Mu_ext2 $INT(X) 2
+Queue 2
+
+Arguments  = 2016 QCD_Pt80to120_Ele $INT(X) 5
+Queue 5
+
+Arguments  = 2016 Data_SingleEle_h $INT(X) 13
+Queue 13
+
+Arguments  = 2016 HplusM090 
+Queue 1
+
+Arguments  = 2016 HplusM120 
+Queue 1
+
+Arguments  = 2016 QCD_Pt80to120_Ele_ext1 $INT(X) 6
+Queue 6
+
+Arguments  = 2016 QCD_Pt300to470_Mu $INT(X) 2
+Queue 2
+
+Arguments  = 2016 TTbarPowheg_Dilepton $INT(X) 13
+Queue 13
+
+Arguments  = 2016 HplusM155 
+Queue 1
+
+Arguments  = 2016 ST_tbar_channel $INT(X) 4
+Queue 4
+
+Arguments  = 2016 QCD_Pt470to600_Mu_ext2 $INT(X) 2
+Queue 2
+
+Arguments  = 2016 QCD_Pt600to800_Mu_ext1 $INT(X) 2
+Queue 2
+
+Arguments  = 2016 DYjetsM10to50 $INT(X) 3
+Queue 3
+
+Arguments  = 2016 QCD_Pt800to1000_Mu_ext1 
+Queue 1
+
+Arguments  = 2016 QCD_Pt120to170_Ele_ext1 $INT(X) 7
+Queue 7
+
+Arguments  = 2016 Data_SingleMu_c $INT(X) 6
+Queue 6
+
+Arguments  = 2016 Data_SingleMu_b $INT(X) 18
+Queue 18
+
+Arguments  = 2016 QCD_Pt470to600_Mu_ext1 
+Queue 1
+
+Arguments  = 2016 Data_SingleMu_g $INT(X) 14
+Queue 14
+
+Arguments  = 2016 Data_SingleMu_f $INT(X) 6
+Queue 6
+
+Arguments  = 2016 HplusM080 
+Queue 1
+
+Arguments  = 2016 Data_SingleMu_d $INT(X) 12
+Queue 12
+
+Arguments  = 2016 Data_SingleMu_h $INT(X) 20
+Queue 20
+
+Arguments  = 2016 ZZTo4L_powheg 
+Queue 1
+
+Arguments  = 2016 W4jets 
+Queue 1
+
+Arguments  = 2016 WWToLNuQQ_powheg 
+Queue 1
+
+Arguments  = 2016 QCD_Pt170to300_Mu_ext1 $INT(X) 2
+Queue 2
+
+Arguments  = 2016 QCD_Pt120to170_Mu $INT(X) 2
+Queue 2
+
+Arguments  = 2016 QCD_Pt600to800_Mu 
+Queue 1
+
+Arguments  = 2016 WZ_ext1 
+Queue 1
+
+Arguments  = 2016 TTbarPowheg_Semilept $INT(X) 21
+Queue 21
+
+Arguments  = 2016 ST_tW_channel 
+Queue 1
+
+Arguments  = 2016 QCD_Pt1000toInf_Mu_ext1 $INT(X) 3
+Queue 3
+
+Arguments  = 2016 QCD_Pt1000toInf_Mu 
+Queue 1
+
+Arguments  = 2016 Data_SingleMu_e $INT(X) 10
+Queue 10
+
+Arguments  = 2016 ZZTo2Q2Nu_amcatnlo $INT(X) 3
+Queue 3
+
+Arguments  = 2016 VVTo2L2Nu_amcatnlo 
+Queue 1
+

@@ -1,0 +1,46 @@
+000 (1974227.025.000) 02/25 07:38:23 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1974227.025.000) 02/25 07:50:52 Started transferring input files
+	Transferring to host: <188.184.204.189:9618?addrs=188.184.204.189-9618+[2001-1458-301-7d--100-af]-9618&noUDP&sock=11332_2b46_164173>
+...
+040 (1974227.025.000) 02/25 07:51:22 Finished transferring input files
+...
+001 (1974227.025.000) 02/25 07:51:23 Job executing on host: <188.184.204.189:9618?addrs=188.184.204.189-9618+[2001-1458-301-7d--100-af]-9618&noUDP&sock=2252_435e_3>
+...
+006 (1974227.025.000) 02/25 07:51:36 Image size of job updated: 2980
+	3  -  MemoryUsage of job (MB)
+	2980  -  ResidentSetSize of job (KB)
+...
+006 (1974227.025.000) 02/25 07:56:33 Image size of job updated: 277360
+	241  -  MemoryUsage of job (MB)
+	245772  -  ResidentSetSize of job (KB)
+...
+006 (1974227.025.000) 02/25 08:01:34 Image size of job updated: 299308
+	262  -  MemoryUsage of job (MB)
+	267720  -  ResidentSetSize of job (KB)
+...
+006 (1974227.025.000) 02/25 08:04:19 Image size of job updated: 311088
+	262  -  MemoryUsage of job (MB)
+	267724  -  ResidentSetSize of job (KB)
+...
+040 (1974227.025.000) 02/25 08:04:24 Entered queue to transfer output files
+...
+040 (1974227.025.000) 02/25 08:14:10 Started transferring output files
+...
+040 (1974227.025.000) 02/25 08:14:30 Finished transferring output files
+...
+005 (1974227.025.000) 02/25 08:14:30 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:09:22, Sys 0 00:00:08  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:09:22, Sys 0 00:00:08  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7998193  -  Run Bytes Sent By Job
+	11694051  -  Run Bytes Received By Job
+	7998193  -  Total Bytes Sent By Job
+	11694051  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :        0        1         1 
+	   Disk (KB)            :    67893    12500    206156 
+	   Memory (MB)          :      262     2000      2000 
+...

@@ -1,0 +1,44 @@
+000 (1968643.370.000) 02/23 15:23:33 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1968643.370.000) 02/23 21:19:43 Started transferring input files
+	Transferring to host: <188.184.203.166:9618?addrs=188.184.203.166-9618&noUDP&sock=2809_f1cb_92667>
+...
+040 (1968643.370.000) 02/23 21:19:44 Finished transferring input files
+...
+001 (1968643.370.000) 02/23 21:19:45 Job executing on host: <188.184.203.166:9618?addrs=188.184.203.166-9618&noUDP&sock=1930_65df_3>
+...
+006 (1968643.370.000) 02/23 21:19:54 Image size of job updated: 142564
+	76  -  MemoryUsage of job (MB)
+	77036  -  ResidentSetSize of job (KB)
+...
+006 (1968643.370.000) 02/23 21:24:55 Image size of job updated: 289860
+	283  -  MemoryUsage of job (MB)
+	289344  -  ResidentSetSize of job (KB)
+...
+006 (1968643.370.000) 02/23 21:29:56 Image size of job updated: 421952
+	412  -  MemoryUsage of job (MB)
+	421436  -  ResidentSetSize of job (KB)
+...
+006 (1968643.370.000) 02/23 21:32:00 Image size of job updated: 585300
+	412  -  MemoryUsage of job (MB)
+	421436  -  ResidentSetSize of job (KB)
+...
+040 (1968643.370.000) 02/23 21:32:00 Started transferring output files
+...
+040 (1968643.370.000) 02/23 21:32:01 Finished transferring output files
+...
+005 (1968643.370.000) 02/23 21:32:02 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:07:46, Sys 0 00:00:03  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:07:46, Sys 0 00:00:03  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7980295  -  Run Bytes Sent By Job
+	11691357  -  Run Bytes Received By Job
+	7980295  -  Total Bytes Sent By Job
+	11691357  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.99        1         1 
+	   Disk (KB)            : 67875       12500    216025 
+	   Memory (MB)          :   412        2000      2000 
+...

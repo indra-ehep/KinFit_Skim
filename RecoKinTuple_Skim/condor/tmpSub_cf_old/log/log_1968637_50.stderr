@@ -1,0 +1,211 @@
+WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679967, badread=6, nerrors=1, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679968, badread=6, nerrors=2, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679969, badread=6, nerrors=3, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679970, badread=6, nerrors=4, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679971, badread=6, nerrors=5, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679972, badread=6, nerrors=6, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679973, badread=6, nerrors=7, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679974, badread=6, nerrors=8, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679975, badread=6, nerrors=9, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error in <TBranch::GetBasket>: File: root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/ZZTo4L_powheg_ext1_Skim_NanoAOD_14of14.root at byte:3454765325, branch:fixedGridRhoFastjetAll, entry:679976, badread=6, nerrors=10, basketnumber=71
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+Error R__unzip_header: error in header.  Values: c6a2
+Error in <TBasket::ReadBasketBuffers>: Inconsistency found in header (nin=0, nbuf=0)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 205949054, fKeylen = 7744, fObjlen = 717105088, noutot = 0, nout=0, nin=0, nbuf=0
+condor_exec.exe: line 40:   197 Killed                  ./makeRecoNtuple cutflow ${year} ${sample} ${jobNum} . ${!varname}
+[290B/290B][100%][==================================================][290B/s]  [290B/290B][100%][==================================================][290B/s]  

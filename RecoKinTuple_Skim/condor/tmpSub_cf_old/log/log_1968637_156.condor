@@ -1,0 +1,44 @@
+000 (1968637.156.000) 02/23 15:21:26 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1968637.156.000) 02/23 16:06:16 Started transferring input files
+	Transferring to host: <188.184.132.83:9618?addrs=188.184.132.83-9618&noUDP&sock=2885_7e4e_95240>
+...
+040 (1968637.156.000) 02/23 16:06:17 Finished transferring input files
+...
+001 (1968637.156.000) 02/23 16:06:18 Job executing on host: <188.184.132.83:9618?addrs=188.184.132.83-9618&noUDP&sock=1918_2abc_3>
+...
+006 (1968637.156.000) 02/23 16:06:26 Image size of job updated: 113076
+	62  -  MemoryUsage of job (MB)
+	63256  -  ResidentSetSize of job (KB)
+...
+006 (1968637.156.000) 02/23 16:11:26 Image size of job updated: 388476
+	320  -  MemoryUsage of job (MB)
+	326772  -  ResidentSetSize of job (KB)
+...
+006 (1968637.156.000) 02/23 16:16:27 Image size of job updated: 406680
+	337  -  MemoryUsage of job (MB)
+	344976  -  ResidentSetSize of job (KB)
+...
+006 (1968637.156.000) 02/23 16:20:58 Image size of job updated: 557776
+	337  -  MemoryUsage of job (MB)
+	344980  -  ResidentSetSize of job (KB)
+...
+040 (1968637.156.000) 02/23 16:20:58 Started transferring output files
+...
+040 (1968637.156.000) 02/23 16:21:00 Finished transferring output files
+...
+005 (1968637.156.000) 02/23 16:21:01 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:05:14, Sys 0 00:00:04  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:05:14, Sys 0 00:00:04  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7983937  -  Run Bytes Sent By Job
+	11691465  -  Run Bytes Received By Job
+	7983937  -  Total Bytes Sent By Job
+	11691465  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.60        1         1 
+	   Disk (KB)            : 67878       12500    200317 
+	   Memory (MB)          :   337        2000      2000 
+...

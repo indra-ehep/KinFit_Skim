@@ -1,0 +1,44 @@
+000 (1974228.169.000) 02/25 07:40:19 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1974228.169.000) 02/25 08:30:37 Started transferring input files
+	Transferring to host: <188.184.133.172:9618?addrs=188.184.133.172-9618&noUDP&sock=2809_f1cb_128027>
+...
+040 (1974228.169.000) 02/25 08:30:38 Finished transferring input files
+...
+001 (1974228.169.000) 02/25 08:30:39 Job executing on host: <188.184.133.172:9618?addrs=188.184.133.172-9618&noUDP&sock=1829_1ecf_3>
+...
+006 (1974228.169.000) 02/25 08:30:48 Image size of job updated: 147348
+	82  -  MemoryUsage of job (MB)
+	83788  -  ResidentSetSize of job (KB)
+...
+006 (1974228.169.000) 02/25 08:35:49 Image size of job updated: 397460
+	316  -  MemoryUsage of job (MB)
+	323408  -  ResidentSetSize of job (KB)
+...
+006 (1974228.169.000) 02/25 08:40:50 Image size of job updated: 397460
+	336  -  MemoryUsage of job (MB)
+	343384  -  ResidentSetSize of job (KB)
+...
+006 (1974228.169.000) 02/25 08:45:50 Image size of job updated: 397460
+	347  -  MemoryUsage of job (MB)
+	355220  -  ResidentSetSize of job (KB)
+...
+040 (1974228.169.000) 02/25 08:49:07 Started transferring output files
+...
+040 (1974228.169.000) 02/25 08:49:08 Finished transferring output files
+...
+005 (1974228.169.000) 02/25 08:49:08 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:06:50, Sys 0 00:00:06  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:06:50, Sys 0 00:00:06  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	8000114  -  Run Bytes Sent By Job
+	11694051  -  Run Bytes Received By Job
+	8000114  -  Total Bytes Sent By Job
+	11694051  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.39        1         1 
+	   Disk (KB)            : 67896       12500    212532 
+	   Memory (MB)          :   347        2000      2000 
+...

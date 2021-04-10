@@ -1,0 +1,44 @@
+000 (2596917.037.000) 03/05 04:28:56 Job submitted from host: <188.185.114.121:9618?addrs=188.185.114.121-9618+[2001-1458-d00-a--100-273]-9618&alias=bigbird19.cern.ch&noUDP&sock=schedd_1983_c064_3>
+...
+040 (2596917.037.000) 03/05 04:37:06 Started transferring input files
+	Transferring to host: <188.184.133.178:9618?addrs=188.184.133.178-9618&noUDP&sock=2804_6beb_118405>
+...
+040 (2596917.037.000) 03/05 04:37:07 Finished transferring input files
+...
+001 (2596917.037.000) 03/05 04:37:08 Job executing on host: <188.184.133.178:9618?addrs=188.184.133.178-9618&noUDP&sock=1871_edc9_3>
+...
+006 (2596917.037.000) 03/05 04:37:16 Image size of job updated: 11388
+	5  -  MemoryUsage of job (MB)
+	5084  -  ResidentSetSize of job (KB)
+...
+006 (2596917.037.000) 03/05 04:42:16 Image size of job updated: 519772
+	478  -  MemoryUsage of job (MB)
+	489144  -  ResidentSetSize of job (KB)
+...
+006 (2596917.037.000) 03/05 04:47:17 Image size of job updated: 539544
+	497  -  MemoryUsage of job (MB)
+	508916  -  ResidentSetSize of job (KB)
+...
+006 (2596917.037.000) 03/05 04:52:17 Image size of job updated: 565180
+	523  -  MemoryUsage of job (MB)
+	534552  -  ResidentSetSize of job (KB)
+...
+040 (2596917.037.000) 03/05 04:57:20 Started transferring output files
+...
+040 (2596917.037.000) 03/05 04:57:21 Finished transferring output files
+...
+005 (2596917.037.000) 03/05 04:57:22 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:09:33, Sys 0 00:00:09  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:09:33, Sys 0 00:00:09  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7989409  -  Run Bytes Sent By Job
+	11691635  -  Run Bytes Received By Job
+	7989409  -  Total Bytes Sent By Job
+	11691635  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.99        1         1 
+	   Disk (KB)            : 67880       12500    213336 
+	   Memory (MB)          :   523        2000      2000 
+...

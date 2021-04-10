@@ -1,0 +1,44 @@
+000 (1974229.284.000) 02/25 07:41:54 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1974229.284.000) 02/25 08:52:20 Started transferring input files
+	Transferring to host: <188.184.133.194:9618?addrs=188.184.133.194-9618&noUDP&sock=3036_e2f5_111002>
+...
+040 (1974229.284.000) 02/25 08:52:21 Finished transferring input files
+...
+001 (1974229.284.000) 02/25 08:52:22 Job executing on host: <188.184.133.194:9618?addrs=188.184.133.194-9618&noUDP&sock=1976_f33b_3>
+...
+006 (1974229.284.000) 02/25 08:52:31 Image size of job updated: 131736
+	75  -  MemoryUsage of job (MB)
+	75860  -  ResidentSetSize of job (KB)
+...
+006 (1974229.284.000) 02/25 08:57:33 Image size of job updated: 233156
+	155  -  MemoryUsage of job (MB)
+	157748  -  ResidentSetSize of job (KB)
+...
+006 (1974229.284.000) 02/25 09:02:33 Image size of job updated: 369996
+	288  -  MemoryUsage of job (MB)
+	294064  -  ResidentSetSize of job (KB)
+...
+006 (1974229.284.000) 02/25 09:03:43 Image size of job updated: 378332
+	288  -  MemoryUsage of job (MB)
+	294064  -  ResidentSetSize of job (KB)
+...
+040 (1974229.284.000) 02/25 09:03:43 Started transferring output files
+...
+040 (1974229.284.000) 02/25 09:03:44 Finished transferring output files
+...
+005 (1974229.284.000) 02/25 09:03:45 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:03:39, Sys 0 00:00:03  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:03:39, Sys 0 00:00:03  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	8002259  -  Run Bytes Sent By Job
+	11694051  -  Run Bytes Received By Job
+	8002259  -  Total Bytes Sent By Job
+	11694051  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.41        1         1 
+	   Disk (KB)            : 67897       12500    212475 
+	   Memory (MB)          :   288        2000      2000 
+...

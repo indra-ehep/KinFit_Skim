@@ -1,0 +1,18 @@
+WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+[16MB/44.09MB][ 36%][==================>                               ][16MB/s]  [44.09MB/44.09MB][100%][==================================================][44.09MB/s]  [44.09MB/44.09MB][100%][==================================================][7.349MB/s]  

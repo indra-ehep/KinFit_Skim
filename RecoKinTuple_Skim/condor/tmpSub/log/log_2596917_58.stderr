@@ -1,0 +1,5 @@
+WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
+[0B/0B][100%][==================================================][0B/s]  
+Run: [ERROR] Server responded with an error: [3010] Unable to create /eos/user/i/idas/Output/cms-hcs-run2/RecoNtuple_Skim/2017; permission denied
+
+[16MB/1.19GB][  1%][>                                                 ][16MB/s]  [112MB/1.19GB][  9%][====>                                             ][112MB/s]  [272MB/1.19GB][ 22%][===========>                                      ][136MB/s]  [464MB/1.19GB][ 38%][===================>                              ][154.7MB/s]  [672MB/1.19GB][ 55%][===========================>                      ][168MB/s]  [880MB/1.19GB][ 72%][====================================>             ][176MB/s]  [1.078GB/1.19GB][ 90%][=============================================>    ][184MB/s]  [1.19GB/1.19GB][100%][==================================================][203.1MB/s]  [1.19GB/1.19GB][100%][==================================================][174.1MB/s]  

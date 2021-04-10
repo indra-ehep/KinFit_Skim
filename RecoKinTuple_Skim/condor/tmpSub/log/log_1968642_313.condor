@@ -1,0 +1,48 @@
+000 (1968642.313.000) 02/23 15:23:27 Job submitted from host: <188.185.70.244:9618?addrs=188.185.70.244-9618+[2001-1458-d00-7--100-2ee]-9618&alias=bigbird10.cern.ch&noUDP&sock=schedd_1882_7954_37>
+...
+040 (1968642.313.000) 02/23 18:03:49 Started transferring input files
+	Transferring to host: <188.184.204.118:9618?addrs=188.184.204.118-9618&noUDP&sock=8155_af65_10621>
+...
+040 (1968642.313.000) 02/23 18:03:51 Finished transferring input files
+...
+001 (1968642.313.000) 02/23 18:03:52 Job executing on host: <188.184.204.118:9618?addrs=188.184.204.118-9618&noUDP&sock=1803_4958_139>
+...
+006 (1968642.313.000) 02/23 18:04:01 Image size of job updated: 77360
+	74  -  MemoryUsage of job (MB)
+	74888  -  ResidentSetSize of job (KB)
+...
+006 (1968642.313.000) 02/23 18:09:02 Image size of job updated: 267380
+	261  -  MemoryUsage of job (MB)
+	266732  -  ResidentSetSize of job (KB)
+...
+006 (1968642.313.000) 02/23 18:14:02 Image size of job updated: 286608
+	279  -  MemoryUsage of job (MB)
+	285584  -  ResidentSetSize of job (KB)
+...
+006 (1968642.313.000) 02/23 18:19:03 Image size of job updated: 298164
+	291  -  MemoryUsage of job (MB)
+	297140  -  ResidentSetSize of job (KB)
+...
+006 (1968642.313.000) 02/23 18:19:59 Image size of job updated: 298164
+	291  -  MemoryUsage of job (MB)
+	297144  -  ResidentSetSize of job (KB)
+...
+040 (1968642.313.000) 02/23 18:20:00 Started transferring output files
+...
+040 (1968642.313.000) 02/23 18:20:02 Finished transferring output files
+...
+005 (1968642.313.000) 02/23 18:20:02 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:03:20, Sys 0 00:00:05  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:03:20, Sys 0 00:00:05  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7980538  -  Run Bytes Sent By Job
+	11691357  -  Run Bytes Received By Job
+	7980538  -  Total Bytes Sent By Job
+	11691357  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.31        1         1 
+	   Disk (KB)            : 67874       12500    142554 
+	   Memory (MB)          :   291        2000      2000 
+...

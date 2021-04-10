@@ -1,0 +1,15 @@
+WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session
+[0B/0B][100%][==================================================][0B/s]  
+Run: [ERROR] Server responded with an error: [3010] Unable to create /eos/user/i/idas/Output/cms-hcs-run2/RecoNtuple_Skim/2017; permission denied
+
+[16MB/1.192GB][  1%][>                                                 ][16MB/s]  [112MB/1.192GB][  9%][====>                                             ][112MB/s]  [336MB/1.192GB][ 27%][=============>                                    ][168MB/s]  [560MB/1.192GB][ 45%][======================>                           ][186.7MB/s]  [784MB/1.192GB][ 64%][================================>                 ][196MB/s]  [992MB/1.192GB][ 81%][========================================>         ][198.4MB/s]  [1.188GB/1.192GB][ 99%][=================================================>][202.7MB/s]  [1.192GB/1.192GB][100%][==================================================][203.4MB/s]  [1.192GB/1.192GB][100%][==================================================][203.4MB/s]  

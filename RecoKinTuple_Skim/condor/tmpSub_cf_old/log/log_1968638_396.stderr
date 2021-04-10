@@ -1,0 +1,4 @@
+WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
+rm: cannot remove '*.csv': No such file or directory
+xrdcp: No such file or directory processing ZZTo2L2Nu_powheg_ext2*.root
+rm: cannot remove '*.root': No such file or directory
