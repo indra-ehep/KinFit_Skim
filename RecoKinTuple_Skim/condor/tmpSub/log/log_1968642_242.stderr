@@ -1,6 +1,0 @@
-WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-[16MB/65.37MB][ 24%][============>                                     ][16MB/s]  [65.37MB/65.37MB][100%][==================================================][4.669MB/s]  [65.37MB/65.37MB][100%][==================================================][2.842MB/s]  

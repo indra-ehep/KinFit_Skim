@@ -1,6 +1,0 @@
-WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
-Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
-Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
-Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
-Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
-[1014kB/1014kB][100%][==================================================][1014kB/s]  [1014kB/1014kB][100%][==================================================][507.2kB/s]  

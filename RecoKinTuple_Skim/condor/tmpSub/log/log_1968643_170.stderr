@@ -1,20 +1,0 @@
-WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
-Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3011] Unable to open /cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/Data_SingleMu_c_Skim_NanoAOD_14of17.root; Server error: no such file or directory
-
-Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3011] Unable to open /cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2017/Data_SingleMu_c_Skim_NanoAOD_15of17.root; Server error: no such file or directory
-
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-[16MB/44.12MB][ 36%][==================>                               ][8MB/s]  [44.12MB/44.12MB][100%][==================================================][22.06MB/s]  [44.12MB/44.12MB][100%][==================================================][2.322MB/s]  

@@ -1,12 +1,0 @@
-WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG42
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG50
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG42
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG50
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG42
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG50
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG42
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG50
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG42
-Error in <TTree::SetBranchStatus>: unknown branch -> L1_SingleEG50
-[16MB/19.91MB][ 80%][========================================>         ][8MB/s]  [19.91MB/19.91MB][100%][==================================================][9.955MB/s]  [19.91MB/19.91MB][100%][==================================================][1.81MB/s]  

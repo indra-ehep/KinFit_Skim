@@ -1,9 +1,0 @@
-WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-[16MB/25.86MB][ 61%][==============================>                   ][8MB/s]  [25.86MB/25.86MB][100%][==================================================][12.93MB/s]  [25.86MB/25.86MB][100%][==================================================][6.466MB/s]  

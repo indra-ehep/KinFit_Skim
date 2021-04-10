@@ -1,16 +1,0 @@
-WARNING: In non-interactive mode release checks e.g. deprecated releases, production architectures are disabled.
-Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3011] Unable to open /cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/Data_SingleMu_g_Skim_NanoAOD_6of14.root; Server error: no such file or directory
-
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Socket error
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-Error in <TNetXNGFile::Close>: [ERROR] Invalid session
-[16MB/39.35MB][ 40%][====================>                             ][8MB/s]  [39.35MB/39.35MB][100%][==================================================][19.67MB/s]  [39.35MB/39.35MB][100%][==================================================][2.071MB/s]  
