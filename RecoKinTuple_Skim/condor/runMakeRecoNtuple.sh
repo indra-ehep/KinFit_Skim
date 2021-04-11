@@ -17,7 +17,7 @@ else
     cd CMSSW_10_2_14/src
     eval `scramv1 runtime -sh`
     cd ../..
-	tar --strip-components=1 -zxvf RecoNtuple_Skim.tar.gz
+	tar --strip-components=1 -zxvf RecoKinTuple_Skim.tar.gz
 fi
 
 #Run for Base, Signal region
@@ -36,15 +36,15 @@ if [ -z $job ] ; then
 else
     jobNum=" ${job}of${nJobTotal}"
 fi
-echo "./makeRecoNtuple ${year} ${sample} ${jobNum} . ${!varname}"
-./makeRecoNtuple ${year} ${sample} ${jobNum} . ${!varname}
+echo "./makeRecoKinTuple ${year} ${sample} ${jobNum} . ${!varname}"
+./makeRecoKinTuple ${year} ${sample} ${jobNum} . ${!varname}
 
 printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/RecoNtuple_Skim_tune16_iter1
-condorOutDir=/cms/store/user/idas/Output/cms-hcs-run2/RecoNtuple_Skim_tune16_iter1
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/RecoKinTuple_Skim_iter1
+condorOutDir=/cms/store/user/idas/Output/cms-hcs-run2/RecoKinTuple_Skim_iter1
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
