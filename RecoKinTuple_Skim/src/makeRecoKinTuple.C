@@ -227,6 +227,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   }
 
   topEvent.SetBtagThresh(selector->btag_cut_DeepCSV);
+  kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
 
 
   BTagCalibrationReader reader(BTagEntry::OP_MEDIUM,  // operating point
@@ -303,9 +304,9 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   std::string outputFileName;
 
   if (nJob==-1){
-    outputFileName = outputDirectory + "/" + sampleType+"_RecoNtuple_Skim.root";
+    outputFileName = outputDirectory + "/" + sampleType+"_RecoKinTuple_Skim.root";
   } else {
-    outputFileName = outputDirectory + "/" + sampleType+"_RecoNtuple_Skim_"+to_string(nJob)+"of"+to_string(totJob)+".root";
+    outputFileName = outputDirectory + "/" + sampleType+"_RecoKinTuple_Skim_"+to_string(nJob)+"of"+to_string(totJob)+".root";
   }
   // char outputFileName[100];
   cout << av[3] << " " << sampleType << " " << systematicType << endl;
@@ -488,7 +489,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
 
 
   for(Long64_t entry=entryStart; entry<entryStop; entry++){
-    //if(entry >= 10000){break;}
+    //if(entry >= 1e4){break;}
     if(entry%dumpFreq == 0){
       // duration =  ( clock() - startClock ) / (double) CLOCKS_PER_SEC;
       // std::cout << "processing entry " << entry << " out of " << nEntr << " : " << duration << " seconds since last progress" << std::endl;
@@ -949,7 +950,7 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
     metZ.SetLeptonType("electron");
   if(_passPresel_Mu)
     metZ.SetLeptonType("muon");
-
+  
   METVector.SetPtEtaPhiM(tree->MET_pt_,
   			   0.,
   			   tree->MET_phi_,
@@ -961,72 +962,138 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   //W transverse mass		
   
   _WtransMass = TMath::Sqrt(2*lepVector.Pt()*tree->MET_pt_*( 1.0 - TMath::Cos( lepVector.DeltaPhi(METVector))));
-  
-  // TLorentzVector tempLep;
-  // tempLep.SetPtEtaPhiM(lepVector.Pt(),
-  // 			 lepVector.Eta(),
-  // 			 lepVector.Phi(),
-  // 			 0.1056);
-  
+    
   _nu_px = METVector.Px();
   _nu_py = METVector.Py();
   _nu_pz = metZ.Calculate();
   _nu_pz_other = metZ.getOther();
+
+
+  // KinFit process JER base
+  kinFit.SetJetVector(jetVectors);
+  kinFit.SetJetResVector(jetResolutionVectors);
+  kinFit.SetBtagVector(jetBtagVectors);
   
-  METVector.SetPz(_nu_pz);
-
-  // cout << _nu_pz << "   ----   " << _nu_pz_other << endl;
-
-  // for (int __j = 0; __j < isBjet.size(); __j++){
-  // 	if (isBjet.at(__j)) b_ind.push_back(__j);
-  // 	else j_ind.push_back(__j);
-  // }
+  kinFit.SetLepton(lepVector);
+  KinFit::LeptonType ltype = (_passPresel_Ele)?(KinFit::kElectron):(KinFit::kMuon); 
+  kinFit.SetLeptonType(ltype);
+  kinFit.SetMET(_nu_px, _nu_py, _nu_pz, _nu_pz_other);
+  if ( kinFit.Fit() ){
     
+    leptonAF		= kinFit.GetLepton();
+    neutrinoAF		= kinFit.GetNeutrino();
+    bjlepAF		= kinFit.GetBLepton();
+    bjhadAF		= kinFit.GetBHadron();
+    cjhadAF		= kinFit.GetCHadron();
+    sjhadAF		= kinFit.GetSHadron();
+    
+    leptonBF		= kinFit.GetLeptonUM();
+    bjlepBF		= kinFit.GetBLeptonUM();
+    bjhadBF		= kinFit.GetBHadronUM();
+    cjhadBF		= kinFit.GetCHadronUM();
+    sjhadBF		= kinFit.GetSHadronUM();
 
-  // topEvent.SetBJetVector(bjetVectors);
-  // topEvent.SetLJetVector(ljetVectors);
+    double Rdifflep	= TMath::Sqrt( TMath::Power(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) , 2) 
+				     + 
+				     TMath::Power(TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) , 2)  
+				     );
+    double Rdiffbjlep	= TMath::Sqrt( TMath::Power(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) , 2) 
+				     + 
+				     TMath::Power(TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) , 2)  
+				     );
+    double Rdiffbjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) , 2) 
+				     + 
+				     TMath::Power(TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) , 2)  
+				     );
+    double Rdiffcjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) , 2) 
+				     + 
+				     TMath::Power(TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) , 2)  
+				     );
+    double Rdiffsjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) , 2) 
+				     + 
+				     TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2)  
+				       );
+    
+    double mjj		= (cjhadBF + sjhadBF).M(); 
+    double mjjkF	= (cjhadAF + sjhadAF).M(); 
+    
+    _M_jj		= mjj;
+    
+    if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2){
+      _chi2	     = kinFit.GetChi2();
+      _NDF	     = kinFit.GetNDF();
+      _Nbiter	     = kinFit.GetNumberOfIter();
+      _M_jjkF	     = mjjkF;
+      _bjlep_id	     = kinFit.GetJetID_BLep();
+      _bjhad_id	     = kinFit.GetJetID_BHad();
+      _cjhad_id	     = kinFit.GetJetID_CHad();
+      _sjhad_id	     = kinFit.GetJetID_SHad();
+      _lepPt	     = leptonAF.Pt();
+      _lepEta	     = leptonAF.Eta();
+      _lepPhi	     = leptonAF.Phi();
+      _lepEnergy     = leptonAF.E();
+      _metPx	     = neutrinoAF.Px();
+      _metPy	     = neutrinoAF.Py();
+      _metPz	     = neutrinoAF.Pz();
+      _jetBlepPt     = bjlepAF.Pt();
+      _jetBlepEta    = bjlepAF.Eta();
+      _jetBlepPhi    = bjlepAF.Phi();
+      _jetBlepEnergy = bjlepAF.E();
+      _jetBhadPt     = bjhadAF.Pt();
+      _jetBhadEta    = bjhadAF.Eta();
+      _jetBhadPhi    = bjhadAF.Phi();
+      _jetBhadEnergy = bjhadAF.E();
+      _jetChadPt     = cjhadAF.Pt();
+      _jetChadEta    = cjhadAF.Eta();
+      _jetChadPhi    = cjhadAF.Phi();
+      _jetChadEnergy = cjhadAF.E();
+      _jetShadPt     = sjhadAF.Pt();
+      _jetShadEta    = sjhadAF.Eta();
+      _jetShadPhi    = sjhadAF.Phi();
+      _jetShadEnergy = sjhadAF.E();
+    }
+    
+  }
+  kinFit.ClearVectors();
+
+  
+  // METVector.SetPz(_nu_pz);
+    
+  // topEvent.SetJetVector(jetVectors);
+  // topEvent.SetJetResVector(jetResolutionVectors);
+  // topEvent.SetBtagVector(jetBtagVectors);
+
   // topEvent.SetLepton(lepVector);
   // topEvent.SetMET(METVector);
+  
+  
+  // topEvent.Calculate();
+  
+  // if (topEvent.GoodCombination()){
+  //   bhad = jetVectors[topEvent.getBHad()];
+  //   blep = jetVectors[topEvent.getBLep()];
+  //   Wj1 = jetVectors[topEvent.getJ1()];
+  //   Wj2 = jetVectors[topEvent.getJ2()];
+  //   METVector.SetPz(topEvent.getNuPz());
     
-  // topEvent.SetBJetResVector(bjetResVectors);
-  // topEvent.SetLJetResVector(ljetResVectors);
-  // topEvent.SetIgnoreBtag(true);
-
-  topEvent.SetJetVector(jetVectors);
-  topEvent.SetJetResVector(jetResolutionVectors);
-  topEvent.SetBtagVector(jetBtagVectors);
-
-  topEvent.SetLepton(lepVector);
-  topEvent.SetMET(METVector);
-  
-  
-  topEvent.Calculate();
-  
-  if (topEvent.GoodCombination()){
-    bhad = jetVectors[topEvent.getBHad()];
-    blep = jetVectors[topEvent.getBLep()];
-    Wj1 = jetVectors[topEvent.getJ1()];
-    Wj2 = jetVectors[topEvent.getJ2()];
-    METVector.SetPz(topEvent.getNuPz());
-    
-    _chi2 = topEvent.getChi2();
-    _M_bjj = ( bhad + Wj1 + Wj2 ).M();
-    _M_jj  = ( Wj1 + Wj2 ).M();
+  //   //_chi2 = topEvent.getChi2();
+  //   _M_bjj = ( bhad + Wj1 + Wj2 ).M();
+  //   _M_jj  = ( Wj1 + Wj2 ).M();
 	
-    _TopHad_pt = ( bhad + Wj1 + Wj2 ).Pt();
-    _TopHad_eta = ( bhad + Wj1 + Wj2 ).Eta();
-    _TopLep_pt = ( blep + lepVector + METVector ).Pt();
-    _TopLep_eta = ( blep + lepVector + METVector ).Eta();
-    _TopLep_charge = lepCharge;
+  //   _TopHad_pt = ( bhad + Wj1 + Wj2 ).Pt();
+  //   _TopHad_eta = ( bhad + Wj1 + Wj2 ).Eta();
+  //   _TopLep_pt = ( blep + lepVector + METVector ).Pt();
+  //   _TopLep_eta = ( blep + lepVector + METVector ).Eta();
+  //   _TopLep_charge = lepCharge;
 
-    _MassCuts = (_M_bjj > 160 && 
-		 _M_bjj < 180 && 
-		 _M_jj > 70 &&
-		 _M_jj < 90);
+  //   _MassCuts = (_M_bjj > 160 && 
+  // 		 _M_bjj < 180 && 
+  // 		 _M_jj > 70 &&
+  // 		 _M_jj < 90);
 
-    _blep_id  = int(topEvent.getBLep());
-    _bhad_id  = int(topEvent.getBHad());
-  }
+  //   _blep_id  = int(topEvent.getBLep());
+  //   _bhad_id  = int(topEvent.getBHad());
+  // }
     
   ljetVectors.clear();
   bjetVectors.clear();

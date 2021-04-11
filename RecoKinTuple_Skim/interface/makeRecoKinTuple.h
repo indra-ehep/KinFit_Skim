@@ -41,6 +41,9 @@
 #include "eleSF_reader.h"
 #include "UncertaintySourcesList.h"
 
+// Header file for Kinematic Fitting
+#include "KinFit.h"
+
 
 class makeRecoKinTuple {
  public :
@@ -50,9 +53,9 @@ class makeRecoKinTuple {
 
  private :
 
-  EventTree*	tree;   
-  EventPick*	evtPick;   
-  Selector*	selector;   
+  EventTree*	tree;		   
+  EventPick*	evtPick;	   
+  Selector*	selector;	   
 	
   bool	isMC;
 
@@ -61,7 +64,7 @@ class makeRecoKinTuple {
   string	sampleType;
   string	systematicType;
 
-  int eventNum = -1;
+  int	eventNum = -1;
 
   bool	isSystematicRun;
 
@@ -73,7 +76,7 @@ class makeRecoKinTuple {
 
   MuonSF*	muSFa;
   MuonSF*	muSFb;
-  ElectronSF* eleSF;
+  ElectronSF*	eleSF;
 
   TH2D*	l_eff;
   TH2D*	c_eff;
@@ -84,174 +87,214 @@ class makeRecoKinTuple {
 
   // Declaration of leaf types
   // Declaration of leaf types
-  Int_t           _run;
-  Long64_t        _event;
-  Int_t           _lumis;
-  Bool_t          _isData;
+  Int_t			 _run;
+  Long64_t		 _event;
+  Int_t			 _lumis;
+  Bool_t		 _isData;
 
-  Float_t         _PUweight;
-  Float_t         _PUweight_Up;
-  Float_t         _PUweight_Do;
+  Float_t		 _PUweight;
+  Float_t		 _PUweight_Up;
+  Float_t		 _PUweight_Do;
 	
-  Float_t         _q2weight_Up;
-  Float_t         _q2weight_Do;
-  Float_t         _q2weight_nominal;
-  std::vector<float>   _genScaleSystWeights;
+  Float_t		 _q2weight_Up;
+  Float_t		 _q2weight_Do;
+  Float_t		 _q2weight_nominal;
+  std::vector<float>	 _genScaleSystWeights;
 
-  Float_t         _pdfWeight;
-  Float_t         _pdfuncer;
-  Float_t         _pdfweight_Up;
-  Float_t	  _pdfweight_Do;
-  std::vector<float>   _pdfSystWeight;
+  Float_t		 _pdfWeight;
+  Float_t		 _pdfuncer;
+  Float_t		 _pdfweight_Up;
+  Float_t		 _pdfweight_Do;
+  std::vector<float>	 _pdfSystWeight;
 
-  Float_t         _ISRweight_Up;
-  Float_t         _ISRweight_Do;
+  Float_t		 _ISRweight_Up;
+  Float_t		 _ISRweight_Do;
 
-  Float_t         _FSRweight_Up;
-  Float_t         _FSRweight_Do;
+  Float_t		 _FSRweight_Up;
+  Float_t		 _FSRweight_Do;
 
-  float           _prefireSF;
-  float           _prefireSF_Up;
-  float           _prefireSF_Do;
+  float			 _prefireSF;
+  float			 _prefireSF_Up;
+  float			 _prefireSF_Do;
 
-  float           _btagWeight_1a;
-  float           _btagWeight_1a_b_Up;
-  float           _btagWeight_1a_b_Do;
-  float           _btagWeight_1a_l_Up;
-  float           _btagWeight_1a_l_Do;
+  float			 _btagWeight_1a;
+  float			 _btagWeight_1a_b_Up;
+  float			 _btagWeight_1a_b_Do;
+  float			 _btagWeight_1a_l_Up;
+  float			 _btagWeight_1a_l_Do;
 
-  std::vector<float> _btagWeight;
-  std::vector<float> _btagWeight_b_Up;
-  std::vector<float> _btagWeight_b_Do;
-  std::vector<float> _btagWeight_l_Up;
-  std::vector<float> _btagWeight_l_Do;
+  std::vector<float>	 _btagWeight;
+  std::vector<float>	 _btagWeight_b_Up;
+  std::vector<float>	 _btagWeight_b_Do;
+  std::vector<float>	 _btagWeight_l_Up;
+  std::vector<float>	 _btagWeight_l_Do;
 
-  std::vector<float> _btagSF;
-  std::vector<float> _btagSF_b_Up;
-  std::vector<float> _btagSF_b_Do;
-  std::vector<float> _btagSF_l_Up;
-  std::vector<float> _btagSF_l_Do;
+  std::vector<float>	 _btagSF;
+  std::vector<float>	 _btagSF_b_Up;
+  std::vector<float>	 _btagSF_b_Do;
+  std::vector<float>	 _btagSF_l_Up;
+  std::vector<float>	 _btagSF_l_Do;
 
-  Float_t         _muEffWeight;
-  Float_t         _muEffWeight_Up;
-  Float_t         _muEffWeight_Do;
+  Float_t		 _muEffWeight;
+  Float_t		 _muEffWeight_Up;
+  Float_t		 _muEffWeight_Do;
 
-  Float_t         _muEffWeight_IdIso;
-  Float_t         _muEffWeight_IdIso_Up;
-  Float_t         _muEffWeight_IdIso_Do;
+  Float_t		 _muEffWeight_IdIso;
+  Float_t		 _muEffWeight_IdIso_Up;
+  Float_t		 _muEffWeight_IdIso_Do;
 
-  Float_t         _muEffWeight_Trig;
-  Float_t         _muEffWeight_Trig_Up;
-  Float_t         _muEffWeight_Trig_Do;
+  Float_t		 _muEffWeight_Trig;
+  Float_t		 _muEffWeight_Trig_Up;
+  Float_t		 _muEffWeight_Trig_Do;
 
-  Float_t         _eleEffWeight;
-  Float_t         _eleEffWeight_Up;
-  Float_t         _eleEffWeight_Do;
+  Float_t		 _eleEffWeight;
+  Float_t		 _eleEffWeight_Up;
+  Float_t		 _eleEffWeight_Do;
 
-  Float_t         _eleEffWeight_IdReco;
-  Float_t         _eleEffWeight_IdReco_Up;
-  Float_t         _eleEffWeight_IdReco_Do;
+  Float_t		 _eleEffWeight_IdReco;
+  Float_t		 _eleEffWeight_IdReco_Up;
+  Float_t		 _eleEffWeight_IdReco_Do;
 
-  Float_t         _eleEffWeight_Trig;
-  Float_t         _eleEffWeight_Trig_Up;
-  Float_t         _eleEffWeight_Trig_Do;
+  Float_t		 _eleEffWeight_Trig;
+  Float_t		 _eleEffWeight_Trig_Up;
+  Float_t		 _eleEffWeight_Trig_Do;
 
-  Float_t         _evtWeight;
-  Float_t         _lumiWeight;
-  Int_t           _nVtx;
-  Int_t           _nGoodVtx;
+  Float_t		 _evtWeight;
+  Float_t		 _lumiWeight;
+  Int_t			 _nVtx;
+  Int_t			 _nGoodVtx;
 
-  Float_t         _genMET;
+  Float_t		 _genMET;
         
-  Float_t         _pfMET;
-  Float_t         _pfMETPhi;
-  Float_t         _nu_px;
-  Float_t         _nu_py;
-  Float_t         _nu_pz;
-  Float_t         _nu_pz_other;
-  Float_t         _WtransMass;
-  Float_t         _M_bjj;
-  Float_t         _M_jj;
-  Float_t         _TopHad_pt;
-  Float_t         _TopHad_eta;
-  Float_t         _TopLep_pt;
-  Float_t         _TopLep_eta;
-  Float_t         _TopLep_charge;
-  Float_t         _chi2;
-  Bool_t          _MassCuts;
-  int             _blep_id;
-  int             _bhad_id;
-
-  /* Float_t 	  _DilepMass; */
-  /* Float_t         _DilepDelR; */
-
-  Int_t           _nEle;
-  Int_t           _nEleLoose;
-  std::vector<float>   _elePt;
-  std::vector<float>   _elePhi;
-  std::vector<float>   _eleSCEta;
-  std::vector<float>   _elePFRelIso;
+  Float_t		 _pfMET;
+  Float_t		 _pfMETPhi;
+  Float_t		 _nu_px;
+  Float_t		 _nu_py;
+  Float_t		 _nu_pz;
+  Float_t		 _nu_pz_other;
+  Float_t		 _WtransMass;
   
-  Int_t           _nMu;
-  Int_t           _nMuLoose;
-  std::vector<float>   _muPt;
-  std::vector<float>   _muEta;
-  std::vector<float>   _muPhi;
-  std::vector<float>   _muPFRelIso;
+  Float_t		 _chi2;
+  int			 _NDF;
+  int			 _Nbiter;
+  Float_t		 _M_jj;
+  Float_t		 _M_jjkF;
+  int			 _bjlep_id;
+  int			 _bjhad_id;
+  int			 _cjhad_id;
+  int			 _sjhad_id;
+  Float_t		 _lepPt;
+  Float_t		 _lepEta;
+  Float_t		 _lepPhi;
+  Float_t		 _lepEnergy;
+  Float_t		 _metPx;
+  Float_t		 _metPy;
+  Float_t		 _metPz;
+  Float_t		 _jetBlepPt;
+  Float_t		 _jetBlepEta;
+  Float_t		 _jetBlepPhi;
+  Float_t		 _jetBlepEnergy;
+  Float_t		 _jetBhadPt;
+  Float_t		 _jetBhadEta;
+  Float_t		 _jetBhadPhi;
+  Float_t		 _jetBhadEnergy;
+  Float_t		 _jetChadPt;
+  Float_t		 _jetChadEta;
+  Float_t		 _jetChadPhi;
+  Float_t		 _jetChadEnergy;
+  Float_t		 _jetShadPt;
+  Float_t		 _jetShadEta;
+  Float_t		 _jetShadPhi;
+  Float_t		 _jetShadEnergy;
+
+  /* Float_t		 _lepPtDiff; */
+  /* Float_t		 _blepPtDiff; */
+  /* Float_t		 _bhadPtDiff; */
+  /* Float_t		 _chadPtDiff; */
+  /* Float_t		 _shadPtDiff; */
+  /* Float_t		 _cshadPtDiff; */
+  /* Float_t		 _M_bjj; */
+  /* Float_t		 _M_jj; */
+  /* Float_t		 _TopHad_pt; */
+  /* Float_t		 _TopHad_eta; */
+  /* Float_t		 _TopLep_pt; */
+  /* Float_t		 _TopLep_eta; */
+  /* Float_t		 _TopLep_charge; */
+  /* Float_t		 _chi2; */
+  /* Bool_t		 _MassCuts; */
+  /* int		 _blep_id; */
+  /* int		 _bhad_id; */
+
+  /* Float_t		 _DilepMass; */
+  /* Float_t		 _DilepDelR; */
+
+  Int_t			 _nEle;
+  Int_t			 _nEleLoose;
+  std::vector<float>	 _elePt;
+  std::vector<float>	 _elePhi;
+  std::vector<float>	 _eleSCEta;
+  std::vector<float>	 _elePFRelIso;
+  
+  Int_t			 _nMu;
+  Int_t			 _nMuLoose;
+  std::vector<float>	 _muPt;
+  std::vector<float>	 _muEta;
+  std::vector<float>	 _muPhi;
+  std::vector<float>	 _muPFRelIso;
 	
-  Int_t           _nJet;
-  Int_t           _nBJet;
-  std::vector<float>   _jetPt;
-  std::vector<float>   _jetEta;
-  std::vector<float>   _jetPhi;
-  std::vector<float>   _jetMass;
+  Int_t			 _nJet;
+  Int_t			 _nBJet;
+  std::vector<float>	 _jetPt;
+  std::vector<float>	 _jetEta;
+  std::vector<float>	 _jetPhi;
+  std::vector<float>	 _jetMass;
 
-  Int_t                _nfwdJet;
-  std::vector<float>   _fwdJetPt;
-  std::vector<float>   _fwdJetEta;
-  std::vector<float>   _fwdJetPhi;
-  std::vector<float>   _fwdJetMass;
+  Int_t			 _nfwdJet;
+  std::vector<float>	 _fwdJetPt;
+  std::vector<float>	 _fwdJetEta;
+  std::vector<float>	 _fwdJetPhi;
+  std::vector<float>	 _fwdJetMass;
 
-  std::vector<float>   _jetCMVA;
-  std::vector<float>   _jetCSVV2;
-  std::vector<float>   _jetDeepB;
-  std::vector<float>   _jetDeepC;
+  std::vector<float>	 _jetCMVA;
+  std::vector<float>	 _jetCSVV2;
+  std::vector<float>	 _jetDeepB;
+  std::vector<float>	 _jetDeepC;
 
-  std::vector<Int_t>   _jetGenJetIdx;
+  std::vector<Int_t>	 _jetGenJetIdx;
 
-  /* std::vector<int>     _jetPartonID; */
-  /* std::vector<float>   _jetGenJetPt; */
-  /* std::vector<int>     _jetGenPartonID; */
-  /* std::vector<float>   _jetGenPt; */
-  /* std::vector<float>   _jetGenEta; */
-  /* std::vector<float>   _jetGenPhi; */
+  /* std::vector<int>    _jetPartonID; */
+  /* std::vector<float>  _jetGenJetPt; */
+  /* std::vector<int>    _jetGenPartonID; */
+  /* std::vector<float>  _jetGenPt; */
+  /* std::vector<float>  _jetGenEta; */
+  /* std::vector<float>  _jetGenPhi; */
 
-  Int_t                _nGenJet;
-  std::vector<float>   _genJetPt;
-  std::vector<float>   _genJetEta;
-  std::vector<float>   _genJetPhi;
-  std::vector<float>   _genJetMass;
-  std::vector<float>   _genJetPartonFlavour;
-  std::vector<float>   _genJetHadronFlavour;
+  Int_t			 _nGenJet;
+  std::vector<float>	 _genJetPt;
+  std::vector<float>	 _genJetEta;
+  std::vector<float>	 _genJetPhi;
+  std::vector<float>	 _genJetMass;
+  std::vector<float>	 _genJetPartonFlavour;
+  std::vector<float>	 _genJetHadronFlavour;
 
-  Int_t                _nGenPart;
-  std::vector<float>   _genPt;
-  std::vector<float>   _genEta;
-  std::vector<float>   _genPhi;
-  std::vector<float>   _genMass;
-  std::vector<int>     _genStatus;
-  std::vector<int>     _genStatusFlag;
-  std::vector<int>     _genPDGID;
-  std::vector<int>     _genMomIdx;
-  /* std::vector<int>     _genMomPID; */
-  /* std::vector<int>     _genGMomPID; */
+  Int_t			 _nGenPart;
+  std::vector<float>	 _genPt;
+  std::vector<float>	 _genEta;
+  std::vector<float>	 _genPhi;
+  std::vector<float>	 _genMass;
+  std::vector<int>	 _genStatus;
+  std::vector<int>	 _genStatusFlag;
+  std::vector<int>	 _genPDGID;
+  std::vector<int>	 _genMomIdx;
+  /* std::vector<int>    _genMomPID; */
+  /* std::vector<int>    _genGMomPID; */
 
-  double          _M3;
-  double          _HT;
-  bool            _passPresel_Ele;
-  bool            _passPresel_Mu;
-  bool            _passAll_Ele;
-  bool            _passAll_Mu;
+  double		 _M3;
+  double		 _HT;
+  bool			 _passPresel_Ele;
+  bool			 _passPresel_Mu;
+  bool			 _passAll_Ele;
+  bool			 _passAll_Mu;
 
   /////////////////////// End of Tree leaf and branches ///////////////////////////
   bool  dileptonsample;
@@ -280,6 +323,11 @@ class makeRecoKinTuple {
   TLorentzVector Wj1;
   TLorentzVector Wj2;
 
+  TLorentzVector leptonBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF; 
+  TLorentzVector leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF; 
+
+
+  KinFit kinFit;
   /* std::vector<bool> isBjet; */
   /* std::vector<int> b_ind; */
   /* std::vector<int> j_ind; */
@@ -352,10 +400,10 @@ void makeRecoKinTuple::InitBranches(){
     }
     outputTree->Branch("btagSF"			, &_btagSF			);
     if (!isSystematicRun){
-      outputTree->Branch("btagSF_b_Up"          , &_btagSF_b_Up                 );
-      outputTree->Branch("btagSF_b_Do"          , &_btagSF_b_Do                 );
-      outputTree->Branch("btagSF_l_Up"          , &_btagSF_l_Up                 );
-      outputTree->Branch("btagSF_l_Do"          , &_btagSF_l_Do                 );
+      outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			);
+      outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			);
+      outputTree->Branch("btagSF_l_Up"		, &_btagSF_l_Up			);
+      outputTree->Branch("btagSF_l_Do"		, &_btagSF_l_Do			);
     }
     outputTree->Branch("muEffWeight"		, &_muEffWeight			);
     outputTree->Branch("muEffWeight_IdIso"	, &_muEffWeight_IdIso		);
@@ -385,47 +433,62 @@ void makeRecoKinTuple::InitBranches(){
     }
 
     outputTree->Branch("evtWeight"		, &_evtWeight			);      
-    outputTree->Branch("lumiWeight"             , &_lumiWeight                  );      
-    //    outputTree->Branch("evtWeightAlt"	, &_evtWeightAlt		);      
-    //    outputTree->Branch("evtWeightAlt"	, &_evtWeightAlt		);      
+    outputTree->Branch("lumiWeight"		, &_lumiWeight			);      
     outputTree->Branch("nVtx"			, &_nVtx			); 
     outputTree->Branch("nGoodVtx"		, &_nGoodVtx			); 
-    /* outputTree->Branch("isPVGood"		, &_isPVGood			);  */
-    /* outputTree->Branch("rho"			, &_rho				);  */
     if (!isSystematicRun){
 	outputTree->Branch("genMET"		, &_genMET			); 
     }
     outputTree->Branch("pfMET"			, &_pfMET			);
     outputTree->Branch("pfMETPhi"		, &_pfMETPhi			); 
-    outputTree->Branch("nu_px"                  , &_nu_px                       );
-    outputTree->Branch("nu_py"                  , &_nu_py                       );
+    outputTree->Branch("nu_px"			, &_nu_px			);
+    outputTree->Branch("nu_py"			, &_nu_py			);
     outputTree->Branch("nu_pz"			, &_nu_pz			);
     outputTree->Branch("nu_pz_other"		, &_nu_pz_other			);
     outputTree->Branch("WtransMass"		, &_WtransMass			);
-    outputTree->Branch("M_bjj"			, &_M_bjj			);
-    outputTree->Branch("M_jj"			, &_M_jj			);
-    outputTree->Branch("TopHad_pt"		, &_TopHad_pt			);
-    outputTree->Branch("TopHad_eta"		, &_TopHad_eta			);
-    outputTree->Branch("TopLep_pt"		, &_TopLep_pt			);
-    outputTree->Branch("TopLep_eta"		, &_TopLep_eta			);
-    outputTree->Branch("TopLep_charge"		, &_TopLep_charge		);
-    outputTree->Branch("chi2"			, &_chi2			);
-    outputTree->Branch("MassCuts"		, &_MassCuts			);
-    outputTree->Branch("blep_id"                    , &_blep_id                     );
-    outputTree->Branch("bhad_id"                    , &_bhad_id                     );
 
-    /* outputTree->Branch("DilepMass"		, &_DilepMass			); */
-    /* outputTree->Branch("DilepDelR"		, &_DilepDelR			); */
+    outputTree->Branch("chi2"			, &_chi2			);
+    outputTree->Branch("NDF"			, &_NDF				);
+    outputTree->Branch("Nbiter"			, &_Nbiter			);
+    outputTree->Branch("M_jj"			, &_M_jj			);
+    outputTree->Branch("M_jjkF"			, &_M_jjkF			);
+    outputTree->Branch("bjlep_id"		, &_bjlep_id			);
+    outputTree->Branch("bjhad_id"		, &_bjhad_id			);
+    outputTree->Branch("cjhad_id"		, &_cjhad_id			);
+    outputTree->Branch("sjhad_id"		, &_sjhad_id			);
+    outputTree->Branch("lepPt"			, &_lepPt			);
+    outputTree->Branch("lepEta"			, &_lepEta			);
+    outputTree->Branch("lepPhi"			, &_lepPhi			);
+    outputTree->Branch("lepEnergy"		, &_lepEnergy			);
+    outputTree->Branch("metPx"			, &_metPx			);
+    outputTree->Branch("metPy"			, &_metPy			);
+    outputTree->Branch("metPz"			, &_metPz			);
+    outputTree->Branch("jetBlepPt"		, &_jetBlepPt			);
+    outputTree->Branch("jetBlepEta"		, &_jetBlepEta			);
+    outputTree->Branch("jetBlepPhi"		, &_jetBlepPhi			);
+    outputTree->Branch("jetBlepEnergy"		, &_jetBlepEnergy		);
+    outputTree->Branch("jetBhadPt"		, &_jetBhadPt			);
+    outputTree->Branch("jetBhadEta"		, &_jetBhadEta			);
+    outputTree->Branch("jetBhadPhi"		, &_jetBhadPhi			);
+    outputTree->Branch("jetBhadEnergy"		, &_jetBhadEnergy		);
+    outputTree->Branch("jetChadPt"		, &_jetChadPt			);
+    outputTree->Branch("jetChadEta"		, &_jetChadEta			);
+    outputTree->Branch("jetChadPhi"		, &_jetChadPhi			);
+    outputTree->Branch("jetChadEnergy"		, &_jetChadEnergy		);
+    outputTree->Branch("jetShadPt"		, &_jetShadPt			);
+    outputTree->Branch("jetShadEta"		, &_jetShadEta			);
+    outputTree->Branch("jetShadPhi"		, &_jetShadPhi			);
+    outputTree->Branch("jetShadEnergy"		, &_jetShadEnergy		);
 
     outputTree->Branch("nEle"			, &_nEle			); 
-    outputTree->Branch("nEleLoose"              , &_nEleLoose                   ); 
+    outputTree->Branch("nEleLoose"		, &_nEleLoose			); 
     outputTree->Branch("elePt"			, &_elePt			);
     outputTree->Branch("elePhi"			, &_elePhi			); 
     outputTree->Branch("eleSCEta"		, &_eleSCEta			); 
     outputTree->Branch("elePFRelIso"		, &_elePFRelIso			); 
 
     outputTree->Branch("nMu"			, &_nMu				); 
-    outputTree->Branch("nMuLoose"               , &_nMuLoose                    ); 
+    outputTree->Branch("nMuLoose"		, &_nMuLoose			); 
     outputTree->Branch("muPt"			, &_muPt			); 
     outputTree->Branch("muEta"			, &_muEta			);
     outputTree->Branch("muPhi"			, &_muPhi			);
@@ -436,36 +499,21 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("jetPt"			, &_jetPt			);
     outputTree->Branch("jetEta"			, &_jetEta			); 
     outputTree->Branch("jetPhi"			, &_jetPhi			); 
-    outputTree->Branch("jetMass"                , &_jetMass                     );
+    outputTree->Branch("jetMass"		, &_jetMass			);
 
     outputTree->Branch("nfwdJet"		, &_nfwdJet			);
     outputTree->Branch("fwdJetPt"		, &_fwdJetPt			);
     outputTree->Branch("fwdJetEta"		, &_fwdJetEta			);
     outputTree->Branch("fwdJetPhi"		, &_fwdJetPhi			);
     outputTree->Branch("fwdJetMass"		, &_fwdJetMass			);
-
-    /* outputTree->Branch("jetRawPt"		, &_jetRawPt			);  */
-    /* outputTree->Branch("jetArea"		, &_jetArea			);  */
     if (!isSystematicRun){
 	/* outputTree->Branch("jetCMVA"		, &_jetCMVA			); */
 	/* outputTree->Branch("jetCSVV2"	, &_jetCSVV2			); */
 	outputTree->Branch("jetDeepB"		, &_jetDeepB			);
-	outputTree->Branch("jetDeepC"	        , &_jetDeepC			);
-
+	outputTree->Branch("jetDeepC"		, &_jetDeepC			);
 	outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		);
     }
 	
-    /* if (!tree->isData_){ */
-    /* 	outputTree->Branch("jetPartonID"	, &_jetPartonID			);  */
-    /* 	outputTree->Branch("jetGenJetPt"	, &_jetGenJetPt			);  */
-    /* 	outputTree->Branch("jetGenPartonID"	, &_jetGenPartonID		);  */
-    /* 	outputTree->Branch("jetGenPt"		, &_jetGenPt			);  */
-    /* 	outputTree->Branch("jetGenEta"		, &_jetGenEta			); */
-    /* 	outputTree->Branch("jetGenPhi"		, &_jetGenPhi			); */
-    /* }		 */
-
-
-
     if (!tree->isData_ && !isSystematicRun){
 	outputTree->Branch("nGenPart"		, &_nGenPart			); 
 	outputTree->Branch("genPt"		, &_genPt			);
@@ -476,8 +524,6 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("genStatusFlag"	, &_genStatusFlag		);
 	outputTree->Branch("genPDGID"		, &_genPDGID			); 
 	outputTree->Branch("genMomIdx"		, &_genMomIdx			);
-	//	outputTree->Branch("genScaleSystWeights"        , &_genScaleSystWeights);
-
 
 	outputTree->Branch("nGenJet"		, &_nGenJet			); 
 	outputTree->Branch("genJetPt"		, &_genJetPt			);
@@ -485,7 +531,7 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("genJetPhi"		, &_genJetPhi			); 
 	outputTree->Branch("genJetMass"		, &_genJetMass			); 
 	outputTree->Branch("genJetPartonFlavour", &_genJetPartonFlavour		); 
-	outputTree->Branch("genJetHadronFlavour", &_genJetHadronFlavour 	); 
+	outputTree->Branch("genJetHadronFlavour", &_genJetHadronFlavour		); 
     }
 
     outputTree->Branch("M3"			, &_M3				); 
@@ -586,17 +632,61 @@ void makeRecoKinTuple::InitVariables()
     _nu_pz			= -9999;
     _nu_pz_other		= -9999;
     _WtransMass			= -9999;
-    _M_bjj			= -9999;
-    _M_jj			= -9999;
-    _TopHad_pt			= -9999;
-    _TopHad_eta			= -9999;
-    _TopLep_pt			= -9999;
-    _TopLep_eta			= -9999;
-    _TopLep_charge		= -9999;
-    _chi2			= -9999;
-    _MassCuts			= false;    
-    _blep_id			= -9999; 
-    _bhad_id			= -9999; 
+
+    _chi2		 = -9999 ;
+    _NDF		 = -9999 ;
+    _Nbiter		 = -9999 ;
+    _M_jj		 = -9999 ;
+    _M_jjkF		 = -9999 ;
+    _bjlep_id		 = -9999 ;
+    _bjhad_id		 = -9999 ;
+    _cjhad_id		 = -9999 ;
+    _sjhad_id		 = -9999 ;
+    _lepPt		 = -9999 ;
+    _lepEta		 = -9999 ;
+    _lepPhi		 = -9999 ;
+    _lepEnergy		 = -9999 ;
+    _metPx		 = -9999 ;
+    _metPy		 = -9999 ;
+    _metPz		 = -9999 ;
+    _jetBlepPt		 = -9999 ;
+    _jetBlepEta		 = -9999 ;
+    _jetBlepPhi		 = -9999 ;
+    _jetBlepEnergy	 = -9999 ;
+    _jetBhadPt		 = -9999 ;
+    _jetBhadEta		 = -9999 ;
+    _jetBhadPhi		 = -9999 ;
+    _jetBhadEnergy	 = -9999 ;
+    _jetChadPt		 = -9999 ;
+    _jetChadEta		 = -9999 ;
+    _jetChadPhi		 = -9999 ;
+    _jetChadEnergy	 = -9999 ;
+    _jetShadPt		 = -9999 ;
+    _jetShadEta		 = -9999 ;
+    _jetShadPhi		 = -9999 ;
+    _jetShadEnergy	 = -9999 ;
+
+    /* _chi2kF		 = -9999; */
+    /* _M_cs		 = -9999; */
+    /* _M_cskF		 = -9999; */
+    /* _lepPtDiff	 = -9999; */
+    /* _blepPtDiff	 = -9999; */
+    /* _bhadPtDiff	 = -9999; */
+    /* _chadPtDiff	 = -9999; */
+    /* _shadPtDiff	 = -9999; */
+    /* _cshadPtDiff	 = -9999; */
+
+    /* _M_bjj			= -9999; */
+    /* _M_jj			= -9999; */
+    /* _TopHad_pt			= -9999; */
+    /* _TopHad_eta			= -9999; */
+    /* _TopLep_pt			= -9999; */
+    /* _TopLep_eta			= -9999; */
+    /* _TopLep_charge		= -9999; */
+    /* _chi2			= -9999; */
+    /* _MassCuts			= false;     */
+    /* _blep_id			= -9999;  */
+    /* _bhad_id			= -9999;  */
 
     /* _DilepMass		= -9999; */
     /* _DilepDelR		= -9999; */
