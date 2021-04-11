@@ -3,7 +3,7 @@ import sys
 import subprocess
 
 #IMPORT MODULES FROM OTHER DIR
-sys.path.insert(0, os.getcwd().replace("RecoNtuple_Skim/sample","Skim_NanoAOD/sample"))
+sys.path.insert(0, os.getcwd().replace("RecoKinTuple_Skim/sample","Skim_NanoAOD/sample"))
 from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018
 
 #eosDir = '/store/user/rverma/Output/cms-hcs-run2/Skim_NanoAOD'
