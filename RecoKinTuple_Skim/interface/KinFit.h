@@ -27,25 +27,28 @@ class KinFit{
 
     KinFit(){
       ClearVectors();
-      _nu_px	   = -9999.0;
-      _nu_py	   = -9999.0;
-      _nu_pz	   = -9999.0; 
-      _nu_pz_other = -9999.0; 
-      leptonType   = kTau;
-      Chi2	   = 1.e9;
-      NDF	   = -9999;
-      Nb_Iter	   = -9999;
-      blep_id	   = -9999; 
-      bhad_id	   = -9999; 
-      chad_id	   = -9999; 
-      shad_id	   = -9999;
+      _nu_px		= -9999.0;
+      _nu_py		= -9999.0;
+      _nu_pz		= -9999.0; 
+      _nu_pz_other	= -9999.0; 
+      leptonType	= kTau;
+      mTop		= 172.76;
+      isMC		= false;
+      Chi2		= 1.e9;
+      NDF		= -9999;
+      Nb_Iter		= -9999;
+      blep_id		= -9999; 
+      bhad_id		= -9999; 
+      chad_id		= -9999; 
+      shad_id		= -9999;
     }
     
     // The following are the mandatory setters
     /////////////////////////////////////////////////////////////////////////////
     // For a given year
     void SetBtagThresh(double thresh_){ btagThresh		= thresh_;}
-
+    void SetMC(bool ifmc){ isMC					= ifmc;} 
+    
     // For a given event
     void ClearVectors(){
 	jets.clear();
@@ -71,6 +74,11 @@ class KinFit{
     }
     /////////////////////////////////////////////////////////////////////////////
 
+    // The SetTop mass an option
+    /////////////////////////////////////////////////////////////////////////////
+    void SetTopMass(double topmass){ mTop			= topmass;} 
+    /////////////////////////////////////////////////////////////////////////////
+    
     // The return of fit function is "true" if fit is converged
     /////////////////////////////////////////////////////////////////////////////
     bool Fit();
@@ -130,6 +138,10 @@ class KinFit{
     double			_nu_px, _nu_py, _nu_pz, _nu_pz_other; 
     TLorentzVector		lepton;
     LeptonType			leptonType;
+    bool                        isMC;
+
+    // Optional : To be set for a given event
+    double                      mTop;
 
     // The following variables are minimal getters
     TLorentzVector		leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF; // Four vectors after KinFit

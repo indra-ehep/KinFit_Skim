@@ -163,7 +163,7 @@ class makeRecoKinTuple {
   Float_t		 _lumiWeight;
   Int_t			 _nVtx;
   Int_t			 _nGoodVtx;
-
+  
   Float_t		 _genMET;
         
   Float_t		 _pfMET;
@@ -174,6 +174,10 @@ class makeRecoKinTuple {
   Float_t		 _nu_pz_other;
   Float_t		 _WtransMass;
   
+  bool                   _hasConv;
+  bool                   _hasRDPass;
+  int                    _ltype;
+  int                    _ltypekF;
   Float_t		 _chi2;
   int			 _NDF;
   int			 _Nbiter;
@@ -447,6 +451,10 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("nu_pz_other"		, &_nu_pz_other			);
     outputTree->Branch("WtransMass"		, &_WtransMass			);
 
+    outputTree->Branch("hasConv"		, &_hasConv			);
+    outputTree->Branch("hasRDPass"	       	, &_hasRDPass			);
+    outputTree->Branch("ltype"		        , &_ltype			);
+    outputTree->Branch("ltypekF"       	        , &_ltypekF			);
     outputTree->Branch("chi2"			, &_chi2			);
     outputTree->Branch("NDF"			, &_NDF				);
     outputTree->Branch("Nbiter"			, &_Nbiter			);
@@ -551,9 +559,9 @@ void makeRecoKinTuple::InitVariables()
     _lumis			= -9999;
     _isData			= false;
 
-    _PUweight			= 1.;
-    _PUweight_Up		= 1.;
-    _PUweight_Do		= 1.;
+    /* _PUweight			= 1.; */
+    /* _PUweight_Up		= 1.; */
+    /* _PUweight_Do		= 1.; */
 
     _q2weight_Up		= 1.;
     _q2weight_Do		= 1.;
@@ -572,9 +580,9 @@ void makeRecoKinTuple::InitVariables()
     _FSRweight_Up		= 1.;
     _FSRweight_Do		= 1.;
 
-    _prefireSF			= 1.;
-    _prefireSF_Up		= 1.;
-    _prefireSF_Do		= 1.;
+    /* _prefireSF			= 1.; */
+    /* _prefireSF_Up		= 1.; */
+    /* _prefireSF_Do		= 1.; */
 
     _btagWeight_1a		= 1.;
     _btagWeight_1a_b_Up		= 1.;
@@ -598,28 +606,28 @@ void makeRecoKinTuple::InitVariables()
     _muEffWeight_Do		= 1.;
     _muEffWeight_Up		= 1.;
 
-    _muEffWeight_IdIso		= 1.;
-    _muEffWeight_IdIso_Up	= 1.;
-    _muEffWeight_IdIso_Do	= 1.;
+    /* _muEffWeight_IdIso		= 1.; */
+    /* _muEffWeight_IdIso_Up	= 1.; */
+    /* _muEffWeight_IdIso_Do	= 1.; */
 
-    _muEffWeight_Trig		= 1.;
-    _muEffWeight_Trig_Up	= 1.;
-    _muEffWeight_Trig_Do	= 1.;
+    /* _muEffWeight_Trig		= 1.; */
+    /* _muEffWeight_Trig_Up	= 1.; */
+    /* _muEffWeight_Trig_Do	= 1.; */
 
     _eleEffWeight		= 1.;
     _eleEffWeight_Do		= 1.;
     _eleEffWeight_Up		= 1.;
 
-    _eleEffWeight_IdReco	= 1.;
-    _eleEffWeight_IdReco_Up	= 1.;
-    _eleEffWeight_IdReco_Do	= 1.;
+    /* _eleEffWeight_IdReco	= 1.; */
+    /* _eleEffWeight_IdReco_Up	= 1.; */
+    /* _eleEffWeight_IdReco_Do	= 1.; */
 
-    _eleEffWeight_Trig		= 1.;
-    _eleEffWeight_Trig_Up	= 1.;
-    _eleEffWeight_Trig_Do	= 1.;
+    /* _eleEffWeight_Trig		= 1.; */
+    /* _eleEffWeight_Trig_Up	= 1.; */
+    /* _eleEffWeight_Trig_Do	= 1.; */
 
-    _evtWeight			= 1.;
-    _lumiWeight			= 1.;
+    /* _evtWeight			= 1.; */
+    /* _lumiWeight			= 1.; */
     _nVtx			= -9999;
     _nGoodVtx			= -9999;
 
@@ -633,63 +641,43 @@ void makeRecoKinTuple::InitVariables()
     _nu_pz_other		= -9999;
     _WtransMass			= -9999;
 
-    _chi2		 = -9999 ;
-    _NDF		 = -9999 ;
-    _Nbiter		 = -9999 ;
-    _M_jj		 = -9999 ;
-    _M_jjkF		 = -9999 ;
-    _bjlep_id		 = -9999 ;
-    _bjhad_id		 = -9999 ;
-    _cjhad_id		 = -9999 ;
-    _sjhad_id		 = -9999 ;
-    _lepPt		 = -9999 ;
-    _lepEta		 = -9999 ;
-    _lepPhi		 = -9999 ;
-    _lepEnergy		 = -9999 ;
-    _metPx		 = -9999 ;
-    _metPy		 = -9999 ;
-    _metPz		 = -9999 ;
-    _jetBlepPt		 = -9999 ;
-    _jetBlepEta		 = -9999 ;
-    _jetBlepPhi		 = -9999 ;
-    _jetBlepEnergy	 = -9999 ;
-    _jetBhadPt		 = -9999 ;
-    _jetBhadEta		 = -9999 ;
-    _jetBhadPhi		 = -9999 ;
-    _jetBhadEnergy	 = -9999 ;
-    _jetChadPt		 = -9999 ;
-    _jetChadEta		 = -9999 ;
-    _jetChadPhi		 = -9999 ;
-    _jetChadEnergy	 = -9999 ;
-    _jetShadPt		 = -9999 ;
-    _jetShadEta		 = -9999 ;
-    _jetShadPhi		 = -9999 ;
-    _jetShadEnergy	 = -9999 ;
+    _hasConv		= false;
+    _hasRDPass		= false;
+    _ltype              = -9999 ;
+    _ltypekF            = -9999 ;
+    _chi2		= -9999 ;
+    _NDF		= -9999 ;
+    _Nbiter		= -9999 ;
+    _M_jj		= -9999 ;
+    _M_jjkF		= -9999 ;
+    _bjlep_id		= -9999 ;
+    _bjhad_id		= -9999 ;
+    _cjhad_id		= -9999 ;
+    _sjhad_id		= -9999 ;
+    _lepPt		= -9999 ;
+    _lepEta		= -9999 ;
+    _lepPhi		= -9999 ;
+    _lepEnergy		= -9999 ;
+    _metPx		= -9999 ;
+    _metPy		= -9999 ;
+    _metPz		= -9999 ;
+    _jetBlepPt		= -9999 ;
+    _jetBlepEta		= -9999 ;
+    _jetBlepPhi		= -9999 ;
+    _jetBlepEnergy	= -9999 ;
+    _jetBhadPt		= -9999 ;
+    _jetBhadEta		= -9999 ;
+    _jetBhadPhi		= -9999 ;
+    _jetBhadEnergy	= -9999 ;
+    _jetChadPt		= -9999 ;
+    _jetChadEta		= -9999 ;
+    _jetChadPhi		= -9999 ;
+    _jetChadEnergy	= -9999 ;
+    _jetShadPt		= -9999 ;
+    _jetShadEta		= -9999 ;
+    _jetShadPhi		= -9999 ;
+    _jetShadEnergy	= -9999 ;
 
-    /* _chi2kF		 = -9999; */
-    /* _M_cs		 = -9999; */
-    /* _M_cskF		 = -9999; */
-    /* _lepPtDiff	 = -9999; */
-    /* _blepPtDiff	 = -9999; */
-    /* _bhadPtDiff	 = -9999; */
-    /* _chadPtDiff	 = -9999; */
-    /* _shadPtDiff	 = -9999; */
-    /* _cshadPtDiff	 = -9999; */
-
-    /* _M_bjj			= -9999; */
-    /* _M_jj			= -9999; */
-    /* _TopHad_pt			= -9999; */
-    /* _TopHad_eta			= -9999; */
-    /* _TopLep_pt			= -9999; */
-    /* _TopLep_eta			= -9999; */
-    /* _TopLep_charge		= -9999; */
-    /* _chi2			= -9999; */
-    /* _MassCuts			= false;     */
-    /* _blep_id			= -9999;  */
-    /* _bhad_id			= -9999;  */
-
-    /* _DilepMass		= -9999; */
-    /* _DilepDelR		= -9999; */
 
     _nEle			= -9999;
     _nEleLoose			= -9999;

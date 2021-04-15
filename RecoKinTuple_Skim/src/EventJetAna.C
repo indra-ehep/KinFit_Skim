@@ -33,7 +33,7 @@ EventJetAna::EventJetAna()
   string year = "2016"; 
   bool isData = false;
   isMC = !isData ;
-
+  
   printf("\n\n");
 
   tree = new EventTree(nFiles, false, year, isData, infile);

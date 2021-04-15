@@ -225,11 +225,11 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
     loadBtagEff(sampleType,year);
 
   }
-
+  
   topEvent.SetBtagThresh(selector->btag_cut_DeepCSV);
   kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
-
-
+  kinFit.SetMC(isMC);
+  
   BTagCalibrationReader reader(BTagEntry::OP_MEDIUM,  // operating point
 			       "central",             // central sys type
 			       {"up", "down"});      // other sys types
@@ -536,7 +536,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
 
     evtPick->process_event(tree, selector, _PUweight);
     
-    if( selector->bJets.size() < 2 || selector->Jets.size() < 4) continue;
+    //if( selector->bJets.size() < 2 || selector->Jets.size() < 4) continue;
 
     if ( evtPick->passPresel_ele || evtPick->passPresel_mu || saveAllEntries) {
       if (saveCutflow && !(evtPick->passAll_ele || evtPick->passAll_mu) ) continue;
@@ -970,13 +970,17 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
 
 
   // KinFit process JER base
+  kinFit.ClearVectors();
+  _hasConv = false;
+  _hasRDPass = false;
   kinFit.SetJetVector(jetVectors);
   kinFit.SetJetResVector(jetResolutionVectors);
   kinFit.SetBtagVector(jetBtagVectors);
   
   kinFit.SetLepton(lepVector);
-  KinFit::LeptonType ltype = (_passPresel_Ele)?(KinFit::kElectron):(KinFit::kMuon); 
+  KinFit::LeptonType ltype = (_passPresel_Ele) ? (KinFit::kElectron) : (KinFit::kMuon); 
   kinFit.SetLeptonType(ltype);
+  kinFit.SetMET(_nu_px, _nu_py, _nu_pz, _nu_pz_other);
   kinFit.SetMET(_nu_px, _nu_py, _nu_pz, _nu_pz_other);
   if ( kinFit.Fit() ){
     
@@ -1018,43 +1022,47 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
     double mjjkF	= (cjhadAF + sjhadAF).M(); 
     
     _M_jj		= mjj;
+    _hasConv		= true;
+    _ltype		= ltype;
+    _chi2		= kinFit.GetChi2();
+    _NDF		= kinFit.GetNDF();
+    _Nbiter		= kinFit.GetNumberOfIter();
     
     if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2){
-      _chi2	     = kinFit.GetChi2();
-      _NDF	     = kinFit.GetNDF();
-      _Nbiter	     = kinFit.GetNumberOfIter();
-      _M_jjkF	     = mjjkF;
-      _bjlep_id	     = kinFit.GetJetID_BLep();
-      _bjhad_id	     = kinFit.GetJetID_BHad();
-      _cjhad_id	     = kinFit.GetJetID_CHad();
-      _sjhad_id	     = kinFit.GetJetID_SHad();
-      _lepPt	     = leptonAF.Pt();
-      _lepEta	     = leptonAF.Eta();
-      _lepPhi	     = leptonAF.Phi();
-      _lepEnergy     = leptonAF.E();
-      _metPx	     = neutrinoAF.Px();
-      _metPy	     = neutrinoAF.Py();
-      _metPz	     = neutrinoAF.Pz();
-      _jetBlepPt     = bjlepAF.Pt();
-      _jetBlepEta    = bjlepAF.Eta();
-      _jetBlepPhi    = bjlepAF.Phi();
-      _jetBlepEnergy = bjlepAF.E();
-      _jetBhadPt     = bjhadAF.Pt();
-      _jetBhadEta    = bjhadAF.Eta();
-      _jetBhadPhi    = bjhadAF.Phi();
-      _jetBhadEnergy = bjhadAF.E();
-      _jetChadPt     = cjhadAF.Pt();
-      _jetChadEta    = cjhadAF.Eta();
-      _jetChadPhi    = cjhadAF.Phi();
-      _jetChadEnergy = cjhadAF.E();
-      _jetShadPt     = sjhadAF.Pt();
-      _jetShadEta    = sjhadAF.Eta();
-      _jetShadPhi    = sjhadAF.Phi();
-      _jetShadEnergy = sjhadAF.E();
+      _hasRDPass	= true;
+      _ltypekF          = ltype;
+      _M_jjkF		= mjjkF;
+      _bjlep_id		= kinFit.GetJetID_BLep();
+      _bjhad_id		= kinFit.GetJetID_BHad();
+      _cjhad_id		= kinFit.GetJetID_CHad();
+      _sjhad_id		= kinFit.GetJetID_SHad();
+      _lepPt		= leptonAF.Pt();
+      _lepEta		= leptonAF.Eta();
+      _lepPhi		= leptonAF.Phi();
+      _lepEnergy	= leptonAF.E();
+      _metPx		= neutrinoAF.Px();
+      _metPy		= neutrinoAF.Py();
+      _metPz		= neutrinoAF.Pz();
+      _jetBlepPt	= bjlepAF.Pt();
+      _jetBlepEta	= bjlepAF.Eta();
+      _jetBlepPhi	= bjlepAF.Phi();
+      _jetBlepEnergy	= bjlepAF.E();
+      _jetBhadPt	= bjhadAF.Pt();
+      _jetBhadEta	= bjhadAF.Eta();
+      _jetBhadPhi	= bjhadAF.Phi();
+      _jetBhadEnergy	= bjhadAF.E();
+      _jetChadPt	= cjhadAF.Pt();
+      _jetChadEta	= cjhadAF.Eta();
+      _jetChadPhi	= cjhadAF.Phi();
+      _jetChadEnergy	= cjhadAF.E();
+      _jetShadPt	= sjhadAF.Pt();
+      _jetShadEta	= sjhadAF.Eta();
+      _jetShadPhi	= sjhadAF.Phi();
+      _jetShadEnergy	= sjhadAF.E();
     }
     
   }
-  kinFit.ClearVectors();
+
 
   
   // METVector.SetPz(_nu_pz);

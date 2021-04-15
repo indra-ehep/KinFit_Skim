@@ -410,7 +410,8 @@ void Selector::filter_jets(){
         
         if( jetPresel){
             Jets.push_back(jetInd);
-	    jet_resolution.push_back(resolution);
+	    //jet_resolution.push_back(resolution);
+	    jet_resolution.push_back(jetSF);
             if (!useDeepCSVbTag){
                 if( tree->jetBtagCSVV2_[jetInd] > btag_cut){
 		    bJets.push_back(jetInd);

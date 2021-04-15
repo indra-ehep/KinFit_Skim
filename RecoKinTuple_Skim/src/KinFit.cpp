@@ -857,32 +857,40 @@ bool KinFit::Fit(){
 	    bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
 	    mbl(0,0)	= TMath::Power(resEt, 2); // et
-	    //mbl(0,0)   *= TMath::Power(JERbase, 2);
+	    //if(isMC){
+	      //mbl(0,0)   *= TMath::Power(JERbase, 2);
 	    mbl(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib1)), 2);
+	      //}
 	    mbl(1,1)	= TMath::Power(resEta, 2); // eta
 	    mbl(2,2)	= TMath::Power(resPhi, 2); // eta
 	    
 	    bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
 	    mbh(0,0)	= TMath::Power(resEt, 2); // et
-	    //mbh(0,0)   *= TMath::Power(JERbase, 2);
+	    //if(isMC){
+	      //mbh(0,0)   *= TMath::Power(JERbase, 2);
 	    mbh(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib2)), 2);
+	      //}
 	    mbh(1,1)	= TMath::Power(resEta, 2); // eta
 	    mbh(2,2)	= TMath::Power(resPhi, 2); // eta	      
 	      
 	    udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
 	    mc(0,0)	= TMath::Power(resEt, 2); // et
-	    //mc(0,0)    *= TMath::Power(JERbase, 2);
+	    //if(isMC){
+	      //mc(0,0)    *= TMath::Power(JERbase, 2);
 	    mc(0,0)    *= TMath::Power(jetsRes.at(ij1), 2);
+	      //}
 	    mc(1,1)	= TMath::Power(resEta, 2); // eta
 	    mc(2,2)	= TMath::Power(resPhi, 2); // eta	      
 	      
 	    udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
 	    ms(0,0)	= TMath::Power(resEt, 2); // et
-	    //ms(0,0)    *= TMath::Power(JERbase, 2);
+	    //if(isMC){
+	      //ms(0,0)    *= TMath::Power(JERbase, 2);
 	    ms(0,0)    *= TMath::Power(jetsRes.at(ij2), 2);
+	      //}
 	    ms(1,1)	= TMath::Power(resEta, 2); // eta
 	    ms(2,2)	= TMath::Power(resPhi, 2); // eta	      
 	    
@@ -895,10 +903,10 @@ bool KinFit::Fit(){
 	    TFitParticleEtEtaPhi *sj  = new TFitParticleEtEtaPhi( "sj",  "sj",  &sjhad,    &ms );
 	      
 	    //leptoniccally decayed top constrain
-	    TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , 172.76); // Values set from PDG 2021
+	    TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , mTop); // Values set from PDG 2021
 	    ltop->addParticles1( lep, neu, bl );
 	    //hadronically decayed top constrain
-	    TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , 172.76); // Values set from PDG 2021
+	    TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021
 	    htop->addParticles1( bh, cj, sj );
 	    
 	    TKinFitter* fitter = new TKinFitter("fitter", "fitter");

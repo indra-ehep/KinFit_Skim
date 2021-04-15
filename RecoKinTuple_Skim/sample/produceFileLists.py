@@ -18,6 +18,7 @@ for year in [2016,2017,2018]:
     sampleList = eval("Samples_%i"%year)
     #skimFiles.write("eosDirSkim=root://cmseos.fnal.gov/%s\n"%eosDir)
     skimFiles.write("eosDirSkim=root://se01.indiacms.res.in/%s\n"%eosDir)   
+    sampleList.sort()
     for sampleName, nJob in sampleList.items():
         line += '%s_FileList_%i="'%(sampleName,year)
         #extraArgs = "%s_Skim_NanoAOD*.root"%sampleName
