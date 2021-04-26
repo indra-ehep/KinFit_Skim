@@ -8,8 +8,8 @@
 //     return TMath::Sqrt( dphi*dphi + deta*deta );
 // }
 
-TRandom* generator = new TRandom3(0);
-//TRandom* generator = new TRandom3(1234);
+//TRandom* generator = new TRandom3(0);
+TRandom* generator = new TRandom3(1234);
 
 Selector::Selector(){
 

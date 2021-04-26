@@ -489,7 +489,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
 
 
   for(Long64_t entry=entryStart; entry<entryStop; entry++){
-    //if(entry >= 1e4){break;}
+    if(entry >= 2e4){break;}
     if(entry%dumpFreq == 0){
       // duration =  ( clock() - startClock ) / (double) CLOCKS_PER_SEC;
       // std::cout << "processing entry " << entry << " out of " << nEntr << " : " << duration << " seconds since last progress" << std::endl;

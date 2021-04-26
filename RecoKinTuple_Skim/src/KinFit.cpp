@@ -922,6 +922,8 @@ bool KinFit::Fit(){
 	    // Tested with 2016 analysis
 	    fitter->setMaxNbIter( 500 );
 	    fitter->setMaxDeltaS( 5e-05 );
+	    //fitter->setMaxF( 0.0001 );
+	    //fitter->setMaxDeltaS( 5e-03 );
 	    fitter->setMaxF( 0.0001 );
 	    fitter->setVerbosity(0);
 	    

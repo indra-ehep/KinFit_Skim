@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo The first input is $1
+s=`echo mtop=$1`
+
+echo s : $s
+
+if [ $# -eq 1 ] ; then
+    root -b -l -q  runProof.C\(\""$s|\""\) 
+fi
