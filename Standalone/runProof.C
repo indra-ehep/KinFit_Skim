@@ -13,13 +13,13 @@ int runProof(const char* opt = "mtop=172.6|sample=TTbarPowheg|year=2016") // sam
   }
   
   if(isproof){
-    TProof *p = TProof::Open("workers=15");
+    TProof *p = TProof::Open("workers=3");
     chain->SetProof();
     //sprintf(mode,"proof|%s",mode);
     options += "|mode=proof";
   }
   
-  chain->Process("PerformKinFit.C++", options.Data());    
+  chain->Process("PerformKinFit.C++", options.Data(), 10000);    
   
   return true;
 }

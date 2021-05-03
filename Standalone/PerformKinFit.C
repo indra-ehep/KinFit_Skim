@@ -1,6 +1,6 @@
 /**********************************************************************
- Created on : 12/04/2021
- Purpose    : Analyse the Reco tree to perform KinFit. 
+ Created on : 23/03/2021
+ Purpose    : Analyse the Reco tree to create the syst histograms 
               (format adapted from h1analysis)
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
@@ -99,9 +99,23 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   hMjj = new TH1F("hMjj","hMjj",80,0,400.0); 
   hMjjkF = new TH1F("hMjjkF","hMjjkF",80,0,400.0); 
   hChi2 = new TH1F("hChi2","hChi2",500,0,100.0); 
+  hMinChi2 = new TH1F("hMinChi2","hMinChi2",500,0,100.0); 
   hNbiter = new TH1F("hNbiter","hNbiter",500,0,500.0); 
   hNbCombiBRD = new TH1F("hNbCombiBRD","hNbCombiBRD", 500, 0.0, 500.0);
   hNbCombiARD = new TH1F("hNbCombiARD","hNbCombiARD", 500, 0.0, 500.0);
+  hdRSigLep  = new TH1F("hdRSigLep","hdRSigLep",500,-2.0,2.0);
+  hdRSigNeu  = new TH1F("hdRSigNeu","hdRSigNeu",500,-2.0,2.0);
+  hdRSigBjHad  = new TH1F("hdRSigBjHad","hdRSigBjHad",500,-2.0,2.0);
+  hdRSigBjLep  = new TH1F("hdRSigBjLep","hdRSigBjLep",500,-2.0,2.0);
+  hdRSigCjHad = new TH1F("hdRSigCjHad","hdRSigCjHad",500,-2.0,2.0);
+  hdRSigSjHad = new TH1F("hdRSigSjHad","hdRSigSjhad",500,-2.0,2.0);
+  hMindRSigLep  = new TH1F("hMindRSigLep","hMindRSigLep",500,-2.0,2.0);
+  hMindRSigNeu  = new TH1F("hMindRSigNeu","hMindRSigNeu",500,-2.0,2.0);
+  hMindRSigBjHad  = new TH1F("hMindRSigBjHad","hMindRSigBjHad",500,-2.0,2.0);
+  hMindRSigBjLep  = new TH1F("hMindRSigBjLep","hMindRSigBjLep",500,-2.0,2.0);
+  hMindRSigCjHad = new TH1F("hMindRSigCjHad","hMindRSigCjHad",500,-2.0,2.0);
+  hMindRSigSjHad = new TH1F("hMindRSigSjHad","hMindRSigSjhad",500,-2.0,2.0);
+
 
   kinFit.SetBtagThresh(0.6321);
   kinFit.SetTopMass(mTop);
@@ -133,9 +147,16 @@ Bool_t PerformKinFit::Process(Long64_t entry)
   br_nu_px->GetEntry(entry);
   br_nu_py->GetEntry(entry);
   br_nu_pz->GetEntry(entry);
-  br_nu_pz_other->GetEntry(entry);
-  
+  br_nu_pz_other->GetEntry(entry); 
+  br_pfMET->GetEntry(entry); 
+  br_pfMETPhi->GetEntry(entry); 
+ 
   if(_passPresel_Ele) return true;
+
+  if(entry%1000==0)
+    cout<<" Processing event : " << entry << endl;
+
+  double reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
   
   //for (int ipt = 0 ; ipt < int(_muPt->size()) ; ipt++ )
   hMuPt->Fill(_muPt->at(0));  
@@ -157,11 +178,19 @@ Bool_t PerformKinFit::Process(Long64_t entry)
   KinFit::LeptonType ltype = (_passPresel_Ele)?(KinFit::kElectron):(KinFit::kMuon); 
   kinFit.SetLeptonType(ltype);
   kinFit.SetMET(_nu_px, _nu_py, _nu_pz, _nu_pz_other);
+  kinFit.SetMETPtPhi(_pfMET, _pfMETPhi);
   
   if ( kinFit.Fit() ){
 
     hNbCombiBRD->Fill(kinFit.GetNCombinations());
     int nRdiffPass = 0;
+    float minChi2 = 1e9;
+    int minNDF = 10;
+    double minRdifflepSignif = 20.;
+    double minRdiffbjhadSignif = 20.;
+    double minRdiffbjlepSignif = 20.;
+    double minRdiffcjhadSignif = 20.;
+    double minRdiffsjhadSignif = 20.;
     for (unsigned int i = 0 ; i < kinFit.GetNCombinations() ; i++ ){
       
       leptonAF		= kinFit.GetLepton(i);
@@ -176,6 +205,19 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       bjhadBF		= kinFit.GetBHadronUM(i);
       cjhadBF		= kinFit.GetCHadronUM(i);
       sjhadBF		= kinFit.GetSHadronUM(i);
+      
+      reslepEta = kinFit.GetResLepEta(i);
+      reslepPhi = kinFit.GetResLepPhi(i);
+      resneuEta = kinFit.GetResNeuEta(i);
+      resneuPhi = kinFit.GetResNeuPhi(i);
+      resbjlepEta = kinFit.GetResBjLepEta(i);
+      resbjlepPhi = kinFit.GetResBjLepPhi(i);
+      resbjhadEta = kinFit.GetResBjHadEta(i);
+      resbjhadPhi = kinFit.GetResBjHadPhi(i);
+      rescjhadEta = kinFit.GetResCjHadEta(i);
+      rescjhadPhi = kinFit.GetResCjHadPhi(i);
+      ressjhadEta = kinFit.GetResSjHadEta(i);
+      ressjhadPhi = kinFit.GetResSjHadPhi(i);
       
       double Rdifflep	= TMath::Sqrt( TMath::Power(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) , 2) 
 				       + 
@@ -197,20 +239,67 @@ Bool_t PerformKinFit::Process(Long64_t entry)
 				       + 
 				       TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2)  
   				       );
-    
+      
+      double sigmaResoRDLep = TMath::Sqrt( TMath::Power(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) , 2) * reslepEta * reslepEta
+					   +
+					   TMath::Power(TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) , 2) * reslepPhi * reslepPhi
+					   ) / Rdifflep ;
+      double sigmaResoRDBjLep = TMath::Sqrt( TMath::Power(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) , 2) * resbjlepEta * resbjlepEta
+					     +
+					     TMath::Power(TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) , 2) * resbjlepPhi * resbjlepPhi
+					     ) / Rdiffbjlep ;
+      
+      double sigmaResoRDBjHad = TMath::Sqrt( TMath::Power(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) , 2) * resbjhadEta * resbjhadEta
+					    +
+					    TMath::Power(TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) , 2)  * resbjhadPhi * resbjhadPhi
+					     ) / Rdiffbjhad ;
+
+      double sigmaResoRDCjHad = TMath::Sqrt( TMath::Power(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) , 2) * rescjhadEta * rescjhadEta
+					    +
+					    TMath::Power(TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) , 2)  * rescjhadPhi * rescjhadPhi
+					     ) / Rdiffcjhad ;
+
+      double sigmaResoRDSjHad = TMath::Sqrt( TMath::Power(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) , 2) * ressjhadEta * ressjhadEta
+					    +
+					    TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2)  * ressjhadPhi * ressjhadPhi
+					     ) / Rdiffsjhad ;
+
+      hdRSigLep->Fill(Rdifflep/sigmaResoRDLep);
+      hdRSigBjHad->Fill(Rdiffbjhad/sigmaResoRDBjHad);
+      hdRSigBjLep->Fill(Rdiffbjlep/sigmaResoRDBjLep);
+      hdRSigCjHad->Fill(Rdiffcjhad/sigmaResoRDCjHad);
+      hdRSigSjHad->Fill(Rdiffsjhad/sigmaResoRDSjHad);
+      
       double mjj	= (cjhadBF + sjhadBF).M(); 
       double mjjkF	= (cjhadAF + sjhadAF).M(); 
     
       hMjj->Fill(mjj);
+      //hChi2->Fill(kinFit.GetChi2(i)/kinFit.GetNDF(i));
       hChi2->Fill(kinFit.GetChi2(i));
       hNbiter->Fill(float(kinFit.GetNumberOfIter(i)));
       if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2){
 	hMjjkF->Fill(mjjkF);
 	nRdiffPass++;
       }
+      if ( kinFit.GetChi2(i) < minChi2 ){
+	minChi2 = kinFit.GetChi2(i) ;
+	minNDF = kinFit.GetNDF(i) ;
+	minRdifflepSignif = Rdifflep/sigmaResoRDLep ;
+	minRdiffbjhadSignif = Rdiffbjhad/sigmaResoRDBjHad;
+	minRdiffbjlepSignif = Rdiffbjlep/sigmaResoRDBjLep;
+	minRdiffcjhadSignif = Rdiffcjhad/sigmaResoRDCjHad;
+	minRdiffsjhadSignif = Rdiffsjhad/sigmaResoRDSjHad;
+      }
     }// for loop
     hNbCombiARD->Fill(nRdiffPass);
-  }//if fit converger
+    hMinChi2->Fill(minChi2);
+    hMindRSigLep->Fill(minRdifflepSignif);
+    hMindRSigBjHad->Fill(minRdiffbjhadSignif);
+    hMindRSigBjLep->Fill(minRdiffbjlepSignif);
+    hMindRSigCjHad->Fill(minRdiffcjhadSignif);
+    hMindRSigSjHad->Fill(minRdiffsjhadSignif);
+
+  }//if fit converges
   kinFit.Clear();
 
   jetVectors.clear();
@@ -233,9 +322,22 @@ void PerformKinFit::SlaveTerminate()
   hMjj->Write();
   hMjjkF->Write();
   hChi2->Write();
+  hMinChi2->Write();
   hNbiter->Write();
   hNbCombiBRD->Write();
   hNbCombiARD->Write();
+  hdRSigLep->Write();
+  hdRSigNeu->Write();
+  hdRSigBjHad->Write();
+  hdRSigBjLep->Write();
+  hdRSigCjHad->Write();
+  hdRSigSjHad->Write();
+  hMindRSigLep->Write();
+  hMindRSigNeu->Write();
+  hMindRSigBjHad->Write();
+  hMindRSigBjLep->Write();
+  hMindRSigCjHad->Write();
+  hMindRSigSjHad->Write();
 
   fFile->Close();
   if (fMode.BeginsWith("proof")) {

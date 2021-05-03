@@ -1,12 +1,10 @@
 /**********************************************************************
  Created on : 12/04/2021
- Purpose    : Analyse the Reco tree to perform the KinFit.
+ Purpose    : Analyse the Reco tree for To Perform the KinFit again.
               (format adapted from h1analysis)
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
 **********************************************************************/
-
-
 
 #ifndef PerformKinFit_h
 #define PerformKinFit_h
@@ -32,6 +30,60 @@
 
 class  TH1F;
 
+class METzCalculator {
+
+ public:
+  /// constructor
+  METzCalculator();
+  //METzCalculator(const edm::ParameterSEt& iConf);
+  /// destructor
+  virtual ~METzCalculator();
+  /// Set MET
+  void SetMET(TLorentzVector MET) {
+    MET_ = MET;
+  }
+  /// Set Muon
+  void SetLepton(TLorentzVector lepton) {
+    lepton_ = lepton;
+  }
+  /// Set lepton type. The default (set in the constructor) is "muon"
+  /// to be compatible with earlier code.
+  /// The values are from the 2010 PDG tables.
+  void SetLeptonType(std::string leptonName) {
+    if(leptonName == "muon")      leptonMass_ = 0.105658367;
+    if(leptonName == "electron")  leptonMass_ = 0.00051099891;
+    if(leptonName == "tau")       leptonMass_ = 1.77682;
+  }
+
+  /// Calculate MEz
+  /// options to choose roots from quadratic equation:
+  /// type = 0 (defalut): if real roots, pick the one nearest to
+  ///                     the lepton Pz except when the Pz so chosen
+  ///                     is greater than 300 GeV in which case pick
+  ///                     the most central root.
+  /// type = 1: if real roots, choose the one closest to the lepton Pz
+  ///           if complex roots, use only the real part.
+  /// type = 2: if real roots, choose the most central solution.
+  ///           if complex roots, use only the real part.
+  /// type = 3: if real roots, pick the largest value of the cosine*
+  double Calculate(int type = 0);
+  /// check for complex root
+  bool IsComplex() const { return isComplex_; };
+  double getOther() const { return otherSol_; };
+  void Print() {
+    std::cout << " METzCalculator: pxmu = " << lepton_.Px() << " pzmu= " << lepton_.Pz() << std::endl;
+    std::cout << " METzCalculator: pxnu = " << MET_.Px() << " pynu= " << MET_.Py() << std::endl;
+  }
+	
+ private:
+	
+  bool isComplex_;
+  TLorentzVector lepton_;
+  TLorentzVector MET_;
+  double otherSol_;
+  double leptonMass_;
+};
+
 class KinFit{
 
  public:
@@ -55,6 +107,8 @@ class KinFit{
 	_nu_py	     = -9999.0;
 	_nu_pz	     = -9999.0; 
 	_nu_pz_other = -9999.0; 
+	_nu_pt	     = -9999.0;
+	_nu_phi	     = -9999.0;
 	leptonType   = kTau;
 
 	jets.clear();
@@ -85,7 +139,20 @@ class KinFit{
 	bjhadUM.clear();
 	cjhadUM.clear(); 
 	sjhadUM.clear();
-
+	
+	ReslepEta.clear();
+	ReslepPhi.clear();
+	ResneuEta.clear();
+	ResneuPhi.clear();
+	ResbjlepEta.clear();
+	ResbjlepPhi.clear();
+	ResbjhadEta.clear();
+	ResbjhadPhi.clear();
+	RescjhadEta.clear();
+	RescjhadPhi.clear();
+	RessjhadEta.clear();
+	RessjhadPhi.clear(); 
+	
     }    
     void SetJetVector(std::vector<TLorentzVector> jets_){ jets	= jets_;}
     void SetJetResVector(std::vector<double> jetres_){ jetsRes	= jetres_;}
@@ -97,6 +164,10 @@ class KinFit{
       _nu_py	   = py_;
       _nu_pz	   = pz_;
       _nu_pz_other = pz_other_;
+    }
+    void SetMETPtPhi(double MET_pt_ , double MET_phi_) {
+      _nu_pt	   = MET_pt_;
+      _nu_phi	   = MET_phi_;
     }
     /////////////////////////////////////////////////////////////////////////////
 
@@ -136,6 +207,18 @@ class KinFit{
     double		GetChi2(unsigned int i)		{ return Chi2.at(i); }
     int			GetNDF(unsigned int i)		{ return NDF.at(i); }
     int			GetNumberOfIter(unsigned int i)	{ return Nb_Iter.at(i); }	// Number of iterations to converge
+    double              GetResLepEta(unsigned int i)    { return ReslepEta.at(i);}
+    double              GetResLepPhi(unsigned int i)    { return ReslepPhi.at(i);}
+    double              GetResNeuEta(unsigned int i)    { return ResneuEta.at(i);}
+    double              GetResNeuPhi(unsigned int i)    { return ResneuPhi.at(i);}
+    double              GetResBjLepEta(unsigned int i)  { return ResbjlepEta.at(i);}
+    double              GetResBjLepPhi(unsigned int i)  { return ResbjlepPhi.at(i);}
+    double              GetResBjHadEta(unsigned int i)  { return ResbjhadEta.at(i);}
+    double              GetResBjHadPhi(unsigned int i)  { return ResbjhadPhi.at(i);}
+    double              GetResCjHadEta(unsigned int i)  { return RescjhadEta.at(i);}
+    double              GetResCjHadPhi(unsigned int i)  { return RescjhadPhi.at(i);}
+    double              GetResSjHadEta(unsigned int i)  { return RessjhadEta.at(i);}
+    double              GetResSjHadPhi(unsigned int i)  { return RessjhadPhi.at(i);}
     /////////////////////////////////////////////////////////////////////////////
     
     struct PtDescending
@@ -170,7 +253,7 @@ class KinFit{
     std::vector<TLorentzVector> jets;
     std::vector<double>		jetsRes;
     std::vector<double>		btag;
-    double			_nu_px, _nu_py, _nu_pz, _nu_pz_other; 
+    double			_nu_px, _nu_py, _nu_pz, _nu_pz_other, _nu_pt, _nu_phi; 
     TLorentzVector		lepton;
     LeptonType			leptonType;
 
@@ -186,8 +269,9 @@ class KinFit{
     std::vector<double>		Chi2;
     std::vector<int>		NDF, Nb_Iter ;
     std::vector<TLorentzVector>	leptonUM, neutrinoUM, bjlepUM, bjhadUM, cjhadUM, sjhadUM;	// Unmodified four vectors before KinFit
-    
+    std::vector<double>		ReslepEta, ReslepPhi, ResneuEta, ResneuPhi, ResbjlepEta, ResbjlepPhi, ResbjhadEta, ResbjhadPhi, RescjhadEta, RescjhadPhi, RessjhadEta, RessjhadPhi ; 
 };
+
 
 class PerformKinFit : public TSelector {
    public :
@@ -203,9 +287,22 @@ class PerformKinFit : public TSelector {
    TH1F           *hMjj;//!
    TH1F           *hMjjkF;//!
    TH1F           *hChi2;//!
+   TH1F           *hMinChi2;//!
    TH1F           *hNbiter;//!
    TH1F           *hNbCombiBRD;//!
    TH1F           *hNbCombiARD;//!
+   TH1F           *hdRSigLep;//!
+   TH1F           *hdRSigNeu;//!
+   TH1F           *hdRSigBjHad;//!
+   TH1F           *hdRSigBjLep;//!
+   TH1F           *hdRSigCjHad;//!
+   TH1F           *hdRSigSjHad;//!
+   TH1F           *hMindRSigLep;//!
+   TH1F           *hMindRSigNeu;//!
+   TH1F           *hMindRSigBjHad;//!
+   TH1F           *hMindRSigBjLep;//!
+   TH1F           *hMindRSigCjHad;//!
+   TH1F           *hMindRSigSjHad;//!
    ////////////////////////////////////////////////////////
 
    Long64_t        fProcessed;//!
@@ -479,7 +576,7 @@ class PerformKinFit : public TSelector {
    
    TBranch	*br_genMET			= 0 ;
    
-   TBranch   *br_pfMET				= 0 ;
+   TBranch      *br_pfMET	       		= 0 ;
    TBranch	*br_pfMETPhi			= 0 ;
    TBranch	*br_nu_px			= 0 ;
    TBranch	*br_nu_py			= 0 ;
@@ -633,7 +730,95 @@ class PerformKinFit : public TSelector {
 
 #endif
 
+/// constructor
+METzCalculator::METzCalculator() {
+  isComplex_ = false;
+  otherSol_ = 0.;
+  leptonMass_ = 0.105658367;
+}
 
+/// destructor
+METzCalculator::~METzCalculator() {
+}
+
+/// member functions
+double METzCalculator::Calculate(int type) {
+
+  double M_W  = 80.4;
+  double M_mu =  leptonMass_;
+  double emu = lepton_.E();
+  double pxmu = lepton_.Px();
+  double pymu = lepton_.Py();
+  double pzmu = lepton_.Pz();
+  double pxnu = MET_.Px();
+  double pynu = MET_.Py();
+  double pznu = 0.;
+  otherSol_ = 0.;
+		
+  double a = M_W*M_W - M_mu*M_mu + 2.0*pxmu*pxnu + 2.0*pymu*pynu;
+  double A = 4.0*(emu*emu - pzmu*pzmu);
+  double B = -4.0*a*pzmu;
+  double C = 4.0*emu*emu*(pxnu*pxnu + pynu*pynu) - a*a;
+
+  double tmproot = B*B - 4.0*A*C;
+
+  if (tmproot<0) {
+    isComplex_= true;
+    pznu = - B/(2*A); // take real part of complex roots
+    otherSol_ = pznu;
+    //std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
+  }
+  else {
+    isComplex_ = false;
+    double tmpsol1 = (-B + TMath::Sqrt(tmproot))/(2.0*A);
+    double tmpsol2 = (-B - TMath::Sqrt(tmproot))/(2.0*A);
+
+    //std::cout << " Neutrino Solutions: " << tmpsol1 << ", " << tmpsol2 << std::endl;
+			
+    if (type == 0 ) {
+      // two real roots, pick the one closest to pz of muon
+      if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2; otherSol_ = tmpsol1;}
+      else { pznu = tmpsol1; otherSol_ = tmpsol2; } 
+      // if pznu is > 300 pick the most central root
+      if ( pznu > 300. ) {
+	if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) { pznu = tmpsol1; otherSol_ = tmpsol2; }
+	else { pznu = tmpsol2; otherSol_ = tmpsol1; }
+      }
+    }
+    if (type == 1 ) {
+      // two real roots, pick the one closest to pz of muon
+      if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2; otherSol_ = tmpsol1; }
+      else {pznu = tmpsol1; otherSol_ = tmpsol2; }
+    }
+    if (type == 2 ) {
+      // pick the most central root.
+      if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) { pznu = tmpsol1; otherSol_ = tmpsol2; }
+      else { pznu = tmpsol2; otherSol_ = tmpsol1; }
+    }
+    if (type == 3 ) {
+      // pick the largest value of the cosine
+      TVector3 p3w, p3mu;
+      p3w.SetXYZ(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol1);
+      p3mu.SetXYZ(pxmu, pymu, pzmu );
+				
+      double sinthcm1 = 2.*(p3mu.Perp(p3w))/M_W;
+      p3w.SetXYZ(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol2);
+      double sinthcm2 = 2.*(p3mu.Perp(p3w))/M_W;
+
+      double costhcm1 = TMath::Sqrt(1. - sinthcm1*sinthcm1);
+      double costhcm2 = TMath::Sqrt(1. - sinthcm2*sinthcm2);
+
+      if ( costhcm1 > costhcm2 ) { pznu = tmpsol1; otherSol_ = tmpsol2; }
+      else { pznu = tmpsol2;otherSol_ = tmpsol1; }
+    }
+		
+  }
+
+  //Particle neutrino;
+  //neutrino.setP4( LorentzVector(pxnu, pynu, pznu, TMath::Sqrt(pxnu*pxnu + pynu*pynu + pznu*pznu ))) ;
+
+  return pznu;
+}
 
 //_____________________________________________________________________
 PerformKinFit::PerformKinFit(TTree * /*tree*/)
@@ -650,13 +835,26 @@ void PerformKinFit::Reset()
   fFile	     = 0;
   fProofFile = 0;
 
-  hMuPt	      = 0;
-  hMjj	      = 0;
-  hMjjkF      = 0;
-  hChi2	      = 0;
-  hNbiter     = 0;
-  hNbCombiBRD = 0;
-  hNbCombiARD = 0;
+  hMuPt		 = 0;
+  hMjj		 = 0;
+  hMjjkF	 = 0;
+  hChi2		 = 0;
+  hMinChi2	 = 0;
+  hNbiter	 = 0;
+  hNbCombiBRD	 = 0;
+  hNbCombiARD	 = 0;
+  hdRSigLep	 = 0;
+  hdRSigNeu	 = 0;
+  hdRSigBjHad	 = 0;
+  hdRSigBjLep	 = 0;
+  hdRSigCjHad	 = 0;
+  hdRSigSjHad	 = 0;
+  hMindRSigLep	 = 0;
+  hMindRSigNeu	 = 0;
+  hMindRSigBjHad = 0;
+  hMindRSigBjLep = 0;
+  hMindRSigCjHad = 0;
+  hMindRSigSjHad = 0;
 
   jetVectors.clear();
   jetBtagVectors.clear();
@@ -1637,21 +1835,39 @@ int KinFit::JetEnergyResolution(double eta, double& JERbase, double& JERdown, do
 }
 
 bool KinFit::Fit(){
-
-  bool			goodCombo = false;
-  TLorentzVector	neutrino, bjlep, bjhad, cjhad, sjhad;
-  TMatrixD		ml(3,3), mn(3,3), mbl(3,3), mbh(3,3), mc(3,3), ms(3,3);
-  double		resEt, resEta, resPhi;
-  double		JERbase, JERdown, JERup;
-  std::vector<TLorentzVector> ljetlist;
-  std::vector<TLorentzVector> bjetlist;
-  std::map<unsigned int, unsigned int> list2jet;
   
+  bool				goodCombo = false;
+  TLorentzVector		neutrino, bjlep, bjhad, cjhad, sjhad;
+  TMatrixD			ml(3,3), mn(3,3), mbl(3,3), mbh(3,3), mc(3,3), ms(3,3);
+  double			resEt, resEta, resPhi;
+  double			JERbase, JERdown, JERup;
+  std::vector<TLorentzVector>	ljetlist;
+  std::vector<TLorentzVector>	bjetlist;
+  std::map<unsigned		int, unsigned int> list2jet;
+  METzCalculator		metZ;
+  TLorentzVector		METVector;
+  double			reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
+  unsigned int			max_nu	  = 2;
 
+  /* metZ.SetLepton(lepton); */
+  
+  /* if(leptonType == kElectron) */
+  /*   metZ.SetLeptonType("electron"); */
+  /* if(leptonType == kMuon) */
+  /*   metZ.SetLeptonType("muon"); */
+  
+  /* METVector.SetPtEtaPhiM(_nu_pt, 0., _nu_phi, 0.); */
+  /* metZ.SetMET(METVector); */
+  
+  /* _nu_px = METVector.Px(); */
+  /* _nu_py = METVector.Py(); */
+  /* _nu_pz = metZ.Calculate(); */
+  /* _nu_pz_other = metZ.getOther(); */
+  
   //bool PtDescending (unsigned int i, unsigned int j) { 
   //  return ( jets.at(i).Pt() > jets.at(j).Pt() ); 
   //}
-
+  
   bjetlist.clear();
   ljetlist.clear();
   list2jet.clear();
@@ -1667,7 +1883,7 @@ bool KinFit::Fit(){
       il++;
     }
   }
-
+  
   if(bjetlist.size() < 2 or ljetlist.size() < 2){
     
     bjetlist.clear();
@@ -1680,13 +1896,24 @@ bool KinFit::Fit(){
   std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
   std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
 
-  
+  /* cout<<"bjetlist--"<<endl; */
+  /* for (auto x : bjetlist)  */
+  /*   x.Print(); */
+  /* cout<<"ljetlist--"<<endl; */
+  /* for (auto x : ljetlist)  */
+  /*   x.Print(); */
+
+  int loop = 0;
   for(unsigned int ib1 = 0 ; ib1 < bjetlist.size() ; ib1++){
     for(unsigned int ib2 = 0 ; ib2 < bjetlist.size() ; ib2++){
       if(bjetlist.at(ib1) == bjetlist.at(ib2)) continue;
       for(unsigned int ij1 = 0 ; ij1 < ljetlist.size()-1 ; ij1++){
 	for (unsigned int ij2 = ij1+1 ; ij2 < ljetlist.size() ; ij2++){
-	  for(unsigned int inu_root = 0 ; inu_root < 2 ; inu_root++){
+	  if(TMath::AreEqualAbs(_nu_pz,_nu_pz_other,1.e-7))
+	    max_nu = 1;
+	  else
+	    max_nu = 2;
+	  for(unsigned int inu_root = 0 ; inu_root < max_nu ; inu_root++){
 	    float nuz = (inu_root==0) ? _nu_pz : _nu_pz_other ;
 	    
 	    neutrino.SetXYZM(_nu_px, _nu_py, nuz, 0.0);
@@ -1695,7 +1922,16 @@ bool KinFit::Fit(){
 	    bjhad = bjetlist.at(ib2);
 	    cjhad = ljetlist.at(ij1);
 	    sjhad = ljetlist.at(ij2);
-	    
+
+	    /* cout<<"loop " << loop++ << endl; */
+	    /* bjlep.Print(); */
+	    /* bjhad.Print(); */
+	    /* cjhad.Print(); */
+	    /* sjhad.Print(); */
+	    /* neutrino.Print(); */
+	    /* lepton.Print(); */
+	    /* cout <<"_nu_pz : " << _nu_pz << " _nu_pz_other : " << _nu_pz_other << endl; */
+
 	    ml.Zero() ;  mn.Zero() ;  mbl.Zero() ;  mbh.Zero() ;  mc.Zero() ;  ms.Zero();
 	      
 	    // This is following covariance matrix setup is using CMS NOTE AN 2005/005.
@@ -1731,9 +1967,12 @@ bool KinFit::Fit(){
 	    if(leptonType == kElectron)
 	      elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 	    
-	    ml(0,0)	= TMath::Power(resEt, 2); // et
-	    ml(1,1)	= TMath::Power(resEta, 2); // eta
-	    ml(2,2)	= TMath::Power(resPhi, 2); // phi
+	    ml(0,0)	= TMath::Power(resEt, 2);	// et
+	    ml(1,1)	= TMath::Power(resEta, 2);	// eta
+	    ml(2,2)	= TMath::Power(resPhi, 2);	// phi
+	    
+	    reslepEta	= resEta ; 
+	    reslepPhi	= resPhi ; 
 	    
 	    metResolution(neutrino.Et(), resEt, resEta, resPhi);
 	    resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
@@ -1742,6 +1981,9 @@ bool KinFit::Fit(){
 	    mn(1,1)	= TMath::Power(resEta, 2); // eta
 	    mn(2,2)	= TMath::Power(resPhi, 2); // eta
 	    
+	    resneuEta	= resEta ; 
+	    resneuPhi	= resPhi ; 
+	    
 	    bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
 	    mbl(0,0)	= TMath::Power(resEt, 2); // et
@@ -1749,6 +1991,9 @@ bool KinFit::Fit(){
 	    //mbl(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib1)), 2);
 	    mbl(1,1)	= TMath::Power(resEta, 2); // eta
 	    mbl(2,2)	= TMath::Power(resPhi, 2); // eta
+
+	    resbjlepEta = resEta ;
+	    resbjlepPhi = resPhi ; 
 	    
 	    bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
@@ -1757,6 +2002,9 @@ bool KinFit::Fit(){
 	    //mbh(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib2)), 2);
 	    mbh(1,1)	= TMath::Power(resEta, 2); // eta
 	    mbh(2,2)	= TMath::Power(resPhi, 2); // eta	      
+
+	    resbjhadEta = resEta ; 
+	    resbjhadPhi = resPhi ;  
 	      
 	    udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
@@ -1765,6 +2013,9 @@ bool KinFit::Fit(){
 	    //mc(0,0)    *= TMath::Power(jetsRes.at(ij1), 2);
 	    mc(1,1)	= TMath::Power(resEta, 2); // eta
 	    mc(2,2)	= TMath::Power(resPhi, 2); // eta	      
+
+	    rescjhadEta = resEta ;
+	    rescjhadPhi = resPhi ;
 	      
 	    udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
 	    JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
@@ -1774,6 +2025,9 @@ bool KinFit::Fit(){
 	    ms(1,1)	= TMath::Power(resEta, 2); // eta
 	    ms(2,2)	= TMath::Power(resPhi, 2); // eta	      
 	    
+	    ressjhadEta = resEta ;
+	    ressjhadPhi = resPhi ; 
+
 	    // For collider setup (Et, eta. phi) setup is suggested in KinFit original document  
 	    TFitParticleEtEtaPhi *lep = new TFitParticleEtEtaPhi( "lep", "lep", &lepton,   &ml );
 	    TFitParticleEtEtaPhi *neu = new TFitParticleEtEtaPhi( "neu", "neu", &neutrino, &mn );
@@ -1852,6 +2106,18 @@ bool KinFit::Fit(){
 	      bjhadAF.push_back( *(fitter->get4Vec(3)) );
 	      cjhadAF.push_back( *(fitter->get4Vec(4)) );
 	      sjhadAF.push_back( *(fitter->get4Vec(5)) );
+	      ReslepEta.push_back(reslepEta);
+	      ReslepPhi.push_back(reslepPhi);
+	      ResneuEta.push_back(resneuEta);
+	      ResneuPhi.push_back(resneuPhi);
+	      ResbjlepEta.push_back(resbjlepEta);
+	      ResbjlepPhi.push_back(resbjlepPhi);
+	      ResbjhadEta.push_back(resbjhadEta);
+	      ResbjhadPhi.push_back(resbjhadPhi);
+	      RescjhadEta.push_back(rescjhadEta);
+	      RescjhadPhi.push_back(rescjhadPhi);
+	      RessjhadEta.push_back(ressjhadEta);
+	      RessjhadPhi.push_back(ressjhadPhi); 
 	      goodCombo = true;
 	      nCombinations++ ;
 	    }
@@ -1872,7 +2138,8 @@ bool KinFit::Fit(){
     }//bjet 2
   }//bjet 1
     
-  
+  //cout<<endl<<endl;
+
   bjetlist.clear();
   ljetlist.clear();
   list2jet.clear();
