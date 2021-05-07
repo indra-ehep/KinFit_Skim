@@ -99,24 +99,27 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   hMjj = new TH1F("hMjj","hMjj",80,0,400.0); 
   hMjjkF = new TH1F("hMjjkF","hMjjkF",80,0,400.0); 
   hChi2 = new TH1F("hChi2","hChi2",500,0,100.0); 
-  hMinChi2 = new TH1F("hMinChi2","hMinChi2",500,0,100.0); 
+  hMinChi2 = new TH1F("hMinChi2","1^{st} minimum",500,0,100.0); 
+  h2MinChi2 = new TH1F("h2MinChi2","2^{nd} minimum",500,0,100.0); 
+  h3MinChi2 = new TH1F("h3MinChi2","3^{rd} minimum",500,0,100.0); 
+  h4MinChi2 = new TH1F("h4MinChi2","4^{th} minimum",500,0,100.0); 
+  h5MinChi2 = new TH1F("h5MinChi2","5^{th} minimum",500,0,100.0); 
   hNbiter = new TH1F("hNbiter","hNbiter",500,0,500.0); 
   hNbCombiBRD = new TH1F("hNbCombiBRD","hNbCombiBRD", 500, 0.0, 500.0);
   hNbCombiARD = new TH1F("hNbCombiARD","hNbCombiARD", 500, 0.0, 500.0);
-  hdRSigLep  = new TH1F("hdRSigLep","hdRSigLep",500,-2.0,2.0);
-  hdRSigNeu  = new TH1F("hdRSigNeu","hdRSigNeu",500,-2.0,2.0);
-  hdRSigBjHad  = new TH1F("hdRSigBjHad","hdRSigBjHad",500,-2.0,2.0);
-  hdRSigBjLep  = new TH1F("hdRSigBjLep","hdRSigBjLep",500,-2.0,2.0);
-  hdRSigCjHad = new TH1F("hdRSigCjHad","hdRSigCjHad",500,-2.0,2.0);
-  hdRSigSjHad = new TH1F("hdRSigSjHad","hdRSigSjhad",500,-2.0,2.0);
-  hMindRSigLep  = new TH1F("hMindRSigLep","hMindRSigLep",500,-2.0,2.0);
-  hMindRSigNeu  = new TH1F("hMindRSigNeu","hMindRSigNeu",500,-2.0,2.0);
-  hMindRSigBjHad  = new TH1F("hMindRSigBjHad","hMindRSigBjHad",500,-2.0,2.0);
-  hMindRSigBjLep  = new TH1F("hMindRSigBjLep","hMindRSigBjLep",500,-2.0,2.0);
-  hMindRSigCjHad = new TH1F("hMindRSigCjHad","hMindRSigCjHad",500,-2.0,2.0);
-  hMindRSigSjHad = new TH1F("hMindRSigSjHad","hMindRSigSjhad",500,-2.0,2.0);
-
-
+  hdRSigLep  = new TH1F("hdRSigLep","hdRSigLep",100, -1.0, 9.0);
+  hdRSigNeu  = new TH1F("hdRSigNeu","hdRSigNeu",100, -1.0, 9.0);
+  hdRSigBjHad  = new TH1F("hdRSigBjHad","hdRSigBjHad",100, -1.0, 9.0);
+  hdRSigBjLep  = new TH1F("hdRSigBjLep","hdRSigBjLep",100, -1.0, 9.0);
+  hdRSigCjHad = new TH1F("hdRSigCjHad","hdRSigCjHad",100, -1.0, 9.0);
+  hdRSigSjHad = new TH1F("hdRSigSjHad","hdRSigSjhad",100, -1.0, 9.0);
+  hMindRSigLep  = new TH1F("hMindRSigLep","hMindRSigLep",100, -1.0, 9.0);
+  hMindRSigNeu  = new TH1F("hMindRSigNeu","hMindRSigNeu",100, -1.0, 9.0);
+  hMindRSigBjHad  = new TH1F("hMindRSigBjHad","hMindRSigBjHad",100, -1.0, 9.0);
+  hMindRSigBjLep  = new TH1F("hMindRSigBjLep","hMindRSigBjLep",100, -1.0, 9.0);
+  hMindRSigCjHad = new TH1F("hMindRSigCjHad","hMindRSigCjHad",100, -1.0, 9.0);
+  hMindRSigSjHad = new TH1F("hMindRSigSjHad","hMindRSigSjhad",100, -1.0, 9.0);
+  
   kinFit.SetBtagThresh(0.6321);
   kinFit.SetTopMass(mTop);
 
@@ -139,6 +142,7 @@ Bool_t PerformKinFit::Process(Long64_t entry)
   br_muEta->GetEntry(entry);
   br_muPhi->GetEntry(entry);
   br_nJet->GetEntry(entry);
+  br_nBJet->GetEntry(entry);
   br_jetPt->GetEntry(entry);
   br_jetEta->GetEntry(entry);
   br_jetPhi->GetEntry(entry);
@@ -180,17 +184,25 @@ Bool_t PerformKinFit::Process(Long64_t entry)
   kinFit.SetMET(_nu_px, _nu_py, _nu_pz, _nu_pz_other);
   kinFit.SetMETPtPhi(_pfMET, _pfMETPhi);
   
+  if(_nBJet >=2 and _nJet>=4){
+    hdRSigNeu->Fill(1.0);
+    hMindRSigNeu->Fill(1.0);
+  }
+
   if ( kinFit.Fit() ){
 
     hNbCombiBRD->Fill(kinFit.GetNCombinations());
     int nRdiffPass = 0;
     float minChi2 = 1e9;
+    float minmass = 1e9;
     int minNDF = 10;
     double minRdifflepSignif = 20.;
     double minRdiffbjhadSignif = 20.;
     double minRdiffbjlepSignif = 20.;
     double minRdiffcjhadSignif = 20.;
     double minRdiffsjhadSignif = 20.;
+    vector<float> chi2_arr;
+    chi2_arr.clear();
     for (unsigned int i = 0 ; i < kinFit.GetNCombinations() ; i++ ){
       
       leptonAF		= kinFit.GetLepton(i);
@@ -264,11 +276,17 @@ Bool_t PerformKinFit::Process(Long64_t entry)
 					    TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2)  * ressjhadPhi * ressjhadPhi
 					     ) / Rdiffsjhad ;
 
-      hdRSigLep->Fill(Rdifflep/sigmaResoRDLep);
-      hdRSigBjHad->Fill(Rdiffbjhad/sigmaResoRDBjHad);
-      hdRSigBjLep->Fill(Rdiffbjlep/sigmaResoRDBjLep);
-      hdRSigCjHad->Fill(Rdiffcjhad/sigmaResoRDCjHad);
-      hdRSigSjHad->Fill(Rdiffsjhad/sigmaResoRDSjHad);
+      // hdRSigLep->Fill(Rdifflep/sigmaResoRDLep);
+      // hdRSigBjHad->Fill(Rdiffbjhad/sigmaResoRDBjHad);
+      // hdRSigBjLep->Fill(Rdiffbjlep/sigmaResoRDBjLep);
+      // hdRSigCjHad->Fill(Rdiffcjhad/sigmaResoRDCjHad);
+      // hdRSigSjHad->Fill(Rdiffsjhad/sigmaResoRDSjHad);
+
+      hdRSigLep->Fill(Rdifflep);
+      hdRSigBjHad->Fill(Rdiffbjhad);
+      hdRSigBjLep->Fill(Rdiffbjlep);
+      hdRSigCjHad->Fill(Rdiffcjhad);
+      hdRSigSjHad->Fill(Rdiffsjhad);
       
       double mjj	= (cjhadBF + sjhadBF).M(); 
       double mjjkF	= (cjhadAF + sjhadAF).M(); 
@@ -276,29 +294,48 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       hMjj->Fill(mjj);
       //hChi2->Fill(kinFit.GetChi2(i)/kinFit.GetNDF(i));
       hChi2->Fill(kinFit.GetChi2(i));
+      chi2_arr.push_back(kinFit.GetChi2(i));
       hNbiter->Fill(float(kinFit.GetNumberOfIter(i)));
       if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2){
-	hMjjkF->Fill(mjjkF);
+	//hMjjkF->Fill(mjjkF);
 	nRdiffPass++;
       }
       if ( kinFit.GetChi2(i) < minChi2 ){
 	minChi2 = kinFit.GetChi2(i) ;
 	minNDF = kinFit.GetNDF(i) ;
-	minRdifflepSignif = Rdifflep/sigmaResoRDLep ;
-	minRdiffbjhadSignif = Rdiffbjhad/sigmaResoRDBjHad;
-	minRdiffbjlepSignif = Rdiffbjlep/sigmaResoRDBjLep;
-	minRdiffcjhadSignif = Rdiffcjhad/sigmaResoRDCjHad;
-	minRdiffsjhadSignif = Rdiffsjhad/sigmaResoRDSjHad;
+	if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2)
+	  minmass = mjjkF;
+	//minRdifflepSignif = Rdifflep/sigmaResoRDLep ;
+	// minRdiffbjhadSignif = Rdiffbjhad/sigmaResoRDBjHad;
+	// minRdiffbjlepSignif = Rdiffbjlep/sigmaResoRDBjLep;
+	// minRdiffcjhadSignif = Rdiffcjhad/sigmaResoRDCjHad;
+	// minRdiffsjhadSignif = Rdiffsjhad/sigmaResoRDSjHad;
+	minRdifflepSignif = Rdifflep ;
+	minRdiffbjhadSignif = Rdiffbjhad;
+	minRdiffbjlepSignif = Rdiffbjlep;
+	minRdiffcjhadSignif = Rdiffcjhad;
+	minRdiffsjhadSignif = Rdiffsjhad;
       }
     }// for loop
-    hNbCombiARD->Fill(nRdiffPass);
+    std::sort(chi2_arr.begin(), chi2_arr.end());
+    
     hMinChi2->Fill(minChi2);
+    if(chi2_arr.size()>=2)
+      h2MinChi2->Fill(chi2_arr.at(1));
+    if(chi2_arr.size()>=3)
+      h3MinChi2->Fill(chi2_arr.at(2));    
+    if(chi2_arr.size()>=4)
+      h4MinChi2->Fill(chi2_arr.at(3));    
+    if(chi2_arr.size()>=5)
+      h5MinChi2->Fill(chi2_arr.at(4));    
+    hNbCombiARD->Fill(nRdiffPass);
     hMindRSigLep->Fill(minRdifflepSignif);
     hMindRSigBjHad->Fill(minRdiffbjhadSignif);
     hMindRSigBjLep->Fill(minRdiffbjlepSignif);
     hMindRSigCjHad->Fill(minRdiffcjhadSignif);
     hMindRSigSjHad->Fill(minRdiffsjhadSignif);
-
+    hMjjkF->Fill(minmass);
+    chi2_arr.clear();
   }//if fit converges
   kinFit.Clear();
 
@@ -323,6 +360,10 @@ void PerformKinFit::SlaveTerminate()
   hMjjkF->Write();
   hChi2->Write();
   hMinChi2->Write();
+  h2MinChi2->Write();
+  h3MinChi2->Write();
+  h4MinChi2->Write();
+  h5MinChi2->Write();
   hNbiter->Write();
   hNbCombiBRD->Write();
   hNbCombiARD->Write();

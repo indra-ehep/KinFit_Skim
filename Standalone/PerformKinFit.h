@@ -22,7 +22,10 @@
 #include "TLorentzVector.h"
 
 #include "PhysicsTools/KinFitter/interface/TFitConstraintM.h"
+#include "PhysicsTools/KinFitter/interface/TFitConstraintEp.h"
 #include "PhysicsTools/KinFitter/interface/TFitParticleEtEtaPhi.h"
+#include "PhysicsTools/KinFitter/interface/TFitParticleEScaledMomDev.h"
+#include "PhysicsTools/KinFitter/interface/TFitParticleMCMomDev.h"
 #include "PhysicsTools/KinFitter/interface/TKinFitter.h"
 
 #include <iostream>
@@ -288,6 +291,10 @@ class PerformKinFit : public TSelector {
    TH1F           *hMjjkF;//!
    TH1F           *hChi2;//!
    TH1F           *hMinChi2;//!
+   TH1F           *h2MinChi2;//!
+   TH1F           *h3MinChi2;//!
+   TH1F           *h4MinChi2;//!
+   TH1F           *h5MinChi2;//!
    TH1F           *hNbiter;//!
    TH1F           *hNbCombiBRD;//!
    TH1F           *hNbCombiARD;//!
@@ -766,7 +773,7 @@ double METzCalculator::Calculate(int type) {
     isComplex_= true;
     pznu = - B/(2*A); // take real part of complex roots
     otherSol_ = pznu;
-    //std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
+    std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
   }
   else {
     isComplex_ = false;
@@ -780,10 +787,10 @@ double METzCalculator::Calculate(int type) {
       if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2; otherSol_ = tmpsol1;}
       else { pznu = tmpsol1; otherSol_ = tmpsol2; } 
       // if pznu is > 300 pick the most central root
-      if ( pznu > 300. ) {
-	if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) { pznu = tmpsol1; otherSol_ = tmpsol2; }
-	else { pznu = tmpsol2; otherSol_ = tmpsol1; }
-      }
+      /* if ( pznu > 300. ) { */
+      /* 	if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) { pznu = tmpsol1; otherSol_ = tmpsol2; } */
+      /* 	else { pznu = tmpsol2; otherSol_ = tmpsol1; } */
+      /* } */
     }
     if (type == 1 ) {
       // two real roots, pick the one closest to pz of muon
@@ -840,6 +847,10 @@ void PerformKinFit::Reset()
   hMjjkF	 = 0;
   hChi2		 = 0;
   hMinChi2	 = 0;
+  h2MinChi2	 = 0;
+  h3MinChi2	 = 0;
+  h4MinChi2	 = 0;
+  h5MinChi2	 = 0;
   hNbiter	 = 0;
   hNbCombiBRD	 = 0;
   hNbCombiARD	 = 0;
@@ -1895,7 +1906,7 @@ bool KinFit::Fit(){
   
   std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
   std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
-
+  
   /* cout<<"bjetlist--"<<endl; */
   /* for (auto x : bjetlist)  */
   /*   x.Print(); */
@@ -1909,14 +1920,16 @@ bool KinFit::Fit(){
       if(bjetlist.at(ib1) == bjetlist.at(ib2)) continue;
       for(unsigned int ij1 = 0 ; ij1 < ljetlist.size()-1 ; ij1++){
 	for (unsigned int ij2 = ij1+1 ; ij2 < ljetlist.size() ; ij2++){
-	  if(TMath::AreEqualAbs(_nu_pz,_nu_pz_other,1.e-7))
-	    max_nu = 1;
-	  else
-	    max_nu = 2;
+	  /* if(TMath::AreEqualAbs(_nu_pz,_nu_pz_other,1.e-7)) */
+	  /*   max_nu = 1; */
+	  /* else */
+	  /*   max_nu = 2; */
+	  max_nu = 1;
 	  for(unsigned int inu_root = 0 ; inu_root < max_nu ; inu_root++){
-	    float nuz = (inu_root==0) ? _nu_pz : _nu_pz_other ;
+	    //float nuz = (inu_root==0) ? _nu_pz : _nu_pz_other ;
 	    
-	    neutrino.SetXYZM(_nu_px, _nu_py, nuz, 0.0);
+	    //neutrino.SetXYZM(_nu_px, _nu_py, nuz, 0.0);
+	    neutrino.SetXYZM(_nu_px, _nu_py, 0.0, 0.0);
 	    
 	    bjlep = bjetlist.at(ib1);
 	    bjhad = bjetlist.at(ib2);
@@ -1980,6 +1993,15 @@ bool KinFit::Fit(){
 	    mn(0,0)	= TMath::Power(resEt, 2); // et
 	    mn(1,1)	= TMath::Power(resEta, 2); // eta
 	    mn(2,2)	= TMath::Power(resPhi, 2); // eta
+	    /* cout <<"_nu Et : " << neutrino.Et()  */
+	    /* 	 << " _nu E : " << neutrino.E()  */
+	    /* 	 << " _nu Pt : " << neutrino.Pt()  */
+	    /* 	 << " _nu |P| : " << neutrino.Vect().Mag()  */
+	    /* 	 << endl; */
+
+	    /* mn(0,0)	= 9999; // et */
+	    /* mn(1,1)	= 9999; // eta */
+	    /* mn(2,2)	= TMath::Power(0.54, 2); // phi */
 	    
 	    resneuEta	= resEta ; 
 	    resneuPhi	= resPhi ; 
@@ -2027,21 +2049,26 @@ bool KinFit::Fit(){
 	    
 	    ressjhadEta = resEta ;
 	    ressjhadPhi = resPhi ; 
-
+	    
 	    // For collider setup (Et, eta. phi) setup is suggested in KinFit original document  
 	    TFitParticleEtEtaPhi *lep = new TFitParticleEtEtaPhi( "lep", "lep", &lepton,   &ml );
 	    TFitParticleEtEtaPhi *neu = new TFitParticleEtEtaPhi( "neu", "neu", &neutrino, &mn );
+	    /* TFitParticleEScaledMomDev *lep = new TFitParticleEScaledMomDev( "lep", "lep", &lepton,   &ml ); */
+	    /* TFitParticleEScaledMomDev *neu = new TFitParticleEScaledMomDev( "neu", "neu", &neutrino, &mn ); */
 	    TFitParticleEtEtaPhi *bl  = new TFitParticleEtEtaPhi( "bl",  "bl",  &bjlep,    &mbl );
 	    TFitParticleEtEtaPhi *bh  = new TFitParticleEtEtaPhi( "bh",  "bh",  &bjhad,    &mbh );
 	    TFitParticleEtEtaPhi *cj  = new TFitParticleEtEtaPhi( "cj",  "cj",  &cjhad,    &mc );
 	    TFitParticleEtEtaPhi *sj  = new TFitParticleEtEtaPhi( "sj",  "sj",  &sjhad,    &ms );
-	      
+	    
 	    //leptoniccally decayed top constrain
 	    TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
 	    ltop->addParticles1( lep, neu, bl );
 	    //hadronically decayed top constrain
 	    TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
 	    htop->addParticles1( bh, cj, sj );
+
+	    TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.4); // Values set from PDG 2021 mW = 80.379
+	    lW->addParticles1( lep, neu);
 	    
 	    TKinFitter* fitter = new TKinFitter("fitter", "fitter");
 	    fitter->addMeasParticle( lep );
@@ -2052,6 +2079,7 @@ bool KinFit::Fit(){
 	    fitter->addMeasParticle( sj );
 	    fitter->addConstraint( ltop );
 	    fitter->addConstraint( htop );
+	    fitter->addConstraint( lW );
 	    
 	    // Tested with 2016 analysis
 	    fitter->setMaxNbIter( 500 );

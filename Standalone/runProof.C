@@ -19,7 +19,7 @@ int runProof(const char* opt = "mtop=172.6|sample=TTbarPowheg|year=2016") // sam
     options += "|mode=proof";
   }
   
-  chain->Process("PerformKinFit.C++", options.Data(), 10000);    
+  chain->Process("PerformKinFit.C++", options.Data(), 100);    
   
   return true;
 }
