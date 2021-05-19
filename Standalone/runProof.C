@@ -1,4 +1,4 @@
-int runProof(const char* opt = "mtop=172.6|sample=TTbarPowheg|year=2016") // sample = data, bkg, signal
+int runProof(const char* opt = "ptmin=30.0|ptmax=50.0|chi2cut=20.0|mtop=172.6|sample=TTbarPowheg|year=2016") // sample = data, bkg, signal
 {
   
   bool isproof  = 0 ;
@@ -19,7 +19,7 @@ int runProof(const char* opt = "mtop=172.6|sample=TTbarPowheg|year=2016") // sam
     options += "|mode=proof";
   }
   
-  chain->Process("PerformKinFit.C++", options.Data(), 100);    
+  chain->Process("PerformKinFit.C++", options.Data(), 10000);    
   
   return true;
 }

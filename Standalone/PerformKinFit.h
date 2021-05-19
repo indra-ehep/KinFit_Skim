@@ -32,6 +32,16 @@
 
 
 class  TH1F;
+class  TH2F;
+
+typedef struct  {
+  double chi2, mass, mW;
+} Pair;
+
+bool comparePair(Pair i1, Pair i2)
+{
+  return (i1.chi2 < i2.chi2);
+}
 
 class METzCalculator {
 
@@ -96,6 +106,7 @@ class KinFit{
     KinFit(){
       Clear();
       mTop	    = 172.76;
+      isComplex     = false;
     }
     
     // The following are the mandatory setters
@@ -222,6 +233,7 @@ class KinFit{
     double              GetResCjHadPhi(unsigned int i)  { return RescjhadPhi.at(i);}
     double              GetResSjHadEta(unsigned int i)  { return RessjhadEta.at(i);}
     double              GetResSjHadPhi(unsigned int i)  { return RessjhadPhi.at(i);}
+    bool		IsComplex()                     { return isComplex; };
     /////////////////////////////////////////////////////////////////////////////
     
     struct PtDescending
@@ -273,6 +285,7 @@ class KinFit{
     std::vector<int>		NDF, Nb_Iter ;
     std::vector<TLorentzVector>	leptonUM, neutrinoUM, bjlepUM, bjhadUM, cjhadUM, sjhadUM;	// Unmodified four vectors before KinFit
     std::vector<double>		ReslepEta, ReslepPhi, ResneuEta, ResneuPhi, ResbjlepEta, ResbjlepPhi, ResbjhadEta, ResbjhadPhi, RescjhadEta, RescjhadPhi, RessjhadEta, RessjhadPhi ; 
+    bool			isComplex;
 };
 
 
@@ -310,6 +323,96 @@ class PerformKinFit : public TSelector {
    TH1F           *hMindRSigBjLep;//!
    TH1F           *hMindRSigCjHad;//!
    TH1F           *hMindRSigSjHad;//!
+
+   TH1F           *hPtvsdEtLep;//!
+   TH1F           *hPtvsdEtBjHad;//!
+   TH1F           *hPtvsdEtBjLep;//!
+   TH1F           *hPtvsdEtCjHad;//!
+   TH1F           *hPtvsdEtSjHad;//!
+
+   TH1F           *hPtvsdetaLep;//!
+   TH1F           *hPtvsdetaBjHad;//!
+   TH1F           *hPtvsdetaBjLep;//!
+   TH1F           *hPtvsdetaCjHad;//!
+   TH1F           *hPtvsdetaSjHad;//!
+
+   TH1F           *hPtvsdPhiLep;//!
+   TH1F           *hPtvsdPhiBjHad;//!
+   TH1F           *hPtvsdPhiBjLep;//!
+   TH1F           *hPtvsdPhiCjHad;//!
+   TH1F           *hPtvsdPhiSjHad;//!
+     
+   TH1F           *hMinPtvsdEtLep;//!
+   TH1F           *hMinPtvsdEtBjHad;//!
+   TH1F           *hMinPtvsdEtBjLep;//!
+   TH1F           *hMinPtvsdEtCjHad;//!
+   TH1F           *hMinPtvsdEtSjHad;//!
+
+   TH1F           *hMinPtvsdetaLep;//!
+   TH1F           *hMinPtvsdetaBjHad;//!
+   TH1F           *hMinPtvsdetaBjLep;//!
+   TH1F           *hMinPtvsdetaCjHad;//!
+   TH1F           *hMinPtvsdetaSjHad;//!
+
+   TH1F           *hMinPtvsdPhiLep;//! 
+   TH1F           *hMinPtvsdPhiBjHad;//!
+   TH1F           *hMinPtvsdPhiBjLep;//!
+   TH1F           *hMinPtvsdPhiCjHad;//!
+   TH1F           *hMinPtvsdPhiSjHad;//!
+  
+   //---------------------------------------------------
+   TH1F           **hPtBFLep;//!
+   TH1F           **hPtBFNeu;//!
+   TH1F           **hPtBFBjHad;//!
+   TH1F           **hPtBFBjLep;//!
+   TH1F           **hPtBFCjHad;//!
+   TH1F           **hPtBFSjHad;//!
+   
+   TH1F           **hPtAFLep;//!
+   TH1F           **hPtAFNeu;//!
+   TH1F           **hPtAFBjHad;//!
+   TH1F           **hPtAFBjLep;//!
+   TH1F           **hPtAFCjHad;//!
+   TH1F           **hPtAFSjHad;//!
+   
+   TH1F           **hPtvsRatioPtLep;//!
+   TH1F           **hPtvsRatioPtNeu;//!
+   TH1F           **hPtvsRatioPtBjHad;//!
+   TH1F           **hPtvsRatioPtBjLep;//!
+   TH1F           **hPtvsRatioPtCjHad;//!
+   TH1F           **hPtvsRatioPtSjHad;//!
+   
+   TH1F           **hMinPtBFLep;//!
+   TH1F           **hMinPtBFNeu;//!
+   TH1F           **hMinPtBFBjHad;//!
+   TH1F           **hMinPtBFBjLep;//!
+   TH1F           **hMinPtBFCjHad;//!
+   TH1F           **hMinPtBFSjHad;//!
+   
+   TH1F           **hMinPtAFLep;//!
+   TH1F           **hMinPtAFNeu;//!
+   TH1F           **hMinPtAFBjHad;//!
+   TH1F           **hMinPtAFBjLep;//!
+   TH1F           **hMinPtAFCjHad;//!
+   TH1F           **hMinPtAFSjHad;//!
+
+   TH1F           **hMinPtvsRatioPtLep;//!
+   TH1F           **hMinPtvsRatioPtNeu;//!
+   TH1F           **hMinPtvsRatioPtBjHad;//!
+   TH1F           **hMinPtvsRatioPtBjLep;//!
+   TH1F           **hMinPtvsRatioPtCjHad;//!
+   TH1F           **hMinPtvsRatioPtSjHad;//!
+
+   TH1F           *hHadTop;//!
+   TH1F           *hLepTop;//!
+   TH1F           *hEtaNeu;//!
+  
+   TH1F           *hIsNeuComplex;//!
+   TH1F           *hMW;//!
+
+   TH1F           **hDiffAvg;//!
+   TH1F           **hMinDiffAvg;//!
+
    ////////////////////////////////////////////////////////
 
    Long64_t        fProcessed;//!
@@ -708,7 +811,14 @@ class PerformKinFit : public TSelector {
    TLorentzVector lepVector;
    TLorentzVector	leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;
    TLorentzVector	leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;
+   TLorentzVector	lepTopAF, hadTopAF;
    double  fmTop ;
+   double  fchi2cut ;
+   double  fptmin, fptmax ;
+   int fNPtBins;
+   float   *fPtmin,*fPtmax;
+   int fNDiffAvgBins;
+   float   *fDAmin,*fDAmax;
    ////////////////////////////////////////////////////////
 
    PerformKinFit(TTree *tree=0);
@@ -729,8 +839,9 @@ class PerformKinFit : public TSelector {
    void    Terminate();
 
    void    GetArguments();
-   Int_t   CreateHistoArrays();
-   
+   //Int_t   CreateHistoArrays();
+   Int_t   FindBinIndex(float, float *, float *, int);
+
    ClassDef(PerformKinFit,2);
 
 };
@@ -751,7 +862,7 @@ METzCalculator::~METzCalculator() {
 /// member functions
 double METzCalculator::Calculate(int type) {
 
-  double M_W  = 80.4;
+  double M_W  = 80.379;
   double M_mu =  leptonMass_;
   double emu = lepton_.E();
   double pxmu = lepton_.Px();
@@ -773,7 +884,7 @@ double METzCalculator::Calculate(int type) {
     isComplex_= true;
     pznu = - B/(2*A); // take real part of complex roots
     otherSol_ = pznu;
-    std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
+    //std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
   }
   else {
     isComplex_ = false;
@@ -867,10 +978,109 @@ void PerformKinFit::Reset()
   hMindRSigCjHad = 0;
   hMindRSigSjHad = 0;
 
+  hPtvsdEtLep	 = 0;
+  hPtvsdEtBjHad	 = 0;
+  hPtvsdEtBjLep	 = 0;
+  hPtvsdEtCjHad	 = 0;
+  hPtvsdEtSjHad	 = 0;
+
+  hPtvsdetaLep	 = 0;
+  hPtvsdetaBjHad = 0;
+  hPtvsdetaBjLep = 0;
+  hPtvsdetaCjHad = 0;
+  hPtvsdetaSjHad = 0;
+
+  hPtvsdPhiLep	 = 0;
+  hPtvsdPhiBjHad = 0;
+  hPtvsdPhiBjLep = 0;
+  hPtvsdPhiCjHad = 0;
+  hPtvsdPhiSjHad = 0;
+  
+  hPtvsRatioPtLep   = 0;
+  hPtvsRatioPtNeu   = 0;
+  hPtvsRatioPtBjHad = 0;
+  hPtvsRatioPtBjLep = 0;
+  hPtvsRatioPtCjHad = 0;
+  hPtvsRatioPtSjHad = 0;
+
+  hMinPtvsdEtLep   = 0;
+  hMinPtvsdEtBjHad = 0;
+  hMinPtvsdEtBjLep = 0;
+  hMinPtvsdEtCjHad = 0;
+  hMinPtvsdEtSjHad = 0;
+
+  hMinPtvsdetaLep   = 0;
+  hMinPtvsdetaBjHad = 0;
+  hMinPtvsdetaBjLep = 0;
+  hMinPtvsdetaCjHad = 0;
+  hMinPtvsdetaSjHad = 0;
+
+  hMinPtvsdPhiLep   = 0; 
+  hMinPtvsdPhiBjHad = 0;
+  hMinPtvsdPhiBjLep = 0;
+  hMinPtvsdPhiCjHad = 0;
+  hMinPtvsdPhiSjHad = 0;
+  
+  hMinPtvsRatioPtLep   = 0;
+  hMinPtvsRatioPtNeu   = 0;
+  hMinPtvsRatioPtBjHad = 0;
+  hMinPtvsRatioPtBjLep = 0;
+  hMinPtvsRatioPtCjHad = 0;
+  hMinPtvsRatioPtSjHad = 0;
+
+  hPtBFLep   = 0;
+  hPtBFNeu   = 0;
+  hPtBFBjHad = 0;
+  hPtBFBjLep = 0;
+  hPtBFCjHad = 0;
+  hPtBFSjHad = 0;
+   
+  hPtAFLep   = 0;
+  hPtAFNeu   = 0;
+  hPtAFBjHad = 0;
+  hPtAFBjLep = 0;
+  hPtAFCjHad = 0;
+  hPtAFSjHad = 0;
+  
+  hMinPtBFLep	= 0;
+  hMinPtBFNeu	= 0;
+  hMinPtBFBjHad = 0;
+  hMinPtBFBjLep = 0;
+  hMinPtBFCjHad = 0;
+  hMinPtBFSjHad = 0;
+   
+  hMinPtAFLep	= 0;
+  hMinPtAFNeu	= 0;
+  hMinPtAFBjHad = 0;
+  hMinPtAFBjLep = 0;
+  hMinPtAFCjHad = 0;
+  hMinPtAFSjHad = 0;
+
+  hHadTop = 0;
+  hLepTop = 0;
+  hEtaNeu = 0;
+  
+  hIsNeuComplex = 0;
+  hMW		= 0;
+
+  fNPtBins	= 6;
+  fPtmin	= 0 ;		//30
+  fPtmax	= 0 ;		//40
+  fNDiffAvgBins = 6;
+  fDAmin	= 0;
+  fDAmax	= 0;
+
+  hDiffAvg    = 0;
+  hMinDiffAvg = 0;
+
   jetVectors.clear();
   jetBtagVectors.clear();
-  fmTop		= 172.76;
 
+  fmTop		= 172.6;
+  fchi2cut     	= 100.0;
+  fptmin        = 10.0 ; //30
+  fptmax        = 40.0 ; //40
+  
   fChain	= 0;
   fProcessed	= 0;
   
@@ -1860,21 +2070,22 @@ bool KinFit::Fit(){
   double			reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
   unsigned int			max_nu	  = 2;
 
-  /* metZ.SetLepton(lepton); */
+  metZ.SetLepton(lepton);
   
-  /* if(leptonType == kElectron) */
-  /*   metZ.SetLeptonType("electron"); */
-  /* if(leptonType == kMuon) */
-  /*   metZ.SetLeptonType("muon"); */
+  if(leptonType == kElectron)
+    metZ.SetLeptonType("electron");
+  if(leptonType == kMuon)
+    metZ.SetLeptonType("muon");
   
-  /* METVector.SetPtEtaPhiM(_nu_pt, 0., _nu_phi, 0.); */
-  /* metZ.SetMET(METVector); */
+  METVector.SetPtEtaPhiM(_nu_pt, 0., _nu_phi, 0.);
+  metZ.SetMET(METVector);
   
-  /* _nu_px = METVector.Px(); */
-  /* _nu_py = METVector.Py(); */
-  /* _nu_pz = metZ.Calculate(); */
-  /* _nu_pz_other = metZ.getOther(); */
-  
+  _nu_px = METVector.Px();
+  _nu_py = METVector.Py();
+  _nu_pz = metZ.Calculate();
+  _nu_pz_other = metZ.getOther();
+  isComplex = metZ.IsComplex();
+
   //bool PtDescending (unsigned int i, unsigned int j) { 
   //  return ( jets.at(i).Pt() > jets.at(j).Pt() ); 
   //}
@@ -1913,7 +2124,7 @@ bool KinFit::Fit(){
   /* cout<<"ljetlist--"<<endl; */
   /* for (auto x : ljetlist)  */
   /*   x.Print(); */
-
+  
   int loop = 0;
   for(unsigned int ib1 = 0 ; ib1 < bjetlist.size() ; ib1++){
     for(unsigned int ib2 = 0 ; ib2 < bjetlist.size() ; ib2++){
@@ -1935,7 +2146,7 @@ bool KinFit::Fit(){
 	    bjhad = bjetlist.at(ib2);
 	    cjhad = ljetlist.at(ij1);
 	    sjhad = ljetlist.at(ij2);
-
+	    
 	    /* cout<<"loop " << loop++ << endl; */
 	    /* bjlep.Print(); */
 	    /* bjhad.Print(); */
@@ -1944,7 +2155,7 @@ bool KinFit::Fit(){
 	    /* neutrino.Print(); */
 	    /* lepton.Print(); */
 	    /* cout <<"_nu_pz : " << _nu_pz << " _nu_pz_other : " << _nu_pz_other << endl; */
-
+	    
 	    ml.Zero() ;  mn.Zero() ;  mbl.Zero() ;  mbh.Zero() ;  mc.Zero() ;  ms.Zero();
 	      
 	    // This is following covariance matrix setup is using CMS NOTE AN 2005/005.
@@ -2066,9 +2277,25 @@ bool KinFit::Fit(){
 	    //hadronically decayed top constrain
 	    TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
 	    htop->addParticles1( bh, cj, sj );
-
-	    TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.4); // Values set from PDG 2021 mW = 80.379
+	    
+	    TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.379); // Values set from PDG 2021 mW = 80.379
 	    lW->addParticles1( lep, neu);
+
+	    
+	    /* TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.); */
+	    /* TFitConstraintEp *sumPyConstr_  = new TFitConstraintEp("SumPy",        "SumPy", nullptr, TFitConstraintEp::pY, 0.); */
+	    /* TFitConstraintEp *sumPzConstr_  = new TFitConstraintEp("SumPz",        "SumPz", nullptr, TFitConstraintEp::pZ, 0.); */
+	    /* TFitConstraintEp *sumEConstr_   = new TFitConstraintEp("SumE",        "SumE", nullptr, TFitConstraintEp::E, mTop+mTop); */
+
+	    /* sumPxConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+	    /* sumPyConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+	    /* sumPzConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+	    /* sumEConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+
+	    /* sumPxConstr_->setConstraint( lepton.Px() + neutrino.Px() + bjlep.Px() + bjhad.Px() + cjhad.Px() + sjhad.Px() ); */
+	    /* sumPyConstr_->setConstraint( lepton.Py() + neutrino.Py() + bjlep.Py() + bjhad.Py() + cjhad.Py() + sjhad.Py() ); */
+	    /* sumPzConstr_->setConstraint( lepton.Pz() + neutrino.Pz() + bjlep.Pz() + bjhad.Pz() + cjhad.Pz() + sjhad.Pz() ); */
+	    /* sumEConstr_->setConstraint( lepton.E() + neutrino.E() + bjlep.E() + bjhad.E() + cjhad.E() + sjhad.E() ); */
 	    
 	    TKinFitter* fitter = new TKinFitter("fitter", "fitter");
 	    fitter->addMeasParticle( lep );
@@ -2080,6 +2307,10 @@ bool KinFit::Fit(){
 	    fitter->addConstraint( ltop );
 	    fitter->addConstraint( htop );
 	    fitter->addConstraint( lW );
+	    /* fitter->addConstraint(sumPxConstr_); */
+	    /* fitter->addConstraint(sumPyConstr_); */
+	    /* fitter->addConstraint(sumPzConstr_); */
+	    /* fitter->addConstraint(sumEConstr_); */
 	    
 	    // Tested with 2016 analysis
 	    fitter->setMaxNbIter( 500 );

@@ -1,10 +1,12 @@
 #!/bin/bash
 
 echo The first input is $1
-s=`echo mtop=$1`
+#s=`echo mtop=$1`
+#s=`echo chi2cut=$1`
+s=`echo $1`
 
 echo s : $s
 
 if [ $# -eq 1 ] ; then
-    root -b -l -q  runProof.C\(\""$s|\""\) 
+    root -b -l -q  runProof.C\(\""$s|chi2cut=20.0|mtop=172.6|sample=TTbarPowheg|year=2016\""\) 
 fi
