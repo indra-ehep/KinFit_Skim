@@ -35,7 +35,10 @@ class  TH1F;
 class  TH2F;
 
 typedef struct  {
-  double chi2, mass, mW;
+  double chi2, mass, mW, A, B;
+  int ndf, nb_iter;
+  TLorentzVector leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;  
+  TLorentzVector leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;    
 } Pair;
 
 bool comparePair(Pair i1, Pair i2)
