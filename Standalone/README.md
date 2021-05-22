@@ -1,4 +1,3 @@
-======================
 Code Execution :
 ======================
 
@@ -11,7 +10,7 @@ ofcourse after setting the standard CMS analysis environments. There is one last
 
 If the user is interested to execute Kinematic Fitting in loops, then one can look inside python script KinFitLoop.py. The user would realize that it invokes run_root which in turn calls run.C for the execution in loop.
 
-======================
+
 Code body :
 ======================
 
