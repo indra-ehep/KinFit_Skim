@@ -34,7 +34,7 @@ There is one last thing before executing the root command is that the user needs
 If the user is interested to execute Kinematic Fitting in loops, then one can look inside python script KinFitLoop.py. The user would realize that it invokes bash script run_root which in turn calls run.C for the execution in loop.
 
 
-Body :
+Description :
 ======================
 
 files.txt:  
@@ -51,5 +51,12 @@ One can change it to,
 'chain->Process("PerformKinFit.C++", options.Data());'  
 if wishes to process all data of TChain.
 
-PerformKinFit.C:  
+PerformKinFit.h:  
+This is the header file of class PerformKinFit, but it also contains,  
+1) Class header declaration and implementation of 'KinFit' methods. The main method of this class is "Fit" and defined at the end of the PerformKinFit.h file.
+2) Class header declaration and implementation for the z-component of mometumum of neutrino using 'METzCalculator'.
+3) A structure that contains mostly the output of KinFit objects name as 'Chi2Array'. This is used for sorting the KinFit output according to the <img src="https://latex.codecogs.com/gif.latex?\chi^2" /> values of fitting result.
+
+PerformKinFit.C:    
+This is the implementation of class PerformKinFit. The main function of this class is 'Process', this method is called for a given tree entry or an event. The Kinematic Fitting is then performed for a given event. All important output objects of KinFit are then passed through a set of selection cuts and sorted according to <img src="https://latex.codecogs.com/gif.latex?\chi^2" /> values. The histograms are filled in various stages of these processes.   
 
