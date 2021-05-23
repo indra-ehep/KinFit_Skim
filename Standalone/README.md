@@ -23,12 +23,18 @@ To execute the Kinematic Fitting the user has to call,
 ofcourse after setting the standard CMS analysis environments such as the following commands in lxplus. 
 
 'source /cvmfs/cms.cern.ch/cmsset_default.sh'
+
 'cmsrel CMSSW_10_2_13'
+
 'cd CMSSW_8_0_28/src'
+
 'cmsenv'
+
 'cd INSTALLATION_PATH_OF_KinFit_Skim/Standalone'
 
+
 There is one last thing before executing the root command is that the user needs to set the list of input files at files.txt (see below).
+
 
 If the user is interested to execute Kinematic Fitting in loops, then one can look inside python script KinFitLoop.py. The user would realize that it invokes bash script run_root which in turn calls run.C for the execution in loop.
 
