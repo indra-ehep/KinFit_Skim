@@ -39,9 +39,9 @@ typedef struct  {
   int ndf, nb_iter;
   TLorentzVector leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;  
   TLorentzVector leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;    
-} Pair;
+} Chi2Array;
 
-bool comparePair(Pair i1, Pair i2)
+bool compareChi2Array(Chi2Array i1, Chi2Array i2)
 {
   return (i1.chi2 < i2.chi2);
 }
@@ -305,6 +305,7 @@ class PerformKinFit : public TSelector {
    TH1F           *hMuPt;//!
    TH1F           *hMjj;//!
    TH1F           *hMjjkF;//!
+   TH1F           *hMjjkF3s;//!
    TH1F           *hChi2;//!
    TH1F           *hMinChi2;//!
    TH1F           *h2MinChi2;//!
@@ -959,6 +960,7 @@ void PerformKinFit::Reset()
   hMuPt		 = 0;
   hMjj		 = 0;
   hMjjkF	 = 0;
+  hMjjkF3s	 = 0;
   hChi2		 = 0;
   hMinChi2	 = 0;
   h2MinChi2	 = 0;
@@ -1066,7 +1068,7 @@ void PerformKinFit::Reset()
   hIsNeuComplex = 0;
   hMW		= 0;
 
-  fNPtBins	= 6;
+  fNPtBins	= 7;
   fPtmin	= 0 ;		//30
   fPtmax	= 0 ;		//40
   fNDiffAvgBins = 6;

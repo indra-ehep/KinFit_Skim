@@ -105,6 +105,7 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   hMuPt = new TH1F("hMuPt","hMuPt",100,0,1000.0); 
   hMjj = new TH1F("hMjj","hMjj",80,0,400.0); 
   hMjjkF = new TH1F("hMjjkF",Form("hMjjkF with chi2cut : %5.2lf",fchi2cut),80,0,400.0); 
+  hMjjkF3s = new TH1F("hMjjkF3s",Form("hMjjkF3s with chi2cut : %5.2lf",fchi2cut),80,0,400.0); 
   hChi2 = new TH1F("hChi2","hChi2",500,0,100.0); 
   hMinChi2 = new TH1F("hMinChi2","1^{st} minimum",500,0,100.0); 
   h2MinChi2 = new TH1F("h2MinChi2","2^{nd} minimum",500,0,100.0); 
@@ -167,9 +168,11 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   
 
   //0-40, 40-80, 80-130, 130-200, 200-300, >300
-  fNPtBins = 6;
-  float ptmin[] = {00., 40.,  80., 130., 200., 300.};
-  float ptmax[] = {40., 80., 130., 200., 300., 10000.};
+  fNPtBins = 7;
+  // float ptmin[] = {00., 40.,  80., 130., 200., 300.};
+  // float ptmax[] = {40., 80., 130., 200., 300., 10000.};
+  float ptmin[] = {00., 20., 40.,  80., 130., 200., 300.};
+  float ptmax[] = {20., 40., 80., 130., 200., 300., 10000.};
   fPtmin = new float[fNPtBins];
   fPtmax = new float[fNPtBins];
 
@@ -234,7 +237,7 @@ void PerformKinFit::SlaveBegin(TTree *tree)
     hPtAFCjHad[ipt]  = new TH1F(Form("hPtAFCjHad_%02d",ipt),Form("hPtAFCjHad for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),2000,0.0,2000.0);
     hPtAFSjHad[ipt]  = new TH1F(Form("hPtAFSjHad_%02d",ipt),Form("hPtAFSjhad for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),2000,0.0,2000.0);
     
-    hPtvsRatioPtLep[ipt]  = new TH1F(Form("hPtvsRatioPtLep_%02d",ipt),Form("hPtvsRatioPtLep for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
+    hPtvsRatioPtLep[ipt]  = new TH1F(Form("hPtvsRatioPtLep_%02d",ipt),Form("hPtvsRatioPtLep for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),2000,0.0,5.0);
     hPtvsRatioPtNeu[ipt]  = new TH1F(Form("hPtvsRatioPtNeu_%02d",ipt),Form("hPtvsRatioPtNeu for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
     hPtvsRatioPtBjHad[ipt]  = new TH1F(Form("hPtvsRatioPtBjHad_%02d",ipt),Form("hPtvsRatioPtBjHad for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
     hPtvsRatioPtBjLep[ipt]  = new TH1F(Form("hPtvsRatioPtBjLep_%02d",ipt),Form("hPtvsRatioPtBjLep for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
@@ -255,7 +258,7 @@ void PerformKinFit::SlaveBegin(TTree *tree)
     hMinPtAFCjHad[ipt]  = new TH1F(Form("hMinPtAFCjHad_%02d",ipt),Form("hMinPtAFCjHad for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),2000,0.0,2000.0);
     hMinPtAFSjHad[ipt]  = new TH1F(Form("hMinPtAFSjHad_%02d",ipt),Form("hMinPtAFSjhad for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),2000,0.0,2000.0);
     
-    hMinPtvsRatioPtLep[ipt]  = new TH1F(Form("hMinPtvsRatioPtLep_%02d",ipt),Form("hMinPtvsRatioPtLep for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
+    hMinPtvsRatioPtLep[ipt]  = new TH1F(Form("hMinPtvsRatioPtLep_%02d",ipt),Form("hMinPtvsRatioPtLep for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),2000,0.0,5.0);
     hMinPtvsRatioPtNeu[ipt]  = new TH1F(Form("hMinPtvsRatioPtNeu_%02d",ipt),Form("hMinPtvsRatioPtNeu for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
     hMinPtvsRatioPtBjHad[ipt]  = new TH1F(Form("hMinPtvsRatioPtBjHad_%02d",ipt),Form("hMinPtvsRatioPtBjHad for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
     hMinPtvsRatioPtBjLep[ipt]  = new TH1F(Form("hMinPtvsRatioPtBjLep_%02d",ipt),Form("hMinPtvsRatioPtBjLep for pt = (%5.2lf - %5.2lf) GeV/c",ptmin[ipt],ptmax[ipt]),200,0.0,5.0);
@@ -374,33 +377,19 @@ Bool_t PerformKinFit::Process(Long64_t entry)
 
     hNbCombiBRD->Fill(kinFit.GetNCombinations());
     int nRdiffPass = 0;
-    float minChi2 = 1e9;
-    float minmass = -10.0;
-    int minNDF = 10;
-    double minRdifflepSignif = 20.;
-    double minRdiffbjhadSignif = 20.;
-    double minRdiffbjlepSignif = 20.;
-    double minRdiffcjhadSignif = 20.;
-    double minRdiffsjhadSignif = 20.;
     vector<float> chi2_arr;
     chi2_arr.clear();
-    vector<Pair> Chi2ToMass_arr;
-    Pair Chi2ToMass;
+    vector<Chi2Array> Chi2ToMass_arr;
+    Chi2Array Chi2ToMass;
     Chi2ToMass_arr.clear();
-    double minlepPtBF = -1.0, minneuPtBF = -1.0, minbjhadPtBF= -1.0, minbjlepPtBF= -1.0, mincjhadPtBF= -1.0, minsjhadPtBF = -1.0;
-    double minlepPt = -1.0, minneuPt = -1.0, minbjhadPt= -1.0, minbjlepPt= -1.0, mincjhadPt= -1.0, minsjhadPt = -1.0;
-    double minlepEtDiff= -1.0, minbjhadEtDiff= -1.0, minbjlepEtDiff= -1.0, mincjhadEtDiff= -1.0, minsjhadEtDiff = -1.0;
-    double minlepetaDiff= -1.0, minbjhadetaDiff= -1.0, minbjlepetaDiff= -1.0, mincjhadetaDiff= -1.0, minsjhadetaDiff = -1.0;
-    double minlepPhiDiff= -1.0, minbjhadPhiDiff= -1.0, minbjlepPhiDiff= -1.0, mincjhadPhiDiff= -1.0, minsjhadPhiDiff = -1.0;
-    double minlepPtRatio= -1.0, minneuPtRatio= -1.0, minbjhadPtRatio= -1.0, minbjlepPtRatio= -1.0, mincjhadPtRatio= -1.0, minsjhadPtRatio = -1.0;
-    double leptop = 10;
-    double hadtop = 10;
-    double neueta = 10;
+    
+    double minlepPt = -1.0;
     float A = -1.0, B = -1.0;
     int ithda = -1;
     int minithda = -1;
     float  minBbyA = -1.0;
     int ithpt = -1;
+
     for (unsigned int i = 0 ; i < kinFit.GetNCombinations() ; i++ ){
       
       leptonAF		= kinFit.GetLepton(i);
@@ -514,7 +503,8 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       }
 
       ithpt = FindBinIndex(bjlepAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-      if( ithpt >= 0){
+      //if( ithpt >= 0){
+      if( ithpt >= 0 && neutrinoAF.E() > fptmin ){
 	hPtBFBjLep[ithpt]->Fill( bjlepBF.Pt() );
 	hPtAFBjLep[ithpt]->Fill( bjlepAF.Pt() );
 	hPtvsRatioPtBjLep[ithpt]->Fill( bjlepBF.Pt() / bjlepAF.Pt() );
@@ -637,7 +627,7 @@ Bool_t PerformKinFit::Process(Long64_t entry)
     //   }
     //   printf("==========Before ==========\n");
     // }
-    std::sort(Chi2ToMass_arr.begin(), Chi2ToMass_arr.end(), comparePair);
+    std::sort(Chi2ToMass_arr.begin(), Chi2ToMass_arr.end(), compareChi2Array);
     // if(Chi2ToMass_arr.size()==5){
     //   printf("==========After ==========\n");
     //   for (auto x : Chi2ToMass_arr){
@@ -658,7 +648,13 @@ Bool_t PerformKinFit::Process(Long64_t entry)
 	
 	hMinChi2->Fill(x.chi2);
 	hMjjkF->Fill(x.mass);
-
+	double ratio_ljet1 = x.cjhadBF.Pt() / x.cjhadAF.Pt() ;
+	double ratio_ljet2 = x.sjhadBF.Pt() / x.sjhadAF.Pt() ;
+	double sigcut = exp( -1.91  - 0.00463*x.cjhadAF.Pt() ) ; 
+	if( (ratio_ljet1 >= (1.0-3.*sigcut) and ratio_ljet1 <= (1.0+3.*sigcut)) and (ratio_ljet2 >= (1.0-3.*sigcut) and ratio_ljet2 <= (1.0+3.*sigcut))){
+	  hMjjkF3s->Fill(x.mass);
+	}
+	
 	hNbCombiARD->Fill(nRdiffPass);
 	// hMindRSigLep->Fill(minRdifflepSignif);
 	// hMindRSigBjHad->Fill(minRdiffbjhadSignif);
@@ -689,7 +685,8 @@ Bool_t PerformKinFit::Process(Long64_t entry)
 	}
 
 	ithpt = FindBinIndex(x.bjlepAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-	if( ithpt >= 0){
+	//if( ithpt >= 0){
+	if( ithpt >= 0 && x.neutrinoAF.E() > fptmin ){
 	  hMinPtBFBjLep[ithpt]->Fill( x.bjlepBF.Pt() );
 	  hMinPtAFBjLep[ithpt]->Fill( x.bjlepAF.Pt() );
 	  hMinPtvsRatioPtBjLep[ithpt]->Fill( x.bjlepBF.Pt() / x.bjlepAF.Pt() );
@@ -788,6 +785,7 @@ void PerformKinFit::SlaveTerminate()
   hMuPt->Write();
   hMjj->Write();
   hMjjkF->Write();
+  hMjjkF3s->Write();
   hChi2->Write();
   hMinChi2->Write();
   h2MinChi2->Write();
@@ -945,47 +943,3 @@ void PerformKinFit::Terminate()
 }
 
 
-      // if ( kinFit.GetChi2(i) < minChi2 and kinFit.GetChi2(i) >= (fchi2cut-20.0)  and kinFit.GetChi2(i) < fchi2cut ){
-	
-      // 	minChi2 = kinFit.GetChi2(i) ;
-      // 	minNDF = kinFit.GetNDF(i) ;
-      // 	// if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2 and minChi2<20)
-      // 	//   minmass = mjjkF;
-      // 	//minRdifflepSignif = Rdifflep/sigmaResoRDLep ;
-      // 	// minRdiffbjhadSignif = Rdiffbjhad/sigmaResoRDBjHad;
-      // 	// minRdiffbjlepSignif = Rdiffbjlep/sigmaResoRDBjLep;
-      // 	// minRdiffcjhadSignif = Rdiffcjhad/sigmaResoRDCjHad;
-      // 	// minRdiffsjhadSignif = Rdiffsjhad/sigmaResoRDSjHad;
-      // 	minRdifflepSignif = Rdifflep ;
-      // 	minRdiffbjhadSignif = Rdiffbjhad;
-      // 	minRdiffbjlepSignif = Rdiffbjlep;
-      // 	minRdiffcjhadSignif = Rdiffcjhad;
-      // 	minRdiffsjhadSignif = Rdiffsjhad;
-	
-      // 	minlepPt = leptonAF.Pt() ;  minneuPt = neutrinoAF.Pt() ;  minbjhadPt = bjhadAF.Pt() ;  minbjlepPt = bjlepAF.Pt() ;  mincjhadPt = cjhadAF.Pt() ;  minsjhadPt = sjhadAF.Pt();
-      // 	minlepPtBF = leptonBF.Pt() ;  minneuPtBF = neutrinoBF.Pt() ;  minbjhadPtBF = bjhadBF.Pt() ;  
-      // 	minbjlepPtBF = bjlepBF.Pt() ;  mincjhadPtBF = cjhadBF.Pt() ;  minsjhadPtBF = sjhadBF.Pt();
-	
-      // 	minlepEtDiff = TMath::Abs(leptonBF.Et() - leptonAF.Et()) ; minbjhadEtDiff = TMath::Abs(bjhadBF.Et() - bjhadAF.Et()) ;
-      // 	minbjlepEtDiff = TMath::Abs(bjlepBF.Et() - bjlepAF.Et()) ; mincjhadEtDiff = TMath::Abs(cjhadBF.Et() - cjhadAF.Et()) ;  
-      // 	minsjhadEtDiff = TMath::Abs(sjhadBF.Et() - sjhadAF.Et()) ;
-	
-      // 	minlepetaDiff = TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) ;  minbjhadetaDiff = TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) ;  
-      // 	minbjlepetaDiff = TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) ;  mincjhadetaDiff = TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta());  
-      // 	minsjhadetaDiff = TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) ;
-	
-      // 	minlepPhiDiff = TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) ; minbjhadPhiDiff = TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) ; 
-      // 	minbjlepPhiDiff = TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) ; mincjhadPhiDiff = TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) ; 
-      // 	minsjhadPhiDiff = TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) ;
-	
-      // 	minlepPtRatio = TMath::Abs(leptonBF.Pt() / leptonAF.Pt()) ;  minbjhadPtRatio = TMath::Abs(bjhadBF.Pt() / bjhadAF.Pt()) ; 
-      // 	minbjlepPtRatio = TMath::Abs(bjlepBF.Pt() / bjlepAF.Pt()) ;  mincjhadPtRatio = TMath::Abs(cjhadBF.Pt() / cjhadAF.Pt()) ; 
-      // 	minsjhadPtRatio = TMath::Abs(sjhadBF.Pt() / sjhadAF.Pt()) ;
-      // 	minneuPtRatio = TMath::Abs(neutrinoBF.Pt() / neutrinoAF.Pt()) ;
-
-      //   leptop = lepTopAF.M() ; 
-      // 	hadtop = hadTopAF.M() ;
-      // 	neueta = neutrinoAF.Eta() ;
-      // 	minithda = FindBinIndex(A,fDAmin,fDAmax,fNDiffAvgBins); 
-      // 	minBbyA = B/A ; 
-      // }
