@@ -9,7 +9,8 @@ So the user requires to perform Kinematic Fitting in a computer equipped with CM
 Installation :
 ======================
 
-git clone https://github.com/indra-ehep/KinFit_Skim.git
+'git clone https://github.com/indra-ehep/KinFit_Skim.git'
+
 Then one needs to change directory to KinFit_Skim/Standalone to run the code..
 
 Execution :
