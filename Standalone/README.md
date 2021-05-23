@@ -37,6 +37,19 @@ If the user is interested to execute Kinematic Fitting in loops, then one can lo
 Body :
 ======================
 
-PerformKinFit.h :
+files.txt:  
+This file contains the list of files to be analyzed. Each item of the list is separated using new lines. One can add '#' sign infront of a files, to skip it in analysis. Should you use the files in xrootd server (such as eosuser.cern.ch or indiacms.res.in) for analysis, then do not forget to initialize your GRID credentials,  
+'voms-proxy-init -voms cms'  
 
+run.C:  
+This a simple root macro that contains
+1) Input arguments for PerformKinFit.   
+2) Reads files.txt to create TChain.  
+3) Then process the first 10000 as set in  
+'chain->Process("PerformKinFit.C++", options.Data(), 10000);'.  
+One can change it to,  
+'chain->Process("PerformKinFit.C++", options.Data());'  
+if wishes to process all data of TChain.
+
+PerformKinFit.C:  
 
