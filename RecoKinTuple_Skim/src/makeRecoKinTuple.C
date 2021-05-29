@@ -1281,7 +1281,9 @@ float makeRecoKinTuple::getBtagSF_1a(string sysType, BTagCalibrationReader reade
 	cout << "Btagging Scale Factors"<<endl;
     }
 
-    for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
+  int xbin,ybin;
+  int maxbinX, maxbinY;
+  for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
 
 	jetPt = tree->jetPt_[*jetInd];
 	jetEta = fabs(tree->jetEta_[*jetInd]);
@@ -1290,22 +1292,30 @@ float makeRecoKinTuple::getBtagSF_1a(string sysType, BTagCalibrationReader reade
 
 	if (jetFlavor == 5){
 	    SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
-	    int xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
-	    int ybin = b_eff->GetYaxis()->FindBin(abs(jetEta));
+	    xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
+	    ybin = b_eff->GetYaxis()->FindBin(abs(jetEta));
+	    maxbinX = b_eff->GetXaxis()->GetLast();
+	    maxbinY = b_eff->GetYaxis()->GetLast();
 	    Eff = b_eff->GetBinContent(xbin,ybin);
 	}
 	else if(jetFlavor == 4){
 	    SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
-	    int xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
-	    int ybin = c_eff->GetYaxis()->FindBin(abs(jetEta));
+	    xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
+	    ybin = c_eff->GetYaxis()->FindBin(abs(jetEta));
+            maxbinX = c_eff->GetXaxis()->GetLast();
+	    maxbinY = c_eff->GetYaxis()->GetLast();
 	    Eff = c_eff->GetBinContent(xbin,ybin);
 	}
 	else {
 	    SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
-	    int xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
-	    int ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
+	    xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
+	    ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
+	    maxbinX = l_eff->GetXaxis()->GetLast();
+	    maxbinY = l_eff->GetYaxis()->GetLast();
 	    Eff = l_eff->GetBinContent(xbin,ybin);
 	}
+
+        if( (xbin==0 or xbin>maxbinX or ybin==0 or ybin>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-7) ) continue;
 
 	if (jetBtag>selector->btag_cut_DeepCSV){
 	    pMC *= Eff;
