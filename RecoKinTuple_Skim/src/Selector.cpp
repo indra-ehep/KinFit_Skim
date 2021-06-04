@@ -16,10 +16,14 @@ Selector::Selector(){
     year = "2016";
 
     // jets
-    jet_Pt_cut = 30; //Default
+    jet_Pt_cut = 30.; //Default
     //jet_Pt_cut = 25;
-    jet_Eta_cut = 2.4;
-
+    jet_Eta_cut = 2.5;
+    
+    //Modified
+    jet_Pt_cut = 0.0; 
+    jet_Eta_cut = 5.0;
+    
     printEvent = -1;
 
     looseJetID = false;

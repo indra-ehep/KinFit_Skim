@@ -8,5 +8,5 @@ s=`echo $1`
 echo s : $s
 
 if [ $# -eq 1 ] ; then
-    root -b -l -q  run.C\(\""$s|chi2cut=20.0|mtop=172.6|sample=TTbarPowheg|year=2016\""\) 
+    root -b -l -q  runProof.C\(\""$s|chi2cut=20.0|mtop=172.6|sample=TTbarPowheg|year=2016\""\) 
 fi

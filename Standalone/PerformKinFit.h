@@ -37,6 +37,7 @@ class  TH2F;
 typedef struct  {
   double chi2, mass, mW, A, B;
   int ndf, nb_iter;
+  //int bjlep_id, bjhad_id, cjhad_id, sjhad_id;
   TLorentzVector leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;  
   TLorentzVector leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;    
 } Chi2Array;
@@ -299,13 +300,33 @@ class PerformKinFit : public TSelector {
    ////////////////////////////////////////////////////////
    TFile            *fFile;
    TProofOutputFile *fProofFile; // For optimized merging of the ntuple
-
+   
    //Declaration of histograms
    ////////////////////////////////////////////////////////
    TH1F           *hMuPt;//!
    TH1F           *hMjj;//!
    TH1F           *hMjjkF;//!
+   TH1F           *hMjjkFsc;//!
    TH1F           *hMjjkF3s;//!
+   TH1F           *hMjjkF_ms;//!
+   TH1F           *hMjjkF_01;//!
+   TH1F           *hMjjkF_02;//!
+   TH1F           *hMjjkF_03;//!
+   TH1F           *hMjjkF_04;//!
+   TH1F           *hMjjkF_05;//!
+   TH1F           *hMjjkF_06;//!
+   TH1F           *hMjjkF_07;//!
+   TH1F           *hMjjkF_08;//!
+   TH1F           *hMjjkF_09;//!
+   TH1F           *hMjjkF_10;//!
+   TH1F           *hMjjkF_11;//!
+   TH1F           *hMjjkF_12;//!
+   TH1F           *hMjjkF_13;//!
+   TH1F           *hMjjkF_14;//!
+   TH1F           *hMjjkF_15;//!
+   TH1F           *hMjjkF_16;//!
+   TH1F           *hMjjkF_17;//!
+   TH1F           *hNlep;//!
    TH1F           *hChi2;//!
    TH1F           *hMinChi2;//!
    TH1F           *h2MinChi2;//!
@@ -407,6 +428,15 @@ class PerformKinFit : public TSelector {
    TH1F           **hMinPtvsRatioPtCjHad;//!
    TH1F           **hMinPtvsRatioPtSjHad;//!
 
+   TH1F           *hPtTopLep;//!
+   TH1F           *hPtTopHad;//!
+   TH2F           *hPtTopHL;//!
+   TH1F           *hAssymPt;//!
+   TH1F           *hNeuEta_Ptlow;//!
+   TH1F           *hNeuEta_Pthigh;//!
+   TH1F           *hMuEta_Ptlow;//!
+   TH1F           *hMuEta_Pthigh;//!
+
    TH1F           *hHadTop;//!
    TH1F           *hLepTop;//!
    TH1F           *hEtaNeu;//!
@@ -416,7 +446,13 @@ class PerformKinFit : public TSelector {
 
    TH1F           **hDiffAvg;//!
    TH1F           **hMinDiffAvg;//!
+   TH1F           *hbtagweight_1a;//
+   
+   //Declaration of output tree
+   ////////////////////////////////////////////////////////
+   TTree          *outputTree;//!
 
+   std::vector<bool>	 _selStep;
    ////////////////////////////////////////////////////////
 
    Long64_t        fProcessed;//!
@@ -424,125 +460,142 @@ class PerformKinFit : public TSelector {
 
    //Declaration of leaves types
    ////////////////////////////////////////////////////////
-  Int_t			 _run = 0 ;
-  Long64_t		 _event = 0 ;
-  Int_t			 _lumis = 0 ;
-  Bool_t		 _isData = 0 ;
+  Int_t		_run = 0 ;
+  Long64_t	_event = 0 ;
+  Int_t		_lumis = 0 ;
+  Bool_t	_isData = 0 ;
 
-  Float_t		 _PUweight = 0 ;
-  Float_t		 _PUweight_Up = 0 ;
-  Float_t		 _PUweight_Do = 0 ;
+  Float_t	_PUweight = 0 ;
+  Float_t	_PUweight_Up = 0 ;
+  Float_t	_PUweight_Do = 0 ;
 	
   Float_t		 _q2weight_Up = 0 ;
   Float_t		 _q2weight_Do = 0 ;
   Float_t		 _q2weight_nominal = 0 ;
-  std::vector<float>	 *_genScaleSystWeights = 0 ;
+  std::vector<float>	*_genScaleSystWeights = 0 ;
 
   Float_t		 _pdfWeight = 0 ;
   Float_t		 _pdfuncer = 0 ;
   Float_t		 _pdfweight_Up = 0 ;
   Float_t		 _pdfweight_Do = 0 ;
-  std::vector<float>	 *_pdfSystWeight = 0 ;
+  std::vector<float>	*_pdfSystWeight = 0 ;
 
-  Float_t		 _ISRweight_Up = 0 ;
-  Float_t		 _ISRweight_Do = 0 ;
+  Float_t	_ISRweight_Up = 0 ;
+  Float_t	_ISRweight_Do = 0 ;
 
-  Float_t		 _FSRweight_Up = 0 ;
-  Float_t		 _FSRweight_Do = 0 ;
+  Float_t	_FSRweight_Up = 0 ;
+  Float_t	_FSRweight_Do = 0 ;
 
-  float			 _prefireSF = 0 ;
-  float			 _prefireSF_Up = 0 ;
-  float			 _prefireSF_Do = 0 ;
+  float	_prefireSF = 0 ;
+  float	_prefireSF_Up = 0 ;
+  float	_prefireSF_Do = 0 ;
 
-  float			 _btagWeight_1a = 0 ;
-  float			 _btagWeight_1a_b_Up = 0 ;
-  float			 _btagWeight_1a_b_Do = 0 ;
-  float			 _btagWeight_1a_l_Up = 0 ;
-  float			 _btagWeight_1a_l_Do = 0 ;
+  float	_btagWeight_1a = 0 ;
+  float	_btagWeight_1a_b_Up = 0 ;
+  float	_btagWeight_1a_b_Do = 0 ;
+  float	_btagWeight_1a_l_Up = 0 ;
+  float	_btagWeight_1a_l_Do = 0 ;
 
-  std::vector<float>	 *_btagWeight = 0 ;
-  std::vector<float>	 *_btagWeight_b_Up = 0 ;
-  std::vector<float>	 *_btagWeight_b_Do = 0 ;
-  std::vector<float>	 *_btagWeight_l_Up = 0 ;
-  std::vector<float>	 *_btagWeight_l_Do = 0 ;
+  std::vector<float>	*_btagWeight = 0 ;
+  std::vector<float>	*_btagWeight_b_Up = 0 ;
+  std::vector<float>	*_btagWeight_b_Do = 0 ;
+  std::vector<float>	*_btagWeight_l_Up = 0 ;
+  std::vector<float>	*_btagWeight_l_Do = 0 ;
 
-  std::vector<float>	 *_btagSF = 0 ;
-  std::vector<float>	 *_btagSF_b_Up = 0 ;
-  std::vector<float>	 *_btagSF_b_Do = 0 ;
-  std::vector<float>	 *_btagSF_l_Up = 0 ;
-  std::vector<float>	 *_btagSF_l_Do = 0 ;
+  std::vector<float>	*_btagSF = 0 ;
+  std::vector<float>	*_btagSF_b_Up = 0 ;
+  std::vector<float>	*_btagSF_b_Do = 0 ;
+  std::vector<float>	*_btagSF_l_Up = 0 ;
+  std::vector<float>	*_btagSF_l_Do = 0 ;
 
-  Float_t		 _muEffWeight = 0 ;
-  Float_t		 _muEffWeight_Up = 0 ;
-  Float_t		 _muEffWeight_Do = 0 ;
+  Float_t	_muEffWeight = 0 ;
+  Float_t	_muEffWeight_Up = 0 ;
+  Float_t	_muEffWeight_Do = 0 ;
 
-  Float_t		 _muEffWeight_IdIso = 0 ;
-  Float_t		 _muEffWeight_IdIso_Up = 0 ;
-  Float_t		 _muEffWeight_IdIso_Do = 0 ;
+  Float_t	_muEffWeight_IdIso = 0 ;
+  Float_t	_muEffWeight_IdIso_Up = 0 ;
+  Float_t	_muEffWeight_IdIso_Do = 0 ;
 
-  Float_t		 _muEffWeight_Trig = 0 ;
-  Float_t		 _muEffWeight_Trig_Up = 0 ;
-  Float_t		 _muEffWeight_Trig_Do = 0 ;
+  Float_t	_muEffWeight_Trig = 0 ;
+  Float_t	_muEffWeight_Trig_Up = 0 ;
+  Float_t	_muEffWeight_Trig_Do = 0 ;
 
-  Float_t		 _eleEffWeight = 0 ;
-  Float_t		 _eleEffWeight_Up = 0 ;
-  Float_t		 _eleEffWeight_Do = 0 ;
+  Float_t	_eleEffWeight = 0 ;
+  Float_t	_eleEffWeight_Up = 0 ;
+  Float_t	_eleEffWeight_Do = 0 ;
 
-  Float_t		 _eleEffWeight_IdReco = 0 ;
-  Float_t		 _eleEffWeight_IdReco_Up = 0 ;
-  Float_t		 _eleEffWeight_IdReco_Do = 0 ;
+  Float_t	_eleEffWeight_IdReco = 0 ;
+  Float_t	_eleEffWeight_IdReco_Up = 0 ;
+  Float_t	_eleEffWeight_IdReco_Do = 0 ;
 
-  Float_t		 _eleEffWeight_Trig = 0 ;
-  Float_t		 _eleEffWeight_Trig_Up = 0 ;
-  Float_t		 _eleEffWeight_Trig_Do = 0 ;
+  Float_t	_eleEffWeight_Trig = 0 ;
+  Float_t	_eleEffWeight_Trig_Up = 0 ;
+  Float_t	_eleEffWeight_Trig_Do = 0 ;
 
-  Float_t		 _evtWeight = 0 ;
-  Float_t		 _lumiWeight = 0 ;
-  Int_t			 _nVtx = 0 ;
-  Int_t			 _nGoodVtx = 0 ;
+  Float_t	_evtWeight = 0 ;
+  Float_t	_lumiWeight = 0 ;
+  Int_t		_nVtx = 0 ;
+  Int_t		_nGoodVtx = 0 ;
 
-  Float_t		 _genMET = 0 ;
+  Float_t	_genMET = 0 ;
         
-  Float_t		 _pfMET = 0 ;
-  Float_t		 _pfMETPhi = 0 ;
-  Float_t		 _nu_px = 0 ;
-  Float_t		 _nu_py = 0 ;
-  Float_t		 _nu_pz = 0 ;
-  Float_t		 _nu_pz_other = 0 ;
-  Float_t		 _WtransMass = 0 ;
+  Float_t	_pfMET = 0 ;
+  Float_t	_pfMETPhi = 0 ;
+  Float_t	_nu_px = 0 ;
+  Float_t	_nu_py = 0 ;
+  Float_t	_nu_pz = 0 ;
+  Float_t	_nu_pz_other = 0 ;
+  Float_t	_WtransMass = 0 ;
   
-  Float_t		 _chi2 = 0 ;
-  int			 _NDF = 0 ;
-  int			 _Nbiter = 0 ;
-  Float_t		 _M_jj = 0 ;
-  Float_t		 _M_jjkF = 0 ;
-  int			 _bjlep_id = 0 ;
-  int			 _bjhad_id = 0 ;
-  int			 _cjhad_id = 0 ;
-  int			 _sjhad_id = 0 ;
-  Float_t		 _lepPt = 0 ;
-  Float_t		 _lepEta = 0 ;
-  Float_t		 _lepPhi = 0 ;
-  Float_t		 _lepEnergy = 0 ;
-  Float_t		 _metPx = 0 ;
-  Float_t		 _metPy = 0 ;
-  Float_t		 _metPz = 0 ;
-  Float_t		 _jetBlepPt = 0 ;
-  Float_t		 _jetBlepEta = 0 ;
-  Float_t		 _jetBlepPhi = 0 ;
-  Float_t		 _jetBlepEnergy = 0 ;
-  Float_t		 _jetBhadPt = 0 ;
-  Float_t		 _jetBhadEta = 0 ;
-  Float_t		 _jetBhadPhi = 0 ;
-  Float_t		 _jetBhadEnergy = 0 ;
-  Float_t		 _jetChadPt = 0 ;
-  Float_t		 _jetChadEta = 0 ;
-  Float_t		 _jetChadPhi = 0 ;
-  Float_t		 _jetChadEnergy = 0 ;
-  Float_t		 _jetShadPt = 0 ;
-  Float_t		 _jetShadEta = 0 ;
-  Float_t		 _jetShadPhi = 0 ;
-  Float_t		 _jetShadEnergy = 0 ;
+  int		_kFType = 0;
+  Float_t	_chi2 = 0 ;
+  int		_NDF = 0 ;
+  int		_Nbiter = 0 ;
+  Float_t	_M_jj = 0 ;
+  Float_t	_M_jjkF = 0 ;
+  int		_bjlep_id = 0 ;
+  int		_bjhad_id = 0 ;
+  int		_cjhad_id = 0 ;
+  int		_sjhad_id = 0 ;
+  Float_t	_lepPt = 0 ;
+  Float_t	_lepEta = 0 ;
+  Float_t	_lepPhi = 0 ;
+  Float_t	_lepEnergy = 0 ;
+  Float_t	_metPx = 0 ;
+  Float_t	_metPy = 0 ;
+  Float_t	_metPz = 0 ;
+  Float_t	_jetBlepPt = 0 ;
+  Float_t	_jetBlepEta = 0 ;
+  Float_t	_jetBlepPhi = 0 ;
+  Float_t	_jetBlepEnergy = 0 ;
+  Float_t	_jetBhadPt = 0 ;
+  Float_t	_jetBhadEta = 0 ;
+  Float_t	_jetBhadPhi = 0 ;
+  Float_t	_jetBhadEnergy = 0 ;
+  Float_t	_jetChadPt = 0 ;
+  Float_t	_jetChadEta = 0 ;
+  Float_t	_jetChadPhi = 0 ;
+  Float_t	_jetChadEnergy = 0 ;
+  Float_t	_jetShadPt = 0 ;
+  Float_t	_jetShadEta = 0 ;
+  Float_t	_jetShadPhi = 0 ;
+  Float_t	_jetShadEnergy = 0 ;
+  Float_t	_jetBlepPtUM = 0 ;
+  Float_t	_jetBlepEtaUM = 0 ;
+  Float_t	_jetBlepPhiUM = 0 ;
+  Float_t	_jetBlepEnergyUM = 0 ;
+  Float_t	_jetBhadPtUM = 0 ;
+  Float_t	_jetBhadEtaUM = 0 ;
+  Float_t	_jetBhadPhiUM = 0 ;
+  Float_t	_jetBhadEnergyUM = 0 ;
+  Float_t	_jetChadPtUM = 0 ;
+  Float_t	_jetChadEtaUM = 0 ;
+  Float_t	_jetChadPhiUM = 0 ;
+  Float_t	_jetChadEnergyUM = 0 ;
+  Float_t	_jetShadPtUM = 0 ;
+  Float_t	_jetShadEtaUM = 0 ;
+  Float_t	_jetShadPhiUM = 0 ;
+  Float_t	_jetShadEnergyUM = 0 ;
   
   Int_t			 _nEle = 0 ;
   Int_t			 _nEleLoose = 0 ;
@@ -698,6 +751,7 @@ class PerformKinFit : public TSelector {
    TBranch	*br_nu_pz_other			= 0 ;
    TBranch	*br_WtransMass			= 0 ;
   
+   //TBranch	*br_kFType			= 0 ;
    TBranch	*br_chi2			= 0 ;
    TBranch	*br_NDF				= 0 ;
    TBranch	*br_Nbiter			= 0 ;
@@ -730,6 +784,22 @@ class PerformKinFit : public TSelector {
    TBranch	*br_jetShadEta			= 0 ;
    TBranch	*br_jetShadPhi			= 0 ;
    TBranch	*br_jetShadEnergy		= 0 ;
+   TBranch	*br_jetBlepPtUM			= 0 ;
+   TBranch	*br_jetBlepEtaUM		= 0 ;
+   TBranch	*br_jetBlepPhiUM		= 0 ;
+   TBranch	*br_jetBlepEnergyUM		= 0 ;
+   TBranch	*br_jetBhadPtUM			= 0 ;
+   TBranch	*br_jetBhadEtaUM		= 0 ;
+   TBranch	*br_jetBhadPhiUM		= 0 ;
+   TBranch	*br_jetBhadEnergyUM		= 0 ;
+   TBranch	*br_jetChadPtUM			= 0 ;
+   TBranch	*br_jetChadEtaUM		= 0 ;
+   TBranch	*br_jetChadPhiUM		= 0 ;
+   TBranch	*br_jetChadEnergyUM		= 0 ;
+   TBranch	*br_jetShadPtUM			= 0 ;
+   TBranch	*br_jetShadEtaUM		= 0 ;
+   TBranch	*br_jetShadPhiUM		= 0 ;
+   TBranch	*br_jetShadEnergyUM		= 0 ;
    
    
    TBranch   *br_nEle				= 0 ;
@@ -828,11 +898,12 @@ class PerformKinFit : public TSelector {
    PerformKinFit(TTree *tree=0);
    virtual ~PerformKinFit() ;
    void    Reset();
-
+   
    int     Version() const {return 1;}
    void    Begin(TTree *tree);
    void    SlaveBegin(TTree *tree);
    void    Init(TTree *tree);
+   void    InitOutBranches();
    Bool_t  Notify();
    Bool_t  Process(Long64_t entry);
    void    SetOption(const char *option) { fOption = option; }
@@ -841,7 +912,7 @@ class PerformKinFit : public TSelector {
    TList  *GetOutputList() const { return fOutput; }
    void    SlaveTerminate();
    void    Terminate();
-
+   
    void    GetArguments();
    //Int_t   CreateHistoArrays();
    Int_t   FindBinIndex(float, float *, float *, int);
@@ -956,12 +1027,33 @@ void PerformKinFit::Reset()
   
   fFile	     = 0;
   fProofFile = 0;
-
+  outputTree = 0;  
+  
   hMuPt		 = 0;
   hMjj		 = 0;
   hMjjkF	 = 0;
+  hMjjkFsc	 = 0;
   hMjjkF3s	 = 0;
+  hNlep		 = 0;
   hChi2		 = 0;
+  hMjjkF_ms	 = 0;
+  hMjjkF_01	 = 0;
+  hMjjkF_02	 = 0;
+  hMjjkF_03	 = 0;
+  hMjjkF_04	 = 0;
+  hMjjkF_05	 = 0;
+  hMjjkF_06	 = 0;
+  hMjjkF_07	 = 0;
+  hMjjkF_08	 = 0;
+  hMjjkF_09	 = 0;
+  hMjjkF_10	 = 0;
+  hMjjkF_11	 = 0;
+  hMjjkF_12	 = 0;
+  hMjjkF_13	 = 0;
+  hMjjkF_14	 = 0;
+  hMjjkF_15	 = 0;
+  hMjjkF_16	 = 0;
+  hMjjkF_17	 = 0;
   hMinChi2	 = 0;
   h2MinChi2	 = 0;
   h3MinChi2	 = 0;
@@ -1060,13 +1152,23 @@ void PerformKinFit::Reset()
   hMinPtAFBjLep = 0;
   hMinPtAFCjHad = 0;
   hMinPtAFSjHad = 0;
-
+  
+  hPtTopLep	 = 0;
+  hPtTopHad	 = 0;
+  hPtTopHL	 = 0;
+  hAssymPt	 = 0;
+  hNeuEta_Ptlow	 = 0;
+  hNeuEta_Pthigh = 0;
+  hMuEta_Ptlow	 = 0;
+  hMuEta_Pthigh	 = 0;
+  
   hHadTop = 0;
   hLepTop = 0;
   hEtaNeu = 0;
   
   hIsNeuComplex = 0;
   hMW		= 0;
+  hbtagweight_1a = 0;
 
   fNPtBins	= 7;
   fPtmin	= 0 ;		//30
@@ -1078,6 +1180,7 @@ void PerformKinFit::Reset()
   hDiffAvg    = 0;
   hMinDiffAvg = 0;
 
+  _selStep.clear();
   jetVectors.clear();
   jetBtagVectors.clear();
 
@@ -1278,6 +1381,225 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("passAll_Mu"		, &_passAll_Mu			, &br_passAll_Mu		);
 
 }
+//_____________________________________________________________________
+
+void PerformKinFit::InitOutBranches(){
+  
+    outputTree->Branch("run"			, &_run				);
+    outputTree->Branch("event"			, &_event			);    
+    outputTree->Branch("lumis"			, &_lumis			);
+    outputTree->Branch("isData"			, &_isData			);
+    
+    outputTree->Branch("PUweight"		, &_PUweight			);
+    //if (!isSystematicRun){
+	outputTree->Branch("PUweight_Up"	, &_PUweight_Up			);
+	outputTree->Branch("PUweight_Do"	, &_PUweight_Do			);
+    //}
+
+    //if (!isSystematicRun){
+	outputTree->Branch("q2weight_Up"	, &_q2weight_Up			);
+	outputTree->Branch("q2weight_Do"	, &_q2weight_Do			);
+	outputTree->Branch("q2weight_nominal"	, &_q2weight_nominal		);
+	outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		);
+
+	outputTree->Branch("pdfWeight"		, &_pdfWeight			);
+	outputTree->Branch("pdfuncer"		, &_pdfuncer			);
+	outputTree->Branch("pdfweight_Up"	, &_pdfweight_Up		);
+	outputTree->Branch("pdfweight_Do"	, &_pdfweight_Do		);
+	outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		);
+
+	outputTree->Branch("ISRweight_Up"	, &_ISRweight_Up		);
+	outputTree->Branch("ISRweight_Do"	, &_ISRweight_Do		);
+
+	outputTree->Branch("FSRweight_Up"	, &_FSRweight_Up		);
+	outputTree->Branch("FSRweight_Do"	, &_FSRweight_Do		);
+     //}
+
+    /* outputTree->Branch("prefireSF"		, &_prefireSF			); */
+    /* if (!isSystematicRun){ */
+    /* 	outputTree->Branch("prefireSF_Up"	, &_prefireSF_Up		); */
+    /* 	outputTree->Branch("prefireSF_Do"	, &_prefireSF_Do		); */
+    /* } */
+
+    outputTree->Branch("btagWeight"		, &_btagWeight			);
+    outputTree->Branch("btagWeight_1a"		, &_btagWeight_1a		);
+    //if (!isSystematicRun){
+	outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		);
+	outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		);
+	outputTree->Branch("btagWeight_l_Up"	, &_btagWeight_l_Up		);
+	outputTree->Branch("btagWeight_l_Do"	, &_btagWeight_l_Do		);
+	outputTree->Branch("btagWeight_1a_b_Up"	, &_btagWeight_1a_b_Up		);
+	outputTree->Branch("btagWeight_1a_b_Do"	, &_btagWeight_1a_b_Do		);
+	outputTree->Branch("btagWeight_1a_l_Up"	, &_btagWeight_1a_l_Up		);
+	outputTree->Branch("btagWeight_1a_l_Do"	, &_btagWeight_1a_l_Do		);
+    //}
+    outputTree->Branch("btagSF"			, &_btagSF			);
+    //if (!isSystematicRun){
+      outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			);
+      outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			);
+      outputTree->Branch("btagSF_l_Up"		, &_btagSF_l_Up			);
+      outputTree->Branch("btagSF_l_Do"		, &_btagSF_l_Do			);
+    //}
+    outputTree->Branch("muEffWeight"		, &_muEffWeight			);
+    outputTree->Branch("muEffWeight_IdIso"	, &_muEffWeight_IdIso		);
+    outputTree->Branch("muEffWeight_Trig"	, &_muEffWeight_Trig		);
+    //if (!isSystematicRun){
+	outputTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		);
+	outputTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		);
+
+	outputTree->Branch("muEffWeight_IdIso_Up", &_muEffWeight_IdIso_Up	);
+	outputTree->Branch("muEffWeight_IdIso_Do", &_muEffWeight_IdIso_Do	);
+
+	outputTree->Branch("muEffWeight_Trig_Up", &_muEffWeight_Trig_Up		);
+	outputTree->Branch("muEffWeight_Trig_Do", &_muEffWeight_Trig_Do		);
+    //}
+    outputTree->Branch("eleEffWeight"		, &_eleEffWeight		);
+    outputTree->Branch("eleEffWeight_IdReco"	, &_eleEffWeight_IdReco		);
+    outputTree->Branch("eleEffWeight_Trig"	, &_eleEffWeight_Trig		);
+    //if (!isSystematicRun){
+	outputTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		);
+	outputTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		);
+
+	outputTree->Branch("eleEffWeight_IdReco_Up", &_eleEffWeight_IdReco_Up	);
+	outputTree->Branch("eleEffWeight_IdReco_Do", &_eleEffWeight_IdReco_Do	);
+
+	outputTree->Branch("eleEffWeight_Trig_Up", &_eleEffWeight_Trig_Up	);
+	outputTree->Branch("eleEffWeight_Trig_Do", &_eleEffWeight_Trig_Do	);
+    //}
+
+    outputTree->Branch("evtWeight"		, &_evtWeight			);      
+    outputTree->Branch("lumiWeight"		, &_lumiWeight			);      
+    outputTree->Branch("nVtx"			, &_nVtx			); 
+    outputTree->Branch("nGoodVtx"		, &_nGoodVtx			); 
+    //if (!isSystematicRun){
+	outputTree->Branch("genMET"		, &_genMET			); 
+    //}
+    outputTree->Branch("pfMET"			, &_pfMET			);
+    outputTree->Branch("pfMETPhi"		, &_pfMETPhi			); 
+    outputTree->Branch("nu_px"			, &_nu_px			);
+    outputTree->Branch("nu_py"			, &_nu_py			);
+    outputTree->Branch("nu_pz"			, &_nu_pz			);
+    outputTree->Branch("nu_pz_other"		, &_nu_pz_other			);
+    outputTree->Branch("WtransMass"		, &_WtransMass			);
+
+    /* outputTree->Branch("hasConv"		, &_hasConv			); */
+    /* outputTree->Branch("hasRDPass"	       	, &_hasRDPass			); */
+    /* outputTree->Branch("ltype"		        , &_ltype			); */
+    /* outputTree->Branch("ltypekF"       	        , &_ltypekF			); */
+    outputTree->Branch("kFType"			, &_kFType			);
+    outputTree->Branch("chi2"			, &_chi2			);
+    outputTree->Branch("NDF"			, &_NDF				);
+    outputTree->Branch("Nbiter"			, &_Nbiter			);
+    outputTree->Branch("M_jj"			, &_M_jj			);
+    outputTree->Branch("M_jjkF"			, &_M_jjkF			);
+    /* outputTree->Branch("bjlep_id"		, &_bjlep_id			); */
+    /* outputTree->Branch("bjhad_id"		, &_bjhad_id			); */
+    /* outputTree->Branch("cjhad_id"		, &_cjhad_id			); */
+    /* outputTree->Branch("sjhad_id"		, &_sjhad_id			); */
+    outputTree->Branch("lepPt"			, &_lepPt			);
+    outputTree->Branch("lepEta"			, &_lepEta			);
+    outputTree->Branch("lepPhi"			, &_lepPhi			);
+    outputTree->Branch("lepEnergy"		, &_lepEnergy			);
+    outputTree->Branch("metPx"			, &_metPx			);
+    outputTree->Branch("metPy"			, &_metPy			);
+    outputTree->Branch("metPz"			, &_metPz			);
+    outputTree->Branch("jetBlepPt"		, &_jetBlepPt			);
+    outputTree->Branch("jetBlepEta"		, &_jetBlepEta			);
+    outputTree->Branch("jetBlepPhi"		, &_jetBlepPhi			);
+    outputTree->Branch("jetBlepEnergy"		, &_jetBlepEnergy		);
+    outputTree->Branch("jetBhadPt"		, &_jetBhadPt			);
+    outputTree->Branch("jetBhadEta"		, &_jetBhadEta			);
+    outputTree->Branch("jetBhadPhi"		, &_jetBhadPhi			);
+    outputTree->Branch("jetBhadEnergy"		, &_jetBhadEnergy		);
+    outputTree->Branch("jetChadPt"		, &_jetChadPt			);
+    outputTree->Branch("jetChadEta"		, &_jetChadEta			);
+    outputTree->Branch("jetChadPhi"		, &_jetChadPhi			);
+    outputTree->Branch("jetChadEnergy"		, &_jetChadEnergy		);
+    outputTree->Branch("jetShadPt"		, &_jetShadPt			);
+    outputTree->Branch("jetShadEta"		, &_jetShadEta			);
+    outputTree->Branch("jetShadPhi"		, &_jetShadPhi			);
+    outputTree->Branch("jetShadEnergy"		, &_jetShadEnergy		);
+    outputTree->Branch("jetBlepPtUM"		, &_jetBlepPtUM			);
+    outputTree->Branch("jetBlepEtaUM"		, &_jetBlepEtaUM	       	);
+    outputTree->Branch("jetBlepPhiUM"		, &_jetBlepPhiUM       		);
+    outputTree->Branch("jetBlepEnergyUM"	, &_jetBlepEnergyUM		);
+    outputTree->Branch("jetBhadPtUM"		, &_jetBhadPtUM			);
+    outputTree->Branch("jetBhadEtaUM"		, &_jetBhadEtaUM       		);
+    outputTree->Branch("jetBhadPhiUM"		, &_jetBhadPhiUM       		);
+    outputTree->Branch("jetBhadEnergyUM"	, &_jetBhadEnergyUM		);
+    outputTree->Branch("jetChadPtUM"		, &_jetChadPtUM			);
+    outputTree->Branch("jetChadEtaUM"		, &_jetChadEtaUM       		);
+    outputTree->Branch("jetChadPhiUM"		, &_jetChadPhiUM       		);
+    outputTree->Branch("jetChadEnergyUM"	, &_jetChadEnergyUM		);
+    outputTree->Branch("jetShadPtUM"		, &_jetShadPtUM			);
+    outputTree->Branch("jetShadEtaUM"		, &_jetShadEtaUM       		);
+    outputTree->Branch("jetShadPhiUM"		, &_jetShadPhiUM       		);
+    outputTree->Branch("jetShadEnergyUM"	, &_jetShadEnergyUM		);
+
+    outputTree->Branch("nEle"			, &_nEle			); 
+    outputTree->Branch("nEleLoose"		, &_nEleLoose			); 
+    outputTree->Branch("elePt"			, &_elePt			);
+    outputTree->Branch("elePhi"			, &_elePhi			); 
+    outputTree->Branch("eleSCEta"		, &_eleSCEta			); 
+    outputTree->Branch("elePFRelIso"		, &_elePFRelIso			); 
+
+    outputTree->Branch("nMu"			, &_nMu				); 
+    outputTree->Branch("nMuLoose"		, &_nMuLoose			); 
+    outputTree->Branch("muPt"			, &_muPt			); 
+    outputTree->Branch("muEta"			, &_muEta			);
+    outputTree->Branch("muPhi"			, &_muPhi			);
+    outputTree->Branch("muPFRelIso"		, &_muPFRelIso			);
+    
+    /* outputTree->Branch("nJet"			, &_nJet			);  */
+    /* outputTree->Branch("nBJet"			, &_nBJet			);  */
+    /* outputTree->Branch("jetPt"			, &_jetPt			); */
+    /* outputTree->Branch("jetEta"			, &_jetEta			);  */
+    /* outputTree->Branch("jetPhi"			, &_jetPhi			);  */
+    /* outputTree->Branch("jetMass"		, &_jetMass			); */
+
+    /* outputTree->Branch("nfwdJet"		, &_nfwdJet			); */
+    /* outputTree->Branch("fwdJetPt"		, &_fwdJetPt			); */
+    /* outputTree->Branch("fwdJetEta"		, &_fwdJetEta			); */
+    /* outputTree->Branch("fwdJetPhi"		, &_fwdJetPhi			); */
+    /* outputTree->Branch("fwdJetMass"		, &_fwdJetMass			); */
+    /* //if (!isSystematicRun){ */
+    /* 	/\* outputTree->Branch("jetCMVA"		, &_jetCMVA			); *\/ */
+    /* 	/\* outputTree->Branch("jetCSVV2"	, &_jetCSVV2			); *\/ */
+    /* 	outputTree->Branch("jetDeepB"		, &_jetDeepB			); */
+    /* 	outputTree->Branch("jetDeepC"		, &_jetDeepC			); */
+    /* 	outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		); */
+    /* //} */
+	
+    /* //if (!tree->isData_ && !isSystematicRun){ */
+    /* 	outputTree->Branch("nGenPart"		, &_nGenPart			);  */
+    /* 	outputTree->Branch("genPt"		, &_genPt			); */
+    /* 	outputTree->Branch("genEta"		, &_genEta			);  */
+    /* 	outputTree->Branch("genPhi"		, &_genPhi			);  */
+    /* 	outputTree->Branch("genMass"		, &_genMass			);  */
+    /* 	outputTree->Branch("genStatus"		, &_genStatus			); */
+    /* 	outputTree->Branch("genStatusFlag"	, &_genStatusFlag		); */
+    /* 	outputTree->Branch("genPDGID"		, &_genPDGID			);  */
+    /* 	outputTree->Branch("genMomIdx"		, &_genMomIdx			); */
+
+    /* 	outputTree->Branch("nGenJet"			, &_nGenJet			);  */
+    /* 	outputTree->Branch("genJetPt"			, &_genJetPt			); */
+    /* 	outputTree->Branch("genJetEta"			, &_genJetEta			);  */
+    /* 	outputTree->Branch("genJetPhi"			, &_genJetPhi			);  */
+    /* 	outputTree->Branch("genJetMass"			, &_genJetMass			);  */
+    /* 	outputTree->Branch("genJetPartonFlavour"	, &_genJetPartonFlavour		);  */
+    /* 	outputTree->Branch("genJetHadronFlavour"	, &_genJetHadronFlavour		);  */
+    /* //} */
+	
+    outputTree->Branch("M3"				, &_M3				); 
+    outputTree->Branch("HT"				, &_HT				); 
+    
+    outputTree->Branch("passPresel_Ele"			, &_passPresel_Ele		); 
+    outputTree->Branch("passPresel_Mu"			, &_passPresel_Mu		);
+    outputTree->Branch("passAll_Ele"			, &_passAll_Ele			); 
+    outputTree->Branch("passAll_Mu"			, &_passAll_Mu			);
+    outputTree->Branch("selStep"			, &_selStep		);
+}
+
 
 //_____________________________________________________________________
 Bool_t PerformKinFit::Notify()
@@ -2016,9 +2338,15 @@ int KinFit::elecResolution(double et, double eta, double& resEt, double& resEta,
 int KinFit::metResolution(double et, double& resEt, double& resEta, double& resPhi)
 {
   
+  //summer 2011
+  /* resEt   = et * TMath::Sqrt( TMath::Power(0.0351,2) + TMath::Power(0/TMath::Sqrt(et),2) + TMath::Power(20.288/et,2) ) ; */
+  /* resEta  = TMath::Sqrt( TMath::Power(0,2) + TMath::Power(0/TMath::Sqrt(et),2) + TMath::Power(0/et,2) ) ; */
+  /* resPhi  = TMath::Sqrt( TMath::Power(0,2) + TMath::Power(1.1664/TMath::Sqrt(et),2) + TMath::Power(3.579/et,2)) ; */
+
+  //fall 2011
   resEt   = et * TMath::Sqrt( TMath::Power(0.0337,2) + TMath::Power(0.888/TMath::Sqrt(et),2) + TMath::Power(19.6/et,2) ) ;
-  resEta  = TMath::Sqrt( TMath::Power(0,2) + TMath::Power(0/TMath::Sqrt(et),2) + TMath::Power(0/et,2) ) ; 
-  resPhi  = TMath::Sqrt( TMath::Power(1.28e-08,2) + TMath::Power(1.45/TMath::Sqrt(et),2) + TMath::Power(1.03/et,2) ); 
+  resEta  = TMath::Sqrt( TMath::Power(0,2) + TMath::Power(0/TMath::Sqrt(et),2) + TMath::Power(0/et,2) ) ;
+  resPhi  = TMath::Sqrt( TMath::Power(1.28e-08,2) + TMath::Power(1.45/TMath::Sqrt(et),2) + TMath::Power(1.03/et,2) );
   
   return true;
 }
@@ -2218,7 +2546,10 @@ bool KinFit::Fit(){
 	    /* mn(0,0)	= 9999; // et */
 	    /* mn(1,1)	= 9999; // eta */
 	    /* mn(2,2)	= TMath::Power(0.54, 2); // phi */
-	    
+	    /* cout<<"Before fit====="<<endl; */
+	    /* mn.Print(); */
+	    /* cout<<"Before fit====="<<endl; */
+
 	    resneuEta	= resEta ; 
 	    resneuPhi	= resPhi ; 
 	    
@@ -2326,7 +2657,12 @@ bool KinFit::Fit(){
 	    //print(fitter);
 	    fitter->fit();
 	    //print(fitter);
-	    
+
+	    /* cout<<"====== After fit"<<endl; */
+	    /* mn.Print(); */
+	    /* cout<<"====== After fit"<<endl; */
+	    /* cout<<endl; */
+
 	    /* if(fitter->getStatus()==0 and fitter->getS() < Chi2){ */
 	    /*   Chi2	 = fitter->getS() ; */
 	    /*   NDF	 = fitter->getNDF();  */

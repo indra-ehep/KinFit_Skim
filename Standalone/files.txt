@@ -1,2 +1,1 @@
-# /Data/root_files/Local_RecoKinTuple/2016/TTbarPowheg_Semilept_RecoKinTuple_Skim_1of21.root
-root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/RecoKinTuple_Skim_iter1/2016/TTbarPowheg_Semilept_RecoKinTuple_Skim_2of21.root
+/Data/root_files/Local_RecoKinTuple/2016/TTbarPowheg_Semilept_RecoKinTuple_Skim_1of21.root
