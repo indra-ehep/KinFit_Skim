@@ -490,8 +490,8 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   
   for(Long64_t entry=entryStart; entry<entryStop; entry++){
 
-    if(entry%100 == 0)
-      cout<<"Processing event : " << entry <<" of total " << entryStop  << endl;
+    //if(entry%100 == 0)
+    //cout<<"Processing event : " << entry <<" of total " << entryStop  << endl;
 
     //if(entry >= 1e4){break;}
 
@@ -557,7 +557,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
 	_PUweight_Do = PUweighterDown->getWeight(tree->nPUTrue_);
 	
 	_btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
-	_btagWeight_1a_corr = getBtagSF_1a_corr("central", reader, tree->event_==eventNum);
+	//_btagWeight_1a_corr = getBtagSF_1a_corr("central", reader, tree->event_==eventNum);
 	_btagWeight_1a_b_Up = getBtagSF_1a("b_up",    reader);
 	_btagWeight_1a_b_Do = getBtagSF_1a("b_down",  reader);
 	_btagWeight_1a_l_Up = getBtagSF_1a("l_up",    reader);

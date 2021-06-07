@@ -118,7 +118,7 @@ class makeRecoKinTuple {
   float			 _prefireSF_Do;
 
   float			 _btagWeight_1a;
-  float			 _btagWeight_1a_corr;
+  //float			 _btagWeight_1a_corr;
   float			 _btagWeight_1a_b_Up;
   float			 _btagWeight_1a_b_Do;
   float			 _btagWeight_1a_l_Up;
@@ -394,7 +394,7 @@ void makeRecoKinTuple::InitBranches(){
     }
     outputTree->Branch("btagWeight"		, &_btagWeight			);
     outputTree->Branch("btagWeight_1a"		, &_btagWeight_1a		);
-    outputTree->Branch("btagWeight_1a_corr"    	, &_btagWeight_1a_corr		);
+    //outputTree->Branch("btagWeight_1a_corr"    	, &_btagWeight_1a_corr		);
     if (!isSystematicRun){
 	outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		);
 	outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		);
@@ -588,7 +588,7 @@ void makeRecoKinTuple::InitVariables()
     /* _prefireSF_Do		= 1.; */
 
     _btagWeight_1a		= 1.;
-    _btagWeight_1a_corr		= 1.;
+    //_btagWeight_1a_corr		= 1.;
     _btagWeight_1a_b_Up		= 1.;
     _btagWeight_1a_b_Do		= 1.;
     _btagWeight_1a_l_Up		= 1.;

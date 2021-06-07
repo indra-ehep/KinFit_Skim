@@ -21,8 +21,8 @@ Selector::Selector(){
     jet_Eta_cut = 2.5;
     
     //Modified
-    jet_Pt_cut = 0.0; 
-    jet_Eta_cut = 5.0;
+    //jet_Pt_cut = 0.0; 
+    //jet_Eta_cut = 5.0;
     
     printEvent = -1;
 
