@@ -121,8 +121,10 @@ class EventTree{
     Bool_t          muIsPFMuon_[15];
     Bool_t          muIsGlobal_[15];
     Bool_t          muIsTracker_[15];
-
-
+    Float_t         mudxy_[15];
+    Float_t         mudz_[15];
+    Int_t           munTrackerLayers_[15];
+    Double_t        muRoccoR_[15];
 
     // Jet
 

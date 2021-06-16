@@ -160,11 +160,14 @@ class makeRecoKinTuple {
   Float_t		 _eleEffWeight_Trig;
   Float_t		 _eleEffWeight_Trig_Up;
   Float_t		 _eleEffWeight_Trig_Do;
-
+  
   Float_t		 _evtWeight;
   Float_t		 _lumiWeight;
+  Float_t		 _sampleWeight;
+  
   Int_t			 _nVtx;
   Int_t			 _nGoodVtx;
+  Bool_t		 _isPVGood;
   
   Float_t		 _genMET;
         
@@ -247,7 +250,8 @@ class makeRecoKinTuple {
   std::vector<float>	 _muEta;
   std::vector<float>	 _muPhi;
   std::vector<float>	 _muPFRelIso;
-	
+  std::vector<float>     _muRoccoR;
+
   Int_t			 _nJet;
   Int_t			 _nBJet;
   std::vector<float>	 _jetPt;
@@ -440,11 +444,14 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("eleEffWeight_Trig_Up", &_eleEffWeight_Trig_Up	);
 	outputTree->Branch("eleEffWeight_Trig_Do", &_eleEffWeight_Trig_Do	);
     }
-
+    
     outputTree->Branch("evtWeight"		, &_evtWeight			);      
     outputTree->Branch("lumiWeight"		, &_lumiWeight			);      
+    outputTree->Branch("sampleWeight"    	, &_sampleWeight       		);      
     outputTree->Branch("nVtx"			, &_nVtx			); 
     outputTree->Branch("nGoodVtx"		, &_nGoodVtx			); 
+    outputTree->Branch("isPVGood"		, &_isPVGood			); 
+    
     if (!isSystematicRun){
 	outputTree->Branch("genMET"		, &_genMET			); 
     }
@@ -506,6 +513,7 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("muEta"			, &_muEta			);
     outputTree->Branch("muPhi"			, &_muPhi			);
     outputTree->Branch("muPFRelIso"		, &_muPFRelIso			);
+    outputTree->Branch("muRoccoR"		, &_muRoccoR			);
     
     outputTree->Branch("nJet"			, &_nJet			); 
     outputTree->Branch("nBJet"			, &_nBJet			); 

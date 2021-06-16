@@ -1,14 +1,14 @@
 #ifndef SELECTOR_H
 #define SELECTOR_H
 
-#include<vector>
-#include<iostream>
+#include <vector>
+#include <iostream>
 #include <iomanip>
-#include<algorithm>
-#include<TH1F.h>
-#include<TMath.h>
-#include<TLorentzVector.h>
-#include"EventTree.h"
+#include <algorithm>
+#include <TH1F.h>
+#include <TMath.h>
+#include <TLorentzVector.h>
+#include "EventTree.h"
 
 #include "Utils.h"
 
@@ -16,15 +16,16 @@
 //#include "interface/JERScaleFactors.h"
 
 
-#include"TRandom3.h"
+#include "TRandom3.h"
 #include <bitset>
 
-#include"../interface/JetResolution.h"
-#include"../interface/JetResolutionObject.h"
+#include "../interface/JetResolution.h"
+#include "../interface/JetResolutionObject.h"
 //#include"interface/JERScaleFactors.h"
 
 #include <random>
 
+#include "../interface/RoccoR.h"
 
 //https://indico.cern.ch/event/482673/contributions/2187022/attachments/1282446/1905912/talk_electron_ID_spring16.pdf
 static const double electronEA[7] = {0.1703,
@@ -53,6 +54,8 @@ public:
 	std::vector<int> Muons;
 	std::vector<int> MuonsLoose;
 	std::vector<int> MuonsNoIso;
+        std::vector<int> MuonsMiniAOD;
+
 	std::vector<int> Jets;
 	std::vector<int> bJets;
         std::vector<int> FwdJets;
@@ -62,6 +65,7 @@ public:
 	
 	std::vector<double> MuRelIso_corr;
 
+        bool isPVGood;
 
 	double jet_Pt_cut;
 	double jet_Eta_cut;
@@ -105,6 +109,11 @@ public:
 	double mu_RelIso_range[2];
  	double mu_MVA_range[2];
 	bool   mu_Iso_invert;
+	
+	//muons miniAOD
+	float mu_Pt_cut_miniAOD;
+        int s;
+        int m;  
 
 	std::string year;
 
@@ -132,6 +141,8 @@ private:
 	JME::JetResolution *jetResolution;
 	JME::JetResolutionScaleFactor *jetResolutionScaleFactor;
 	JME::JetParameters jetParam;
+
+        RoccoR *rc;
 
 };
 

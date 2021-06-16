@@ -65,6 +65,11 @@ Selector::Selector(){
     smearEle = true;
     scaleEle = true;
 
+    //muons miniAOD
+    mu_Pt_cut_miniAOD = 26.0;
+    rc = 0;
+    s = 0 ;
+    m = 0;
 }
 
 void Selector::init_JER(std::string inputPrefix){
@@ -90,6 +95,10 @@ void Selector::init_JER(std::string inputPrefix){
 void Selector::process_objects(EventTree* inp_tree){
     tree = inp_tree;
     clear_vectors();
+    
+    if(!rc)
+      rc = new RoccoR(Form("weight/RoccoR/RoccoR%sUL.txt",year.c_str()));
+    
     //cout << "before selector muons" << endl;
     filter_muons();
 
@@ -109,6 +118,7 @@ void Selector::clear_vectors(){
     Muons.clear();
     MuonsLoose.clear();
     MuonsNoIso.clear();
+    MuonsMiniAOD.clear();
     Jets.clear();
     FwdJets.clear();
     bJets.clear();
@@ -274,7 +284,7 @@ void Selector::filter_muons(){
 	double PFrelIso_corr = tree->muPFRelIso_[muInd];
 
 	bool looseMuonID = tree->muIsPFMuon_[muInd] && (tree->muIsTracker_[muInd] || tree->muIsGlobal_[muInd]);
-	//bool mediumMuonID = tree->muMediumId_[muInd];
+	bool mediumMuonID = tree->muMediumId_[muInd];
 	bool tightMuonID = tree->muTightId_[muInd];
 
 	bool passTight = (pt >= mu_Pt_cut &&
@@ -300,19 +310,84 @@ void Selector::filter_muons(){
 				TMath::Abs(eta) <= mu_Eta_tight &&
 				tightMuonID
 				);
+
+
+
+	/*
+	  // The MiniAOD Selection
+
+	double UncertaintyComputer::muPtWithRochCorr(const MyMuon *mu, bool isData, double u1, double u2, int s, int m){
+	  double charge = mu->charge;
+	  double pt 	= mu->p4.pt();
+	  double eta 	= mu->p4.eta();
+	  double phi 	= mu->p4.phi();
+	  int nl 	= mu->nTrackerLayers;
+	  double dataSF = rc.kScaleDT(charge, pt, eta, phi, s, m); 
+	  double mcSF 	= rc.kScaleAndSmearMC(charge, pt, eta, phi, nl, u1, u2, s, m); 
+	  double SF = 1.0; 
+	  if(isData)SF = dataSF;
+	  else SF = mcSF;
+	  ///cout<<pt<<"\t"<<SF<<"\t"<<SF*pt<<"\t"<<charge<<"\t"<<eta<<"\t"<<phi<<"\t"<<nl<<"\t"<<u1<<"\t"<<u2<<"\t"<<s<<"\t"<<m<<endl;
+	  return SF*pt;
+	}
+
+
+	bool ObjectSelector::isMediumMuon(const MyMuon * m){
+	  bool isMedium(false);
+	  bool goodGlob = m->isGlobalMuon && m->normChi2 <3 &&  m->chi2LocalPosition < 12 && m->trkKink < 20; 
+	  bool isLooseMuon =  m->isPFMuon && (m->isGlobalMuon || m->isTrackerMuon) ;
+	  isMedium =  isLooseMuon && m->validFraction > 0.8 && m->segmentCompatibility >(goodGlob ? 0.303 : 0.451); 
+	  return isMedium;   
+	}
+
+	void ObjectSelector::preSelectMuons(TString url, vector<int> * m_i, const vector<MyMuon> & vM , 
+					    MyVertex & vertex, const bool & isData, const double & random_u1, 
+					    const double & random_u2, const int & err_member, const int & err_set){
+	  for( int i=0;i< (int) vM.size();i++){
+	    const MyMuon * m = &vM[i];
+	    double mEta     = TMath::Abs(m->p4.eta());
+	    ///double mPt      = TMath::Abs(m->p4.pt());
+	    double mPt   = muPtWithRochCorr(m, isData, random_u1, random_u2, err_set, err_member); 
+	    double dxy = abs(m->D0);
+	    double dz = abs(m->Dz);
+	    bool passID = false;
+	    passID = isMediumMuon(m);
+	    if(passID && mPt > 26.0 && mEta < 2.4 && dxy < 0.05 && dz <0.2){
+	      m_i->push_back(i);
+	    }
+	  }
+	}
+	*/
+	
+	double SFRochCorr = 1.0;
+	if (tree->isData_)
+	  SFRochCorr *= rc->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+	else
+	  SFRochCorr *= rc->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], gRandom->Rndm(), s, m);;
+	
+	tree->muRoccoR_[muInd] = SFRochCorr;
+	
+	pt = pt*SFRochCorr;
+	
+	bool passMiniAOD_presel = ( mediumMuonID and pt > mu_Pt_cut_miniAOD and 
+				    TMath::Abs(eta) <= mu_Eta_tight and tree->mudxy_[muInd] < 0.05 and tree->mudz_[muInd] < 0.2 ) ;
 	
 	if (int(tree->event_)==printEvent){
 	    cout << "-- " << muInd << " passTight="<<passTight<< " passLoose="<<passLoose << " pt="<<pt<< " eta="<<eta<< " phi="<<tree->muPhi_[muInd]<< " tightID="<<tightMuonID<< " looseID="<<looseMuonID << " pfRelIso="<<PFrelIso_corr << endl;
 	} 
 	
-	if(passTight){
-	    Muons.push_back(muInd);
+	//if(passTight){
+	if(passMiniAOD_presel){
+	  Muons.push_back(muInd);
 	}
 	else if (passLoose){
 	    MuonsLoose.push_back(muInd);
 	}
 	if(passTight_noIso){
 	    MuonsNoIso.push_back(muInd);
+	}
+	if(passMiniAOD_presel){
+	  MuonsMiniAOD.push_back(muInd);
 	}
     }
 }
@@ -476,4 +551,5 @@ bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){
 
 
 Selector::~Selector(){
+  delete rc;
 }

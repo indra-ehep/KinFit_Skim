@@ -3,7 +3,7 @@ CPPFLAGS1= -Wall -g -O -fPIC
 
 all: bin
 
-bin: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/Selector.o src/EventTree.o src/EventPick.o makeKineTuple #makeCutflows src/testLepSF
+bin: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/Selector.o src/EventTree.o src/EventPick.o src/RoccoR.o makeKineTuple #makeCutflows src/testLepSF
 
 bin1: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/Selector.o src/EventTree.o src/EventPick.o recom #makeCutflows src/testLepSF
 	mv -f EventJetAna bin/
@@ -67,6 +67,8 @@ src/Selector_gen.o: src/EventTree.o src/Selector_gen.cpp interface/Selector.h
 src/EventPick_gen.o: src/Selector_gen.o src/EventPick_gen.cpp interface/EventPick.h
 	g++ $(CPPFLAGS) -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/EventPick_gen.cpp 
 
+src/RoccoR.o: src/RoccoR.cc interface/RoccoR.h
+	g++ $(CPPFLAGS) -c `root-config --libs` -I`root-config --incdir` -std=c++17 src/RoccoR.cc
 
 EventJetAna: src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp interface/muSF_reader.h interface/eleSF_reader.h 
 	mv -f *.o src/
@@ -75,9 +77,9 @@ EventJetAna: src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C in
 recom: src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp interface/muSF_reader.h interface/eleSF_reader.h 
 	g++ $(CPPFLAGS1) -o EventJetAna `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventJetAna.C src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp 
 
-makeKineTuple:src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h
+makeKineTuple:src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h
 	mv -f *.o src/
-	g++ $(CPPFLAGS) -o makeRecoKinTuple `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -D STANDALONE -std=c++17 -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} src/makeRecoKinTuple.C src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp src/KinFit.cpp -lPhysicsToolsKinFitter
+	g++ $(CPPFLAGS) -o makeRecoKinTuple `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -D STANDALONE -std=c++17 -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} src/makeRecoKinTuple.C src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp src/KinFit.cpp -lPhysicsToolsKinFitter
 
 compile:src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h
 	g++ $(CPPFLAGS) -o makeRecoKinTuple `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -D STANDALONE -std=c++17 -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} src/makeRecoKinTuple.C src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp src/KinFit.cpp -lPhysicsToolsKinFitter

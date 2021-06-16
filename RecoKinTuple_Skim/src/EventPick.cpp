@@ -142,7 +142,7 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     }
 
     string run_lumi_event = to_string(tree->run_)+","+to_string(tree->lumis_)+","+to_string(tree->event_)+"\n";
-
+    
     if (saveCutflows) {
 	cutFlow_ele->Fill(0.0); // Input events
 	cutFlow_mu->Fill(0.0); // Input events
@@ -151,7 +151,7 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 	// dump_input_ele << run_lumi_event;
 	// dump_input_mu << run_lumi_event;
     }
-
+    
     if (int(tree->event_)==printEvent){
 	cout << "TriggerMu "<< Pass_trigger_mu << endl;
 	cout << "TriggerEle "<< Pass_trigger_ele << endl;
@@ -159,13 +159,15 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     
     // Pass_trigger_mu = Pass_trigger_mu || Pass_trigger_ele;
     // Pass_trigger_ele = Pass_trigger_mu || Pass_trigger_ele;
-
+    
     passPresel_mu  = true;
     passPresel_ele = true;
 
     bool isPVGood = (tree->pvNDOF_>4 &&
 		     sqrt(tree->pvX_ * tree->pvX_ + tree->pvY_ * tree->pvY_)<=2. &&
 		     abs(tree->pvZ_) <= 24.);
+
+    selector->isPVGood = isPVGood;
 
     //if (int(tree->event_)==printEvent){
     if (int(tree->event_)==10000){
@@ -189,15 +191,6 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
       passPresel_mu = false;
     }
 
-    if( passPresel_mu && isPVGood) { 
-      if (saveCutflows) { 
-	cutFlow_mu->Fill(2); 
-	cutFlowWeight_mu->Fill(2,weight); 
-      } 
-    }else {
-      passPresel_mu = false;
-    }
-
     // Cut events that fail ele trigger
     if( passPresel_ele &&  (Pass_trigger_ele)) { 
       if (saveCutflows) {
@@ -208,24 +201,32 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     } else { 
       passPresel_ele = false;
     }
-    
-    if( passPresel_ele && isPVGood) { 
-      if (saveCutflows) {
-	cutFlow_ele->Fill(2); 
-	cutFlowWeight_ele->Fill(2,weight);
-      } 
-    } else { 
-      passPresel_ele = false; 
-    }
 
-
+    //Process selector events
     if ( passPresel_ele || passPresel_mu ) {
-	selector->process_objects(tree);
+      selector->process_objects(tree);
     }
     else {
 	return;
     }
 
+    // if( passPresel_mu && isPVGood) { 
+    //   if (saveCutflows) { 
+    // 	cutFlow_mu->Fill(2); 
+    // 	cutFlowWeight_mu->Fill(2,weight); 
+    //   } 
+    // }else {
+    //   passPresel_mu = false;
+    // }
+    
+    // if( passPresel_ele && isPVGood) { 
+    //   if (saveCutflows) {
+    // 	cutFlow_ele->Fill(2); 
+    // 	cutFlowWeight_ele->Fill(2,weight);
+    //   } 
+    // } else { 
+    //   passPresel_ele = false; 
+    // }
 
     if (int(tree->event_)==printEvent){
 	cout << "Muons     "<< selector->Muons.size() << endl;
@@ -268,31 +269,57 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 	  }
 	}
 	if (saveCutflows){cutFlow_mu->Fill(3); cutFlowWeight_mu->Fill(3,weight); }
+      } else { 
+	passPresel_mu = false;
       }
-      else { passPresel_mu = false;}
 
-      if( passPresel_mu && int(selector->MuonsLoose.size()) <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight); } }
-	else { passPresel_mu = false;}
-      if( passPresel_mu && int(selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);  dump_lepton_mu << run_lumi_event;} }
-	else { passPresel_mu = false;}
-    }
-    else{
-	if( passPresel_mu && selector->Muons.size() == 1){
-            if (saveCutflows){cutFlow_mu->Fill(3); cutFlowWeight_mu->Fill(3,weight); }
-        }
-        else { passPresel_mu = false;}
+      if( passPresel_mu && int(selector->MuonsLoose.size()) <=  NlooseMuVeto_le ) { 
+	if (saveCutflows) {
+	  cutFlow_mu->Fill(4); 
+	  cutFlowWeight_mu->Fill(4,weight); 
+	} 
+      } else { 
+	passPresel_mu = false;
+      }
 
-        // if( passPresel_mu && selector->MuonsNoIso.size() == 1 ) {
-	//     if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight); } }
-        // else { passPresel_mu = false;}
-        // if( passPresel_mu && (selector->ElectronsNoIso.size() ) == 0 ) {
-	//     if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);} }
-        // else { passPresel_mu = false;}
-//aloke : looselepveto in QCDCR
-	if( passPresel_mu && int(selector->MuonsLoose.size()) <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight);} }
-	else { passPresel_mu = false;}
-	if( passPresel_mu && int(selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);  dump_lepton_mu << run_lumi_event;} }
-	else { passPresel_mu = false;}
+      if( passPresel_mu && int(selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {
+	if (saveCutflows) {
+	  cutFlow_mu->Fill(5); 
+	  cutFlowWeight_mu->Fill(5,weight);  
+	  dump_lepton_mu << run_lumi_event;
+	} 
+      } else { 
+	passPresel_mu = false;
+      }
+    } else{
+
+      if( passPresel_mu && selector->Muons.size() == 1){
+	if (saveCutflows){
+	  cutFlow_mu->Fill(3); 
+	  cutFlowWeight_mu->Fill(3,weight); 
+	}
+      } else { 
+	passPresel_mu = false;
+      }
+
+      if( passPresel_mu && int( selector->MuonsLoose.size()) <=  NlooseMuVeto_le ) { 
+	if (saveCutflows) {
+	  cutFlow_mu->Fill(4); 
+	  cutFlowWeight_mu->Fill(4,weight);
+	} 
+      } else { 
+	passPresel_mu = false;
+      }
+      
+      if( passPresel_mu && int(selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {
+	if (saveCutflows) {
+	  cutFlow_mu->Fill(5); 
+	  cutFlowWeight_mu->Fill(5,weight);  
+	  dump_lepton_mu << run_lumi_event;
+	} 
+      } else { 
+	passPresel_mu = false;
+      }
     }
 
 

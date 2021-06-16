@@ -207,6 +207,14 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Muon_isTracker",1);
     chain->SetBranchAddress("Muon_isTracker", &muIsTracker_);
 
+    chain->SetBranchStatus("Muon_dxy",1);
+    chain->SetBranchAddress("Muon_dxy", &mudxy_);
+
+    chain->SetBranchStatus("Muon_dz",1);
+    chain->SetBranchAddress("Muon_dz", &mudz_);
+
+    chain->SetBranchStatus("Muon_nTrackerLayers",1);
+    chain->SetBranchAddress("Muon_nTrackerLayers", &munTrackerLayers_);
 
     // jets
 	

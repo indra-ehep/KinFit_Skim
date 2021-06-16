@@ -362,6 +362,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   if (year=="2018") luminosity=59740.565202;
 
   double nMC_total = 0.;
+  double nMC_total_US = 0.;
   useGenWeightScaling = true;
 
   double nMC_thisFile = 0.;
@@ -369,10 +370,10 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   for(int fileI=0; fileI<ac-4; fileI++){
     TFile *_file = TFile::Open(fileNames[fileI],"read");
     TH1D *hEvents = (TH1D*) _file->Get("hEvents");
-    //nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights
-    nMC_thisFile = hEvents->GetEntries()/2.0; //Modified by Indra
+    nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights
     if (nMC_thisFile==0) {useGenWeightScaling=false;} //if bin isn't filled, fall back to using positive - negative bins
     nMC_total += nMC_thisFile;
+    nMC_total_US += hEvents->GetEntries()/2.0;
   }
 
   if (!useGenWeightScaling){
@@ -386,8 +387,10 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   if (nMC_total==0){
     nMC_total=1;
   }
-
+  
   _lumiWeight = getEvtWeight(sampleType, std::stoi(year), luminosity, nMC_total);
+  _sampleWeight = getEvtWeight(sampleType, std::stoi(year), luminosity, nMC_total_US);
+  
   // _lumiWeightAlt = _lumiWeight;
 
   // if (isTTGamma){
@@ -757,7 +760,8 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   
   _nVtx		   = tree->nVtx_;
   _nGoodVtx	   = tree->nGoodVtx_;
-  
+  _isPVGood        = selector->isPVGood;
+
   if (useGenWeightScaling){
     _evtWeight     = _lumiWeight *  tree->genWeight_; 
   }else{
@@ -822,7 +826,8 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
     _muPhi.push_back(tree->muPhi_[muInd]);
     _muEta.push_back(tree->muEta_[muInd]);
     _muPFRelIso.push_back(tree->muPFRelIso_[muInd]);
-
+    _muRoccoR.push_back(tree->muRoccoR_[muInd]);
+    
     lepVector.SetPtEtaPhiM(tree->muPt_[muInd],
 			   tree->muEta_[muInd],
 			   tree->muPhi_[muInd],
