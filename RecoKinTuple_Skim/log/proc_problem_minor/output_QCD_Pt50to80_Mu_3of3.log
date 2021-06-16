@@ -1,0 +1,39 @@
+3 of 3
+QCD_Pt50to80_Mu
+pos : 18446744073709551615
+sampleType : QCD_Pt50to80_Mu,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt50to80_Mu 
+. QCD_Pt50to80_Mu 
+./QCD_Pt50to80_Mu_RecoKinTuple_Skim_3of3.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 799.3
+XS = 437504
+lumi = 35921.9
+nEvents_MC = 1.96622e+07
+Total Entries : 43004
+processing entry 29000 out of 43004 : 41.495 seconds since last progress
+processing entry 30000 out of 43004 : 0.0646586 seconds since last progress
+processing entry 31000 out of 43004 : 0.14158 seconds since last progress
+processing entry 32000 out of 43004 : 0.0994465 seconds since last progress
+processing entry 33000 out of 43004 : 0.043433 seconds since last progress
+processing entry 34000 out of 43004 : 0.125513 seconds since last progress
+processing entry 35000 out of 43004 : 0.12777 seconds since last progress
+processing entry 36000 out of 43004 : 0.262266 seconds since last progress
+processing entry 37000 out of 43004 : 0.0430375 seconds since last progress
+processing entry 38000 out of 43004 : 0.110744 seconds since last progress
+processing entry 39000 out of 43004 : 0.121086 seconds since last progress
+processing entry 40000 out of 43004 : 0.0506096 seconds since last progress
+processing entry 41000 out of 43004 : 0.100416 seconds since last progress
+processing entry 42000 out of 43004 : 0.115545 seconds since last progress
+processing entry 43000 out of 43004 : 0.0517191 seconds since last progress

@@ -1,0 +1,31 @@
+-1 of -1
+TTZtoLL_M1to10
+pos : 18446744073709551615
+sampleType : TTZtoLL_M1to10,  systematicType : 
+Dilepton Sample :0
+. TTZtoLL_M1to10 
+. TTZtoLL_M1to10 
+./TTZtoLL_M1to10_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.00717587
+XS = 0.0493
+lumi = 35921.9
+nEvents_MC = 246792
+Total Entries : 72986
+processing entry 0 out of 72986 : 27.096 seconds since last progress
+processing entry 5000 out of 72986 : 77.7592 seconds since last progress
+processing entry 10000 out of 72986 : 44.7205 seconds since last progress
+processing entry 15000 out of 72986 : 59.9063 seconds since last progress
+processing entry 20000 out of 72986 : 67.5626 seconds since last progress
+processing entry 25000 out of 72986 : 63.9291 seconds since last progress
+processing entry 30000 out of 72986 : 69.0814 seconds since last progress
+processing entry 35000 out of 72986 : 74.5558 seconds since last progress
+processing entry 40000 out of 72986 : 47.8871 seconds since last progress
+processing entry 45000 out of 72986 : 56.6996 seconds since last progress
+processing entry 50000 out of 72986 : 59.6847 seconds since last progress
+processing entry 55000 out of 72986 : 57.6065 seconds since last progress
+processing entry 60000 out of 72986 : 61.4633 seconds since last progress
+processing entry 65000 out of 72986 : 47.7185 seconds since last progress
+processing entry 70000 out of 72986 : 65.3068 seconds since last progress

@@ -1,0 +1,20 @@
+10 of 20
+Data_SingleEle_g
+pos : 18446744073709551615
+sampleType : Data_SingleEle_g,  systematicType : 
+Dilepton Sample :0
+. Data_SingleEle_g 
+. Data_SingleEle_g 
+./Data_SingleEle_g_RecoKinTuple_Skim_10of20.root
+HERE
+DONE
+isMC: 0
+Using event weight 1
+XS = 4269.35
+lumi = 35921.9
+nEvents_MC = 1.53363e+08
+Total Entries : 85789151
+processing entry 39000000 out of 85789151 : 230.785 seconds since last progress
+processing entry 40000000 out of 85789151 : 137.481 seconds since last progress
+processing entry 41000000 out of 85789151 : 123.948 seconds since last progress
+processing entry 42000000 out of 85789151 : 142.549 seconds since last progress

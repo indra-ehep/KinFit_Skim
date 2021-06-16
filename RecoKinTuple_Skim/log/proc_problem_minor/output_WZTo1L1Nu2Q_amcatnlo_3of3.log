@@ -1,0 +1,23 @@
+3 of 3
+WZTo1L1Nu2Q_amcatnlo
+pos : 18446744073709551615
+sampleType : WZTo1L1Nu2Q_amcatnlo,  systematicType : 
+Dilepton Sample :0
+. WZTo1L1Nu2Q_amcatnlo 
+. WZTo1L1Nu2Q_amcatnlo 
+./WZTo1L1Nu2Q_amcatnlo_RecoKinTuple_Skim_3of3.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.000911562
+XS = 10.71
+lumi = 35921.9
+nEvents_MC = 4.22048e+08
+Total Entries : 7848863
+processing entry 5500000 out of 7848863 : 310.405 seconds since last progress
+processing entry 6000000 out of 7848863 : 407.264 seconds since last progress
+processing entry 6500000 out of 7848863 : 453.469 seconds since last progress
+processing entry 7000000 out of 7848863 : 431.52 seconds since last progress
+processing entry 7500000 out of 7848863 : 458.361 seconds since last progress
+Error in <TNetXNGFile::Close>: [ERROR] Socket error
+Error in <TNetXNGFile::Close>: [ERROR] Socket error

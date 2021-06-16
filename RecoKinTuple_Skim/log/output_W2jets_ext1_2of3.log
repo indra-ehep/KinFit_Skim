@@ -1,0 +1,21 @@
+2 of 3
+W2jets_ext1
+pos : 18446744073709551615
+sampleType : W2jets_ext1,  systematicType : 
+Dilepton Sample :0
+. W2jets_ext1 
+. W2jets_ext1 
+./W2jets_ext1_RecoKinTuple_Skim_2of3.root
+HERE
+DONE
+isMC: 1
+Using event weight 4.54064
+XS = 3839.43
+lumi = 35921.9
+nEvents_MC = 3.03745e+07
+Total Entries : 8112715
+processing entry 3000000 out of 8112715 : 90.1708 seconds since last progress
+processing entry 3500000 out of 8112715 : 97.1185 seconds since last progress
+processing entry 4000000 out of 8112715 : 116.866 seconds since last progress
+processing entry 4500000 out of 8112715 : 112.955 seconds since last progress
+processing entry 5000000 out of 8112715 : 101.265 seconds since last progress

@@ -1,0 +1,20 @@
+2 of 3
+WZTo3LNu_powheg_ext1
+pos : 18446744073709551615
+sampleType : WZTo3LNu_powheg_ext1,  systematicType : 
+Dilepton Sample :0
+. WZTo3LNu_powheg_ext1 
+. WZTo3LNu_powheg_ext1 
+./WZTo3LNu_powheg_ext1_RecoKinTuple_Skim_2of3.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.00884007
+XS = 4.42965
+lumi = 35921.9
+nEvents_MC = 1.8e+07
+Total Entries : 6144769
+processing entry 2500000 out of 6144769 : 144.985 seconds since last progress
+processing entry 3000000 out of 6144769 : 97.5169 seconds since last progress
+processing entry 3500000 out of 6144769 : 100.662 seconds since last progress
+processing entry 4000000 out of 6144769 : 83.3405 seconds since last progress

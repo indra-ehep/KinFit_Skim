@@ -1,0 +1,41 @@
+4 of 4
+QCD_Pt30to50_Mu
+pos : 18446744073709551615
+sampleType : QCD_Pt30to50_Mu,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt30to50_Mu 
+. QCD_Pt30to50_Mu 
+./QCD_Pt30to50_Mu_RecoKinTuple_Skim_4of4.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 1986.37
+XS = 1.65247e+06
+lumi = 35921.9
+nEvents_MC = 2.98836e+07
+Total Entries : 35613
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 27000 out of 35613 : 53.302 seconds since last progress
+processing entry 28000 out of 35613 : 0.0567935 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 29000 out of 35613 : 2.40127 seconds since last progress
+processing entry 30000 out of 35613 : 0.0853389 seconds since last progress
+processing entry 31000 out of 35613 : 0.0369831 seconds since last progress
+processing entry 32000 out of 35613 : 0.107369 seconds since last progress
+processing entry 33000 out of 35613 : 0.121775 seconds since last progress
+processing entry 34000 out of 35613 : 0.0615351 seconds since last progress
+processing entry 35000 out of 35613 : 0.129679 seconds since last progress

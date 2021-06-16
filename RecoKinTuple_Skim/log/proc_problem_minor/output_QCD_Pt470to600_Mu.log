@@ -1,0 +1,33 @@
+-1 of -1
+QCD_Pt470to600_Mu
+pos : 18446744073709551615
+sampleType : QCD_Pt470to600_Mu,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt470to600_Mu 
+. QCD_Pt470to600_Mu 
+./QCD_Pt470to600_Mu_RecoKinTuple_Skim.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 0.714539
+XS = 79.0255
+lumi = 35921.9
+nEvents_MC = 3.97283e+06
+Total Entries : 12973
+processing entry 0 out of 12973 : 24.8322 seconds since last progress
+processing entry 1000 out of 12973 : 2.36883 seconds since last progress
+processing entry 2000 out of 12973 : 3.48493 seconds since last progress
+processing entry 3000 out of 12973 : 4.00909 seconds since last progress
+processing entry 4000 out of 12973 : 3.02693 seconds since last progress
+processing entry 5000 out of 12973 : 4.7092 seconds since last progress
+processing entry 6000 out of 12973 : 1.59737 seconds since last progress
+processing entry 7000 out of 12973 : 8.63221 seconds since last progress
+processing entry 8000 out of 12973 : 5.01864 seconds since last progress
+processing entry 9000 out of 12973 : 4.45762 seconds since last progress
+processing entry 10000 out of 12973 : 2.97791 seconds since last progress
+processing entry 11000 out of 12973 : 5.83538 seconds since last progress
+processing entry 12000 out of 12973 : 0.949352 seconds since last progress

@@ -1,0 +1,64 @@
+-1 of -1
+WZ_ext1
+pos : 18446744073709551615
+sampleType : WZ_ext1,  systematicType : 
+Dilepton Sample :0
+. WZ_ext1 
+. WZ_ext1 
+./WZ_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 0.330749
+XS = 27.6
+lumi = 35921.9
+nEvents_MC = 2.99757e+06
+Total Entries : 434570
+processing entry 0 out of 434570 : 33.0183 seconds since last progress
+processing entry 10000 out of 434570 : 7.91767 seconds since last progress
+processing entry 20000 out of 434570 : 2.65571 seconds since last progress
+processing entry 30000 out of 434570 : 2.70811 seconds since last progress
+processing entry 40000 out of 434570 : 3.41766 seconds since last progress
+processing entry 50000 out of 434570 : 2.35741 seconds since last progress
+processing entry 60000 out of 434570 : 2.00098 seconds since last progress
+processing entry 70000 out of 434570 : 2.95263 seconds since last progress
+processing entry 80000 out of 434570 : 2.90597 seconds since last progress
+processing entry 90000 out of 434570 : 2.65347 seconds since last progress
+processing entry 100000 out of 434570 : 1.96737 seconds since last progress
+processing entry 110000 out of 434570 : 2.22666 seconds since last progress
+processing entry 120000 out of 434570 : 3.13028 seconds since last progress
+processing entry 130000 out of 434570 : 2.86149 seconds since last progress
+processing entry 140000 out of 434570 : 2.48255 seconds since last progress
+processing entry 150000 out of 434570 : 3.01464 seconds since last progress
+processing entry 160000 out of 434570 : 6.7834 seconds since last progress
+processing entry 170000 out of 434570 : 1.99298 seconds since last progress
+processing entry 180000 out of 434570 : 2.30934 seconds since last progress
+processing entry 190000 out of 434570 : 3.2171 seconds since last progress
+processing entry 200000 out of 434570 : 1.64101 seconds since last progress
+processing entry 210000 out of 434570 : 1.63401 seconds since last progress
+processing entry 220000 out of 434570 : 1.25091 seconds since last progress
+processing entry 230000 out of 434570 : 1.33328 seconds since last progress
+processing entry 240000 out of 434570 : 1.61243 seconds since last progress
+processing entry 250000 out of 434570 : 1.54508 seconds since last progress
+processing entry 260000 out of 434570 : 1.25139 seconds since last progress
+processing entry 270000 out of 434570 : 1.2397 seconds since last progress
+processing entry 280000 out of 434570 : 2.62829 seconds since last progress
+processing entry 290000 out of 434570 : 1.31968 seconds since last progress
+processing entry 300000 out of 434570 : 1.34888 seconds since last progress
+processing entry 310000 out of 434570 : 4.8996 seconds since last progress
+processing entry 320000 out of 434570 : 1.92018 seconds since last progress
+processing entry 330000 out of 434570 : 1.8131 seconds since last progress
+processing entry 340000 out of 434570 : 2.9143 seconds since last progress
+processing entry 350000 out of 434570 : 1.92313 seconds since last progress
+processing entry 360000 out of 434570 : 1.48947 seconds since last progress
+processing entry 370000 out of 434570 : 3.09453 seconds since last progress
+processing entry 380000 out of 434570 : 6.15951 seconds since last progress
+processing entry 390000 out of 434570 : 2.05423 seconds since last progress
+processing entry 400000 out of 434570 : 1.46892 seconds since last progress
+processing entry 410000 out of 434570 : 1.44227 seconds since last progress
+processing entry 420000 out of 434570 : 1.71013 seconds since last progress
+processing entry 430000 out of 434570 : 1.91102 seconds since last progress

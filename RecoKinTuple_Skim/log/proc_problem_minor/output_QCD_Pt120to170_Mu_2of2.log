@@ -1,0 +1,33 @@
+2 of 2
+QCD_Pt120to170_Mu
+pos : 18446744073709551615
+sampleType : QCD_Pt120to170_Mu,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt120to170_Mu 
+. QCD_Pt120to170_Mu 
+./QCD_Pt120to170_Mu_RecoKinTuple_Skim_2of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 114.573
+XS = 25190.5
+lumi = 35921.9
+nEvents_MC = 7.89794e+06
+Total Entries : 17753
+processing entry 9000 out of 17753 : 43.2454 seconds since last progress
+processing entry 10000 out of 17753 : 0.240007 seconds since last progress
+processing entry 11000 out of 17753 : 0.228465 seconds since last progress
+processing entry 12000 out of 17753 : 0.170242 seconds since last progress
+processing entry 13000 out of 17753 : 0.156238 seconds since last progress
+processing entry 14000 out of 17753 : 0.197093 seconds since last progress
+processing entry 15000 out of 17753 : 0.180232 seconds since last progress
+processing entry 16000 out of 17753 : 0.272321 seconds since last progress
+processing entry 17000 out of 17753 : 0.298246 seconds since last progress

@@ -1,0 +1,32 @@
+-1 of -1
+HplusM080
+pos : 18446744073709551615
+sampleType : HplusM080,  systematicType : 
+Dilepton Sample :0
+. HplusM080 
+. HplusM080 
+./HplusM080_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.248466
+XS = 6.77
+lumi = 35921.9
+nEvents_MC = 978770
+Total Entries : 515066
+processing entry 0 out of 515066 : 30.5834 seconds since last progress
+processing entry 50000 out of 515066 : 382.531 seconds since last progress
+processing entry 100000 out of 515066 : 312.396 seconds since last progress
+PV 1
+    ndof=102.25   (>4)
+    pX=0.105469   (<2)
+    pY=0.169434   (<2)
+    pZ=-4.99988   (<24)
+processing entry 150000 out of 515066 : 371.006 seconds since last progress
+processing entry 200000 out of 515066 : 404.826 seconds since last progress
+processing entry 250000 out of 515066 : 366.098 seconds since last progress
+processing entry 300000 out of 515066 : 375.899 seconds since last progress
+processing entry 350000 out of 515066 : 385.491 seconds since last progress
+processing entry 400000 out of 515066 : 368.072 seconds since last progress
+processing entry 450000 out of 515066 : 375.123 seconds since last progress
+processing entry 500000 out of 515066 : 381.39 seconds since last progress

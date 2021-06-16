@@ -1,0 +1,32 @@
+-1 of -1
+HplusM160
+pos : 18446744073709551615
+sampleType : HplusM160,  systematicType : 
+Dilepton Sample :0
+. HplusM160 
+. HplusM160 
+./HplusM160_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.244132
+XS = 6.77
+lumi = 35921.9
+nEvents_MC = 996144
+Total Entries : 527332
+processing entry 0 out of 527332 : 24.6814 seconds since last progress
+processing entry 50000 out of 527332 : 160.645 seconds since last progress
+processing entry 100000 out of 527332 : 146.92 seconds since last progress
+processing entry 150000 out of 527332 : 172.368 seconds since last progress
+processing entry 200000 out of 527332 : 161.945 seconds since last progress
+processing entry 250000 out of 527332 : 169.644 seconds since last progress
+processing entry 300000 out of 527332 : 160.141 seconds since last progress
+PV 1
+    ndof=104.5   (>4)
+    pX=0.107727   (<2)
+    pY=0.168701   (<2)
+    pZ=4.52399   (<24)
+processing entry 350000 out of 527332 : 172.095 seconds since last progress
+processing entry 400000 out of 527332 : 164.222 seconds since last progress
+processing entry 450000 out of 527332 : 185.332 seconds since last progress
+processing entry 500000 out of 527332 : 165.522 seconds since last progress

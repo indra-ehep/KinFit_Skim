@@ -1,0 +1,33 @@
+-1 of -1
+TTZtoLL_ext1
+pos : 18446744073709551615
+sampleType : TTZtoLL_ext1,  systematicType : 
+Dilepton Sample :0
+. TTZtoLL_ext1 
+. TTZtoLL_ext1 
+./TTZtoLL_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.0195135
+XS = 0.2728
+lumi = 35921.9
+nEvents_MC = 502191
+Total Entries : 793509
+processing entry 0 out of 793509 : 26.711 seconds since last progress
+processing entry 50000 out of 793509 : 1333.74 seconds since last progress
+processing entry 100000 out of 793509 : 1495.86 seconds since last progress
+processing entry 150000 out of 793509 : 1624.34 seconds since last progress
+processing entry 200000 out of 793509 : 1608.18 seconds since last progress
+processing entry 250000 out of 793509 : 1462.65 seconds since last progress
+processing entry 300000 out of 793509 : 1608.53 seconds since last progress
+processing entry 350000 out of 793509 : 1320.34 seconds since last progress
+processing entry 400000 out of 793509 : 1220.83 seconds since last progress
+processing entry 450000 out of 793509 : 1088.56 seconds since last progress
+processing entry 500000 out of 793509 : 1179.52 seconds since last progress
+processing entry 550000 out of 793509 : 1217.49 seconds since last progress
+processing entry 600000 out of 793509 : 1204.27 seconds since last progress
+processing entry 650000 out of 793509 : 1080.66 seconds since last progress
+processing entry 700000 out of 793509 : 1137.68 seconds since last progress
+processing entry 750000 out of 793509 : 1214.1 seconds since last progress
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session

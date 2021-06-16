@@ -1,0 +1,43 @@
+2 of 2
+QCD_Pt300to470_Mu
+pos : 18446744073709551615
+sampleType : QCD_Pt300to470_Mu,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt300to470_Mu 
+. QCD_Pt300to470_Mu 
+./QCD_Pt300to470_Mu_RecoKinTuple_Skim_2of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 3.60845
+XS = 797.353
+lumi = 35921.9
+nEvents_MC = 7.93759e+06
+Total Entries : 22339
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 12000 out of 22339 : 46.2309 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 13000 out of 22339 : 4.98749 seconds since last progress
+processing entry 14000 out of 22339 : 0.747981 seconds since last progress
+processing entry 15000 out of 22339 : 0.567752 seconds since last progress
+processing entry 16000 out of 22339 : 1.21405 seconds since last progress
+processing entry 17000 out of 22339 : 2.25183 seconds since last progress
+processing entry 18000 out of 22339 : 0.673558 seconds since last progress
+processing entry 19000 out of 22339 : 0.78921 seconds since last progress
+processing entry 20000 out of 22339 : 0.618081 seconds since last progress
+processing entry 21000 out of 22339 : 3.20732 seconds since last progress
+processing entry 22000 out of 22339 : 1.05279 seconds since last progress

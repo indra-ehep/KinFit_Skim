@@ -1,0 +1,44 @@
+1 of 3
+QCD_Pt300to470_Mu_ext1
+pos : 18446744073709551615
+sampleType : QCD_Pt300to470_Mu_ext1,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt300to470_Mu_ext1 
+. QCD_Pt300to470_Mu_ext1 
+./QCD_Pt300to470_Mu_ext1_RecoKinTuple_Skim_1of3.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 1.73982
+XS = 797.353
+lumi = 35921.9
+nEvents_MC = 1.64629e+07
+Total Entries : 46280
+processing entry 0 out of 46280 : 44.0387 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 1000 out of 46280 : 4.41627 seconds since last progress
+processing entry 2000 out of 46280 : 3.67313 seconds since last progress
+processing entry 3000 out of 46280 : 7.61781 seconds since last progress
+processing entry 4000 out of 46280 : 1.5205 seconds since last progress
+processing entry 5000 out of 46280 : 2.35469 seconds since last progress
+processing entry 6000 out of 46280 : 1.00313 seconds since last progress
+processing entry 7000 out of 46280 : 4.96459 seconds since last progress
+processing entry 8000 out of 46280 : 0.723704 seconds since last progress
+processing entry 9000 out of 46280 : 2.54428 seconds since last progress
+processing entry 10000 out of 46280 : 0.273707 seconds since last progress
+processing entry 11000 out of 46280 : 1.7555 seconds since last progress
+processing entry 12000 out of 46280 : 1.61544 seconds since last progress
+processing entry 13000 out of 46280 : 0.489392 seconds since last progress
+processing entry 14000 out of 46280 : 1.42905 seconds since last progress
+processing entry 15000 out of 46280 : 0.464297 seconds since last progress

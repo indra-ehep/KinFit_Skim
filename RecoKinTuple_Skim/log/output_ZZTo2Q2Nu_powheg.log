@@ -1,0 +1,34 @@
+-1 of -1
+ZZTo2Q2Nu_powheg
+pos : 18446744073709551615
+sampleType : ZZTo2Q2Nu_powheg,  systematicType : 
+Dilepton Sample :0
+. ZZTo2Q2Nu_powheg 
+. ZZTo2Q2Nu_powheg 
+./ZZTo2Q2Nu_powheg_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.296199
+XS = 4.04
+lumi = 35921.9
+nEvents_MC = 489955
+Total Entries : 172
+processing entry 0 out of 172 : 23.3366 seconds since last progress
+processing entry 10 out of 172 : 0.00171455 seconds since last progress
+processing entry 20 out of 172 : 0.00369755 seconds since last progress
+processing entry 30 out of 172 : 0.000513428 seconds since last progress
+processing entry 40 out of 172 : 0.000590914 seconds since last progress
+processing entry 50 out of 172 : 0.0004489 seconds since last progress
+processing entry 60 out of 172 : 0.00035869 seconds since last progress
+processing entry 70 out of 172 : 0.00039033 seconds since last progress
+processing entry 80 out of 172 : 0.000343233 seconds since last progress
+processing entry 90 out of 172 : 0.000583036 seconds since last progress
+processing entry 100 out of 172 : 0.000427457 seconds since last progress
+processing entry 110 out of 172 : 0.000370962 seconds since last progress
+processing entry 120 out of 172 : 0.000585411 seconds since last progress
+processing entry 130 out of 172 : 0.000342875 seconds since last progress
+processing entry 140 out of 172 : 0.000398179 seconds since last progress
+processing entry 150 out of 172 : 0.000645286 seconds since last progress
+processing entry 160 out of 172 : 0.000521741 seconds since last progress
+processing entry 170 out of 172 : 0.000443797 seconds since last progress

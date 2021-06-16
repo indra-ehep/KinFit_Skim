@@ -1,0 +1,40 @@
+5 of 6
+QCD_Pt120to170_Ele
+pos : 18446744073709551615
+sampleType : QCD_Pt120to170_Ele,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt120to170_Ele 
+. QCD_Pt120to170_Ele 
+./QCD_Pt120to170_Ele_RecoKinTuple_Skim_5of6.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 62.8004
+XS = 62964
+lumi = 35921.9
+nEvents_MC = 3.60154e+07
+Total Entries : 44892
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 30000 out of 44892 : 63.4635 seconds since last progress
+processing entry 31000 out of 44892 : 0.0765812 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 32000 out of 44892 : 2.97358 seconds since last progress
+processing entry 33000 out of 44892 : 0.29065 seconds since last progress
+processing entry 34000 out of 44892 : 0.15039 seconds since last progress
+processing entry 35000 out of 44892 : 0.0777728 seconds since last progress
+processing entry 36000 out of 44892 : 0.18542 seconds since last progress
+processing entry 37000 out of 44892 : 0.647665 seconds since last progress

@@ -1,0 +1,39 @@
+-1 of -1
+QCD_Pt470to600_Mu_ext1
+pos : 18446744073709551615
+sampleType : QCD_Pt470to600_Mu_ext1,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt470to600_Mu_ext1 
+. QCD_Pt470to600_Mu_ext1 
+./QCD_Pt470to600_Mu_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 0.500765
+XS = 79.0255
+lumi = 35921.9
+nEvents_MC = 5.66882e+06
+Total Entries : 18669
+processing entry 0 out of 18669 : 29.5732 seconds since last progress
+processing entry 1000 out of 18669 : 14.5465 seconds since last progress
+processing entry 2000 out of 18669 : 1.43713 seconds since last progress
+processing entry 3000 out of 18669 : 3.82281 seconds since last progress
+processing entry 4000 out of 18669 : 1.89402 seconds since last progress
+processing entry 5000 out of 18669 : 4.5058 seconds since last progress
+processing entry 6000 out of 18669 : 1.97181 seconds since last progress
+processing entry 7000 out of 18669 : 4.37427 seconds since last progress
+processing entry 8000 out of 18669 : 5.48836 seconds since last progress
+processing entry 9000 out of 18669 : 8.22737 seconds since last progress
+processing entry 10000 out of 18669 : 1.19281 seconds since last progress
+processing entry 11000 out of 18669 : 4.76382 seconds since last progress
+processing entry 12000 out of 18669 : 5.86788 seconds since last progress
+processing entry 13000 out of 18669 : 0.609092 seconds since last progress
+processing entry 14000 out of 18669 : 8.96165 seconds since last progress
+processing entry 15000 out of 18669 : 0.996275 seconds since last progress
+processing entry 16000 out of 18669 : 3.40553 seconds since last progress
+processing entry 17000 out of 18669 : 2.72022 seconds since last progress
+processing entry 18000 out of 18669 : 2.20091 seconds since last progress

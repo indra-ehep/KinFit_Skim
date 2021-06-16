@@ -1,0 +1,31 @@
+-1 of -1
+WWTo4Q_powheg
+pos : 18446744073709551615
+sampleType : WWTo4Q_powheg,  systematicType : 
+Dilepton Sample :0
+. WWTo4Q_powheg 
+. WWTo4Q_powheg 
+./WWTo4Q_powheg_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.929737
+XS = 51.723
+lumi = 35921.9
+nEvents_MC = 1.9984e+06
+Total Entries : 719
+processing entry 0 out of 719 : 25.9388 seconds since last progress
+processing entry 50 out of 719 : 0.00660231 seconds since last progress
+processing entry 100 out of 719 : 0.00395216 seconds since last progress
+processing entry 150 out of 719 : 0.00279253 seconds since last progress
+processing entry 200 out of 719 : 0.00444244 seconds since last progress
+processing entry 250 out of 719 : 0.0187485 seconds since last progress
+processing entry 300 out of 719 : 0.0132044 seconds since last progress
+processing entry 350 out of 719 : 0.0031058 seconds since last progress
+processing entry 400 out of 719 : 0.00325183 seconds since last progress
+processing entry 450 out of 719 : 0.00279496 seconds since last progress
+processing entry 500 out of 719 : 0.0032539 seconds since last progress
+processing entry 550 out of 719 : 0.00323274 seconds since last progress
+processing entry 600 out of 719 : 0.00275752 seconds since last progress
+processing entry 650 out of 719 : 0.00530312 seconds since last progress
+processing entry 700 out of 719 : 0.00300776 seconds since last progress

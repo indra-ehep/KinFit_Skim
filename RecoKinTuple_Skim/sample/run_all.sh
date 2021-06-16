@@ -1,6 +1,6 @@
 #!/bin/bash
 
-execdir=/home/idas/t3store3/git/KinFit_Skim/RecoKinTuple_Skim 
+execdir=/eos/user/i/idas/CMS-Analysis/KinFit_Skim/RecoKinTuple_Skim
 
 function cpucount(){
 
@@ -21,8 +21,8 @@ function cpucount(){
 }
 
 ######## Set the following values ##############
-maxnofcpuauproc=45
-nsec=5
+maxnofcpuauproc=10
+nsec=20
 ################################################
 
 
@@ -62,7 +62,7 @@ do
 	    fi
 	done
     done
-done < $execdir/sample/fl_save.txt
+done < $1
 
 #source $execdir/sample/Skim_NanoAOD_FileLists_cff.sh
 # sample=ST_tbar_channel

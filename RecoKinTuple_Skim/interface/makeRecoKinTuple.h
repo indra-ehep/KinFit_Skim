@@ -65,7 +65,7 @@ class makeRecoKinTuple {
   string	systematicType;
 
   int	eventNum = -1;
-
+  
   bool	isSystematicRun;
 
   bool	useGenWeightScaling;
@@ -91,6 +91,7 @@ class makeRecoKinTuple {
   Long64_t		 _event;
   Int_t			 _lumis;
   Bool_t		 _isData;
+  Long64_t               _skim_entryId;
 
   Float_t		 _PUweight;
   Float_t		 _PUweight_Up;
@@ -356,12 +357,13 @@ class makeRecoKinTuple {
 
 
 void makeRecoKinTuple::InitBranches(){
-
+  
     outputTree->Branch("run"			, &_run				);
     outputTree->Branch("event"			, &_event			);    
     outputTree->Branch("lumis"			, &_lumis			);
     outputTree->Branch("isData"			, &_isData			);
- 
+    outputTree->Branch("skim_entryId"  		, &_skim_entryId       		);
+    
     outputTree->Branch("PUweight"		, &_PUweight			);
     if (!isSystematicRun){
 	outputTree->Branch("PUweight_Up"	, &_PUweight_Up			);
@@ -372,13 +374,13 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("q2weight_Up"	, &_q2weight_Up			);
 	outputTree->Branch("q2weight_Do"	, &_q2weight_Do			);
 	outputTree->Branch("q2weight_nominal"	, &_q2weight_nominal		);
-	outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		);
+	//outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		);
 
 	outputTree->Branch("pdfWeight"		, &_pdfWeight			);
 	outputTree->Branch("pdfuncer"		, &_pdfuncer			);
 	outputTree->Branch("pdfweight_Up"	, &_pdfweight_Up		);
 	outputTree->Branch("pdfweight_Do"	, &_pdfweight_Do		);
-	outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		);
+	//outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		);
 
 	outputTree->Branch("ISRweight_Up"	, &_ISRweight_Up		);
 	outputTree->Branch("ISRweight_Do"	, &_ISRweight_Do		);
@@ -392,14 +394,14 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("prefireSF_Up"	, &_prefireSF_Up		);
 	outputTree->Branch("prefireSF_Do"	, &_prefireSF_Do		);
     }
-    outputTree->Branch("btagWeight"		, &_btagWeight			);
+    //outputTree->Branch("btagWeight"		, &_btagWeight			);
     outputTree->Branch("btagWeight_1a"		, &_btagWeight_1a		);
     //outputTree->Branch("btagWeight_1a_corr"    	, &_btagWeight_1a_corr		);
     if (!isSystematicRun){
-	outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		);
-	outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		);
-	outputTree->Branch("btagWeight_l_Up"	, &_btagWeight_l_Up		);
-	outputTree->Branch("btagWeight_l_Do"	, &_btagWeight_l_Do		);
+	/* outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		); */
+	/* outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		); */
+	/* outputTree->Branch("btagWeight_l_Up"	, &_btagWeight_l_Up		); */
+	/* outputTree->Branch("btagWeight_l_Do"	, &_btagWeight_l_Do		); */
 	outputTree->Branch("btagWeight_1a_b_Up"	, &_btagWeight_1a_b_Up		);
 	outputTree->Branch("btagWeight_1a_b_Do"	, &_btagWeight_1a_b_Do		);
 	outputTree->Branch("btagWeight_1a_l_Up"	, &_btagWeight_1a_l_Up		);
@@ -407,10 +409,10 @@ void makeRecoKinTuple::InitBranches(){
     }
     outputTree->Branch("btagSF"			, &_btagSF			);
     if (!isSystematicRun){
-      outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			);
-      outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			);
-      outputTree->Branch("btagSF_l_Up"		, &_btagSF_l_Up			);
-      outputTree->Branch("btagSF_l_Do"		, &_btagSF_l_Do			);
+      /* outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			); */
+      /* outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			); */
+      /* outputTree->Branch("btagSF_l_Up"		, &_btagSF_l_Up			); */
+      /* outputTree->Branch("btagSF_l_Do"		, &_btagSF_l_Do			); */
     }
     outputTree->Branch("muEffWeight"		, &_muEffWeight			);
     outputTree->Branch("muEffWeight_IdIso"	, &_muEffWeight_IdIso		);
@@ -454,42 +456,42 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("nu_pz_other"		, &_nu_pz_other			);
     outputTree->Branch("WtransMass"		, &_WtransMass			);
 
-    outputTree->Branch("hasConv"		, &_hasConv			);
-    outputTree->Branch("hasRDPass"	       	, &_hasRDPass			);
-    outputTree->Branch("ltype"		        , &_ltype			);
-    outputTree->Branch("ltypekF"       	        , &_ltypekF			);
-    outputTree->Branch("chi2"			, &_chi2			);
-    outputTree->Branch("NDF"			, &_NDF				);
-    outputTree->Branch("Nbiter"			, &_Nbiter			);
-    outputTree->Branch("M_jj"			, &_M_jj			);
-    outputTree->Branch("M_jjkF"			, &_M_jjkF			);
-    outputTree->Branch("bjlep_id"		, &_bjlep_id			);
-    outputTree->Branch("bjhad_id"		, &_bjhad_id			);
-    outputTree->Branch("cjhad_id"		, &_cjhad_id			);
-    outputTree->Branch("sjhad_id"		, &_sjhad_id			);
-    outputTree->Branch("lepPt"			, &_lepPt			);
-    outputTree->Branch("lepEta"			, &_lepEta			);
-    outputTree->Branch("lepPhi"			, &_lepPhi			);
-    outputTree->Branch("lepEnergy"		, &_lepEnergy			);
-    outputTree->Branch("metPx"			, &_metPx			);
-    outputTree->Branch("metPy"			, &_metPy			);
-    outputTree->Branch("metPz"			, &_metPz			);
-    outputTree->Branch("jetBlepPt"		, &_jetBlepPt			);
-    outputTree->Branch("jetBlepEta"		, &_jetBlepEta			);
-    outputTree->Branch("jetBlepPhi"		, &_jetBlepPhi			);
-    outputTree->Branch("jetBlepEnergy"		, &_jetBlepEnergy		);
-    outputTree->Branch("jetBhadPt"		, &_jetBhadPt			);
-    outputTree->Branch("jetBhadEta"		, &_jetBhadEta			);
-    outputTree->Branch("jetBhadPhi"		, &_jetBhadPhi			);
-    outputTree->Branch("jetBhadEnergy"		, &_jetBhadEnergy		);
-    outputTree->Branch("jetChadPt"		, &_jetChadPt			);
-    outputTree->Branch("jetChadEta"		, &_jetChadEta			);
-    outputTree->Branch("jetChadPhi"		, &_jetChadPhi			);
-    outputTree->Branch("jetChadEnergy"		, &_jetChadEnergy		);
-    outputTree->Branch("jetShadPt"		, &_jetShadPt			);
-    outputTree->Branch("jetShadEta"		, &_jetShadEta			);
-    outputTree->Branch("jetShadPhi"		, &_jetShadPhi			);
-    outputTree->Branch("jetShadEnergy"		, &_jetShadEnergy		);
+    /* outputTree->Branch("hasConv"		, &_hasConv			); */
+    /* outputTree->Branch("hasRDPass"	       	, &_hasRDPass			); */
+    /* outputTree->Branch("ltype"		        , &_ltype			); */
+    /* outputTree->Branch("ltypekF"       	        , &_ltypekF			); */
+    /* outputTree->Branch("chi2"			, &_chi2			); */
+    /* outputTree->Branch("NDF"			, &_NDF				); */
+    /* outputTree->Branch("Nbiter"			, &_Nbiter			); */
+    /* outputTree->Branch("M_jj"			, &_M_jj			); */
+    /* outputTree->Branch("M_jjkF"			, &_M_jjkF			); */
+    /* outputTree->Branch("bjlep_id"		, &_bjlep_id			); */
+    /* outputTree->Branch("bjhad_id"		, &_bjhad_id			); */
+    /* outputTree->Branch("cjhad_id"		, &_cjhad_id			); */
+    /* outputTree->Branch("sjhad_id"		, &_sjhad_id			); */
+    /* outputTree->Branch("lepPt"			, &_lepPt			); */
+    /* outputTree->Branch("lepEta"			, &_lepEta			); */
+    /* outputTree->Branch("lepPhi"			, &_lepPhi			); */
+    /* outputTree->Branch("lepEnergy"		, &_lepEnergy			); */
+    /* outputTree->Branch("metPx"			, &_metPx			); */
+    /* outputTree->Branch("metPy"			, &_metPy			); */
+    /* outputTree->Branch("metPz"			, &_metPz			); */
+    /* outputTree->Branch("jetBlepPt"		, &_jetBlepPt			); */
+    /* outputTree->Branch("jetBlepEta"		, &_jetBlepEta			); */
+    /* outputTree->Branch("jetBlepPhi"		, &_jetBlepPhi			); */
+    /* outputTree->Branch("jetBlepEnergy"		, &_jetBlepEnergy		); */
+    /* outputTree->Branch("jetBhadPt"		, &_jetBhadPt			); */
+    /* outputTree->Branch("jetBhadEta"		, &_jetBhadEta			); */
+    /* outputTree->Branch("jetBhadPhi"		, &_jetBhadPhi			); */
+    /* outputTree->Branch("jetBhadEnergy"		, &_jetBhadEnergy		); */
+    /* outputTree->Branch("jetChadPt"		, &_jetChadPt			); */
+    /* outputTree->Branch("jetChadEta"		, &_jetChadEta			); */
+    /* outputTree->Branch("jetChadPhi"		, &_jetChadPhi			); */
+    /* outputTree->Branch("jetChadEnergy"		, &_jetChadEnergy		); */
+    /* outputTree->Branch("jetShadPt"		, &_jetShadPt			); */
+    /* outputTree->Branch("jetShadEta"		, &_jetShadEta			); */
+    /* outputTree->Branch("jetShadPhi"		, &_jetShadPhi			); */
+    /* outputTree->Branch("jetShadEnergy"		, &_jetShadEnergy		); */
 
     outputTree->Branch("nEle"			, &_nEle			); 
     outputTree->Branch("nEleLoose"		, &_nEleLoose			); 
@@ -512,11 +514,12 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("jetPhi"			, &_jetPhi			); 
     outputTree->Branch("jetMass"		, &_jetMass			);
 
-    outputTree->Branch("nfwdJet"		, &_nfwdJet			);
-    outputTree->Branch("fwdJetPt"		, &_fwdJetPt			);
-    outputTree->Branch("fwdJetEta"		, &_fwdJetEta			);
-    outputTree->Branch("fwdJetPhi"		, &_fwdJetPhi			);
-    outputTree->Branch("fwdJetMass"		, &_fwdJetMass			);
+    /* outputTree->Branch("nfwdJet"		, &_nfwdJet			); */
+    /* outputTree->Branch("fwdJetPt"		, &_fwdJetPt			); */
+    /* outputTree->Branch("fwdJetEta"		, &_fwdJetEta			); */
+    /* outputTree->Branch("fwdJetPhi"		, &_fwdJetPhi			); */
+    /* outputTree->Branch("fwdJetMass"		, &_fwdJetMass			); */
+
     if (!isSystematicRun){
 	/* outputTree->Branch("jetCMVA"		, &_jetCMVA			); */
 	/* outputTree->Branch("jetCSVV2"	, &_jetCSVV2			); */
@@ -545,8 +548,8 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("genJetHadronFlavour", &_genJetHadronFlavour		); 
     }
 
-    outputTree->Branch("M3"			, &_M3				); 
-    outputTree->Branch("HT"			, &_HT				); 
+    /* outputTree->Branch("M3"			, &_M3				);  */
+    /* outputTree->Branch("HT"			, &_HT				);  */
 
     outputTree->Branch("passPresel_Ele"		, &_passPresel_Ele		); 
     outputTree->Branch("passPresel_Mu"		, &_passPresel_Mu		);

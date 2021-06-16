@@ -1,0 +1,33 @@
+-1 of -1
+TTWtoLNu_ext1
+pos : 18446744073709551615
+sampleType : TTWtoLNu_ext1,  systematicType : 
+Dilepton Sample :0
+. TTWtoLNu_ext1 
+. TTWtoLNu_ext1 
+./TTWtoLNu_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.0100273
+XS = 0.2043
+lumi = 35921.9
+nEvents_MC = 731888
+Total Entries : 1079122
+processing entry 0 out of 1079122 : 25.0554 seconds since last progress
+processing entry 100000 out of 1079122 : 3595.49 seconds since last progress
+processing entry 200000 out of 1079122 : 3336.63 seconds since last progress
+processing entry 300000 out of 1079122 : 3297.25 seconds since last progress
+PV 1
+    ndof=129   (>4)
+    pX=0.102844   (<2)
+    pY=0.170654   (<2)
+    pZ=-0.970268   (<24)
+processing entry 400000 out of 1079122 : 3290.6 seconds since last progress
+processing entry 500000 out of 1079122 : 3342.7 seconds since last progress
+processing entry 600000 out of 1079122 : 3293.05 seconds since last progress
+processing entry 700000 out of 1079122 : 3484.77 seconds since last progress
+processing entry 800000 out of 1079122 : 3286.47 seconds since last progress
+processing entry 900000 out of 1079122 : 3298.63 seconds since last progress
+processing entry 1000000 out of 1079122 : 3622.21 seconds since last progress
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session

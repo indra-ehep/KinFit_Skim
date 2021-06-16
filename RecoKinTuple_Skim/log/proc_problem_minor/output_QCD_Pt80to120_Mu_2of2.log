@@ -1,0 +1,40 @@
+2 of 2
+QCD_Pt80to120_Mu
+pos : 18446744073709551615
+sampleType : QCD_Pt80to120_Mu,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt80to120_Mu 
+. QCD_Pt80to120_Mu 
+./QCD_Pt80to120_Mu_RecoKinTuple_Skim_2of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 275.523
+XS = 106034
+lumi = 35921.9
+nEvents_MC = 1.38243e+07
+Total Entries : 31204
+processing entry 16000 out of 31204 : 34.127 seconds since last progress
+processing entry 17000 out of 31204 : 0.149736 seconds since last progress
+processing entry 18000 out of 31204 : 0.156837 seconds since last progress
+processing entry 19000 out of 31204 : 0.283426 seconds since last progress
+processing entry 20000 out of 31204 : 0.122599 seconds since last progress
+processing entry 21000 out of 31204 : 0.0738907 seconds since last progress
+processing entry 22000 out of 31204 : 0.151276 seconds since last progress
+processing entry 23000 out of 31204 : 0.147461 seconds since last progress
+processing entry 24000 out of 31204 : 0.287273 seconds since last progress
+processing entry 25000 out of 31204 : 0.146553 seconds since last progress
+processing entry 26000 out of 31204 : 0.162191 seconds since last progress
+processing entry 27000 out of 31204 : 0.150162 seconds since last progress
+processing entry 28000 out of 31204 : 0.138276 seconds since last progress
+processing entry 29000 out of 31204 : 0.183706 seconds since last progress
+processing entry 30000 out of 31204 : 0.16407 seconds since last progress
+processing entry 31000 out of 31204 : 0.085533 seconds since last progress

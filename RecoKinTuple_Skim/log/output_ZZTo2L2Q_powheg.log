@@ -1,0 +1,47 @@
+-1 of -1
+ZZTo2L2Q_powheg
+pos : 18446744073709551615
+sampleType : ZZTo2L2Q_powheg,  systematicType : 
+Dilepton Sample :0
+. ZZTo2L2Q_powheg 
+. ZZTo2L2Q_powheg 
+./ZZTo2L2Q_powheg_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.237339
+XS = 3.28
+lumi = 35921.9
+nEvents_MC = 496436
+Total Entries : 256386
+processing entry 0 out of 256386 : 33.7824 seconds since last progress
+processing entry 10000 out of 256386 : 7.88051 seconds since last progress
+PV 1
+    ndof=176.5   (>4)
+    pX=0.10321   (<2)
+    pY=0.170654   (<2)
+    pZ=-3.62082   (<24)
+processing entry 20000 out of 256386 : 3.12044 seconds since last progress
+processing entry 30000 out of 256386 : 3.19607 seconds since last progress
+processing entry 40000 out of 256386 : 2.76399 seconds since last progress
+processing entry 50000 out of 256386 : 3.37756 seconds since last progress
+processing entry 60000 out of 256386 : 3.25598 seconds since last progress
+processing entry 70000 out of 256386 : 2.85087 seconds since last progress
+processing entry 80000 out of 256386 : 2.42084 seconds since last progress
+processing entry 90000 out of 256386 : 2.74047 seconds since last progress
+processing entry 100000 out of 256386 : 3.52722 seconds since last progress
+processing entry 110000 out of 256386 : 7.24292 seconds since last progress
+processing entry 120000 out of 256386 : 6.40199 seconds since last progress
+processing entry 130000 out of 256386 : 2.11937 seconds since last progress
+processing entry 140000 out of 256386 : 3.36433 seconds since last progress
+processing entry 150000 out of 256386 : 2.46439 seconds since last progress
+processing entry 160000 out of 256386 : 2.73085 seconds since last progress
+processing entry 170000 out of 256386 : 3.01907 seconds since last progress
+processing entry 180000 out of 256386 : 4.5176 seconds since last progress
+processing entry 190000 out of 256386 : 1.91876 seconds since last progress
+processing entry 200000 out of 256386 : 2.80448 seconds since last progress
+processing entry 210000 out of 256386 : 4.63115 seconds since last progress
+processing entry 220000 out of 256386 : 2.75512 seconds since last progress
+processing entry 230000 out of 256386 : 2.60624 seconds since last progress
+processing entry 240000 out of 256386 : 1.76233 seconds since last progress
+processing entry 250000 out of 256386 : 2.75762 seconds since last progress

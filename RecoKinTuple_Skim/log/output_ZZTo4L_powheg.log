@@ -1,0 +1,42 @@
+-1 of -1
+ZZTo4L_powheg
+pos : 18446744073709551615
+sampleType : ZZTo4L_powheg,  systematicType : 
+Dilepton Sample :0
+. ZZTo4L_powheg 
+. ZZTo4L_powheg 
+./ZZTo4L_powheg_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.00744074
+XS = 1.3816
+lumi = 35921.9
+nEvents_MC = 6.66999e+06
+Total Entries : 2014035
+processing entry 0 out of 2014035 : 37.1271 seconds since last progress
+processing entry 100000 out of 2014035 : 20.9995 seconds since last progress
+processing entry 200000 out of 2014035 : 22.674 seconds since last progress
+processing entry 300000 out of 2014035 : 20.8926 seconds since last progress
+processing entry 400000 out of 2014035 : 21.9382 seconds since last progress
+processing entry 500000 out of 2014035 : 22.5178 seconds since last progress
+processing entry 600000 out of 2014035 : 23.4301 seconds since last progress
+processing entry 700000 out of 2014035 : 24.0686 seconds since last progress
+processing entry 800000 out of 2014035 : 22.691 seconds since last progress
+processing entry 900000 out of 2014035 : 19.5937 seconds since last progress
+processing entry 1000000 out of 2014035 : 19.6807 seconds since last progress
+processing entry 1100000 out of 2014035 : 19.5597 seconds since last progress
+processing entry 1200000 out of 2014035 : 19.4424 seconds since last progress
+processing entry 1300000 out of 2014035 : 18.9949 seconds since last progress
+processing entry 1400000 out of 2014035 : 15.1714 seconds since last progress
+PV 1
+    ndof=49.5   (>4)
+    pX=0.101929   (<2)
+    pY=0.171753   (<2)
+    pZ=11.1808   (<24)
+processing entry 1500000 out of 2014035 : 18.8638 seconds since last progress
+processing entry 1600000 out of 2014035 : 21.5303 seconds since last progress
+processing entry 1700000 out of 2014035 : 22.6643 seconds since last progress
+processing entry 1800000 out of 2014035 : 18.8833 seconds since last progress
+processing entry 1900000 out of 2014035 : 19.3969 seconds since last progress
+processing entry 2000000 out of 2014035 : 19.0415 seconds since last progress

@@ -1,0 +1,28 @@
+-1 of -1
+WZTo1L3Nu_amcatnlo
+pos : 18446744073709551615
+sampleType : WZTo1L3Nu_amcatnlo,  systematicType : 
+Dilepton Sample :0
+. WZTo1L3Nu_amcatnlo 
+. WZTo1L3Nu_amcatnlo 
+./WZTo1L3Nu_amcatnlo_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.0116427
+XS = 3.033
+lumi = 35921.9
+nEvents_MC = 9.3579e+06
+Total Entries : 557671
+processing entry 0 out of 557671 : 24.8964 seconds since last progress
+processing entry 50000 out of 557671 : 12.2575 seconds since last progress
+processing entry 100000 out of 557671 : 7.23677 seconds since last progress
+processing entry 150000 out of 557671 : 16.777 seconds since last progress
+processing entry 200000 out of 557671 : 8.59941 seconds since last progress
+processing entry 250000 out of 557671 : 14.9977 seconds since last progress
+processing entry 300000 out of 557671 : 7.0668 seconds since last progress
+processing entry 350000 out of 557671 : 7.85975 seconds since last progress
+processing entry 400000 out of 557671 : 22.7408 seconds since last progress
+processing entry 450000 out of 557671 : 6.53524 seconds since last progress
+processing entry 500000 out of 557671 : 10.5849 seconds since last progress
+processing entry 550000 out of 557671 : 7.72328 seconds since last progress

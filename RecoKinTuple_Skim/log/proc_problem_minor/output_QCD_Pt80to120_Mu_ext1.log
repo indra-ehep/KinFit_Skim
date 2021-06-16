@@ -1,0 +1,43 @@
+-1 of -1
+QCD_Pt80to120_Mu_ext1
+pos : 18446744073709551615
+sampleType : QCD_Pt80to120_Mu_ext1,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt80to120_Mu_ext1 
+. QCD_Pt80to120_Mu_ext1 
+./QCD_Pt80to120_Mu_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 388.234
+XS = 106034
+lumi = 35921.9
+nEvents_MC = 9.8109e+06
+Total Entries : 22251
+processing entry 0 out of 22251 : 26.2348 seconds since last progress
+processing entry 1000 out of 22251 : 0.0699914 seconds since last progress
+processing entry 2000 out of 22251 : 1.24537 seconds since last progress
+processing entry 3000 out of 22251 : 0.115718 seconds since last progress
+processing entry 4000 out of 22251 : 0.164581 seconds since last progress
+processing entry 5000 out of 22251 : 0.0888658 seconds since last progress
+processing entry 6000 out of 22251 : 0.139306 seconds since last progress
+processing entry 7000 out of 22251 : 0.159147 seconds since last progress
+processing entry 8000 out of 22251 : 0.249818 seconds since last progress
+processing entry 9000 out of 22251 : 0.144621 seconds since last progress
+processing entry 10000 out of 22251 : 0.0804345 seconds since last progress
+processing entry 11000 out of 22251 : 0.157406 seconds since last progress
+processing entry 12000 out of 22251 : 0.133582 seconds since last progress
+processing entry 13000 out of 22251 : 0.139034 seconds since last progress
+processing entry 14000 out of 22251 : 0.136919 seconds since last progress
+processing entry 15000 out of 22251 : 0.248398 seconds since last progress
+processing entry 16000 out of 22251 : 0.0931584 seconds since last progress
+processing entry 17000 out of 22251 : 0.13145 seconds since last progress
+processing entry 18000 out of 22251 : 0.129763 seconds since last progress
+processing entry 19000 out of 22251 : 0.130337 seconds since last progress
+processing entry 20000 out of 22251 : 0.122777 seconds since last progress
+processing entry 21000 out of 22251 : 0.115862 seconds since last progress
+processing entry 22000 out of 22251 : 0.118651 seconds since last progress

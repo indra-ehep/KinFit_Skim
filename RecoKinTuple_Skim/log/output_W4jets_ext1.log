@@ -1,0 +1,28 @@
+-1 of -1
+W4jets_ext1
+pos : 18446744073709551615
+sampleType : W4jets_ext1,  systematicType : 
+Dilepton Sample :0
+. W4jets_ext1 
+. W4jets_ext1 
+./W4jets_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 10.273
+XS = 592.918
+lumi = 35921.9
+nEvents_MC = 2.07328e+06
+Total Entries : 597568
+processing entry 0 out of 597568 : 23.7645 seconds since last progress
+processing entry 50000 out of 597568 : 21.1492 seconds since last progress
+processing entry 100000 out of 597568 : 29.1495 seconds since last progress
+processing entry 150000 out of 597568 : 23.4501 seconds since last progress
+processing entry 200000 out of 597568 : 18.6734 seconds since last progress
+processing entry 250000 out of 597568 : 23.712 seconds since last progress
+processing entry 300000 out of 597568 : 28.5378 seconds since last progress
+processing entry 350000 out of 597568 : 21.4908 seconds since last progress
+processing entry 400000 out of 597568 : 22.1526 seconds since last progress
+processing entry 450000 out of 597568 : 27.5476 seconds since last progress
+processing entry 500000 out of 597568 : 23.7063 seconds since last progress
+processing entry 550000 out of 597568 : 24.6425 seconds since last progress

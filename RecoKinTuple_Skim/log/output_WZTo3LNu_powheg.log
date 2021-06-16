@@ -1,0 +1,35 @@
+-1 of -1
+WZTo3LNu_powheg
+pos : 18446744073709551615
+sampleType : WZTo3LNu_powheg,  systematicType : 
+Dilepton Sample :0
+. WZTo3LNu_powheg 
+. WZTo3LNu_powheg 
+./WZTo3LNu_powheg_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.0798321
+XS = 4.42965
+lumi = 35921.9
+nEvents_MC = 1.9932e+06
+Total Entries : 680944
+processing entry 0 out of 680944 : 32.3656 seconds since last progress
+processing entry 50000 out of 680944 : 12.7118 seconds since last progress
+processing entry 100000 out of 680944 : 8.70973 seconds since last progress
+PV 1
+    ndof=88   (>4)
+    pX=0.104065   (<2)
+    pY=0.168579   (<2)
+    pZ=-1.44611   (<24)
+processing entry 150000 out of 680944 : 13.0365 seconds since last progress
+processing entry 200000 out of 680944 : 8.26486 seconds since last progress
+processing entry 250000 out of 680944 : 12.5828 seconds since last progress
+processing entry 300000 out of 680944 : 8.86722 seconds since last progress
+processing entry 350000 out of 680944 : 13.7954 seconds since last progress
+processing entry 400000 out of 680944 : 7.47273 seconds since last progress
+processing entry 450000 out of 680944 : 12.8562 seconds since last progress
+processing entry 500000 out of 680944 : 6.90737 seconds since last progress
+processing entry 550000 out of 680944 : 6.71043 seconds since last progress
+processing entry 600000 out of 680944 : 14.5902 seconds since last progress
+processing entry 650000 out of 680944 : 7.3079 seconds since last progress

@@ -1,0 +1,25 @@
+1 of 3
+DYjetsM10to50
+pos : 18446744073709551615
+sampleType : DYjetsM10to50,  systematicType : 
+Dilepton Sample :0
+. DYjetsM10to50 
+. DYjetsM10to50 
+./DYjetsM10to50_RecoKinTuple_Skim_1of3.root
+HERE
+DONE
+isMC: 1
+Using event weight 19.0376
+XS = 18610
+lumi = 35921.9
+nEvents_MC = 3.5115e+07
+Total Entries : 256409
+processing entry 0 out of 256409 : 65.741 seconds since last progress
+processing entry 10000 out of 256409 : 6.84714 seconds since last progress
+processing entry 20000 out of 256409 : 1.46921 seconds since last progress
+processing entry 30000 out of 256409 : 2.12906 seconds since last progress
+processing entry 40000 out of 256409 : 1.95114 seconds since last progress
+processing entry 50000 out of 256409 : 2.25691 seconds since last progress
+processing entry 60000 out of 256409 : 1.77655 seconds since last progress
+processing entry 70000 out of 256409 : 1.31254 seconds since last progress
+processing entry 80000 out of 256409 : 1.58025 seconds since last progress

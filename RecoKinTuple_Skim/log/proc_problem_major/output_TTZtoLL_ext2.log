@@ -1,0 +1,41 @@
+-1 of -1
+TTZtoLL_ext2
+pos : 18446744073709551615
+sampleType : TTZtoLL_ext2,  systematicType : 
+Dilepton Sample :0
+. TTZtoLL_ext2 
+. TTZtoLL_ext2 
+./TTZtoLL_ext2_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.00664953
+XS = 0.2728
+lumi = 35921.9
+nEvents_MC = 1.47371e+06
+Total Entries : 2324728
+processing entry 0 out of 2324728 : 26.8673 seconds since last progress
+processing entry 100000 out of 2324728 : 2438.46 seconds since last progress
+processing entry 200000 out of 2324728 : 2904.67 seconds since last progress
+processing entry 300000 out of 2324728 : 2806.29 seconds since last progress
+processing entry 400000 out of 2324728 : 2848.5 seconds since last progress
+processing entry 500000 out of 2324728 : 2418.6 seconds since last progress
+processing entry 600000 out of 2324728 : 2209.88 seconds since last progress
+processing entry 700000 out of 2324728 : 2282.61 seconds since last progress
+processing entry 800000 out of 2324728 : 2266.75 seconds since last progress
+processing entry 900000 out of 2324728 : 2343.58 seconds since last progress
+processing entry 1000000 out of 2324728 : 2231.73 seconds since last progress
+processing entry 1100000 out of 2324728 : 2335.22 seconds since last progress
+processing entry 1200000 out of 2324728 : 2306.3 seconds since last progress
+processing entry 1300000 out of 2324728 : 2332.27 seconds since last progress
+processing entry 1400000 out of 2324728 : 2217.03 seconds since last progress
+processing entry 1500000 out of 2324728 : 2256.18 seconds since last progress
+processing entry 1600000 out of 2324728 : 2205.63 seconds since last progress
+processing entry 1700000 out of 2324728 : 2214.82 seconds since last progress
+processing entry 1800000 out of 2324728 : 2365.93 seconds since last progress
+processing entry 1900000 out of 2324728 : 2235.16 seconds since last progress
+processing entry 2000000 out of 2324728 : 2429.37 seconds since last progress
+processing entry 2100000 out of 2324728 : 2385.88 seconds since last progress
+processing entry 2200000 out of 2324728 : 2375.51 seconds since last progress
+processing entry 2300000 out of 2324728 : 2328.55 seconds since last progress
+Error in <TNetXNGFile::Close>: [ERROR] Invalid session

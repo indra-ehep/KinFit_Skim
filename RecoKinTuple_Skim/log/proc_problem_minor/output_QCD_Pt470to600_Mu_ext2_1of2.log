@@ -1,0 +1,49 @@
+1 of 2
+QCD_Pt470to600_Mu_ext2
+pos : 18446744073709551615
+sampleType : QCD_Pt470to600_Mu_ext2,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt470to600_Mu_ext2 
+. QCD_Pt470to600_Mu_ext2 
+./QCD_Pt470to600_Mu_ext2_RecoKinTuple_Skim_1of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 0.288265
+XS = 79.0255
+lumi = 35921.9
+nEvents_MC = 9.8477e+06
+Total Entries : 32299
+processing entry 0 out of 32299 : 54.2023 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 1000 out of 32299 : 5.39249 seconds since last progress
+processing entry 2000 out of 32299 : 3.24861 seconds since last progress
+processing entry 3000 out of 32299 : 1.61943 seconds since last progress
+processing entry 4000 out of 32299 : 3.77385 seconds since last progress
+processing entry 5000 out of 32299 : 1.13178 seconds since last progress
+processing entry 6000 out of 32299 : 1.16548 seconds since last progress
+processing entry 7000 out of 32299 : 1.85701 seconds since last progress
+processing entry 8000 out of 32299 : 6.85302 seconds since last progress
+processing entry 9000 out of 32299 : 1.92147 seconds since last progress
+processing entry 10000 out of 32299 : 5.90249 seconds since last progress
+processing entry 11000 out of 32299 : 1.75013 seconds since last progress
+processing entry 12000 out of 32299 : 6.50163 seconds since last progress
+processing entry 13000 out of 32299 : 4.87866 seconds since last progress
+processing entry 14000 out of 32299 : 4.5451 seconds since last progress
+processing entry 15000 out of 32299 : 7.73422 seconds since last progress
+processing entry 16000 out of 32299 : 4.41334 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight

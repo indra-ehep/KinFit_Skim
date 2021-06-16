@@ -1,0 +1,19 @@
+4 of 6
+DYjetsM50_ext1
+pos : 18446744073709551615
+sampleType : DYjetsM50_ext1,  systematicType : 
+Dilepton Sample :0
+. DYjetsM50_ext1 
+. DYjetsM50_ext1 
+./DYjetsM50_ext1_RecoKinTuple_Skim_4of6.root
+HERE
+DONE
+isMC: 1
+Using event weight 4.38813
+XS = 6077.22
+lumi = 35921.9
+nEvents_MC = 4.9749e+07
+Total Entries : 18549945
+processing entry 10000000 out of 18549945 : 200.115 seconds since last progress
+processing entry 11000000 out of 18549945 : 182.546 seconds since last progress
+processing entry 12000000 out of 18549945 : 220.747 seconds since last progress

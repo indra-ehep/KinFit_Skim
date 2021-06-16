@@ -1,0 +1,21 @@
+1 of 3
+ZZTo2Q2Nu_amcatnlo
+pos : 18446744073709551615
+sampleType : ZZTo2Q2Nu_amcatnlo,  systematicType : 
+Dilepton Sample :0
+. ZZTo2Q2Nu_amcatnlo 
+. ZZTo2Q2Nu_amcatnlo 
+./ZZTo2Q2Nu_amcatnlo_RecoKinTuple_Skim_1of3.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.000729168
+XS = 4.04
+lumi = 35921.9
+nEvents_MC = 1.99027e+08
+Total Entries : 12820
+processing entry 0 out of 12820 : 55.3973 seconds since last progress
+processing entry 1000 out of 12820 : 2.87419 seconds since last progress
+processing entry 2000 out of 12820 : 0.215861 seconds since last progress
+processing entry 3000 out of 12820 : 0.653951 seconds since last progress
+processing entry 4000 out of 12820 : 0.142955 seconds since last progress

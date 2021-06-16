@@ -1,0 +1,26 @@
+6 of 6
+QCD_Pt300to470_Mu_ext2
+pos : 18446744073709551615
+sampleType : QCD_Pt300to470_Mu_ext2,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt300to470_Mu_ext2 
+. QCD_Pt300to470_Mu_ext2 
+./QCD_Pt300to470_Mu_ext2_RecoKinTuple_Skim_6of6.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 1.16406
+XS = 797.353
+lumi = 35921.9
+nEvents_MC = 2.46055e+07
+Total Entries : 69327
+processing entry 60000 out of 69327 : 80.9864 seconds since last progress
+processing entry 65000 out of 69327 : 7.76907 seconds since last progress

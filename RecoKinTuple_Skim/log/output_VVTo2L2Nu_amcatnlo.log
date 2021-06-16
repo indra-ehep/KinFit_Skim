@@ -1,0 +1,31 @@
+-1 of -1
+VVTo2L2Nu_amcatnlo
+pos : 18446744073709551615
+sampleType : VVTo2L2Nu_amcatnlo,  systematicType : 
+Dilepton Sample :0
+. VVTo2L2Nu_amcatnlo 
+. VVTo2L2Nu_amcatnlo 
+./VVTo2L2Nu_amcatnlo_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.00680046
+XS = 11.95
+lumi = 35921.9
+nEvents_MC = 6.31232e+07
+Total Entries : 1490596
+processing entry 0 out of 1490596 : 46.2424 seconds since last progress
+processing entry 100000 out of 1490596 : 25.6934 seconds since last progress
+processing entry 200000 out of 1490596 : 27.4337 seconds since last progress
+processing entry 300000 out of 1490596 : 22.3566 seconds since last progress
+processing entry 400000 out of 1490596 : 19.9431 seconds since last progress
+processing entry 500000 out of 1490596 : 22.6314 seconds since last progress
+processing entry 600000 out of 1490596 : 20.9651 seconds since last progress
+processing entry 700000 out of 1490596 : 20.7636 seconds since last progress
+processing entry 800000 out of 1490596 : 19.3125 seconds since last progress
+processing entry 900000 out of 1490596 : 21.4024 seconds since last progress
+processing entry 1000000 out of 1490596 : 22.2303 seconds since last progress
+processing entry 1100000 out of 1490596 : 20.5838 seconds since last progress
+processing entry 1200000 out of 1490596 : 23.8649 seconds since last progress
+processing entry 1300000 out of 1490596 : 20.191 seconds since last progress
+processing entry 1400000 out of 1490596 : 21.0171 seconds since last progress

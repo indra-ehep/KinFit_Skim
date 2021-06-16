@@ -1,0 +1,41 @@
+1 of 2
+QCD_Pt300toInf_Ele
+pos : 18446744073709551615
+sampleType : QCD_Pt300toInf_Ele,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt300toInf_Ele 
+. QCD_Pt300toInf_Ele 
+./QCD_Pt300toInf_Ele_RecoKinTuple_Skim_1of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 6.57077
+XS = 1350
+lumi = 35921.9
+nEvents_MC = 7.38034e+06
+Total Entries : 25269
+processing entry 0 out of 25269 : 33.3477 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 1000 out of 25269 : 2.81308 seconds since last progress
+processing entry 2000 out of 25269 : 1.05539 seconds since last progress
+processing entry 3000 out of 25269 : 0.154841 seconds since last progress
+processing entry 4000 out of 25269 : 0.140052 seconds since last progress
+processing entry 5000 out of 25269 : 2.77066 seconds since last progress
+processing entry 6000 out of 25269 : 2.16752 seconds since last progress
+processing entry 7000 out of 25269 : 0.854873 seconds since last progress
+processing entry 8000 out of 25269 : 2.91528 seconds since last progress
+processing entry 9000 out of 25269 : 1.14268 seconds since last progress
+processing entry 10000 out of 25269 : 0.146383 seconds since last progress
+processing entry 11000 out of 25269 : 1.15401 seconds since last progress
+processing entry 12000 out of 25269 : 3.71504 seconds since last progress

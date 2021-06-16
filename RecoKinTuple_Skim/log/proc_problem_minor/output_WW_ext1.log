@@ -1,0 +1,39 @@
+-1 of -1
+WW_ext1
+pos : 18446744073709551615
+sampleType : WW_ext1,  systematicType : 
+Dilepton Sample :0
+. WW_ext1 
+. WW_ext1 
+./WW_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 0.389635
+XS = 75.8
+lumi = 35921.9
+nEvents_MC = 6.98828e+06
+Total Entries : 1306830
+processing entry 0 out of 1306830 : 25.4493 seconds since last progress
+processing entry 100000 out of 1306830 : 19.1415 seconds since last progress
+processing entry 200000 out of 1306830 : 20.071 seconds since last progress
+PV 1
+    ndof=45.5   (>4)
+    pX=0.103943   (<2)
+    pY=0.169678   (<2)
+    pZ=5.09906   (<24)
+processing entry 300000 out of 1306830 : 12.9579 seconds since last progress
+processing entry 400000 out of 1306830 : 19.575 seconds since last progress
+processing entry 500000 out of 1306830 : 17.3554 seconds since last progress
+processing entry 600000 out of 1306830 : 16.5102 seconds since last progress
+processing entry 700000 out of 1306830 : 23.0197 seconds since last progress
+processing entry 800000 out of 1306830 : 13.1777 seconds since last progress
+processing entry 900000 out of 1306830 : 19.6869 seconds since last progress
+processing entry 1000000 out of 1306830 : 17.6407 seconds since last progress
+processing entry 1100000 out of 1306830 : 15.5259 seconds since last progress
+processing entry 1200000 out of 1306830 : 20.3544 seconds since last progress
+processing entry 1300000 out of 1306830 : 15.0276 seconds since last progress

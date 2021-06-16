@@ -1,0 +1,40 @@
+2 of 2
+QCD_Pt470to600_Mu_ext2
+pos : 18446744073709551615
+sampleType : QCD_Pt470to600_Mu_ext2,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt470to600_Mu_ext2 
+. QCD_Pt470to600_Mu_ext2 
+./QCD_Pt470to600_Mu_ext2_RecoKinTuple_Skim_2of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 0.288265
+XS = 79.0255
+lumi = 35921.9
+nEvents_MC = 9.8477e+06
+Total Entries : 32299
+processing entry 17000 out of 32299 : 59.4492 seconds since last progress
+processing entry 18000 out of 32299 : 2.84549 seconds since last progress
+processing entry 19000 out of 32299 : 0.472259 seconds since last progress
+processing entry 20000 out of 32299 : 0.59014 seconds since last progress
+processing entry 21000 out of 32299 : 2.04773 seconds since last progress
+processing entry 22000 out of 32299 : 1.39238 seconds since last progress
+processing entry 23000 out of 32299 : 1.08222 seconds since last progress
+processing entry 24000 out of 32299 : 1.14343 seconds since last progress
+processing entry 25000 out of 32299 : 1.85491 seconds since last progress
+processing entry 26000 out of 32299 : 0.406812 seconds since last progress
+processing entry 27000 out of 32299 : 0.584887 seconds since last progress
+processing entry 28000 out of 32299 : 1.16344 seconds since last progress
+processing entry 29000 out of 32299 : 2.58237 seconds since last progress
+processing entry 30000 out of 32299 : 3.81845 seconds since last progress
+processing entry 31000 out of 32299 : 5.3509 seconds since last progress
+processing entry 32000 out of 32299 : 2.04294 seconds since last progress

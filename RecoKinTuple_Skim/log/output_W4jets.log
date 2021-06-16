@@ -1,0 +1,43 @@
+-1 of -1
+W4jets
+pos : 18446744073709551615
+sampleType : W4jets,  systematicType : 
+Dilepton Sample :0
+. W4jets 
+. W4jets 
+./W4jets_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 2.33624
+XS = 592.918
+lumi = 35921.9
+nEvents_MC = 9.11666e+06
+Total Entries : 2639328
+processing entry 0 out of 2639328 : 58.3155 seconds since last progress
+processing entry 100000 out of 2639328 : 70.6134 seconds since last progress
+processing entry 200000 out of 2639328 : 74.5557 seconds since last progress
+processing entry 300000 out of 2639328 : 64.9943 seconds since last progress
+processing entry 400000 out of 2639328 : 61.3677 seconds since last progress
+processing entry 500000 out of 2639328 : 61.2064 seconds since last progress
+processing entry 600000 out of 2639328 : 55.7196 seconds since last progress
+processing entry 700000 out of 2639328 : 56.1184 seconds since last progress
+processing entry 800000 out of 2639328 : 63.0766 seconds since last progress
+processing entry 900000 out of 2639328 : 63.1361 seconds since last progress
+processing entry 1000000 out of 2639328 : 73.2456 seconds since last progress
+processing entry 1100000 out of 2639328 : 61.6441 seconds since last progress
+processing entry 1200000 out of 2639328 : 52.8962 seconds since last progress
+processing entry 1300000 out of 2639328 : 68.3183 seconds since last progress
+processing entry 1400000 out of 2639328 : 68.8222 seconds since last progress
+processing entry 1500000 out of 2639328 : 64.9395 seconds since last progress
+processing entry 1600000 out of 2639328 : 62.6321 seconds since last progress
+processing entry 1700000 out of 2639328 : 58.367 seconds since last progress
+processing entry 1800000 out of 2639328 : 61.595 seconds since last progress
+processing entry 1900000 out of 2639328 : 58.0818 seconds since last progress
+processing entry 2000000 out of 2639328 : 66.6956 seconds since last progress
+processing entry 2100000 out of 2639328 : 59.109 seconds since last progress
+processing entry 2200000 out of 2639328 : 68.3853 seconds since last progress
+processing entry 2300000 out of 2639328 : 50.7285 seconds since last progress
+processing entry 2400000 out of 2639328 : 69.6927 seconds since last progress
+processing entry 2500000 out of 2639328 : 65.0752 seconds since last progress
+processing entry 2600000 out of 2639328 : 69.0609 seconds since last progress

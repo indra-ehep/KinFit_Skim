@@ -1,0 +1,37 @@
+-1 of -1
+WWToLNuQQ_powheg_ext1
+pos : 18446744073709551615
+sampleType : WWToLNuQQ_powheg_ext1,  systematicType : 
+Dilepton Sample :0
+. WWToLNuQQ_powheg_ext1 
+. WWToLNuQQ_powheg_ext1 
+./WWToLNuQQ_powheg_ext1_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.269854
+XS = 49.997
+lumi = 35921.9
+nEvents_MC = 6.6554e+06
+Total Entries : 2061389
+processing entry 0 out of 2061389 : 30.9111 seconds since last progress
+processing entry 100000 out of 2061389 : 27.0725 seconds since last progress
+processing entry 200000 out of 2061389 : 44.0388 seconds since last progress
+processing entry 300000 out of 2061389 : 29.5814 seconds since last progress
+processing entry 400000 out of 2061389 : 26.5524 seconds since last progress
+processing entry 500000 out of 2061389 : 31.4178 seconds since last progress
+processing entry 600000 out of 2061389 : 38.6876 seconds since last progress
+processing entry 700000 out of 2061389 : 39.3205 seconds since last progress
+processing entry 800000 out of 2061389 : 36.0048 seconds since last progress
+processing entry 900000 out of 2061389 : 30.0473 seconds since last progress
+processing entry 1000000 out of 2061389 : 30.0518 seconds since last progress
+processing entry 1100000 out of 2061389 : 32.6962 seconds since last progress
+processing entry 1200000 out of 2061389 : 34.3688 seconds since last progress
+processing entry 1300000 out of 2061389 : 31.3847 seconds since last progress
+processing entry 1400000 out of 2061389 : 30.8929 seconds since last progress
+processing entry 1500000 out of 2061389 : 31.1959 seconds since last progress
+processing entry 1600000 out of 2061389 : 19.3793 seconds since last progress
+processing entry 1700000 out of 2061389 : 32.6798 seconds since last progress
+processing entry 1800000 out of 2061389 : 37.3706 seconds since last progress
+processing entry 1900000 out of 2061389 : 29.9227 seconds since last progress
+processing entry 2000000 out of 2061389 : 28.4621 seconds since last progress

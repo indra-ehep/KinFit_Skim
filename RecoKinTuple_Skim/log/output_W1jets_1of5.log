@@ -1,0 +1,19 @@
+1 of 5
+W1jets
+pos : 18446744073709551615
+sampleType : W1jets,  systematicType : 
+Dilepton Sample :0
+. W1jets 
+. W1jets 
+./W1jets_RecoKinTuple_Skim_1of5.root
+HERE
+DONE
+isMC: 1
+Using event weight 9.66369
+XS = 11775.9
+lumi = 35921.9
+nEvents_MC = 4.37735e+07
+Total Entries : 11012674
+processing entry 0 out of 11012674 : 60.5382 seconds since last progress
+processing entry 1000000 out of 11012674 : 132.015 seconds since last progress
+processing entry 2000000 out of 11012674 : 156.101 seconds since last progress

@@ -1,0 +1,63 @@
+-1 of -1
+ZZTo2L2Nu_powheg
+pos : 18446744073709551615
+sampleType : ZZTo2L2Nu_powheg,  systematicType : 
+Dilepton Sample :0
+. ZZTo2L2Nu_powheg 
+. ZZTo2L2Nu_powheg 
+./ZZTo2L2Nu_powheg_RecoKinTuple_Skim.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.00226831
+XS = 0.564
+lumi = 35921.9
+nEvents_MC = 8.93175e+06
+Total Entries : 4640965
+processing entry 0 out of 4640965 : 60.6723 seconds since last progress
+processing entry 100000 out of 4640965 : 37.7916 seconds since last progress
+processing entry 200000 out of 4640965 : 25.4607 seconds since last progress
+processing entry 300000 out of 4640965 : 26.4359 seconds since last progress
+processing entry 400000 out of 4640965 : 26.413 seconds since last progress
+processing entry 500000 out of 4640965 : 26.2831 seconds since last progress
+processing entry 600000 out of 4640965 : 14.6212 seconds since last progress
+processing entry 700000 out of 4640965 : 25.0024 seconds since last progress
+processing entry 800000 out of 4640965 : 24.3215 seconds since last progress
+processing entry 900000 out of 4640965 : 23.811 seconds since last progress
+processing entry 1000000 out of 4640965 : 24.0694 seconds since last progress
+processing entry 1100000 out of 4640965 : 23.7224 seconds since last progress
+processing entry 1200000 out of 4640965 : 12.9222 seconds since last progress
+processing entry 1300000 out of 4640965 : 26.024 seconds since last progress
+processing entry 1400000 out of 4640965 : 23.0624 seconds since last progress
+processing entry 1500000 out of 4640965 : 23.078 seconds since last progress
+processing entry 1600000 out of 4640965 : 23.1584 seconds since last progress
+processing entry 1700000 out of 4640965 : 23.2342 seconds since last progress
+processing entry 1800000 out of 4640965 : 12.5579 seconds since last progress
+processing entry 1900000 out of 4640965 : 23.2085 seconds since last progress
+processing entry 2000000 out of 4640965 : 33.6833 seconds since last progress
+processing entry 2100000 out of 4640965 : 21.9553 seconds since last progress
+processing entry 2200000 out of 4640965 : 20.46 seconds since last progress
+processing entry 2300000 out of 4640965 : 19.644 seconds since last progress
+processing entry 2400000 out of 4640965 : 12.7244 seconds since last progress
+processing entry 2500000 out of 4640965 : 23.6513 seconds since last progress
+processing entry 2600000 out of 4640965 : 22.8373 seconds since last progress
+processing entry 2700000 out of 4640965 : 20.1527 seconds since last progress
+processing entry 2800000 out of 4640965 : 21.8134 seconds since last progress
+processing entry 2900000 out of 4640965 : 21.9049 seconds since last progress
+processing entry 3000000 out of 4640965 : 13.7784 seconds since last progress
+processing entry 3100000 out of 4640965 : 21.8349 seconds since last progress
+processing entry 3200000 out of 4640965 : 27.3643 seconds since last progress
+processing entry 3300000 out of 4640965 : 26.8873 seconds since last progress
+processing entry 3400000 out of 4640965 : 25.3701 seconds since last progress
+processing entry 3500000 out of 4640965 : 26.3905 seconds since last progress
+processing entry 3600000 out of 4640965 : 14.3354 seconds since last progress
+processing entry 3700000 out of 4640965 : 24.417 seconds since last progress
+processing entry 3800000 out of 4640965 : 23.4793 seconds since last progress
+processing entry 3900000 out of 4640965 : 25.0151 seconds since last progress
+processing entry 4000000 out of 4640965 : 22.4227 seconds since last progress
+processing entry 4100000 out of 4640965 : 22.9203 seconds since last progress
+processing entry 4200000 out of 4640965 : 13.1037 seconds since last progress
+processing entry 4300000 out of 4640965 : 22.1392 seconds since last progress
+processing entry 4400000 out of 4640965 : 22.0408 seconds since last progress
+processing entry 4500000 out of 4640965 : 25.5775 seconds since last progress
+processing entry 4600000 out of 4640965 : 18.4885 seconds since last progress

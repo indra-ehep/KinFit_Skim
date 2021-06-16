@@ -1,0 +1,20 @@
+3 of 3
+W3jets
+pos : 18446744073709551615
+sampleType : W3jets,  systematicType : 
+Dilepton Sample :0
+. W3jets 
+. W3jets 
+./W3jets_RecoKinTuple_Skim_3of3.root
+HERE
+DONE
+isMC: 1
+Using event weight 2.11526
+XS = 1165.81
+lumi = 35921.9
+nEvents_MC = 1.97981e+07
+Total Entries : 5527555
+processing entry 4000000 out of 5527555 : 112.599 seconds since last progress
+processing entry 4500000 out of 5527555 : 117.169 seconds since last progress
+processing entry 5000000 out of 5527555 : 115.056 seconds since last progress
+processing entry 5500000 out of 5527555 : 136.439 seconds since last progress

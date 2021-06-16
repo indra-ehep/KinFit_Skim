@@ -1,0 +1,20 @@
+2 of 3
+WJetsToQQ
+pos : 18446744073709551615
+sampleType : WJetsToQQ,  systematicType : 
+Dilepton Sample :0
+. WJetsToQQ 
+. WJetsToQQ 
+./WJetsToQQ_RecoKinTuple_Skim_2of3.root
+HERE
+DONE
+isMC: 1
+Using event weight 0.150953
+XS = 95.14
+lumi = 35921.9
+nEvents_MC = 2.26402e+07
+Total Entries : 11153
+processing entry 4000 out of 11153 : 72.6379 seconds since last progress
+processing entry 5000 out of 11153 : 0.196967 seconds since last progress
+processing entry 6000 out of 11153 : 0.119469 seconds since last progress
+processing entry 7000 out of 11153 : 0.176421 seconds since last progress

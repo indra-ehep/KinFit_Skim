@@ -1,0 +1,53 @@
+1 of 2
+QCD_Pt800to1000_Mu_ext2
+pos : 18446744073709551615
+sampleType : QCD_Pt800to1000_Mu_ext2,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt800to1000_Mu_ext2 
+. QCD_Pt800to1000_Mu_ext2 
+./QCD_Pt800to1000_Mu_ext2_RecoKinTuple_Skim_1of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 0.0169673
+XS = 4.7074
+lumi = 35921.9
+nEvents_MC = 9.96615e+06
+Total Entries : 40927
+processing entry 0 out of 40927 : 48.0139 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 1000 out of 40927 : 5.70287 seconds since last progress
+processing entry 2000 out of 40927 : 1.60936 seconds since last progress
+processing entry 3000 out of 40927 : 8.22862 seconds since last progress
+processing entry 4000 out of 40927 : 5.17981 seconds since last progress
+processing entry 5000 out of 40927 : 1.06675 seconds since last progress
+processing entry 6000 out of 40927 : 4.59451 seconds since last progress
+processing entry 7000 out of 40927 : 7.24864 seconds since last progress
+processing entry 8000 out of 40927 : 4.07521 seconds since last progress
+processing entry 9000 out of 40927 : 5.54922 seconds since last progress
+processing entry 10000 out of 40927 : 4.61426 seconds since last progress
+processing entry 11000 out of 40927 : 5.76882 seconds since last progress
+processing entry 12000 out of 40927 : 2.71666 seconds since last progress
+processing entry 13000 out of 40927 : 0.602802 seconds since last progress
+processing entry 14000 out of 40927 : 21.2068 seconds since last progress
+processing entry 15000 out of 40927 : 3.32835 seconds since last progress
+processing entry 16000 out of 40927 : 16.1444 seconds since last progress
+processing entry 17000 out of 40927 : 3.62285 seconds since last progress
+processing entry 18000 out of 40927 : 11.4829 seconds since last progress
+processing entry 19000 out of 40927 : 3.50411 seconds since last progress
+processing entry 20000 out of 40927 : 1.83429 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight

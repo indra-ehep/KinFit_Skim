@@ -1,0 +1,18 @@
+6 of 6
+W3jets_ext1
+pos : 18446744073709551615
+sampleType : W3jets_ext1,  systematicType : 
+Dilepton Sample :0
+. W3jets_ext1 
+. W3jets_ext1 
+./W3jets_ext1_RecoKinTuple_Skim_6of6.root
+HERE
+DONE
+isMC: 1
+Using event weight 1.06015
+XS = 1165.81
+lumi = 35921.9
+nEvents_MC = 3.95019e+07
+Total Entries : 11035231
+processing entry 10000000 out of 11035231 : 351.144 seconds since last progress
+processing entry 11000000 out of 11035231 : 310.752 seconds since last progress

@@ -1,0 +1,21 @@
+2 of 8
+Data_SingleEle_f
+pos : 18446744073709551615
+sampleType : Data_SingleEle_f,  systematicType : 
+Dilepton Sample :0
+. Data_SingleEle_f 
+. Data_SingleEle_f 
+./Data_SingleEle_f_RecoKinTuple_Skim_2of8.root
+HERE
+DONE
+isMC: 0
+Using event weight 1
+XS = 1965.2
+lumi = 35921.9
+nEvents_MC = 7.05935e+07
+Total Entries : 37185843
+processing entry 5000000 out of 37185843 : 124.301 seconds since last progress
+processing entry 6000000 out of 37185843 : 137.15 seconds since last progress
+processing entry 7000000 out of 37185843 : 110.416 seconds since last progress
+processing entry 8000000 out of 37185843 : 129.217 seconds since last progress
+processing entry 9000000 out of 37185843 : 124.258 seconds since last progress

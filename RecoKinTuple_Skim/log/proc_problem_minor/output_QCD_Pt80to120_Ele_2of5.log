@@ -1,0 +1,38 @@
+2 of 5
+QCD_Pt80to120_Ele
+pos : 18446744073709551615
+sampleType : QCD_Pt80to120_Ele,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt80to120_Ele 
+. QCD_Pt80to120_Ele 
+./QCD_Pt80to120_Ele_RecoKinTuple_Skim_2of5.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 349.899
+XS = 350000
+lumi = 35921.9
+nEvents_MC = 3.59322e+07
+Total Entries : 29965
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 6000 out of 29965 : 75.2258 seconds since last progress
+processing entry 7000 out of 29965 : 0.117011 seconds since last progress
+processing entry 8000 out of 29965 : 0.143391 seconds since last progress
+processing entry 9000 out of 29965 : 0.139646 seconds since last progress
+processing entry 10000 out of 29965 : 0.0831484 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 11000 out of 29965 : 2.61752 seconds since last progress

@@ -1,0 +1,20 @@
+5 of 12
+Data_SingleEle_e
+pos : 18446744073709551615
+sampleType : Data_SingleEle_e,  systematicType : 
+Dilepton Sample :0
+. Data_SingleEle_e 
+. Data_SingleEle_e 
+./Data_SingleEle_e_RecoKinTuple_Skim_5of12.root
+HERE
+DONE
+isMC: 0
+Using event weight 1
+XS = 3266.02
+lumi = 35921.9
+nEvents_MC = 1.17322e+08
+Total Entries : 57179230
+processing entry 20000000 out of 57179230 : 241.482 seconds since last progress
+processing entry 21000000 out of 57179230 : 125.982 seconds since last progress
+processing entry 22000000 out of 57179230 : 100.716 seconds since last progress
+processing entry 23000000 out of 57179230 : 133.231 seconds since last progress

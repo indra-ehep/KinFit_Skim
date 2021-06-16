@@ -1,0 +1,20 @@
+2 of 4
+W2jets
+pos : 18446744073709551615
+sampleType : W2jets,  systematicType : 
+Dilepton Sample :0
+. W2jets 
+. W2jets 
+./W2jets_RecoKinTuple_Skim_2of4.root
+HERE
+DONE
+isMC: 1
+Using event weight 4.59848
+XS = 3839.43
+lumi = 35921.9
+nEvents_MC = 2.99924e+07
+Total Entries : 7999377
+processing entry 2000000 out of 7999377 : 89.2432 seconds since last progress
+processing entry 2500000 out of 7999377 : 119.644 seconds since last progress
+processing entry 3000000 out of 7999377 : 113.877 seconds since last progress
+processing entry 3500000 out of 7999377 : 123.311 seconds since last progress

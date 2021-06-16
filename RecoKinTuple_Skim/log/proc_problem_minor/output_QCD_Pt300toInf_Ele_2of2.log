@@ -1,0 +1,45 @@
+2 of 2
+QCD_Pt300toInf_Ele
+pos : 18446744073709551615
+sampleType : QCD_Pt300toInf_Ele,  systematicType : 
+Dilepton Sample :0
+. QCD_Pt300toInf_Ele 
+. QCD_Pt300toInf_Ele 
+./QCD_Pt300toInf_Ele_RecoKinTuple_Skim_2of2.root
+HERE
+DONE
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+isMC: 1
+Using event weight 6.57077
+XS = 1350
+lumi = 35921.9
+nEvents_MC = 7.38034e+06
+Total Entries : 25269
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 13000 out of 25269 : 47.2677 seconds since last progress
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+processing entry 14000 out of 25269 : 5.83533 seconds since last progress
+processing entry 15000 out of 25269 : 0.653967 seconds since last progress
+processing entry 16000 out of 25269 : 1.92754 seconds since last progress
+processing entry 17000 out of 25269 : 0.569314 seconds since last progress
+processing entry 18000 out of 25269 : 1.69784 seconds since last progress
+processing entry 19000 out of 25269 : 0.415093 seconds since last progress
+processing entry 20000 out of 25269 : 0.74686 seconds since last progress
+processing entry 21000 out of 25269 : 0.833434 seconds since last progress
+processing entry 22000 out of 25269 : 0.709994 seconds since last progress
+processing entry 23000 out of 25269 : 0.710676 seconds since last progress
+processing entry 24000 out of 25269 : 2.76208 seconds since last progress
+processing entry 25000 out of 25269 : 0.185109 seconds since last progress
