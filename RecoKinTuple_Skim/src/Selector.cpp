@@ -97,7 +97,7 @@ void Selector::process_objects(EventTree* inp_tree){
     clear_vectors();
     
     if(!rc)
-      rc = new RoccoR(Form("weight/RoccoR/RoccoR%sUL.txt",year.c_str()));
+      rc = new RoccoR(Form("weight/RoccoR/RoccoR%saUL.txt",year.c_str()));
     
     //cout << "before selector muons" << endl;
     filter_muons();
