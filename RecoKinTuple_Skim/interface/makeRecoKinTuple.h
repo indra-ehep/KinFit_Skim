@@ -163,7 +163,10 @@ class makeRecoKinTuple {
   Float_t		 _evtWeight;
   Float_t		 _lumiWeight;
   Float_t		 _sampleWeight;
-  
+  Double_t               _nMC_total;
+  Double_t               _nMC_totalUS;
+  Float_t                _xss;
+
   Int_t			 _nVtx;
   Int_t			 _nGoodVtx;
   Bool_t		 _isPVGood;
@@ -446,6 +449,10 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("evtWeight"		, &_evtWeight			);      
     outputTree->Branch("lumiWeight"		, &_lumiWeight			);      
     outputTree->Branch("sampleWeight"    	, &_sampleWeight       		);      
+    outputTree->Branch("nMC_total"      	, &_nMC_total       		);      
+    outputTree->Branch("nMC_totalUS"    	, &_nMC_totalUS       		);      
+    outputTree->Branch("xss"              	, &_xss         		);      
+
     outputTree->Branch("nVtx"			, &_nVtx			); 
     outputTree->Branch("nGoodVtx"		, &_nGoodVtx			); 
     outputTree->Branch("isPVGood"		, &_isPVGood			);

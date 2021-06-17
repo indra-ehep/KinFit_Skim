@@ -105,7 +105,7 @@ void initCrossSections(){
     crossSections["ST_t_channel"]       =  {136.02, 136.02, 136.02};
     crossSections["ST_tbar_channel"]    =  { 80.95,  80.95,  80.95};
     crossSections["ST_s_channel"]       =  {3.68064, 3.68064, 3.68064};
-
+    
     //Product fo XS and filter eff from table at:
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#QCD
     crossSections["QCD_Pt15to20_Mu"]    = {3819570.0, 3819570.0, 3819570.0};
@@ -147,7 +147,7 @@ void initCrossSections(){
     return;
 }
 
-double getEvtWeight(string sampleType, int year, double luminosity, double nEvents_MC){
+double getEvtWeight(string sampleType, int year, double luminosity, double nEvents_MC, float& xss){
     
     double evtWeight = -1.;
 
@@ -160,6 +160,7 @@ double getEvtWeight(string sampleType, int year, double luminosity, double nEven
 	if (crossSections.find(sampleType) != crossSections.end()) {
 	    int index = year - 2016;
 	    evtWeight = crossSections[sampleType][index] * luminosity / nEvents_MC;
+	    xss = crossSections[sampleType][index];
 	}
 	else {
 	    cout << "-------------------------------------------------" << endl;
