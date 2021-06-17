@@ -494,10 +494,10 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   
   for(Long64_t entry=entryStart; entry<entryStop; entry++){
 
-    //if(entry%100 == 0)
-    //cout<<"Processing event : " << entry <<" of total " << entryStop  << endl;
+    // if(entry%100 == 0)
+    //   cout<<"Processing event : " << entry <<" of total " << entryStop  << endl;
 
-    //if(entry >= 1e4){break;}
+    // if(entry >= 1e4){break;}
 
     if(entry%dumpFreq == 0){
       // duration =  ( clock() - startClock ) / (double) CLOCKS_PER_SEC;
@@ -552,7 +552,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
     if ( evtPick->passPresel_ele || evtPick->passPresel_mu || saveAllEntries) {
       if (saveCutflow && !(evtPick->passAll_ele || evtPick->passAll_mu) ) continue;
 
-
+      
       InitVariables();
       // FillEvent(year);
       FillEvent(year,isHemVetoObj); //HEM test
@@ -563,7 +563,6 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
 	_PUweight_Do = PUweighterDown->getWeight(tree->nPUTrue_);
 	
 	_btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
-	//_btagWeight_1a_corr = getBtagSF_1a_corr("central", reader, tree->event_==eventNum);
 	_btagWeight_1a_b_Up = getBtagSF_1a("b_up",    reader);
 	_btagWeight_1a_b_Do = getBtagSF_1a("b_down",  reader);
 	_btagWeight_1a_l_Up = getBtagSF_1a("l_up",    reader);
@@ -761,7 +760,7 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   _nVtx		   = tree->nVtx_;
   _nGoodVtx	   = tree->nGoodVtx_;
   _isPVGood        = selector->isPVGood;
-
+  
   if (useGenWeightScaling){
     _evtWeight     = _lumiWeight *  tree->genWeight_; 
   }else{
@@ -1267,7 +1266,7 @@ void makeRecoKinTuple::loadBtagEff(string sampleName, string year){
 }				   
 
 float makeRecoKinTuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, bool verbose){
- 
+  
     double weight = 1.0;
 
     double jetPt;
@@ -1328,105 +1327,8 @@ float makeRecoKinTuple::getBtagSF_1a(string sysType, BTagCalibrationReader reade
 	    maxbinY = l_eff->GetYaxis()->GetLast();
 	    Eff = l_eff->GetBinContent(xbin,ybin);
 	}
-
-        //if( (xbin==0 or xbin>maxbinX or ybin==0 or ybin>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-7) ) continue;
-
-	if (jetBtag>selector->btag_cut_DeepCSV){
-	    pMC *= Eff;
-	    pData *= Eff*SFb;
-	} else {
-	    pMC *= 1. - Eff;
-	    pData *= 1. - (Eff*SFb);
-	}
-	if (verbose){
-	    cout << "    jetPt="<<jetPt<<"  jetEta="<<jetEta<<"  jetFlavor="<<jetFlavor<<"  jetBtag="<<jetBtag<<"  Tagged="<<(jetBtag>selector->btag_cut_DeepCSV)<<"  Eff="<<Eff<<"  SF="<<SFb<<endl;
-	    cout << "          --p(MC)="<<pMC<<"  --p(Data)="<<pData << endl;
-	}
-    }
-
-    //    weight = pData/pMC;
-    if (pMC==0){
-	//      cout << "Inf weight" << endl;
-	//	cout << pData << " / " << pMC << endl;
-	weight = 0.;
-    } else {
-	weight = pData/pMC;
-    }
-    if (verbose){
-	cout << "  FinalWeight="<<weight<<endl;
-    }
-
-    return weight;
-
-}
-
-float makeRecoKinTuple::getBtagSF_1a_corr(string sysType, BTagCalibrationReader reader, bool verbose){
-
-    double weight = 1.0;
-
-    double jetPt;
-    double jetEta;
-    double jetBtag;
-    int jetFlavor;
-    double SFb;
-    double Eff;
-
-    double pMC=1;
-    double pData=1;
 	
-    string b_sysType = "central";
-    string l_sysType = "central";
-    if (sysType=="b_up"){
-	b_sysType = "up";
-    } else if (sysType=="b_down"){
-	b_sysType = "down";
-    } else if (sysType=="l_up"){
-	l_sysType = "up";
-    } else if (sysType=="l_down"){
-	l_sysType = "down";
-    }	
-    if (verbose){
-	cout << "Btagging Scale Factors"<<endl;
-    }
-
-  int xbin,ybin;
-  int maxbinX, maxbinY;
-  for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
-
-	jetPt = tree->jetPt_[*jetInd];
-	jetEta = fabs(tree->jetEta_[*jetInd]);
-	jetFlavor = abs(tree->jetHadFlvr_[*jetInd]);
-	jetBtag = tree->jetBtagDeepB_[*jetInd];
-
-	if (jetFlavor == 5){
-	    SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
-	    xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
-	    ybin = b_eff->GetYaxis()->FindBin(abs(jetEta));
-	    maxbinX = b_eff->GetXaxis()->GetLast();
-	    maxbinY = b_eff->GetYaxis()->GetLast();
-	    Eff = b_eff->GetBinContent(xbin,ybin);
-	}
-	else if(jetFlavor == 4){
-	    SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
-	    xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
-	    ybin = c_eff->GetYaxis()->FindBin(abs(jetEta));
-            maxbinX = c_eff->GetXaxis()->GetLast();
-	    maxbinY = c_eff->GetYaxis()->GetLast();
-	    Eff = c_eff->GetBinContent(xbin,ybin);
-	}
-	else {
-	    SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
-	    xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
-	    ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
-	    maxbinX = l_eff->GetXaxis()->GetLast();
-	    maxbinY = l_eff->GetYaxis()->GetLast();
-	    Eff = l_eff->GetBinContent(xbin,ybin);
-	}
-
-        if( (xbin==0 or xbin>maxbinX or ybin==0 or ybin>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-7) ) {
-	  //cout << "hitting here " << endl;
-	  continue;
-	}
+        if( (xbin==0 or xbin>maxbinX or ybin==0 or ybin>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-7) ) continue;
 
 	if (jetBtag>selector->btag_cut_DeepCSV){
 	    pMC *= Eff;
@@ -1456,6 +1358,7 @@ float makeRecoKinTuple::getBtagSF_1a_corr(string sysType, BTagCalibrationReader 
     return weight;
 
 }
+
 
 
 vector<float> makeRecoKinTuple::getBtagSF_1c(string sysType, BTagCalibrationReader reader, vector<float> &btagSF){
@@ -1532,6 +1435,7 @@ vector<float> makeRecoKinTuple::getBtagSF_1c(string sysType, BTagCalibrationRead
 	return btagWeights;
     }
 }
+
 
 
 #endif

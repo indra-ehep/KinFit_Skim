@@ -119,7 +119,6 @@ class makeRecoKinTuple {
   float			 _prefireSF_Do;
 
   float			 _btagWeight_1a;
-  //float			 _btagWeight_1a_corr;
   float			 _btagWeight_1a_b_Up;
   float			 _btagWeight_1a_b_Do;
   float			 _btagWeight_1a_l_Up;
@@ -352,7 +351,6 @@ class makeRecoKinTuple {
   double topPtWeight();
   void loadBtagEff(string sampleType, string year);
   float getBtagSF_1a(string sysType, BTagCalibrationReader reader, bool verbose=false);
-  float getBtagSF_1a_corr(string sysType, BTagCalibrationReader reader, bool verbose=false);
   vector<float> getBtagSF_1c(string sysType, BTagCalibrationReader reader, vector<float> &btagSF);
 
   /* double getMuSF(int muInd, int systLevel); */
@@ -378,13 +376,13 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("q2weight_Up"	, &_q2weight_Up			);
 	outputTree->Branch("q2weight_Do"	, &_q2weight_Do			);
 	outputTree->Branch("q2weight_nominal"	, &_q2weight_nominal		);
-	//outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		);
-
+	/* outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		); */
+	
 	outputTree->Branch("pdfWeight"		, &_pdfWeight			);
 	outputTree->Branch("pdfuncer"		, &_pdfuncer			);
 	outputTree->Branch("pdfweight_Up"	, &_pdfweight_Up		);
 	outputTree->Branch("pdfweight_Do"	, &_pdfweight_Do		);
-	//outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		);
+	/* outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		); */
 
 	outputTree->Branch("ISRweight_Up"	, &_ISRweight_Up		);
 	outputTree->Branch("ISRweight_Do"	, &_ISRweight_Do		);
@@ -393,14 +391,14 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("FSRweight_Do"	, &_FSRweight_Do		);
     }
 
-    outputTree->Branch("prefireSF"		, &_prefireSF			);
-    if (!isSystematicRun){
-	outputTree->Branch("prefireSF_Up"	, &_prefireSF_Up		);
-	outputTree->Branch("prefireSF_Do"	, &_prefireSF_Do		);
-    }
-    //outputTree->Branch("btagWeight"		, &_btagWeight			);
+    /* outputTree->Branch("prefireSF"		, &_prefireSF			); */
+    /* if (!isSystematicRun){ */
+    /* 	outputTree->Branch("prefireSF_Up"	, &_prefireSF_Up		); */
+    /* 	outputTree->Branch("prefireSF_Do"	, &_prefireSF_Do		); */
+    /* } */
+
+    outputTree->Branch("btagWeight"		, &_btagWeight			);
     outputTree->Branch("btagWeight_1a"		, &_btagWeight_1a		);
-    //outputTree->Branch("btagWeight_1a_corr"    	, &_btagWeight_1a_corr		);
     if (!isSystematicRun){
 	/* outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		); */
 	/* outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		); */
@@ -411,38 +409,38 @@ void makeRecoKinTuple::InitBranches(){
 	outputTree->Branch("btagWeight_1a_l_Up"	, &_btagWeight_1a_l_Up		);
 	outputTree->Branch("btagWeight_1a_l_Do"	, &_btagWeight_1a_l_Do		);
     }
-    outputTree->Branch("btagSF"			, &_btagSF			);
-    if (!isSystematicRun){
-      /* outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			); */
-      /* outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			); */
-      /* outputTree->Branch("btagSF_l_Up"		, &_btagSF_l_Up			); */
-      /* outputTree->Branch("btagSF_l_Do"		, &_btagSF_l_Do			); */
-    }
+    /* outputTree->Branch("btagSF"			, &_btagSF			);  */
+    /* if (!isSystematicRun){ */
+    /*   outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			); */
+    /*   outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			); */
+    /*   outputTree->Branch("btagSF_l_Up"		, &_btagSF_l_Up			); */
+    /*   outputTree->Branch("btagSF_l_Do"		, &_btagSF_l_Do			); */
+    /* } */
     outputTree->Branch("muEffWeight"		, &_muEffWeight			);
     outputTree->Branch("muEffWeight_IdIso"	, &_muEffWeight_IdIso		);
     outputTree->Branch("muEffWeight_Trig"	, &_muEffWeight_Trig		);
     if (!isSystematicRun){
-	outputTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		);
-	outputTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		);
+    	outputTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		);
+    	outputTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		);
 
-	outputTree->Branch("muEffWeight_IdIso_Up", &_muEffWeight_IdIso_Up	);
-	outputTree->Branch("muEffWeight_IdIso_Do", &_muEffWeight_IdIso_Do	);
+    	outputTree->Branch("muEffWeight_IdIso_Up", &_muEffWeight_IdIso_Up	);
+    	outputTree->Branch("muEffWeight_IdIso_Do", &_muEffWeight_IdIso_Do	);
 
-	outputTree->Branch("muEffWeight_Trig_Up", &_muEffWeight_Trig_Up		);
-	outputTree->Branch("muEffWeight_Trig_Do", &_muEffWeight_Trig_Do		);
+    	outputTree->Branch("muEffWeight_Trig_Up", &_muEffWeight_Trig_Up		);
+    	outputTree->Branch("muEffWeight_Trig_Do", &_muEffWeight_Trig_Do		);
     }
     outputTree->Branch("eleEffWeight"		, &_eleEffWeight		);
     outputTree->Branch("eleEffWeight_IdReco"	, &_eleEffWeight_IdReco		);
     outputTree->Branch("eleEffWeight_Trig"	, &_eleEffWeight_Trig		);
     if (!isSystematicRun){
-	outputTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		);
-	outputTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		);
+    	outputTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		);
+    	outputTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		);
 
-	outputTree->Branch("eleEffWeight_IdReco_Up", &_eleEffWeight_IdReco_Up	);
-	outputTree->Branch("eleEffWeight_IdReco_Do", &_eleEffWeight_IdReco_Do	);
+    	outputTree->Branch("eleEffWeight_IdReco_Up", &_eleEffWeight_IdReco_Up	);
+    	outputTree->Branch("eleEffWeight_IdReco_Do", &_eleEffWeight_IdReco_Do	);
 
-	outputTree->Branch("eleEffWeight_Trig_Up", &_eleEffWeight_Trig_Up	);
-	outputTree->Branch("eleEffWeight_Trig_Do", &_eleEffWeight_Trig_Do	);
+    	outputTree->Branch("eleEffWeight_Trig_Up", &_eleEffWeight_Trig_Up	);
+    	outputTree->Branch("eleEffWeight_Trig_Do", &_eleEffWeight_Trig_Do	);
     }
     
     outputTree->Branch("evtWeight"		, &_evtWeight			);      
@@ -450,18 +448,18 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("sampleWeight"    	, &_sampleWeight       		);      
     outputTree->Branch("nVtx"			, &_nVtx			); 
     outputTree->Branch("nGoodVtx"		, &_nGoodVtx			); 
-    outputTree->Branch("isPVGood"		, &_isPVGood			); 
+    outputTree->Branch("isPVGood"		, &_isPVGood			);
     
     if (!isSystematicRun){
 	outputTree->Branch("genMET"		, &_genMET			); 
     }
     outputTree->Branch("pfMET"			, &_pfMET			);
-    outputTree->Branch("pfMETPhi"		, &_pfMETPhi			); 
+    outputTree->Branch("pfMETPhi"		, &_pfMETPhi			);
     outputTree->Branch("nu_px"			, &_nu_px			);
     outputTree->Branch("nu_py"			, &_nu_py			);
     outputTree->Branch("nu_pz"			, &_nu_pz			);
     outputTree->Branch("nu_pz_other"		, &_nu_pz_other			);
-    outputTree->Branch("WtransMass"		, &_WtransMass			);
+    /* outputTree->Branch("WtransMass"		, &_WtransMass			); */
 
     /* outputTree->Branch("hasConv"		, &_hasConv			); */
     /* outputTree->Branch("hasRDPass"	       	, &_hasRDPass			); */
@@ -530,7 +528,7 @@ void makeRecoKinTuple::InitBranches(){
 
     if (!isSystematicRun){
 	/* outputTree->Branch("jetCMVA"		, &_jetCMVA			); */
-	/* outputTree->Branch("jetCSVV2"	, &_jetCSVV2			); */
+	outputTree->Branch("jetCSVV2"		, &_jetCSVV2			);
 	outputTree->Branch("jetDeepB"		, &_jetDeepB			);
 	outputTree->Branch("jetDeepC"		, &_jetDeepC			);
 	outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		);
@@ -564,6 +562,7 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("passAll_Ele"		, &_passAll_Ele			); 
     outputTree->Branch("passAll_Mu"		, &_passAll_Mu			);
 }
+
 
 void makeRecoKinTuple::InitVariables()
 {
@@ -599,7 +598,6 @@ void makeRecoKinTuple::InitVariables()
     /* _prefireSF_Do		= 1.; */
 
     _btagWeight_1a		= 1.;
-    //_btagWeight_1a_corr		= 1.;
     _btagWeight_1a_b_Up		= 1.;
     _btagWeight_1a_b_Do		= 1.;
     _btagWeight_1a_l_Up		= 1.;
@@ -707,6 +705,7 @@ void makeRecoKinTuple::InitVariables()
     _muEta.clear();
     _muPhi.clear();
     _muPFRelIso.clear();
+    _muRoccoR.clear();
 
     _nJet			= -9999;  
     _nBJet			= -9999;  

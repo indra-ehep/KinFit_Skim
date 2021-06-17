@@ -201,25 +201,25 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     } else { 
       passPresel_ele = false;
     }
-
-    if( passPresel_mu && isPVGood) { 
-      if (saveCutflows) { 
-    	cutFlow_mu->Fill(2); 
-    	cutFlowWeight_mu->Fill(2,weight); 
-      } 
-    }else {
-      passPresel_mu = false;
-    }
     
-    if( passPresel_ele && isPVGood) { 
-      if (saveCutflows) {
-    	cutFlow_ele->Fill(2); 
-    	cutFlowWeight_ele->Fill(2,weight);
-      } 
-    } else { 
-      passPresel_ele = false; 
-    }
-
+    // if( passPresel_mu && isPVGood) { 
+    //   if (saveCutflows) { 
+    // 	cutFlow_mu->Fill(2); 
+    // 	cutFlowWeight_mu->Fill(2,weight); 
+    //   } 
+    // }else {
+    //   passPresel_mu = false;
+    // }
+    
+    // if( passPresel_ele && isPVGood) { 
+    //   if (saveCutflows) {
+    // 	cutFlow_ele->Fill(2); 
+    // 	cutFlowWeight_ele->Fill(2,weight);
+    //   } 
+    // } else { 
+    //   passPresel_ele = false; 
+    // }
+    
     //Process selector events
     if ( passPresel_ele || passPresel_mu ) {
       selector->process_objects(tree);
