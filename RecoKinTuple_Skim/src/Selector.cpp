@@ -507,7 +507,8 @@ void Selector::filter_jets(){
           if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
         }
 	
-	bool passMiniAOD_presel =  (tree->jetID_[jetInd] == 1 && pt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD && passDR_lep_jet_miniAOD);
+	//bool passMiniAOD_presel =  (tree->jetID_[jetInd] == 1 && pt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD && passDR_lep_jet_miniAOD);
+	bool passMiniAOD_presel =  ((tree->jetID_[jetInd]>>jetID_cutBit & 1) && pt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD && passDR_lep_jet_miniAOD);
 	
 	if (int(tree->event_)==printEvent){
 	  cout << "   pt=" << pt << "  eta=" << eta << " phi=" << phi << "  jetID=" << jetID_pass << endl;
