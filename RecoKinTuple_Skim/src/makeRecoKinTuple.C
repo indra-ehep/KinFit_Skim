@@ -366,24 +366,25 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   _nMC_total = 0.;
   _nMC_totalUS = 0.;
   
-  useGenWeightScaling = true;
+  useGenWeightScaling = false;
 
   double nMC_thisFile = 0.;
   char** fileNames = av+4;
-  for(int fileI=0; fileI<ac-4; fileI++){
-    TFile *_file = TFile::Open(fileNames[fileI],"read");
-    TH1D *hEvents = (TH1D*) _file->Get("hEvents");
-    nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights
-    if (nMC_thisFile==0) {useGenWeightScaling=false;} //if bin isn't filled, fall back to using positive - negative bins
-    _nMC_total += nMC_thisFile;
-    _nMC_totalUS += hEvents->GetEntries()/2.0;
-  }
-
-  if (!useGenWeightScaling){
+  if (useGenWeightScaling){
+    for(int fileI=0; fileI<ac-4; fileI++){
+      TFile *_file = TFile::Open(fileNames[fileI],"read");
+      TH1D *hEvents = (TH1D*) _file->Get("hEvents");
+      nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights
+      if (nMC_thisFile==0) {useGenWeightScaling=false;} //if bin isn't filled, fall back to using positive - negative bins
+      _nMC_total += nMC_thisFile;
+      _nMC_totalUS += hEvents->GetEntries()/2.0;
+    }
+  } else {
     for(int fileI=0; fileI<ac-4; fileI++){
       TFile *_file = TFile::Open(fileNames[fileI],"read");
       TH1D *hEvents = (TH1D*) _file->Get("hEvents");
       _nMC_total += (hEvents->GetBinContent(3) - hEvents->GetBinContent(1));  //positive weight - neg weight 
+      _nMC_totalUS += hEvents->GetEntries()/2.0;
     }
   }
   
@@ -503,7 +504,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
     // if(entry%100 == 0)
     //   cout<<"Processing event : " << entry <<" of total " << entryStop  << endl;
 
-     //if(entry >= 1e4){break;}
+    //  if(entry >= 1e4){break;}
 
     if(entry%dumpFreq == 0){
       // duration =  ( clock() - startClock ) / (double) CLOCKS_PER_SEC;
