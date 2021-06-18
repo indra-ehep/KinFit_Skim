@@ -114,6 +114,11 @@ public:
 	float mu_Pt_cut_miniAOD;
         int s;
         int m;  
+	//jets miniAOD
+	float jet_Pt_cut_miniAOD ; 
+	float jet_Eta_cut_miniAOD ;
+	float veto_lep_jet_dR_miniAOD ;
+
 
 	std::string year;
 

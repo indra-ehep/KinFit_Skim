@@ -70,6 +70,11 @@ Selector::Selector(){
     rc = 0;
     s = 0 ;
     m = 0;
+    
+    //jets miniAOD
+    jet_Pt_cut_miniAOD = 25.; 
+    jet_Eta_cut_miniAOD = 2.4;
+    veto_lep_jet_dR_miniAOD = 0.5;
 }
 
 void Selector::init_JER(std::string inputPrefix){
@@ -330,7 +335,7 @@ void Selector::filter_muons(){
 	  ///cout<<pt<<"\t"<<SF<<"\t"<<SF*pt<<"\t"<<charge<<"\t"<<eta<<"\t"<<phi<<"\t"<<nl<<"\t"<<u1<<"\t"<<u2<<"\t"<<s<<"\t"<<m<<endl;
 	  return SF*pt;
 	}
-
+	
 
 	bool ObjectSelector::isMediumMuon(const MyMuon * m){
 	  bool isMedium(false);
@@ -339,7 +344,7 @@ void Selector::filter_muons(){
 	  isMedium =  isLooseMuon && m->validFraction > 0.8 && m->segmentCompatibility >(goodGlob ? 0.303 : 0.451); 
 	  return isMedium;   
 	}
-
+	
 	void ObjectSelector::preSelectMuons(TString url, vector<int> * m_i, const vector<MyMuon> & vM , 
 					    MyVertex & vertex, const bool & isData, const double & random_u1, 
 					    const double & random_u2, const int & err_member, const int & err_set){
@@ -466,14 +471,52 @@ void Selector::filter_jets(){
                           passDR_lep_jet
                           );
 
+	// void ObjectSelector::preSelectJets( string jetAlgo, vector<int> * j_i, const vector<MyJet> & vJ){
+	//   //https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016
+	//   for(unsigned int i=0;i<vJ.size();i++){
+	//     const MyJet *jet= &vJ[i];
+	//     double jetEta   = TMath::Abs(jet->p4.eta());
+	//     double jetPt    = TMath::Abs(jet->p4.pt());
+	//     double NHF      = jet->neutralHadronEnergyFraction;
+	//     double NEMF     = jet->neutralEmEnergyFraction;
+	//     double CHF      = jet->chargedHadronEnergyFraction;
+	//     double CEMF     = jet->chargedEmEnergyFraction;
+	//     double NumConst = jet->NumConst;
+	//     double CHM      = jet->chargedMultiplicity;
+	//     double looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && (abs(jetEta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99);
+	//     if(looseJetID && jetPt > 25.0) j_i->push_back(i);
+	//   }
+	// }
+	
+	////------------------------------------------------------------------
+	///https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookNanoAOD#Jets
+	////------------------------------------------------------------------
+	/// jetId==1 means: pass loose ID, fail tight, fail tightLepVeto
+	/// jetId==3 means: pass loose and tight ID, fail tightLepVeto
+	/// jetId==7 means: pass loose, tight, tightLepVeto ID. 
+	////------------------------------------------------------------------
+        bool passDR_lep_jet_miniAOD = true;
+	
+        //loop over selected electrons
+        for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+	    if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
+        }
+	
+        //loop over selected muons
+        for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+          if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
+        }
+	
+	bool passMiniAOD_presel =  (tree->jetID_[jetInd] == 1 && pt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD && passDR_lep_jet_miniAOD);
+	
 	if (int(tree->event_)==printEvent){
-	    cout << "   pt=" << pt << "  eta=" << eta << " phi=" << phi << "  jetID=" << jetID_pass << endl;
-	    cout << "         presel=" << jetPresel << endl;
-	    cout << "              pt=" << (pt >= jet_Pt_cut) <<endl;
-	    cout << "              eta=" << (TMath::Abs(eta) <= jet_Eta_cut) <<endl;
-	    cout << "              jetID=" << jetID_pass <<endl;
-	    cout << "              dRLep=" << passDR_lep_jet <<endl;
-	    cout << "              btag="<<(tree->jetBtagDeepB_[jetInd] > btag_cut_DeepCSV) << endl; 
+	  cout << "   pt=" << pt << "  eta=" << eta << " phi=" << phi << "  jetID=" << jetID_pass << endl;
+	  cout << "         presel=" << jetPresel << endl;
+	  cout << "              pt=" << (pt >= jet_Pt_cut) <<endl;
+	  cout << "              eta=" << (TMath::Abs(eta) <= jet_Eta_cut) <<endl;
+	  cout << "              jetID=" << jetID_pass <<endl;
+	  cout << "              dRLep=" << passDR_lep_jet <<endl;
+	  cout << "              btag="<<(tree->jetBtagDeepB_[jetInd] > btag_cut_DeepCSV) << endl; 
 
 	}
 
@@ -487,7 +530,8 @@ void Selector::filter_jets(){
         }
         
         
-        if( jetPresel){
+        //if( jetPresel){
+        if( passMiniAOD_presel ){
             Jets.push_back(jetInd);
 	    //jet_resolution.push_back(resolution);
 	    jet_resolution.push_back(jetSF);
