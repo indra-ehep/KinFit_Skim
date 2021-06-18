@@ -59,7 +59,8 @@ EventPick::EventPick(std::string titleIn){
 
     QCDselect = false;
 
-    applyMetFilter   = false;
+    //applyMetFilter   = false;
+    applyMetFilter   = true;
 
 }
 
