@@ -11,14 +11,16 @@ void initCrossSections(){
     crossSections["TTbarPowheg_Dilepton"]             =  { 87.315, 87.315, 87.315};
     crossSections["TTbarPowheg_Semilept"]             =  {364.352,364.352,364.352};
     crossSections["TTbarPowheg_Hadronic"]             =  {380.095,380.095,380.095};
-    crossSections["HplusM080"]                        =  {6.77, 6.77, 6.77}; 
-    crossSections["HplusM090"]                        =  {6.77, 6.77, 6.77}; 
-    crossSections["HplusM100"]                        =  {6.77, 6.77, 6.77}; 
-    crossSections["HplusM120"]                        =  {6.77, 6.77, 6.77}; 
-    crossSections["HplusM140"]                        =  {6.77, 6.77, 6.77}; 
-    crossSections["HplusM150"]                        =  {6.77, 6.77, 6.77}; 
-    crossSections["HplusM155"]                        =  {6.77, 6.77, 6.77}; 
-    crossSections["HplusM160"]                        =  {6.77, 6.77, 6.77}; 
+    // Default setting
+    /* crossSections["HplusM080"]                        =  {6.77, 6.77, 6.77};  */
+    crossSections["HplusM080"]                        =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM090"]                        =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM100"]                        =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM120"]                        =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM140"]                        =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM150"]                        =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM155"]                        =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM160"]                        =  {21.55, 21.55, 21.55}; 
 
     // Unused crossSections["WjetsInclusive"]    = {61526.7, 61526.7, 61526.7}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets
 
