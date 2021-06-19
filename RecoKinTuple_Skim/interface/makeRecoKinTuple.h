@@ -307,7 +307,8 @@ class makeRecoKinTuple {
   bool			 _passPresel_Mu;
   bool			 _passAll_Ele;
   bool			 _passAll_Mu;
-
+  bool			 _passTrigger_ele;
+  bool			 _passTrigger_mu;
   /////////////////////// End of Tree leaf and branches ///////////////////////////
   bool  dileptonsample;
 
@@ -568,6 +569,8 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("passPresel_Mu"		, &_passPresel_Mu		);
     outputTree->Branch("passAll_Ele"		, &_passAll_Ele			); 
     outputTree->Branch("passAll_Mu"		, &_passAll_Mu			);
+    outputTree->Branch("passTrigger_ele"	, &_passTrigger_ele	       	);
+    outputTree->Branch("passTrigger_mu"		, &_passTrigger_mu 		);
 }
 
 
@@ -758,7 +761,8 @@ void makeRecoKinTuple::InitVariables()
     _passPresel_Mu		= false;
     _passAll_Ele		= false;
     _passAll_Mu			= false;
-
+    _passTrigger_ele		= false;
+    _passTrigger_mu		= false;
 }
 
 

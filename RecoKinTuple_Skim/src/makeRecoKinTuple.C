@@ -366,7 +366,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   _nMC_total = 0.;
   _nMC_totalUS = 0.;
   
-  useGenWeightScaling = false;
+  useGenWeightScaling = true;
 
   double nMC_thisFile = 0.;
   char** fileNames = av+4;
@@ -885,8 +885,9 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   _passPresel_Mu   = evtPick->passPresel_mu;
   _passAll_Ele     = evtPick->passAll_ele;
   _passAll_Mu      = evtPick->passAll_mu;
+  _passTrigger_ele = evtPick->passTrigger_ele;
+  _passTrigger_mu  = evtPick->passTrigger_mu;
   
-
   //int parentPID = -1;
   for (int i_jet = 0; i_jet < _nfwdJet; i_jet++){
     int jetInd = selector->FwdJets.at(i_jet);

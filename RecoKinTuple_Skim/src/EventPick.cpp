@@ -81,6 +81,8 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     }
     bool Pass_trigger_mu  = false;
     bool Pass_trigger_ele = false;
+    passTrigger_ele = false;
+    passTrigger_mu = false;
 
     if (year=="2016") {
 	Pass_trigger_mu = (tree->HLT_IsoMu24_ || tree->HLT_IsoTkMu24_  ) || no_trigger;
@@ -160,7 +162,10 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     
     // Pass_trigger_mu = Pass_trigger_mu || Pass_trigger_ele;
     // Pass_trigger_ele = Pass_trigger_mu || Pass_trigger_ele;
+    passTrigger_ele = Pass_trigger_ele;
+    passTrigger_mu = Pass_trigger_mu;
     
+
     passPresel_mu  = true;
     passPresel_ele = true;
 
