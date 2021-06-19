@@ -85,4 +85,4 @@ compile:src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interfa
 	g++ $(CPPFLAGS) -o makeRecoKinTuple `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -D STANDALONE -std=c++17 -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} src/makeRecoKinTuple.C src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp src/KinFit.cpp -lPhysicsToolsKinFitter
 
 clean:
-	rm -f *.o src/*.o lib/*.so bin/* makeRecoKinTuple 
+	rm -f *.o src/*.o lib/*.so bin/* interface/*.gch makeRecoKinTuple 
