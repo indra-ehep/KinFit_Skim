@@ -887,7 +887,8 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   _passAll_Mu      = evtPick->passAll_mu;
   _passTrigger_ele = evtPick->passTrigger_ele;
   _passTrigger_mu  = evtPick->passTrigger_mu;
-  
+  _passFilter      = evtPick->passFilter;
+
   //int parentPID = -1;
   for (int i_jet = 0; i_jet < _nfwdJet; i_jet++){
     int jetInd = selector->FwdJets.at(i_jet);

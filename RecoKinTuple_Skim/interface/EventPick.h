@@ -72,9 +72,10 @@ public:
 	bool passPresel_mu; // passed preselection
 	bool passAll_mu; // single flag: event passed all cuts: preselection + photon
 	bool passFirstcut; // pass the sync cut	
-	bool passTrigger_ele;
-	bool passTrigger_mu;
-
+	bool passTrigger_ele ;
+	bool passTrigger_mu ;
+	bool passFilter ;
+	
 	// histograms
 	TH1D* cutFlow_mu;
 	TH1D* cutFlowWeight_mu;

@@ -58,10 +58,10 @@ EventPick::EventPick(std::string titleIn){
     ZeroBExclusive = false;
 
     QCDselect = false;
-
-    //applyMetFilter   = false;
-    applyMetFilter   = true;
-
+    
+    applyMetFilter   = false; //Default
+    //applyMetFilter   = true;
+    
 }
 
 EventPick::~EventPick(){
@@ -83,10 +83,11 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     bool Pass_trigger_ele = false;
     passTrigger_ele = false;
     passTrigger_mu = false;
-
+    passFilter = false;
+    
     if (year=="2016") {
-	Pass_trigger_mu = (tree->HLT_IsoMu24_ || tree->HLT_IsoTkMu24_  ) || no_trigger;
-	Pass_trigger_ele = tree->HLT_Ele27_WPTight_Gsf_ || no_trigger;
+      Pass_trigger_mu = (tree->HLT_IsoMu24_ || tree->HLT_IsoTkMu24_  ) || no_trigger;
+      Pass_trigger_ele = tree->HLT_Ele27_WPTight_Gsf_ || no_trigger;
     }
     if (year=="2017"){
 	Pass_trigger_mu = (tree->HLT_IsoMu27_) || no_trigger;
@@ -128,7 +129,10 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 	Pass_trigger_mu = (tree->HLT_IsoMu24_) || no_trigger;
 	Pass_trigger_ele = tree->HLT_Ele32_WPTight_Gsf_ || no_trigger;
     }
-
+    
+    passTrigger_ele = Pass_trigger_ele;
+    passTrigger_mu = Pass_trigger_mu;
+    
     bool filters = (tree->Flag_goodVertices_ &&
 		    tree->Flag_globalSuperTightHalo2016Filter_ &&
 		    tree->Flag_HBHENoiseFilter_ &&
@@ -137,7 +141,9 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 		    tree->Flag_BadPFMuonFilter_ );
 
     if (year=="2017" || year=="2018"){ filters = filters && tree->Flag_ecalBadCalibFilterV2_ ;}
-
+    
+    passFilter = filters;
+    
     //comment out following two line when no filter is needed
     if(applyMetFilter){
 	Pass_trigger_mu = Pass_trigger_mu && filters ;
@@ -162,8 +168,6 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     
     // Pass_trigger_mu = Pass_trigger_mu || Pass_trigger_ele;
     // Pass_trigger_ele = Pass_trigger_mu || Pass_trigger_ele;
-    passTrigger_ele = Pass_trigger_ele;
-    passTrigger_mu = Pass_trigger_mu;
     
 
     passPresel_mu  = true;
