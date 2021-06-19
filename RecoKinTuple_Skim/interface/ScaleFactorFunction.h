@@ -106,7 +106,8 @@ void initCrossSections(){
     crossSections["ST_tbarW_channel"]   =  { 35.85,  35.85,  35.85};
     crossSections["ST_t_channel"]       =  {136.02, 136.02, 136.02};
     crossSections["ST_tbar_channel"]    =  { 80.95,  80.95,  80.95};
-    crossSections["ST_s_channel"]       =  {3.68064, 3.68064, 3.68064};
+    //crossSections["ST_s_channel"]       =  {3.68064, 3.68064, 3.68064}; //// Default setting
+    crossSections["ST_s_channel"]       =  {10.32, 10.32, 10.32};
     
     //Product fo XS and filter eff from table at:
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#QCD
