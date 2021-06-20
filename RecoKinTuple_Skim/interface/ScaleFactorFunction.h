@@ -24,11 +24,18 @@ void initCrossSections(){
     crossSections["HplusM160"]                  =  {21.55, 21.55, 21.55}; 
 
     //crossSections["ST_s_channel"]		=  {3.68064, 3.68064, 3.68064}; //// Default setting
-    crossSections["ST_s_channel"]		=  { 10.32,  10.32,  10.32};
-    crossSections["ST_t_channel"]		=  {136.02, 136.02, 136.02};
-    crossSections["ST_tbar_channel"]		=  { 80.95,  80.95,  80.95};
-    crossSections["ST_tW_channel"]		=  { 35.85,  35.85,  35.85};
-    crossSections["ST_tbarW_channel"]		=  { 35.85,  35.85,  35.85};
+    /* crossSections["ST_s_channel"]		=  { 10.32,  10.32,  10.32}; */
+    /* crossSections["ST_t_channel"]		=  {136.02, 136.02, 136.02}; */
+    /* crossSections["ST_tbar_channel"]		=  { 80.95,  80.95,  80.95}; */
+    /* crossSections["ST_tW_channel"]		=  { 35.85,  35.85,  35.85}; */
+    /* crossSections["ST_tbarW_channel"]		=  { 35.85,  35.85,  35.85}; */
+
+    // Obtained using CMSDAS and CMS_XSDB
+    crossSections["ST_s_channel"]		=  { 3.74,  3.74,  3.74}; 
+    crossSections["ST_t_channel"]		=  {113.3, 113.3, 113.3};
+    crossSections["ST_tbar_channel"]		=  {67.91, 67.91, 67.91};
+    crossSections["ST_tW_channel"]		=  {34.91, 34.91, 34.91};
+    crossSections["ST_tbarW_channel"]		=  {34.97, 34.97, 34.97};
 
     // // Default
     crossSections["DYjetsM50"]			=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
