@@ -8,9 +8,15 @@ std::map<std::string, vector<double> > crossSections;
 void initCrossSections(){
 
     crossSections["TTbarPowheg"]		=  {831.76, 831.76, 831.76};  //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675)
-    crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315};
-    crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352};
-    crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095};
+    /* crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315}; */
+    /* crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352}; */
+    /* crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095}; */
+    // Obtained using CMSDAS and CMS_XSDB
+    crossSections["TTbarPowheg_Dilepton"]       =  { 88.29, 88.29, 88.29}; //687.1
+    crossSections["TTbarPowheg_Semilept"]       =  {365.34, 365.34, 365.34}; //687.1
+    crossSections["TTbarPowheg_Hadronic"]       =  {377.96, 377.96, 377.96}; //687.1
+
+
     // // Default setting
     /* crossSections["HplusM080"]               =  {6.77, 6.77, 6.77};  */
     // //MiniAOD setting
@@ -38,11 +44,17 @@ void initCrossSections(){
     crossSections["ST_tbarW_channel"]		=  {34.97, 34.97, 34.97};
 
     // // Default
-    crossSections["DYjetsM50"]			=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
-    crossSections["DYjetsM50_ext1"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
-    crossSections["DYjetsM50_ext2"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
-    crossSections["DYjetsM10to50"]		=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
-    crossSections["DYjetsM10to50_ext1"]		=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+    /* crossSections["DYjetsM50"]			=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
+    /* crossSections["DYjetsM50_ext1"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
+    /* crossSections["DYjetsM50_ext2"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
+    /* crossSections["DYjetsM10to50"]		=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
+    /* crossSections["DYjetsM10to50_ext1"]		=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
+    // Obtained using CMSDAS and CMS_XSDB
+    crossSections["DYjetsM50"]			=  {4963.0, 4963.0, 4963.0}; // 4957. , 6077.22
+    crossSections["DYjetsM50_ext1"]		=  {4963.0, 4963.0, 4963.0};
+    crossSections["DYjetsM50_ext2"]		=  {4963.0, 4963.0, 4963.0};
+    crossSections["DYjetsM10to50"]		=  {16270.0, 16270.0, 16270.0}; //16290.
+    crossSections["DYjetsM10to50_ext1"]		=  {16270.0, 16270.0, 16270.0}; 
 
     // Unused crossSections["WjetsInclusive"]   = {61526.7, 61526.7, 61526.7}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets
     // // Default
@@ -55,14 +67,24 @@ void initCrossSections(){
     /* crossSections["W4jets_ext1"]		=  {  592.9176,   592.9176,   592.9176};//524.2; */
     /* crossSections["W4jets_ext2"]		=  {  592.9176,   592.9176,   592.9176};//524.2; */
     // //MiniAOD
-    crossSections["W1jets"]			=  {9493.0, 9493.0, 9493.0};//9493.0;
-    crossSections["W2jets"]			=  {3120.0, 3120.0, 3120.0}; //3120.0;
-    crossSections["W2jets_ext1"]		=  {3120.0, 3120.0, 3120.0}; //3120.0;
-    crossSections["W3jets"]			=  { 942.3,  942.3,  942.3};//942.3;
-    crossSections["W3jets_ext1"]		=  { 942.3,  942.3,  942.3};//942.3;
-    crossSections["W4jets"]			=  { 524.2,  524.2,  524.2};//524.2;
-    crossSections["W4jets_ext1"]		=  { 524.2,  524.2,  524.2};//524.2;
-    crossSections["W4jets_ext2"]		=  { 524.2,  524.2,  524.2};//524.2;
+    /* crossSections["W1jets"]			=  {9493.0, 9493.0, 9493.0};//9493.0; */
+    /* crossSections["W2jets"]			=  {3120.0, 3120.0, 3120.0}; //3120.0; */
+    /* crossSections["W2jets_ext1"]		=  {3120.0, 3120.0, 3120.0}; //3120.0; */
+    /* crossSections["W3jets"]			=  { 942.3,  942.3,  942.3};//942.3; */
+    /* crossSections["W3jets_ext1"]		=  { 942.3,  942.3,  942.3};//942.3; */
+    /* crossSections["W4jets"]			=  { 524.2,  524.2,  524.2};//524.2; */
+    /* crossSections["W4jets_ext1"]		=  { 524.2,  524.2,  524.2};//524.2; */
+    /* crossSections["W4jets_ext2"]		=  { 524.2,  524.2,  524.2};//524.2; */
+    /* crossSections["WJetsToQQ"]			=  {95.14, 95.14, 95.14};  //Added */
+    // Obtained using CMSDAS and CMS_XSDB
+    crossSections["W1jets"]			=  {9625.0, 9625.0, 9625.0}; //9578.0
+    crossSections["W2jets"]			=  {3161.0, 3161.0, 3161.0}; //3154.0;
+    crossSections["W2jets_ext1"]		=  {3161.0, 3161.0, 3161.0}; 
+    crossSections["W3jets"]			=  { 958.0,  958.0,  958.0}; //
+    crossSections["W3jets_ext1"]		=  { 958.0,  958.0,  958.0};//942.3;
+    crossSections["W4jets"]			=  { 494.6,  494.6,  494.6};//495.7;
+    crossSections["W4jets_ext1"]		=  { 494.6,  494.6,  494.6};//524.2;
+    crossSections["W4jets_ext2"]		=  { 494.6,  494.6,  494.6};//524.2;
     crossSections["WJetsToQQ"]			=  {95.14, 95.14, 95.14};  //Added
 
     /* crossSections["DYjetsM10to50"]		= {18610.0, 18610.0, 18610.0};  */
@@ -76,13 +98,19 @@ void initCrossSections(){
     /* crossSections["ZZ"]				= {12.14,12.14,12.14}; */
     /* crossSections["ZZ_ext1"]			= {12.14,12.14,12.14}; */
     // MiniAOD
-    crossSections["WW"]				= {118.7, 118.7, 118.7};
-    crossSections["WW_ext1"]			= {118.7, 118.7, 118.7};
-    crossSections["WZ"]				= {46.74, 46.74, 46.74};
-    crossSections["WZ_ext1"]			= {46.74, 46.74, 46.74};
-    crossSections["ZZ"]				= {17.72, 17.72, 17.72};
-    crossSections["ZZ_ext1"]			= {17.72, 17.72, 17.72};
-
+    /* crossSections["WW"]				= {118.7, 118.7, 118.7}; */
+    /* crossSections["WW_ext1"]			= {118.7, 118.7, 118.7}; */
+    /* crossSections["WZ"]				= {46.74, 46.74, 46.74}; */
+    /* crossSections["WZ_ext1"]			= {46.74, 46.74, 46.74}; */
+    /* crossSections["ZZ"]				= {17.72, 17.72, 17.72}; */
+    /* crossSections["ZZ_ext1"]			= {17.72, 17.72, 17.72}; */
+    // Obtained using CMSDAS and CMS_XSDB
+    crossSections["WW"]				= { 64.3,  64.3,  64.3}; // 64.28
+    crossSections["WW_ext1"]			= { 64.3,  64.3,  64.3};
+    crossSections["WZ"]				= {23.43, 23.43, 23.43}; // 23.48
+    crossSections["WZ_ext1"]			= {23.43, 23.43, 23.43};
+    crossSections["ZZ"]				= {10.16, 10.16, 10.16};
+    crossSections["ZZ_ext1"]			= {10.16, 10.16, 10.16};
 
 
     crossSections["TTWtoQQ"]			=  {0.4062, 0.4062, 0.4062}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
