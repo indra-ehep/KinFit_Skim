@@ -44,17 +44,22 @@ void initCrossSections(){
     crossSections["ST_tbarW_channel"]		=  {34.97, 34.97, 34.97};
 
     // // Default
-    /* crossSections["DYjetsM50"]			=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
+    /* crossSections["DYjetsM50"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
     /* crossSections["DYjetsM50_ext1"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
     /* crossSections["DYjetsM50_ext2"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
     /* crossSections["DYjetsM10to50"]		=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
-    /* crossSections["DYjetsM10to50_ext1"]		=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
+    /* crossSections["DYjetsM10to50_ext1"]	=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns */
     // Obtained using CMSDAS and CMS_XSDB
-    crossSections["DYjetsM50"]			=  {4963.0, 4963.0, 4963.0}; // 4957. , 6077.22
+    crossSections["DYjetsM50"]			=  {4963.0, 4963.0, 4963.0}; // 4957. , 6077.22 (NNLO) so kf = 1.2245 for LO=4963
     crossSections["DYjetsM50_ext1"]		=  {4963.0, 4963.0, 4963.0};
     crossSections["DYjetsM50_ext2"]		=  {4963.0, 4963.0, 4963.0};
     crossSections["DYjetsM10to50"]		=  {16270.0, 16270.0, 16270.0}; //16290.
     crossSections["DYjetsM10to50_ext1"]		=  {16270.0, 16270.0, 16270.0}; 
+    crossSections["DY1jetsM50"]			=  {1012.0, 1012.0, 1012.0}; //1003.0 
+    crossSections["DY2jetsM50"]			=  { 334.7,  334.7,  334.7}; //336.7 
+    crossSections["DY2jetsM50_ext1"]	       	=  { 334.7,  334.7,  334.7}; 
+    crossSections["DY3jetsM50"]			=  { 102.3,  102.3,  102.3}; //102.9 
+    crossSections["DY4jetsM50"]			=  { 54.52,  54.52,  54.52}; //54.71 
 
     // Unused crossSections["WjetsInclusive"]   = {61526.7, 61526.7, 61526.7}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets
     // // Default
@@ -85,6 +90,9 @@ void initCrossSections(){
     crossSections["W4jets"]			=  { 494.6,  494.6,  494.6};//495.7;
     crossSections["W4jets_ext1"]		=  { 494.6,  494.6,  494.6};//524.2;
     crossSections["W4jets_ext2"]		=  { 494.6,  494.6,  494.6};//524.2;
+    crossSections["Wjets"]			=  {50260., 50260., 50260.};//50380.0;
+    crossSections["Wjets_ext1"]			=  {50260., 50260., 50260.};//524.2;
+    crossSections["Wjets_ext2"]			=  {50260., 50260., 50260.};//524.2;
     crossSections["WJetsToQQ"]			=  {95.14, 95.14, 95.14};  //Added
 
     /* crossSections["DYjetsM10to50"]		= {18610.0, 18610.0, 18610.0};  */
