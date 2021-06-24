@@ -25,6 +25,8 @@ W4jets_ext1_FileList_2016="$eosDirSkim/2016/W4jets_ext1_Skim_NanoAOD.root"
 
 W4jets_ext2_FileList_2016="$eosDirSkim/2016/W4jets_ext2_Skim_NanoAOD_1of4.root $eosDirSkim/2016/W4jets_ext2_Skim_NanoAOD_2of4.root $eosDirSkim/2016/W4jets_ext2_Skim_NanoAOD_3of4.root $eosDirSkim/2016/W4jets_ext2_Skim_NanoAOD_4of4.root"
 
+DY3jetsM50_FileList_2016="$eosDirSkim/2016/DY3jetsM50_Skim_NanoAOD.root"
+
 WZTo3LNu_powheg_ext1_FileList_2016="$eosDirSkim/2016/WZTo3LNu_powheg_ext1_Skim_NanoAOD_1of3.root $eosDirSkim/2016/WZTo3LNu_powheg_ext1_Skim_NanoAOD_2of3.root $eosDirSkim/2016/WZTo3LNu_powheg_ext1_Skim_NanoAOD_3of3.root"
 
 WZTo2L2Q_amcatnlo_FileList_2016="$eosDirSkim/2016/WZTo2L2Q_amcatnlo_Skim_NanoAOD_1of3.root $eosDirSkim/2016/WZTo2L2Q_amcatnlo_Skim_NanoAOD_2of3.root $eosDirSkim/2016/WZTo2L2Q_amcatnlo_Skim_NanoAOD_3of3.root"
@@ -74,6 +76,8 @@ Data_SingleEle_e_FileList_2016="$eosDirSkim/2016/Data_SingleEle_e_Skim_NanoAOD_1
 Data_SingleEle_f_FileList_2016="$eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_1of8.root $eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_2of8.root $eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_3of8.root $eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_4of8.root $eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_5of8.root $eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_6of8.root $eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_7of8.root $eosDirSkim/2016/Data_SingleEle_f_Skim_NanoAOD_8of8.root"
 
 Data_SingleEle_g_FileList_2016="$eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_10of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_11of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_12of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_13of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_14of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_15of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_16of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_17of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_18of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_19of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_1of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_20of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_2of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_3of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_4of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_5of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_6of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_7of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_8of20.root $eosDirSkim/2016/Data_SingleEle_g_Skim_NanoAOD_9of20.root"
+
+DY1jetsM50_FileList_2016="$eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_1of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_2of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_3of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_4of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_5of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_6of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_7of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_8of9.root $eosDirSkim/2016/DY1jetsM50_Skim_NanoAOD_9of9.root"
 
 QCD_Pt30to50_Ele_ext1_FileList_2016="$eosDirSkim/2016/QCD_Pt30to50_Ele_ext1_Skim_NanoAOD.root"
 
@@ -135,6 +139,8 @@ TTZtoLL_ext2_FileList_2016="$eosDirSkim/2016/TTZtoLL_ext2_Skim_NanoAOD.root"
 
 TTZtoLL_ext1_FileList_2016="$eosDirSkim/2016/TTZtoLL_ext1_Skim_NanoAOD.root"
 
+QCD_Pt1000toInf_Mu_FileList_2016="$eosDirSkim/2016/QCD_Pt1000toInf_Mu_Skim_NanoAOD.root"
+
 DYjetsM50_ext1_FileList_2016="$eosDirSkim/2016/DYjetsM50_ext1_Skim_NanoAOD_1of6.root $eosDirSkim/2016/DYjetsM50_ext1_Skim_NanoAOD_2of6.root $eosDirSkim/2016/DYjetsM50_ext1_Skim_NanoAOD_3of6.root $eosDirSkim/2016/DYjetsM50_ext1_Skim_NanoAOD_4of6.root $eosDirSkim/2016/DYjetsM50_ext1_Skim_NanoAOD_5of6.root $eosDirSkim/2016/DYjetsM50_ext1_Skim_NanoAOD_6of6.root"
 
 HplusM150_FileList_2016="$eosDirSkim/2016/HplusM150_Skim_NanoAOD.root"
@@ -142,6 +148,10 @@ HplusM150_FileList_2016="$eosDirSkim/2016/HplusM150_Skim_NanoAOD.root"
 QCD_Pt800to1000_Mu_ext2_FileList_2016="$eosDirSkim/2016/QCD_Pt800to1000_Mu_ext2_Skim_NanoAOD_1of2.root $eosDirSkim/2016/QCD_Pt800to1000_Mu_ext2_Skim_NanoAOD_2of2.root"
 
 QCD_Pt80to120_Ele_FileList_2016="$eosDirSkim/2016/QCD_Pt80to120_Ele_Skim_NanoAOD_1of5.root $eosDirSkim/2016/QCD_Pt80to120_Ele_Skim_NanoAOD_2of5.root $eosDirSkim/2016/QCD_Pt80to120_Ele_Skim_NanoAOD_3of5.root $eosDirSkim/2016/QCD_Pt80to120_Ele_Skim_NanoAOD_4of5.root $eosDirSkim/2016/QCD_Pt80to120_Ele_Skim_NanoAOD_5of5.root"
+
+Wjets_FileList_2016="$eosDirSkim/2016/Wjets_Skim_NanoAOD_1of3.root $eosDirSkim/2016/Wjets_Skim_NanoAOD_2of3.root $eosDirSkim/2016/Wjets_Skim_NanoAOD_3of3.root"
+
+DY4jetsM50_FileList_2016="$eosDirSkim/2016/DY4jetsM50_Skim_NanoAOD.root"
 
 Data_SingleEle_h_FileList_2016="$eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_10of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_11of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_12of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_13of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_1of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_2of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_3of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_4of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_5of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_6of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_7of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_8of13.root $eosDirSkim/2016/Data_SingleEle_h_Skim_NanoAOD_9of13.root"
 
@@ -154,6 +164,8 @@ QCD_Pt80to120_Ele_ext1_FileList_2016="$eosDirSkim/2016/QCD_Pt80to120_Ele_ext1_Sk
 QCD_Pt300to470_Mu_FileList_2016="$eosDirSkim/2016/QCD_Pt300to470_Mu_Skim_NanoAOD_1of2.root $eosDirSkim/2016/QCD_Pt300to470_Mu_Skim_NanoAOD_2of2.root"
 
 TTbarPowheg_Dilepton_FileList_2016="$eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_10of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_11of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_12of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_13of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_1of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_2of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_3of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_4of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_5of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_6of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_7of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_8of13.root $eosDirSkim/2016/TTbarPowheg_Dilepton_Skim_NanoAOD_9of13.root"
+
+DY2jetsM50_FileList_2016="$eosDirSkim/2016/DY2jetsM50_Skim_NanoAOD_1of3.root $eosDirSkim/2016/DY2jetsM50_Skim_NanoAOD_2of3.root $eosDirSkim/2016/DY2jetsM50_Skim_NanoAOD_3of3.root"
 
 HplusM155_FileList_2016="$eosDirSkim/2016/HplusM155_Skim_NanoAOD.root"
 
@@ -205,7 +217,7 @@ ST_tW_channel_FileList_2016="$eosDirSkim/2016/ST_tW_channel_Skim_NanoAOD.root"
 
 QCD_Pt1000toInf_Mu_ext1_FileList_2016="$eosDirSkim/2016/QCD_Pt1000toInf_Mu_ext1_Skim_NanoAOD_1of3.root $eosDirSkim/2016/QCD_Pt1000toInf_Mu_ext1_Skim_NanoAOD_2of3.root $eosDirSkim/2016/QCD_Pt1000toInf_Mu_ext1_Skim_NanoAOD_3of3.root"
 
-QCD_Pt1000toInf_Mu_FileList_2016="$eosDirSkim/2016/QCD_Pt1000toInf_Mu_Skim_NanoAOD.root"
+Wjets_ext2_FileList_2016="$eosDirSkim/2016/Wjets_ext2_Skim_NanoAOD_1of6.root $eosDirSkim/2016/Wjets_ext2_Skim_NanoAOD_2of6.root $eosDirSkim/2016/Wjets_ext2_Skim_NanoAOD_3of6.root $eosDirSkim/2016/Wjets_ext2_Skim_NanoAOD_4of6.root $eosDirSkim/2016/Wjets_ext2_Skim_NanoAOD_5of6.root $eosDirSkim/2016/Wjets_ext2_Skim_NanoAOD_6of6.root"
 
 Data_SingleMu_e_FileList_2016="$eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_10of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_1of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_2of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_3of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_4of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_5of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_6of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_7of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_8of10.root $eosDirSkim/2016/Data_SingleMu_e_Skim_NanoAOD_9of10.root"
 
@@ -222,8 +234,6 @@ W1jets_FileList_2017="$eosDirSkim/2017/W1jets_Skim_NanoAOD_1of7.root $eosDirSkim
 
 WWTo1L1Nu2Q_amcatnlo_FileList_2017="$eosDirSkim/2017/WWTo1L1Nu2Q_amcatnlo_Skim_NanoAOD.root"
 
-Data_SingleMu_e_FileList_2017="$eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_10of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_11of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_12of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_13of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_14of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_15of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_16of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_17of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_18of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_19of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_1of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_20of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_21of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_2of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_3of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_4of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_5of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_6of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_7of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_8of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_9of21.root"
-
 TTWtoLNu_FileList_2017="$eosDirSkim/2017/TTWtoLNu_Skim_NanoAOD.root"
 
 ZZTo4L_powheg_ext2_FileList_2017="$eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_10of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_11of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_12of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_13of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_1of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_2of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_3of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_4of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_5of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_6of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_7of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_8of13.root $eosDirSkim/2017/ZZTo4L_powheg_ext2_Skim_NanoAOD_9of13.root"
@@ -237,6 +247,8 @@ ZZTo4L_powheg_ext1_FileList_2017="$eosDirSkim/2017/ZZTo4L_powheg_ext1_Skim_NanoA
 ST_tbar_channel_FileList_2017="$eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_10of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_11of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_12of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_13of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_1of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_2of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_3of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_4of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_5of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_6of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_7of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_8of13.root $eosDirSkim/2017/ST_tbar_channel_Skim_NanoAOD_9of13.root"
 
 HplusM120_FileList_2017="$eosDirSkim/2017/HplusM120_Skim_NanoAOD.root"
+
+DY2jetsM50_FileList_2017="$eosDirSkim/2017/DY2jetsM50_Skim_NanoAOD.root"
 
 QCD_Pt300toInf_Ele_FileList_2017="$eosDirSkim/2017/QCD_Pt300toInf_Ele_Skim_NanoAOD.root"
 
@@ -266,7 +278,7 @@ ST_t_channel_FileList_2017="$eosDirSkim/2017/ST_t_channel_Skim_NanoAOD_10of19.ro
 
 Data_SingleMu_f_FileList_2017="$eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_10of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_11of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_12of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_13of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_14of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_15of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_16of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_17of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_18of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_19of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_1of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_20of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_21of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_22of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_23of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_24of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_25of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_26of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_27of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_28of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_29of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_2of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_30of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_31of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_3of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_4of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_5of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_6of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_7of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_8of31.root $eosDirSkim/2017/Data_SingleMu_f_Skim_NanoAOD_9of31.root"
 
-HplusM080_FileList_2017="$eosDirSkim/2017/HplusM080_Skim_NanoAOD.root"
+Data_SingleMu_e_FileList_2017="$eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_10of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_11of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_12of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_13of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_14of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_15of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_16of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_17of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_18of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_19of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_1of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_20of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_21of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_2of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_3of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_4of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_5of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_6of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_7of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_8of21.root $eosDirSkim/2017/Data_SingleMu_e_Skim_NanoAOD_9of21.root"
 
 Data_SingleMu_d_FileList_2017="$eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_10of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_11of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_1of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_2of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_3of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_4of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_5of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_6of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_7of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_8of11.root $eosDirSkim/2017/Data_SingleMu_d_Skim_NanoAOD_9of11.root"
 
@@ -280,15 +292,19 @@ WZTo1L1Nu2Q_amcatnlo_FileList_2017="$eosDirSkim/2017/WZTo1L1Nu2Q_amcatnlo_Skim_N
 
 WWToLNuQQ_powheg_FileList_2017="$eosDirSkim/2017/WWToLNuQQ_powheg_Skim_NanoAOD.root"
 
-QCD_Pt80to120_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt80to120_Mu_Skim_NanoAOD_1of3.root $eosDirSkim/2017/QCD_Pt80to120_Mu_Skim_NanoAOD_2of3.root $eosDirSkim/2017/QCD_Pt80to120_Mu_Skim_NanoAOD_3of3.root"
+DY3jetsM50_FileList_2017="$eosDirSkim/2017/DY3jetsM50_Skim_NanoAOD.root"
 
 TTZtoLL_FileList_2017="$eosDirSkim/2017/TTZtoLL_Skim_NanoAOD_1of3.root $eosDirSkim/2017/TTZtoLL_Skim_NanoAOD_2of3.root $eosDirSkim/2017/TTZtoLL_Skim_NanoAOD_3of3.root"
 
 TTZtoQQ_FileList_2017="$eosDirSkim/2017/TTZtoQQ_Skim_NanoAOD.root"
 
+QCD_Pt80to120_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt80to120_Mu_Skim_NanoAOD_1of3.root $eosDirSkim/2017/QCD_Pt80to120_Mu_Skim_NanoAOD_2of3.root $eosDirSkim/2017/QCD_Pt80to120_Mu_Skim_NanoAOD_3of3.root"
+
 QCD_Pt170to300_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_1of8.root $eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_2of8.root $eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_3of8.root $eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_4of8.root $eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_5of8.root $eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_6of8.root $eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_7of8.root $eosDirSkim/2017/QCD_Pt170to300_Mu_Skim_NanoAOD_8of8.root"
 
 WWTo2L2Nu_powheg_FileList_2017="$eosDirSkim/2017/WWTo2L2Nu_powheg_Skim_NanoAOD.root"
+
+DY1jetsM50_FileList_2017="$eosDirSkim/2017/DY1jetsM50_Skim_NanoAOD_1of5.root $eosDirSkim/2017/DY1jetsM50_Skim_NanoAOD_2of5.root $eosDirSkim/2017/DY1jetsM50_Skim_NanoAOD_3of5.root $eosDirSkim/2017/DY1jetsM50_Skim_NanoAOD_4of5.root $eosDirSkim/2017/DY1jetsM50_Skim_NanoAOD_5of5.root"
 
 HplusM155_FileList_2017="$eosDirSkim/2017/HplusM155_Skim_NanoAOD.root"
 
@@ -296,9 +312,13 @@ DYjetsM10to50_FileList_2017="$eosDirSkim/2017/DYjetsM10to50_Skim_NanoAOD_1of3.ro
 
 QCD_Pt600to800_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt600to800_Mu_Skim_NanoAOD_1of4.root $eosDirSkim/2017/QCD_Pt600to800_Mu_Skim_NanoAOD_2of4.root $eosDirSkim/2017/QCD_Pt600to800_Mu_Skim_NanoAOD_3of4.root $eosDirSkim/2017/QCD_Pt600to800_Mu_Skim_NanoAOD_4of4.root"
 
+QCD_Pt1000toInf_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt1000toInf_Mu_Skim_NanoAOD_1of3.root $eosDirSkim/2017/QCD_Pt1000toInf_Mu_Skim_NanoAOD_2of3.root $eosDirSkim/2017/QCD_Pt1000toInf_Mu_Skim_NanoAOD_3of3.root"
+
 WZTo1L3Nu_amcatnlo_FileList_2017="$eosDirSkim/2017/WZTo1L3Nu_amcatnlo_Skim_NanoAOD.root"
 
 HplusM150_FileList_2017="$eosDirSkim/2017/HplusM150_Skim_NanoAOD.root"
+
+DY2jetsM50_ext1_FileList_2017="$eosDirSkim/2017/DY2jetsM50_ext1_Skim_NanoAOD_1of2.root $eosDirSkim/2017/DY2jetsM50_ext1_Skim_NanoAOD_2of2.root"
 
 QCD_Pt80to120_Ele_FileList_2017="$eosDirSkim/2017/QCD_Pt80to120_Ele_Skim_NanoAOD.root"
 
@@ -308,13 +328,15 @@ WZTo2L2Q_amcatnlo_FileList_2017="$eosDirSkim/2017/WZTo2L2Q_amcatnlo_Skim_NanoAOD
 
 DYjetsM10to50_ext1_FileList_2017="$eosDirSkim/2017/DYjetsM10to50_ext1_Skim_NanoAOD_1of5.root $eosDirSkim/2017/DYjetsM10to50_ext1_Skim_NanoAOD_2of5.root $eosDirSkim/2017/DYjetsM10to50_ext1_Skim_NanoAOD_3of5.root $eosDirSkim/2017/DYjetsM10to50_ext1_Skim_NanoAOD_4of5.root $eosDirSkim/2017/DYjetsM10to50_ext1_Skim_NanoAOD_5of5.root"
 
-ST_tbarW_channel_FileList_2017="$eosDirSkim/2017/ST_tbarW_channel_Skim_NanoAOD.root"
+Wjets_FileList_2017="$eosDirSkim/2017/Wjets_Skim_NanoAOD_1of4.root $eosDirSkim/2017/Wjets_Skim_NanoAOD_2of4.root $eosDirSkim/2017/Wjets_Skim_NanoAOD_3of4.root $eosDirSkim/2017/Wjets_Skim_NanoAOD_4of4.root"
 
 ZZ_FileList_2017="$eosDirSkim/2017/ZZ_Skim_NanoAOD.root"
 
 TTbarPowheg_Semilept_FileList_2017="$eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_10of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_11of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_12of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_13of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_14of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_15of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_16of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_17of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_18of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_19of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_1of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_20of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_21of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_22of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_23of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_24of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_25of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_2of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_3of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_4of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_5of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_6of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_7of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_8of25.root $eosDirSkim/2017/TTbarPowheg_Semilept_Skim_NanoAOD_9of25.root"
 
 WWTo4Q_powheg_FileList_2017="$eosDirSkim/2017/WWTo4Q_powheg_Skim_NanoAOD.root"
+
+DY4jetsM50_FileList_2017="$eosDirSkim/2017/DY4jetsM50_Skim_NanoAOD.root"
 
 ST_tW_channel_FileList_2017="$eosDirSkim/2017/ST_tW_channel_Skim_NanoAOD_1of2.root $eosDirSkim/2017/ST_tW_channel_Skim_NanoAOD_2of2.root"
 
@@ -324,7 +346,7 @@ QCD_Pt800to1000_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt800to1000_Mu_Skim_NanoA
 
 ZZTo2L2Nu_powheg_FileList_2017="$eosDirSkim/2017/ZZTo2L2Nu_powheg_Skim_NanoAOD.root"
 
-QCD_Pt1000toInf_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt1000toInf_Mu_Skim_NanoAOD_1of3.root $eosDirSkim/2017/QCD_Pt1000toInf_Mu_Skim_NanoAOD_2of3.root $eosDirSkim/2017/QCD_Pt1000toInf_Mu_Skim_NanoAOD_3of3.root"
+HplusM090_FileList_2017="$eosDirSkim/2017/HplusM090_Skim_NanoAOD.root"
 
 DYjetsM50_ext1_FileList_2017="$eosDirSkim/2017/DYjetsM50_ext1_Skim_NanoAOD_1of5.root $eosDirSkim/2017/DYjetsM50_ext1_Skim_NanoAOD_2of5.root $eosDirSkim/2017/DYjetsM50_ext1_Skim_NanoAOD_3of5.root $eosDirSkim/2017/DYjetsM50_ext1_Skim_NanoAOD_4of5.root $eosDirSkim/2017/DYjetsM50_ext1_Skim_NanoAOD_5of5.root"
 
@@ -334,15 +356,21 @@ QCD_Pt120to170_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt120to170_Mu_Skim_NanoAOD
 
 DYjetsM50_ext2_FileList_2017="$eosDirSkim/2017/DYjetsM50_ext2_Skim_NanoAOD_1of6.root $eosDirSkim/2017/DYjetsM50_ext2_Skim_NanoAOD_2of6.root $eosDirSkim/2017/DYjetsM50_ext2_Skim_NanoAOD_3of6.root $eosDirSkim/2017/DYjetsM50_ext2_Skim_NanoAOD_4of6.root $eosDirSkim/2017/DYjetsM50_ext2_Skim_NanoAOD_5of6.root $eosDirSkim/2017/DYjetsM50_ext2_Skim_NanoAOD_6of6.root"
 
-HplusM090_FileList_2017="$eosDirSkim/2017/HplusM090_Skim_NanoAOD.root"
+HplusM080_FileList_2017="$eosDirSkim/2017/HplusM080_Skim_NanoAOD.root"
 
 QCD_Pt170to300_Ele_FileList_2017="$eosDirSkim/2017/QCD_Pt170to300_Ele_Skim_NanoAOD.root"
 
-QCD_Pt20to30_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt20to30_Mu_Skim_NanoAOD_1of3.root $eosDirSkim/2017/QCD_Pt20to30_Mu_Skim_NanoAOD_2of3.root $eosDirSkim/2017/QCD_Pt20to30_Mu_Skim_NanoAOD_3of3.root"
+Wjets_ext1_FileList_2017="$eosDirSkim/2017/Wjets_ext1_Skim_NanoAOD_1of6.root $eosDirSkim/2017/Wjets_ext1_Skim_NanoAOD_2of6.root $eosDirSkim/2017/Wjets_ext1_Skim_NanoAOD_3of6.root $eosDirSkim/2017/Wjets_ext1_Skim_NanoAOD_4of6.root $eosDirSkim/2017/Wjets_ext1_Skim_NanoAOD_5of6.root $eosDirSkim/2017/Wjets_ext1_Skim_NanoAOD_6of6.root"
 
 VVTo2L2Nu_amcatnlo_FileList_2017="$eosDirSkim/2017/VVTo2L2Nu_amcatnlo_Skim_NanoAOD_1of2.root $eosDirSkim/2017/VVTo2L2Nu_amcatnlo_Skim_NanoAOD_2of2.root"
 
 TTZtoLL_M1to10_FileList_2017="$eosDirSkim/2017/TTZtoLL_M1to10_Skim_NanoAOD.root"
+
+QCD_Pt20to30_Mu_FileList_2017="$eosDirSkim/2017/QCD_Pt20to30_Mu_Skim_NanoAOD_1of3.root $eosDirSkim/2017/QCD_Pt20to30_Mu_Skim_NanoAOD_2of3.root $eosDirSkim/2017/QCD_Pt20to30_Mu_Skim_NanoAOD_3of3.root"
+
+DY3jetsM50_ext1_FileList_2017="$eosDirSkim/2017/DY3jetsM50_ext1_Skim_NanoAOD.root"
+
+ST_tbarW_channel_FileList_2017="$eosDirSkim/2017/ST_tbarW_channel_Skim_NanoAOD.root"
 
 W2jets_FileList_2017="$eosDirSkim/2017/W2jets_Skim_NanoAOD_1of6.root $eosDirSkim/2017/W2jets_Skim_NanoAOD_2of6.root $eosDirSkim/2017/W2jets_Skim_NanoAOD_3of6.root $eosDirSkim/2017/W2jets_Skim_NanoAOD_4of6.root $eosDirSkim/2017/W2jets_Skim_NanoAOD_5of6.root $eosDirSkim/2017/W2jets_Skim_NanoAOD_6of6.root"
 
@@ -391,6 +419,8 @@ ST_tbar_channel_FileList_2018="$eosDirSkim/2018/ST_tbar_channel_Skim_NanoAOD_10o
 
 HplusM120_FileList_2018="$eosDirSkim/2018/HplusM120_Skim_NanoAOD.root"
 
+DY2jetsM50_FileList_2018="$eosDirSkim/2018/DY2jetsM50_Skim_NanoAOD_1of3.root $eosDirSkim/2018/DY2jetsM50_Skim_NanoAOD_2of3.root $eosDirSkim/2018/DY2jetsM50_Skim_NanoAOD_3of3.root"
+
 QCD_Pt80to120_Mu_ext1_FileList_2018="$eosDirSkim/2018/QCD_Pt80to120_Mu_ext1_Skim_NanoAOD_1of5.root $eosDirSkim/2018/QCD_Pt80to120_Mu_ext1_Skim_NanoAOD_2of5.root $eosDirSkim/2018/QCD_Pt80to120_Mu_ext1_Skim_NanoAOD_3of5.root $eosDirSkim/2018/QCD_Pt80to120_Mu_ext1_Skim_NanoAOD_4of5.root $eosDirSkim/2018/QCD_Pt80to120_Mu_ext1_Skim_NanoAOD_5of5.root"
 
 QCD_Pt300toInf_Ele_FileList_2018="$eosDirSkim/2018/QCD_Pt300toInf_Ele_Skim_NanoAOD.root"
@@ -431,21 +461,25 @@ Data_SingleMu_d_FileList_2018="$eosDirSkim/2018/Data_SingleMu_d_Skim_NanoAOD_10o
 
 TTZtoQQ_ext1_FileList_2018="$eosDirSkim/2018/TTZtoQQ_ext1_Skim_NanoAOD_1of3.root $eosDirSkim/2018/TTZtoQQ_ext1_Skim_NanoAOD_2of3.root $eosDirSkim/2018/TTZtoQQ_ext1_Skim_NanoAOD_3of3.root"
 
+ZZTo2L2Nu_powheg_ext2_FileList_2018="$eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_1of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_2of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_3of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_4of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_5of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_6of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_7of7.root"
+
 W4jets_FileList_2018="$eosDirSkim/2018/W4jets_Skim_NanoAOD_1of2.root $eosDirSkim/2018/W4jets_Skim_NanoAOD_2of2.root"
 
 WZTo1L1Nu2Q_amcatnlo_FileList_2018="$eosDirSkim/2018/WZTo1L1Nu2Q_amcatnlo_Skim_NanoAOD_1of4.root $eosDirSkim/2018/WZTo1L1Nu2Q_amcatnlo_Skim_NanoAOD_2of4.root $eosDirSkim/2018/WZTo1L1Nu2Q_amcatnlo_Skim_NanoAOD_3of4.root $eosDirSkim/2018/WZTo1L1Nu2Q_amcatnlo_Skim_NanoAOD_4of4.root"
 
 WWToLNuQQ_powheg_FileList_2018="$eosDirSkim/2018/WWToLNuQQ_powheg_Skim_NanoAOD_1of3.root $eosDirSkim/2018/WWToLNuQQ_powheg_Skim_NanoAOD_2of3.root $eosDirSkim/2018/WWToLNuQQ_powheg_Skim_NanoAOD_3of3.root"
 
-QCD_Pt80to120_Mu_FileList_2018="$eosDirSkim/2018/QCD_Pt80to120_Mu_Skim_NanoAOD.root"
+DY3jetsM50_FileList_2018="$eosDirSkim/2018/DY3jetsM50_Skim_NanoAOD.root"
 
 TTZtoQQ_FileList_2018="$eosDirSkim/2018/TTZtoQQ_Skim_NanoAOD.root"
+
+QCD_Pt80to120_Mu_FileList_2018="$eosDirSkim/2018/QCD_Pt80to120_Mu_Skim_NanoAOD.root"
 
 QCD_Pt170to300_Mu_FileList_2018="$eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_1of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_2of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_3of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_4of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_5of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_6of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_7of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_8of9.root $eosDirSkim/2018/QCD_Pt170to300_Mu_Skim_NanoAOD_9of9.root"
 
 WWTo2L2Nu_powheg_FileList_2018="$eosDirSkim/2018/WWTo2L2Nu_powheg_Skim_NanoAOD_1of2.root $eosDirSkim/2018/WWTo2L2Nu_powheg_Skim_NanoAOD_2of2.root"
 
-ZZTo2L2Nu_powheg_ext2_FileList_2018="$eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_1of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_2of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_3of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_4of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_5of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_6of7.root $eosDirSkim/2018/ZZTo2L2Nu_powheg_ext2_Skim_NanoAOD_7of7.root"
+DY1jetsM50_FileList_2018="$eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_10of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_11of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_12of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_13of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_1of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_2of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_3of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_4of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_5of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_6of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_7of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_8of13.root $eosDirSkim/2018/DY1jetsM50_Skim_NanoAOD_9of13.root"
 
 HplusM155_FileList_2018="$eosDirSkim/2018/HplusM155_Skim_NanoAOD.root"
 
@@ -465,13 +499,15 @@ HplusM150_FileList_2018="$eosDirSkim/2018/HplusM150_Skim_NanoAOD.root"
 
 DYjetsM10to50_ext1_FileList_2018="$eosDirSkim/2018/DYjetsM10to50_ext1_Skim_NanoAOD_1of5.root $eosDirSkim/2018/DYjetsM10to50_ext1_Skim_NanoAOD_2of5.root $eosDirSkim/2018/DYjetsM10to50_ext1_Skim_NanoAOD_3of5.root $eosDirSkim/2018/DYjetsM10to50_ext1_Skim_NanoAOD_4of5.root $eosDirSkim/2018/DYjetsM10to50_ext1_Skim_NanoAOD_5of5.root"
 
-ST_tbarW_channel_FileList_2018="$eosDirSkim/2018/ST_tbarW_channel_Skim_NanoAOD_1of2.root $eosDirSkim/2018/ST_tbarW_channel_Skim_NanoAOD_2of2.root"
+Wjets_FileList_2018="$eosDirSkim/2018/Wjets_Skim_NanoAOD_10of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_1of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_2of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_3of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_4of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_5of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_6of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_7of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_8of10.root $eosDirSkim/2018/Wjets_Skim_NanoAOD_9of10.root"
 
 ZZ_FileList_2018="$eosDirSkim/2018/ZZ_Skim_NanoAOD.root"
 
 TTbarPowheg_Semilept_FileList_2018="$eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_10of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_11of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_12of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_13of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_14of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_15of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_16of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_17of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_1of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_2of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_3of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_4of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_5of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_6of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_7of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_8of17.root $eosDirSkim/2018/TTbarPowheg_Semilept_Skim_NanoAOD_9of17.root"
 
 WWTo4Q_powheg_FileList_2018="$eosDirSkim/2018/WWTo4Q_powheg_Skim_NanoAOD.root"
+
+DY4jetsM50_FileList_2018="$eosDirSkim/2018/DY4jetsM50_Skim_NanoAOD.root"
 
 ST_tW_channel_FileList_2018="$eosDirSkim/2018/ST_tW_channel_Skim_NanoAOD_1of2.root $eosDirSkim/2018/ST_tW_channel_Skim_NanoAOD_2of2.root"
 
@@ -500,6 +536,8 @@ W3jets_FileList_2018="$eosDirSkim/2018/W3jets_Skim_NanoAOD_1of3.root $eosDirSkim
 TTZtoLL_M1to10_FileList_2018="$eosDirSkim/2018/TTZtoLL_M1to10_Skim_NanoAOD.root"
 
 QCD_Pt20to30_Mu_FileList_2018="$eosDirSkim/2018/QCD_Pt20to30_Mu_Skim_NanoAOD_1of5.root $eosDirSkim/2018/QCD_Pt20to30_Mu_Skim_NanoAOD_2of5.root $eosDirSkim/2018/QCD_Pt20to30_Mu_Skim_NanoAOD_3of5.root $eosDirSkim/2018/QCD_Pt20to30_Mu_Skim_NanoAOD_4of5.root $eosDirSkim/2018/QCD_Pt20to30_Mu_Skim_NanoAOD_5of5.root"
+
+ST_tbarW_channel_FileList_2018="$eosDirSkim/2018/ST_tbarW_channel_Skim_NanoAOD_1of2.root $eosDirSkim/2018/ST_tbarW_channel_Skim_NanoAOD_2of2.root"
 
 ZZTo4L_amcatnlo_FileList_2018="$eosDirSkim/2018/ZZTo4L_amcatnlo_Skim_NanoAOD_1of3.root $eosDirSkim/2018/ZZTo4L_amcatnlo_Skim_NanoAOD_2of3.root $eosDirSkim/2018/ZZTo4L_amcatnlo_Skim_NanoAOD_3of3.root"
 
