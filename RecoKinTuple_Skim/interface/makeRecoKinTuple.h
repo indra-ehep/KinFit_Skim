@@ -289,6 +289,7 @@ class makeRecoKinTuple {
   std::vector<float>	 _genJetPartonFlavour;
   std::vector<float>	 _genJetHadronFlavour;
 
+  Int_t			 _nLHEPart;
   Int_t			 _nGenPart;
   std::vector<float>	 _genPt;
   std::vector<float>	 _genEta;
@@ -544,6 +545,7 @@ void makeRecoKinTuple::InitBranches(){
     }
 	
     if (!tree->isData_ && !isSystematicRun){
+	outputTree->Branch("nLHEPart"		, &_nLHEPart			); 
 	outputTree->Branch("nGenPart"		, &_nGenPart			); 
 	outputTree->Branch("genPt"		, &_genPt			);
 	outputTree->Branch("genEta"		, &_genEta			); 
@@ -747,6 +749,7 @@ void makeRecoKinTuple::InitVariables()
     _genJetPartonFlavour.clear();
     _genJetHadronFlavour.clear();
     
+    _nLHEPart			= -9999;
     _nGenPart			= -9999;
     _genPt.clear();
     _genPhi.clear();

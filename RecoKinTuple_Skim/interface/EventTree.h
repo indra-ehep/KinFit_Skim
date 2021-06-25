@@ -48,6 +48,8 @@ class EventTree{
     Float_t    pvChi2_;
     
 
+    // nLHEpart
+    UInt_t    nLHEPart_;
     // genParticle
     
     UInt_t    nGenPart_;

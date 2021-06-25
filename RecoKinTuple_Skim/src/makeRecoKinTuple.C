@@ -796,10 +796,11 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   _nJet            = selector->Jets.size();
   _nfwdJet         = selector->FwdJets.size();
   _nBJet           = selector->bJets.size();
-
+  
+  _nLHEPart        = tree->nLHEPart_;
   _nGenPart        = tree->nGenPart_;
   _nGenJet         = tree->nGenJet_;
-
+  
   //TODO
   //        _pdfWeight       = tree->pdfWeight_;	
   
