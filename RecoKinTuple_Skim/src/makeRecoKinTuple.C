@@ -198,14 +198,13 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   selector->looseJetID = false;
     
   selector->useDeepCSVbTag = true;
-    
+  
   if (isMC){
-    if (year=="2016") selector->init_JER("weight/JetSF/JER/Summer16_25nsV1");
+    //if (year=="2016") selector->init_JER("weight/JetSF/JER/Summer16_25nsV1");
+    if (year=="2016") selector->init_JER("weight/JetSF/JERMiniAOD/Spring16_25nsV10a"); // For MiniAOD comparison
     if (year=="2017") selector->init_JER("weight/JetSF/JER/Fall17_V3");
     if (year=="2018") selector->init_JER("weight/JetSF/JER/Autumn18_V7b");
   }
-
-
 
   if (year=="2016") selector->btag_cut_DeepCSV = 0.6321;
   if (year=="2017") selector->btag_cut_DeepCSV = 0.4941;
