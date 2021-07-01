@@ -1,0 +1,8 @@
+W3jets_FileList_2016
+DYjetsM50_ext1_FileList_2016
+DYjetsM10to50_FileList_2016
+W4jets_FileList_2016
+WW_FileList_2016
+WW_ext1_FileList_2016
+WZ_FileList_2016
+DY2jetsM50_FileList_2016
