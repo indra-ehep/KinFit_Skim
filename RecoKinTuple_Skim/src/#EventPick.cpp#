@@ -176,7 +176,7 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     bool isPVGood = (tree->pvNDOF_>4 &&
 		     sqrt(tree->pvX_ * tree->pvX_ + tree->pvY_ * tree->pvY_)<=2. &&
 		     abs(tree->pvZ_) <= 24.);
-    
+
     selector->isPVGood = isPVGood;
 
     //if (int(tree->event_)==printEvent){

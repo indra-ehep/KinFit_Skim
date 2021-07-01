@@ -288,6 +288,30 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   //    if( systematicType=="QCDcr")       {selector->QCDselect = true; evtPick->ZeroBExclusive=true; evtPick->QCDselect = true;}
   std::cout << "Dilepton Sample :" << dileptonsample << std::endl;
 
+  // TH1F *hPtJetRaw = new TH1F("hPtJetRaw","hPtJetRaw", 1000, 0., 1000.);
+  // TH1F *hEtaJetRaw = new TH1F("hEtaJetRaw","hEtaJetRaw", 100, -3., 3.);
+  // TH1F *hPhiJetRaw = new TH1F("hPhiJetRaw","hPhiJetRaw", 100, -5., 5.);
+
+  // TH1F *hPtJetSel = new TH1F("hPtJetSel","hPtJetSel", 1000, 0., 1000.);
+  // TH1F *hEtaJetSel = new TH1F("hEtaJetSel","hEtaJetSel", 100, -3., 3.);
+  // TH1F *hPhiJetSel = new TH1F("hPhiJetSel","hPhiJetSel", 100, -5., 5.);
+
+  // TH1F *hPtJetJER = new TH1F("hPtJetJER","hPtJetJER", 1000, 0., 1000.);
+  // TH1F *hEtaJetJER = new TH1F("hEtaJetJER","hEtaJetJER", 100, -3., 3.);
+  // TH1F *hPhiJetJER = new TH1F("hPhiJetJER","hPhiJetJER", 100, -5., 5.);
+
+  // TH1F *hPtJetPreSel = new TH1F("hPtJetPreSel","hPtJetPreSel", 1000, 0., 1000.);
+  // TH1F *hEtaJetPreSel = new TH1F("hEtaJetPreSel","hEtaJetPreSel", 100, -3., 3.);
+  // TH1F *hPhiJetPreSel = new TH1F("hPhiJetPreSel","hPhiJetPreSel", 100, -5., 5.);
+
+  // TH1F *hPtJetCleaning = new TH1F("hPtJetCleaning","hPtJetCleaning", 1000, 0., 1000.);
+  // TH1F *hEtaJetCleaning = new TH1F("hEtaJetCleaning","hEtaJetCleaning", 100, -3., 3.);
+  // TH1F *hPhiJetCleaning = new TH1F("hPhiJetCleaning","hPhiJetCleaning", 100, -5., 5.);
+
+  // TH1F *hPtMuRaw = new TH1F("hPtMuRaw","hPtMuRaw", 1000, 0., 1000.);
+  // TH1F *hEtaMuRaw = new TH1F("hEtaMuRaw","hEtaMuRaw", 100, -3., 3.);
+  // TH1F *hPhiMuRaw = new TH1F("hPhiMuRaw","hPhiMuRaw", 100, -5., 5.);
+
   if (dileptonsample && saveCutflow){
     evtPick->Njet_ge = 2;
     evtPick->NBjet_ge = 0;
@@ -528,7 +552,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
 	jecvar->applyJEC(tree, jecvar012_g); // 0:down, 1:norm, 2:up
       }
     }
-
+    
     //HEM test 
     bool isHemVetoObj = false;
     int nHEM_ele=0;
@@ -544,7 +568,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
     }
     HEM_ele_Veto=(nHEM_ele>=1);
     isHemVetoObj=HEM_ele_Veto && year=="2018";
-
+    
     if(_isData &&  tree->run_>=319077 && isHemVetoObj && applyHemVeto){ 
       count_HEM++;
       continue; 
@@ -558,12 +582,64 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
     saveAllEntries = true;
     if ( evtPick->passPresel_ele || evtPick->passPresel_mu || saveAllEntries) {
       if (saveCutflow && !(evtPick->passAll_ele || evtPick->passAll_mu) ) continue;
-
       
       InitVariables();
       // FillEvent(year);
       FillEvent(year,isHemVetoObj); //HEM test
+            
+      // for (int i_jet = 0; i_jet <_nJet && evtPick->passTrigger_mu; i_jet++){	
+      // //for (unsigned int i_jet = 0; i_jet < selector->JetsCleaningPt.size() && evtPick->passTrigger_mu ; i_jet++){	
+      // 	// 	if(tree->jetPt_[selector->JetsCleaning.at(i_jet)] > 17.0 and abs(tree->jetEta_[selector->JetsCleaning.at(i_jet)]) < 4.0){
+      // 	//int jetInd = selector->JetsCleaning.at(i_jet);
+      // 	int jetInd = selector->Jets.at(i_jet);
+      // 	//if(tree->jetPt_[jetInd] > 25.0 and abs(tree->jetEta_[jetInd]) < 2.4){
+      // 	  hPtJetRaw->Fill(tree->jetPt_[jetInd]);
+      // 	  hEtaJetRaw->Fill(tree->jetEta_[jetInd]);
+      // 	  hPhiJetRaw->Fill(tree->jetPhi_[jetInd]);
+      // 	  //}
+      // }
+      // for (int i_jet = 0; i_jet <_nJet && evtPick->passTrigger_mu; i_jet++){	
+      // 	int jetInd = selector->Jets.at(i_jet);
+      // 	if(tree->jetPt_[i_jet] > 17.0 and abs(tree->jetEta_[i_jet]) < 4.0){
+      // 	  hPtJetSel->Fill(tree->jetPt_[jetInd]);
+      // 	  hEtaJetSel->Fill(tree->jetEta_[jetInd]);
+      // 	  hPhiJetSel->Fill(tree->jetPhi_[jetInd]);
+      // 	}
+      // }
 
+      // for (unsigned int i_jet = 0; i_jet < selector->JetsJERPt.size() && evtPick->passTrigger_mu ; i_jet++){	
+      // 	if(tree->jetPt_[i_jet] > 17.0 and abs(tree->jetEta_[i_jet]) < 4.0){
+      // 	  hPtJetJER->Fill(selector->JetsJERPt.at(i_jet));
+      // 	  hEtaJetJER->Fill(tree->jetEta_[i_jet]);
+      // 	  hPhiJetJER->Fill(tree->jetPhi_[i_jet]);
+      // 	}
+      // }
+      // for (unsigned int i_jet = 0; i_jet < selector->JetsPreSelPt.size() && evtPick->passTrigger_mu ; i_jet++){	
+      // 	if(tree->jetPt_[selector->JetsPreSel.at(i_jet)] > 17.0 and abs(tree->jetEta_[selector->JetsPreSel.at(i_jet)]) < 4.0){
+      // 	  hPtJetPreSel->Fill(selector->JetsPreSelPt.at(i_jet));
+      // 	  hEtaJetPreSel->Fill(tree->jetEta_[selector->JetsPreSel.at(i_jet)]);
+      // 	  hPhiJetPreSel->Fill(tree->jetPhi_[selector->JetsPreSel.at(i_jet)]);
+      // 	}
+      // }
+      // for (unsigned int i_jet = 0; i_jet < selector->JetsCleaningPt.size() && evtPick->passTrigger_mu ; i_jet++){	
+      // 	if(tree->jetPt_[selector->JetsCleaning.at(i_jet)] > 17.0 and abs(tree->jetEta_[selector->JetsCleaning.at(i_jet)]) < 4.0){
+      // 	  hPtJetCleaning->Fill(selector->JetsCleaningPt.at(i_jet));
+      // 	  hEtaJetCleaning->Fill(tree->jetEta_[selector->JetsCleaning.at(i_jet)]);
+      // 	  hPhiJetCleaning->Fill(tree->jetPhi_[selector->JetsCleaning.at(i_jet)]);
+      // 	}
+      // }
+
+      // for (unsigned int imu = 0; imu < selector->Muons.size() && evtPick->passTrigger_mu; imu++){	
+      // 	int muInd = selector->Muons.at(imu);
+      // 	//hPtMuRaw->Fill(tree->muPt_[muInd]*tree->muRoccoR_[muInd]);
+      // 	if(tree->muPt_[muInd] > 10.0 and abs(tree->muEta_[muInd]) < 3.0){
+      // 	  hPtMuRaw->Fill(tree->muPt_[muInd]);
+      // 	  //hPtMuRaw->Fill(tree->muPt_[muInd]*tree->muRoccoR_[muInd]);
+      // 	  hEtaMuRaw->Fill(tree->muEta_[muInd]);
+      // 	  hPhiMuRaw->Fill(tree->muPhi_[muInd]);
+      // 	}
+      // }
+      
       if(isMC) {
 	_PUweight    = PUweighter->getWeight(tree->nPUTrue_);
 	_PUweight_Up = PUweighterUp->getWeight(tree->nPUTrue_);
@@ -751,6 +827,31 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   if (saveCutflow) {
     evtPick->close_cutflow_files();
   }
+  
+  // hPtJetRaw->Write();
+  // hEtaJetRaw->Write();
+  // hPhiJetRaw->Write();
+  
+  // hPtJetSel->Write();
+  // hEtaJetSel->Write();
+  // hPhiJetSel->Write();
+  
+  // hPtJetJER->Write();
+  // hEtaJetJER->Write();
+  // hPhiJetJER->Write();
+  
+  // hPtJetPreSel->Write();
+  // hEtaJetPreSel->Write();
+  // hPhiJetPreSel->Write();
+  
+  // hPtJetCleaning->Write();
+  // hEtaJetCleaning->Write();
+  // hPhiJetCleaning->Write();
+  
+  // hPtMuRaw->Write();
+  // hEtaMuRaw->Write();
+  // hPhiMuRaw->Write();
+
   outputFile->Close();
     
 }

@@ -82,7 +82,6 @@ class makeRecoKinTuple {
   TH2D*	c_eff;
   TH2D*	b_eff;
 
-
   // Fixed size dimensions of array or collections stored in the TTree if any.
 
   // Declaration of leaf types

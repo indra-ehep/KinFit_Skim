@@ -65,6 +65,12 @@ public:
 	
 	std::vector<double> MuRelIso_corr;
 
+	std::vector<double> JetsJERPt;
+	std::vector<double> JetsPreSelPt;
+	std::vector<double> JetsCleaningPt;
+	std::vector<int> JetsPreSel;
+	std::vector<int> JetsCleaning;
+
         bool isPVGood;
 
 	double jet_Pt_cut;
@@ -82,6 +88,8 @@ public:
 	bool   looseJetID;
 	bool   useDeepCSVbTag;
 	bool   QCDselect;
+
+	bool  looseJetID_miniAOD;
 
 	// electrons
 	double ele_Pt_cut;
