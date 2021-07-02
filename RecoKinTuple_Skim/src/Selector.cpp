@@ -418,13 +418,15 @@ void Selector::filter_jets(){
     cout << "Found Event Staring Jets" << endl;
   }
 
+  TLorentzVector tJET;
   for(int jetInd = 0; jetInd < int(tree->nJet_); ++jetInd){
 
     double pt = tree->jetPt_[jetInd];
     double eta = tree->jetEta_[jetInd];
     double phi = tree->jetPhi_[jetInd];
     double smearpt = tree->jetPt_[jetInd];
-
+    tJET.SetPtEtaPhiM(pt, eta, phi, tree->jetMass_[jetInd]);
+    
     //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
     int jetID_cutBit = 1;
     if (year=="2016"){ jetID_cutBit = 0; }
@@ -477,12 +479,30 @@ void Selector::filter_jets(){
 	cout << "JetSmear: "<<jetSmear << endl;
       }
       
+      double modPx = jetSmear*tJET.Px(); 
+      double modPy = jetSmear*tJET.Py(); 
+      double modPz = jetSmear*tJET.Pz(); 
+      double modE  = jetSmear*tJET.E(); 
+      tJET.SetPtEtaPhiE(modPx, modPy, modPz, modE);
+
       smearpt = pt*jetSmear;
       JetsJERPt.push_back(smearpt);
       
       if (smearJetPt){
-	pt = pt*jetSmear;
-	tree->jetPt_[jetInd] = pt;
+	// Default
+	// pt = pt*jetSmear;
+	// tree->jetPt_[jetInd] = pt;
+
+	pt = tJET.Pt();
+	eta = tJET.Eta();
+	phi = tJET.Phi();
+	double mass = tJET.M();
+	
+	tree->jetPt_[jetInd]  = pt;
+	tree->jetEta_[jetInd] = eta;
+	tree->jetPhi_[jetInd] = phi;
+	tree->jetMass_[jetInd] = mass;
+	
       }
     }//isMC
 
@@ -529,7 +549,7 @@ void Selector::filter_jets(){
     /// jetId==7 means: pass loose, tight, tightLepVeto ID. 
     ////------------------------------------------------------------------
     
-    bool passMiniAOD_presel =  ((tree->jetID_[jetInd]>>0 & 1 && looseJetID_miniAOD) && smearpt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD) ? true : false ;
+    bool passMiniAOD_presel =  ((tree->jetID_[jetInd]>>0 & 1 && looseJetID_miniAOD) && pt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD) ? true : false ;
     if(passMiniAOD_presel){
       JetsPreSel.push_back(jetInd);
       JetsPreSelPt.push_back(smearpt);
