@@ -425,6 +425,9 @@ void Selector::filter_jets(){
     double eta = tree->jetEta_[jetInd];
     double phi = tree->jetPhi_[jetInd];
     double smearpt = tree->jetPt_[jetInd];
+    
+    if(pt < 17.0 or abs(eta) > 4.0) continue;
+    
     //tJET.SetPtEtaPhiM(pt, eta, phi, tree->jetMass_[jetInd]);
     
     //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
