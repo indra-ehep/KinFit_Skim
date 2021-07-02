@@ -297,6 +297,8 @@ void Selector::filter_muons(){
       
     double eta = tree->muEta_[muInd];
     double pt = tree->muPt_[muInd];
+
+    if(pt < 10.0 or abs(eta) > 3.0) continue;
 	
     double PFrelIso_corr = tree->muPFRelIso_[muInd];
 
