@@ -298,7 +298,7 @@ void Selector::filter_muons(){
     double eta = tree->muEta_[muInd];
     double pt = tree->muPt_[muInd];
 
-    if(pt < 10.0 or abs(eta) > 3.0) continue;
+    //if(pt < 10.0 or abs(eta) > 3.0) continue;
 	
     double PFrelIso_corr = tree->muPFRelIso_[muInd];
 
@@ -428,7 +428,7 @@ void Selector::filter_jets(){
     double phi = tree->jetPhi_[jetInd];
     double smearpt = tree->jetPt_[jetInd];
     
-    if(pt < 17.0 or abs(eta) > 4.0) continue;
+    //if(pt < 17.0 or abs(eta) > 4.0) continue;
     
     //tJET.SetPtEtaPhiM(pt, eta, phi, tree->jetMass_[jetInd]);
     

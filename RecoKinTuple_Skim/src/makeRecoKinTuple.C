@@ -287,7 +287,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   if(qcdSample)       {selector->QCDselect = true; evtPick->QCDselect = true;}
   //    if( systematicType=="QCDcr")       {selector->QCDselect = true; evtPick->ZeroBExclusive=true; evtPick->QCDselect = true;}
   std::cout << "Dilepton Sample :" << dileptonsample << std::endl;
-
+  
   // TH1F *hPtJetRaw = new TH1F("hPtJetRaw","hPtJetRaw", 1000, 0., 1000.);
   // TH1F *hEtaJetRaw = new TH1F("hEtaJetRaw","hEtaJetRaw", 100, -3., 3.);
   // TH1F *hPhiJetRaw = new TH1F("hPhiJetRaw","hPhiJetRaw", 100, -5., 5.);
@@ -588,16 +588,12 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
       FillEvent(year,isHemVetoObj); //HEM test
             
       // for (int i_jet = 0; i_jet <_nJet && evtPick->passTrigger_mu; i_jet++){	
-      // //for (unsigned int i_jet = 0; i_jet < selector->JetsCleaningPt.size() && evtPick->passTrigger_mu ; i_jet++){	
-      // 	// 	if(tree->jetPt_[selector->JetsCleaning.at(i_jet)] > 17.0 and abs(tree->jetEta_[selector->JetsCleaning.at(i_jet)]) < 4.0){
-      // 	//int jetInd = selector->JetsCleaning.at(i_jet);
       // 	int jetInd = selector->Jets.at(i_jet);
-      // 	//if(tree->jetPt_[jetInd] > 25.0 and abs(tree->jetEta_[jetInd]) < 2.4){
-      // 	  hPtJetRaw->Fill(tree->jetPt_[jetInd]);
-      // 	  hEtaJetRaw->Fill(tree->jetEta_[jetInd]);
-      // 	  hPhiJetRaw->Fill(tree->jetPhi_[jetInd]);
-      // 	  //}
+      // 	hPtJetRaw->Fill(tree->jetPt_[jetInd]);
+      // 	hEtaJetRaw->Fill(tree->jetEta_[jetInd]);
+      // 	hPhiJetRaw->Fill(tree->jetPhi_[jetInd]);
       // }
+
       // for (int i_jet = 0; i_jet <_nJet && evtPick->passTrigger_mu; i_jet++){	
       // 	int jetInd = selector->Jets.at(i_jet);
       // 	if(tree->jetPt_[i_jet] > 17.0 and abs(tree->jetEta_[i_jet]) < 4.0){
