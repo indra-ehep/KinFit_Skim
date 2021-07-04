@@ -455,6 +455,7 @@ void Selector::filter_jets(){
       double jetSmear = 1;
 
       int genIdx = tree->jetGenJetIdx_[jetInd];
+
       // if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
       // 	double genJetPt = tree->GenJet_pt_[genIdx];
       // 	jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
@@ -464,17 +465,17 @@ void Selector::filter_jets(){
       
       bool miniAOD_SF_check = false;
       if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
-	double genJetPt = tree->GenJet_pt_[genIdx];
-	double genJetEta = tree->GenJet_eta_[genIdx];
-	double genJetPhi = tree->GenJet_phi_[genIdx];
-	if( dR(eta, phi, genJetEta, genJetPhi) < veto_lep_jet_dR_miniAOD/2. && TMath::Abs(genJetPt - pt) < 3.0*resolution*pt )
-	  miniAOD_SF_check = true;
+      	double genJetPt = tree->GenJet_pt_[genIdx];
+      	double genJetEta = tree->GenJet_eta_[genIdx];
+      	double genJetPhi = tree->GenJet_phi_[genIdx];
+      	if( dR(eta, phi, genJetEta, genJetPhi) < veto_lep_jet_dR_miniAOD/2. && TMath::Abs(genJetPt - pt) < 3.0*resolution*pt )
+      	  miniAOD_SF_check = true;
       }
       
       if (miniAOD_SF_check)
-	jetSmear = max( 0.0, 1. + (jetSF - 1.) * (pt - tree->GenJet_pt_[genIdx])/pt);
+      	jetSmear = max( 0.0, 1. + (jetSF - 1.) * (pt - tree->GenJet_pt_[genIdx])/pt);
       else
-	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
+      	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
       
       
       if (int(tree->event_)==printEvent){
