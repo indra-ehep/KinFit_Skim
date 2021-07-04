@@ -456,26 +456,26 @@ void Selector::filter_jets(){
 
       int genIdx = tree->jetGenJetIdx_[jetInd];
 
-      // if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
-      // 	double genJetPt = tree->GenJet_pt_[genIdx];
-      // 	jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
-      // }else{
-      // 	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
-      // }
-      
-      bool miniAOD_SF_check = false;
       if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
       	double genJetPt = tree->GenJet_pt_[genIdx];
-      	double genJetEta = tree->GenJet_eta_[genIdx];
-      	double genJetPhi = tree->GenJet_phi_[genIdx];
-      	if( dR(eta, phi, genJetEta, genJetPhi) < veto_lep_jet_dR_miniAOD/2. && TMath::Abs(genJetPt - pt) < 3.0*resolution*pt )
-      	  miniAOD_SF_check = true;
+      	jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
+      }else{
+      	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
       }
       
-      if (miniAOD_SF_check)
-      	jetSmear = max( 0.0, 1. + (jetSF - 1.) * (pt - tree->GenJet_pt_[genIdx])/pt);
-      else
-      	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
+      // bool miniAOD_SF_check = false;
+      // if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
+      // 	double genJetPt = tree->GenJet_pt_[genIdx];
+      // 	double genJetEta = tree->GenJet_eta_[genIdx];
+      // 	double genJetPhi = tree->GenJet_phi_[genIdx];
+      // 	if( dR(eta, phi, genJetEta, genJetPhi) < veto_lep_jet_dR_miniAOD/2. && TMath::Abs(genJetPt - pt) < 3.0*resolution*pt )
+      // 	  miniAOD_SF_check = true;
+      // }
+      
+      // if (miniAOD_SF_check)
+      // 	jetSmear = max( 0.0, 1. + (jetSF - 1.) * (pt - tree->GenJet_pt_[genIdx])/pt);
+      // else
+      // 	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
       
       
       if (int(tree->event_)==printEvent){
@@ -632,58 +632,6 @@ void Selector::filter_jets(){
 }
 
 
-// void Selector::filter_jets(){
-//   for(int jetInd = 0; jetInd < int(tree->nJet_); ++jetInd){
-//     double jetSF = 1.;
-//     double resolution = 0.;
-
-//     if (!tree->isData_){
-//       jetParam.setJetEta(tree->jetEta_[jetInd]);         jetParam.setJetPt(tree->jetPt_[jetInd]);
-//       jetParam.setJetArea(tree->jetArea_[jetInd]);       jetParam.setRho(tree->rho_);
-//       resolution = jetResolution->getResolution(jetParam);
-          
-//       if (JERsystLevel==1) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::NOMINAL);
-//       if (JERsystLevel==0) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::DOWN);
-//       if (JERsystLevel==2) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::UP);
-
-//       int genIdx = tree->jetGenJetIdx_[jetInd];
-//       if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
-// 	double genJetPt = tree->GenJet_pt_[genIdx];
-// 	jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
-//       }else
-// 	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
-
-//       smearpt = pt*jetSmear;
-//       JetsJERPt.push_back(smearpt);
-//     }//isMC
-
-//     bool passMiniAOD_presel =  ((tree->jetID_[jetInd]>>0 & 1 && looseJetID_miniAOD) && pt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD);
-//     if(passMiniAOD_presel){
-//       JetsPreSel.push_back(jetInd);
-//       JetsPreSelPt.push_back(smearpt);
-//     }
-
-//     bool passDR_lep_jet_miniAOD = true;
-	
-//     //loop over selected muons
-//     for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-//       if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
-//     }
-//     if(passMiniAOD_presel && passDR_lep_jet_miniAOD){
-//       JetsCleaning.push_back(jetInd);
-//       JetsCleaningPt.push_back(smearpt);
-//     }
-
-//     passMiniAOD_presel =  true;    
-//     if( passMiniAOD_presel ){
-//       Jets.push_back(jetInd);
-//       jet_resolution.push_back(jetSF);
-//     }//presel condition
-
-//   }//main jet loop 
-
-    
-// }
 
 
 bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){

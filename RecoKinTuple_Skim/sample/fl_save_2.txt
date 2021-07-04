@@ -1,8 +1,0 @@
-WZ_ext1_FileList_2016
-ZZ_ext1_FileList_2016
-ZZ_FileList_2016
-DY3jetsM50_FileList_2016
-DY1jetsM50_FileList_2016
-Wjets_FileList_2016
-DY4jetsM50_FileList_2016
-Wjets_ext2_FileList_2016
