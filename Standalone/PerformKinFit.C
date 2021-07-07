@@ -107,19 +107,22 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   
   hMuPt = new TH1F("hMuPt","hMuPt",100,0,1000.0); 
   hMjj = new TH1F("hMjj","hMjj",80,0,400.0); 
-  hMjjkF = new TH1F("hMjjkF",Form("hMjjkF with chi2cut : %5.2lf",fchi2cut),80,0,400.0); 
+  hMjjkF = new TH1F("hMjjkF",Form("hMjjkF with chi2cut : %5.2lf",fchi2cut),80,0,400.0);
+  //new
+  hMjjkF_thad	= new TH1F("hMjjkF_thad",	Form("hMjjkF_thad with chi2cut: %5.2lf",fchi2cut),80,0,400.0); 
+  //
   hMjjkFsc = new TH1F("hMjjkFsc",Form("hMjjkFsc with chi2cut : %5.2lf",fchi2cut),80,0,400.0); 
   hMjjkF3s = new TH1F("hMjjkF3s",Form("hMjjkF3s with chi2cut : %5.2lf",fchi2cut),80,0,400.0); 
 
   hMjjkF_ms = new TH1F("hMjjkF_ms",Form("hMjjkF_ms : missing counts"),80,0,400.0); 
   hMjjkF_01 = new TH1F("hMjjkF_01",Form("hMjjkF_01 with E > 0 GeV"),80,0,400.0); 
   hMjjkF_02 = new TH1F("hMjjkF_02",Form("hMjjkF_02 with #chi^{2} < %5.2lf",fchi2cut),80,0,400.0); 
-  hMjjkF_03 = new TH1F("hMjjkF_03",Form("hMjjkF_03 with p_{T}^{#mu} > 30 GeV/c"),80,0,400.0); 
-  hMjjkF_04 = new TH1F("hMjjkF_04",Form("hMjjkF_04 with p_{T}^{bj} > 30 GeV/c"),80,0,400.0); 
-  hMjjkF_05 = new TH1F("hMjjkF_05",Form("hMjjkF_05 with p_{T}^{bl} > 30 GeV/c"),80,0,400.0); 
-  hMjjkF_06 = new TH1F("hMjjkF_06",Form("hMjjkF_06 with p_{T}^{sj1} > 30 GeV/c"),80,0,400.0); 
-  hMjjkF_07 = new TH1F("hMjjkF_07",Form("hMjjkF_07 with p_{T}^{sj2} > 30 GeV/c"),80,0,400.0); 
-  hMjjkF_08 = new TH1F("hMjjkF_08",Form("hMjjkF_08 with p_{T}^{MET} > 20 GeV/c"),80,0,400.0); 
+  hMjjkF_03 = new TH1F("hMjjkF_03",Form("hMjjkF_03 with p_{T}^{#mu} > 30 GeV/c and |eta| < 2.4"),80,0,400.0); 
+  hMjjkF_04 = new TH1F("hMjjkF_04",Form("hMjjkF_04 with p_{T}^{bj} > 30 GeV/c and |eta| < 2.4"),80,0,400.0); 
+  hMjjkF_05 = new TH1F("hMjjkF_05",Form("hMjjkF_05 with p_{T}^{bl} > 30 GeV/c and |eta| < 2.4"),80,0,400.0); 
+  hMjjkF_06 = new TH1F("hMjjkF_06",Form("hMjjkF_06 with p_{T}^{sj1} > 30 GeV/c and |eta| < 2.4"),80,0,400.0); 
+  hMjjkF_07 = new TH1F("hMjjkF_07",Form("hMjjkF_07 with p_{T}^{sj2} > 30 GeV/c and |eta| < 2.4"),80,0,400.0); 
+  hMjjkF_08 = new TH1F("hMjjkF_08",Form("hMjjkF_08 with p_{T}^{MET} > 20 GeV/c and |eta| < 2.4"),80,0,400.0); 
   hMjjkF_09 = new TH1F("hMjjkF_09",Form("hMjjkF_09 with #DeltaR^{bj} < 0.2 "),80,0,400.0); 
   hMjjkF_10 = new TH1F("hMjjkF_10",Form("hMjjkF_10 with #DeltaR^{sj1} < 0.2 "),80,0,400.0); 
   hMjjkF_11 = new TH1F("hMjjkF_11",Form("hMjjkF_11 with #DeltaR^{sj2} < 0.2 "),80,0,400.0); 
@@ -132,6 +135,10 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   
   hNlep = new TH1F("hNlep","hNlep",200,-10.0,10.0); 
   hChi2 = new TH1F("hChi2","hChi2",500,0,100.0); 
+  //new
+  hChi2_tlep 	= new TH1F("hChi2_tlep",	"hChi2_tlep",	500,0,100.0); 
+  hChi2_thad 	= new TH1F("hChi2_thad",	"hChi2_thad",	500,0,100.0); 
+  //
   hMinChi2 = new TH1F("hMinChi2","1^{st} minimum",500,0,100.0); 
   h2MinChi2 = new TH1F("h2MinChi2","2^{nd} minimum",500,0,100.0); 
   h3MinChi2 = new TH1F("h3MinChi2","3^{rd} minimum",500,0,100.0); 
@@ -140,6 +147,22 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   hNbiter = new TH1F("hNbiter","hNbiter",500,0,500.0); 
   hNbCombiBRD = new TH1F("hNbCombiBRD","hNbCombiBRD", 500, 0.0, 500.0);
   hNbCombiARD = new TH1F("hNbCombiARD","hNbCombiARD", 500, 0.0, 500.0);
+
+  //new
+  hMinChi2_tlep = new TH1F("hMinChi2_tlep",		"1^{st} minimum",	500,0,100.0); 
+  hMinChi2_thad = new TH1F("hMinChi2_thad",		"1^{st} minimum",	500,0,100.0); 
+  hdRcjsjBF		= new TH1F("hdRcjsjBF",			"hdRcjsjBF",	200, 0, 10.0);
+  hdRcjsjAF		= new TH1F("hdRcjsjAF",			"hdRcjsjAF",	200, 0, 10.0);
+  hdRLepNuBF	= new TH1F("hdRLepNuBF",		"hdRLepNuBF",	200, 0, 10.0);
+  hdRLepNuAF	= new TH1F("hdRLepNuAF",		"hdRLePNuAF",	200, 0, 10.0);
+  //
+
+  hdRlepBFAF	= new TH1F("hdRLepBFAF",		"hdRLepBFAF",	200, 0, 10.0);
+  hdRbjlepBFAF	= new TH1F("hdRbjlepepBFAF",	"hdRLepBFAF",	200, 0, 10.0);
+  hdRbjhadBFAF	= new TH1F("hdRbjhadBFAF",		"hdRLepBFAF",	200, 0, 10.0);
+  hdRcjhadBFAF	= new TH1F("hdRcjhadBFAF",		"hdRLepBFAF",	200, 0, 10.0);
+  hdRsjhadBFAF	= new TH1F("hdRsjhadBFAF",		"hdRLepBFAF",	200, 0, 10.0);
+
   hdRSigLep  = new TH1F("hdRSigLep","hdRSigLep",100, -1.0, 9.0);
   hdRSigNeu  = new TH1F("hdRSigNeu","hdRSigNeu",100, -1.0, 9.0);
   hdRSigBjHad  = new TH1F("hdRSigBjHad","hdRSigBjHad",100, -1.0, 9.0);
@@ -304,11 +327,23 @@ void PerformKinFit::SlaveBegin(TTree *tree)
   hMW = new TH1F("hMW","hMW",2000,0,200.0); 
   hMW->GetXaxis()->SetTitle(Form("Mass (MeV/c^{2})"));
   hMW->GetYaxis()->SetTitle(Form("Counts per %2.0f MeV/c^{2}",1000.0*hMW->GetBinWidth(3)));
+
+  //new
+  hMW_tlep = new TH1F("hMW_tlep", "hMW_tlep", 2000, 0, 200.0); 
+  hMW_tlep->GetXaxis()->SetTitle(Form("Mass (MeV/c^{2})"));
+  hMW_tlep->GetYaxis()->SetTitle(Form("Counts per %2.0f MeV/c^{2}",1000.0*hMW->GetBinWidth(3)));
+  //
   
   hHadTop = new TH1F("hHadTop","hHadTop",2000,0,400.0); 
   hLepTop = new TH1F("hLepTop","hLepTop",2000,0,400.0); 
   hEtaNeu = new TH1F("hEtaNeu","hEtaNeu",100,-10,10.0); 
-
+  //new
+  hEtaNeu_tlep = new TH1F("hEtaNeu_tlep","hEtaNeu_tlep",200,-10,10.0); 
+  hEtaLep 	= new TH1F("hEtaLep",	"hEtaLep",	200,-10,10.0); 
+  hEtacjhad = new TH1F("hEtacjhad",	"hEtacjhad",	200,-10,10.0); 
+  hEtasjhad = new TH1F("hEtasjhad",	"hEtasjhad",	200,-10,10.0); 
+  //
+  
   //0-50, 50-100, 100-150, 150-200, 200-250, >250
   fNDiffAvgBins = 6;
   fDAmin = new float[fNDiffAvgBins];
@@ -355,64 +390,66 @@ Bool_t PerformKinFit::Process(Long64_t entry)
   //fChain->GetTree()->GetEntry(entry);
   _btagWeight_1a = -100.0;
   
-  br_passPresel_Ele->GetEntry(entry);
-  br_passPresel_Mu->GetEntry(entry);
-  br_muPt->GetEntry(entry);
-  br_muEta->GetEntry(entry);
-  br_muPhi->GetEntry(entry);
-  br_nJet->GetEntry(entry);
-  br_nBJet->GetEntry(entry);
-  br_jetPt->GetEntry(entry);
-  br_jetEta->GetEntry(entry);
-  br_jetPhi->GetEntry(entry);
-  br_jetMass->GetEntry(entry);
-  br_jetDeepB->GetEntry(entry);
-  br_nu_px->GetEntry(entry);
-  br_nu_py->GetEntry(entry);
-  br_nu_pz->GetEntry(entry);
-  br_nu_pz_other->GetEntry(entry); 
-  br_pfMET->GetEntry(entry); 
-  br_pfMETPhi->GetEntry(entry); 
-  br_btagWeight_1a->GetEntry(entry); 
-  
-  
-  br_HT->GetEntry(entry);
-  br_M3->GetEntry(entry);
-  br_M_jjkF->GetEntry(entry);
-  br_M_jj->GetEntry(entry);
-  br_WtransMass->GetEntry(entry);
-  br_elePhi->GetEntry(entry);
-  br_elePt->GetEntry(entry);
-  br_eleSCEta->GetEntry(entry);
-  br_nVtx->GetEntry(entry);
-  br_chi2->GetEntry(entry);
+  fChain->GetTree()->GetEntry(entry);
 
-  br_evtWeight->GetEntry(entry) ;
-  br_PUweight->GetEntry(entry) ;
-  br_muEffWeight->GetEntry(entry) ;
-  br_eleEffWeight->GetEntry(entry) ;  // 1 * 1 * 1 * 1 for q2 * pdf * isr * fsr
-  br_btagWeight_1a->GetEntry(entry) ;  
-  br_btagWeight_1a_b_Do->GetEntry(entry) ;
-  br_btagWeight_1a_b_Up->GetEntry(entry) ;
-  br_btagWeight_1a_l_Do->GetEntry(entry) ;
-  br_btagWeight_1a_l_Up->GetEntry(entry) ;
-  br_eleEffWeight_Do->GetEntry(entry) ;
-  br_eleEffWeight_Up->GetEntry(entry) ;
-  br_FSRweight_Do->GetEntry(entry) ;  
-  br_FSRweight_Up->GetEntry(entry) ;
-  br_ISRweight_Do->GetEntry(entry) ;
-  br_ISRweight_Up->GetEntry(entry) ;  
-  br_muEffWeight_Do->GetEntry(entry) ;
-  br_muEffWeight_Up->GetEntry(entry) ;
-  br_pdfweight_Do->GetEntry(entry) ;
-  br_pdfweight_Up->GetEntry(entry) ;
-  br_PUweight_Do->GetEntry(entry) ;
-  br_PUweight_Up->GetEntry(entry) ;
-  br_q2weight_Do->GetEntry(entry) ;
-  br_q2weight_Up->GetEntry(entry) ;
+  // br_passPresel_Ele->GetEntry(entry);
+  // br_passPresel_Mu->GetEntry(entry);
+  // br_muPt->GetEntry(entry);
+  // br_muEta->GetEntry(entry);
+  // br_muPhi->GetEntry(entry);
+  // br_nJet->GetEntry(entry);
+  // br_nBJet->GetEntry(entry);
+  // br_jetPt->GetEntry(entry);
+  // br_jetEta->GetEntry(entry);
+  // br_jetPhi->GetEntry(entry);
+  // br_jetMass->GetEntry(entry);
+  // br_jetDeepB->GetEntry(entry);
+  // br_nu_px->GetEntry(entry);
+  // br_nu_py->GetEntry(entry);
+  // br_nu_pz->GetEntry(entry);
+  // br_nu_pz_other->GetEntry(entry); 
+  // br_pfMET->GetEntry(entry); 
+  // br_pfMETPhi->GetEntry(entry); 
+  // br_btagWeight_1a->GetEntry(entry); 
   
-  if(_passPresel_Ele) return true;
-  
+  // // br_HT->GetEntry(entry);
+  // // br_M3->GetEntry(entry);
+  // // br_M_jjkF->GetEntry(entry);
+  // // br_M_jj->GetEntry(entry);
+  // // br_WtransMass->GetEntry(entry);
+  // br_elePhi->GetEntry(entry);
+  // br_elePt->GetEntry(entry);
+  // br_eleSCEta->GetEntry(entry);
+  // br_nVtx->GetEntry(entry);
+  // // br_chi2->GetEntry(entry);
+
+  // br_evtWeight->GetEntry(entry) ;
+  // br_PUweight->GetEntry(entry) ;
+  // br_muEffWeight->GetEntry(entry) ;
+  // br_eleEffWeight->GetEntry(entry) ;  // 1 * 1 * 1 * 1 for q2 * pdf * isr * fsr
+  // br_btagWeight_1a->GetEntry(entry) ;  
+  // br_btagWeight_1a_b_Do->GetEntry(entry) ;
+  // br_btagWeight_1a_b_Up->GetEntry(entry) ;
+  // br_btagWeight_1a_l_Do->GetEntry(entry) ;
+  // br_btagWeight_1a_l_Up->GetEntry(entry) ;
+  // br_eleEffWeight_Do->GetEntry(entry) ;
+  // br_eleEffWeight_Up->GetEntry(entry) ;
+  // br_FSRweight_Do->GetEntry(entry) ;  
+  // br_FSRweight_Up->GetEntry(entry) ;
+  // br_ISRweight_Do->GetEntry(entry) ;
+  // br_ISRweight_Up->GetEntry(entry) ;  
+  // br_muEffWeight_Do->GetEntry(entry) ;
+  // br_muEffWeight_Up->GetEntry(entry) ;
+  // br_pdfweight_Do->GetEntry(entry) ;
+  // br_pdfweight_Up->GetEntry(entry) ;
+  // br_PUweight_Do->GetEntry(entry) ;
+  // br_PUweight_Up->GetEntry(entry) ;
+  // br_q2weight_Do->GetEntry(entry) ;
+  // br_q2weight_Up->GetEntry(entry) ;
+
+  //if(_passPresel_Ele) return true;
+  if(_nMu != 1 or _nEle != 0 or _nMuLoose != 0 or _nEleLoose != 0) return true;
+
   hNlep->Fill(int(_muPt->size()));
   
   if(_btagWeight_1a > 0.0)
@@ -458,13 +495,7 @@ Bool_t PerformKinFit::Process(Long64_t entry)
   if ( kinFit.Fit() ){
 
     hNbCombiBRD->Fill(kinFit.GetNCombinations());
-    int nRdiffPass = 0;
-    vector<float> chi2_arr;
-    chi2_arr.clear();
-    vector<Chi2Array> Chi2ToMass_arr;
-    Chi2Array Chi2ToMass;
-    Chi2ToMass_arr.clear();
-    
+    int nRdiffPass = 0;    
     double minlepPt = -1.0;
     float A = -1.0, B = -1.0;
     int ithda = -1;
@@ -472,6 +503,55 @@ Bool_t PerformKinFit::Process(Long64_t entry)
     float  minBbyA = -1.0;
     int ithpt = -1;
 
+    //new
+    Chi2Array	     Chi2ToMass,     Chi2ToMass_tlep,	 Chi2ToMass_thad;
+    vector<float>    chi2_arr,	     chi2_arr_tlep,	 chi2_arr_thad;
+    chi2_arr.clear();	chi2_arr_tlep.clear();	chi2_arr_thad.clear();
+
+    vector<Chi2Array> Chi2ToMass_arr;    	Chi2ToMass_arr.clear();    
+    vector<Chi2Array> Chi2ToMass_arr_tlep;	Chi2ToMass_arr_tlep.clear();
+    vector<Chi2Array> Chi2ToMass_arr_thad;	Chi2ToMass_arr_thad.clear();
+    //
+    
+    //new
+    for (unsigned int i = 0 ; i < kinFit.GetNCombinations_tlep() ; i++ ){
+      leptonAF_tlep   = kinFit.GetLepton_tlep(i);
+      neutrinoAF_tlep = kinFit.GetNeutrino_tlep(i);
+      bjlepAF_tlep    = kinFit.GetBLepton_tlep(i);
+      lepTopAF_tlep   = (leptonAF_tlep + neutrinoAF_tlep + bjlepAF_tlep);
+      
+      if(leptonAF_tlep.E()<0.0 or neutrinoAF_tlep.E()<0.0 or bjlepAF_tlep.E()<0.0) continue;
+      
+      hChi2_tlep->Fill(kinFit.GetChi2_tlep(i));
+      
+      chi2_arr_tlep.push_back(kinFit.GetChi2_tlep(i));
+      Chi2ToMass_tlep.chi2	 = kinFit.GetChi2_tlep(i);
+      Chi2ToMass_tlep.mW	 = (leptonAF_tlep + neutrinoAF_tlep).M();
+      Chi2ToMass_tlep.leptonAF	 = leptonAF_tlep;
+      Chi2ToMass_tlep.neutrinoAF = neutrinoAF_tlep;
+      Chi2ToMass_tlep.bjlepAF	 = bjlepAF_tlep;      
+      Chi2ToMass_arr_tlep.push_back(Chi2ToMass_tlep);
+    }
+    
+    for (unsigned int i = 0 ; i < kinFit.GetNCombinations_thad() ; i++ ){
+      cjhadAF_thad = kinFit.GetCHadron_thad(i);
+      sjhadAF_thad = kinFit.GetSHadron_thad(i);
+      bjhadAF_thad = kinFit.GetBHadron_thad(i);
+      hadTopAF_thad = (bjhadAF_thad  + cjhadAF_thad + sjhadAF_thad);
+      
+      if(bjhadAF_thad.E()<0.0  or cjhadAF_thad.E()<0.0	or sjhadAF_thad.E()<0.0) continue;
+
+      hChi2_thad->Fill(kinFit.GetChi2_thad(i));
+
+      chi2_arr_thad.push_back(kinFit.GetChi2_thad(i));      
+      Chi2ToMass_thad.chi2    = kinFit.GetChi2_thad(i);
+      Chi2ToMass_thad.mass    = (cjhadAF_thad + sjhadAF_thad).M();
+      Chi2ToMass_thad.cjhadAF = cjhadAF_thad;
+      Chi2ToMass_thad.sjhadAF = sjhadAF_thad;
+      Chi2ToMass_thad.bjlepAF = bjhadAF_thad;      
+      Chi2ToMass_arr_thad.push_back(Chi2ToMass_thad);
+    }
+    //
     for (unsigned int i = 0 ; i < kinFit.GetNCombinations() ; i++ ){
       
       leptonAF		= kinFit.GetLepton(i);
@@ -506,35 +586,70 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       ressjhadEta = kinFit.GetResSjHadEta(i);
       ressjhadPhi = kinFit.GetResSjHadPhi(i);
       
-      double Rdifflep	= TMath::Sqrt( TMath::Power(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) , 2) + TMath::Power(TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) , 2) );
-      double Rdiffbjlep	= TMath::Sqrt( TMath::Power(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) , 2) + TMath::Power(TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) , 2) );
-      double Rdiffbjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) , 2) );
-      double Rdiffcjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) , 2) );
-      double Rdiffsjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2) ); 
+      // new
+      double deta, dphi,  deta2, dphi2;
+      deta = fabs(leptonBF.Eta() - leptonAF.Eta()); 
+      deta2 = deta*deta/(reslepEta*reslepEta);
+      dphi = leptonBF.DeltaPhi(leptonAF);			
+      dphi2 = dphi*dphi/(reslepPhi*reslepPhi);      
+      double Rdifflep = TMath::Sqrt(deta*deta + dphi*dphi);
+      double sigmaResoRDLep = TMath::Sqrt(deta2 + dphi2);
       
-      double sigmaResoRDLep = TMath::Sqrt( TMath::Power(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) , 2) * reslepEta * reslepEta
-					   +
-					   TMath::Power(TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) , 2) * reslepPhi * reslepPhi
-					   ) / Rdifflep ;
-      double sigmaResoRDBjLep = TMath::Sqrt( TMath::Power(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) , 2) * resbjlepEta * resbjlepEta
-					     +
-					     TMath::Power(TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) , 2) * resbjlepPhi * resbjlepPhi
-					     ) / Rdiffbjlep ;
+      deta = fabs(bjlepBF.Eta() - bjlepAF.Eta());	
+      deta2 = deta*deta/(resbjlepEta*resbjlepEta);
+      dphi = bjlepBF.DeltaPhi(bjlepAF);				
+      dphi2 = dphi*dphi/(resbjlepPhi*resbjlepPhi);      
+      double Rdiffbjlep = TMath::Sqrt(deta*deta + dphi*dphi);
+      double sigmaResoRDBjLep = TMath::Sqrt(deta2 + dphi2);
       
-      double sigmaResoRDBjHad = TMath::Sqrt( TMath::Power(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) , 2) * resbjhadEta * resbjhadEta
-					    +
-					    TMath::Power(TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) , 2)  * resbjhadPhi * resbjhadPhi
-					     ) / Rdiffbjhad ;
+      deta = fabs(bjhadBF.Eta() - bjhadAF.Eta());	
+      deta2 = deta*deta/(resbjhadEta*resbjhadEta);
+      dphi = bjhadBF.DeltaPhi(bjhadAF);				
+      dphi2 = dphi*dphi/(resbjhadPhi*resbjhadPhi);      
+      double Rdiffbjhad = TMath::Sqrt(deta*deta + dphi*dphi);
+      double sigmaResoRDBjHad = TMath::Sqrt(deta2 + dphi2);
+      //
 
-      double sigmaResoRDCjHad = TMath::Sqrt( TMath::Power(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) , 2) * rescjhadEta * rescjhadEta
-					    +
-					    TMath::Power(TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) , 2)  * rescjhadPhi * rescjhadPhi
-					     ) / Rdiffcjhad ;
+      // Commented due to evaluation above
+      // double Rdifflep	= leptonBF.DeltaR(leptonAF); 
+      // double Rdiffbjlep	= bjlepBF.DeltaR(bjlepAF);  
+      // double Rdiffbjhad	= bjhadBF.DeltaR(bjhadAF); 
+      double Rdiffcjhad	= cjhadBF.DeltaR(cjhadAF); 
+      double Rdiffsjhad	= sjhadBF.DeltaR(sjhadAF); 
+      
+      // double sigmaResoRDLep = TMath::Sqrt( TMath::Power(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) , 2) * reslepEta * reslepEta
+      // 					   +
+      // 					   TMath::Power(TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) , 2) * reslepPhi * reslepPhi
+      // 					   ) / Rdifflep ;
+      // double sigmaResoRDBjLep = TMath::Sqrt( TMath::Power(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) , 2) * resbjlepEta * resbjlepEta
+      // 					     +
+      // 					     TMath::Power(TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) , 2) * resbjlepPhi * resbjlepPhi
+      // 					     ) / Rdiffbjlep ;
+      
+      // double sigmaResoRDBjHad = TMath::Sqrt( TMath::Power(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) , 2) * resbjhadEta * resbjhadEta
+      // 					    +
+      // 					    TMath::Power(TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) , 2)  * resbjhadPhi * resbjhadPhi
+      // 					     ) / Rdiffbjhad ;
 
-      double sigmaResoRDSjHad = TMath::Sqrt( TMath::Power(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) , 2) * ressjhadEta * ressjhadEta
-					    +
-					    TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2)  * ressjhadPhi * ressjhadPhi
-					     ) / Rdiffsjhad ;
+      // double sigmaResoRDCjHad = TMath::Sqrt( TMath::Power(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) , 2) * rescjhadEta * rescjhadEta
+      // 					    +
+      // 					    TMath::Power(TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) , 2)  * rescjhadPhi * rescjhadPhi
+      // 					     ) / Rdiffcjhad ;
+
+      // double sigmaResoRDSjHad = TMath::Sqrt( TMath::Power(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) , 2) * ressjhadEta * ressjhadEta
+      // 					    +
+      // 					    TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2)  * ressjhadPhi * ressjhadPhi
+      // 					     ) / Rdiffsjhad ;
+      
+      // Incorrect Rdiff evaluation
+      ///////////////////////////////////////////////////////////////////////////////
+      // double Rdifflep	= TMath::Sqrt( TMath::Power(TMath::Abs(leptonBF.Eta() - .Eta()) , 2) + TMath::Power(TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) , 2) );
+      // double Rdiffbjlep	= TMath::Sqrt( TMath::Power(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) , 2) + TMath::Power(TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) , 2) );
+      // double Rdiffbjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) , 2) );
+      // double Rdiffcjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) , 2) );
+      // double Rdiffsjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) , 2) ); 
+      ///////////////////////////////////////////////////////////////////////////////
+
       
       // hdRSigLep->Fill(Rdifflep/sigmaResoRDLep);
       // hdRSigBjHad->Fill(Rdiffbjhad/sigmaResoRDBjHad);
@@ -550,85 +665,75 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       
       ithpt = FindBinIndex(leptonAF.Pt(),fPtmin,fPtmax,fNPtBins); 
       if( ithpt >= 0){
-	hPtBFLep[ithpt]->Fill( leptonBF.Pt() );
-	hPtAFLep[ithpt]->Fill( leptonAF.Pt() );
-	hPtvsRatioPtLep[ithpt]->Fill( leptonBF.Pt() / leptonAF.Pt() );
+    	hPtBFLep[ithpt]->Fill( leptonBF.Pt() );
+    	hPtAFLep[ithpt]->Fill( leptonAF.Pt() );
+    	hPtvsRatioPtLep[ithpt]->Fill( leptonBF.Pt() / leptonAF.Pt() );
       }
 
       ithpt = FindBinIndex(neutrinoAF.Pt(),fPtmin,fPtmax,fNPtBins); 
       if( ithpt >= 0){
-	hPtBFNeu[ithpt]->Fill( neutrinoBF.Pt() );
-	hPtAFNeu[ithpt]->Fill( neutrinoAF.Pt() );
-	hPtvsRatioPtNeu[ithpt]->Fill( neutrinoBF.Pt() / neutrinoAF.Pt() );
+    	hPtBFNeu[ithpt]->Fill( neutrinoBF.Pt() );
+    	hPtAFNeu[ithpt]->Fill( neutrinoAF.Pt() );
+    	hPtvsRatioPtNeu[ithpt]->Fill( neutrinoBF.Pt() / neutrinoAF.Pt() );
       }
 
       ithpt = FindBinIndex(bjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
       if( ithpt >= 0){
-	hPtBFBjHad[ithpt]->Fill( bjhadBF.Pt() );
-	hPtAFBjHad[ithpt]->Fill( bjhadAF.Pt() );
-	hPtvsRatioPtBjHad[ithpt]->Fill( bjhadBF.Pt() / bjhadAF.Pt() );
+    	hPtBFBjHad[ithpt]->Fill( bjhadBF.Pt() );
+    	hPtAFBjHad[ithpt]->Fill( bjhadAF.Pt() );
+    	hPtvsRatioPtBjHad[ithpt]->Fill( bjhadBF.Pt() / bjhadAF.Pt() );
       }
 
       ithpt = FindBinIndex(bjlepAF.Pt(),fPtmin,fPtmax,fNPtBins); 
       //if( ithpt >= 0){
       if( ithpt >= 0 && neutrinoAF.E() > fptmin ){
-	hPtBFBjLep[ithpt]->Fill( bjlepBF.Pt() );
-	hPtAFBjLep[ithpt]->Fill( bjlepAF.Pt() );
-	hPtvsRatioPtBjLep[ithpt]->Fill( bjlepBF.Pt() / bjlepAF.Pt() );
+    	hPtBFBjLep[ithpt]->Fill( bjlepBF.Pt() );
+    	hPtAFBjLep[ithpt]->Fill( bjlepAF.Pt() );
+    	hPtvsRatioPtBjLep[ithpt]->Fill( bjlepBF.Pt() / bjlepAF.Pt() );
       }
 
       ithpt = FindBinIndex(cjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
       if( ithpt >= 0){
-	hPtBFCjHad[ithpt]->Fill( cjhadBF.Pt() );
-	hPtAFCjHad[ithpt]->Fill( cjhadAF.Pt() );
-	hPtvsRatioPtCjHad[ithpt]->Fill( cjhadBF.Pt() / cjhadAF.Pt() );
+    	hPtBFCjHad[ithpt]->Fill( cjhadBF.Pt() );
+    	hPtAFCjHad[ithpt]->Fill( cjhadAF.Pt() );
+    	hPtvsRatioPtCjHad[ithpt]->Fill( cjhadBF.Pt() / cjhadAF.Pt() );
       }
 
       ithpt = FindBinIndex(sjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
       if( ithpt >= 0){
-	hPtBFSjHad[ithpt]->Fill( sjhadBF.Pt() );
-	hPtAFSjHad[ithpt]->Fill( sjhadAF.Pt() );
-	hPtvsRatioPtSjHad[ithpt]->Fill( sjhadBF.Pt() / sjhadAF.Pt() );
+    	hPtBFSjHad[ithpt]->Fill( sjhadBF.Pt() );
+    	hPtAFSjHad[ithpt]->Fill( sjhadAF.Pt() );
+    	hPtvsRatioPtSjHad[ithpt]->Fill( sjhadBF.Pt() / sjhadAF.Pt() );
       }
 
       if(leptonAF.Pt() >= fptmin and leptonAF.Pt() < fptmax ){
-	hPtvsdEtLep->Fill(TMath::Abs(leptonBF.Et() - leptonAF.Et()) );
-	hPtvsdetaLep->Fill(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) );
-	hPtvsdPhiLep->Fill(TMath::Abs(leptonBF.Phi() - leptonAF.Phi()) );
+    	hPtvsdEtLep->Fill(TMath::Abs(leptonBF.Et() - leptonAF.Et()) );
+    	hPtvsdetaLep->Fill(TMath::Abs(leptonBF.Eta() - leptonAF.Eta()) );
+    	hPtvsdPhiLep->Fill( leptonBF.DeltaPhi(leptonAF) );
       }
       
       if(bjhadAF.Pt() >= fptmin and bjhadAF.Pt() < fptmax ){
-	hPtvsdEtBjHad->Fill(TMath::Abs(bjhadBF.Et() - bjhadAF.Et()) );
-	// if(bjhadAF.Pt() < 40.0 and TMath::Abs(bjhadBF.Et() - bjhadAF.Et()) > 50.0){
-	// 	printf("BjHad :: Before KinFit : Pt : %6.2f, Pz : %6.2f, P : %6.2f, E : %6.2f, Et : %6.2f\n",bjhadBF.Pt(),bjhadBF.Pz(),bjhadBF.P(),bjhadBF.E(),bjhadBF.Et());
-	// 	printf("BjHad :: After KinFit : Pt : %6.2f, Pz : %6.2f, P : %6.2f, E : %6.2f, Et : %6.2f\n",bjhadAF.Pt(),bjhadAF.Pz(),bjhadAF.P(),bjhadAF.E(),bjhadAF.Et());
-	// 	cout<<endl;
-	// }
-	hPtvsdetaBjHad->Fill(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) );
-	hPtvsdPhiBjHad->Fill(TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) );
-	// if(bjhadAF.Pt() < 40.0 and TMath::Abs(bjhadBF.Phi() - bjhadAF.Phi()) > 3.0){
-	// 	printf("BjHad :: Before KF : Pt : %6.2f, Pz : %6.2f, P : %6.2f, E : %6.2f, Et : %6.2f, Phi : %6.2f\n",bjhadBF.Pt(),bjhadBF.Pz(),bjhadBF.P(),bjhadBF.E(),bjhadBF.Et(),bjhadBF.Phi());
-	// 	printf("BjHad :: After KF : Pt : %6.2f, Pz : %6.2f, P : %6.2f, E : %6.2f, Et : %6.2f, Phi : %6.2f\n",bjhadAF.Pt(),bjhadAF.Pz(),bjhadAF.P(),bjhadAF.E(),bjhadAF.Et(),bjhadAF.Phi());
-	// 	cout<<endl;
-	// }
+    	hPtvsdEtBjHad->Fill(TMath::Abs(bjhadBF.Et() - bjhadAF.Et()) );
+    	hPtvsdetaBjHad->Fill(TMath::Abs(bjhadBF.Eta() - bjhadAF.Eta()) );
+    	hPtvsdPhiBjHad->Fill( bjhadBF.DeltaPhi(bjhadAF) );
       }
       
       if(bjlepAF.Pt() >= fptmin and bjlepAF.Pt() < fptmax ){
-	hPtvsdEtBjLep->Fill(TMath::Abs(bjlepBF.Et() - bjlepAF.Et()) );
-	hPtvsdetaBjLep->Fill(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) );
-	hPtvsdPhiBjLep->Fill(TMath::Abs(bjlepBF.Phi() - bjlepAF.Phi()) );
+    	hPtvsdEtBjLep->Fill(TMath::Abs(bjlepBF.Et() - bjlepAF.Et()) );
+    	hPtvsdetaBjLep->Fill(TMath::Abs(bjlepBF.Eta() - bjlepAF.Eta()) );
+    	hPtvsdPhiBjLep->Fill( bjlepBF.DeltaPhi(bjlepAF) );
       }
 
       if(cjhadAF.Pt() >= fptmin and cjhadAF.Pt() < fptmax ){
-	hPtvsdEtCjHad->Fill(TMath::Abs(cjhadBF.Et() - cjhadAF.Et()) );
-	hPtvsdetaCjHad->Fill(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) );
-	hPtvsdPhiCjHad->Fill(TMath::Abs(cjhadBF.Phi() - cjhadAF.Phi()) );
+    	hPtvsdEtCjHad->Fill(TMath::Abs(cjhadBF.Et() - cjhadAF.Et()) );
+    	hPtvsdetaCjHad->Fill(TMath::Abs(cjhadBF.Eta() - cjhadAF.Eta()) );
+    	hPtvsdPhiCjHad->Fill( cjhadBF.DeltaPhi(cjhadAF) );
       }
       
       if(sjhadAF.Pt() >= fptmin and sjhadAF.Pt() < fptmax ){
-	hPtvsdEtSjHad->Fill(TMath::Abs(sjhadBF.Et() - sjhadAF.Et()) );
-	hPtvsdetaSjHad->Fill(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) );
-	hPtvsdPhiSjHad->Fill(TMath::Abs(sjhadBF.Phi() - sjhadAF.Phi()) );
+    	hPtvsdEtSjHad->Fill(TMath::Abs(sjhadBF.Et() - sjhadAF.Et()) );
+    	hPtvsdetaSjHad->Fill(TMath::Abs(sjhadBF.Eta() - sjhadAF.Eta()) );
+    	hPtvsdPhiSjHad->Fill( sjhadBF.DeltaPhi(sjhadAF) );
       }
       
       // Case A--
@@ -647,7 +752,7 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       B = (lepTopAF3D - hadTopAF3D).Pt(); 
       ithda = FindBinIndex(A,fDAmin,fDAmax,fNDiffAvgBins); 
       if( ithda >= 0){
-	hDiffAvg[ithda]->Fill(B/A);
+    	hDiffAvg[ithda]->Fill(B/A);
       }
       
       double mjj	= (cjhadBF + sjhadBF).M(); 
@@ -657,39 +762,52 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       hChi2->Fill(kinFit.GetChi2(i));
       
       if(leptonAF.Pt() > 30. and neutrinoAF.Pt() > 20. and bjhadAF.Pt()>30. and bjlepAF.Pt()>30. and cjhadAF.Pt()>30. and sjhadAF.Pt()>30.
-	 and Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2)
-	chi2_arr.push_back(kinFit.GetChi2(i));
+    	 and Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2)
+    	chi2_arr.push_back(kinFit.GetChi2(i));
 
       hNbiter->Fill(float(kinFit.GetNumberOfIter(i)));
       
-      Chi2ToMass.chi2	    = kinFit.GetChi2(i);
-      Chi2ToMass.mass	    = mjjkF;
-      Chi2ToMass.mW	    = (leptonAF + neutrinoAF).M();
-      Chi2ToMass.A	    = A;
-      Chi2ToMass.B	    = B;
-      Chi2ToMass.ndf	    = kinFit.GetNDF(i);
-      Chi2ToMass.nb_iter    = kinFit.GetNumberOfIter(i);
-      Chi2ToMass.leptonAF   = leptonAF;
-      Chi2ToMass.neutrinoAF = neutrinoAF;
-      Chi2ToMass.bjlepAF    = bjlepAF; 
-      Chi2ToMass.bjhadAF    = bjhadAF;
-      Chi2ToMass.cjhadAF    = cjhadAF;
-      Chi2ToMass.sjhadAF    = sjhadAF;
-      Chi2ToMass.leptonBF   = leptonBF;
-      Chi2ToMass.neutrinoBF = neutrinoBF;
-      Chi2ToMass.bjlepBF    = bjlepBF; 
-      Chi2ToMass.bjhadBF    = bjhadBF;
-      Chi2ToMass.cjhadBF    = cjhadBF;
-      Chi2ToMass.sjhadBF    = sjhadBF;
-
+      Chi2ToMass.chi2		 = kinFit.GetChi2(i);
+      Chi2ToMass.mass		 = mjjkF;
+      Chi2ToMass.mW		 = (leptonAF + neutrinoAF).M();
+      Chi2ToMass.A		 = A;
+      Chi2ToMass.B		 = B;
+      Chi2ToMass.ndf		 = kinFit.GetNDF(i);
+      Chi2ToMass.nb_iter	 = kinFit.GetNumberOfIter(i);
+      Chi2ToMass.chi2_thad	 = kinFit.GetChi2_thad(i);
+      Chi2ToMass.chi2_tlep	 = kinFit.GetChi2_tlep(i);
+      Chi2ToMass.leptonAF	 = leptonAF;
+      Chi2ToMass.neutrinoAF	 = neutrinoAF;
+      Chi2ToMass.bjlepAF	 = bjlepAF; 
+      Chi2ToMass.bjhadAF	 = bjhadAF;
+      Chi2ToMass.cjhadAF	 = cjhadAF;
+      Chi2ToMass.sjhadAF	 = sjhadAF;
+      Chi2ToMass.leptonBF	 = leptonBF;
+      Chi2ToMass.neutrinoBF	 = neutrinoBF;
+      Chi2ToMass.bjlepBF	 = bjlepBF; 
+      Chi2ToMass.bjhadBF	 = bjhadBF;
+      Chi2ToMass.cjhadBF	 = cjhadBF;
+      Chi2ToMass.sjhadBF	 = sjhadBF;
+      Chi2ToMass.bjhadAF_thad	 = kinFit.GetBHadron_thad(i);
+      Chi2ToMass.cjhadAF_thad	 = kinFit.GetCHadron_thad(i);    
+      Chi2ToMass.sjhadAF_thad	 = kinFit.GetSHadron_thad(i);
+      Chi2ToMass.leptonAF_tlep	 = kinFit.GetLepton_tlep(i);
+      Chi2ToMass.neutrinoAF_tlep = kinFit.GetNeutrino_tlep(i);
+      Chi2ToMass.bjlepAF_tlep	 = kinFit.GetBLepton_tlep(i);
+      
       Chi2ToMass_arr.push_back(Chi2ToMass);
       
       if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2)
-	nRdiffPass++;
+    	nRdiffPass++;
       
     }// for loop over all kinfit combinations
     
     std::sort(chi2_arr.begin(), chi2_arr.end());
+    //new
+    std::sort(chi2_arr_tlep.begin(),	chi2_arr_tlep.end());
+    std::sort(chi2_arr_thad.begin(),	chi2_arr_thad.end());
+    //
+
     // if(Chi2ToMass_arr.size()==5){
     //   printf("==========Before ==========\n");
     //   for (auto x : Chi2ToMass_arr){
@@ -699,6 +817,11 @@ Bool_t PerformKinFit::Process(Long64_t entry)
     //   printf("==========Before ==========\n");
     // }
     std::sort(Chi2ToMass_arr.begin(), Chi2ToMass_arr.end(), compareChi2Array);
+    //new
+    std::sort(Chi2ToMass_arr_tlep.begin(),	Chi2ToMass_arr_tlep.end(),	compareChi2Array);
+    std::sort(Chi2ToMass_arr_thad.begin(),	Chi2ToMass_arr_thad.end(),	compareChi2Array);
+    //
+    
     // if(Chi2ToMass_arr.size()==5){
     //   printf("==========After ==========\n");
     //   for (auto x : Chi2ToMass_arr){
@@ -708,326 +831,370 @@ Bool_t PerformKinFit::Process(Long64_t entry)
     //   printf("==========After ==========\n");
     //   cout<<endl;
     // }
+    
+    //new
+    int iloop_tlep = 0;
+    for (auto x : Chi2ToMass_arr_tlep){
+      if(x.chi2 >= (fchi2cut-20.0) and  x.chi2 < fchi2cut and iloop_tlep == 0){
+    	hMinChi2_tlep->Fill(x.chi2);
+    	hMW_tlep->Fill(x.mW );
+    	hEtaNeu_tlep->Fill(x.neutrinoAF.Eta());
+      }// Min chi2 condition
+      iloop_tlep++;
+    }// for loop over Chi2ToMass_arr arrays
 
+    int iloop_thad = 0;
+    for (auto x : Chi2ToMass_arr_thad){
+      if(x.chi2 >= (fchi2cut-20.0) and  x.chi2 < fchi2cut and iloop_thad == 0){
+    	hMinChi2_thad->Fill(x.chi2);
+    	hMjjkF_thad->Fill(x.mass);
+      }// Min chi2 condition
+      iloop_thad++;
+    }// for loop over Chi2ToMass_arr arrays
+    //
 
     int iloop = 0;
     for (auto x : Chi2ToMass_arr){
       //cout << "[" << x.chi2 << ", " << x.mass << "] ";
       
-      double Rdifflep	= TMath::Sqrt( TMath::Power(TMath::Abs(x.leptonBF.Eta() - x.leptonAF.Eta()) , 2) + TMath::Power(TMath::Abs(x.leptonBF.Phi() - x.leptonAF.Phi()) , 2) );
-      double Rdiffbjlep	= TMath::Sqrt( TMath::Power(TMath::Abs(x.bjlepBF.Eta() - x.bjlepAF.Eta()) , 2) + TMath::Power(TMath::Abs(x.bjlepBF.Phi() - x.bjlepAF.Phi()) , 2) );
-      double Rdiffbjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(x.bjhadBF.Eta() - x.bjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(x.bjhadBF.Phi() - x.bjhadAF.Phi()) , 2) );
-      double Rdiffcjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(x.cjhadBF.Eta() - x.cjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(x.cjhadBF.Phi() - x.cjhadAF.Phi()) , 2) );
-      double Rdiffsjhad	= TMath::Sqrt( TMath::Power(TMath::Abs(x.sjhadBF.Eta() - x.sjhadAF.Eta()) , 2) + TMath::Power(TMath::Abs(x.sjhadBF.Phi() - x.sjhadAF.Phi()) , 2) ); 
+      //new
+      double Rdifflep	= x.leptonBF.DeltaR(x.leptonAF); 
+      double Rdiffbjlep	= x.bjlepBF.DeltaR(x.bjlepAF);  
+      double Rdiffbjhad	= x.bjhadBF.DeltaR(x.bjhadAF); 
+      double Rdiffcjhad	= x.cjhadBF.DeltaR(x.cjhadAF); 
+      double Rdiffsjhad	= x.sjhadBF.DeltaR(x.sjhadAF); 
       
-      if(iloop == 0){ // Only 1st min chi2
-	minlepPt = x.leptonAF.Pt() ;
-	if(x.leptonAF.Pt() > 30. and x.neutrinoAF.Pt() > 20. and x.bjhadAF.Pt()>30. and x.bjlepAF.Pt()>30. and x.cjhadAF.Pt()>30. and x.sjhadAF.Pt()>30.
-	   and Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2)
-	  hMjjkFsc->Fill(x.mass);
-	
-	// Set the leaf elements of output kinfit tree
-	//============================================
-	_kFType			= 1;
-	_chi2			= x.chi2;
-	_NDF			= x.ndf;
-	_Nbiter			= x.nb_iter ;
-	_M_jj			= (x.cjhadBF + x.sjhadBF).M();
-	_M_jjkF			= x.mass;
-	
-	_pfMET			= x.neutrinoBF.Pt() ;
-	_pfMETPhi		= x.neutrinoBF.Phi() ;
-	_nu_px			= x.neutrinoBF.Px() ;
-	_nu_py			= x.neutrinoBF.Py() ;
-	_nu_pz			= x.neutrinoBF.Pz() ;
-	//_nu_pz_other		= 0 ;
-	_jetBlepPtUM		= x.bjlepBF.Pt() ;
-	_jetBlepEtaUM		= x.bjlepBF.Eta() ;
-	_jetBlepPhiUM		= x.bjlepBF.Phi() ;
-	_jetBlepEnergyUM	= x.bjlepBF.E() ;
-	_jetBhadPtUM		= x.bjhadBF.Pt() ;
-	_jetBhadEtaUM		= x.bjhadBF.Eta() ;
-	_jetBhadPhiUM		= x.bjhadBF.Phi() ;
-	_jetBhadEnergyUM	= x.bjhadBF.E() ;
-	_jetChadPtUM		= x.cjhadBF.Pt() ;
-	_jetChadEtaUM		= x.cjhadBF.Eta() ;
-	_jetChadPhiUM		= x.cjhadBF.Phi() ;
-	_jetChadEnergyUM	= x.cjhadBF.E() ;
-	_jetShadPtUM		= x.sjhadBF.Pt() ;
-	_jetShadEtaUM		= x.sjhadBF.Eta()  ;
-	_jetShadPhiUM		= x.sjhadBF.Phi()  ;
-	_jetShadEnergyUM	= x.sjhadBF.E()  ;
-	
-	_lepPt			= x.leptonAF.Pt() ;
-	_lepEta			= x.leptonAF.Eta() ;
-	_lepPhi			= x.leptonAF.Phi() ;
-	_lepEnergy		= x.leptonAF.E() ;
-	_metPx			= x.neutrinoAF.Px() ;
-	_metPy			= x.neutrinoAF.Py() ;
-	_metPz			= x.neutrinoAF.Pz() ;
-	_jetBlepPt		= x.bjlepAF.Pt() ;
-	_jetBlepEta		= x.bjlepAF.Eta() ;
-	_jetBlepPhi		= x.bjlepAF.Phi() ;
-	_jetBlepEnergy		= x.bjlepAF.E() ;
-	_jetBhadPt		= x.bjhadAF.Pt() ;
-	_jetBhadEta		= x.bjhadAF.Eta() ;
-	_jetBhadPhi		= x.bjhadAF.Phi() ;
-	_jetBhadEnergy		= x.bjhadAF.E() ;
-	_jetChadPt		= x.cjhadAF.Pt() ;
-	_jetChadEta		= x.cjhadAF.Eta() ;
-	_jetChadPhi		= x.cjhadAF.Phi() ;
-	_jetChadEnergy		= x.cjhadAF.E() ;
-	_jetShadPt		= x.sjhadAF.Pt() ;
-	_jetShadEta		= x.sjhadAF.Eta()  ;
-	_jetShadPhi		= x.sjhadAF.Phi()  ;
-	_jetShadEnergy		= x.sjhadAF.E()  ;
-	
-	//============================================
-	
-	//mass histo
-	//=========================================
-	isel = 0;
-	hMjjkF_01->Fill(x.mass);                   // E > 0 condn
-	isSel[isel++] = true;
-	if(x.chi2 >= (fchi2cut-20.0) and  x.chi2 < fchi2cut){
-	  hMjjkF_02->Fill(x.mass);                 // chi2 < 20
-	  isSel[isel++] = true;
-	  if(x.leptonAF.Pt()>30.){
-	    hMjjkF_03->Fill(x.mass);               // pt_mu > 30
-	    isSel[isel++] = true;
-	    if(x.bjhadAF.Pt()>30.){
-	      hMjjkF_04->Fill(x.mass);             // pt_bj > 30
-	      isSel[isel++] = true;
-	      if(x.bjlepAF.Pt()>30.){
-		hMjjkF_05->Fill(x.mass);           // pt_bl > 30
-		isSel[isel++] = true;
-		if(x.cjhadAF.Pt()>30.){
-		  hMjjkF_06->Fill(x.mass);         // pt_cj > 30
-		  isSel[isel++] = true;
-		  if(x.sjhadAF.Pt()>30.){
-		    hMjjkF_07->Fill(x.mass);       // pt_sj > 30
-		    isSel[isel++] = true;
-		    if(x.neutrinoAF.Pt()>20.){
-		      hMjjkF_08->Fill(x.mass);     // pt_neu > 20
-		      isSel[isel++] = true;
-		      if(Rdiffbjhad < 0.2){
-			hMjjkF_09->Fill(x.mass);             // Rdiffbjhad < 0.2
-			isSel[isel++] = true;
-			if(Rdiffcjhad < 0.2){
-			  hMjjkF_10->Fill(x.mass);           // Rdiffcjhad < 0.2
-			  isSel[isel++] = true;
-			  if(Rdiffsjhad < 0.2){
-			    hMjjkF_11->Fill(x.mass);         // Rdiffsjhad < 0.2
-			    isSel[isel++] = true;
-			    if(Rdiffbjlep < 0.2){
-			      hMjjkF_12->Fill(x.mass);       // Rdiffbjlep < 0.2
-			      isSel[isel++] = true;
-			      if(Rdifflep < 0.2){
-				hMjjkF_13->Fill(x.mass);     // Rdifflep < 0.2
-				isSel[isel++] = true;
+      double dRcjsjBF,	dRcjsjAF,  dRLepNuBF,	dRLepNuAF;
+      dRcjsjBF	= x.cjhadBF.DeltaR(x.sjhadBF);     dRcjsjAF  = x.cjhadAF.DeltaR(x.sjhadAF);
+      dRLepNuBF	= x.leptonBF.DeltaR(x.neutrinoBF); dRLepNuAF = x.leptonAF.DeltaR(x.neutrinoAF);
+      //
+      
+      if(iloop == 0 && x.chi2 > -1.0 ){ // Only 1st min chi2
 
-				double ratio_neu = x.neutrinoBF.Pt() / x.neutrinoAF.Pt() ;
-				double sigcut_neu = exp( -5.19100e-02  - 9.91514e-03*x.neutrinoAF.Pt() ) ; 
-				if( (ratio_neu >= (1.0-3.*sigcut_neu) and ratio_neu <= (1.0+3.*sigcut_neu)) ){
-				  hMjjkF_14->Fill(x.mass);   // neu 3 sig cut
-				  isSel[isel++] = true;
+    	minlepPt = x.leptonAF.Pt() ;
+    	if(x.leptonAF.Pt() > 30. and x.neutrinoAF.Pt() > 20. and x.bjhadAF.Pt()>30. and x.bjlepAF.Pt()>30. and x.cjhadAF.Pt()>30. and x.sjhadAF.Pt()>30.
+    	   and Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2){
+    	  hMjjkFsc->Fill(x.mass);
+    	}
 
-				  double ratio_bj = x.bjhadBF.Pt() / x.bjhadAF.Pt() ;
-				  double sigcut_bj = exp( -1.89164e+00  - 4.01351e-03*x.bjhadAF.Pt() ) ; 
-				  if( (ratio_bj >= (1.0-3.*sigcut_bj) and ratio_bj <= (1.0+3.*sigcut_bj)) ){
-				    hMjjkF_15->Fill(x.mass);   // bjhad 3 sig cut
-				    isSel[isel++] = true;
+    	// Set the leaf elements of output kinfit tree
+    	//============================================
+    	//_kFType			= _kFType; // See PerformKinFit::Notify()
+    	_chi2			= x.chi2;
+	_chi2_thad     		= x.chi2_thad;
+	_chi2_tlep     		= x.chi2_tlep;
+    	_NDF			= x.ndf;
+    	_Nbiter			= x.nb_iter ;
+    	_M_jj			= (x.cjhadBF + x.sjhadBF).M();
+    	_M_jjkF			= x.mass;
+	
+    	_pfMET			= x.neutrinoBF.Pt() ;
+    	_pfMETPhi		= x.neutrinoBF.Phi() ;
+    	_nu_px			= x.neutrinoBF.Px() ;
+    	_nu_py			= x.neutrinoBF.Py() ;
+    	_nu_pz			= x.neutrinoBF.Pz() ;
+    	//_nu_pz_other		= 0 ;
+    	_jetBlepPtUM		= x.bjlepBF.Pt() ;
+    	_jetBlepEtaUM		= x.bjlepBF.Eta() ;
+    	_jetBlepPhiUM		= x.bjlepBF.Phi() ;
+    	_jetBlepEnergyUM	= x.bjlepBF.E() ;
+    	_jetBhadPtUM		= x.bjhadBF.Pt() ;
+    	_jetBhadEtaUM		= x.bjhadBF.Eta() ;
+    	_jetBhadPhiUM		= x.bjhadBF.Phi() ;
+    	_jetBhadEnergyUM	= x.bjhadBF.E() ;
+    	_jetChadPtUM		= x.cjhadBF.Pt() ;
+    	_jetChadEtaUM		= x.cjhadBF.Eta() ;
+    	_jetChadPhiUM		= x.cjhadBF.Phi() ;
+    	_jetChadEnergyUM	= x.cjhadBF.E() ;
+    	_jetShadPtUM		= x.sjhadBF.Pt() ;
+    	_jetShadEtaUM		= x.sjhadBF.Eta()  ;
+    	_jetShadPhiUM		= x.sjhadBF.Phi()  ;
+    	_jetShadEnergyUM	= x.sjhadBF.E()  ;
+	
+    	_lepPt			= x.leptonAF.Pt() ;
+    	_lepEta			= x.leptonAF.Eta() ;
+    	_lepPhi			= x.leptonAF.Phi() ;
+    	_lepEnergy		= x.leptonAF.E() ;
+    	_metPx			= x.neutrinoAF.Px() ;
+    	_metPy			= x.neutrinoAF.Py() ;
+    	_metPz			= x.neutrinoAF.Pz() ;
+    	_jetBlepPt		= x.bjlepAF.Pt() ;
+    	_jetBlepEta		= x.bjlepAF.Eta() ;
+    	_jetBlepPhi		= x.bjlepAF.Phi() ;
+    	_jetBlepEnergy		= x.bjlepAF.E() ;
+    	_jetBhadPt		= x.bjhadAF.Pt() ;
+    	_jetBhadEta		= x.bjhadAF.Eta() ;
+    	_jetBhadPhi		= x.bjhadAF.Phi() ;
+    	_jetBhadEnergy		= x.bjhadAF.E() ;
+    	_jetChadPt		= x.cjhadAF.Pt() ;
+    	_jetChadEta		= x.cjhadAF.Eta() ;
+    	_jetChadPhi		= x.cjhadAF.Phi() ;
+    	_jetChadEnergy		= x.cjhadAF.E() ;
+    	_jetShadPt		= x.sjhadAF.Pt() ;
+    	_jetShadEta		= x.sjhadAF.Eta()  ;
+    	_jetShadPhi		= x.sjhadAF.Phi()  ;
+    	_jetShadEnergy		= x.sjhadAF.E()  ;
+	
+    	//============================================
+	
+    	//mass histo
+    	//=========================================
+    	isel = 0;
+    	hMjjkF_01->Fill(x.mass);                   // E > 0 condn
+    	isSel[isel++] = true;
+    	if(x.chi2 >= (fchi2cut-20.0) and  x.chi2 < fchi2cut){
+    	  hMjjkF_02->Fill(x.mass);                 // chi2 < 20
+    	  isSel[isel++] = true;
+    	  if(x.leptonAF.Pt()>30. and fabs(x.leptonAF.Eta()) < 2.4){
+    	    hMjjkF_03->Fill(x.mass);               // pt_mu > 30
+    	    isSel[isel++] = true;
+    	    if(x.bjhadAF.Pt()>30. and fabs(x.bjhadAF.Eta()) < 2.4){
+    	      hMjjkF_04->Fill(x.mass);             // pt_bj > 30
+    	      isSel[isel++] = true;
+    	      if(x.bjlepAF.Pt()>30. and fabs(x.bjlepAF.Eta()) < 2.4){
+    		hMjjkF_05->Fill(x.mass);           // pt_bl > 30
+    		isSel[isel++] = true;
+    		if(x.cjhadAF.Pt()>30. and fabs(x.cjhadAF.Eta()) < 2.4){
+    		  hMjjkF_06->Fill(x.mass);         // pt_cj > 30
+    		  isSel[isel++] = true;
+    		  if(x.sjhadAF.Pt()>30. and fabs(x.sjhadAF.Eta()) < 2.4){
+    		    hMjjkF_07->Fill(x.mass);       // pt_sj > 30
+    		    isSel[isel++] = true;
+    		    if(x.neutrinoAF.Pt()>20. and fabs(x.neutrinoAF.Eta()) < 2.4){
+    		      hMjjkF_08->Fill(x.mass);     // pt_neu > 20
+    		      isSel[isel++] = true;
+    		      if(Rdiffbjhad < 0.2){
+    			hMjjkF_09->Fill(x.mass);             // Rdiffbjhad < 0.2
+    			isSel[isel++] = true;
+    			if(Rdiffcjhad < 0.2){
+    			  hMjjkF_10->Fill(x.mass);           // Rdiffcjhad < 0.2
+    			  isSel[isel++] = true;
+    			  if(Rdiffsjhad < 0.2){
+    			    hMjjkF_11->Fill(x.mass);         // Rdiffsjhad < 0.2
+    			    isSel[isel++] = true;
+    			    if(Rdiffbjlep < 0.2){
+    			      hMjjkF_12->Fill(x.mass);       // Rdiffbjlep < 0.2
+    			      isSel[isel++] = true;
+    			      if(Rdifflep < 0.2){
+    				hMjjkF_13->Fill(x.mass);     // Rdifflep < 0.2
+    				isSel[isel++] = true;
 
-				    double ratio_cj = x.cjhadBF.Pt() / x.cjhadAF.Pt() ;
-				    double sigcut_cj = exp( -2.09665e+00  -4.46061e-03*x.cjhadAF.Pt() ) ; 
-				    if( (ratio_cj >= (1.0-3.*sigcut_cj) and ratio_cj <= (1.0+3.*sigcut_cj)) ){
-				      hMjjkF_16->Fill(x.mass);   // cjhad 3 sig cut
-				      isSel[isel++] = true;
+    				double ratio_neu = x.neutrinoBF.Pt() / x.neutrinoAF.Pt() ;
+    				//double sigcut_neu = exp( -5.19100e-02  - 9.91514e-03*x.neutrinoAF.Pt() ) ; 
+    				double sigcut_neu = exp( -4.39693e-01  - 1.10347e-02*x.neutrinoAF.Pt() ) ; 
+    				if( (ratio_neu >= (1.0-3.*sigcut_neu) and ratio_neu <= (1.0+3.*sigcut_neu)) ){
+    				  hMjjkF_14->Fill(x.mass);   // neu 3 sig cut
+    				  isSel[isel++] = true;
 
-				      double ratio_sj = x.sjhadBF.Pt() / x.sjhadAF.Pt() ;
-				      double sigcut_sj = exp( -1.87615e+00  -8.24975e-03*x.sjhadAF.Pt() ) ; 
-				      if( (ratio_sj >= (1.0-3.*sigcut_sj) and ratio_sj <= (1.0+3.*sigcut_sj)) ){
-					hMjjkF_17->Fill(x.mass);   // sjhad 3 sig cut				  
-					isSel[isel++] = true;
+    				  double ratio_bj = x.bjhadBF.Pt() / x.bjhadAF.Pt() ;
+    				  //double sigcut_bj = exp( -1.89164e+00  - 4.01351e-03*x.bjhadAF.Pt() ) ; 
+    				  double sigcut_bj = exp( -1.89470e+00 - 3.78872e-03*x.bjhadAF.Pt() ) ; 
+    				  if( (ratio_bj >= (1.0-3.*sigcut_bj) and ratio_bj <= (1.0+3.*sigcut_bj)) ){
+    				    hMjjkF_15->Fill(x.mass);   // bjhad 3 sig cut
+    				    isSel[isel++] = true;
+
+    				    double ratio_cj = x.cjhadBF.Pt() / x.cjhadAF.Pt() ;
+    				    //double sigcut_cj = exp( -2.09665e+00  -4.46061e-03*x.cjhadAF.Pt() ) ; 
+    				    double sigcut_cj = exp( -2.13892e+00 - 3.99743e-03*x.cjhadAF.Pt() ) ; 
+    				    if( (ratio_cj >= (1.0-3.*sigcut_cj) and ratio_cj <= (1.0+3.*sigcut_cj)) ){
+    				      hMjjkF_16->Fill(x.mass);   // cjhad 3 sig cut
+    				      isSel[isel++] = true;
+
+    				      double ratio_sj = x.sjhadBF.Pt() / x.sjhadAF.Pt() ;
+    				      //double sigcut_sj = exp( -1.87615e+00  -8.24975e-03*x.sjhadAF.Pt() ) ; 
+    				      double sigcut_sj = exp( -1.96286e+00  - 6.51804e-03*x.sjhadAF.Pt() ) ; 
+    				      if( (ratio_sj >= (1.0-3.*sigcut_sj) and ratio_sj <= (1.0+3.*sigcut_sj)) ){
+    					hMjjkF_17->Fill(x.mass);   // sjhad 3 sig cut				  
+    					isSel[isel++] = true;
 					
-					lepTopAF = (x.leptonAF + x.neutrinoAF + x.bjlepAF) ;
-					hadTopAF = (x.bjhadAF + x.cjhadAF + x.sjhadAF);
+    					lepTopAF = (x.leptonAF + x.neutrinoAF + x.bjlepAF) ;
+    					hadTopAF = (x.bjhadAF + x.cjhadAF + x.sjhadAF);
 					
-					hPtTopLep->Fill(lepTopAF.Pt());
-					hPtTopHad->Fill(hadTopAF.Pt());
-					hPtTopHL->Fill(hadTopAF.Pt(),lepTopAF.Pt());
+    					hPtTopLep->Fill(lepTopAF.Pt());
+    					hPtTopHad->Fill(hadTopAF.Pt());
+    					hPtTopHL->Fill(hadTopAF.Pt(),lepTopAF.Pt());
 					
-					hAssymPt->Fill( (hadTopAF.Pt() - lepTopAF.Pt())/(hadTopAF.Pt() + lepTopAF.Pt()) );
+    					hAssymPt->Fill( (hadTopAF.Pt() - lepTopAF.Pt())/(hadTopAF.Pt() + lepTopAF.Pt()) );
 					
-					if(x.leptonAF.Pt() > x.neutrinoAF.Pt()){
-					  hMuEta_Pthigh->Fill(x.leptonAF.Eta());
-					  hNeuEta_Ptlow->Fill(x.neutrinoAF.Eta());
-					}else{
-					  hNeuEta_Pthigh->Fill(x.neutrinoAF.Eta());
-					  hMuEta_Ptlow->Fill(x.leptonAF.Eta());
-					}
+    					if(x.leptonAF.Pt() > x.neutrinoAF.Pt()){
+    					  hMuEta_Pthigh->Fill(x.leptonAF.Eta());
+    					  hNeuEta_Ptlow->Fill(x.neutrinoAF.Eta());
+    					}else{
+    					  hNeuEta_Pthigh->Fill(x.neutrinoAF.Eta());
+    					  hMuEta_Ptlow->Fill(x.leptonAF.Eta());
+    					}
 					
-					ithpt = FindBinIndex(x.leptonAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-					if( ithpt >= 0){
-					  hMinPtBFLep[ithpt]->Fill( x.leptonBF.Pt() );
-					  hMinPtAFLep[ithpt]->Fill( x.leptonAF.Pt() );
-					  hMinPtvsRatioPtLep[ithpt]->Fill( x.leptonBF.Pt() / x.leptonAF.Pt()  );
-					  //printf("ithpt : %d\n",ithpt);
-					}
+    				      }// sjhad 3 sig cut
+    				      else
+    					hMjjkF_ms->Fill(x.mass);
+    				    }// cjhad 3 sig cut
+    				    else
+    				      hMjjkF_ms->Fill(x.mass);				 
+    				  } // bjhad 3 sig cut
+    				  else
+    				    hMjjkF_ms->Fill(x.mass);
+    				}// neu 3 sig cut
+    				else
+    				  hMjjkF_ms->Fill(x.mass);
+
+    				ithpt = FindBinIndex(x.leptonAF.Pt(),fPtmin,fPtmax,fNPtBins); 
+    				if( ithpt >= 0){
+    				  hMinPtBFLep[ithpt]->Fill( x.leptonBF.Pt() );
+    				  hMinPtAFLep[ithpt]->Fill( x.leptonAF.Pt() );
+    				  hMinPtvsRatioPtLep[ithpt]->Fill( x.leptonBF.Pt() / x.leptonAF.Pt()  );
+    				  //printf("ithpt : %d\n",ithpt);
+    				}
 		    
-					ithpt = FindBinIndex(x.neutrinoAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-					if( ithpt >= 0){
-					  hMinPtBFNeu[ithpt]->Fill( x.neutrinoBF.Pt() );
-					  hMinPtAFNeu[ithpt]->Fill( x.neutrinoAF.Pt() );
-					  hMinPtvsRatioPtNeu[ithpt]->Fill( x.neutrinoBF.Pt() / x.neutrinoAF.Pt() );
-					}
+    				ithpt = FindBinIndex(x.neutrinoAF.Pt(),fPtmin,fPtmax,fNPtBins); 
+    				if( ithpt >= 0){
+    				  hMinPtBFNeu[ithpt]->Fill( x.neutrinoBF.Pt() );
+    				  hMinPtAFNeu[ithpt]->Fill( x.neutrinoAF.Pt() );
+    				  hMinPtvsRatioPtNeu[ithpt]->Fill( x.neutrinoBF.Pt() / x.neutrinoAF.Pt() );
+    				}
 
-					ithpt = FindBinIndex(x.bjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-					if( ithpt >= 0){
-					  hMinPtBFBjHad[ithpt]->Fill( x.bjhadBF.Pt() );
-					  hMinPtAFBjHad[ithpt]->Fill( x.bjhadAF.Pt() );
-					  hMinPtvsRatioPtBjHad[ithpt]->Fill( x.bjhadBF.Pt() / x.bjhadAF.Pt() );
-					}
+    				ithpt = FindBinIndex(x.bjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
+    				if( ithpt >= 0){
+    				  hMinPtBFBjHad[ithpt]->Fill( x.bjhadBF.Pt() );
+    				  hMinPtAFBjHad[ithpt]->Fill( x.bjhadAF.Pt() );
+    				  hMinPtvsRatioPtBjHad[ithpt]->Fill( x.bjhadBF.Pt() / x.bjhadAF.Pt() );
+    				}
 
-					ithpt = FindBinIndex(x.bjlepAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-					//if( ithpt >= 0){
-					if( ithpt >= 0){
-					  hMinPtBFBjLep[ithpt]->Fill( x.bjlepBF.Pt() );
-					  hMinPtAFBjLep[ithpt]->Fill( x.bjlepAF.Pt() );
-					  hMinPtvsRatioPtBjLep[ithpt]->Fill( x.bjlepBF.Pt() / x.bjlepAF.Pt() );
-					}
+    				ithpt = FindBinIndex(x.bjlepAF.Pt(),fPtmin,fPtmax,fNPtBins); 
+    				//if( ithpt >= 0){
+    				if( ithpt >= 0){
+    				  hMinPtBFBjLep[ithpt]->Fill( x.bjlepBF.Pt() );
+    				  hMinPtAFBjLep[ithpt]->Fill( x.bjlepAF.Pt() );
+    				  hMinPtvsRatioPtBjLep[ithpt]->Fill( x.bjlepBF.Pt() / x.bjlepAF.Pt() );
+    				}
 
-					ithpt = FindBinIndex(x.cjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-					if( ithpt >= 0){
-					  hMinPtBFCjHad[ithpt]->Fill( x.cjhadBF.Pt() );
-					  hMinPtAFCjHad[ithpt]->Fill( x.cjhadAF.Pt() );
-					  hMinPtvsRatioPtCjHad[ithpt]->Fill( x.cjhadBF.Pt() / x.cjhadAF.Pt() );
-					}
+    				ithpt = FindBinIndex(x.cjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
+    				if( ithpt >= 0){
+    				  hMinPtBFCjHad[ithpt]->Fill( x.cjhadBF.Pt() );
+    				  hMinPtAFCjHad[ithpt]->Fill( x.cjhadAF.Pt() );
+    				  hMinPtvsRatioPtCjHad[ithpt]->Fill( x.cjhadBF.Pt() / x.cjhadAF.Pt() );
+    				}
 
-					ithpt = FindBinIndex(x.sjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
-					if( ithpt >= 0){
-					  hMinPtBFSjHad[ithpt]->Fill( x.sjhadBF.Pt() );
-					  hMinPtAFSjHad[ithpt]->Fill( x.sjhadAF.Pt() );
-					  hMinPtvsRatioPtSjHad[ithpt]->Fill( x.sjhadBF.Pt() / x.sjhadAF.Pt() );
-					}
-					
-					
-					
-				      }// sjhad 3 sig cut
-				      else
-					hMjjkF_ms->Fill(x.mass);
-				    }// cjhad 3 sig cut
-				    else
-				      hMjjkF_ms->Fill(x.mass);				 
-				  } // bjhad 3 sig cut
-				  else
-				    hMjjkF_ms->Fill(x.mass);
-				}// neu 3 sig cut
-				else
-				  hMjjkF_ms->Fill(x.mass);
-			      }// Rdifflep < 0.2
-			      else
-				hMjjkF_ms->Fill(x.mass);
-			    }// Rdiffbjlep < 0.2
-			    else
-			      hMjjkF_ms->Fill(x.mass);
-			  }// Rdiffsjhad < 0.2
-			  else
-			    hMjjkF_ms->Fill(x.mass);
-			}// Rdiffcjhad < 0.2
-			else
-			  hMjjkF_ms->Fill(x.mass);
-		      }// Rdiffbjhad < 0.2
-		      else
-			hMjjkF_ms->Fill(x.mass);
-		    }// pt_neu > 30
-		    else
-		      hMjjkF_ms->Fill(x.mass);
-		  }// pt_sj > 30
-		  else
-		    hMjjkF_ms->Fill(x.mass);
-		}// pt_cj > 30
-		else
-		  hMjjkF_ms->Fill(x.mass);
-	      }// pt_bl > 30
-	      else
-		hMjjkF_ms->Fill(x.mass);
-	    }// pt_bj > 30
-	    else
-	      hMjjkF_ms->Fill(x.mass);
-	  }// pt_mu > 30
-	  else
-	    hMjjkF_ms->Fill(x.mass);
-	}//chi2 < 20
-	else
-	  hMjjkF_ms->Fill(x.mass);
+    				ithpt = FindBinIndex(x.sjhadAF.Pt(),fPtmin,fPtmax,fNPtBins); 
+    				if( ithpt >= 0){
+    				  hMinPtBFSjHad[ithpt]->Fill( x.sjhadBF.Pt() );
+    				  hMinPtAFSjHad[ithpt]->Fill( x.sjhadAF.Pt() );
+    				  hMinPtvsRatioPtSjHad[ithpt]->Fill( x.sjhadBF.Pt() / x.sjhadAF.Pt() );
+    				}
+				
+    			      }// Rdifflep < 0.2
+    			      else
+    				hMjjkF_ms->Fill(x.mass);
+    			    }// Rdiffbjlep < 0.2
+    			    else
+    			      hMjjkF_ms->Fill(x.mass);
+    			  }// Rdiffsjhad < 0.2
+    			  else
+    			    hMjjkF_ms->Fill(x.mass);
+    			}// Rdiffcjhad < 0.2
+    			else
+    			  hMjjkF_ms->Fill(x.mass);
+    		      }// Rdiffbjhad < 0.2
+    		      else
+    			hMjjkF_ms->Fill(x.mass);
+    		    }// pt_neu > 30
+    		    else
+    		      hMjjkF_ms->Fill(x.mass);
+    		  }// pt_sj > 30
+    		  else
+    		    hMjjkF_ms->Fill(x.mass);
+    		}// pt_cj > 30
+    		else
+    		  hMjjkF_ms->Fill(x.mass);
+    	      }// pt_bl > 30
+    	      else
+    		hMjjkF_ms->Fill(x.mass);
+    	    }// pt_bj > 30
+    	    else
+    	      hMjjkF_ms->Fill(x.mass);
+    	  }// pt_mu > 30
+    	  else
+    	    hMjjkF_ms->Fill(x.mass);
+    	}//chi2 < 20
+    	else
+    	  hMjjkF_ms->Fill(x.mass);
 
-	for(int is = 0 ; is < nSel ; is++ ) 
-	  _selStep.push_back(isSel[is]);
-  
+    	for(int is = 0 ; is < nSel ; is++ ) 
+    	  _selStep.push_back(isSel[is]);
+	
+	//Fill for non-negative chi2
 	outputTree->Fill();
-
       }//iloop == 0 condition
       
       if(x.chi2 >= (fchi2cut-20.0) and  x.chi2 < fchi2cut and iloop == 0){ // minchi2 < 20
+    	//new
+    	hdRcjsjBF->Fill(dRcjsjBF);		hdRcjsjAF->Fill(dRcjsjAF);
+    	hdRLepNuBF->Fill(dRLepNuBF);		hdRLepNuAF->Fill(dRLepNuAF);
 	
-	
-	hMjjkF->Fill(x.mass);
+    	hdRlepBFAF->Fill(Rdifflep);	hdRbjlepBFAF->Fill(Rdiffbjlep);
+    	hdRbjhadBFAF->Fill(Rdiffbjhad);	hdRcjhadBFAF->Fill(Rdiffcjhad);
+    	hdRsjhadBFAF->Fill(Rdiffsjhad);
+    	//
+
+    	minlepPt = x.leptonAF.Pt() ;
+    	hMjjkF->Fill(x.mass);
 	
 
-	double ratio_ljet1 = x.cjhadBF.Pt() / x.cjhadAF.Pt() ;
-	double ratio_ljet2 = x.sjhadBF.Pt() / x.sjhadAF.Pt() ;
-	double sigcut = exp( -1.91  - 0.00463*x.cjhadAF.Pt() ) ; 
-	if( (ratio_ljet1 >= (1.0-3.*sigcut) and ratio_ljet1 <= (1.0+3.*sigcut)) and (ratio_ljet2 >= (1.0-3.*sigcut) and ratio_ljet2 <= (1.0+3.*sigcut))){
-	  hMjjkF3s->Fill(x.mass);
-	}
+    	double ratio_ljet1 = x.cjhadBF.Pt() / x.cjhadAF.Pt() ;
+    	double ratio_ljet2 = x.sjhadBF.Pt() / x.sjhadAF.Pt() ;
+    	double sigcut = exp( -1.91  - 0.00463*x.cjhadAF.Pt() ) ; 
+    	if( (ratio_ljet1 >= (1.0-3.*sigcut) and ratio_ljet1 <= (1.0+3.*sigcut)) and (ratio_ljet2 >= (1.0-3.*sigcut) and ratio_ljet2 <= (1.0+3.*sigcut))){
+    	  hMjjkF3s->Fill(x.mass);
+    	}
 	
-	hNbCombiARD->Fill(nRdiffPass);
-	// hMindRSigLep->Fill(minRdifflepSignif);
-	// hMindRSigBjHad->Fill(minRdiffbjhadSignif);
-	// hMindRSigBjLep->Fill(minRdiffbjlepSignif);
-	// hMindRSigCjHad->Fill(minRdiffcjhadSignif);
-	// hMindRSigSjHad->Fill(minRdiffsjhadSignif);
+    	hNbCombiARD->Fill(nRdiffPass);
+    	// hMindRSigLep->Fill(minRdifflepSignif);
+    	// hMindRSigBjHad->Fill(minRdiffbjhadSignif);
+    	// hMindRSigBjLep->Fill(minRdiffbjlepSignif);
+    	// hMindRSigCjHad->Fill(minRdiffcjhadSignif);
+    	// hMindRSigSjHad->Fill(minRdiffsjhadSignif);
 	
 
-	if(x.leptonAF.Pt() >= fptmin and x.leptonAF.Pt() < fptmax ){
-	  hMinPtvsdEtLep->Fill(TMath::Abs(x.leptonBF.Et() - x.leptonAF.Et()) );
-	  hMinPtvsdetaLep->Fill(TMath::Abs(x.leptonBF.Eta() - x.leptonAF.Eta()) );
-	  hMinPtvsdPhiLep->Fill(TMath::Abs(x.leptonBF.Phi() - x.leptonAF.Phi()) );
-	}
+    	if(x.leptonAF.Pt() >= fptmin and x.leptonAF.Pt() < fptmax ){
+    	  hMinPtvsdEtLep->Fill(TMath::Abs(x.leptonBF.Et() - x.leptonAF.Et()) );
+    	  hMinPtvsdetaLep->Fill(TMath::Abs(x.leptonBF.Eta() - x.leptonAF.Eta()) );
+    	  hMinPtvsdPhiLep->Fill( x.leptonBF.DeltaPhi(x.leptonAF) );
+    	}
       
-	if(x.bjhadAF.Pt() >= fptmin and x.bjhadAF.Pt() < fptmax ){
-	  hMinPtvsdEtBjHad->Fill(TMath::Abs(x.bjhadBF.Et() - x.bjhadAF.Et()) );
-	  hMinPtvsdetaBjHad->Fill(TMath::Abs(x.bjhadBF.Eta() - x.bjhadAF.Eta()) );
-	  hMinPtvsdPhiBjHad->Fill(TMath::Abs(x.bjhadBF.Phi() - x.bjhadAF.Phi()) );
-	}
+    	if(x.bjhadAF.Pt() >= fptmin and x.bjhadAF.Pt() < fptmax ){
+    	  hMinPtvsdEtBjHad->Fill(TMath::Abs(x.bjhadBF.Et() - x.bjhadAF.Et()) );
+    	  hMinPtvsdetaBjHad->Fill(TMath::Abs(x.bjhadBF.Eta() - x.bjhadAF.Eta()) );
+    	  hMinPtvsdPhiBjHad->Fill( x.bjhadBF.DeltaPhi(x.bjhadAF) );
+    	}
       
-	if(x.bjlepAF.Pt() >= fptmin and x.bjlepAF.Pt() < fptmax ){
-	  hMinPtvsdEtBjLep->Fill(TMath::Abs(x.bjlepBF.Et() - x.bjlepAF.Et()) );
-	  hMinPtvsdetaBjLep->Fill(TMath::Abs(x.bjlepBF.Eta() - x.bjlepAF.Eta()) );
-	  hMinPtvsdPhiBjLep->Fill(TMath::Abs(x.bjlepBF.Phi() - x.bjlepAF.Phi()) );
-	}
+    	if(x.bjlepAF.Pt() >= fptmin and x.bjlepAF.Pt() < fptmax ){
+    	  hMinPtvsdEtBjLep->Fill(TMath::Abs(x.bjlepBF.Et() - x.bjlepAF.Et()) );
+    	  hMinPtvsdetaBjLep->Fill(TMath::Abs(x.bjlepBF.Eta() - x.bjlepAF.Eta()) );
+    	  hMinPtvsdPhiBjLep->Fill( x.bjlepBF.DeltaPhi(x.bjlepAF) );
+    	}
 
-	if(x.cjhadAF.Pt() >= fptmin and x.cjhadAF.Pt() < fptmax ){
-	  hMinPtvsdEtCjHad->Fill(TMath::Abs(x.cjhadBF.Et() - x.cjhadAF.Et()) );
-	  hMinPtvsdetaCjHad->Fill(TMath::Abs(x.cjhadBF.Eta() - x.cjhadAF.Eta()) );
-	  hMinPtvsdPhiCjHad->Fill(TMath::Abs(x.cjhadBF.Phi() - x.cjhadAF.Phi()) );
-	}
+    	if(x.cjhadAF.Pt() >= fptmin and x.cjhadAF.Pt() < fptmax ){
+    	  hMinPtvsdEtCjHad->Fill(TMath::Abs(x.cjhadBF.Et() - x.cjhadAF.Et()) );
+    	  hMinPtvsdetaCjHad->Fill(TMath::Abs(x.cjhadBF.Eta() - x.cjhadAF.Eta()) );
+    	  hMinPtvsdPhiCjHad->Fill( x.cjhadBF.DeltaPhi(x.cjhadAF) );
+    	}
       
-	if(x.sjhadAF.Pt() >= fptmin and x.sjhadAF.Pt() < fptmax ){
-	  hMinPtvsdEtSjHad->Fill(TMath::Abs(x.sjhadBF.Et() - x.sjhadAF.Et()) );
-	  hMinPtvsdetaSjHad->Fill(TMath::Abs(x.sjhadBF.Eta() - x.sjhadAF.Eta()) );
-	  hMinPtvsdPhiSjHad->Fill(TMath::Abs(x.sjhadBF.Phi() - x.sjhadAF.Phi()) );
-	}
+    	if(x.sjhadAF.Pt() >= fptmin and x.sjhadAF.Pt() < fptmax ){
+    	  hMinPtvsdEtSjHad->Fill(TMath::Abs(x.sjhadBF.Et() - x.sjhadAF.Et()) );
+    	  hMinPtvsdetaSjHad->Fill(TMath::Abs(x.sjhadBF.Eta() - x.sjhadAF.Eta()) );
+    	  hMinPtvsdPhiSjHad->Fill( x.sjhadBF.DeltaPhi(x.sjhadAF) );
+    	}
 	
-	hHadTop->Fill( (x.bjhadAF + x.cjhadAF + x.sjhadAF).M() );
-	hLepTop->Fill( (x.leptonAF + x.neutrinoAF + x.bjlepAF).M() );
-	hEtaNeu->Fill( x.neutrinoAF.Eta() );
-	hMW->Fill( x.mW );
+    	hHadTop->Fill( (x.bjhadAF + x.cjhadAF + x.sjhadAF).M() );
+    	hLepTop->Fill( (x.leptonAF + x.neutrinoAF + x.bjlepAF).M() );
+    	hEtaNeu->Fill( x.neutrinoAF.Eta() );
+    	hEtaLep->Fill( x.leptonAF.Eta());
+    	hEtacjhad->Fill( x.cjhadAF.Eta());		
+    	hEtasjhad->Fill( x.sjhadAF.Eta());
+    	hMW->Fill( x.mW );
 	
-	ithda = FindBinIndex(x.A,fDAmin,fDAmax,fNDiffAvgBins); 
-	if( ithda >= 0)
-	  hMinDiffAvg[ithda]->Fill( x.B / x.A );
+    	ithda = FindBinIndex(x.A,fDAmin,fDAmax,fNDiffAvgBins); 
+    	if( ithda >= 0)
+    	  hMinDiffAvg[ithda]->Fill( x.B / x.A );
 	
       }// Min chi2 condition
       iloop++;
@@ -1045,12 +1212,24 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       h4MinChi2->Fill(chi2_arr.at(3));    
     if(chi2_arr.size()>=5 and minlepPt > 0.0)
       h5MinChi2->Fill(chi2_arr.at(4));    
-        
+
+    //new
     chi2_arr.clear();
+    chi2_arr_tlep.clear();
+    chi2_arr_thad.clear();
     Chi2ToMass_arr.clear();
+    Chi2ToMass_arr_tlep.clear();
+    Chi2ToMass_arr_thad.clear();
+    //
+    
+    //Fill for converged cases
+    //outputTree->Fill();
+
   }//if fit converges
   //hIsNeuComplex->Fill(kinFit.IsComplex());
   
+  //Fill for all events in reco tree
+  //outputTree->Fill();
   
   kinFit.Clear();
   jetVectors.clear();
@@ -1075,6 +1254,9 @@ void PerformKinFit::SlaveTerminate()
   hMuPt->Write();
   hMjj->Write();
   hMjjkF->Write();
+  //new
+  hMjjkF_thad->Write();
+  //
   hMjjkF3s->Write();
   hMjjkFsc->Write();
 
@@ -1099,7 +1281,13 @@ void PerformKinFit::SlaveTerminate()
   
   hNlep->Write();
   hChi2->Write();
+  //new
+  hChi2_tlep->Write();	   hChi2_thad->Write();
+  //
   hMinChi2->Write();
+  //new
+  hMinChi2_tlep->Write();  hMinChi2_thad->Write();
+  //
   h2MinChi2->Write();
   h3MinChi2->Write();
   h4MinChi2->Write();
@@ -1107,6 +1295,11 @@ void PerformKinFit::SlaveTerminate()
   hNbiter->Write();
   hNbCombiBRD->Write();
   hNbCombiARD->Write();
+  //new
+  hdRcjsjBF->Write();  		hdRcjsjAF->Write();			hdRLepNuBF->Write();
+  hdRLepNuAF->Write();		hdRlepBFAF->Write();		hdRbjlepBFAF->Write();
+  hdRbjhadBFAF->Write();	hdRcjhadBFAF->Write();		hdRsjhadBFAF->Write();
+  //
   hdRSigLep->Write();
   hdRSigNeu->Write();
   hdRSigBjHad->Write();
@@ -1184,7 +1377,7 @@ void PerformKinFit::SlaveTerminate()
     hMinPtBFBjLep[ipt]->Write();
     hMinPtBFCjHad[ipt]->Write();
     hMinPtBFSjHad[ipt]->Write();
-
+    
     hMinPtAFLep[ipt]->Write();
     hMinPtAFNeu[ipt]->Write();
     hMinPtAFBjHad[ipt]->Write();
@@ -1220,6 +1413,12 @@ void PerformKinFit::SlaveTerminate()
   hHadTop->Write();
   hLepTop->Write();
   hEtaNeu->Write();
+  //new
+  hEtaNeu_tlep->Write();
+  hEtaLep->Write();		
+  hEtacjhad->Write();		
+  hEtasjhad->Write();
+  //
   
   hbtagweight_1a->Write();
 

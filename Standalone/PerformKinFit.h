@@ -3,6 +3,7 @@
  Purpose    : Analyse the Reco tree for To Perform the KinFit again.
               (format adapted from h1analysis)
  Author     : Indranil Das, Visiting Fellow
+Modification: Shashi Dugad for chi2, chi3 components. 
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
 **********************************************************************/
 
@@ -38,9 +39,13 @@ typedef struct  {
   double chi2, mass, mW, A, B;
   int ndf, nb_iter;
   //int bjlep_id, bjhad_id, cjhad_id, sjhad_id;
+  double chi2_thad, chi2_tlep ;
   TLorentzVector leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;  
   TLorentzVector leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;    
+  TLorentzVector leptonAF_tlep, neutrinoAF_tlep, bjlepAF_tlep; 
+  TLorentzVector bjhadAF_thad,  cjhadAF_thad,    sjhadAF_thad;  
 } Chi2Array;
+
 
 bool compareChi2Array(Chi2Array i1, Chi2Array i2)
 {
@@ -129,48 +134,33 @@ class KinFit{
 	_nu_phi	     = -9999.0;
 	leptonType   = kTau;
 
+	//--------------------
+	nCombinations = 0;
+	nCombinations_tlep = 0;			
+	nCombinations_thad = 0;
+
 	jets.clear();
 	jetsRes.clear();
 	btag.clear();
-	//--------------------
-	nCombinations = 0;
-	leptonAF.clear(); 
-	neutrinoAF.clear(); 
 
-	bjlepAF.clear();
-	bjhadAF.clear(); 
-	cjhadAF.clear(); 
-	sjhadAF.clear();
 
-	blep_id.clear();
-	bhad_id.clear();
-	chad_id.clear();
-	shad_id.clear();
+	leptonAF.clear();        neutrinoAF.clear(); 	      bjlepAF.clear();
+	leptonUM.clear();        neutrinoUM.clear();        bjlepUM.clear(); 
+	leptonAF_tlep.clear();   neutrinoAF_tlep.clear();   bjlepAF_tlep.clear();
 
-	Chi2.clear();
-	NDF.clear();
-	Nb_Iter.clear();
+	bjhadAF.clear(); 	       cjhadAF.clear();           sjhadAF.clear();
+	bjhadUM.clear();	       cjhadUM.clear();           sjhadUM.clear();
+	bjhadAF_thad.clear();    cjhadAF_thad.clear();      sjhadAF_thad.clear();
 
-	leptonUM.clear();
-	neutrinoUM.clear();
-	bjlepUM.clear(); 
-	bjhadUM.clear();
-	cjhadUM.clear(); 
-	sjhadUM.clear();
-	
-	ReslepEta.clear();
-	ReslepPhi.clear();
-	ResneuEta.clear();
-	ResneuPhi.clear();
-	ResbjlepEta.clear();
-	ResbjlepPhi.clear();
-	ResbjhadEta.clear();
-	ResbjhadPhi.clear();
-	RescjhadEta.clear();
-	RescjhadPhi.clear();
-	RessjhadEta.clear();
-	RessjhadPhi.clear(); 
-	
+	blep_id.clear();	  bhad_id.clear();	    chad_id.clear();	shad_id.clear();
+	Chi2.clear();	      Chi2_tlep.clear();	Chi2_thad.clear();
+	NDF.clear();        Nb_Iter.clear();
+	  
+	ReslepEta.clear();	ReslepPhi.clear();	  	ResneuEta.clear();		ResneuPhi.clear();
+	ResbjlepEta.clear();	ResbjlepPhi.clear();	ResbjhadEta.clear();	ResbjhadPhi.clear();
+	RescjhadEta.clear();	RescjhadPhi.clear();	RessjhadEta.clear();	RessjhadPhi.clear(); 
+
+	  
     }    
     void SetJetVector(std::vector<TLorentzVector> jets_){ jets	= jets_;}
     void SetJetResVector(std::vector<double> jetres_){ jetsRes	= jetres_;}
@@ -208,6 +198,17 @@ class KinFit{
     TLorentzVector	GetBHadron(unsigned int i)	{ return bjhadAF.at(i);}
     TLorentzVector	GetCHadron(unsigned int i)	{ return cjhadAF.at(i);}
     TLorentzVector	GetSHadron(unsigned int i)	{ return sjhadAF.at(i);}
+
+    unsigned int	GetNCombinations_tlep()		{ return nCombinations_tlep;}
+    TLorentzVector	GetLepton_tlep(unsigned int i)	{ return leptonAF_tlep.at(i);}
+    TLorentzVector	GetNeutrino_tlep(unsigned int i){ return neutrinoAF_tlep.at(i);}
+    TLorentzVector	GetBLepton_tlep(unsigned int i)	{ return bjlepAF_tlep.at(i);}
+
+    unsigned int	GetNCombinations_thad()		{ return nCombinations_thad;}
+    TLorentzVector	GetBHadron_thad(unsigned int i)	{ return bjhadAF_thad.at(i);}
+    TLorentzVector	GetCHadron_thad(unsigned int i)	{ return cjhadAF_thad.at(i);}
+    TLorentzVector	GetSHadron_thad(unsigned int i)	{ return sjhadAF_thad.at(i);}
+
     unsigned int	GetJetID_BLep(unsigned int i)	{ return blep_id.at(i);}
     unsigned int	GetJetID_BHad(unsigned int i)	{ return bhad_id.at(i);}
     unsigned int	GetJetID_CHad(unsigned int i)	{ return chad_id.at(i);}
@@ -222,9 +223,14 @@ class KinFit{
     TLorentzVector	GetBHadronUM(unsigned int i)	{ return bjhadUM.at(i);}
     TLorentzVector	GetCHadronUM(unsigned int i)	{ return cjhadUM.at(i);}
     TLorentzVector	GetSHadronUM(unsigned int i)	{ return sjhadUM.at(i);}
-    double		GetChi2(unsigned int i)		{ return Chi2.at(i); }
+
+    bool		IsComplex()                     { return isComplex; };
     int			GetNDF(unsigned int i)		{ return NDF.at(i); }
     int			GetNumberOfIter(unsigned int i)	{ return Nb_Iter.at(i); }	// Number of iterations to converge
+    double		GetChi2(unsigned int i)		{ return Chi2.at(i); }
+    double		GetChi2_tlep(unsigned int i)	{ return Chi2_tlep.at(i); }
+    double		GetChi2_thad(unsigned int i)	{ return Chi2_thad.at(i); }
+
     double              GetResLepEta(unsigned int i)    { return ReslepEta.at(i);}
     double              GetResLepPhi(unsigned int i)    { return ReslepPhi.at(i);}
     double              GetResNeuEta(unsigned int i)    { return ResneuEta.at(i);}
@@ -237,7 +243,7 @@ class KinFit{
     double              GetResCjHadPhi(unsigned int i)  { return RescjhadPhi.at(i);}
     double              GetResSjHadEta(unsigned int i)  { return RessjhadEta.at(i);}
     double              GetResSjHadPhi(unsigned int i)  { return RessjhadPhi.at(i);}
-    bool		IsComplex()                     { return isComplex; };
+
     /////////////////////////////////////////////////////////////////////////////
     
     struct PtDescending
@@ -280,16 +286,28 @@ class KinFit{
     double			mTop;
     
     // The following variables are minimal getters
-    unsigned int		nCombinations;                                                  // Number of converged combinations
-    std::vector<TLorentzVector> leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;	// Four vectors after KinFit
+    // Number of converged combinations
+    unsigned int		nCombinations, 		nCombinations_tlep, 	nCombinations_thad;                                            
+
+    // Four vectors after KinFit
+    std::vector<TLorentzVector> leptonAF,       neutrinoAF,       bjlepAF;
+    std::vector<TLorentzVector> bjhadAF,        cjhadAF,          sjhadAF;
+    std::vector<TLorentzVector> leptonAF_tlep,  neutrinoAF_tlep,  bjlepAF_tlep;
+    std::vector<TLorentzVector> bjhadAF_thad,   cjhadAF_thad,     sjhadAF_thad;
+    
     std::vector<unsigned int>	blep_id, bhad_id, chad_id, shad_id;
     
     // The following variables are additional getters
-    std::vector<double>		Chi2;
+    std::vector<double>		Chi2, Chi2_tlep, Chi2_thad;
     std::vector<int>		NDF, Nb_Iter ;
-    std::vector<TLorentzVector>	leptonUM, neutrinoUM, bjlepUM, bjhadUM, cjhadUM, sjhadUM;	// Unmodified four vectors before KinFit
-    std::vector<double>		ReslepEta, ReslepPhi, ResneuEta, ResneuPhi, ResbjlepEta, ResbjlepPhi, ResbjhadEta, ResbjhadPhi, RescjhadEta, RescjhadPhi, RessjhadEta, RessjhadPhi ; 
-    bool			isComplex;
+    // Unmodified four vectors before KinFit
+    std::vector<TLorentzVector>	leptonUM,  neutrinoUM,  bjlepUM;
+    std::vector<TLorentzVector>	bjhadUM,   cjhadUM,     sjhadUM;	
+    std::vector<double>		ReslepEta,    ReslepPhi,    ResneuEta,    ResneuPhi;
+    std::vector<double>		ResbjlepEta,  ResbjlepPhi,  ResbjhadEta,  ResbjhadPhi;
+    std::vector<double>		RescjhadEta,  RescjhadPhi,  RessjhadEta,  RessjhadPhi;
+    bool		    isComplex;
+
 };
 
 
@@ -306,6 +324,8 @@ class PerformKinFit : public TSelector {
    TH1F           *hMuPt;//!
    TH1F           *hMjj;//!
    TH1F           *hMjjkF;//!
+   TH1F           *hMjjkF_tlep;//!
+   TH1F           *hMjjkF_thad;//!
    TH1F           *hMjjkFsc;//!
    TH1F           *hMjjkF3s;//!
    TH1F           *hMjjkF_ms;//!
@@ -328,7 +348,11 @@ class PerformKinFit : public TSelector {
    TH1F           *hMjjkF_17;//!
    TH1F           *hNlep;//!
    TH1F           *hChi2;//!
+   TH1F           *hChi2_tlep;//!
+   TH1F           *hChi2_thad;//!
    TH1F           *hMinChi2;//!
+   TH1F           *hMinChi2_tlep;//!
+   TH1F           *hMinChi2_thad;//!
    TH1F           *h2MinChi2;//!
    TH1F           *h3MinChi2;//!
    TH1F           *h4MinChi2;//!
@@ -336,6 +360,24 @@ class PerformKinFit : public TSelector {
    TH1F           *hNbiter;//!
    TH1F           *hNbCombiBRD;//!
    TH1F           *hNbCombiARD;//!
+
+   TH1F           *hdRcjsjBF;
+   TH1F	          *hdRcjsjAF;
+   TH1F           *hdRLepNuBF;
+   TH1F		  *hdRLepNuAF;
+
+   TH1F		  *hEtaNeu;
+   TH1F		  *hEtaLep;
+   TH1F		  *hEtacjhad;
+   TH1F		  *hEtasjhad;
+   TH1F           *hEtaNeu_tlep;
+
+   TH1F           *hdRlepBFAF;
+   TH1F           *hdRbjlepBFAF;
+   TH1F           *hdRbjhadBFAF;
+   TH1F           *hdRcjhadBFAF;
+   TH1F           *hdRsjhadBFAF;
+
    TH1F           *hdRSigLep;//!
    TH1F           *hdRSigNeu;//!
    TH1F           *hdRSigBjHad;//!
@@ -439,10 +481,12 @@ class PerformKinFit : public TSelector {
 
    TH1F           *hHadTop;//!
    TH1F           *hLepTop;//!
-   TH1F           *hEtaNeu;//!
+   //TH1F           *hEtaNeu;//!
   
    TH1F           *hIsNeuComplex;//!
    TH1F           *hMW;//!
+
+   TH1F		  *hMW_tlep;
 
    TH1F           **hDiffAvg;//!
    TH1F           **hMinDiffAvg;//!
@@ -549,6 +593,8 @@ class PerformKinFit : public TSelector {
   
   int		_kFType = 0;
   Float_t	_chi2 = 0 ;
+  Float_t	_chi2_thad = 0 ;
+  Float_t	_chi2_tlep = 0 ;
   int		_NDF = 0 ;
   int		_Nbiter = 0 ;
   Float_t	_M_jj = 0 ;
@@ -557,6 +603,7 @@ class PerformKinFit : public TSelector {
   int		_bjhad_id = 0 ;
   int		_cjhad_id = 0 ;
   int		_sjhad_id = 0 ;
+
   Float_t	_lepPt = 0 ;
   Float_t	_lepEta = 0 ;
   Float_t	_lepPhi = 0 ;
@@ -564,6 +611,7 @@ class PerformKinFit : public TSelector {
   Float_t	_metPx = 0 ;
   Float_t	_metPy = 0 ;
   Float_t	_metPz = 0 ;
+
   Float_t	_jetBlepPt = 0 ;
   Float_t	_jetBlepEta = 0 ;
   Float_t	_jetBlepPhi = 0 ;
@@ -580,6 +628,7 @@ class PerformKinFit : public TSelector {
   Float_t	_jetShadEta = 0 ;
   Float_t	_jetShadPhi = 0 ;
   Float_t	_jetShadEnergy = 0 ;
+
   Float_t	_jetBlepPtUM = 0 ;
   Float_t	_jetBlepEtaUM = 0 ;
   Float_t	_jetBlepPhiUM = 0 ;
@@ -753,6 +802,8 @@ class PerformKinFit : public TSelector {
   
    //TBranch	*br_kFType			= 0 ;
    TBranch	*br_chi2			= 0 ;
+   TBranch	*br_chi2_tlep			= 0 ;
+   TBranch	*br_chi2_thad			= 0 ;
    TBranch	*br_NDF				= 0 ;
    TBranch	*br_Nbiter			= 0 ;
    TBranch	*br_M_jj			= 0 ;
@@ -809,6 +860,7 @@ class PerformKinFit : public TSelector {
    TBranch   *br_elePhi				= 0 ;
    TBranch   *br_eleSCEta			= 0 ;
    TBranch   *br_elePFRelIso			= 0 ;
+
    TBranch   *br_nMu				= 0 ;
    TBranch   *br_nMuLoose			= 0 ;
    TBranch   *br_muPt				= 0;
@@ -886,6 +938,11 @@ class PerformKinFit : public TSelector {
    TLorentzVector	leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;
    TLorentzVector	leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;
    TLorentzVector	lepTopAF, hadTopAF;
+
+   TLorentzVector	leptonAF_tlep,  neutrinoAF_tlep,  bjlepAF_tlep;
+   TLorentzVector   bjhadAF_thad,   cjhadAF_thad,     sjhadAF_thad;
+   TLorentzVector   lepTopAF_tlep,  hadTopAF_thad;
+
    double  fmTop ;
    double  fchi2cut ;
    double  fptmin, fptmax ;
@@ -1031,7 +1088,11 @@ void PerformKinFit::Reset()
   
   hMuPt		 = 0;
   hMjj		 = 0;
-  hMjjkF	 = 0;
+
+  hMjjkF	 = 0;  hMjjkF_tlep = 0;		hMjjkF_thad = 0;  
+  hChi2		 = 0;  hChi2_tlep  = 0;		hChi2_thad  = 0;
+  hMinChi2	 = 0;  hMinChi2_tlep = 0;	hMinChi2_thad = 0;
+
   hMjjkFsc	 = 0;
   hMjjkF3s	 = 0;
   hNlep		 = 0;
@@ -1166,9 +1227,11 @@ void PerformKinFit::Reset()
   hLepTop = 0;
   hEtaNeu = 0;
   
-  hIsNeuComplex = 0;
-  hMW		= 0;
+  hIsNeuComplex	 = 0;
+  hMW		 = 0;
   hbtagweight_1a = 0;
+  hMW_tlep	 = 0;
+  hEtaNeu_tlep	 = 0;
 
   fNPtBins	= 7;
   fPtmin	= 0 ;		//30
@@ -1234,24 +1297,24 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("PUweight_Do"		, &_PUweight_Do			, &br_PUweight_Do		);
 
 
-   fChain->SetBranchAddress("prefireSF"			, &_prefireSF			, &br_prefireSF			);
+   /* fChain->SetBranchAddress("prefireSF"			, &_prefireSF			, &br_prefireSF			); */
 
-   fChain->SetBranchAddress("prefireSF_Up"		, &_prefireSF_Up		, &br_prefireSF_Up		);
-   fChain->SetBranchAddress("prefireSF_Do"		, &_prefireSF_Do		, &br_prefireSF_Do		);
+   /* fChain->SetBranchAddress("prefireSF_Up"		, &_prefireSF_Up		, &br_prefireSF_Up		); */
+   /* fChain->SetBranchAddress("prefireSF_Do"		, &_prefireSF_Do		, &br_prefireSF_Do		); */
 
    fChain->SetBranchAddress("btagWeight"		, &_btagWeight			, &br_btagWeight		);
    fChain->SetBranchAddress("btagWeight_1a"		, &_btagWeight_1a		, &br_btagWeight_1a		);
 
-   fChain->SetBranchAddress("btagWeight_b_Up"		, &_btagWeight_b_Up		, &br_btagWeight_b_Up		);
-   fChain->SetBranchAddress("btagWeight_b_Do"		, &_btagWeight_b_Do		, &br_btagWeight_b_Do		);
-   fChain->SetBranchAddress("btagWeight_l_Up"		, &_btagWeight_l_Up		, &br_btagWeight_l_Up		);
-   fChain->SetBranchAddress("btagWeight_l_Do"		, &_btagWeight_l_Do		, &br_btagWeight_l_Do		);
+   /* fChain->SetBranchAddress("btagWeight_b_Up"		, &_btagWeight_b_Up		, &br_btagWeight_b_Up		); */
+   /* fChain->SetBranchAddress("btagWeight_b_Do"		, &_btagWeight_b_Do		, &br_btagWeight_b_Do		); */
+   /* fChain->SetBranchAddress("btagWeight_l_Up"		, &_btagWeight_l_Up		, &br_btagWeight_l_Up		); */
+   /* fChain->SetBranchAddress("btagWeight_l_Do"		, &_btagWeight_l_Do		, &br_btagWeight_l_Do		); */
    fChain->SetBranchAddress("btagWeight_1a_b_Up"	, &_btagWeight_1a_b_Up		, &br_btagWeight_1a_b_Up	);
    fChain->SetBranchAddress("btagWeight_1a_b_Do"	, &_btagWeight_1a_b_Do		, &br_btagWeight_1a_b_Do	);
    fChain->SetBranchAddress("btagWeight_1a_l_Up"	, &_btagWeight_1a_l_Up		, &br_btagWeight_1a_l_Up	);
    fChain->SetBranchAddress("btagWeight_1a_l_Do"	, &_btagWeight_1a_l_Do		, &br_btagWeight_1a_l_Do	);
 
-   fChain->SetBranchAddress("btagSF"			, &_btagSF			, &br_btagSF			);
+   /* fChain->SetBranchAddress("btagSF"			, &_btagSF			, &br_btagSF			); */
    fChain->SetBranchAddress("muEffWeight"		, &_muEffWeight			, &br_muEffWeight		);
    fChain->SetBranchAddress("muEffWeight_IdIso"		, &_muEffWeight_IdIso		, &br_muEffWeight_IdIso		);
    fChain->SetBranchAddress("muEffWeight_Trig"		, &_muEffWeight_Trig		, &br_muEffWeight_Trig		);
@@ -1280,13 +1343,13 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("q2weight_Up"		, &_q2weight_Up			, &br_q2weight_Up		);
    fChain->SetBranchAddress("q2weight_Do"		, &_q2weight_Do			, &br_q2weight_Do		);
    fChain->SetBranchAddress("q2weight_nominal"		, &_q2weight_nominal		, &br_q2weight_nominal		);
-   fChain->SetBranchAddress("genScaleSystWeights"	, &_genScaleSystWeights		, &br_genScaleSystWeights	);
+   /* fChain->SetBranchAddress("genScaleSystWeights"	, &_genScaleSystWeights		, &br_genScaleSystWeights	); */
 
    fChain->SetBranchAddress("pdfWeight"			, &_pdfWeight			, &br_pdfWeight			);
    fChain->SetBranchAddress("pdfuncer"			, &_pdfuncer			, &br_pdfuncer			);
    fChain->SetBranchAddress("pdfweight_Up"		, &_pdfweight_Up		, &br_pdfweight_Up		);
    fChain->SetBranchAddress("pdfweight_Do"		, &_pdfweight_Do		, &br_pdfweight_Do		);
-   fChain->SetBranchAddress("pdfSystWeight"		, &_pdfSystWeight		, &br_pdfSystWeight		);
+   /* fChain->SetBranchAddress("pdfSystWeight"		, &_pdfSystWeight		, &br_pdfSystWeight		); */
 
    fChain->SetBranchAddress("ISRweight_Up"		, &_ISRweight_Up		, &br_ISRweight_Up		);
    fChain->SetBranchAddress("ISRweight_Do"		, &_ISRweight_Do		, &br_ISRweight_Do		);
@@ -1306,56 +1369,58 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("nu_py"			, &_nu_py			, &br_nu_py			);
    fChain->SetBranchAddress("nu_pz"			, &_nu_pz			, &br_nu_pz			);
    fChain->SetBranchAddress("nu_pz_other"		, &_nu_pz_other			, &br_nu_pz_other		);
-   fChain->SetBranchAddress("WtransMass"		, &_WtransMass			, &br_WtransMass		);
+   /* fChain->SetBranchAddress("WtransMass"		, &_WtransMass			, &br_WtransMass		); */
 
-   fChain->SetBranchAddress("chi2"			, &_chi2			, &br_chi2			);
-   fChain->SetBranchAddress("NDF"			, &_NDF				, &br_NDF			);
-   fChain->SetBranchAddress("Nbiter"			, &_Nbiter			, &br_Nbiter			);
-   fChain->SetBranchAddress("M_jj"			, &_M_jj			, &br_M_jj			);
-   fChain->SetBranchAddress("M_jjkF"			, &_M_jjkF			, &br_M_jjkF 			);
-   fChain->SetBranchAddress("bjlep_id"			, &_bjlep_id			, &br_bjlep_id			);
-   fChain->SetBranchAddress("bjhad_id"			, &_bjhad_id			, &br_bjhad_id			);
-   fChain->SetBranchAddress("cjhad_id"			, &_cjhad_id			, &br_cjhad_id			);
-   fChain->SetBranchAddress("sjhad_id"			, &_sjhad_id			, &br_sjhad_id			);
-   fChain->SetBranchAddress("lepPt"			, &_lepPt			, &br_lepPt			);
-   fChain->SetBranchAddress("lepEta"			, &_lepEta			, &br_lepEta			);
-   fChain->SetBranchAddress("lepPhi"			, &_lepPhi			, &br_lepPhi			);
-   fChain->SetBranchAddress("lepEnergy"			, &_lepEnergy			, &br_lepEnergy			);
-   fChain->SetBranchAddress("metPx"			, &_metPx			, &br_metPx			);
-   fChain->SetBranchAddress("metPy"			, &_metPy			, &br_metPy			);
-   fChain->SetBranchAddress("metPz"			, &_metPz			, &br_metPz			);
-   fChain->SetBranchAddress("jetBlepPt"			, &_jetBlepPt			, &br_jetBlepPt			);
-   fChain->SetBranchAddress("jetBlepEta"		, &_jetBlepEta			, &br_jetBlepEta		);
-   fChain->SetBranchAddress("jetBlepPhi"		, &_jetBlepPhi			, &br_jetBlepPhi		);
-   fChain->SetBranchAddress("jetBlepEnergy"		, &_jetBlepEnergy		, &br_jetBlepEnergy		);
-   fChain->SetBranchAddress("jetBhadPt"			, &_jetBhadPt			, &br_jetBhadPt			);
-   fChain->SetBranchAddress("jetBhadEta"		, &_jetBhadEta			, &br_jetBhadEta		);
-   fChain->SetBranchAddress("jetBhadPhi"		, &_jetBhadPhi			, &br_jetBhadPhi		);
-   fChain->SetBranchAddress("jetBhadEnergy"		, &_jetBhadEnergy		, &br_jetBhadEnergy		);
-   fChain->SetBranchAddress("jetChadPt"			, &_jetChadPt			, &br_jetChadPt			);
-   fChain->SetBranchAddress("jetChadEta"		, &_jetChadEta			, &br_jetChadEta		);
-   fChain->SetBranchAddress("jetChadPhi"		, &_jetChadPhi			, &br_jetChadPhi		);
-   fChain->SetBranchAddress("jetChadEnergy"		, &_jetChadEnergy		, &br_jetChadEnergy		);
-   fChain->SetBranchAddress("jetShadPt"			, &_jetShadPt			, &br_jetShadPt			);
-   fChain->SetBranchAddress("jetShadEta"		, &_jetShadEta			, &br_jetShadEta		);
-   fChain->SetBranchAddress("jetShadPhi"		, &_jetShadPhi			, &br_jetShadPhi		);
-   fChain->SetBranchAddress("jetShadEnergy"		, &_jetShadEnergy		, &br_jetShadEnergy		);
+   /* fChain->SetBranchAddress("chi2"			, &_chi2			, &br_chi2			); */
+   /* fChain->SetBranchAddress("NDF"			, &_NDF				, &br_NDF			); */
+   /* fChain->SetBranchAddress("Nbiter"			, &_Nbiter			, &br_Nbiter			); */
+   /* fChain->SetBranchAddress("M_jj"			, &_M_jj			, &br_M_jj			); */
+   /* fChain->SetBranchAddress("M_jjkF"			, &_M_jjkF			, &br_M_jjkF 			); */
+   /* fChain->SetBranchAddress("bjlep_id"			, &_bjlep_id			, &br_bjlep_id			); */
+   /* fChain->SetBranchAddress("bjhad_id"			, &_bjhad_id			, &br_bjhad_id			); */
+   /* fChain->SetBranchAddress("cjhad_id"			, &_cjhad_id			, &br_cjhad_id			); */
+   /* fChain->SetBranchAddress("sjhad_id"			, &_sjhad_id			, &br_sjhad_id			); */
+   /* fChain->SetBranchAddress("lepPt"			, &_lepPt			, &br_lepPt			); */
+   /* fChain->SetBranchAddress("lepEta"			, &_lepEta			, &br_lepEta			); */
+   /* fChain->SetBranchAddress("lepPhi"			, &_lepPhi			, &br_lepPhi			); */
+   /* fChain->SetBranchAddress("lepEnergy"			, &_lepEnergy			, &br_lepEnergy			); */
+   /* fChain->SetBranchAddress("metPx"			, &_metPx			, &br_metPx			); */
+   /* fChain->SetBranchAddress("metPy"			, &_metPy			, &br_metPy			); */
+   /* fChain->SetBranchAddress("metPz"			, &_metPz			, &br_metPz			); */
+   /* fChain->SetBranchAddress("jetBlepPt"			, &_jetBlepPt			, &br_jetBlepPt			); */
+   /* fChain->SetBranchAddress("jetBlepEta"		, &_jetBlepEta			, &br_jetBlepEta		); */
+   /* fChain->SetBranchAddress("jetBlepPhi"		, &_jetBlepPhi			, &br_jetBlepPhi		); */
+   /* fChain->SetBranchAddress("jetBlepEnergy"		, &_jetBlepEnergy		, &br_jetBlepEnergy		); */
+   /* fChain->SetBranchAddress("jetBhadPt"			, &_jetBhadPt			, &br_jetBhadPt			); */
+   /* fChain->SetBranchAddress("jetBhadEta"		, &_jetBhadEta			, &br_jetBhadEta		); */
+   /* fChain->SetBranchAddress("jetBhadPhi"		, &_jetBhadPhi			, &br_jetBhadPhi		); */
+   /* fChain->SetBranchAddress("jetBhadEnergy"		, &_jetBhadEnergy		, &br_jetBhadEnergy		); */
+   /* fChain->SetBranchAddress("jetChadPt"			, &_jetChadPt			, &br_jetChadPt			); */
+   /* fChain->SetBranchAddress("jetChadEta"		, &_jetChadEta			, &br_jetChadEta		); */
+   /* fChain->SetBranchAddress("jetChadPhi"		, &_jetChadPhi			, &br_jetChadPhi		); */
+   /* fChain->SetBranchAddress("jetChadEnergy"		, &_jetChadEnergy		, &br_jetChadEnergy		); */
+   /* fChain->SetBranchAddress("jetShadPt"			, &_jetShadPt			, &br_jetShadPt			); */
+   /* fChain->SetBranchAddress("jetShadEta"		, &_jetShadEta			, &br_jetShadEta		); */
+   /* fChain->SetBranchAddress("jetShadPhi"		, &_jetShadPhi			, &br_jetShadPhi		); */
+   /* fChain->SetBranchAddress("jetShadEnergy"		, &_jetShadEnergy		, &br_jetShadEnergy		); */
 
 
    fChain->SetBranchAddress("nEle"			, &_nEle			, &br_nEle			); 
+   fChain->SetBranchAddress("nEleLoose"			, &_nEleLoose			, &br_nEleLoose			);
    fChain->SetBranchAddress("elePt"			, &_elePt			, &br_elePt			);
    fChain->SetBranchAddress("elePhi"			, &_elePhi			, &br_elePhi			); 
    fChain->SetBranchAddress("eleSCEta"			, &_eleSCEta			, &br_eleSCEta			); 
    fChain->SetBranchAddress("elePFRelIso"		, &_elePFRelIso			, &br_elePFRelIso		); 
 
-   fChain->SetBranchAddress("nMu"			, &_nMu				, &br_nMu			); 
+   fChain->SetBranchAddress("nMu"			, &_nMu				, &br_nMu			);
+   fChain->SetBranchAddress("nMuLoose"			, &_nMuLoose		       	, &br_nMuLoose			);  
    fChain->SetBranchAddress("muPt"			, &_muPt			, &br_muPt			); 
    fChain->SetBranchAddress("muEta"			, &_muEta			, &br_muEta			);
    fChain->SetBranchAddress("muPhi"			, &_muPhi			, &br_muPhi			);
    fChain->SetBranchAddress("muPFRelIso"		, &_muPFRelIso			, &br_muPFRelIso		);
     
    fChain->SetBranchAddress("nJet"			, &_nJet			, &br_nJet			); 
-   fChain->SetBranchAddress("nfwdJet"			, &_nfwdJet			, &br_nfwdJet			);
+   /* fChain->SetBranchAddress("nfwdJet"			, &_nfwdJet			, &br_nfwdJet			); */
    fChain->SetBranchAddress("nBJet"			, &_nBJet			, &br_nBJet			); 
    fChain->SetBranchAddress("jetPt"			, &_jetPt			, &br_jetPt			);
    fChain->SetBranchAddress("jetEta"			, &_jetEta			, &br_jetEta			); 
@@ -1366,15 +1431,15 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("jetDeepC"			, &_jetDeepC			, &br_jetDeepC			);
    fChain->SetBranchAddress("jetGenJetIdx"		, &_jetGenJetIdx		, &br_jetGenJetIdx		);
 
-   fChain->SetBranchAddress("fwdJetPt"			, &_fwdJetPt			, &br_fwdJetPt			);
-   fChain->SetBranchAddress("fwdJetEta"			, &_fwdJetEta			, &br_fwdJetEta			);
-   fChain->SetBranchAddress("fwdJetPhi"			, &_fwdJetPhi			, &br_fwdJetPhi			);
-   fChain->SetBranchAddress("fwdJetMass"		, &_fwdJetMass			, &br_fwdJetMass		);
+   /* fChain->SetBranchAddress("fwdJetPt"			, &_fwdJetPt			, &br_fwdJetPt			); */
+   /* fChain->SetBranchAddress("fwdJetEta"			, &_fwdJetEta			, &br_fwdJetEta			); */
+   /* fChain->SetBranchAddress("fwdJetPhi"			, &_fwdJetPhi			, &br_fwdJetPhi			); */
+   /* fChain->SetBranchAddress("fwdJetMass"		, &_fwdJetMass			, &br_fwdJetMass		); */
 
 
-   fChain->SetBranchAddress("M3"			, &_M3				, &br_M3			); 
-   fChain->SetBranchAddress("HT"			, &_HT				, &br_HT			); 
-
+   /* fChain->SetBranchAddress("M3"			, &_M3				, &br_M3			);  */
+   /* fChain->SetBranchAddress("HT"			, &_HT				, &br_HT			);  */
+   
    fChain->SetBranchAddress("passPresel_Ele"		, &_passPresel_Ele		, &br_passPresel_Ele		); 
    fChain->SetBranchAddress("passPresel_Mu"		, &_passPresel_Mu		, &br_passPresel_Mu		);
    fChain->SetBranchAddress("passAll_Ele"		, &_passAll_Ele			, &br_passAll_Ele		); 
@@ -1400,13 +1465,13 @@ void PerformKinFit::InitOutBranches(){
 	outputTree->Branch("q2weight_Up"	, &_q2weight_Up			);
 	outputTree->Branch("q2weight_Do"	, &_q2weight_Do			);
 	outputTree->Branch("q2weight_nominal"	, &_q2weight_nominal		);
-	outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		);
+	/* outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		); */
 
 	outputTree->Branch("pdfWeight"		, &_pdfWeight			);
 	outputTree->Branch("pdfuncer"		, &_pdfuncer			);
 	outputTree->Branch("pdfweight_Up"	, &_pdfweight_Up		);
 	outputTree->Branch("pdfweight_Do"	, &_pdfweight_Do		);
-	outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		);
+	/* outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		); */
 
 	outputTree->Branch("ISRweight_Up"	, &_ISRweight_Up		);
 	outputTree->Branch("ISRweight_Do"	, &_ISRweight_Do		);
@@ -1424,16 +1489,16 @@ void PerformKinFit::InitOutBranches(){
     outputTree->Branch("btagWeight"		, &_btagWeight			);
     outputTree->Branch("btagWeight_1a"		, &_btagWeight_1a		);
     //if (!isSystematicRun){
-	outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		);
-	outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		);
-	outputTree->Branch("btagWeight_l_Up"	, &_btagWeight_l_Up		);
-	outputTree->Branch("btagWeight_l_Do"	, &_btagWeight_l_Do		);
+	/* outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		); */
+	/* outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		); */
+	/* outputTree->Branch("btagWeight_l_Up"	, &_btagWeight_l_Up		); */
+	/* outputTree->Branch("btagWeight_l_Do"	, &_btagWeight_l_Do		); */
 	outputTree->Branch("btagWeight_1a_b_Up"	, &_btagWeight_1a_b_Up		);
 	outputTree->Branch("btagWeight_1a_b_Do"	, &_btagWeight_1a_b_Do		);
 	outputTree->Branch("btagWeight_1a_l_Up"	, &_btagWeight_1a_l_Up		);
 	outputTree->Branch("btagWeight_1a_l_Do"	, &_btagWeight_1a_l_Do		);
     //}
-    outputTree->Branch("btagSF"			, &_btagSF			);
+    /* outputTree->Branch("btagSF"			, &_btagSF			); */
     //if (!isSystematicRun){
       outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			);
       outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			);
@@ -1480,7 +1545,7 @@ void PerformKinFit::InitOutBranches(){
     outputTree->Branch("nu_py"			, &_nu_py			);
     outputTree->Branch("nu_pz"			, &_nu_pz			);
     outputTree->Branch("nu_pz_other"		, &_nu_pz_other			);
-    outputTree->Branch("WtransMass"		, &_WtransMass			);
+    /* outputTree->Branch("WtransMass"		, &_WtransMass			); */
 
     /* outputTree->Branch("hasConv"		, &_hasConv			); */
     /* outputTree->Branch("hasRDPass"	       	, &_hasRDPass			); */
@@ -1488,6 +1553,8 @@ void PerformKinFit::InitOutBranches(){
     /* outputTree->Branch("ltypekF"       	        , &_ltypekF			); */
     outputTree->Branch("kFType"			, &_kFType			);
     outputTree->Branch("chi2"			, &_chi2			);
+    outputTree->Branch("chi2_thad"		, &_chi2_thad			);
+    outputTree->Branch("chi2_tlep"		, &_chi2_tlep			);
     outputTree->Branch("NDF"			, &_NDF				);
     outputTree->Branch("Nbiter"			, &_Nbiter			);
     outputTree->Branch("M_jj"			, &_M_jj			);
@@ -1550,8 +1617,8 @@ void PerformKinFit::InitOutBranches(){
     outputTree->Branch("muPhi"			, &_muPhi			);
     outputTree->Branch("muPFRelIso"		, &_muPFRelIso			);
     
-    /* outputTree->Branch("nJet"			, &_nJet			);  */
-    /* outputTree->Branch("nBJet"			, &_nBJet			);  */
+    outputTree->Branch("nJet"			, &_nJet			);
+    outputTree->Branch("nBJet"			, &_nBJet			);
     /* outputTree->Branch("jetPt"			, &_jetPt			); */
     /* outputTree->Branch("jetEta"			, &_jetEta			);  */
     /* outputTree->Branch("jetPhi"			, &_jetPhi			);  */
@@ -1590,8 +1657,8 @@ void PerformKinFit::InitOutBranches(){
     /* 	outputTree->Branch("genJetHadronFlavour"	, &_genJetHadronFlavour		);  */
     /* //} */
 	
-    outputTree->Branch("M3"				, &_M3				); 
-    outputTree->Branch("HT"				, &_HT				); 
+    /* outputTree->Branch("M3"				, &_M3				);  */
+    /* outputTree->Branch("HT"				, &_HT				);  */
     
     outputTree->Branch("passPresel_Ele"			, &_passPresel_Ele		); 
     outputTree->Branch("passPresel_Mu"			, &_passPresel_Mu		);
@@ -1608,6 +1675,14 @@ Bool_t PerformKinFit::Notify()
 //   get branch pointers
 
   Info("Notify","processing file: %s",fChain->GetCurrentFile()->GetName());  
+  
+  TString fname(fChain->GetCurrentFile()->GetName());
+  if(fname.Contains("Dilepton"))
+    _kFType = 1;
+  else if(fname.Contains("Hadronic"))
+    _kFType = 2;
+  if(fname.Contains("Semilept"))
+    _kFType = 3;
 
   return kTRUE;
 }
@@ -2390,7 +2465,7 @@ int KinFit::JetEnergyResolution(double eta, double& JERbase, double& JERdown, do
 
 bool KinFit::Fit(){
   
-  bool				goodCombo = false;
+  bool				goodCombo = false, goodCombo_tlep = false, goodCombo_thad = false;
   TLorentzVector		neutrino, bjlep, bjhad, cjhad, sjhad;
   TMatrixD			ml(3,3), mn(3,3), mbl(3,3), mbh(3,3), mc(3,3), ms(3,3);
   double			resEt, resEta, resPhi;
@@ -2532,7 +2607,8 @@ bool KinFit::Fit(){
 	    reslepPhi	= resPhi ; 
 	    
 	    metResolution(neutrino.Et(), resEt, resEta, resPhi);
-	    resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
+	    //resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
+	    resEta	= 9999.; // This is from miniAOD
 	    //Error in <TDecompLU::InvertLU>: matrix is singular, 1 diag elements < tolerance of 2.2204e-16
 	    mn(0,0)	= TMath::Power(resEt, 2); // et
 	    mn(1,1)	= TMath::Power(resEta, 2); // eta
@@ -2542,7 +2618,7 @@ bool KinFit::Fit(){
 	    /* 	 << " _nu Pt : " << neutrino.Pt()  */
 	    /* 	 << " _nu |P| : " << neutrino.Vect().Mag()  */
 	    /* 	 << endl; */
-
+	    
 	    /* mn(0,0)	= 9999; // et */
 	    /* mn(1,1)	= 9999; // eta */
 	    /* mn(2,2)	= TMath::Power(0.54, 2); // phi */
@@ -2647,17 +2723,32 @@ bool KinFit::Fit(){
 	    /* fitter->addConstraint(sumPyConstr_); */
 	    /* fitter->addConstraint(sumPzConstr_); */
 	    /* fitter->addConstraint(sumEConstr_); */
+
+	    TKinFitter* fitter_tlep = new TKinFitter("fitter_tlep", "fitter_tlep");
+	    fitter_tlep->addMeasParticle( lep );   fitter_tlep->addMeasParticle( neu );
+	    fitter_tlep->addMeasParticle( bl );	   fitter_tlep->addConstraint( ltop );
+	    fitter_tlep->addConstraint( lW );
+	    
+	    TKinFitter* fitter_thad = new TKinFitter("fitter_thad", "fitter_thad");
+	    fitter_thad->addMeasParticle( bh );	   fitter_thad->addMeasParticle( cj );
+            fitter_thad->addMeasParticle( sj );	   fitter_thad->addConstraint( htop );
+
 	    
 	    // Tested with 2016 analysis
 	    fitter->setMaxNbIter( 500 );
 	    fitter->setMaxDeltaS( 5e-05 );
 	    fitter->setMaxF( 0.0001 );
 	    fitter->setVerbosity(0);
-	    
-	    //print(fitter);
-	    fitter->fit();
-	    //print(fitter);
 
+	    fitter_tlep->setMaxNbIter( 500 );   fitter_tlep->setMaxDeltaS( 5e-05 );
+	    fitter_tlep->setMaxF( 0.0001 );	fitter_tlep->setVerbosity(0);
+	    
+	    fitter_thad->setMaxNbIter( 500 );   fitter_thad->setMaxDeltaS( 5e-05 );
+	    fitter_thad->setMaxF( 0.0001 );	fitter_thad->setVerbosity(0);
+	    //print(fitter);
+	    fitter->fit();     fitter_tlep->fit();       fitter_thad->fit();
+	    //print(fitter);
+	    
 	    /* cout<<"====== After fit"<<endl; */
 	    /* mn.Print(); */
 	    /* cout<<"====== After fit"<<endl; */
@@ -2686,7 +2777,8 @@ bool KinFit::Fit(){
 	    /*   goodCombo	 = true; */
 	    /* } */
 
-	    if(fitter->getStatus()==0){
+	    if(fitter->getStatus()==0 and fitter_tlep->getStatus()==0 and fitter_thad->getStatus()==0){
+	      
 	      Chi2.push_back( fitter->getS() );
 	      NDF.push_back( fitter->getNDF() ); 
 	      Nb_Iter.push_back( fitter->getNbIter() );
@@ -2720,7 +2812,40 @@ bool KinFit::Fit(){
 	      RessjhadPhi.push_back(ressjhadPhi); 
 	      goodCombo = true;
 	      nCombinations++ ;
+	      
+	      Chi2_tlep.push_back( fitter_tlep->getS() );
+	      leptonAF_tlep.push_back( *(fitter_tlep->get4Vec(0)) );
+	      neutrinoAF_tlep.push_back( *(fitter_tlep->get4Vec(1)) );
+	      bjlepAF_tlep.push_back( *(fitter_tlep->get4Vec(2)) );
+	      goodCombo_tlep = true;
+	      nCombinations_tlep++ ;
+	      
+	      Chi2_thad.push_back( fitter_thad->getS() );
+	      bjhadAF_thad.push_back( *(fitter_thad->get4Vec(0)) );
+	      cjhadAF_thad.push_back( *(fitter_thad->get4Vec(1)) );
+	      sjhadAF_thad.push_back( *(fitter_thad->get4Vec(2)) );
+	      goodCombo_thad = true;
+	      nCombinations_thad++;
+	      
 	    }
+	    
+	    /* if(fitter_tlep->getStatus()==0){ */
+	    /*   Chi2_tlep.push_back( fitter_tlep->getS() ); */
+	    /*   leptonAF_tlep.push_back( *(fitter_tlep->get4Vec(0)) ); */
+	    /*   neutrinoAF_tlep.push_back( *(fitter_tlep->get4Vec(1)) ); */
+	    /*   bjlepAF_tlep.push_back( *(fitter_tlep->get4Vec(2)) ); */
+	    /*   goodCombo_tlep = true; */
+	    /*   nCombinations_tlep++ ; */
+	    /* } */
+
+	    /* if(fitter_thad->getStatus()==0){ */
+	    /*   Chi2_thad.push_back( fitter_thad->getS() ); */
+	    /*   bjhadAF_thad.push_back( *(fitter_thad->get4Vec(0)) ); */
+	    /*   cjhadAF_thad.push_back( *(fitter_thad->get4Vec(1)) ); */
+	    /*   sjhadAF_thad.push_back( *(fitter_thad->get4Vec(2)) ); */
+	    /*   goodCombo_thad = true; */
+	    /*   nCombinations_thad++; */
+	    /* } */
 	    
 	    delete lep;
 	    delete neu;
@@ -2731,7 +2856,9 @@ bool KinFit::Fit(){
 	    delete ltop;
 	    delete htop;
 	    delete fitter;
-	      
+	    
+	    delete fitter_tlep;	    delete fitter_thad;  
+	    
 	  }//inu_root
 	}//ijet 2 
       }//ijet 1
@@ -2739,10 +2866,16 @@ bool KinFit::Fit(){
   }//bjet 1
     
   //cout<<endl<<endl;
-
+  
   bjetlist.clear();
   ljetlist.clear();
   list2jet.clear();
+  
+  /* bool combinedStatus = false; */
+  /* if(goodCombo && goodCombo_tlep && goodCombo_thad) */
+  /*   combinedStatus = true; */
+  
+  /* return combinedStatus; */
   
   return goodCombo;
   
