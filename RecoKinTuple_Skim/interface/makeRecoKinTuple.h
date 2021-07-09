@@ -244,7 +244,8 @@ class makeRecoKinTuple {
   std::vector<float>	 _elePhi;
   std::vector<float>	 _eleSCEta;
   std::vector<float>	 _elePFRelIso;
-  
+  std::vector<float>	 _eleCharge;
+
   Int_t			 _nMu;
   Int_t			 _nMuLoose;
   std::vector<float>	 _muPt;
@@ -252,6 +253,7 @@ class makeRecoKinTuple {
   std::vector<float>	 _muPhi;
   std::vector<float>	 _muPFRelIso;
   std::vector<float>     _muRoccoR;
+  std::vector<float>	 _muCharge;
 
   Int_t			 _nJet;
   Int_t			 _nBJet;
@@ -506,14 +508,15 @@ void makeRecoKinTuple::InitBranches(){
     /* outputTree->Branch("jetShadEta"		, &_jetShadEta			); */
     /* outputTree->Branch("jetShadPhi"		, &_jetShadPhi			); */
     /* outputTree->Branch("jetShadEnergy"		, &_jetShadEnergy		); */
-
+    
     outputTree->Branch("nEle"			, &_nEle			); 
     outputTree->Branch("nEleLoose"		, &_nEleLoose			); 
     outputTree->Branch("elePt"			, &_elePt			);
     outputTree->Branch("elePhi"			, &_elePhi			); 
     outputTree->Branch("eleSCEta"		, &_eleSCEta			); 
     outputTree->Branch("elePFRelIso"		, &_elePFRelIso			); 
-
+    outputTree->Branch("eleCharge"		, &_eleCharge			);
+    
     outputTree->Branch("nMu"			, &_nMu				); 
     outputTree->Branch("nMuLoose"		, &_nMuLoose			); 
     outputTree->Branch("muPt"			, &_muPt			); 
@@ -521,6 +524,7 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("muPhi"			, &_muPhi			);
     outputTree->Branch("muPFRelIso"		, &_muPFRelIso			);
     outputTree->Branch("muRoccoR"		, &_muRoccoR			);
+    outputTree->Branch("muCharge"		, &_muCharge			);
     
     outputTree->Branch("nJet"			, &_nJet			); 
     outputTree->Branch("nBJet"			, &_nBJet			); 
@@ -536,11 +540,11 @@ void makeRecoKinTuple::InitBranches(){
     /* outputTree->Branch("fwdJetMass"		, &_fwdJetMass			); */
 
     if (!isSystematicRun){
-	/* outputTree->Branch("jetCMVA"		, &_jetCMVA			); */
-	outputTree->Branch("jetCSVV2"		, &_jetCSVV2			);
-	outputTree->Branch("jetDeepB"		, &_jetDeepB			);
-	outputTree->Branch("jetDeepC"		, &_jetDeepC			);
-	outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		);
+      /* outputTree->Branch("jetCMVA"		, &_jetCMVA			); */
+      outputTree->Branch("jetCSVV2"		, &_jetCSVV2			);
+      outputTree->Branch("jetDeepB"		, &_jetDeepB			);
+      outputTree->Branch("jetDeepC"		, &_jetDeepC			);
+      outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		);
     }
 	
     if (!tree->isData_ && !isSystematicRun){
@@ -711,6 +715,7 @@ void makeRecoKinTuple::InitVariables()
     _elePhi.clear();
     _eleSCEta.clear();
     _elePFRelIso.clear();
+    _eleCharge.clear();
 
     _nMu			= -9999;
     _nMuLoose			= -9999;
@@ -719,7 +724,8 @@ void makeRecoKinTuple::InitVariables()
     _muPhi.clear();
     _muPFRelIso.clear();
     _muRoccoR.clear();
-
+    _muCharge.clear();
+    
     _nJet			= -9999;  
     _nBJet			= -9999;  
     _jetPt.clear();

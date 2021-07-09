@@ -577,7 +577,9 @@ class PerformKinFit : public TSelector {
   Float_t	_eleEffWeight_Trig_Do = 0 ;
 
   Float_t	_evtWeight = 0 ;
+  Float_t	_sampleWeight = 0 ;
   Float_t	_lumiWeight = 0 ;
+
   Int_t		_nVtx = 0 ;
   Int_t		_nGoodVtx = 0 ;
 
@@ -652,6 +654,7 @@ class PerformKinFit : public TSelector {
   std::vector<float>	 *_elePhi = 0 ;
   std::vector<float>	 *_eleSCEta = 0 ;
   std::vector<float>	 *_elePFRelIso = 0 ;
+  std::vector<float>	 *_eleCharge = 0 ;
   
   Int_t			 _nMu = 0 ;
   Int_t			 _nMuLoose = 0 ;
@@ -659,7 +662,8 @@ class PerformKinFit : public TSelector {
   std::vector<float>	 *_muEta = 0 ;
   std::vector<float>	 *_muPhi = 0 ;
   std::vector<float>	 *_muPFRelIso = 0 ;
-	
+  std::vector<float>	 *_muCharge = 0 ;  
+
   Int_t			 _nJet = 0 ;
   Int_t			 _nBJet = 0 ;
   std::vector<float>	 *_jetPt = 0 ;
@@ -783,6 +787,7 @@ class PerformKinFit : public TSelector {
    TBranch	*br_eleEffWeight_Trig_Do	= 0 ;
    
    TBranch	*br_evtWeight			= 0 ;
+   TBranch	*br_sampleWeight       		= 0 ;
    TBranch	*br_lumiWeight			= 0 ;
    /* TBranch   *br_evtWeightAlt		= 0 ; */
    /* TBranch   *br_lumiWeightAlt		= 0 ; */
@@ -860,6 +865,7 @@ class PerformKinFit : public TSelector {
    TBranch   *br_elePhi				= 0 ;
    TBranch   *br_eleSCEta			= 0 ;
    TBranch   *br_elePFRelIso			= 0 ;
+   TBranch   *br_eleCharge			= 0 ;
 
    TBranch   *br_nMu				= 0 ;
    TBranch   *br_nMuLoose			= 0 ;
@@ -867,6 +873,7 @@ class PerformKinFit : public TSelector {
    TBranch   *br_muEta				= 0 ;
    TBranch   *br_muPhi				= 0 ;
    TBranch   *br_muPFRelIso			= 0 ;
+   TBranch   *br_muCharge			= 0 ;
    
    TBranch   *br_nJet				= 0 ;
    TBranch   *br_nBJet				= 0 ;
@@ -1358,6 +1365,8 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("FSRweight_Do"		, &_FSRweight_Do		, &br_FSRweight_Do		);
 
    fChain->SetBranchAddress("evtWeight"			, &_evtWeight			, &br_evtWeight			);      
+   fChain->SetBranchAddress("sampleWeight"		, &_sampleWeight		, &br_sampleWeight             	);      
+   fChain->SetBranchAddress("lumiWeight"		, &_lumiWeight			, &br_lumiWeight       		);      
 
    fChain->SetBranchAddress("nVtx"			, &_nVtx			, &br_nVtx			); 
    fChain->SetBranchAddress("nGoodVtx"			, &_nGoodVtx			, &br_nGoodVtx			); 
@@ -1411,6 +1420,7 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("elePhi"			, &_elePhi			, &br_elePhi			); 
    fChain->SetBranchAddress("eleSCEta"			, &_eleSCEta			, &br_eleSCEta			); 
    fChain->SetBranchAddress("elePFRelIso"		, &_elePFRelIso			, &br_elePFRelIso		); 
+   fChain->SetBranchAddress("eleCharge" 		, &_eleCharge			, &br_eleCharge		); 
 
    fChain->SetBranchAddress("nMu"			, &_nMu				, &br_nMu			);
    fChain->SetBranchAddress("nMuLoose"			, &_nMuLoose		       	, &br_nMuLoose			);  
@@ -1418,7 +1428,8 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("muEta"			, &_muEta			, &br_muEta			);
    fChain->SetBranchAddress("muPhi"			, &_muPhi			, &br_muPhi			);
    fChain->SetBranchAddress("muPFRelIso"		, &_muPFRelIso			, &br_muPFRelIso		);
-    
+   fChain->SetBranchAddress("muCharge" 	        	, &_muCharge			, &br_muCharge		); 
+
    fChain->SetBranchAddress("nJet"			, &_nJet			, &br_nJet			); 
    /* fChain->SetBranchAddress("nfwdJet"			, &_nfwdJet			, &br_nfwdJet			); */
    fChain->SetBranchAddress("nBJet"			, &_nBJet			, &br_nBJet			); 
@@ -1427,6 +1438,7 @@ void PerformKinFit::Init(TTree *tree)
    fChain->SetBranchAddress("jetPhi"			, &_jetPhi			, &br_jetPhi			); 
    fChain->SetBranchAddress("jetMass"			, &_jetMass			, &br_jetMass			);
 
+   fChain->SetBranchAddress("jetCSVV2"			, &_jetCSVV2			, &br_jetCSVV2			);
    fChain->SetBranchAddress("jetDeepB"			, &_jetDeepB			, &br_jetDeepB			);
    fChain->SetBranchAddress("jetDeepC"			, &_jetDeepC			, &br_jetDeepC			);
    fChain->SetBranchAddress("jetGenJetIdx"		, &_jetGenJetIdx		, &br_jetGenJetIdx		);
@@ -1534,6 +1546,8 @@ void PerformKinFit::InitOutBranches(){
 
     outputTree->Branch("evtWeight"		, &_evtWeight			);      
     outputTree->Branch("lumiWeight"		, &_lumiWeight			);      
+    outputTree->Branch("sampleWeight"    	, &_sampleWeight       		);      
+
     outputTree->Branch("nVtx"			, &_nVtx			); 
     outputTree->Branch("nGoodVtx"		, &_nGoodVtx			); 
     //if (!isSystematicRun){
@@ -1609,13 +1623,15 @@ void PerformKinFit::InitOutBranches(){
     outputTree->Branch("elePhi"			, &_elePhi			); 
     outputTree->Branch("eleSCEta"		, &_eleSCEta			); 
     outputTree->Branch("elePFRelIso"		, &_elePFRelIso			); 
-
+    outputTree->Branch("eleCharge"		, &_eleCharge			);
+    
     outputTree->Branch("nMu"			, &_nMu				); 
     outputTree->Branch("nMuLoose"		, &_nMuLoose			); 
     outputTree->Branch("muPt"			, &_muPt			); 
     outputTree->Branch("muEta"			, &_muEta			);
     outputTree->Branch("muPhi"			, &_muPhi			);
     outputTree->Branch("muPFRelIso"		, &_muPFRelIso			);
+    outputTree->Branch("muCharge"		, &_muCharge			);
     
     outputTree->Branch("nJet"			, &_nJet			);
     outputTree->Branch("nBJet"			, &_nBJet			);
@@ -1631,8 +1647,8 @@ void PerformKinFit::InitOutBranches(){
     /* outputTree->Branch("fwdJetMass"		, &_fwdJetMass			); */
     /* //if (!isSystematicRun){ */
     /* 	/\* outputTree->Branch("jetCMVA"		, &_jetCMVA			); *\/ */
-    /* 	/\* outputTree->Branch("jetCSVV2"	, &_jetCSVV2			); *\/ */
-    /* 	outputTree->Branch("jetDeepB"		, &_jetDeepB			); */
+    outputTree->Branch("jetCSVV2"       	, &_jetCSVV2			);
+    outputTree->Branch("jetDeepB"		, &_jetDeepB			);
     /* 	outputTree->Branch("jetDeepC"		, &_jetDeepC			); */
     /* 	outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		); */
     /* //} */
@@ -1678,12 +1694,22 @@ Bool_t PerformKinFit::Notify()
   
   TString fname(fChain->GetCurrentFile()->GetName());
   if(fname.Contains("Dilepton"))
-    _kFType = 1;
+    _kFType = 11;
   else if(fname.Contains("Hadronic"))
-    _kFType = 2;
-  if(fname.Contains("Semilept"))
-    _kFType = 3;
-
+    _kFType = 12;
+  else if(fname.Contains("Semilept"))
+    _kFType = 13;
+  else if(fname.Contains("ST_s_channel"))
+    _kFType = 21;
+  else if(fname.Contains("ST_t_channel"))
+    _kFType = 22;
+  else if(fname.Contains("ST_tbar_channel"))
+    _kFType = 23;
+  else if(fname.Contains("ST_tW_channel"))
+    _kFType = 24;
+  else if(fname.Contains("ST_tbarW_channel"))
+    _kFType = 25;
+  
   return kTRUE;
 }
 

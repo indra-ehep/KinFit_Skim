@@ -146,8 +146,8 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     
     //comment out following two line when no filter is needed
     if(applyMetFilter){
-	Pass_trigger_mu = Pass_trigger_mu && filters ;
-	Pass_trigger_ele = Pass_trigger_ele && filters ;
+      Pass_trigger_mu = Pass_trigger_mu && filters ;
+      Pass_trigger_ele = Pass_trigger_ele && filters ;
     }
 
     string run_lumi_event = to_string(tree->run_)+","+to_string(tree->lumis_)+","+to_string(tree->event_)+"\n";

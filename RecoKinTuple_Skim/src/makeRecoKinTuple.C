@@ -196,7 +196,7 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
   }
 
   selector->looseJetID = false;
-    
+  
   selector->useDeepCSVbTag = true;
   
   if (isMC){
@@ -579,8 +579,14 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
     evtPick->process_event(tree, selector, _PUweight);
     
     //if( selector->bJets.size() < 2 || selector->Jets.size() < 4) continue;
-    saveAllEntries = true;
-    if ( evtPick->passPresel_ele || evtPick->passPresel_mu || saveAllEntries) {
+    //saveAllEntries = true;
+    //if ( evtPick->passPresel_ele || evtPick->passPresel_mu || saveAllEntries) {
+    if ( 
+	(selector->isPVGood and evtPick->passTrigger_ele and selector->Electrons.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 0 and selector->MuonsLoose.size() == 0)
+	 or 
+	(selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0)
+	 or 
+	 saveAllEntries) {
       if (saveCutflow && !(evtPick->passAll_ele || evtPick->passAll_mu) ) continue;
       
       InitVariables();
@@ -913,9 +919,9 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
     _elePt.push_back(tree->elePt_[eleInd]);
     _elePhi.push_back(tree->elePhi_[eleInd]);
     _eleSCEta.push_back(tree->eleEta_[eleInd] + tree->eleDeltaEtaSC_[eleInd]);
-    
     _elePFRelIso.push_back(tree->elePFRelIso_[eleInd]);
-    
+    _eleCharge.push_back(tree->eleCharge_[eleInd]);
+
     lepVector.SetPtEtaPhiM(tree->elePt_[eleInd],
 			   tree->eleEta_[eleInd] + tree->eleDeltaEtaSC_[eleInd],
 			   tree->elePhi_[eleInd],
@@ -931,7 +937,8 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
     _muEta.push_back(tree->muEta_[muInd]);
     _muPFRelIso.push_back(tree->muPFRelIso_[muInd]);
     _muRoccoR.push_back(tree->muRoccoR_[muInd]);
-    
+    _muCharge.push_back(tree->muCharge_[muInd]);
+
     lepVector.SetPtEtaPhiM(tree->muPt_[muInd],
 			   tree->muEta_[muInd],
 			   tree->muPhi_[muInd],
@@ -1103,7 +1110,7 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   // kinFit.SetMET(_nu_px, _nu_py, _nu_pz, _nu_pz_other);
   // kinFit.SetMET(_nu_px, _nu_py, _nu_pz, _nu_pz_other);
   // if ( kinFit.Fit() ){
-    
+  
   //   leptonAF		= kinFit.GetLepton();
   //   neutrinoAF		= kinFit.GetNeutrino();
   //   bjlepAF		= kinFit.GetBLepton();
