@@ -794,7 +794,21 @@ Bool_t PerformKinFit::Process(Long64_t entry)
       Chi2ToMass.leptonAF_tlep	 = kinFit.GetLepton_tlep(i);
       Chi2ToMass.neutrinoAF_tlep = kinFit.GetNeutrino_tlep(i);
       Chi2ToMass.bjlepAF_tlep	 = kinFit.GetBLepton_tlep(i);
-      
+
+      Chi2ToMass.reslepEta	 = kinFit.GetResLepEta(i);
+      Chi2ToMass.reslepPhi	 = kinFit.GetResLepPhi(i);
+      Chi2ToMass.resneuEta	 = kinFit.GetResNeuEta(i);
+      Chi2ToMass.resneuPhi	 = kinFit.GetResNeuPhi(i);
+      Chi2ToMass.resbjlepEta	 = kinFit.GetResBjLepEta(i);
+      Chi2ToMass.resbjlepPhi	 = kinFit.GetResBjLepPhi(i);
+      Chi2ToMass.resbjhadEta	 = kinFit.GetResBjHadEta(i);
+      Chi2ToMass.resbjhadPhi	 = kinFit.GetResBjHadPhi(i);
+      Chi2ToMass.rescjhadEta	 = kinFit.GetResCjHadEta(i);
+      Chi2ToMass.rescjhadPhi	 = kinFit.GetResCjHadPhi(i);
+      Chi2ToMass.ressjhadEta	 = kinFit.GetResSjHadEta(i);
+      Chi2ToMass.ressjhadPhi	 = kinFit.GetResSjHadPhi(i);
+
+
       Chi2ToMass_arr.push_back(Chi2ToMass);
       
       if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2)
@@ -934,7 +948,21 @@ Bool_t PerformKinFit::Process(Long64_t entry)
     	_jetShadEta		= x.sjhadAF.Eta()  ;
     	_jetShadPhi		= x.sjhadAF.Phi()  ;
     	_jetShadEnergy		= x.sjhadAF.E()  ;
-	
+
+	_reslepEta		= x.reslepEta ;   
+	_reslepPhi		= x.reslepPhi ;   
+	_resneuEta		= x.resneuEta ;   
+	_resneuPhi		= x.resneuPhi ;
+	_resbjlepEta		= x.resbjlepEta ;
+	_resbjlepPhi		= x.resbjlepPhi ; 
+	_resbjhadEta		= x.resbjhadEta ; 
+	_resbjhadPhi		= x.resbjhadPhi ;
+	_rescjhadEta		= x.rescjhadEta ; 
+	_rescjhadPhi		= x.rescjhadPhi ; 
+	_ressjhadEta		= x.ressjhadEta ; 
+	_ressjhadPhi		= x.ressjhadPhi ; 
+
+
     	//============================================
 	
     	//mass histo

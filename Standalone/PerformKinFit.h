@@ -44,6 +44,7 @@ typedef struct  {
   TLorentzVector leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;    
   TLorentzVector leptonAF_tlep, neutrinoAF_tlep, bjlepAF_tlep; 
   TLorentzVector bjhadAF_thad,  cjhadAF_thad,    sjhadAF_thad;  
+  double  reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
 } Chi2Array;
 
 
@@ -230,7 +231,7 @@ class KinFit{
     double		GetChi2(unsigned int i)		{ return Chi2.at(i); }
     double		GetChi2_tlep(unsigned int i)	{ return Chi2_tlep.at(i); }
     double		GetChi2_thad(unsigned int i)	{ return Chi2_thad.at(i); }
-
+    
     double              GetResLepEta(unsigned int i)    { return ReslepEta.at(i);}
     double              GetResLepPhi(unsigned int i)    { return ReslepPhi.at(i);}
     double              GetResNeuEta(unsigned int i)    { return ResneuEta.at(i);}
@@ -701,6 +702,10 @@ class PerformKinFit : public TSelector {
   std::vector<int>	 *_genStatusFlag = 0 ;
   std::vector<int>	 *_genPDGID = 0 ;
   std::vector<int>	 *_genMomIdx = 0 ;
+  
+  double  _reslepEta = 0,   _reslepPhi = 0,   _resneuEta = 0,   _resneuPhi = 0, 
+          _resbjlepEta = 0, _resbjlepPhi = 0, _resbjhadEta = 0, _resbjhadPhi = 0, 
+          _rescjhadEta = 0, _rescjhadPhi = 0, _ressjhadEta = 0, _ressjhadPhi = 0; 
 
   double		 _M3 = 0 ;
   double		 _HT = 0 ;
@@ -1616,6 +1621,18 @@ void PerformKinFit::InitOutBranches(){
     outputTree->Branch("jetShadEtaUM"		, &_jetShadEtaUM       		);
     outputTree->Branch("jetShadPhiUM"		, &_jetShadPhiUM       		);
     outputTree->Branch("jetShadEnergyUM"	, &_jetShadEnergyUM		);
+    outputTree->Branch("reslepEta"		, &_reslepEta			);
+    outputTree->Branch("reslepPhi"		, &_reslepPhi			);
+    outputTree->Branch("resneuEta"		, &_resneuEta			);
+    outputTree->Branch("resneuPhi"		, &_resneuPhi			);
+    outputTree->Branch("resbjlepEta"		, &_resbjlepEta			);
+    outputTree->Branch("resbjlepPhi"		, &_resbjlepPhi			);
+    outputTree->Branch("resbjhadEta"		, &_resbjhadEta			);
+    outputTree->Branch("resbjhadPhi"		, &_resbjhadPhi			);
+    outputTree->Branch("rescjhadEta"		, &_rescjhadEta			);
+    outputTree->Branch("rescjhadPhi"		, &_rescjhadPhi			);
+    outputTree->Branch("ressjhadEta"		, &_ressjhadEta			);
+    outputTree->Branch("ressjhadPhi"		, &_ressjhadPhi			);
 
     outputTree->Branch("nEle"			, &_nEle			); 
     outputTree->Branch("nEleLoose"		, &_nEleLoose			); 
