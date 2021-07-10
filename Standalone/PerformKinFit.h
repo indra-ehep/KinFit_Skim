@@ -38,7 +38,7 @@ class  TH2F;
 typedef struct  {
   double chi2, mass, mW, A, B;
   int ndf, nb_iter;
-  //int bjlep_id, bjhad_id, cjhad_id, sjhad_id;
+  unsigned int bjlep_id, bjhad_id, cjhad_id, sjhad_id;
   double chi2_thad, chi2_tlep ;
   TLorentzVector leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;  
   TLorentzVector leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;    
@@ -307,8 +307,9 @@ class KinFit{
     std::vector<double>		ReslepEta,    ReslepPhi,    ResneuEta,    ResneuPhi;
     std::vector<double>		ResbjlepEta,  ResbjlepPhi,  ResbjhadEta,  ResbjhadPhi;
     std::vector<double>		RescjhadEta,  RescjhadPhi,  RessjhadEta,  RessjhadPhi;
-    bool		    isComplex;
-
+    bool		        isComplex;
+    //double                      bjlepbtag, bjhadbtag, cjhadbtag, sjhadbtag; 
+    
 };
 
 
@@ -706,6 +707,8 @@ class PerformKinFit : public TSelector {
   double  _reslepEta = 0,   _reslepPhi = 0,   _resneuEta = 0,   _resneuPhi = 0, 
           _resbjlepEta = 0, _resbjlepPhi = 0, _resbjhadEta = 0, _resbjhadPhi = 0, 
           _rescjhadEta = 0, _rescjhadPhi = 0, _ressjhadEta = 0, _ressjhadPhi = 0; 
+
+  double  _bjlepDeepCSV = 0, _bjhadDeepCSV = 0, _cjhadDeepCSV = 0, _sjhadDeepCSV = 0;
 
   double		 _M3 = 0 ;
   double		 _HT = 0 ;
@@ -1634,6 +1637,12 @@ void PerformKinFit::InitOutBranches(){
     outputTree->Branch("ressjhadEta"		, &_ressjhadEta			);
     outputTree->Branch("ressjhadPhi"		, &_ressjhadPhi			);
 
+    outputTree->Branch("bjlepDeepCSV"		, &_bjlepDeepCSV       		);
+    outputTree->Branch("bjhadDeepCSV"		, &_bjhadDeepCSV       		);
+    outputTree->Branch("cjhadDeepCSV"		, &_cjhadDeepCSV       		);
+    outputTree->Branch("sjhadDeepCSV"		, &_sjhadDeepCSV       		);
+
+
     outputTree->Branch("nEle"			, &_nEle			); 
     outputTree->Branch("nEleLoose"		, &_nEleLoose			); 
     outputTree->Branch("elePt"			, &_elePt			);
@@ -1664,8 +1673,8 @@ void PerformKinFit::InitOutBranches(){
     /* outputTree->Branch("fwdJetMass"		, &_fwdJetMass			); */
     /* //if (!isSystematicRun){ */
     /* 	/\* outputTree->Branch("jetCMVA"		, &_jetCMVA			); *\/ */
-    outputTree->Branch("jetCSVV2"       	, &_jetCSVV2			);
-    outputTree->Branch("jetDeepB"		, &_jetDeepB			);
+    /* outputTree->Branch("jetCSVV2"       	, &_jetCSVV2			); */
+    /* outputTree->Branch("jetDeepB"		, &_jetDeepB			); */
     /* 	outputTree->Branch("jetDeepC"		, &_jetDeepC			); */
     /* 	outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		); */
     /* //} */
@@ -2597,7 +2606,9 @@ bool KinFit::Fit(){
 	    bjhad = bjetlist.at(ib2);
 	    cjhad = ljetlist.at(ij1);
 	    sjhad = ljetlist.at(ij2);
-	    
+
+	    //bjlepbtag = btag.at(list2jet[ib1]);// bjhadbtag, cjhadbtag, sjhadbtag; 
+
 	    /* cout<<"loop " << loop++ << endl; */
 	    /* bjlep.Print(); */
 	    /* bjhad.Print(); */

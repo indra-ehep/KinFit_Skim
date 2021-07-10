@@ -767,48 +767,52 @@ Bool_t PerformKinFit::Process(Long64_t entry)
 
       hNbiter->Fill(float(kinFit.GetNumberOfIter(i)));
       
-      Chi2ToMass.chi2		 = kinFit.GetChi2(i);
-      Chi2ToMass.mass		 = mjjkF;
-      Chi2ToMass.mW		 = (leptonAF + neutrinoAF).M();
-      Chi2ToMass.A		 = A;
-      Chi2ToMass.B		 = B;
-      Chi2ToMass.ndf		 = kinFit.GetNDF(i);
-      Chi2ToMass.nb_iter	 = kinFit.GetNumberOfIter(i);
-      Chi2ToMass.chi2_thad	 = kinFit.GetChi2_thad(i);
-      Chi2ToMass.chi2_tlep	 = kinFit.GetChi2_tlep(i);
-      Chi2ToMass.leptonAF	 = leptonAF;
-      Chi2ToMass.neutrinoAF	 = neutrinoAF;
-      Chi2ToMass.bjlepAF	 = bjlepAF; 
-      Chi2ToMass.bjhadAF	 = bjhadAF;
-      Chi2ToMass.cjhadAF	 = cjhadAF;
-      Chi2ToMass.sjhadAF	 = sjhadAF;
-      Chi2ToMass.leptonBF	 = leptonBF;
-      Chi2ToMass.neutrinoBF	 = neutrinoBF;
-      Chi2ToMass.bjlepBF	 = bjlepBF; 
-      Chi2ToMass.bjhadBF	 = bjhadBF;
-      Chi2ToMass.cjhadBF	 = cjhadBF;
-      Chi2ToMass.sjhadBF	 = sjhadBF;
-      Chi2ToMass.bjhadAF_thad	 = kinFit.GetBHadron_thad(i);
-      Chi2ToMass.cjhadAF_thad	 = kinFit.GetCHadron_thad(i);    
-      Chi2ToMass.sjhadAF_thad	 = kinFit.GetSHadron_thad(i);
-      Chi2ToMass.leptonAF_tlep	 = kinFit.GetLepton_tlep(i);
-      Chi2ToMass.neutrinoAF_tlep = kinFit.GetNeutrino_tlep(i);
-      Chi2ToMass.bjlepAF_tlep	 = kinFit.GetBLepton_tlep(i);
+      Chi2ToMass.chi2			= kinFit.GetChi2(i);
+      Chi2ToMass.mass			= mjjkF;
+      Chi2ToMass.mW			= (leptonAF + neutrinoAF).M();
+      Chi2ToMass.A			= A;
+      Chi2ToMass.B			= B;
+      Chi2ToMass.ndf			= kinFit.GetNDF(i);
+      Chi2ToMass.nb_iter		= kinFit.GetNumberOfIter(i);
+      Chi2ToMass.chi2_thad		= kinFit.GetChi2_thad(i);
+      Chi2ToMass.chi2_tlep		= kinFit.GetChi2_tlep(i);
+      Chi2ToMass.leptonAF		= leptonAF;
+      Chi2ToMass.neutrinoAF		= neutrinoAF;
+      Chi2ToMass.bjlepAF		= bjlepAF; 
+      Chi2ToMass.bjhadAF		= bjhadAF;
+      Chi2ToMass.cjhadAF		= cjhadAF;
+      Chi2ToMass.sjhadAF		= sjhadAF;
+      Chi2ToMass.leptonBF		= leptonBF;
+      Chi2ToMass.neutrinoBF		= neutrinoBF;
+      Chi2ToMass.bjlepBF		= bjlepBF; 
+      Chi2ToMass.bjhadBF		= bjhadBF;
+      Chi2ToMass.cjhadBF		= cjhadBF;
+      Chi2ToMass.sjhadBF		= sjhadBF;
+      Chi2ToMass.bjhadAF_thad		= kinFit.GetBHadron_thad(i);
+      Chi2ToMass.cjhadAF_thad		= kinFit.GetCHadron_thad(i);    
+      Chi2ToMass.sjhadAF_thad		= kinFit.GetSHadron_thad(i);
+      Chi2ToMass.leptonAF_tlep		= kinFit.GetLepton_tlep(i);
+      Chi2ToMass.neutrinoAF_tlep	= kinFit.GetNeutrino_tlep(i);
+      Chi2ToMass.bjlepAF_tlep		= kinFit.GetBLepton_tlep(i);
 
-      Chi2ToMass.reslepEta	 = kinFit.GetResLepEta(i);
-      Chi2ToMass.reslepPhi	 = kinFit.GetResLepPhi(i);
-      Chi2ToMass.resneuEta	 = kinFit.GetResNeuEta(i);
-      Chi2ToMass.resneuPhi	 = kinFit.GetResNeuPhi(i);
-      Chi2ToMass.resbjlepEta	 = kinFit.GetResBjLepEta(i);
-      Chi2ToMass.resbjlepPhi	 = kinFit.GetResBjLepPhi(i);
-      Chi2ToMass.resbjhadEta	 = kinFit.GetResBjHadEta(i);
-      Chi2ToMass.resbjhadPhi	 = kinFit.GetResBjHadPhi(i);
-      Chi2ToMass.rescjhadEta	 = kinFit.GetResCjHadEta(i);
-      Chi2ToMass.rescjhadPhi	 = kinFit.GetResCjHadPhi(i);
-      Chi2ToMass.ressjhadEta	 = kinFit.GetResSjHadEta(i);
-      Chi2ToMass.ressjhadPhi	 = kinFit.GetResSjHadPhi(i);
-
-
+      Chi2ToMass.reslepEta		= kinFit.GetResLepEta(i);
+      Chi2ToMass.reslepPhi		= kinFit.GetResLepPhi(i);
+      Chi2ToMass.resneuEta		= kinFit.GetResNeuEta(i);
+      Chi2ToMass.resneuPhi		= kinFit.GetResNeuPhi(i);
+      Chi2ToMass.resbjlepEta		= kinFit.GetResBjLepEta(i);
+      Chi2ToMass.resbjlepPhi		= kinFit.GetResBjLepPhi(i);
+      Chi2ToMass.resbjhadEta		= kinFit.GetResBjHadEta(i);
+      Chi2ToMass.resbjhadPhi		= kinFit.GetResBjHadPhi(i);
+      Chi2ToMass.rescjhadEta		= kinFit.GetResCjHadEta(i);
+      Chi2ToMass.rescjhadPhi		= kinFit.GetResCjHadPhi(i);
+      Chi2ToMass.ressjhadEta		= kinFit.GetResSjHadEta(i);
+      Chi2ToMass.ressjhadPhi		= kinFit.GetResSjHadPhi(i);
+      
+      Chi2ToMass.bjlep_id		= kinFit.GetJetID_BLep(i); 
+      Chi2ToMass.bjhad_id		= kinFit.GetJetID_BHad(i); 
+      Chi2ToMass.cjhad_id		= kinFit.GetJetID_CHad(i);
+      Chi2ToMass.sjhad_id		= kinFit.GetJetID_SHad(i);
+      
       Chi2ToMass_arr.push_back(Chi2ToMass);
       
       if(Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2)
@@ -961,8 +965,11 @@ Bool_t PerformKinFit::Process(Long64_t entry)
 	_rescjhadPhi		= x.rescjhadPhi ; 
 	_ressjhadEta		= x.ressjhadEta ; 
 	_ressjhadPhi		= x.ressjhadPhi ; 
-
-
+	_bjlepDeepCSV		= _jetDeepB->at(x.bjlep_id) ;
+	_bjhadDeepCSV		= _jetDeepB->at(x.bjhad_id) ; 
+	_cjhadDeepCSV		= _jetDeepB->at(x.cjhad_id) ;  
+	_sjhadDeepCSV		= _jetDeepB->at(x.sjhad_id) ;
+	
     	//============================================
 	
     	//mass histo
