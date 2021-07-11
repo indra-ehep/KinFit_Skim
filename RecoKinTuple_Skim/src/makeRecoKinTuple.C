@@ -1024,6 +1024,7 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
     jetVector.SetPtEtaPhiM(tree->jetPt_[jetInd], tree->jetEta_[jetInd], tree->jetPhi_[jetInd], tree->jetMass_[jetInd]);
 	
     _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
+    _jetHadFlvr.push_back(tree->jetHadFlvr_[jetInd]);
 
     double resolution = selector->jet_resolution.at(i_jet);
 
