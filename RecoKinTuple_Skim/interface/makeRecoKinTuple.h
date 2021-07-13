@@ -274,6 +274,7 @@ class makeRecoKinTuple {
   std::vector<float>	 _jetDeepC;
 
   std::vector<Int_t>	 _jetHadFlvr;
+  std::vector<Int_t>	 _jetPartFlvr;
   std::vector<Int_t>	 _jetGenJetIdx;
 
   /* std::vector<int>    _jetPartonID; */
@@ -546,6 +547,7 @@ void makeRecoKinTuple::InitBranches(){
       outputTree->Branch("jetDeepB"		, &_jetDeepB			);
       outputTree->Branch("jetDeepC"		, &_jetDeepC			);
       outputTree->Branch("jetHadFlvr"		, &_jetHadFlvr			);
+      outputTree->Branch("jetPartFlvr"		, &_jetPartFlvr			);
       outputTree->Branch("jetGenJetIdx"		, &_jetGenJetIdx		);
     }
 	
@@ -747,6 +749,7 @@ void makeRecoKinTuple::InitVariables()
     _jetDeepC.clear();
 
     _jetHadFlvr.clear();
+    _jetPartFlvr.clear();
     _jetGenJetIdx.clear();    
 
     _nGenJet			= -9999;

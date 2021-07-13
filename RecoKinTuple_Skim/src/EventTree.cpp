@@ -265,6 +265,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
   chain->SetBranchAddress("Jet_neEmEF", &jetneEmEF_);
 
   if (!isData_){
+    chain->SetBranchStatus("Jet_partonFlavour",1);
+    chain->SetBranchAddress("Jet_partonFlavour", &jetPartFlvr_);
+
     chain->SetBranchStatus("Jet_hadronFlavour",1);
     chain->SetBranchAddress("Jet_hadronFlavour", &jetHadFlvr_);
 	

@@ -524,11 +524,11 @@ makeRecoKinTuple::makeRecoKinTuple(int ac, char** av)
 
   
   for(Long64_t entry=entryStart; entry<entryStop; entry++){
-
+    
     // if(entry%100 == 0)
     //   cout<<"Processing event : " << entry <<" of total " << entryStop  << endl;
 
-    //  if(entry >= 1e4){break;}
+    // if(entry >= 1e4){break;}
 
     if(entry%dumpFreq == 0){
       // duration =  ( clock() - startClock ) / (double) CLOCKS_PER_SEC;
@@ -1025,6 +1025,7 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
 	
     _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
     _jetHadFlvr.push_back(tree->jetHadFlvr_[jetInd]);
+    _jetPartFlvr.push_back(tree->jetPartFlvr_[jetInd]);
 
     double resolution = selector->jet_resolution.at(i_jet);
 
