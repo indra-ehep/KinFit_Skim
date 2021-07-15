@@ -61,8 +61,8 @@ Selector::Selector(){
     mu_RelIso_loose = 0.25;
 	
     mu_Iso_invert = false;
-    smearJetPt = true; // Deafult
-    //smearJetPt = false;
+    //smearJetPt = true; // Deafult
+    smearJetPt = false;
     smearEle = true;
     scaleEle = true;
     
@@ -77,6 +77,12 @@ Selector::Selector(){
     jet_Pt_cut_miniAOD = 25.; 
     jet_Eta_cut_miniAOD = 2.4;
     veto_lep_jet_dR_miniAOD = 0.4;
+
+    //met defaults
+    METPt  = -9999;
+    METPhi  = -9999;
+
+
 }
 
 void Selector::init_JER(std::string inputPrefix){
@@ -115,6 +121,9 @@ void Selector::process_objects(EventTree* inp_tree){
     //cout << "before selector jets" << endl;
     filter_jets();
 
+    filter_jetsNoCorr();
+    
+    filter_mets();
 }
 
 void Selector::clear_vectors(){
@@ -131,12 +140,13 @@ void Selector::clear_vectors(){
     bJets.clear();
 	
     MuRelIso_corr.clear();
-    JetsJERPt.clear();
-    JetsPreSelPt.clear();;
-    JetsCleaningPt.clear();;
-    JetsPreSel.clear();;
-    JetsCleaning.clear();;
-    
+    // JetsJERPt.clear();
+    // JetsPreSelPt.clear();;
+    // JetsCleaningPt.clear();;
+    // JetsPreSel.clear();;
+    // JetsCleaning.clear();;
+    JetsPtSmeared.clear();
+    JetsNoCorr.clear();
 }
 
 void Selector::filter_electrons(){
@@ -426,7 +436,7 @@ void Selector::filter_jets(){
     double pt = tree->jetPt_[jetInd];
     double eta = tree->jetEta_[jetInd];
     double phi = tree->jetPhi_[jetInd];
-    double smearpt = tree->jetPt_[jetInd];
+    double smearedpt = tree->jetPt_[jetInd];
     
     //if(pt < 17.0 or abs(eta) > 4.0) continue;
     
@@ -452,8 +462,8 @@ void Selector::filter_jets(){
       if (JERsystLevel==0) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::DOWN);
       if (JERsystLevel==2) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::UP);
 
-      double jetSmear = 1;
-
+      double jetSmear = 1.;
+      
       int genIdx = tree->jetGenJetIdx_[jetInd];
 
       if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
@@ -491,13 +501,13 @@ void Selector::filter_jets(){
       // double modE  = jetSmear*tJET.E(); 
       // tJET.SetPtEtaPhiE(modPx, modPy, modPz, modE);
       
-      smearpt = pt*jetSmear;
-      JetsJERPt.push_back(smearpt);
+      smearedpt = pt*jetSmear;
+      //JetsJERPt.push_back(smearedpt);
       
       if (smearJetPt){
 	// Default
-	pt = pt*jetSmear;
-	tree->jetPt_[jetInd] = pt;
+	// pt = pt*jetSmear;
+	// tree->jetPt_[jetInd] = pt;
 	
 	// pt = tJET.Pt();
 	// eta = tJET.Eta();
@@ -555,11 +565,11 @@ void Selector::filter_jets(){
     /// jetId==7 means: pass loose, tight, tightLepVeto ID. 
     ////------------------------------------------------------------------
     
-    bool passMiniAOD_presel =  ((tree->jetID_[jetInd]>>0 & 1 && looseJetID_miniAOD) && pt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD) ? true : false ;
-    if(passMiniAOD_presel){
-      JetsPreSel.push_back(jetInd);
-      JetsPreSelPt.push_back(smearpt);
-    }
+    bool passMiniAOD_presel =  ((tree->jetID_[jetInd]>>0 & 1 && looseJetID_miniAOD) && smearedpt > jet_Pt_cut_miniAOD && TMath::Abs(eta) <= jet_Eta_cut_miniAOD) ;
+    // if(passMiniAOD_presel){
+    //   JetsPreSel.push_back(jetInd);
+    //   JetsPreSelPt.push_back(smearedpt);
+    // }
 
     bool passDR_lep_jet_miniAOD = true;
 	
@@ -572,10 +582,10 @@ void Selector::filter_jets(){
     for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
       if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
     }
-    if(passMiniAOD_presel && passDR_lep_jet_miniAOD){
-      JetsCleaning.push_back(jetInd);
-      JetsCleaningPt.push_back(smearpt);
-    }
+    // if(passMiniAOD_presel && passDR_lep_jet_miniAOD){
+    //   JetsCleaning.push_back(jetInd);
+    //   JetsCleaningPt.push_back(smearedpt);
+    // }
     
     if (int(tree->event_)==printEvent){
       cout << "   pt=" << pt << "  eta=" << eta << " phi=" << phi << "  jetID=" << jetID_pass << endl;
@@ -603,6 +613,7 @@ void Selector::filter_jets(){
     if( passMiniAOD_presel && passDR_lep_jet_miniAOD ){
     //if( true ){
       Jets.push_back(jetInd);
+      JetsPtSmeared.push_back(smearedpt);
       //jet_resolution.push_back(resolution);
       jet_resolution.push_back(jetSF);
       if (!useDeepCSVbTag){
@@ -623,7 +634,7 @@ void Selector::filter_jets(){
     }//presel condition
 
   }//main jet loop 
-    
+  
   // // Update the MET for JEC changes
   // if (JECsystLevel==0 || JECsystLevel==2){
   // 	tree->pfMET_ = float(tMET.Pt());
@@ -631,7 +642,165 @@ void Selector::filter_jets(){
   // }
 }
 
+void Selector::filter_jetsNoCorr(){
+  
+  //TLorentzVector tJET;
+  for(int jetInd = 0; jetInd < int(tree->nJet_); ++jetInd){
+    
+    double pt = tree->jetPt_[jetInd];
+    double eta = tree->jetEta_[jetInd];
+    double phi = tree->jetPhi_[jetInd];
+    
+    //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
+    int jetID_cutBit = 1;
+    if (year=="2016"){ jetID_cutBit = 0; }
+	
+    bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 and looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
+    
+    //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////
+    bool passDR_lep_jet = true;
+    //loop over selected electrons
+    for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+      if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    }
+    //loop over selected muons
+    for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+      if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    }
+    bool jetPresel = (pt >= jet_Pt_cut and TMath::Abs(eta) <= jet_Eta_cut and jetID_pass and passDR_lep_jet);
+    //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////
 
+    
+    //////////////////////////////////////////////// MiniAOD selection //////////////////////////////////////////////////////////
+    bool passMiniAOD_presel =  ((tree->jetID_[jetInd]>>0 & 1 and looseJetID_miniAOD) and pt > jet_Pt_cut_miniAOD and TMath::Abs(eta) <= jet_Eta_cut_miniAOD) ;    
+    bool passDR_lep_jet_miniAOD = true;
+    //loop over selected electrons
+    for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+      if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
+    }
+    //loop over selected muons
+    for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+      if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
+    }
+    //////////////////////////////////////////////// MiniAOD selection //////////////////////////////////////////////////////////
+
+    //if( jetPresel){
+    if( passMiniAOD_presel and passDR_lep_jet_miniAOD ){
+      JetsNoCorr.push_back(jetInd);
+    }//presel condition
+
+  }//main jet loop 
+    
+}
+
+// double UncertaintyComputer::metWithJESJER(const vector<MyJet> & vJ, vector<int> *j, MyMET MET, int jes, int jer, bool isData, const int & seed) 
+// { 
+//   double metX = MET.p4.px(); 
+//   double metY = MET.p4.py(); 
+//   if(!isData){
+//     std::mt19937 m_random_generator;
+//     m_random_generator = std::mt19937(seed);
+//     for(size_t i = 0; i < j->size(); i++){ 
+//       int j_ind = j->at(i); 
+//       double gen_pt = vJ[j_ind].Genp4.pt(); 
+//       double jet_pt = vJ[j_ind].p4.pt();
+//       double sigmaJER = vJ[j_ind].resolution;
+//       //apply JER uncert, scaling
+//       double delR = DeltaR(vJ[j_ind].Genp4, vJ[j_ind].p4);
+//       double rCone = 0.4;
+//       //https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h
+//       MyLorentzVector rawJet = vJ[j_ind].p4; 
+//       metX += rawJet.px(); 
+//       metY += rawJet.py(); 
+//       double SF = getJERSF(vJ[j_ind].p4.eta(), jer); 
+//       double jerF = 1.0;
+//       std::normal_distribution<> d(0, sigmaJER);
+//       double N0sigma = d(m_random_generator);
+//       //https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution
+//       if(delR<rCone/2 && abs(jet_pt -gen_pt)<3*sigmaJER*jet_pt ){
+//         jerF = max(0.0, 1.0 + (SF - 1)*(jet_pt - gen_pt)/jet_pt); 
+//       }
+//       else{
+//         jerF   = 1+ N0sigma* std::sqrt(std::max(SF*SF -1, 0.0));
+//       }
+//       metX -= jerF*rawJet.px(); 
+//       metY -= jerF*rawJet.py();
+//       //apply JES scaling
+//       double jesF = vJ[j_ind].JECUncertainty*double(jes);
+//       metX -= jesF*rawJet.px(); 
+//       metY -= jesF*rawJet.py();
+//     } 
+//   }  
+//   return sqrt(metX*metX + metY*metY); 
+// }
+
+void Selector::filter_mets(){
+  
+  TLorentzVector MET;
+  MET.SetPtEtaPhiM(tree->MET_pt_, 0., tree->MET_phi_, 0.);
+  
+  TVector3 jet, jetSmeared;
+  double metX = MET.Px(); 
+  double metY = MET.Py();
+  if (!tree->isData_){
+    for (unsigned int ijet = 0; ijet < JetsNoCorr.size(); ijet++){		
+      int jetInd = JetsNoCorr.at(ijet);
+      double pt = tree->jetPt_[jetInd];
+      double eta = tree->jetEta_[jetInd];
+      double phi = tree->jetPhi_[jetInd];
+
+      jetParam.setJetEta(tree->jetEta_[jetInd]);
+      jetParam.setJetPt(tree->jetPt_[jetInd]);
+      jetParam.setJetArea(tree->jetArea_[jetInd]);
+      jetParam.setRho(tree->rho_);
+      double resolution = jetResolution->getResolution(jetParam);
+      
+      double jetSF = 1.0;
+      if (JERsystLevel==1) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::NOMINAL);
+      if (JERsystLevel==0) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::DOWN);
+      if (JERsystLevel==2) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::UP);
+      
+      int genIdx = tree->jetGenJetIdx_[jetInd];
+      double jetSmear = 1.0 ;
+      if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
+      	double genJetPt = tree->GenJet_pt_[genIdx];
+      	jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
+      }else{
+      	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
+      }
+
+      // int genIdx = tree->jetGenJetIdx_[jetInd];
+      // if ( (genIdx<0) or (genIdx > int(tree->nGenJet_)) ) continue;
+      // bool miniAOD_SF_check = false;
+      // double genJetPt = tree->GenJet_pt_[genIdx];
+      // double genJetEta = tree->GenJet_eta_[genIdx];
+      // double genJetPhi = tree->GenJet_phi_[genIdx];
+      // if( dR(eta, phi, genJetEta, genJetPhi) < veto_lep_jet_dR_miniAOD/2. && TMath::Abs(genJetPt - pt) < 3.0*resolution*pt )
+      // 	miniAOD_SF_check = true;      
+      // if (miniAOD_SF_check)
+      // 	jetSmear = max( 0.0, 1. + (jetSF - 1.) * (pt - tree->GenJet_pt_[genIdx])/pt);
+      // else
+      // 	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
+      
+      jet.SetPtEtaPhi(pt,eta,phi);
+      jetSmeared.SetPtEtaPhi(jetSmear*pt,eta,phi);
+      
+      metX += jet.Px(); 
+      metY += jet.Py(); 
+
+      metX -= jetSmeared.Px();
+      metY -= jetSmeared.Py();
+
+    }
+  }//isMC
+  
+  MET.SetXYZM(metX, metY, 0., 0.);
+  
+  METPt  = MET.Pt();
+  METPhi = MET.Phi();
+
+  
+}
 
 
 bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){

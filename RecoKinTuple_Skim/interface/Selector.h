@@ -65,11 +65,17 @@ public:
 	
 	std::vector<double> MuRelIso_corr;
 
-	std::vector<double> JetsJERPt;
-	std::vector<double> JetsPreSelPt;
-	std::vector<double> JetsCleaningPt;
-	std::vector<int> JetsPreSel;
-	std::vector<int> JetsCleaning;
+	/* std::vector<double> JetsJERPt; */
+	/* std::vector<double> JetsPreSelPt; */
+	/* std::vector<double> JetsCleaningPt; */
+	/* std::vector<int> JetsPreSel; */
+	/* std::vector<int> JetsCleaning; */
+	std::vector<double> JetsPtSmeared;
+
+	std::vector<int> JetsNoCorr;
+
+	float METPt;
+	float METPhi;
 
         bool isPVGood;
 
@@ -142,6 +148,8 @@ private:
 	void filter_electrons();
 	void filter_muons();
 	void filter_jets();
+	void filter_jetsNoCorr();
+	void filter_mets();
 
 	/* double JER(int jetInd); */
 	

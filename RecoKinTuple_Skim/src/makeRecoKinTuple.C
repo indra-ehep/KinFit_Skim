@@ -888,9 +888,11 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   }
 
   _genMET	   = tree->GenMET_pt_;
-  _pfMET	   = tree->MET_pt_;
-  _pfMETPhi    	   = tree->MET_phi_;
-    
+  _pfMET	   = selector->METPt;
+  _pfMETPhi    	   = selector->METPhi;
+  _pfMETUM	   = tree->MET_pt_;
+  _pfMETPhiUM      = tree->MET_phi_;
+  
   _nEle		   = selector->Electrons.size();
   _nEleLoose       = selector->ElectronsLoose.size();
   _nMu		   = selector->Muons.size();
@@ -1011,7 +1013,8 @@ void makeRecoKinTuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
   for (int i_jet = 0; i_jet <_nJet; i_jet++){
 		
     int jetInd = selector->Jets.at(i_jet);
-    _jetPt.push_back(tree->jetPt_[jetInd]);
+    _jetPt.push_back(selector->JetsPtSmeared.at(i_jet));
+    _jetPtUM.push_back(tree->jetPt_[jetInd]);
     _jetEta.push_back(tree->jetEta_[jetInd]);
     _jetPhi.push_back(tree->jetPhi_[jetInd]);
     _jetMass.push_back(tree->jetMass_[jetInd]);

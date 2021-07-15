@@ -174,6 +174,8 @@ class makeRecoKinTuple {
         
   Float_t		 _pfMET;
   Float_t		 _pfMETPhi;
+  Float_t		 _pfMETUM;
+  Float_t		 _pfMETPhiUM;
   Float_t		 _nu_px;
   Float_t		 _nu_py;
   Float_t		 _nu_pz;
@@ -258,6 +260,7 @@ class makeRecoKinTuple {
   Int_t			 _nJet;
   Int_t			 _nBJet;
   std::vector<float>	 _jetPt;
+  std::vector<float>	 _jetPtUM;
   std::vector<float>	 _jetEta;
   std::vector<float>	 _jetPhi;
   std::vector<float>	 _jetMass;
@@ -468,6 +471,8 @@ void makeRecoKinTuple::InitBranches(){
     }
     outputTree->Branch("pfMET"			, &_pfMET			);
     outputTree->Branch("pfMETPhi"		, &_pfMETPhi			);
+    outputTree->Branch("pfMETUM"	       	, &_pfMETUM			);
+    outputTree->Branch("pfMETPhiUM"		, &_pfMETPhiUM			);
     outputTree->Branch("nu_px"			, &_nu_px			);
     outputTree->Branch("nu_py"			, &_nu_py			);
     outputTree->Branch("nu_pz"			, &_nu_pz			);
@@ -531,6 +536,7 @@ void makeRecoKinTuple::InitBranches(){
     outputTree->Branch("nJet"			, &_nJet			); 
     outputTree->Branch("nBJet"			, &_nBJet			); 
     outputTree->Branch("jetPt"			, &_jetPt			);
+    outputTree->Branch("jetPtUM"	       	, &_jetPtUM			);
     outputTree->Branch("jetEta"			, &_jetEta			); 
     outputTree->Branch("jetPhi"			, &_jetPhi			); 
     outputTree->Branch("jetMass"		, &_jetMass			);
@@ -669,6 +675,8 @@ void makeRecoKinTuple::InitVariables()
 
     _pfMET			= -9999;
     _pfMETPhi			= -9999;
+    _pfMETUM			= -9999;
+    _pfMETPhiUM			= -9999;
     _nu_px			= -9999;
     _nu_py			= -9999;
     _nu_pz			= -9999;
@@ -733,6 +741,7 @@ void makeRecoKinTuple::InitVariables()
     _nJet			= -9999;  
     _nBJet			= -9999;  
     _jetPt.clear();
+    _jetPtUM.clear();
     _jetEta.clear();
     _jetPhi.clear();
     _jetMass.clear();
