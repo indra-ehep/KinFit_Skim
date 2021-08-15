@@ -46,7 +46,7 @@ for year in [2016,2017,2018]:
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim"
     os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
-    jdlFile.write("X=$(step)-1\n")
+    jdlFile.write("X=$(step)\n")
     
     for sample in sampleList:
         noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,sample,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
