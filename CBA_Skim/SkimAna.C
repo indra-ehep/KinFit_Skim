@@ -126,7 +126,14 @@ Int_t SkimAna::CreateHistoArrays()
   h5MinChi2_ele = new TH1F("h5MinChi2_ele","5^{th} minimum",500,0,100.0); 
 
   savedir->cd();
+
+  fFile[1]->cd();
+  outputTree = new TTree("Kinfit_Reco","Kinfit_Reco");
+  outputTree->SetAutoSave();
+  InitOutBranches();
   
+  savedir->cd();
+
   return true;
 }
 
@@ -150,6 +157,8 @@ void SkimAna::GetArguments(){
       fMode = ((TObjString *) (tok.Tokenize("="))->At(1))->GetString();
     if(tok.BeginsWith("index"))
       fIndex = (((TObjString *) (tok.Tokenize("="))->At(1))->GetString()).Atoi();
+    if(tok.BeginsWith("total"))
+      fTotal = (((TObjString *) (tok.Tokenize("="))->At(1))->GetString()).Atoi();
     if(tok.BeginsWith("syst"))
       fSyst = ((TObjString *) (tok.Tokenize("="))->At(1))->GetString();
     if(tok.BeginsWith("aod"))
@@ -896,9 +905,10 @@ void SkimAna::SlaveBegin(TTree *tree)
   
   char *filename[3];
   
-  filename[0] = Form("%s_%02d_%d.root",fSample.Data(),fIndex,fYear) ;
+  filename[0] = Form("%s_hist_%03dof%d.root",fSample.Data(),fIndex,fTotal) ;
+  filename[1] = Form("%s_tree_%03dof%d.root",fSample.Data(),fIndex,fTotal) ;
   
-  for(int ifile=0;ifile<1;ifile++){
+  for(int ifile=0;ifile<2;ifile++){
     
     if(fMode.BeginsWith("proof")){
       fProofFile[ifile] = new TProofOutputFile(filename[ifile], "M");
@@ -915,7 +925,7 @@ void SkimAna::SlaveBegin(TTree *tree)
       Abort(amsg, kAbortProcess);
       return;
     }
-    
+        
   }//ifile loop
   
   
@@ -1441,21 +1451,67 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 
   jetVectors.clear();
   jetBtagVectors.clear();
+
+  _run = event->run_ ;
+  _event = event->event_ ;
+  _lumis = event->lumis_ ;
+  _isData = event->isData_ ;
+  _nVtx = event->nVtx_ ;
+  _nGoodVtx = event->nGoodVtx_ ;
   
+  _nJet = selector->Jets.size();
+  _nBJet = 0 ;
+  _jetPt->clear() ;
+  _jetEta->clear() ;
+  _jetPhi->clear() ;
+  _jetMass->clear() ;
+  _jetDeepB->clear() ;
+  double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
     jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);
-    jetBtagVectors.push_back( event->jetBtagDeepB_[jetInd] );
+    double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagCSVV2_[jetInd] ;
+    jetBtagVectors.push_back( jetBtag );
+    
+    _jetPt->push_back(selector->JetsPtSmeared.at(ijet));
+    _jetEta->push_back(event->jetEta_[jetInd]);
+    _jetPhi->push_back(event->jetPhi_[jetInd]);
+    _jetMass->push_back(event->jetMass_[jetInd]);
+    _jetDeepB->push_back(jetBtag);
+    if(jetBtag>btagThreshold)
+      _nBJet++;
   }
-  if(isMuon)
+  
+  _nMu = selector->Muons.size();
+  _muPt->clear();
+  _muEta->clear();
+  _muPhi->clear();
+  _muCharge->clear();
+  if(isMuon){
     lepVector.SetPtEtaPhiM( event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], 
 			    event->muEta_[selector->Muons.at(0)] , event->muPhi_[selector->Muons.at(0)], 
 			    TDatabasePDG::Instance()->GetParticle(13)->Mass());
-  if(isEle)
+    
+    _muPt->push_back(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)]);
+    _muEta->push_back(event->muEta_[selector->Muons.at(0)]);
+    _muPhi->push_back(event->muPhi_[selector->Muons.at(0)]);
+    _muCharge->push_back(event->muCharge_[selector->Muons.at(0)]);
+  }
+
+  _nEle = selector->Electrons.size();
+  _elePt->clear();
+  _eleEta->clear();
+  _elePhi->clear();
+  _eleCharge->clear();
+  if(isEle){
     lepVector.SetPtEtaPhiM( event->elePt_[selector->Electrons.at(0)], event->eleEta_[selector->Electrons.at(0)], 
 			    event->elePhi_[selector->Electrons.at(0)], TDatabasePDG::Instance()->GetParticle(11)->Mass());
-			    
+    _elePt->push_back(event->elePt_[selector->Electrons.at(0)]);
+    _eleEta->push_back(event->eleEta_[selector->Electrons.at(0)]);
+    _elePhi->push_back(event->elePhi_[selector->Electrons.at(0)]);
+    _eleCharge->push_back(event->eleCharge_[selector->Electrons.at(0)]);
+  }		    
   
 
   kinFit.SetJetVector(jetVectors);
@@ -1581,22 +1637,97 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	  
     	  //hMjjkFsc->Fill(x.mass);
 	  
-	  kinFitMinChi2 = x.chi2;
+	  kinFitMinChi2		= x.chi2;
 	  
-	  leptonAF	= x.leptonAF;
-	  neutrinoAF	= x.neutrinoAF;
+	  leptonAF		= x.leptonAF;
+	  neutrinoAF		= x.neutrinoAF;
 	  
-	  bjlepAF	= x.bjlepAF;
-	  bjhadAF	= x.bjhadAF;
+	  bjlepAF		= x.bjlepAF;
+	  bjhadAF		= x.bjhadAF;
 	  
-	  cjhadAF	= x.cjhadAF;
-	  sjhadAF	= x.sjhadAF;
+	  cjhadAF		= x.cjhadAF;
+	  sjhadAF		= x.sjhadAF;
 	  
-	  cjhadBF	= x.cjhadBF;
-	  sjhadBF	= x.sjhadBF;
+	  cjhadBF		= x.cjhadBF;
+	  sjhadBF		= x.sjhadBF;
 	  
-	  isValid	= true;
-	
+	  isValid		= true;
+	  
+	  //To fill the Tree for DNN other MVA
+	  _chi2			= x.chi2;
+	  _chi2_thad     	= x.chi2_thad;
+	  _chi2_tlep     	= x.chi2_tlep;
+	  _NDF			= x.ndf;
+	  _Nbiter		= x.nb_iter ;
+	  _M_jj			= (x.cjhadBF + x.sjhadBF).M();
+	  _M_jjkF		= x.mass;
+	  
+	  _pfMET		= x.neutrinoBF.Pt() ;
+	  _pfMETPhi		= x.neutrinoBF.Phi() ;
+	  _nu_px		= x.neutrinoBF.Px() ;
+	  _nu_py		= x.neutrinoBF.Py() ;
+	  _nu_pz		= x.neutrinoBF.Pz() ;
+	  //_nu_pz_other	= 0 ;
+	  _jetBlepPtUM		= x.bjlepBF.Pt() ;
+	  _jetBlepEtaUM		= x.bjlepBF.Eta() ;
+	  _jetBlepPhiUM		= x.bjlepBF.Phi() ;
+	  _jetBlepEnergyUM	= x.bjlepBF.E() ;
+	  _jetBhadPtUM		= x.bjhadBF.Pt() ;
+	  _jetBhadEtaUM		= x.bjhadBF.Eta() ;
+	  _jetBhadPhiUM		= x.bjhadBF.Phi() ;
+	  _jetBhadEnergyUM	= x.bjhadBF.E() ;
+	  _jetChadPtUM		= x.cjhadBF.Pt() ;
+	  _jetChadEtaUM		= x.cjhadBF.Eta() ;
+	  _jetChadPhiUM		= x.cjhadBF.Phi() ;
+	  _jetChadEnergyUM	= x.cjhadBF.E() ;
+	  _jetShadPtUM		= x.sjhadBF.Pt() ;
+	  _jetShadEtaUM		= x.sjhadBF.Eta()  ;
+	  _jetShadPhiUM		= x.sjhadBF.Phi()  ;
+	  _jetShadEnergyUM	= x.sjhadBF.E()  ;
+	  
+	  _lepPt		= x.leptonAF.Pt() ;
+	  _lepEta		= x.leptonAF.Eta() ;
+	  _lepPhi		= x.leptonAF.Phi() ;
+	  _lepEnergy		= x.leptonAF.E() ;
+	  _metPx		= x.neutrinoAF.Px() ;
+	  _metPy		= x.neutrinoAF.Py() ;
+	  _metPz		= x.neutrinoAF.Pz() ;
+	  _jetBlepPt		= x.bjlepAF.Pt() ;
+	  _jetBlepEta		= x.bjlepAF.Eta() ;
+	  _jetBlepPhi		= x.bjlepAF.Phi() ;
+	  _jetBlepEnergy	= x.bjlepAF.E() ;
+	  _jetBhadPt		= x.bjhadAF.Pt() ;
+	  _jetBhadEta		= x.bjhadAF.Eta() ;
+	  _jetBhadPhi		= x.bjhadAF.Phi() ;
+	  _jetBhadEnergy	= x.bjhadAF.E() ;
+	  _jetChadPt		= x.cjhadAF.Pt() ;
+	  _jetChadEta		= x.cjhadAF.Eta() ;
+	  _jetChadPhi		= x.cjhadAF.Phi() ;
+	  _jetChadEnergy	= x.cjhadAF.E() ;
+	  _jetShadPt		= x.sjhadAF.Pt() ;
+	  _jetShadEta		= x.sjhadAF.Eta()  ;
+	  _jetShadPhi		= x.sjhadAF.Phi()  ;
+	  _jetShadEnergy	= x.sjhadAF.E()  ;
+	  
+	  _reslepEta		= x.reslepEta ;   
+	  _reslepPhi		= x.reslepPhi ;   
+	  _resneuEta		= x.resneuEta ;   
+	  _resneuPhi		= x.resneuPhi ;
+	  _resbjlepEta		= x.resbjlepEta ;
+	  _resbjlepPhi		= x.resbjlepPhi ; 
+	  _resbjhadEta		= x.resbjhadEta ; 
+	  _resbjhadPhi		= x.resbjhadPhi ;
+	  _rescjhadEta		= x.rescjhadEta ; 
+	  _rescjhadPhi		= x.rescjhadPhi ; 
+	  _ressjhadEta		= x.ressjhadEta ; 
+	  _ressjhadPhi		= x.ressjhadPhi ; 
+	  _bjlepDeepCSV		= event->jetBtagDeepB_[x.bjlep_id] ;
+	  _bjhadDeepCSV		= event->jetBtagDeepB_[x.bjhad_id] ; 
+	  _cjhadDeepCSV		= event->jetBtagDeepB_[x.cjhad_id] ;  
+	  _sjhadDeepCSV		= event->jetBtagDeepB_[x.sjhad_id] ;
+	  
+	  //Fill for non-negative chi2
+	  outputTree->Fill();
 	}//DeltaR and pt cuts
       }//iloop == 0 condition      
       iloop++;
@@ -1629,11 +1760,24 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     Chi2ToMass_arr.clear();
     
   }//if fit converges
-
+  
   kinFit.Clear();
   jetVectors.clear();
   jetBtagVectors.clear();
-
+  _jetPt->clear() ;
+  _jetEta->clear() ;
+  _jetPhi->clear() ;
+  _jetMass->clear() ;
+  _jetDeepB->clear() ;
+  _muPt->clear();
+  _muEta->clear();
+  _muPhi->clear();
+  _muCharge->clear();
+  _elePt->clear();
+  _eleEta->clear();
+  _elePhi->clear();
+  _eleCharge->clear();
+  
   return isValid;
 }
 
@@ -1646,10 +1790,10 @@ void SkimAna::SlaveTerminate()
 
   
   // File closure
+  TDirectory *savedir = gDirectory;
   
   for(int ifile=0;ifile<1;ifile++){
 
-    TDirectory *savedir = gDirectory;
     savedir->cd();
     
     fFile[ifile]->cd();
@@ -1713,6 +1857,23 @@ void SkimAna::SlaveTerminate()
     
   }//file loop
   
+  
+  for(int ifile=1;ifile<2;ifile++){
+    
+    savedir->cd();
+    fFile[ifile]->cd();
+    outputTree->Write();
+    fFile[ifile]->Close();
+    savedir->cd();
+    
+    if (fMode.BeginsWith("proof")) {
+      Info("SlaveTerminate", "objects saved into '%s%s': sending related TProofOutputFile ...",
+	   fProofFile[ifile]->GetFileName(), fProofFile[ifile]->GetOptionsAnchor());
+      fProofFile[ifile]->Print();
+      fOutput->Add(fProofFile[ifile]);    
+    }
+  }  
+
   if(PUweighter)
     delete PUweighter;
     

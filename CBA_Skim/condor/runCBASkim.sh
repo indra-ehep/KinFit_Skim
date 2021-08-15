@@ -41,8 +41,8 @@ condorOutDir=/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
-    xrdcp -f ${sample}*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
-    xrdcp -f ${sample}*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
+    xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
+    xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
     echo "Cleanup"
     rm -rf CMSSW_10_2_14
     rm *.root

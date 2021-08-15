@@ -1,4 +1,4 @@
-int run(const char* opt = "sample=Wjets|year=2016|input=input/inlap/2016/Wjets_2016.txt|index=2|syst=base|aod=nano|run=prod") // sample = data, bkg, signal
+int run(const char* opt = "sample=singleTop|year=2016|input=input/files.txt|index=2|syst=base|aod=nano|run=prod") // sample = data, bkg, signal
 {
   
   bool isproof  = false ;
@@ -42,17 +42,11 @@ int run(const char* opt = "sample=Wjets|year=2016|input=input/inlap/2016/Wjets_2
     }
     idx++;
   }
-  
-  // if(run == "prod")
-  //   chain->Process("SkimAna.C++", options.Data() );    
-  // else
-  //   chain->Process("SkimAna.C++", options.Data(), 10000 );    
+  cout <<" Total files "<<idx<<endl; 
+  op += Form("|total=%d",idx);
 
-  //gSystem->Load("SkimAna_C.so");
-  
-  //SkimAna skim ;
   SkimAna *skim = new SkimAna();
-  skim->SetOption(opt);
+  skim->SetOption(op.Data());
   skim->ExecSerial(inputfile.Data());
   delete skim;
   
