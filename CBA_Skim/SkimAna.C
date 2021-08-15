@@ -905,8 +905,8 @@ void SkimAna::SlaveBegin(TTree *tree)
   
   char *filename[3];
   
-  filename[0] = Form("%s_hist_%03dof%d.root",fSample.Data(),fIndex,fTotal) ;
-  filename[1] = Form("%s_tree_%03dof%d.root",fSample.Data(),fIndex,fTotal) ;
+  filename[0] = Form("%s_hist_%dof%d.root",fSample.Data(),fIndex,fTotal) ;
+  filename[1] = Form("%s_tree_%dof%d.root",fSample.Data(),fIndex,fTotal) ;
   
   for(int ifile=0;ifile<2;ifile++){
     
