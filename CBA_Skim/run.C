@@ -1,4 +1,4 @@
-int run(const char* opt = "sample=singleTop|year=2016|input=input/files.txt|index=2|syst=base|aod=nano|run=prod") // sample = data, bkg, signal
+int run(const char* opt = "sample=HplusM120|year=2016|input=input/files.txt|index=0|syst=base|aod=nano|run=prod") // sample = data, bkg, signal
 {
   
   bool isproof  = false ;

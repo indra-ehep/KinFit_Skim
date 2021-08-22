@@ -44,7 +44,8 @@ Selector::Selector(){
 
     // whether to invert lepton requirements for 
     QCDselect = false;
-
+    DDselect = false;
+    
     // electrons TIGHT
     ele_Pt_cut = 35.0; // Default
     ele_Eta_cut = 2.4;
@@ -141,10 +142,12 @@ void Selector::clear_vectors(){
     ElectronsLoose.clear();
     ElectronsMedium.clear();
     ElectronsNoIso.clear();
+    ElectronsNoIsoLoose.clear();
 
     Muons.clear();
     MuonsLoose.clear();
     MuonsNoIso.clear();
+    MuonsNoIsoLoose.clear();
     MuonsMiniAOD.clear();
 
     Jets.clear();
@@ -182,7 +185,7 @@ void Selector::filter_electrons(){
         
         uint eleID = tree->eleIDcutbased_[eleInd];
         bool passVetoID   = eleID >= 1;
-        // bool passLooseID  = eleID >= 2;
+        bool passLooseID  = eleID >= 2;
 	bool passMediumID = eleID >= 3;
         bool passTightID  = eleID >= 4;
         
@@ -241,12 +244,13 @@ void Selector::filter_electrons(){
 			   PFrelIso_corr > (absSCEta < 1.479 ? isoEBcut : isoEECut) );
         }
 
-
-	//bool passVetoIDNoIso = passEleID(eleInd, 1,false); // Ignore iso requirements
-
-	//float vetoIsoEBcut = 0.198 + 0.506/tree->elePt_[eleInd];
-	//float vetoIsoEECut = 0.203 + 0.963/tree->elePt_[eleInd];
-
+	
+	bool passVetoIDNoIso = passEleID(eleInd, 1,false); // Ignore iso requirements
+	
+	float vetoIsoEBcut = 0.198 + 0.506/tree->elePt_[eleInd];
+	float vetoIsoEECut = 0.203 + 0.963/tree->elePt_[eleInd];
+	
+	passTightID_noIso = passEleID(eleInd, 4,false);
 	//QCD CR now applies veto iso as upper limit, so Veto leptons are the same as they would be otherwise
 
 	// // if using QCD cr, just use cut without iso requirement
@@ -274,6 +278,13 @@ void Selector::filter_electrons(){
 			     passTightID_noIso &&
 			     passD0 &&
 			     passDz);
+
+	bool eleSel_noIso_loose = (passEtaEBEEGap && 
+				   absEta <= ele_EtaLoose_cut &&
+				   pt >= ele_PtLoose_cut &&
+				   //passVetoID &&
+				   passD0 &&
+				   passDz);
 	
         
 	if (int(tree->event_)==printEvent){
@@ -407,6 +418,9 @@ void Selector::filter_electrons(){
         if( eleSel_noIso ){
 	  ElectronsNoIso.push_back(eleInd);
         }
+	if( eleSel_noIso_loose ){
+	  ElectronsNoIsoLoose.push_back(eleInd);
+	}
   }
 
   if (int(tree->event_)==printEvent){
@@ -471,6 +485,11 @@ void Selector::filter_muons(){
     bool passTight_noIso = (pt >= mu_Pt_cut &&
 			    TMath::Abs(eta) <= mu_Eta_tight &&
 			    tightMuonID
+			    );
+    
+    bool passLoose_noIso = (pt >= mu_PtLoose_cut &&
+			    TMath::Abs(eta) <= mu_Eta_loose &&
+			    looseMuonID
 			    );
     
     /*
@@ -539,6 +558,9 @@ void Selector::filter_muons(){
     }
     if(passMiniAOD_presel){
       MuonsMiniAOD.push_back(muInd);
+    }
+    if(passLoose_noIso){
+      MuonsNoIsoLoose.push_back(muInd);
     }
   }
 }
@@ -648,14 +670,26 @@ void Selector::filter_jets(){
 
     bool passDR_lep_jet = true;
 
-    //loop over selected electrons
-    for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
-      if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    if(!DDselect){
+      //loop over selected electrons
+      for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
+    }else{
+      for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
+	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }      
     }
-
+    
     //loop over selected muons
-    for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-      if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    if(!DDselect){
+      for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
+    }else{
+      for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
+	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
     }
     
     bool jetPresel = (pt >= jet_Pt_cut &&
@@ -663,7 +697,7 @@ void Selector::filter_jets(){
     		      jetID_pass &&
     		      passDR_lep_jet
     		      );
-
+    
     // void ObjectSelector::preSelectJets( string jetAlgo, vector<int> * j_i, const vector<MyJet> & vJ){
     //   //https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016
     //   for(unsigned int i=0;i<vJ.size();i++){
@@ -943,7 +977,8 @@ bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){
     bool GsfEleConversionVetoCut             = (WPcutBits>>(8*nBits) & 7) >= cutVal;
     bool GsfEleMissingHitsCut                = (WPcutBits>>(9*nBits) & 7) >= cutVal;
 
-    bool passID = (MinPtCut
+    bool passID = (
+		   MinPtCut
 		   && GsfEleSCEtaMultiRangeCut
 		   && GsfEleDEtaInSeedCut
 		   && GsfEleDPhiInCut
@@ -952,7 +987,8 @@ bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){
 		   && GsfEleEInverseMinusPInverseCut
 		   && (GsfEleEffAreaPFIsoCut || !doRelisoCut)
 		   && GsfEleConversionVetoCut
-		   && GsfEleMissingHitsCut);
+		   && GsfEleMissingHitsCut
+		   );
 
     return passID;
 

@@ -51,9 +51,12 @@ public:
 	std::vector<int> ElectronsLoose;
 	std::vector<int> ElectronsMedium;
 	std::vector<int> ElectronsNoIso;
+	std::vector<int> ElectronsNoIsoLoose;
+
 	std::vector<int> Muons;
 	std::vector<int> MuonsLoose;
 	std::vector<int> MuonsNoIso;
+	std::vector<int> MuonsNoIsoLoose;
         std::vector<int> MuonsMiniAOD;
 
 	std::vector<int> Jets;
@@ -95,6 +98,7 @@ public:
 	bool   looseJetID;
 	bool   useDeepCSVbTag;
 	bool   QCDselect;
+	bool   DDselect;
 
 	bool  looseJetID_miniAOD;
 

@@ -689,9 +689,8 @@ class SkimAna : public TSelector {
 
    ////////////////////////////////////////////////////////
    // Histogram for checking
-   int fNSyst ;
-   int fNHist ; 
-   int fNTestHist ;
+   int fNHists ; 
+   int fNBaseHists ;
    TH1D           **hCheck;//
    TH1F           *hMinChi2_mu,  *h2MinChi2_mu, *h3MinChi2_mu, *h4MinChi2_mu, *h5MinChi2_mu;
    TH1F           *hMinChi2_ele,  *h2MinChi2_ele, *h3MinChi2_ele, *h4MinChi2_ele, *h5MinChi2_ele;

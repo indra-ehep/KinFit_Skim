@@ -24,11 +24,11 @@ Int_t SkimAna::CreateHistoArrays()
 {
   // Create the histogram arrays
   
-  fNSyst = 19;
-  fNHist = 2*fNSyst ; 
 
-  fNTestHist = 75;
-  hCheck = new TH1D*[fNTestHist+fNSyst];
+  fNBaseHists = 79;
+  fNHists = 4*fNBaseHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
+
+  hCheck = new TH1D*[fNHists];
   TDirectory *savedir = gDirectory;
   savedir->cd();
   fFile[0]->cd();
@@ -109,10 +109,32 @@ Int_t SkimAna::CreateHistoArrays()
   hCheck[72] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 50, 0., 250);
   hCheck[73] = new TH1D("_kb_mjj_bf_ele","_kb_mjj_bf_ele", 50, 0., 250);
   hCheck[74] = new TH1D("_topPtReweight","_topPtReweight",2000, -10, 10);
+  hCheck[75] = new TH1D("_muIso","_muIso", 100, 0., 1.);
+  hCheck[76] = new TH1D("_eleIso","_eleIso", 100, 0., 1.);
+  hCheck[77] = new TH1D("_muMET","_muMET", 100, 0., 500.);
+  hCheck[78] = new TH1D("_eleMET","_eleMET", 100, 0., 500.);
 
-  for(int isyst=0;isyst<fNSyst;isyst++)
-    hCheck[fNTestHist+isyst] = new TH1D(Form("weight_%d",isyst), Form("weight_%d",isyst),2000, -10, 10);
-
+  // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
+  
+  int minHs = fNBaseHists ;
+  for(int isyst=minHs;isyst<2*fNBaseHists;isyst++){
+    hCheck[isyst] = (TH1D *)hCheck[isyst-minHs]->Clone(Form("%s_lmet",hCheck[isyst-minHs]->GetName()));
+    hCheck[isyst]->SetTitle(Form("%s_lmet",hCheck[isyst-minHs]->GetTitle()));
+  }
+  
+  minHs = 2*fNBaseHists ;
+  for(int isyst=minHs;isyst<3*fNBaseHists;isyst++){
+    hCheck[isyst] = (TH1D *)hCheck[isyst-minHs]->Clone(Form("%s_noniso",hCheck[isyst-minHs]->GetName()));
+    hCheck[isyst]->SetTitle(Form("%s_noniso",hCheck[isyst-minHs]->GetTitle()));
+  }
+  
+  minHs = 3*fNBaseHists ;
+  for(int isyst=minHs;isyst<4*fNBaseHists;isyst++){
+    hCheck[isyst] = (TH1D *)hCheck[isyst-minHs]->Clone(Form("%s_noniso_lmet",hCheck[isyst-minHs]->GetName()));
+    hCheck[isyst]->SetTitle(Form("%s_noniso_lmet",hCheck[isyst-minHs]->GetTitle()));
+  }
+  
+  
   hMinChi2_mu = new TH1F("hMinChi2_mu","1^{st} minimum",500,0,100.0); 
   h2MinChi2_mu = new TH1F("h2MinChi2_mu","2^{nd} minimum",500,0,100.0); 
   h3MinChi2_mu = new TH1F("h3MinChi2_mu","3^{rd} minimum",500,0,100.0); 
@@ -366,6 +388,10 @@ void SkimAna::SetTrio()
   selector->JERsystLevel = jervar012_g;
   selector->isNanoAOD = isNanoAOD ;
   
+  //selector->QCDselect = true ;
+  selector->DDselect = true ;
+  selector->mu_RelIso_loose = 0.4;
+    
   selector->mu_Pt_cut = 30.;
   selector->mu_Eta_tight = 2.4;
   selector->ele_Pt_cut = 35.;
@@ -813,7 +839,7 @@ void SkimAna::GetBtagSF_1a(){
 //_____________________________________________________________________________
 void SkimAna::GetMuonEff(double iso){
 
-  int muInd_ = selector->Muons.at(0);
+  int muInd_ = selector->MuonsNoIso.at(0);
   
   if (fYear==2016){
     vector<double> muWeights_a    = muSFa->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_], mueffvar012_g, 2016);
@@ -863,7 +889,7 @@ void SkimAna::GetMuonEff(double iso){
 //_____________________________________________________________________________
 void SkimAna::GetElectronEff(){
 
-  int eleInd_ = selector->Electrons.at(0);
+  int eleInd_ = selector->ElectronsNoIso.at(0);
   vector<double> eleWeights    = eleSF->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
   _eleEffWeight    = eleWeights.at(0);
   eleWeights.clear();
@@ -1034,7 +1060,6 @@ void SkimAna::TheoWeights(){
 
 
 }
-
 //_____________________________________________________________________________
 Bool_t SkimAna::Process(Long64_t entry)
 {
@@ -1137,43 +1162,104 @@ Bool_t SkimAna::Process(Long64_t entry)
   //Event level or trigger level conditions will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //hCheck[1]->Fill(_PUWeight); //filled later;
-  
-  if(evtPick->passTrigger_mu || evtPick->passTrigger_ele)
+
+  if(evtPick->passTrigger_mu || evtPick->passTrigger_ele){
     hCheck[0]->Fill(0.0);
-  if((evtPick->passTrigger_mu || evtPick->passTrigger_ele) && selector->isPVGood && evtPick->passFilter)
+
+    hCheck[0+fNBaseHists]->Fill(0.0);
+
+    hCheck[0+2*fNBaseHists]->Fill(0.0);
+
+    hCheck[0+3*fNBaseHists]->Fill(0.0);
+  }
+
+  if((evtPick->passTrigger_mu || evtPick->passTrigger_ele) && selector->isPVGood && evtPick->passFilter){
     hCheck[0]->Fill(1.0);
+
+    hCheck[0+fNBaseHists]->Fill(1.0);
+
+    hCheck[0+2*fNBaseHists]->Fill(1.0);
+
+    hCheck[0+3*fNBaseHists]->Fill(1.0);
+  }
   
   if(evtPick->passTrigger_mu){
     hCheck[1]->Fill(0.0);
     hCheck[2]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
     hCheck[5]->Fill(0.0, _sampleWeight*_PUWeight);
+
+    hCheck[1+fNBaseHists]->Fill(0.0);
+    hCheck[2+fNBaseHists]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+    hCheck[5+fNBaseHists]->Fill(0.0, _sampleWeight*_PUWeight);
+
+    hCheck[1+2*fNBaseHists]->Fill(0.0);
+    hCheck[2+2*fNBaseHists]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+    hCheck[5+2*fNBaseHists]->Fill(0.0, _sampleWeight*_PUWeight);
+
+    hCheck[1+3*fNBaseHists]->Fill(0.0);
+    hCheck[2+3*fNBaseHists]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+    hCheck[5+3*fNBaseHists]->Fill(0.0, _sampleWeight*_PUWeight);
   }
   
   if(evtPick->passTrigger_mu and selector->isPVGood and evtPick->passFilter){
     hCheck[1]->Fill(1.0);
     hCheck[2]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
     hCheck[5]->Fill(1.0, _sampleWeight*_PUWeight);
+
+    hCheck[1+fNBaseHists]->Fill(1.0);
+    hCheck[2+fNBaseHists]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+    hCheck[5+fNBaseHists]->Fill(1.0, _sampleWeight*_PUWeight);
+
+    hCheck[1+2*fNBaseHists]->Fill(1.0);
+    hCheck[2+2*fNBaseHists]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+    hCheck[5+2*fNBaseHists]->Fill(1.0, _sampleWeight*_PUWeight);
+
+    hCheck[1+3*fNBaseHists]->Fill(1.0);
+    hCheck[2+3*fNBaseHists]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+    hCheck[5+3*fNBaseHists]->Fill(1.0, _sampleWeight*_PUWeight);
   }
   
   //elec
   if(evtPick->passTrigger_ele){
     hCheck[3]->Fill(0.0);
     hCheck[4]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+
+    hCheck[3+fNBaseHists]->Fill(0.0);
+    hCheck[4+fNBaseHists]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+
+    hCheck[3+2*fNBaseHists]->Fill(0.0);
+    hCheck[4+2*fNBaseHists]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+
+    hCheck[3+3*fNBaseHists]->Fill(0.0);
+    hCheck[4+3*fNBaseHists]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
   }
 
   if(evtPick->passTrigger_ele and selector->isPVGood and evtPick->passFilter){
     hCheck[3]->Fill(1.0);
     hCheck[4]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
-  }
+ 
+    hCheck[3+fNBaseHists]->Fill(1.0);
+    hCheck[4+fNBaseHists]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+
+    hCheck[3+2*fNBaseHists]->Fill(1.0);
+    hCheck[4+2*fNBaseHists]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+ 
+    hCheck[3+3*fNBaseHists]->Fill(1.0);
+    hCheck[4+3*fNBaseHists]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+   }
   
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   // if(fProcessed%mod_num==0)
   //   Info("Process","Level 3");
+  //MuonsNoIso
+  //ElectronsNoIso
 
-  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0);
-  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->Electrons.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 0 and selector->MuonsLoose.size() == 0);
+  // bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
+  // bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
+  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1);
+  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
   //////=====================================================
   if(!singleMu and !singleEle) return true;
   //////=====================================================
@@ -1184,38 +1270,116 @@ Bool_t SkimAna::Process(Long64_t entry)
   //Processes after single muon/electron selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if(!isData){
-    if(singleMu) GetMuonEff(event->muPFRelIso_[selector->Muons.at(0)]);
+    if(singleMu) GetMuonEff(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
     if(singleEle) GetElectronEff();
   }
   
-  hCheck[9]->Fill(_muEffWeight);
-  hCheck[10]->Fill(_eleEffWeight);
-
   bool muonIsoCut = false;
-  if(singleMu)
-    muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] < 0.15) ? true : false; 
-  
+  bool muonNonIsoCut = false;
+  if(singleMu){
+    muonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.15) ? true : false; 
+    muonNonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] > 0.15 and event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.4) ? true : false; 
+  }
+
   bool eleIsoCut = false;
-  if(singleEle)
+  bool eleNonIsoCut = false;
+  if(singleEle){
+    double SCeta = event->eleEta_[selector->ElectronsNoIso.at(0)] + event->eleDeltaEtaSC_[selector->ElectronsNoIso.at(0)];
+    double absSCEta = TMath::Abs(SCeta);
+
     eleIsoCut =  (
-  		  (TMath::Abs(event->eleEta_[selector->Electrons.at(0)]) <= 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] < 0.0695) 
+  		  (absSCEta <= 1.479 and event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0695) 
   		  or 
-  		  (TMath::Abs(event->eleEta_[selector->Electrons.at(0)]) > 1.479 and  event->elePFRelIso_[selector->Electrons.at(0)] < 0.0821)
+  		  (absSCEta > 1.479 and  event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0821)
   		  ) ? true : false;
 
-  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
+    eleNonIsoCut =  (
+		     (
+		      absSCEta <= 1.479 
+		      and 
+		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.0695 
+		      and 
+		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
+		      ) 
+		     or 
+		     (
+		      absSCEta > 1.479 
+		      and  
+		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < 0.0821
+		      and
+		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
+		      )
+		     ) ? true : false;
+
+  }
+  
+  if(singleMu)
+    hCheck[75]->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+  if(singleEle)
+    hCheck[76]->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+  
+  if(singleMu and muonIsoCut){
+    hCheck[9]->Fill(_muEffWeight);
+    hCheck[9+fNBaseHists]->Fill(_muEffWeight);
+  }
+  if(singleMu and muonNonIsoCut){
+    hCheck[9+2*fNBaseHists]->Fill(_muEffWeight);
+    hCheck[9+3*fNBaseHists]->Fill(_muEffWeight);
+  }
+
+  if(singleEle and eleIsoCut){
+    hCheck[10]->Fill(_eleEffWeight);
+    hCheck[10+fNBaseHists]->Fill(_eleEffWeight);
+  }
+  if(singleEle and eleNonIsoCut){
+    hCheck[10+2*fNBaseHists]->Fill(_eleEffWeight);
+    hCheck[10+3*fNBaseHists]->Fill(_eleEffWeight);
+  }  
+
+  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
     hCheck[0]->Fill(2.0);
+    hCheck[0+fNBaseHists]->Fill(2.0);
+  }
+  if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
+    hCheck[0+2*fNBaseHists]->Fill(2.0);
+    hCheck[0+3*fNBaseHists]->Fill(2.0);
+  }
   
   if(singleMu and muonIsoCut){
     hCheck[1]->Fill(2.0);
     hCheck[2]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
     hCheck[5]->Fill(2.0, _sampleWeight*_PUWeight*_muEffWeight);
+
+    hCheck[1+fNBaseHists]->Fill(2.0);
+    hCheck[2+fNBaseHists]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+    hCheck[5+fNBaseHists]->Fill(2.0, _sampleWeight*_PUWeight*_muEffWeight);
+  }
+
+  if(singleMu and muonNonIsoCut){
+    hCheck[1+2*fNBaseHists]->Fill(2.0);
+    hCheck[2+2*fNBaseHists]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+    hCheck[5+2*fNBaseHists]->Fill(2.0, _sampleWeight*_PUWeight*_muEffWeight);
+
+    hCheck[1+3*fNBaseHists]->Fill(2.0);
+    hCheck[2+3*fNBaseHists]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+    hCheck[5+3*fNBaseHists]->Fill(2.0, _sampleWeight*_PUWeight*_muEffWeight);
   }
   
   //elec
   if(singleEle and eleIsoCut){
     hCheck[3]->Fill(2.0);
     hCheck[4]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+
+    hCheck[3+fNBaseHists]->Fill(2.0);
+    hCheck[4+fNBaseHists]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+  }
+
+  if(singleEle and eleIsoCut){
+    hCheck[3+2*fNBaseHists]->Fill(2.0);
+    hCheck[4+2*fNBaseHists]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+
+    hCheck[3+3*fNBaseHists]->Fill(2.0);
+    hCheck[4+3*fNBaseHists]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
   }
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1229,26 +1393,68 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   //Processes after njet >= 4 selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
+  // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
+
+  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
     hCheck[0]->Fill(3.0);
+    hCheck[0+fNBaseHists]->Fill(3.0);
+  }
+  if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
+    hCheck[0+2*fNBaseHists]->Fill(3.0);
+    hCheck[0+3*fNBaseHists]->Fill(3.0);
+  }
   
   if(singleMu and muonIsoCut){
     hCheck[1]->Fill(3.0);
     hCheck[2]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
     hCheck[5]->Fill(3.0, _sampleWeight*_PUWeight*_muEffWeight);
+
+    hCheck[1+fNBaseHists]->Fill(3.0);
+    hCheck[2+fNBaseHists]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+    hCheck[5+fNBaseHists]->Fill(3.0, _sampleWeight*_PUWeight*_muEffWeight);
+  }
+
+  if(singleMu and muonNonIsoCut){
+    hCheck[1+2*fNBaseHists]->Fill(3.0);
+    hCheck[2+2*fNBaseHists]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+    hCheck[5+2*fNBaseHists]->Fill(3.0, _sampleWeight*_PUWeight*_muEffWeight);
+
+    hCheck[1+3*fNBaseHists]->Fill(3.0);
+    hCheck[2+3*fNBaseHists]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+    hCheck[5+3*fNBaseHists]->Fill(3.0, _sampleWeight*_PUWeight*_muEffWeight);
   }
   
   //elec
   if(singleEle and eleIsoCut){
     hCheck[3]->Fill(3.0);
     hCheck[4]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+
+    hCheck[3+fNBaseHists]->Fill(3.0);
+    hCheck[4+fNBaseHists]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
   }
+
+  if(singleEle and eleIsoCut){
+    hCheck[3+2*fNBaseHists]->Fill(3.0);
+    hCheck[4+2*fNBaseHists]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+
+    hCheck[3+3*fNBaseHists]->Fill(3.0);
+    hCheck[4+3*fNBaseHists]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+  }
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  if(singleMu)
+    hCheck[77]->Fill(selector->METPt);
   
+  if(singleEle)
+    hCheck[78]->Fill(selector->METPt);
+  
+
   METThreshold = 20. ;
+  bool isLowMET = false;
   //////=====================================================
-  if(selector->METPt < METThreshold ) return true;
+  //if(selector->METPt < METThreshold ) return true;
+  if(selector->METPt < METThreshold ) isLowMET = true;
   //////=====================================================
 
   // if(fProcessed%mod_num==0)
@@ -1256,20 +1462,78 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   //Processes after MET selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
-    hCheck[0]->Fill(4.0);
+  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
+    if(!isLowMET)
+      hCheck[0]->Fill(4.0);
+    else
+      hCheck[0+fNBaseHists]->Fill(4.0);
+  }
+  if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
+    if(!isLowMET)
+      hCheck[0+2*fNBaseHists]->Fill(4.0);
+    else
+      hCheck[0+3*fNBaseHists]->Fill(4.0);
+  }
   
   if(singleMu and muonIsoCut){
-    hCheck[1]->Fill(4.0);
-    hCheck[2]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
-    hCheck[5]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+    if(!isLowMET){
+      hCheck[1]->Fill(4.0);
+      hCheck[2]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+      hCheck[5]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+    }else{
+      hCheck[1+fNBaseHists]->Fill(4.0);
+      hCheck[2+fNBaseHists]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+      hCheck[5+fNBaseHists]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+    }
+  }
+
+  if(singleMu and muonNonIsoCut){
+    if(!isLowMET){
+      hCheck[1+2*fNBaseHists]->Fill(4.0);
+      hCheck[2+2*fNBaseHists]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+      hCheck[5+2*fNBaseHists]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+    }else{
+      hCheck[1+3*fNBaseHists]->Fill(4.0);
+      hCheck[2+3*fNBaseHists]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+      hCheck[5+3*fNBaseHists]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+    }
   }
   
   //elec
   if(singleEle and eleIsoCut){
-    hCheck[3]->Fill(4.0);
-    hCheck[4]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+    if(!isLowMET){
+      hCheck[3]->Fill(4.0);
+      hCheck[4]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+    }else{
+      hCheck[3+fNBaseHists]->Fill(4.0);
+      hCheck[4+fNBaseHists]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+    }
   }
+
+  if(singleEle and eleIsoCut){
+    if(!isLowMET){
+      hCheck[3+2*fNBaseHists]->Fill(4.0);
+      hCheck[4+2*fNBaseHists]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+    }else{
+      hCheck[3+3*fNBaseHists]->Fill(4.0);
+      hCheck[4+3*fNBaseHists]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+    }
+  }
+
+  // if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
+  //   hCheck[0]->Fill(4.0);
+  
+  // if(singleMu and muonIsoCut){
+  //   hCheck[1]->Fill(4.0);
+  //   hCheck[2]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+  //   hCheck[5]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+  // }
+  
+  // //elec
+  // if(singleEle and eleIsoCut){
+  //   hCheck[3]->Fill(4.0);
+  //   hCheck[4]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+  // }
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////=====================================================
@@ -1308,45 +1572,167 @@ Bool_t SkimAna::Process(Long64_t entry)
   double mu_wt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight ;
   double ele_wt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight*_topPtReWeight ;
   
-  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
-    hCheck[0]->Fill(5.0);
+  if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
+    if(!isLowMET)
+      hCheck[0]->Fill(5.0);
+    else
+      hCheck[0+fNBaseHists]->Fill(5.0);
+  }
+
+  if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
+    if(!isLowMET)
+      hCheck[0+2*fNBaseHists]->Fill(5.0);
+    else
+      hCheck[0+3*fNBaseHists]->Fill(5.0);
+  }
   
   if(singleMu and muonIsoCut){
-    hCheck[1]->Fill(5.0);
-    hCheck[2]->Fill(5.0, mu_wt);
-    hCheck[5]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
-    hCheck[30]->Fill(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], mu_wt);
-    hCheck[31]->Fill(event->muEta_[selector->Muons.at(0)], mu_wt);
-    hCheck[32]->Fill(event->muPhi_[selector->Muons.at(0)], mu_wt);
-    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-      int jetInd = selector->Jets.at(ijet);
-      hCheck[36]->Fill(selector->JetsPtSmeared.at(ijet), mu_wt);
-      hCheck[37]->Fill(event->jetEta_[jetInd], mu_wt);
-      hCheck[38]->Fill(event->jetPhi_[jetInd], mu_wt);
+    if(!isLowMET){
+      hCheck[1]->Fill(5.0);
+      hCheck[2]->Fill(5.0, mu_wt);
+      hCheck[5]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[30]->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[31]->Fill(event->muEta_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[32]->Fill(event->muPhi_[selector->MuonsNoIso.at(0)], mu_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[36]->Fill(selector->JetsPtSmeared.at(ijet), mu_wt);
+	hCheck[37]->Fill(event->jetEta_[jetInd], mu_wt);
+	hCheck[38]->Fill(event->jetPhi_[jetInd], mu_wt);
+      }
+      hCheck[42]->Fill(selector->METPt, mu_wt);
+      hCheck[43]->Fill(selector->METPhi, mu_wt);
+      hCheck[46]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[47]->Fill(selector->bJets.size(), mu_wt);
+    }else{
+      hCheck[1+fNBaseHists]->Fill(5.0);
+      hCheck[2+fNBaseHists]->Fill(5.0, mu_wt);
+      hCheck[5+fNBaseHists]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[30+fNBaseHists]->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[31+fNBaseHists]->Fill(event->muEta_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[32+fNBaseHists]->Fill(event->muPhi_[selector->MuonsNoIso.at(0)], mu_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[36+fNBaseHists]->Fill(selector->JetsPtSmeared.at(ijet), mu_wt);
+	hCheck[37+fNBaseHists]->Fill(event->jetEta_[jetInd], mu_wt);
+	hCheck[38+fNBaseHists]->Fill(event->jetPhi_[jetInd], mu_wt);
+      }
+      hCheck[42+fNBaseHists]->Fill(selector->METPt, mu_wt);
+      hCheck[43+fNBaseHists]->Fill(selector->METPhi, mu_wt);
+      hCheck[46+fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[47+fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
     }
-    hCheck[42]->Fill(selector->METPt, mu_wt);
-    hCheck[43]->Fill(selector->METPhi, mu_wt);
-    hCheck[46]->Fill(selector->Jets.size(), mu_wt);
-    hCheck[47]->Fill(selector->bJets.size(), mu_wt);
+  }
+
+  if(singleMu and muonNonIsoCut){
+    if(!isLowMET){
+      hCheck[1+2*fNBaseHists]->Fill(5.0);
+      hCheck[2+2*fNBaseHists]->Fill(5.0, mu_wt);
+      hCheck[5+2*fNBaseHists]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[30+2*fNBaseHists]->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[31+2*fNBaseHists]->Fill(event->muEta_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[32+2*fNBaseHists]->Fill(event->muPhi_[selector->MuonsNoIso.at(0)], mu_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[36+2*fNBaseHists]->Fill(selector->JetsPtSmeared.at(ijet), mu_wt);
+	hCheck[37+2*fNBaseHists]->Fill(event->jetEta_[jetInd], mu_wt);
+	hCheck[38+2*fNBaseHists]->Fill(event->jetPhi_[jetInd], mu_wt);
+      }
+      hCheck[42+2*fNBaseHists]->Fill(selector->METPt, mu_wt);
+      hCheck[43+2*fNBaseHists]->Fill(selector->METPhi, mu_wt);
+      hCheck[46+2*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[47+2*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+    }else{
+      hCheck[1+3*fNBaseHists]->Fill(5.0);
+      hCheck[2+3*fNBaseHists]->Fill(5.0, mu_wt);
+      hCheck[5+3*fNBaseHists]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[30+3*fNBaseHists]->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[31+3*fNBaseHists]->Fill(event->muEta_[selector->MuonsNoIso.at(0)], mu_wt);
+      hCheck[32+3*fNBaseHists]->Fill(event->muPhi_[selector->MuonsNoIso.at(0)], mu_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[36+3*fNBaseHists]->Fill(selector->JetsPtSmeared.at(ijet), mu_wt);
+	hCheck[37+3*fNBaseHists]->Fill(event->jetEta_[jetInd], mu_wt);
+	hCheck[38+3*fNBaseHists]->Fill(event->jetPhi_[jetInd], mu_wt);
+      }
+      hCheck[42+3*fNBaseHists]->Fill(selector->METPt, mu_wt);
+      hCheck[43+3*fNBaseHists]->Fill(selector->METPhi, mu_wt);
+      hCheck[46+3*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[47+3*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+    }
   }
   
   //elec
   if(singleEle and eleIsoCut){
-    hCheck[3]->Fill(5.0);
-    hCheck[4]->Fill(5.0, ele_wt);
-    hCheck[33]->Fill(event->elePt_[selector->Electrons.at(0)], ele_wt);
-    hCheck[34]->Fill(event->eleEta_[selector->Electrons.at(0)], ele_wt);
-    hCheck[35]->Fill(event->elePhi_[selector->Electrons.at(0)], ele_wt);
-    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-      int jetInd = selector->Jets.at(ijet);
-      hCheck[39]->Fill(selector->JetsPtSmeared.at(ijet), ele_wt);
-      hCheck[40]->Fill(event->jetEta_[jetInd], ele_wt);
-      hCheck[41]->Fill(event->jetPhi_[jetInd], ele_wt);
+    if(!isLowMET){
+      hCheck[3]->Fill(5.0);
+      hCheck[4]->Fill(5.0, ele_wt);
+      hCheck[33]->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[34]->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[35]->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], ele_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[39]->Fill(selector->JetsPtSmeared.at(ijet), ele_wt);
+	hCheck[40]->Fill(event->jetEta_[jetInd], ele_wt);
+	hCheck[41]->Fill(event->jetPhi_[jetInd], ele_wt);
+      }
+      hCheck[44]->Fill(selector->METPt, ele_wt);
+      hCheck[45]->Fill(selector->METPhi, ele_wt);
+      hCheck[48]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[49]->Fill(selector->bJets.size(), ele_wt);
+    }else{
+      hCheck[3+fNBaseHists]->Fill(5.0);
+      hCheck[4+fNBaseHists]->Fill(5.0, ele_wt);
+      hCheck[33+fNBaseHists]->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[34+fNBaseHists]->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[35+fNBaseHists]->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], ele_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[39+fNBaseHists]->Fill(selector->JetsPtSmeared.at(ijet), ele_wt);
+	hCheck[40+fNBaseHists]->Fill(event->jetEta_[jetInd], ele_wt);
+	hCheck[41+fNBaseHists]->Fill(event->jetPhi_[jetInd], ele_wt);
+      }
+      hCheck[44+fNBaseHists]->Fill(selector->METPt, ele_wt);
+      hCheck[45+fNBaseHists]->Fill(selector->METPhi, ele_wt);
+      hCheck[48+fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[49+fNBaseHists]->Fill(selector->bJets.size(), ele_wt);
     }
-    hCheck[44]->Fill(selector->METPt, ele_wt);
-    hCheck[45]->Fill(selector->METPhi, ele_wt);
-    hCheck[48]->Fill(selector->Jets.size(), ele_wt);
-    hCheck[49]->Fill(selector->bJets.size(), ele_wt);
+  }
+
+  if(singleEle and eleNonIsoCut){
+    if(!isLowMET){
+      hCheck[3+2*fNBaseHists]->Fill(5.0);
+      hCheck[4+2*fNBaseHists]->Fill(5.0, ele_wt);
+      hCheck[33+2*fNBaseHists]->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[34+2*fNBaseHists]->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[35+2*fNBaseHists]->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], ele_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[39+2*fNBaseHists]->Fill(selector->JetsPtSmeared.at(ijet), ele_wt);
+	hCheck[40+2*fNBaseHists]->Fill(event->jetEta_[jetInd], ele_wt);
+	hCheck[41+2*fNBaseHists]->Fill(event->jetPhi_[jetInd], ele_wt);
+      }
+      hCheck[44+2*fNBaseHists]->Fill(selector->METPt, ele_wt);
+      hCheck[45+2*fNBaseHists]->Fill(selector->METPhi, ele_wt);
+      hCheck[48+2*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[49+2*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);
+    }else{
+      hCheck[3+3*fNBaseHists]->Fill(5.0);
+      hCheck[4+3*fNBaseHists]->Fill(5.0, ele_wt);
+      hCheck[33+3*fNBaseHists]->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[34+3*fNBaseHists]->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], ele_wt);
+      hCheck[35+3*fNBaseHists]->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], ele_wt);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	hCheck[39+3*fNBaseHists]->Fill(selector->JetsPtSmeared.at(ijet), ele_wt);
+	hCheck[40+3*fNBaseHists]->Fill(event->jetEta_[jetInd], ele_wt);
+	hCheck[41+3*fNBaseHists]->Fill(event->jetPhi_[jetInd], ele_wt);
+      }
+      hCheck[44+3*fNBaseHists]->Fill(selector->METPt, ele_wt);
+      hCheck[45+3*fNBaseHists]->Fill(selector->METPhi, ele_wt);
+      hCheck[48+3*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[49+3*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);
+    }
   }
 
 
@@ -1354,69 +1740,263 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   
   if(ProcessKinFit((singleMu and muonIsoCut), false)){
-
-    hCheck[1]->Fill(6.0);
-    hCheck[2]->Fill(6.0, mu_wt);
-    hCheck[5]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
-    hCheck[50]->Fill(leptonAF.Pt(), mu_wt);
-    hCheck[51]->Fill(leptonAF.Eta(), mu_wt);
-    hCheck[52]->Fill(leptonAF.Phi(), mu_wt);
+    if(!isLowMET){
+      hCheck[1]->Fill(6.0);
+      hCheck[2]->Fill(6.0, mu_wt);
+      hCheck[5]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[50]->Fill(leptonAF.Pt(), mu_wt);
+      hCheck[51]->Fill(leptonAF.Eta(), mu_wt);
+      hCheck[52]->Fill(leptonAF.Phi(), mu_wt);
   
-    hCheck[56]->Fill(bjlepAF.Pt(), mu_wt);
-    hCheck[56]->Fill(bjhadAF.Pt(), mu_wt);
-    hCheck[56]->Fill(cjhadAF.Pt(), mu_wt);
-    hCheck[56]->Fill(sjhadAF.Pt(), mu_wt);
+      hCheck[56]->Fill(bjlepAF.Pt(), mu_wt);
+      hCheck[56]->Fill(bjhadAF.Pt(), mu_wt);
+      hCheck[56]->Fill(cjhadAF.Pt(), mu_wt);
+      hCheck[56]->Fill(sjhadAF.Pt(), mu_wt);
 
-    hCheck[57]->Fill(bjlepAF.Eta(), mu_wt);
-    hCheck[57]->Fill(bjhadAF.Eta(), mu_wt);
-    hCheck[57]->Fill(cjhadAF.Eta(), mu_wt);
-    hCheck[57]->Fill(sjhadAF.Eta(), mu_wt);
+      hCheck[57]->Fill(bjlepAF.Eta(), mu_wt);
+      hCheck[57]->Fill(bjhadAF.Eta(), mu_wt);
+      hCheck[57]->Fill(cjhadAF.Eta(), mu_wt);
+      hCheck[57]->Fill(sjhadAF.Eta(), mu_wt);
 
-    hCheck[58]->Fill(bjlepAF.Phi(), mu_wt);
-    hCheck[58]->Fill(bjhadAF.Phi(), mu_wt);
-    hCheck[58]->Fill(cjhadAF.Phi(), mu_wt);
-    hCheck[58]->Fill(sjhadAF.Phi(), mu_wt);
+      hCheck[58]->Fill(bjlepAF.Phi(), mu_wt);
+      hCheck[58]->Fill(bjhadAF.Phi(), mu_wt);
+      hCheck[58]->Fill(cjhadAF.Phi(), mu_wt);
+      hCheck[58]->Fill(sjhadAF.Phi(), mu_wt);
     
-    hCheck[62]->Fill(neutrinoAF.Pt(), mu_wt);
-    hCheck[63]->Fill(neutrinoAF.Phi(), mu_wt);
+      hCheck[62]->Fill(neutrinoAF.Pt(), mu_wt);
+      hCheck[63]->Fill(neutrinoAF.Phi(), mu_wt);
 
-    hCheck[66]->Fill(selector->Jets.size(), mu_wt);
-    hCheck[67]->Fill(selector->bJets.size(), mu_wt);
+      hCheck[66]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[67]->Fill(selector->bJets.size(), mu_wt);
   
-    hCheck[70]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
-    hCheck[72]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+      hCheck[70]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+      hCheck[72]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+    }else{
+      hCheck[1+fNBaseHists]->Fill(6.0);
+      hCheck[2+fNBaseHists]->Fill(6.0, mu_wt);
+      hCheck[5+fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[50+fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
+      hCheck[51+fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
+      hCheck[52+fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
+  
+      hCheck[56+fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
+      hCheck[56+fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
+      hCheck[56+fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
+      hCheck[56+fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
+
+      hCheck[57+fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
+      hCheck[57+fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
+      hCheck[57+fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
+      hCheck[57+fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
+
+      hCheck[58+fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
+      hCheck[58+fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
+      hCheck[58+fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
+      hCheck[58+fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
+    
+      hCheck[62+fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
+      hCheck[63+fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
+
+      hCheck[66+fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[67+fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+  
+      hCheck[70+fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+      hCheck[72+fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+    }
   }
 
+  if(ProcessKinFit((singleMu and muonNonIsoCut), false)){
+    if(!isLowMET){
+      hCheck[1+2*fNBaseHists]->Fill(6.0);
+      hCheck[2+2*fNBaseHists]->Fill(6.0, mu_wt);
+      hCheck[5+2*fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[50+2*fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
+      hCheck[51+2*fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
+      hCheck[52+2*fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
+  
+      hCheck[56+2*fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
+      hCheck[56+2*fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
+      hCheck[56+2*fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
+      hCheck[56+2*fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
+
+      hCheck[57+2*fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
+      hCheck[57+2*fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
+      hCheck[57+2*fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
+      hCheck[57+2*fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
+
+      hCheck[58+2*fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
+      hCheck[58+2*fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
+      hCheck[58+2*fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
+      hCheck[58+2*fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
+    
+      hCheck[62+2*fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
+      hCheck[63+2*fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
+
+      hCheck[66+2*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[67+2*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+  
+      hCheck[70+2*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+      hCheck[72+2*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+    }else{
+      hCheck[1+3*fNBaseHists]->Fill(6.0);
+      hCheck[2+3*fNBaseHists]->Fill(6.0, mu_wt);
+      hCheck[5+3*fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+      hCheck[50+3*fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
+      hCheck[51+3*fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
+      hCheck[52+3*fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
+  
+      hCheck[56+3*fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
+      hCheck[56+3*fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
+      hCheck[56+3*fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
+      hCheck[56+3*fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
+
+      hCheck[57+3*fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
+      hCheck[57+3*fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
+      hCheck[57+3*fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
+      hCheck[57+3*fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
+
+      hCheck[58+3*fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
+      hCheck[58+3*fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
+      hCheck[58+3*fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
+      hCheck[58+3*fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
+    
+      hCheck[62+3*fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
+      hCheck[63+3*fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
+
+      hCheck[66+3*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+      hCheck[67+3*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+  
+      hCheck[70+3*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+      hCheck[72+3*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+    }
+  }
+  
   if(ProcessKinFit(false, (singleEle and eleIsoCut))){
-    hCheck[3]->Fill(6.0);
-    hCheck[4]->Fill(6.0, ele_wt);
-    hCheck[53]->Fill(leptonAF.Pt(), ele_wt);
-    hCheck[54]->Fill(leptonAF.Eta(), ele_wt);
-    hCheck[55]->Fill(leptonAF.Phi(), ele_wt);
+    if(!isLowMET){
+      hCheck[3]->Fill(6.0);
+      hCheck[4]->Fill(6.0, ele_wt);
+      hCheck[53]->Fill(leptonAF.Pt(), ele_wt);
+      hCheck[54]->Fill(leptonAF.Eta(), ele_wt);
+      hCheck[55]->Fill(leptonAF.Phi(), ele_wt);
 
-    hCheck[59]->Fill(bjlepAF.Pt(), ele_wt);
-    hCheck[59]->Fill(bjhadAF.Pt(), ele_wt);
-    hCheck[59]->Fill(cjhadAF.Pt(), ele_wt);
-    hCheck[59]->Fill(sjhadAF.Pt(), ele_wt);
+      hCheck[59]->Fill(bjlepAF.Pt(), ele_wt);
+      hCheck[59]->Fill(bjhadAF.Pt(), ele_wt);
+      hCheck[59]->Fill(cjhadAF.Pt(), ele_wt);
+      hCheck[59]->Fill(sjhadAF.Pt(), ele_wt);
 
-    hCheck[60]->Fill(bjlepAF.Eta(), ele_wt);
-    hCheck[60]->Fill(bjhadAF.Eta(), ele_wt);
-    hCheck[60]->Fill(cjhadAF.Eta(), ele_wt);
-    hCheck[60]->Fill(sjhadAF.Eta(), ele_wt);
+      hCheck[60]->Fill(bjlepAF.Eta(), ele_wt);
+      hCheck[60]->Fill(bjhadAF.Eta(), ele_wt);
+      hCheck[60]->Fill(cjhadAF.Eta(), ele_wt);
+      hCheck[60]->Fill(sjhadAF.Eta(), ele_wt);
 
-    hCheck[61]->Fill(bjlepAF.Phi(), ele_wt);
-    hCheck[61]->Fill(bjhadAF.Phi(), ele_wt);
-    hCheck[61]->Fill(cjhadAF.Phi(), ele_wt);
-    hCheck[61]->Fill(sjhadAF.Phi(), ele_wt);
+      hCheck[61]->Fill(bjlepAF.Phi(), ele_wt);
+      hCheck[61]->Fill(bjhadAF.Phi(), ele_wt);
+      hCheck[61]->Fill(cjhadAF.Phi(), ele_wt);
+      hCheck[61]->Fill(sjhadAF.Phi(), ele_wt);
 
-    hCheck[64]->Fill(neutrinoAF.Pt(), ele_wt);
-    hCheck[65]->Fill(neutrinoAF.Phi(), ele_wt);
+      hCheck[64]->Fill(neutrinoAF.Pt(), ele_wt);
+      hCheck[65]->Fill(neutrinoAF.Phi(), ele_wt);
 
-    hCheck[68]->Fill(selector->Jets.size(), ele_wt);
-    hCheck[69]->Fill(selector->bJets.size(), ele_wt);    
+      hCheck[68]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[69]->Fill(selector->bJets.size(), ele_wt);    
 
-    hCheck[71]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
-    hCheck[73]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+      hCheck[71]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+      hCheck[73]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+    }else{
+      hCheck[3+fNBaseHists]->Fill(6.0);
+      hCheck[4+fNBaseHists]->Fill(6.0, ele_wt);
+      hCheck[53+fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
+      hCheck[54+fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
+      hCheck[55+fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+
+      hCheck[59+fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
+      hCheck[59+fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
+      hCheck[59+fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
+      hCheck[59+fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+
+      hCheck[60+fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
+      hCheck[60+fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
+      hCheck[60+fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
+      hCheck[60+fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+
+      hCheck[61+fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
+      hCheck[61+fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
+      hCheck[61+fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
+      hCheck[61+fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+
+      hCheck[64+fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
+      hCheck[65+fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+
+      hCheck[68+fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[69+fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+
+      hCheck[71+fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+      hCheck[73+fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+    }
+  }
+
+  if(ProcessKinFit(false, (singleEle and eleNonIsoCut))){
+    if(!isLowMET){
+      hCheck[3+2*fNBaseHists]->Fill(6.0);
+      hCheck[4+2*fNBaseHists]->Fill(6.0, ele_wt);
+      hCheck[53+2*fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
+      hCheck[54+2*fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
+      hCheck[55+2*fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+
+      hCheck[59+2*fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
+      hCheck[59+2*fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
+      hCheck[59+2*fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
+      hCheck[59+2*fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+
+      hCheck[60+2*fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
+      hCheck[60+2*fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
+      hCheck[60+2*fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
+      hCheck[60+2*fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+
+      hCheck[61+2*fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
+      hCheck[61+2*fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
+      hCheck[61+2*fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
+      hCheck[61+2*fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+
+      hCheck[64+2*fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
+      hCheck[65+2*fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+
+      hCheck[68+2*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[69+2*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+
+      hCheck[71+2*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+      hCheck[73+2*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+    }else{
+      hCheck[3+3*fNBaseHists]->Fill(6.0);
+      hCheck[4+3*fNBaseHists]->Fill(6.0, ele_wt);
+      hCheck[53+3*fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
+      hCheck[54+3*fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
+      hCheck[55+3*fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+
+      hCheck[59+3*fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
+      hCheck[59+3*fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
+      hCheck[59+3*fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
+      hCheck[59+3*fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+
+      hCheck[60+3*fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
+      hCheck[60+3*fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
+      hCheck[60+3*fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
+      hCheck[60+3*fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+
+      hCheck[61+3*fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
+      hCheck[61+3*fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
+      hCheck[61+3*fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
+      hCheck[61+3*fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+
+      hCheck[64+3*fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
+      hCheck[65+3*fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+
+      hCheck[68+3*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+      hCheck[69+3*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+
+      hCheck[71+3*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+      hCheck[73+3*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+    }
   }
   
   // if(fProcessed%mod_num==0)
@@ -1424,6 +2004,396 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   return kTRUE;
 }
+
+// //_____________________________________________________________________________
+// Bool_t SkimAna::Process(Long64_t entry)
+// {
+//   // entry is the entry number in the current Tree
+  
+//   // to read complete event, call fChain->GetTree()->GetEntry(entry)
+//   // if(fMode.Contains("proof"))
+//   //   fChain->GetTree()->GetEntry(entry);  
+//   // else
+//   //   fChain->GetEntry(fProcessed);  
+  
+//   fChain->GetTree()->GetEntry(entry);  
+//   //fChain->GetEntry(entry);
+  
+//   //    fChain->GetEntry(fProcessed);  
+
+//   fProcessed++;
+//   fStatus++;
+  
+//   // OldMethod();
+
+//   _sampleWeight	 = 1.0;
+//   _prefireWeight = 1.0;
+//   _PUWeight	 = 1.0;
+//   _muEffWeight	 = 1.0;
+//   _eleEffWeight	 = 1.0;
+//   _bTagWeight	 = 1.0;
+//   _topPtReWeight = 1.0;
+
+//   int mod_num = 10000;
+
+//   if(fProcessed%mod_num==0){
+//     Info("Process","Processing : %lld(%lld) of number of events : %lld and total number of events : %.0lf, year : %s", 
+// 	 fProcessed, entry, fChain->GetEntries(), totEventsUS[fSampleType.Data()],evtPick->year.c_str());
+//   }
+  
+  
+//   // Set JEC syst
+//   if( !isData and (systType == kJECUp or systType == kJECDown)){
+//     jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+//   }
+  
+//   // //Clear selector vectors
+//   selector->clear_vectors();
+  
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 0");
+  
+//   // This is main method to process the objects read from tree
+//   evtPick->process_event(fBasePath.Data(), event, selector, 1.0); // here last argument 1.0 is weight applied to cutflow
+
+//   //Special case of Wjets and DY
+//   //if(!isNanoAOD and !isData and fSampleType.Contains("Wjets")){
+//   if(!isData and fSampleType.Contains("Wjets")){
+//     _local_evtWeight = ScaleLumiW(event->nLHEPart_) * luminosity/1000.;
+//     if(fProcessed%100000==0)
+//       Info("Process", "Wjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
+//   }
+  
+//   if(!isData and fSampleType.Contains("DYjetsM50")){
+//     _local_evtWeight = ScaleLumiZ(event->nLHEPart_) * luminosity/1000.;
+//     if(fProcessed%100000==0)
+//       Info("Notify", "DYjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
+//   }
+
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 1");
+ 
+
+//   // Sample weight 
+//   if(!isData)
+//     _sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
+
+//   // Access the prefire weight
+//   if(!isData){
+//     switch (systType) {
+//     case kPreFireUp:
+//       _prefireWeight = event->L1PreFiringWeight_Up_ ;
+//       break;
+//     case kPreFireDown:
+//       _prefireWeight = event->L1PreFiringWeight_Dn_ ;
+//       break;
+//     default:
+//       _prefireWeight = event->L1PreFiringWeight_Nom_ ;
+//       break;
+//     }  
+//   }
+
+//   // Access the PU weight
+//   if(!isData){
+//     _PUWeight = PUweighter->getWeight(event->nPUTrue_);
+//   }
+  
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 2");
+
+//   hCheck[6]->Fill(_sampleWeight);
+//   hCheck[7]->Fill(_PUWeight);
+//   hCheck[8]->Fill(_prefireWeight);
+//   //Event level or trigger level conditions will be placed in block below
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   //hCheck[1]->Fill(_PUWeight); //filled later;
+  
+//   if(evtPick->passTrigger_mu || evtPick->passTrigger_ele)
+//     hCheck[0]->Fill(0.0);
+//   if((evtPick->passTrigger_mu || evtPick->passTrigger_ele) && selector->isPVGood && evtPick->passFilter)
+//     hCheck[0]->Fill(1.0);
+  
+//   if(evtPick->passTrigger_mu){
+//     hCheck[1]->Fill(0.0);
+//     hCheck[2]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+//     hCheck[5]->Fill(0.0, _sampleWeight*_PUWeight);
+//   }
+  
+//   if(evtPick->passTrigger_mu and selector->isPVGood and evtPick->passFilter){
+//     hCheck[1]->Fill(1.0);
+//     hCheck[2]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+//     hCheck[5]->Fill(1.0, _sampleWeight*_PUWeight);
+//   }
+  
+//   //elec
+//   if(evtPick->passTrigger_ele){
+//     hCheck[3]->Fill(0.0);
+//     hCheck[4]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
+//   }
+
+//   if(evtPick->passTrigger_ele and selector->isPVGood and evtPick->passFilter){
+//     hCheck[3]->Fill(1.0);
+//     hCheck[4]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+//   }
+  
+  
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 3");
+
+//   bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0);
+//   bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->Electrons.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 0 and selector->MuonsLoose.size() == 0);
+//   //////=====================================================
+//   if(!singleMu and !singleEle) return true;
+//   //////=====================================================
+
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 4");
+
+//   //Processes after single muon/electron selection will be placed in block below
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   if(!isData){
+//     if(singleMu) GetMuonEff(event->muPFRelIso_[selector->Muons.at(0)]);
+//     if(singleEle) GetElectronEff();
+//   }
+  
+//   hCheck[9]->Fill(_muEffWeight);
+//   hCheck[10]->Fill(_eleEffWeight);
+
+//   bool muonIsoCut = false;
+//   if(singleMu)
+//     muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] < 0.15) ? true : false; 
+  
+//   bool eleIsoCut = false;
+//   if(singleEle)
+//     eleIsoCut =  (
+//   		  (TMath::Abs(event->eleEta_[selector->Electrons.at(0)]) <= 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] < 0.0695) 
+//   		  or 
+//   		  (TMath::Abs(event->eleEta_[selector->Electrons.at(0)]) > 1.479 and  event->elePFRelIso_[selector->Electrons.at(0)] < 0.0821)
+//   		  ) ? true : false;
+
+//   if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
+//     hCheck[0]->Fill(2.0);
+  
+//   if(singleMu and muonIsoCut){
+//     hCheck[1]->Fill(2.0);
+//     hCheck[2]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+//     hCheck[5]->Fill(2.0, _sampleWeight*_PUWeight*_muEffWeight);
+//   }
+  
+//   //elec
+//   if(singleEle and eleIsoCut){
+//     hCheck[3]->Fill(2.0);
+//     hCheck[4]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+//   }
+  
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+//   //////=====================================================
+//   if(selector->Jets.size() < 4 ) return true;
+//   //////=====================================================
+
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 5");
+
+//   //Processes after njet >= 4 selection will be placed in block below
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+//   if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
+//     hCheck[0]->Fill(3.0);
+  
+//   if(singleMu and muonIsoCut){
+//     hCheck[1]->Fill(3.0);
+//     hCheck[2]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+//     hCheck[5]->Fill(3.0, _sampleWeight*_PUWeight*_muEffWeight);
+//   }
+  
+//   //elec
+//   if(singleEle and eleIsoCut){
+//     hCheck[3]->Fill(3.0);
+//     hCheck[4]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+//   }
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+//   METThreshold = 20. ;
+//   //////=====================================================
+//   if(selector->METPt < METThreshold ) return true;
+//   //////=====================================================
+
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 6");
+
+//   //Processes after MET selection will be placed in block below
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
+//     hCheck[0]->Fill(4.0);
+  
+//   if(singleMu and muonIsoCut){
+//     hCheck[1]->Fill(4.0);
+//     hCheck[2]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
+//     hCheck[5]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+//   }
+  
+//   //elec
+//   if(singleEle and eleIsoCut){
+//     hCheck[3]->Fill(4.0);
+//     hCheck[4]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
+//   }
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//   //////=====================================================
+//   if(selector->bJets.size() < 2 ) return true;
+//   //////=====================================================
+  
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 7");
+
+//   //Processes after nbjet >= 2 selection will be placed in block below
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   if(!isData){
+//     GetBtagSF_1a();
+//     //_topPtReWeight = topPtReweight();
+//     _topPtReWeight = 1.0;
+//   }
+//   switch (systType) {
+//   case kBTagbDown:
+//     hCheck[12]->Fill(_bTagWeight);
+//     break;      
+//   case kBTagbUp:
+//     hCheck[13]->Fill(_bTagWeight);
+//     break;
+//   case kBTaglDown:
+//     hCheck[14]->Fill(_bTagWeight);
+//     break;
+//   case kBTaglUp:
+//     hCheck[15]->Fill(_bTagWeight);
+//     break;
+//   default:
+//     hCheck[11]->Fill(_bTagWeight);
+//     break;
+//   }
+//   hCheck[74]->Fill(_topPtReWeight);
+  
+//   double mu_wt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight ;
+//   double ele_wt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight*_topPtReWeight ;
+  
+//   if((singleMu and muonIsoCut) or (singleEle and eleIsoCut))
+//     hCheck[0]->Fill(5.0);
+  
+//   if(singleMu and muonIsoCut){
+//     hCheck[1]->Fill(5.0);
+//     hCheck[2]->Fill(5.0, mu_wt);
+//     hCheck[5]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+//     hCheck[30]->Fill(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], mu_wt);
+//     hCheck[31]->Fill(event->muEta_[selector->Muons.at(0)], mu_wt);
+//     hCheck[32]->Fill(event->muPhi_[selector->Muons.at(0)], mu_wt);
+//     for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+//       int jetInd = selector->Jets.at(ijet);
+//       hCheck[36]->Fill(selector->JetsPtSmeared.at(ijet), mu_wt);
+//       hCheck[37]->Fill(event->jetEta_[jetInd], mu_wt);
+//       hCheck[38]->Fill(event->jetPhi_[jetInd], mu_wt);
+//     }
+//     hCheck[42]->Fill(selector->METPt, mu_wt);
+//     hCheck[43]->Fill(selector->METPhi, mu_wt);
+//     hCheck[46]->Fill(selector->Jets.size(), mu_wt);
+//     hCheck[47]->Fill(selector->bJets.size(), mu_wt);
+//   }
+  
+//   //elec
+//   if(singleEle and eleIsoCut){
+//     hCheck[3]->Fill(5.0);
+//     hCheck[4]->Fill(5.0, ele_wt);
+//     hCheck[33]->Fill(event->elePt_[selector->Electrons.at(0)], ele_wt);
+//     hCheck[34]->Fill(event->eleEta_[selector->Electrons.at(0)], ele_wt);
+//     hCheck[35]->Fill(event->elePhi_[selector->Electrons.at(0)], ele_wt);
+//     for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+//       int jetInd = selector->Jets.at(ijet);
+//       hCheck[39]->Fill(selector->JetsPtSmeared.at(ijet), ele_wt);
+//       hCheck[40]->Fill(event->jetEta_[jetInd], ele_wt);
+//       hCheck[41]->Fill(event->jetPhi_[jetInd], ele_wt);
+//     }
+//     hCheck[44]->Fill(selector->METPt, ele_wt);
+//     hCheck[45]->Fill(selector->METPhi, ele_wt);
+//     hCheck[48]->Fill(selector->Jets.size(), ele_wt);
+//     hCheck[49]->Fill(selector->bJets.size(), ele_wt);
+//   }
+
+
+//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  
+//   if(ProcessKinFit((singleMu and muonIsoCut), false)){
+
+//     hCheck[1]->Fill(6.0);
+//     hCheck[2]->Fill(6.0, mu_wt);
+//     hCheck[5]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+//     hCheck[50]->Fill(leptonAF.Pt(), mu_wt);
+//     hCheck[51]->Fill(leptonAF.Eta(), mu_wt);
+//     hCheck[52]->Fill(leptonAF.Phi(), mu_wt);
+  
+//     hCheck[56]->Fill(bjlepAF.Pt(), mu_wt);
+//     hCheck[56]->Fill(bjhadAF.Pt(), mu_wt);
+//     hCheck[56]->Fill(cjhadAF.Pt(), mu_wt);
+//     hCheck[56]->Fill(sjhadAF.Pt(), mu_wt);
+
+//     hCheck[57]->Fill(bjlepAF.Eta(), mu_wt);
+//     hCheck[57]->Fill(bjhadAF.Eta(), mu_wt);
+//     hCheck[57]->Fill(cjhadAF.Eta(), mu_wt);
+//     hCheck[57]->Fill(sjhadAF.Eta(), mu_wt);
+
+//     hCheck[58]->Fill(bjlepAF.Phi(), mu_wt);
+//     hCheck[58]->Fill(bjhadAF.Phi(), mu_wt);
+//     hCheck[58]->Fill(cjhadAF.Phi(), mu_wt);
+//     hCheck[58]->Fill(sjhadAF.Phi(), mu_wt);
+    
+//     hCheck[62]->Fill(neutrinoAF.Pt(), mu_wt);
+//     hCheck[63]->Fill(neutrinoAF.Phi(), mu_wt);
+
+//     hCheck[66]->Fill(selector->Jets.size(), mu_wt);
+//     hCheck[67]->Fill(selector->bJets.size(), mu_wt);
+  
+//     hCheck[70]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+//     hCheck[72]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+//   }
+
+//   if(ProcessKinFit(false, (singleEle and eleIsoCut))){
+//     hCheck[3]->Fill(6.0);
+//     hCheck[4]->Fill(6.0, ele_wt);
+//     hCheck[53]->Fill(leptonAF.Pt(), ele_wt);
+//     hCheck[54]->Fill(leptonAF.Eta(), ele_wt);
+//     hCheck[55]->Fill(leptonAF.Phi(), ele_wt);
+
+//     hCheck[59]->Fill(bjlepAF.Pt(), ele_wt);
+//     hCheck[59]->Fill(bjhadAF.Pt(), ele_wt);
+//     hCheck[59]->Fill(cjhadAF.Pt(), ele_wt);
+//     hCheck[59]->Fill(sjhadAF.Pt(), ele_wt);
+
+//     hCheck[60]->Fill(bjlepAF.Eta(), ele_wt);
+//     hCheck[60]->Fill(bjhadAF.Eta(), ele_wt);
+//     hCheck[60]->Fill(cjhadAF.Eta(), ele_wt);
+//     hCheck[60]->Fill(sjhadAF.Eta(), ele_wt);
+
+//     hCheck[61]->Fill(bjlepAF.Phi(), ele_wt);
+//     hCheck[61]->Fill(bjhadAF.Phi(), ele_wt);
+//     hCheck[61]->Fill(cjhadAF.Phi(), ele_wt);
+//     hCheck[61]->Fill(sjhadAF.Phi(), ele_wt);
+
+//     hCheck[64]->Fill(neutrinoAF.Pt(), ele_wt);
+//     hCheck[65]->Fill(neutrinoAF.Phi(), ele_wt);
+
+//     hCheck[68]->Fill(selector->Jets.size(), ele_wt);
+//     hCheck[69]->Fill(selector->bJets.size(), ele_wt);    
+
+//     hCheck[71]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+//     hCheck[73]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+//   }
+  
+//   // if(fProcessed%mod_num==0)
+//   //   Info("Process","Level 8");
+
+//   return kTRUE;
+// }
 //_____________________________________________________________________________
 bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 {
@@ -1483,34 +2453,34 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
       _nBJet++;
   }
   
-  _nMu = selector->Muons.size();
+  _nMu = selector->MuonsNoIso.size();
   _muPt->clear();
   _muEta->clear();
   _muPhi->clear();
   _muCharge->clear();
   if(isMuon){
-    lepVector.SetPtEtaPhiM( event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], 
-			    event->muEta_[selector->Muons.at(0)] , event->muPhi_[selector->Muons.at(0)], 
+    lepVector.SetPtEtaPhiM( event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], 
+			    event->muEta_[selector->MuonsNoIso.at(0)] , event->muPhi_[selector->MuonsNoIso.at(0)], 
 			    TDatabasePDG::Instance()->GetParticle(13)->Mass());
     
-    _muPt->push_back(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)]);
-    _muEta->push_back(event->muEta_[selector->Muons.at(0)]);
-    _muPhi->push_back(event->muPhi_[selector->Muons.at(0)]);
-    _muCharge->push_back(event->muCharge_[selector->Muons.at(0)]);
+    _muPt->push_back(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)]);
+    _muEta->push_back(event->muEta_[selector->MuonsNoIso.at(0)]);
+    _muPhi->push_back(event->muPhi_[selector->MuonsNoIso.at(0)]);
+    _muCharge->push_back(event->muCharge_[selector->MuonsNoIso.at(0)]);
   }
 
-  _nEle = selector->Electrons.size();
+  _nEle = selector->ElectronsNoIso.size();
   _elePt->clear();
   _eleEta->clear();
   _elePhi->clear();
   _eleCharge->clear();
   if(isEle){
-    lepVector.SetPtEtaPhiM( event->elePt_[selector->Electrons.at(0)], event->eleEta_[selector->Electrons.at(0)], 
-			    event->elePhi_[selector->Electrons.at(0)], TDatabasePDG::Instance()->GetParticle(11)->Mass());
-    _elePt->push_back(event->elePt_[selector->Electrons.at(0)]);
-    _eleEta->push_back(event->eleEta_[selector->Electrons.at(0)]);
-    _elePhi->push_back(event->elePhi_[selector->Electrons.at(0)]);
-    _eleCharge->push_back(event->eleCharge_[selector->Electrons.at(0)]);
+    lepVector.SetPtEtaPhiM( event->elePt_[selector->ElectronsNoIso.at(0)], event->eleEta_[selector->ElectronsNoIso.at(0)], 
+			    event->elePhi_[selector->ElectronsNoIso.at(0)], TDatabasePDG::Instance()->GetParticle(11)->Mass());
+    _elePt->push_back(event->elePt_[selector->ElectronsNoIso.at(0)]);
+    _eleEta->push_back(event->eleEta_[selector->ElectronsNoIso.at(0)]);
+    _elePhi->push_back(event->elePhi_[selector->ElectronsNoIso.at(0)]);
+    _eleCharge->push_back(event->eleCharge_[selector->ElectronsNoIso.at(0)]);
   }		    
   
 
@@ -1798,7 +2768,7 @@ void SkimAna::SlaveTerminate()
     
     fFile[ifile]->cd();
     
-    for(int icheck=0;icheck<(fNTestHist+fNSyst);icheck++)
+    for(int icheck=0;icheck<fNHists;icheck++)
       hCheck[icheck]->Write();
     
     printf("DataMu & ");
