@@ -230,7 +230,7 @@ class KinFit{
     unsigned int	GetJetID_CHad(unsigned int i)	{ return chad_id.at(i);}
     unsigned int	GetJetID_SHad(unsigned int i)	{ return shad_id.at(i);}
     /////////////////////////////////////////////////////////////////////////////
-
+    
     // The following are the additional getters
     /////////////////////////////////////////////////////////////////////////////
     TLorentzVector	GetLeptonUM(unsigned int i)	{ return leptonUM.at(i);}
@@ -264,9 +264,9 @@ class KinFit{
     
     struct PtDescending
     {
-      inline bool operator() (const TLorentzVector& vec1, const TLorentzVector& vec2)
+      inline bool operator() (const pair<unsigned int, TLorentzVector>& a, const pair<unsigned int, TLorentzVector>& b)
       {
-        return (vec1.Pt() > vec2.Pt());
+        return (a.second.Pt() > b.second.Pt());
       }
     };
 
@@ -1564,10 +1564,10 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("Nbiter"			, &_Nbiter			);
     outputTree->Branch("M_jj"			, &_M_jj			);
     outputTree->Branch("M_jjkF"			, &_M_jjkF			);
-    /* outputTree->Branch("bjlep_id"		, &_bjlep_id			); */
-    /* outputTree->Branch("bjhad_id"		, &_bjhad_id			); */
-    /* outputTree->Branch("cjhad_id"		, &_cjhad_id			); */
-    /* outputTree->Branch("sjhad_id"		, &_sjhad_id			); */
+    outputTree->Branch("bjlep_id"		, &_bjlep_id			);
+    outputTree->Branch("bjhad_id"		, &_bjhad_id			);
+    outputTree->Branch("cjhad_id"		, &_cjhad_id			);
+    outputTree->Branch("sjhad_id"		, &_sjhad_id			);
     outputTree->Branch("lepPt"			, &_lepPt			);
     outputTree->Branch("lepEta"			, &_lepEta			);
     outputTree->Branch("lepPhi"			, &_lepPhi			);
@@ -2791,6 +2791,8 @@ int KinFit::JetEnergyResolution(double eta, double& JERbase, double& JERdown, do
   return true;
 }
 
+
+
 bool KinFit::Fit(){
   
   bool				goodCombo = false, goodCombo_tlep = false, goodCombo_thad = false;
@@ -2798,9 +2800,11 @@ bool KinFit::Fit(){
   TMatrixD			ml(3,3), mn(3,3), mbl(3,3), mbh(3,3), mc(3,3), ms(3,3);
   double			resEt, resEta, resPhi;
   double			JERbase, JERdown, JERup;
-  std::vector<TLorentzVector>	ljetlist;
-  std::vector<TLorentzVector>	bjetlist;
-  std::map<unsigned int, unsigned int> list2jet;
+  /* std::vector<TLorentzVector>	ljetlist; */
+  /* std::vector<TLorentzVector>	bjetlist; */
+  vector<pair<unsigned int, TLorentzVector>>	ljetlist;
+  vector<pair<unsigned int, TLorentzVector>>	bjetlist;
+  //std::map<unsigned int, unsigned int> list2jet;
   //METzCalculator		metZ;
   TLorentzVector		METVector;
   double			reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
@@ -2828,16 +2832,19 @@ bool KinFit::Fit(){
   
   bjetlist.clear();
   ljetlist.clear();
-  list2jet.clear();
+  //list2jet.clear();
   int ib = 0, il = 0;
   for (unsigned int i = 0 ; i < jets.size() ; i++){
     if (btag[i] > btagThresh){ 
-      bjetlist.push_back(jets.at(i));
-      list2jet[ib] = i;
+      bjetlist.push_back(make_pair(i,jets.at(i)));
+      /* bjetlist.push_back(jets.at(i)); */
+      /* list2jet[ib] = i; */
       ib++;
     }else{
-      ljetlist.push_back(jets.at(i));
-      list2jet[il] = i;
+      ljetlist.push_back(make_pair(i,jets.at(i)));
+      //ljetlist[i] = jets.at(i);
+      /* ljetlist.push_back(jets.at(i)); */
+      /* list2jet[il] = i; */
       il++;
     }
   }
@@ -2846,7 +2853,7 @@ bool KinFit::Fit(){
     
     bjetlist.clear();
     ljetlist.clear();
-    list2jet.clear();
+    //list2jet.clear();
     
     return goodCombo;
   }
@@ -2854,344 +2861,352 @@ bool KinFit::Fit(){
   std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
   std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
   
-  /* cout<<"bjetlist--"<<endl; */
-  /* for (auto x : bjetlist)  */
-  /*   x.Print(); */
-  /* cout<<"ljetlist--"<<endl; */
-  /* for (auto x : ljetlist)  */
-  /*   x.Print(); */
+  /* for (auto x : bjetlist) */
+  /*   cout<<"bjet : "<<x.first<<", Pt : "<<x.second.Pt()<<endl; */
+  
+  /* for (auto x : ljetlist) */
+  /*   cout<<"ljet : "<<x.first<<", Pt : "<<x.second.Pt()<<endl; */
+  
+
+
+  //return goodCombo;
   
   int loop = 0;
-  for(unsigned int ib1 = 0 ; ib1 < bjetlist.size() ; ib1++){
-    for(unsigned int ib2 = 0 ; ib2 < bjetlist.size() ; ib2++){
-      if(bjetlist.at(ib1) == bjetlist.at(ib2)) continue;
-      for(unsigned int ij1 = 0 ; ij1 < ljetlist.size()-1 ; ij1++){
-	for (unsigned int ij2 = ij1+1 ; ij2 < ljetlist.size() ; ij2++){
-	  /* if(TMath::AreEqualAbs(_nu_pz,_nu_pz_other,1.e-7)) */
-	  /*   max_nu = 1; */
-	  /* else */
-	  /*   max_nu = 2; */
-	  max_nu = 1;
-	  for(unsigned int inu_root = 0 ; inu_root < max_nu ; inu_root++){
-	    //float nuz = (inu_root==0) ? _nu_pz : _nu_pz_other ;
+  /* for(unsigned int ib1 = 0 ; ib1 < bjetlist.size() ; ib1++){ */
+  /*   for(unsigned int ib2 = 0 ; ib2 < bjetlist.size() ; ib2++){ */
+  for (auto bj1 : bjetlist){
+    for (auto bj2 : bjetlist){
+      if(bj1.first == bj2.first) continue;
+      for (auto lj1 : ljetlist){
+	for (auto lj2 : ljetlist){
+	  if(lj1.first == lj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
+	  /* for(unsigned int ij1 = 0 ; ij1 < ljetlist.size()-1 ; ij1++){ */
+	  /* 	for (unsigned int ij2 = ij1+1 ; ij2 < ljetlist.size() ; ij2++){ */
+  	  /* if(TMath::AreEqualAbs(_nu_pz,_nu_pz_other,1.e-7)) */
+  	  /*   max_nu = 1; */
+  	  /* else */
+  	  /*   max_nu = 2; */
+  	  max_nu = 1;
+  	  for(unsigned int inu_root = 0 ; inu_root < max_nu ; inu_root++){
+  	    //float nuz = (inu_root==0) ? _nu_pz : _nu_pz_other ;
 	    
-	    //neutrino.SetXYZM(_nu_px, _nu_py, nuz, 0.0);
-	    neutrino.SetXYZM(_nu_px, _nu_py, 0.0, 0.0);
+  	    //neutrino.SetXYZM(_nu_px, _nu_py, nuz, 0.0);
+  	    neutrino.SetXYZM(_nu_px, _nu_py, 0.0, 0.0);
 	    
-	    bjlep = bjetlist.at(ib1);
-	    bjhad = bjetlist.at(ib2);
-	    cjhad = ljetlist.at(ij1);
-	    sjhad = ljetlist.at(ij2);
+  	    bjlep = bj1.second;
+  	    bjhad = bj2.second;
+  	    cjhad = lj1.second;
+  	    sjhad = lj2.second;
 
-	    //bjlepbtag = btag.at(list2jet[ib1]);// bjhadbtag, cjhadbtag, sjhadbtag; 
+  	    //bjlepbtag = btag.at(list2jet[ib1]);// bjhadbtag, cjhadbtag, sjhadbtag;
 
-	    /* cout<<"loop " << loop++ << endl; */
-	    /* bjlep.Print(); */
-	    /* bjhad.Print(); */
-	    /* cjhad.Print(); */
-	    /* sjhad.Print(); */
-	    /* neutrino.Print(); */
-	    /* lepton.Print(); */
-	    /* cout <<"_nu_pz : " << _nu_pz << " _nu_pz_other : " << _nu_pz_other << endl; */
+  	    /* cout<<"loop " << loop++ << endl; */
+  	    /* bjlep.Print(); */
+  	    /* bjhad.Print(); */
+  	    /* cjhad.Print(); */
+  	    /* sjhad.Print(); */
+  	    /* neutrino.Print(); */
+  	    /* lepton.Print(); */
+  	    /* cout <<"_nu_pz : " << _nu_pz << " _nu_pz_other : " << _nu_pz_other << endl; */
 	    
-	    ml.Zero() ;  mn.Zero() ;  mbl.Zero() ;  mbh.Zero() ;  mc.Zero() ;  ms.Zero();
+  	    ml.Zero() ;  mn.Zero() ;  mbl.Zero() ;  mbh.Zero() ;  mc.Zero() ;  ms.Zero();
 	      
-	    // This is following covariance matrix setup is using CMS NOTE AN 2005/005.
-	    // ml(0,0) = ErrEt (lepton.Et(), lepton.Eta()); // et
-	    // ml(1,1) = ErrEta(lepton.Et(), lepton.Eta()); // eta
-	    // ml(2,2) = ErrPhi(lepton.Et(), lepton.Eta()); // phi
+  	    // This is following covariance matrix setup is using CMS NOTE AN 2005/005.
+  	    // ml(0,0) = ErrEt (lepton.Et(), lepton.Eta()); // et
+  	    // ml(1,1) = ErrEta(lepton.Et(), lepton.Eta()); // eta
+  	    // ml(2,2) = ErrPhi(lepton.Et(), lepton.Eta()); // phi
 	      
-	    // mn(0,0) = ErrEt (neutrino.Et(), neutrino.Eta()); // et
-	    // mn(1,1) = ErrEta(neutrino.Et(), neutrino.Eta()); // eta
-	    // mn(2,2) = ErrPhi(neutrino.Et(), neutrino.Eta()); // phi
+  	    // mn(0,0) = ErrEt (neutrino.Et(), neutrino.Eta()); // et
+  	    // mn(1,1) = ErrEta(neutrino.Et(), neutrino.Eta()); // eta
+  	    // mn(2,2) = ErrPhi(neutrino.Et(), neutrino.Eta()); // phi
 	      
-	    // mbl(0,0) = ErrEt (bjlep.Et(), bjlep.Eta()); // et
-	    // mbl(1,1) = ErrEta(bjlep.Et(), bjlep.Eta()); // eta
-	    // mbl(2,2) = ErrPhi(bjlep.Et(), bjlep.Eta()); // phi
+  	    // mbl(0,0) = ErrEt (bjlep.Et(), bjlep.Eta()); // et
+  	    // mbl(1,1) = ErrEta(bjlep.Et(), bjlep.Eta()); // eta
+  	    // mbl(2,2) = ErrPhi(bjlep.Et(), bjlep.Eta()); // phi
 	      
-	    // mbh(0,0) = ErrEt (bjhad.Et(), bjhad.Eta()); // et
-	    // mbh(1,1) = ErrEta(bjhad.Et(), bjhad.Eta()); // eta
-	    // mbh(2,2) = ErrPhi(bjhad.Et(), bjhad.Eta()); // phi
+  	    // mbh(0,0) = ErrEt (bjhad.Et(), bjhad.Eta()); // et
+  	    // mbh(1,1) = ErrEta(bjhad.Et(), bjhad.Eta()); // eta
+  	    // mbh(2,2) = ErrPhi(bjhad.Et(), bjhad.Eta()); // phi
 	      
-	    // mc(0,0) = ErrEt (cjhad.Et(), cjhad.Eta()); // et
-	    // mc(1,1) = ErrEta(cjhad.Et(), cjhad.Eta()); // eta
-	    // mc(2,2) = ErrPhi(cjhad.Et(), cjhad.Eta()); // phi
+  	    // mc(0,0) = ErrEt (cjhad.Et(), cjhad.Eta()); // et
+  	    // mc(1,1) = ErrEta(cjhad.Et(), cjhad.Eta()); // eta
+  	    // mc(2,2) = ErrPhi(cjhad.Et(), cjhad.Eta()); // phi
 	      
-	    // ms(0,0) = ErrEt (sjhad.Et(), sjhad.Eta()); // et
-	    // ms(1,1) = ErrEta(sjhad.Et(), sjhad.Eta()); // eta
-	    // ms(2,2) = ErrPhi(sjhad.Et(), sjhad.Eta()); // phi
+  	    // ms(0,0) = ErrEt (sjhad.Et(), sjhad.Eta()); // et
+  	    // ms(1,1) = ErrEta(sjhad.Et(), sjhad.Eta()); // eta
+  	    // ms(2,2) = ErrPhi(sjhad.Et(), sjhad.Eta()); // phi
 	    
-	    // This is following covariance matrix setup is using TopQuarkAnalysis/TopKinFitter
-	    if (leptonType != kElectron and leptonType != kMuon) continue;
+  	    // This is following covariance matrix setup is using TopQuarkAnalysis/TopKinFitter
+  	    if (leptonType != kElectron and leptonType != kMuon) continue;
 	    
-	    if(leptonType == kMuon)
-	      muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);	    
-	    if(leptonType == kElectron)
-	      elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
+  	    if(leptonType == kMuon)
+  	      muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
+  	    if(leptonType == kElectron)
+  	      elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 	    
-	    ml(0,0)	= TMath::Power(resEt, 2);	// et
-	    ml(1,1)	= TMath::Power(resEta, 2);	// eta
-	    ml(2,2)	= TMath::Power(resPhi, 2);	// phi
+  	    ml(0,0)	= TMath::Power(resEt, 2);	// et
+  	    ml(1,1)	= TMath::Power(resEta, 2);	// eta
+  	    ml(2,2)	= TMath::Power(resPhi, 2);	// phi
 	    
-	    reslepEta	= resEta ; 
-	    reslepPhi	= resPhi ; 
+  	    reslepEta	= resEta ;
+  	    reslepPhi	= resPhi ;
 	    
-	    metResolution(neutrino.Et(), resEt, resEta, resPhi);
-	    //resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
-	    resEta	= 9999.; // This is from miniAOD
-	    //Error in <TDecompLU::InvertLU>: matrix is singular, 1 diag elements < tolerance of 2.2204e-16
-	    mn(0,0)	= TMath::Power(resEt, 2); // et
-	    mn(1,1)	= TMath::Power(resEta, 2); // eta
-	    mn(2,2)	= TMath::Power(resPhi, 2); // eta
-	    /* cout <<"_nu Et : " << neutrino.Et()  */
-	    /* 	 << " _nu E : " << neutrino.E()  */
-	    /* 	 << " _nu Pt : " << neutrino.Pt()  */
-	    /* 	 << " _nu |P| : " << neutrino.Vect().Mag()  */
-	    /* 	 << endl; */
+  	    metResolution(neutrino.Et(), resEt, resEta, resPhi);
+  	    //resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
+  	    resEta	= 9999.; // This is from miniAOD
+  	    //Error in <TDecompLU::InvertLU>: matrix is singular, 1 diag elements < tolerance of 2.2204e-16
+  	    mn(0,0)	= TMath::Power(resEt, 2); // et
+  	    mn(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mn(2,2)	= TMath::Power(resPhi, 2); // eta
+  	    /* cout <<"_nu Et : " << neutrino.Et()  */
+  	    /* 	 << " _nu E : " << neutrino.E()  */
+  	    /* 	 << " _nu Pt : " << neutrino.Pt()  */
+  	    /* 	 << " _nu |P| : " << neutrino.Vect().Mag()  */
+  	    /* 	 << endl; */
 	    
-	    /* mn(0,0)	= 9999; // et */
-	    /* mn(1,1)	= 9999; // eta */
-	    /* mn(2,2)	= TMath::Power(0.54, 2); // phi */
-	    /* cout<<"Before fit====="<<endl; */
-	    /* mn.Print(); */
-	    /* cout<<"Before fit====="<<endl; */
+  	    /* mn(0,0)	= 9999; // et */
+  	    /* mn(1,1)	= 9999; // eta */
+  	    /* mn(2,2)	= TMath::Power(0.54, 2); // phi */
+  	    /* cout<<"Before fit====="<<endl; */
+  	    /* mn.Print(); */
+  	    /* cout<<"Before fit====="<<endl; */
 	    
-	    resneuEta	= resEta ; 
-	    resneuPhi	= resPhi ; 
+  	    resneuEta	= resEta ;
+  	    resneuPhi	= resPhi ;
 	    
-	    bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
-	    JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
-	    mbl(0,0)	= TMath::Power(resEt, 2); // et
-	    mbl(0,0)   *= TMath::Power(JERbase, 2);
-	    //mbl(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib1)), 2);
-	    mbl(1,1)	= TMath::Power(resEta, 2); // eta
-	    mbl(2,2)	= TMath::Power(resPhi, 2); // eta
+  	    bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
+  	    JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
+  	    mbl(0,0)	= TMath::Power(resEt, 2); // et
+  	    mbl(0,0)   *= TMath::Power(JERbase, 2);
+  	    //mbl(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib1)), 2);
+  	    mbl(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mbl(2,2)	= TMath::Power(resPhi, 2); // eta
 	    
-	    resbjlepEta = resEta ;
-	    resbjlepPhi = resPhi ; 
+  	    resbjlepEta = resEta ;
+  	    resbjlepPhi = resPhi ;
 	    
-	    bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
-	    JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
-	    mbh(0,0)	= TMath::Power(resEt, 2); // et
-	    mbh(0,0)   *= TMath::Power(JERbase, 2);
-	    //mbh(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib2)), 2);
-	    mbh(1,1)	= TMath::Power(resEta, 2); // eta
-	    mbh(2,2)	= TMath::Power(resPhi, 2); // eta	      
+  	    bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
+  	    JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
+  	    mbh(0,0)	= TMath::Power(resEt, 2); // et
+  	    mbh(0,0)   *= TMath::Power(JERbase, 2);
+  	    //mbh(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib2)), 2);
+  	    mbh(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mbh(2,2)	= TMath::Power(resPhi, 2); // eta
 
-	    resbjhadEta = resEta ; 
-	    resbjhadPhi = resPhi ;  
+  	    resbjhadEta = resEta ;
+  	    resbjhadPhi = resPhi ;
 	      
-	    udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
-	    JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
-	    mc(0,0)	= TMath::Power(resEt, 2); // et
-	    mc(0,0)    *= TMath::Power(JERbase, 2);
-	    //mc(0,0)    *= TMath::Power(jetsRes.at(ij1), 2);
-	    mc(1,1)	= TMath::Power(resEta, 2); // eta
-	    mc(2,2)	= TMath::Power(resPhi, 2); // eta	      
+  	    udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
+  	    JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
+  	    mc(0,0)	= TMath::Power(resEt, 2); // et
+  	    mc(0,0)    *= TMath::Power(JERbase, 2);
+  	    //mc(0,0)    *= TMath::Power(jetsRes.at(ij1), 2);
+  	    mc(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mc(2,2)	= TMath::Power(resPhi, 2); // eta
 
-	    rescjhadEta = resEta ;
-	    rescjhadPhi = resPhi ;
+  	    rescjhadEta = resEta ;
+  	    rescjhadPhi = resPhi ;
 	      
-	    udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
-	    JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
-	    ms(0,0)	= TMath::Power(resEt, 2); // et
-	    ms(0,0)    *= TMath::Power(JERbase, 2);
-	    //ms(0,0)    *= TMath::Power(jetsRes.at(ij2), 2);
-	    ms(1,1)	= TMath::Power(resEta, 2); // eta
-	    ms(2,2)	= TMath::Power(resPhi, 2); // eta	      
+  	    udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
+  	    JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
+  	    ms(0,0)	= TMath::Power(resEt, 2); // et
+  	    ms(0,0)    *= TMath::Power(JERbase, 2);
+  	    //ms(0,0)    *= TMath::Power(jetsRes.at(ij2), 2);
+  	    ms(1,1)	= TMath::Power(resEta, 2); // eta
+  	    ms(2,2)	= TMath::Power(resPhi, 2); // eta
 	    
-	    ressjhadEta = resEta ;
-	    ressjhadPhi = resPhi ; 
+  	    ressjhadEta = resEta ;
+  	    ressjhadPhi = resPhi ;
 	    
-	    // For collider setup (Et, eta. phi) setup is suggested in KinFit original document  
-	    TFitParticleEtEtaPhi *lep = new TFitParticleEtEtaPhi( "lep", "lep", &lepton,   &ml );
-	    TFitParticleEtEtaPhi *neu = new TFitParticleEtEtaPhi( "neu", "neu", &neutrino, &mn );
-	    /* TFitParticleEScaledMomDev *lep = new TFitParticleEScaledMomDev( "lep", "lep", &lepton,   &ml ); */
-	    /* TFitParticleEScaledMomDev *neu = new TFitParticleEScaledMomDev( "neu", "neu", &neutrino, &mn ); */
-	    TFitParticleEtEtaPhi *bl  = new TFitParticleEtEtaPhi( "bl",  "bl",  &bjlep,    &mbl );
-	    TFitParticleEtEtaPhi *bh  = new TFitParticleEtEtaPhi( "bh",  "bh",  &bjhad,    &mbh );
-	    TFitParticleEtEtaPhi *cj  = new TFitParticleEtEtaPhi( "cj",  "cj",  &cjhad,    &mc );
-	    TFitParticleEtEtaPhi *sj  = new TFitParticleEtEtaPhi( "sj",  "sj",  &sjhad,    &ms );
+  	    // For collider setup (Et, eta. phi) setup is suggested in KinFit original document
+  	    TFitParticleEtEtaPhi *lep = new TFitParticleEtEtaPhi( "lep", "lep", &lepton,   &ml );
+  	    TFitParticleEtEtaPhi *neu = new TFitParticleEtEtaPhi( "neu", "neu", &neutrino, &mn );
+  	    /* TFitParticleEScaledMomDev *lep = new TFitParticleEScaledMomDev( "lep", "lep", &lepton,   &ml ); */
+  	    /* TFitParticleEScaledMomDev *neu = new TFitParticleEScaledMomDev( "neu", "neu", &neutrino, &mn ); */
+  	    TFitParticleEtEtaPhi *bl  = new TFitParticleEtEtaPhi( "bl",  "bl",  &bjlep,    &mbl );
+  	    TFitParticleEtEtaPhi *bh  = new TFitParticleEtEtaPhi( "bh",  "bh",  &bjhad,    &mbh );
+  	    TFitParticleEtEtaPhi *cj  = new TFitParticleEtEtaPhi( "cj",  "cj",  &cjhad,    &mc );
+  	    TFitParticleEtEtaPhi *sj  = new TFitParticleEtEtaPhi( "sj",  "sj",  &sjhad,    &ms );
 	    
-	    //leptoniccally decayed top constrain
-	    TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
-	    ltop->addParticles1( lep, neu, bl );
-	    //hadronically decayed top constrain
-	    TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
-	    htop->addParticles1( bh, cj, sj );
+  	    //leptoniccally decayed top constrain
+  	    TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
+  	    ltop->addParticles1( lep, neu, bl );
+  	    //hadronically decayed top constrain
+  	    TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
+  	    htop->addParticles1( bh, cj, sj );
 	    
-	    TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.379); // Values set from PDG 2021 mW = 80.379
-	    lW->addParticles1( lep, neu);
+  	    TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.379); // Values set from PDG 2021 mW = 80.379
+  	    lW->addParticles1( lep, neu);
 
 	    
-	    /* TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.); */
-	    /* TFitConstraintEp *sumPyConstr_  = new TFitConstraintEp("SumPy",        "SumPy", nullptr, TFitConstraintEp::pY, 0.); */
-	    /* TFitConstraintEp *sumPzConstr_  = new TFitConstraintEp("SumPz",        "SumPz", nullptr, TFitConstraintEp::pZ, 0.); */
-	    /* TFitConstraintEp *sumEConstr_   = new TFitConstraintEp("SumE",        "SumE", nullptr, TFitConstraintEp::E, mTop+mTop); */
+  	    /* TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.); */
+  	    /* TFitConstraintEp *sumPyConstr_  = new TFitConstraintEp("SumPy",        "SumPy", nullptr, TFitConstraintEp::pY, 0.); */
+  	    /* TFitConstraintEp *sumPzConstr_  = new TFitConstraintEp("SumPz",        "SumPz", nullptr, TFitConstraintEp::pZ, 0.); */
+  	    /* TFitConstraintEp *sumEConstr_   = new TFitConstraintEp("SumE",        "SumE", nullptr, TFitConstraintEp::E, mTop+mTop); */
 
-	    /* sumPxConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
-	    /* sumPyConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
-	    /* sumPzConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
-	    /* sumEConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+  	    /* sumPxConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+  	    /* sumPyConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+  	    /* sumPzConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
+  	    /* sumEConstr_->addParticles(lep, neu, bl, bh, cj, sj); */
 
-	    /* sumPxConstr_->setConstraint( lepton.Px() + neutrino.Px() + bjlep.Px() + bjhad.Px() + cjhad.Px() + sjhad.Px() ); */
-	    /* sumPyConstr_->setConstraint( lepton.Py() + neutrino.Py() + bjlep.Py() + bjhad.Py() + cjhad.Py() + sjhad.Py() ); */
-	    /* sumPzConstr_->setConstraint( lepton.Pz() + neutrino.Pz() + bjlep.Pz() + bjhad.Pz() + cjhad.Pz() + sjhad.Pz() ); */
-	    /* sumEConstr_->setConstraint( lepton.E() + neutrino.E() + bjlep.E() + bjhad.E() + cjhad.E() + sjhad.E() ); */
+  	    /* sumPxConstr_->setConstraint( lepton.Px() + neutrino.Px() + bjlep.Px() + bjhad.Px() + cjhad.Px() + sjhad.Px() ); */
+  	    /* sumPyConstr_->setConstraint( lepton.Py() + neutrino.Py() + bjlep.Py() + bjhad.Py() + cjhad.Py() + sjhad.Py() ); */
+  	    /* sumPzConstr_->setConstraint( lepton.Pz() + neutrino.Pz() + bjlep.Pz() + bjhad.Pz() + cjhad.Pz() + sjhad.Pz() ); */
+  	    /* sumEConstr_->setConstraint( lepton.E() + neutrino.E() + bjlep.E() + bjhad.E() + cjhad.E() + sjhad.E() ); */
 	    
-	    TKinFitter* fitter = new TKinFitter("fitter", "fitter");
-	    fitter->addMeasParticle( lep );
-	    fitter->addMeasParticle( neu );
-	    fitter->addMeasParticle( bl );
-	    fitter->addMeasParticle( bh );
-	    fitter->addMeasParticle( cj );
-	    fitter->addMeasParticle( sj );
-	    fitter->addConstraint( ltop );
-	    fitter->addConstraint( htop );
-	    fitter->addConstraint( lW );
-	    /* fitter->addConstraint(sumPxConstr_); */
-	    /* fitter->addConstraint(sumPyConstr_); */
-	    /* fitter->addConstraint(sumPzConstr_); */
-	    /* fitter->addConstraint(sumEConstr_); */
+  	    TKinFitter* fitter = new TKinFitter("fitter", "fitter");
+  	    fitter->addMeasParticle( lep );
+  	    fitter->addMeasParticle( neu );
+  	    fitter->addMeasParticle( bl );
+  	    fitter->addMeasParticle( bh );
+  	    fitter->addMeasParticle( cj );
+  	    fitter->addMeasParticle( sj );
+  	    fitter->addConstraint( ltop );
+  	    fitter->addConstraint( htop );
+  	    fitter->addConstraint( lW );
+  	    /* fitter->addConstraint(sumPxConstr_); */
+  	    /* fitter->addConstraint(sumPyConstr_); */
+  	    /* fitter->addConstraint(sumPzConstr_); */
+  	    /* fitter->addConstraint(sumEConstr_); */
 
-	    TKinFitter* fitter_tlep = new TKinFitter("fitter_tlep", "fitter_tlep");
-	    fitter_tlep->addMeasParticle( lep );   fitter_tlep->addMeasParticle( neu );
-	    fitter_tlep->addMeasParticle( bl );	   fitter_tlep->addConstraint( ltop );
-	    fitter_tlep->addConstraint( lW );
+  	    TKinFitter* fitter_tlep = new TKinFitter("fitter_tlep", "fitter_tlep");
+  	    fitter_tlep->addMeasParticle( lep );   fitter_tlep->addMeasParticle( neu );
+  	    fitter_tlep->addMeasParticle( bl );	   fitter_tlep->addConstraint( ltop );
+  	    fitter_tlep->addConstraint( lW );
 	    
-	    TKinFitter* fitter_thad = new TKinFitter("fitter_thad", "fitter_thad");
-	    fitter_thad->addMeasParticle( bh );	   fitter_thad->addMeasParticle( cj );
+  	    TKinFitter* fitter_thad = new TKinFitter("fitter_thad", "fitter_thad");
+  	    fitter_thad->addMeasParticle( bh );	   fitter_thad->addMeasParticle( cj );
             fitter_thad->addMeasParticle( sj );	   fitter_thad->addConstraint( htop );
 
 	    
-	    // Tested with 2016 analysis
-	    fitter->setMaxNbIter( 500 );
-	    fitter->setMaxDeltaS( 5e-05 );
-	    fitter->setMaxF( 0.0001 );
-	    fitter->setVerbosity(0);
+  	    // Tested with 2016 analysis
+  	    fitter->setMaxNbIter( 500 );
+  	    fitter->setMaxDeltaS( 5e-05 );
+  	    fitter->setMaxF( 0.0001 );
+  	    fitter->setVerbosity(0);
 
-	    fitter_tlep->setMaxNbIter( 500 );   fitter_tlep->setMaxDeltaS( 5e-05 );
-	    fitter_tlep->setMaxF( 0.0001 );	fitter_tlep->setVerbosity(0);
+  	    fitter_tlep->setMaxNbIter( 500 );   fitter_tlep->setMaxDeltaS( 5e-05 );
+  	    fitter_tlep->setMaxF( 0.0001 );	fitter_tlep->setVerbosity(0);
 	    
-	    fitter_thad->setMaxNbIter( 500 );   fitter_thad->setMaxDeltaS( 5e-05 );
-	    fitter_thad->setMaxF( 0.0001 );	fitter_thad->setVerbosity(0);
-	    //print(fitter);
-	    fitter->fit();     fitter_tlep->fit();       fitter_thad->fit();
-	    //print(fitter);
+  	    fitter_thad->setMaxNbIter( 500 );   fitter_thad->setMaxDeltaS( 5e-05 );
+  	    fitter_thad->setMaxF( 0.0001 );	fitter_thad->setVerbosity(0);
+  	    //print(fitter);
+  	    fitter->fit();     fitter_tlep->fit();       fitter_thad->fit();
+  	    //print(fitter);
 	    
-	    /* cout<<"====== After fit"<<endl; */
-	    /* mn.Print(); */
-	    /* cout<<"====== After fit"<<endl; */
-	    /* cout<<endl; */
+  	    /* cout<<"====== After fit"<<endl; */
+  	    /* mn.Print(); */
+  	    /* cout<<"====== After fit"<<endl; */
+  	    /* cout<<endl; */
 
-	    /* if(fitter->getStatus()==0 and fitter->getS() < Chi2){ */
-	    /*   Chi2	 = fitter->getS() ; */
-	    /*   NDF	 = fitter->getNDF();  */
-	    /*   Nb_Iter	 = fitter->getNbIter(); */
-	    /*   blep_id	 = bjetlist.at(ib1) ;  */
-	    /*   bhad_id	 = bjetlist.at(ib2) ;  */
-	    /*   chad_id	 = ij1 ; */
-	    /*   shad_id	 = ij2 ; */
-	    /*   leptonUM	 = lepton ; */
-	    /*   neutrinoUM = neutrino ; */
-	    /*   bjlepUM	 = bjlep ; */
-	    /*   bjhadUM	 = bjhad ; */
-	    /*   cjhadUM	 = cjhad ; */
-	    /*   sjhadUM	 = sjhad ; */
-	    /*   leptonAF	 = *(fitter->get4Vec(0)); */
-	    /*   neutrinoAF = *(fitter->get4Vec(1)); */
-	    /*   bjlepAF	 = *(fitter->get4Vec(2)); */
-	    /*   bjhadAF	 = *(fitter->get4Vec(3)); */
-	    /*   cjhadAF	 = *(fitter->get4Vec(4)); */
-	    /*   sjhadAF	 = *(fitter->get4Vec(5)); */
-	    /*   goodCombo	 = true; */
-	    /* } */
+  	    /* if(fitter->getStatus()==0 and fitter->getS() < Chi2){ */
+  	    /*   Chi2	 = fitter->getS() ; */
+  	    /*   NDF	 = fitter->getNDF();  */
+  	    /*   Nb_Iter	 = fitter->getNbIter(); */
+  	    /*   blep_id	 = bjetlist.at(ib1) ;  */
+  	    /*   bhad_id	 = bjetlist.at(ib2) ;  */
+  	    /*   chad_id	 = ij1 ; */
+  	    /*   shad_id	 = ij2 ; */
+  	    /*   leptonUM	 = lepton ; */
+  	    /*   neutrinoUM = neutrino ; */
+  	    /*   bjlepUM	 = bjlep ; */
+  	    /*   bjhadUM	 = bjhad ; */
+  	    /*   cjhadUM	 = cjhad ; */
+  	    /*   sjhadUM	 = sjhad ; */
+  	    /*   leptonAF	 = *(fitter->get4Vec(0)); */
+  	    /*   neutrinoAF = *(fitter->get4Vec(1)); */
+  	    /*   bjlepAF	 = *(fitter->get4Vec(2)); */
+  	    /*   bjhadAF	 = *(fitter->get4Vec(3)); */
+  	    /*   cjhadAF	 = *(fitter->get4Vec(4)); */
+  	    /*   sjhadAF	 = *(fitter->get4Vec(5)); */
+  	    /*   goodCombo	 = true; */
+  	    /* } */
 
-	    if(fitter->getStatus()==0 and fitter_tlep->getStatus()==0 and fitter_thad->getStatus()==0){
+  	    if(fitter->getStatus()==0 and fitter_tlep->getStatus()==0 and fitter_thad->getStatus()==0){
 	      
-	      Chi2.push_back( fitter->getS() );
-	      NDF.push_back( fitter->getNDF() ); 
-	      Nb_Iter.push_back( fitter->getNbIter() );
-	      blep_id.push_back( list2jet[ib1] ); 
-	      bhad_id.push_back( list2jet[ib2] ); 
-	      chad_id.push_back( list2jet[ij1] );
-	      shad_id.push_back( list2jet[ij2] );
-	      leptonUM.push_back( lepton );
-	      neutrinoUM.push_back( neutrino );
-	      bjlepUM.push_back( bjlep );
-	      bjhadUM.push_back( bjhad );
-	      cjhadUM.push_back( cjhad );
-	      sjhadUM.push_back( sjhad );
-	      leptonAF.push_back( *(fitter->get4Vec(0)) );
-	      neutrinoAF.push_back( *(fitter->get4Vec(1)) );
-	      bjlepAF.push_back( *(fitter->get4Vec(2)) );
-	      bjhadAF.push_back( *(fitter->get4Vec(3)) );
-	      cjhadAF.push_back( *(fitter->get4Vec(4)) );
-	      sjhadAF.push_back( *(fitter->get4Vec(5)) );
-	      ReslepEta.push_back(reslepEta);
-	      ReslepPhi.push_back(reslepPhi);
-	      ResneuEta.push_back(resneuEta);
-	      ResneuPhi.push_back(resneuPhi);
-	      ResbjlepEta.push_back(resbjlepEta);
-	      ResbjlepPhi.push_back(resbjlepPhi);
-	      ResbjhadEta.push_back(resbjhadEta);
-	      ResbjhadPhi.push_back(resbjhadPhi);
-	      RescjhadEta.push_back(rescjhadEta);
-	      RescjhadPhi.push_back(rescjhadPhi);
-	      RessjhadEta.push_back(ressjhadEta);
-	      RessjhadPhi.push_back(ressjhadPhi); 
-	      goodCombo = true;
-	      nCombinations++ ;
+  	      Chi2.push_back( fitter->getS() );
+  	      NDF.push_back( fitter->getNDF() );
+  	      Nb_Iter.push_back( fitter->getNbIter() );
+  	      blep_id.push_back( bj1.first );
+  	      bhad_id.push_back( bj2.first );
+  	      chad_id.push_back( lj1.first );
+  	      shad_id.push_back( lj2.first );
+  	      leptonUM.push_back( lepton );
+  	      neutrinoUM.push_back( neutrino );
+  	      bjlepUM.push_back( bjlep );
+  	      bjhadUM.push_back( bjhad );
+  	      cjhadUM.push_back( cjhad );
+  	      sjhadUM.push_back( sjhad );
+  	      leptonAF.push_back( *(fitter->get4Vec(0)) );
+  	      neutrinoAF.push_back( *(fitter->get4Vec(1)) );
+  	      bjlepAF.push_back( *(fitter->get4Vec(2)) );
+  	      bjhadAF.push_back( *(fitter->get4Vec(3)) );
+  	      cjhadAF.push_back( *(fitter->get4Vec(4)) );
+  	      sjhadAF.push_back( *(fitter->get4Vec(5)) );
+  	      ReslepEta.push_back(reslepEta);
+  	      ReslepPhi.push_back(reslepPhi);
+  	      ResneuEta.push_back(resneuEta);
+  	      ResneuPhi.push_back(resneuPhi);
+  	      ResbjlepEta.push_back(resbjlepEta);
+  	      ResbjlepPhi.push_back(resbjlepPhi);
+  	      ResbjhadEta.push_back(resbjhadEta);
+  	      ResbjhadPhi.push_back(resbjhadPhi);
+  	      RescjhadEta.push_back(rescjhadEta);
+  	      RescjhadPhi.push_back(rescjhadPhi);
+  	      RessjhadEta.push_back(ressjhadEta);
+  	      RessjhadPhi.push_back(ressjhadPhi);
+  	      goodCombo = true;
+  	      nCombinations++ ;
 	      
-	      Chi2_tlep.push_back( fitter_tlep->getS() );
-	      leptonAF_tlep.push_back( *(fitter_tlep->get4Vec(0)) );
-	      neutrinoAF_tlep.push_back( *(fitter_tlep->get4Vec(1)) );
-	      bjlepAF_tlep.push_back( *(fitter_tlep->get4Vec(2)) );
-	      goodCombo_tlep = true;
-	      nCombinations_tlep++ ;
+  	      Chi2_tlep.push_back( fitter_tlep->getS() );
+  	      leptonAF_tlep.push_back( *(fitter_tlep->get4Vec(0)) );
+  	      neutrinoAF_tlep.push_back( *(fitter_tlep->get4Vec(1)) );
+  	      bjlepAF_tlep.push_back( *(fitter_tlep->get4Vec(2)) );
+  	      goodCombo_tlep = true;
+  	      nCombinations_tlep++ ;
 	      
-	      Chi2_thad.push_back( fitter_thad->getS() );
-	      bjhadAF_thad.push_back( *(fitter_thad->get4Vec(0)) );
-	      cjhadAF_thad.push_back( *(fitter_thad->get4Vec(1)) );
-	      sjhadAF_thad.push_back( *(fitter_thad->get4Vec(2)) );
-	      goodCombo_thad = true;
-	      nCombinations_thad++;
+  	      Chi2_thad.push_back( fitter_thad->getS() );
+  	      bjhadAF_thad.push_back( *(fitter_thad->get4Vec(0)) );
+  	      cjhadAF_thad.push_back( *(fitter_thad->get4Vec(1)) );
+  	      sjhadAF_thad.push_back( *(fitter_thad->get4Vec(2)) );
+  	      goodCombo_thad = true;
+  	      nCombinations_thad++;
 	      
-	    }
+  	    }
 	    
-	    /* if(fitter_tlep->getStatus()==0){ */
-	    /*   Chi2_tlep.push_back( fitter_tlep->getS() ); */
-	    /*   leptonAF_tlep.push_back( *(fitter_tlep->get4Vec(0)) ); */
-	    /*   neutrinoAF_tlep.push_back( *(fitter_tlep->get4Vec(1)) ); */
-	    /*   bjlepAF_tlep.push_back( *(fitter_tlep->get4Vec(2)) ); */
-	    /*   goodCombo_tlep = true; */
-	    /*   nCombinations_tlep++ ; */
-	    /* } */
+  	    /* if(fitter_tlep->getStatus()==0){ */
+  	    /*   Chi2_tlep.push_back( fitter_tlep->getS() ); */
+  	    /*   leptonAF_tlep.push_back( *(fitter_tlep->get4Vec(0)) ); */
+  	    /*   neutrinoAF_tlep.push_back( *(fitter_tlep->get4Vec(1)) ); */
+  	    /*   bjlepAF_tlep.push_back( *(fitter_tlep->get4Vec(2)) ); */
+  	    /*   goodCombo_tlep = true; */
+  	    /*   nCombinations_tlep++ ; */
+  	    /* } */
 
-	    /* if(fitter_thad->getStatus()==0){ */
-	    /*   Chi2_thad.push_back( fitter_thad->getS() ); */
-	    /*   bjhadAF_thad.push_back( *(fitter_thad->get4Vec(0)) ); */
-	    /*   cjhadAF_thad.push_back( *(fitter_thad->get4Vec(1)) ); */
-	    /*   sjhadAF_thad.push_back( *(fitter_thad->get4Vec(2)) ); */
-	    /*   goodCombo_thad = true; */
-	    /*   nCombinations_thad++; */
-	    /* } */
+  	    /* if(fitter_thad->getStatus()==0){ */
+  	    /*   Chi2_thad.push_back( fitter_thad->getS() ); */
+  	    /*   bjhadAF_thad.push_back( *(fitter_thad->get4Vec(0)) ); */
+  	    /*   cjhadAF_thad.push_back( *(fitter_thad->get4Vec(1)) ); */
+  	    /*   sjhadAF_thad.push_back( *(fitter_thad->get4Vec(2)) ); */
+  	    /*   goodCombo_thad = true; */
+  	    /*   nCombinations_thad++; */
+  	    /* } */
 	    
-	    delete lep;
-	    delete neu;
-	    delete bl;
-	    delete bh;
-	    delete cj;
-	    delete sj;
-	    delete ltop;
-	    delete htop;
-	    delete lW;
-	    delete fitter;
+  	    delete lep;
+  	    delete neu;
+  	    delete bl;
+  	    delete bh;
+  	    delete cj;
+  	    delete sj;
+  	    delete ltop;
+  	    delete htop;
+  	    delete lW;
+  	    delete fitter;
 	    
-	    delete fitter_tlep;	    delete fitter_thad;  
+  	    delete fitter_tlep;	    delete fitter_thad;
 	    
-	  }//inu_root
-	}//ijet 2 
+  	  }//inu_root
+  	}//ijet 2
       }//ijet 1
     }//bjet 2
   }//bjet 1
@@ -3200,7 +3215,7 @@ bool KinFit::Fit(){
   
   bjetlist.clear();
   ljetlist.clear();
-  list2jet.clear();
+  //list2jet.clear();
   
   /* bool combinedStatus = false; */
   /* if(goodCombo && goodCombo_tlep && goodCombo_thad) */

@@ -1734,13 +1734,11 @@ Bool_t SkimAna::Process(Long64_t entry)
       hCheck[49+3*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);
     }
   }
-
-
+  
+  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  
-  if(ProcessKinFit((singleMu and muonIsoCut), false)){
-    if(!isLowMET){
+  if(ProcessKinFit((singleMu and muonIsoCut), false) and !isLowMET){
       hCheck[1]->Fill(6.0);
       hCheck[2]->Fill(6.0, mu_wt);
       hCheck[5]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
@@ -1771,108 +1769,10 @@ Bool_t SkimAna::Process(Long64_t entry)
   
       hCheck[70]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
       hCheck[72]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
-    }else{
-      hCheck[1+fNBaseHists]->Fill(6.0);
-      hCheck[2+fNBaseHists]->Fill(6.0, mu_wt);
-      hCheck[5+fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
-      hCheck[50+fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
-      hCheck[51+fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
-      hCheck[52+fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
-  
-      hCheck[56+fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
-      hCheck[56+fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
-      hCheck[56+fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
-      hCheck[56+fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
-
-      hCheck[57+fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
-      hCheck[57+fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
-      hCheck[57+fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
-      hCheck[57+fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
-
-      hCheck[58+fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
-      hCheck[58+fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
-      hCheck[58+fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
-      hCheck[58+fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
-    
-      hCheck[62+fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
-      hCheck[63+fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
-
-      hCheck[66+fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
-      hCheck[67+fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
-  
-      hCheck[70+fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
-      hCheck[72+fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
-    }
-  }
-
-  if(ProcessKinFit((singleMu and muonNonIsoCut), false)){
-    if(!isLowMET){
-      hCheck[1+2*fNBaseHists]->Fill(6.0);
-      hCheck[2+2*fNBaseHists]->Fill(6.0, mu_wt);
-      hCheck[5+2*fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
-      hCheck[50+2*fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
-      hCheck[51+2*fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
-      hCheck[52+2*fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
-  
-      hCheck[56+2*fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
-      hCheck[56+2*fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
-      hCheck[56+2*fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
-      hCheck[56+2*fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
-
-      hCheck[57+2*fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
-      hCheck[57+2*fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
-      hCheck[57+2*fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
-      hCheck[57+2*fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
-
-      hCheck[58+2*fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
-      hCheck[58+2*fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
-      hCheck[58+2*fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
-      hCheck[58+2*fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
-    
-      hCheck[62+2*fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
-      hCheck[63+2*fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
-
-      hCheck[66+2*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
-      hCheck[67+2*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
-  
-      hCheck[70+2*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
-      hCheck[72+2*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
-    }else{
-      hCheck[1+3*fNBaseHists]->Fill(6.0);
-      hCheck[2+3*fNBaseHists]->Fill(6.0, mu_wt);
-      hCheck[5+3*fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
-      hCheck[50+3*fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
-      hCheck[51+3*fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
-      hCheck[52+3*fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
-  
-      hCheck[56+3*fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
-      hCheck[56+3*fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
-      hCheck[56+3*fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
-      hCheck[56+3*fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
-
-      hCheck[57+3*fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
-      hCheck[57+3*fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
-      hCheck[57+3*fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
-      hCheck[57+3*fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
-
-      hCheck[58+3*fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
-      hCheck[58+3*fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
-      hCheck[58+3*fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
-      hCheck[58+3*fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
-    
-      hCheck[62+3*fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
-      hCheck[63+3*fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
-
-      hCheck[66+3*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
-      hCheck[67+3*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
-  
-      hCheck[70+3*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
-      hCheck[72+3*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
-    }
   }
   
-  if(ProcessKinFit(false, (singleEle and eleIsoCut))){
-    if(!isLowMET){
+  if(ProcessKinFit(false, (singleEle and eleIsoCut)) and !isLowMET){
+    
       hCheck[3]->Fill(6.0);
       hCheck[4]->Fill(6.0, ele_wt);
       hCheck[53]->Fill(leptonAF.Pt(), ele_wt);
@@ -1902,102 +1802,267 @@ Bool_t SkimAna::Process(Long64_t entry)
 
       hCheck[71]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
       hCheck[73]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
-    }else{
-      hCheck[3+fNBaseHists]->Fill(6.0);
-      hCheck[4+fNBaseHists]->Fill(6.0, ele_wt);
-      hCheck[53+fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
-      hCheck[54+fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
-      hCheck[55+fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
-
-      hCheck[59+fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
-      hCheck[59+fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
-      hCheck[59+fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
-      hCheck[59+fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
-
-      hCheck[60+fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
-      hCheck[60+fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
-      hCheck[60+fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
-      hCheck[60+fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
-
-      hCheck[61+fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
-      hCheck[61+fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
-      hCheck[61+fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
-      hCheck[61+fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
-
-      hCheck[64+fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
-      hCheck[65+fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
-
-      hCheck[68+fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
-      hCheck[69+fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
-
-      hCheck[71+fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
-      hCheck[73+fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
     }
-  }
+  
+  // if(ProcessKinFit((singleMu and muonIsoCut), false)){
+  //   if(!isLowMET){
+  //     hCheck[1]->Fill(6.0);
+  //     hCheck[2]->Fill(6.0, mu_wt);
+  //     hCheck[5]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+  //     hCheck[50]->Fill(leptonAF.Pt(), mu_wt);
+  //     hCheck[51]->Fill(leptonAF.Eta(), mu_wt);
+  //     hCheck[52]->Fill(leptonAF.Phi(), mu_wt);
+  
+  //     hCheck[56]->Fill(bjlepAF.Pt(), mu_wt);
+  //     hCheck[56]->Fill(bjhadAF.Pt(), mu_wt);
+  //     hCheck[56]->Fill(cjhadAF.Pt(), mu_wt);
+  //     hCheck[56]->Fill(sjhadAF.Pt(), mu_wt);
 
-  if(ProcessKinFit(false, (singleEle and eleNonIsoCut))){
-    if(!isLowMET){
-      hCheck[3+2*fNBaseHists]->Fill(6.0);
-      hCheck[4+2*fNBaseHists]->Fill(6.0, ele_wt);
-      hCheck[53+2*fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
-      hCheck[54+2*fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
-      hCheck[55+2*fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+  //     hCheck[57]->Fill(bjlepAF.Eta(), mu_wt);
+  //     hCheck[57]->Fill(bjhadAF.Eta(), mu_wt);
+  //     hCheck[57]->Fill(cjhadAF.Eta(), mu_wt);
+  //     hCheck[57]->Fill(sjhadAF.Eta(), mu_wt);
 
-      hCheck[59+2*fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
-      hCheck[59+2*fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
-      hCheck[59+2*fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
-      hCheck[59+2*fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+  //     hCheck[58]->Fill(bjlepAF.Phi(), mu_wt);
+  //     hCheck[58]->Fill(bjhadAF.Phi(), mu_wt);
+  //     hCheck[58]->Fill(cjhadAF.Phi(), mu_wt);
+  //     hCheck[58]->Fill(sjhadAF.Phi(), mu_wt);
+    
+  //     hCheck[62]->Fill(neutrinoAF.Pt(), mu_wt);
+  //     hCheck[63]->Fill(neutrinoAF.Phi(), mu_wt);
 
-      hCheck[60+2*fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
-      hCheck[60+2*fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
-      hCheck[60+2*fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
-      hCheck[60+2*fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+  //     hCheck[66]->Fill(selector->Jets.size(), mu_wt);
+  //     hCheck[67]->Fill(selector->bJets.size(), mu_wt);
+  
+  //     hCheck[70]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+  //     hCheck[72]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+  //   }else{
+  //     hCheck[1+fNBaseHists]->Fill(6.0);
+  //     hCheck[2+fNBaseHists]->Fill(6.0, mu_wt);
+  //     hCheck[5+fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+  //     hCheck[50+fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
+  //     hCheck[51+fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
+  //     hCheck[52+fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
+  
+  //     hCheck[56+fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
+  //     hCheck[56+fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
+  //     hCheck[56+fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
+  //     hCheck[56+fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
 
-      hCheck[61+2*fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
-      hCheck[61+2*fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
-      hCheck[61+2*fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
-      hCheck[61+2*fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+  //     hCheck[57+fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
+  //     hCheck[57+fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
+  //     hCheck[57+fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
+  //     hCheck[57+fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
 
-      hCheck[64+2*fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
-      hCheck[65+2*fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+  //     hCheck[58+fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
+  //     hCheck[58+fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
+  //     hCheck[58+fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
+  //     hCheck[58+fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
+    
+  //     hCheck[62+fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
+  //     hCheck[63+fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
 
-      hCheck[68+2*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
-      hCheck[69+2*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+  //     hCheck[66+fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+  //     hCheck[67+fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+  
+  //     hCheck[70+fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+  //     hCheck[72+fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+  //   }
+  // }
 
-      hCheck[71+2*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
-      hCheck[73+2*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
-    }else{
-      hCheck[3+3*fNBaseHists]->Fill(6.0);
-      hCheck[4+3*fNBaseHists]->Fill(6.0, ele_wt);
-      hCheck[53+3*fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
-      hCheck[54+3*fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
-      hCheck[55+3*fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+  // if(ProcessKinFit((singleMu and muonNonIsoCut), false)){
+  //   if(!isLowMET){
+  //     hCheck[1+2*fNBaseHists]->Fill(6.0);
+  //     hCheck[2+2*fNBaseHists]->Fill(6.0, mu_wt);
+  //     hCheck[5+2*fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+  //     hCheck[50+2*fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
+  //     hCheck[51+2*fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
+  //     hCheck[52+2*fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
+  
+  //     hCheck[56+2*fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
+  //     hCheck[56+2*fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
+  //     hCheck[56+2*fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
+  //     hCheck[56+2*fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
 
-      hCheck[59+3*fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
-      hCheck[59+3*fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
-      hCheck[59+3*fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
-      hCheck[59+3*fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+  //     hCheck[57+2*fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
+  //     hCheck[57+2*fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
+  //     hCheck[57+2*fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
+  //     hCheck[57+2*fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
 
-      hCheck[60+3*fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
-      hCheck[60+3*fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
-      hCheck[60+3*fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
-      hCheck[60+3*fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+  //     hCheck[58+2*fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
+  //     hCheck[58+2*fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
+  //     hCheck[58+2*fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
+  //     hCheck[58+2*fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
+    
+  //     hCheck[62+2*fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
+  //     hCheck[63+2*fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
 
-      hCheck[61+3*fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
-      hCheck[61+3*fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
-      hCheck[61+3*fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
-      hCheck[61+3*fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+  //     hCheck[66+2*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+  //     hCheck[67+2*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+  
+  //     hCheck[70+2*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+  //     hCheck[72+2*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+  //   }else{
+  //     hCheck[1+3*fNBaseHists]->Fill(6.0);
+  //     hCheck[2+3*fNBaseHists]->Fill(6.0, mu_wt);
+  //     hCheck[5+3*fNBaseHists]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
+  //     hCheck[50+3*fNBaseHists]->Fill(leptonAF.Pt(), mu_wt);
+  //     hCheck[51+3*fNBaseHists]->Fill(leptonAF.Eta(), mu_wt);
+  //     hCheck[52+3*fNBaseHists]->Fill(leptonAF.Phi(), mu_wt);
+  
+  //     hCheck[56+3*fNBaseHists]->Fill(bjlepAF.Pt(), mu_wt);
+  //     hCheck[56+3*fNBaseHists]->Fill(bjhadAF.Pt(), mu_wt);
+  //     hCheck[56+3*fNBaseHists]->Fill(cjhadAF.Pt(), mu_wt);
+  //     hCheck[56+3*fNBaseHists]->Fill(sjhadAF.Pt(), mu_wt);
 
-      hCheck[64+3*fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
-      hCheck[65+3*fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+  //     hCheck[57+3*fNBaseHists]->Fill(bjlepAF.Eta(), mu_wt);
+  //     hCheck[57+3*fNBaseHists]->Fill(bjhadAF.Eta(), mu_wt);
+  //     hCheck[57+3*fNBaseHists]->Fill(cjhadAF.Eta(), mu_wt);
+  //     hCheck[57+3*fNBaseHists]->Fill(sjhadAF.Eta(), mu_wt);
 
-      hCheck[68+3*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
-      hCheck[69+3*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+  //     hCheck[58+3*fNBaseHists]->Fill(bjlepAF.Phi(), mu_wt);
+  //     hCheck[58+3*fNBaseHists]->Fill(bjhadAF.Phi(), mu_wt);
+  //     hCheck[58+3*fNBaseHists]->Fill(cjhadAF.Phi(), mu_wt);
+  //     hCheck[58+3*fNBaseHists]->Fill(sjhadAF.Phi(), mu_wt);
+    
+  //     hCheck[62+3*fNBaseHists]->Fill(neutrinoAF.Pt(), mu_wt);
+  //     hCheck[63+3*fNBaseHists]->Fill(neutrinoAF.Phi(), mu_wt);
 
-      hCheck[71+3*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
-      hCheck[73+3*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
-    }
-  }
+  //     hCheck[66+3*fNBaseHists]->Fill(selector->Jets.size(), mu_wt);
+  //     hCheck[67+3*fNBaseHists]->Fill(selector->bJets.size(), mu_wt);
+  
+  //     hCheck[70+3*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), mu_wt);
+  //     hCheck[72+3*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), mu_wt);
+  //   }
+  // }
+  
+  // if(ProcessKinFit(false, (singleEle and eleIsoCut))){
+  //   if(!isLowMET){
+  //     hCheck[3]->Fill(6.0);
+  //     hCheck[4]->Fill(6.0, ele_wt);
+  //     hCheck[53]->Fill(leptonAF.Pt(), ele_wt);
+  //     hCheck[54]->Fill(leptonAF.Eta(), ele_wt);
+  //     hCheck[55]->Fill(leptonAF.Phi(), ele_wt);
+
+  //     hCheck[59]->Fill(bjlepAF.Pt(), ele_wt);
+  //     hCheck[59]->Fill(bjhadAF.Pt(), ele_wt);
+  //     hCheck[59]->Fill(cjhadAF.Pt(), ele_wt);
+  //     hCheck[59]->Fill(sjhadAF.Pt(), ele_wt);
+
+  //     hCheck[60]->Fill(bjlepAF.Eta(), ele_wt);
+  //     hCheck[60]->Fill(bjhadAF.Eta(), ele_wt);
+  //     hCheck[60]->Fill(cjhadAF.Eta(), ele_wt);
+  //     hCheck[60]->Fill(sjhadAF.Eta(), ele_wt);
+
+  //     hCheck[61]->Fill(bjlepAF.Phi(), ele_wt);
+  //     hCheck[61]->Fill(bjhadAF.Phi(), ele_wt);
+  //     hCheck[61]->Fill(cjhadAF.Phi(), ele_wt);
+  //     hCheck[61]->Fill(sjhadAF.Phi(), ele_wt);
+
+  //     hCheck[64]->Fill(neutrinoAF.Pt(), ele_wt);
+  //     hCheck[65]->Fill(neutrinoAF.Phi(), ele_wt);
+
+  //     hCheck[68]->Fill(selector->Jets.size(), ele_wt);
+  //     hCheck[69]->Fill(selector->bJets.size(), ele_wt);    
+
+  //     hCheck[71]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+  //     hCheck[73]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+  //   }else{
+  //     hCheck[3+fNBaseHists]->Fill(6.0);
+  //     hCheck[4+fNBaseHists]->Fill(6.0, ele_wt);
+  //     hCheck[53+fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
+  //     hCheck[54+fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
+  //     hCheck[55+fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+
+  //     hCheck[59+fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
+  //     hCheck[59+fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
+  //     hCheck[59+fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
+  //     hCheck[59+fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+
+  //     hCheck[60+fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
+  //     hCheck[60+fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
+  //     hCheck[60+fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
+  //     hCheck[60+fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+
+  //     hCheck[61+fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
+  //     hCheck[61+fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
+  //     hCheck[61+fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
+  //     hCheck[61+fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+
+  //     hCheck[64+fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
+  //     hCheck[65+fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+
+  //     hCheck[68+fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+  //     hCheck[69+fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+
+  //     hCheck[71+fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+  //     hCheck[73+fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+  //   }
+  // }
+
+  // if(ProcessKinFit(false, (singleEle and eleNonIsoCut))){
+  //   if(!isLowMET){
+  //     hCheck[3+2*fNBaseHists]->Fill(6.0);
+  //     hCheck[4+2*fNBaseHists]->Fill(6.0, ele_wt);
+  //     hCheck[53+2*fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
+  //     hCheck[54+2*fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
+  //     hCheck[55+2*fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+
+  //     hCheck[59+2*fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
+  //     hCheck[59+2*fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
+  //     hCheck[59+2*fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
+  //     hCheck[59+2*fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+
+  //     hCheck[60+2*fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
+  //     hCheck[60+2*fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
+  //     hCheck[60+2*fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
+  //     hCheck[60+2*fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+
+  //     hCheck[61+2*fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
+  //     hCheck[61+2*fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
+  //     hCheck[61+2*fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
+  //     hCheck[61+2*fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+
+  //     hCheck[64+2*fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
+  //     hCheck[65+2*fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+
+  //     hCheck[68+2*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+  //     hCheck[69+2*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+
+  //     hCheck[71+2*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+  //     hCheck[73+2*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+  //   }else{
+  //     hCheck[3+3*fNBaseHists]->Fill(6.0);
+  //     hCheck[4+3*fNBaseHists]->Fill(6.0, ele_wt);
+  //     hCheck[53+3*fNBaseHists]->Fill(leptonAF.Pt(), ele_wt);
+  //     hCheck[54+3*fNBaseHists]->Fill(leptonAF.Eta(), ele_wt);
+  //     hCheck[55+3*fNBaseHists]->Fill(leptonAF.Phi(), ele_wt);
+
+  //     hCheck[59+3*fNBaseHists]->Fill(bjlepAF.Pt(), ele_wt);
+  //     hCheck[59+3*fNBaseHists]->Fill(bjhadAF.Pt(), ele_wt);
+  //     hCheck[59+3*fNBaseHists]->Fill(cjhadAF.Pt(), ele_wt);
+  //     hCheck[59+3*fNBaseHists]->Fill(sjhadAF.Pt(), ele_wt);
+
+  //     hCheck[60+3*fNBaseHists]->Fill(bjlepAF.Eta(), ele_wt);
+  //     hCheck[60+3*fNBaseHists]->Fill(bjhadAF.Eta(), ele_wt);
+  //     hCheck[60+3*fNBaseHists]->Fill(cjhadAF.Eta(), ele_wt);
+  //     hCheck[60+3*fNBaseHists]->Fill(sjhadAF.Eta(), ele_wt);
+
+  //     hCheck[61+3*fNBaseHists]->Fill(bjlepAF.Phi(), ele_wt);
+  //     hCheck[61+3*fNBaseHists]->Fill(bjhadAF.Phi(), ele_wt);
+  //     hCheck[61+3*fNBaseHists]->Fill(cjhadAF.Phi(), ele_wt);
+  //     hCheck[61+3*fNBaseHists]->Fill(sjhadAF.Phi(), ele_wt);
+
+  //     hCheck[64+3*fNBaseHists]->Fill(neutrinoAF.Pt(), ele_wt);
+  //     hCheck[65+3*fNBaseHists]->Fill(neutrinoAF.Phi(), ele_wt);
+
+  //     hCheck[68+3*fNBaseHists]->Fill(selector->Jets.size(), ele_wt);
+  //     hCheck[69+3*fNBaseHists]->Fill(selector->bJets.size(), ele_wt);    
+
+  //     hCheck[71+3*fNBaseHists]->Fill((cjhadAF+sjhadAF).M(), ele_wt);
+  //     hCheck[73+3*fNBaseHists]->Fill((cjhadBF+sjhadBF).M(), ele_wt);
+  //   }
+  // }
   
   // if(fProcessed%mod_num==0)
   //   Info("Process","Level 8");
@@ -2691,11 +2756,15 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	  _rescjhadPhi		= x.rescjhadPhi ; 
 	  _ressjhadEta		= x.ressjhadEta ; 
 	  _ressjhadPhi		= x.ressjhadPhi ; 
-	  _bjlepDeepCSV		= event->jetBtagDeepB_[x.bjlep_id] ;
-	  _bjhadDeepCSV		= event->jetBtagDeepB_[x.bjhad_id] ; 
-	  _cjhadDeepCSV		= event->jetBtagDeepB_[x.cjhad_id] ;  
-	  _sjhadDeepCSV		= event->jetBtagDeepB_[x.sjhad_id] ;
-	  
+	  _bjlepDeepCSV		= jetBtagVectors[x.bjlep_id] ;
+	  _bjhadDeepCSV		= jetBtagVectors[x.bjhad_id] ; 
+	  _cjhadDeepCSV		= jetBtagVectors[x.cjhad_id] ;  
+	  _sjhadDeepCSV		= jetBtagVectors[x.sjhad_id] ;
+	  _bjlep_id		= x.bjlep_id ;
+	  _bjhad_id		= x.bjhad_id ;
+	  _cjhad_id		= x.cjhad_id ;
+	  _sjhad_id		= x.sjhad_id ;
+		      
 	  //Fill for non-negative chi2
 	  outputTree->Fill();
 	}//DeltaR and pt cuts
@@ -2903,7 +2972,9 @@ bool SkimAna::ExecSerial(const char* infile)
   tree->GetEntry(0);
   Notify();
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20 ; ientry++){
+    //cout<<"Processing event "<<ientry<<endl;
     Process(ientry);
   }
   SlaveTerminate();

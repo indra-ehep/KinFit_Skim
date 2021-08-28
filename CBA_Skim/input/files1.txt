@@ -1,1 +1,1 @@
-/home/indra/temp/lxplus_test/flab/Data_SingleEle_e_Skim_NanoAOD_6of12.root
+/Data/root_files/AOD_files/NanoAOD_framework/Skim/2016/TTbarPowheg_Semilept_Skim_NanoAOD_1of21.root
