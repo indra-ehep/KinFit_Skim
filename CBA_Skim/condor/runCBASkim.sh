@@ -32,7 +32,7 @@ syst=$5
 
 #time root -l -b -q run.C\(\""sample=${sample}|year=${year}|input=${input}|index=${index}|syst=${syst}|aod=nano|run=prod"\"\)
 
-time ./SkimAna $1 $2 $3 $4 $5
+time ./SkimAna $sample $year $input $index $syst
 
 printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
