@@ -25,7 +25,11 @@
 #include <vector>
 #include <iostream>
 #include <map>
-
+#include <algorithm>
+#include <ctime>
+#include <iomanip>
+#include <cmath>
+#include <stdexcept>
 
 #include "interface/PUReweight.h"
 #include "interface/EventTree.h"
@@ -33,6 +37,7 @@
 #include "interface/EventPick.h"
 #include "interface/ScaleFactorFunction.h"
 #include "interface/JECvariation.h"
+#include "interface/UncertaintySourcesList.h"
 #include "interface/muSF_reader.h"
 #include "interface/eleSF_reader.h"
 #include "interface/BTagCalibrationStandalone.h"
@@ -689,9 +694,16 @@ class SkimAna : public TSelector {
 
    ////////////////////////////////////////////////////////
    // Histogram for checking
-   int fNHists ; 
-   int fNBaseHists ;
-   TH1D           **hCheck;//
+   int fNBCFHists ;
+   int fNCFHists ; 
+   TH1D           **hCutFlow;//
+   int fNBWtHists ; 
+   int fNWtHists;
+   TH1D           **histWt;//
+   int fNBObHists ; 
+   int fNObHists ;
+   TH1D           **histObs;//
+
    TH1F           *hMinChi2_mu,  *h2MinChi2_mu, *h3MinChi2_mu, *h4MinChi2_mu, *h5MinChi2_mu;
    TH1F           *hMinChi2_ele,  *h2MinChi2_ele, *h3MinChi2_ele, *h4MinChi2_ele, *h5MinChi2_ele;
    ////////////////////////////////////////////////////////
