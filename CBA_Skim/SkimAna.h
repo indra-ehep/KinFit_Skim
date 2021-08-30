@@ -771,7 +771,7 @@ class SkimAna : public TSelector {
    bool    ExecSerial(const char* infile);
    
    
-   ClassDef(SkimAna,2);
+   //ClassDef(SkimAna,2);
 
 };
 

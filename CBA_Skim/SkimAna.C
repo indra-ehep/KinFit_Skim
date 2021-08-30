@@ -20,6 +20,8 @@
 #include "TProof.h"
 
 
+//ClassImp(SkimAna)
+
 Int_t SkimAna::CreateHistoArrays()
 {
   // Create the histogram arrays
@@ -371,23 +373,23 @@ void SkimAna::SelectSyst()
     Info("SelectSyst","Syst : %s", fSyst.Data()); 
 
   } else if (fSyst == "eleeffdown") {
-
+    
     systType = kEleEffDown;
     eleeffvar012_g = 0;  
     Info("SelectSyst","Syst : %s", fSyst.Data()); 
-
+    
   } else if (fSyst == "jecup") {
-
+    
     systType = kJECUp;
     jecvar012_g = 2;      
     Info("SelectSyst","Syst : %s", fSyst.Data()); 
-
+    
   } else if (fSyst == "jecdown") {
-
+    
     systType = kJECDown;
     jecvar012_g = 0;      
     Info("SelectSyst","Syst : %s", fSyst.Data()); 
-
+    
   } else if (fSyst == "jerup") {
 
     systType = kJERUp;
@@ -4008,18 +4010,48 @@ bool SkimAna::ExecSerial(const char* infile)
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20 ; ientry++){
+    //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }
   SlaveTerminate();
-
+  
   fin->Close();
   delete fin;
 
   return true;
 }
 
-// int main()
-// {
-//   cout <<"Hello there " <<endl;
-//   return true;
-// }
+int main(int argc, char** argv)
+{
+  // year=$1
+  // sample=$2
+  // input=$3
+  // index=$4
+  // syst=$5
+
+  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod",argv[1],argv[2],argv[3],argv[4],argv[5]));
+
+  cout << "Input filename: " << argv[3] << endl;
+  ifstream fin(argv[3]);
+  int index = atoi(argv[4]);
+
+  string s;
+  int idx = 0;
+  TString inputfile = ""; 
+  while(getline(fin,s)){
+    //cout << s << endl;
+    if(idx==index){
+      inputfile = s.c_str();
+    }
+    idx++;
+  }
+  cout <<" Total files "<<idx<<endl; 
+  op += Form("|total=%d",idx);
+  
+  SkimAna *skim = new SkimAna();
+  skim->SetOption(op.Data());
+  skim->ExecSerial(inputfile.Data());
+  delete skim;
+  
+  return true;
+}

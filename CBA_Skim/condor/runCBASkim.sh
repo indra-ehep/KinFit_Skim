@@ -21,7 +21,7 @@ else
 fi
 tar --strip-components=1 -zxvf CBA_Skim.tar.gz
 #Run for Base, Signal region
-./complib.sh
+#./complib.sh
 echo "All arguements: "$@
 echo "Number of arguements: "$#
 year=$1
@@ -30,7 +30,9 @@ input=$3
 index=$4
 syst=$5
 
-time root -l -b -q run.C\(\""sample=${sample}|year=${year}|input=${input}|index=${index}|syst=${syst}|aod=nano|run=prod"\"\)
+#time root -l -b -q run.C\(\""sample=${sample}|year=${year}|input=${input}|index=${index}|syst=${syst}|aod=nano|run=prod"\"\)
+
+time ./SkimAna $1 $2 $3 $4 $5
 
 printf "Done Histogramming at ";/bin/date
 #---------------------------------------------

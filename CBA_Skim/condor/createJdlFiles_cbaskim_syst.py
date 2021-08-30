@@ -9,24 +9,30 @@ import time
 # samples_2016 = ["HplusM120", "DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
 # samples_2017 = ["DataEle", "DataMu", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
 # samples_2018 = ["DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
-samples_2016 = ["HplusM120", "DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-samples_2017 = ["DataEle", "DataMu", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-samples_2018 = ["DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
+# samples_2016 = ["HplusM120", "DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
+# samples_2017 = ["DataEle", "DataMu", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
+# samples_2018 = ["DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
+samples_2016 = ["HplusM120", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
+samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
+samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
 # syst_2016 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
 # syst_2017 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
 # syst_2018 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown"]
-syst_2016 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
-syst_2017 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
-syst_2018 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown"]
+# syst_2016 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
+# syst_2017 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
+# syst_2018 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown"]
+syst_2016 = ["jecup", "jecdown"]
+syst_2017 = ["jecup", "jecdown"]
+syst_2018 = ["jecup", "jecdown"]
 
-if not os.path.exists("tmpSubSyst/log"):
-    os.makedirs("tmpSubSyst/log")
+if not os.path.exists("tmpSubSyst1/log"):
+    os.makedirs("tmpSubSyst1/log")
 condorLogDir = "log"
-tarFile = "tmpSubSyst/CBA_Skim.tar.gz"
+tarFile = "tmpSubSyst1/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmpSubSyst/")
+os.system("cp runCBASkim.sh tmpSubSyst1/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -44,11 +50,11 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmpSubSyst/condorSubmit.sh','w')
+subFile = open('tmpSubSyst1/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmpSubSyst/%s'%jdlName,'w')
+    jdlFile = open('tmpSubSyst1/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
     condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst"
