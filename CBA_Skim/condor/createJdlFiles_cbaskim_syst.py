@@ -57,9 +57,9 @@ for year in [2016,2017,2018]:
     for sample in sampleList:
         
         if sample.find('Data') >=0:
-            systList = eval("syst_%i"%year)
-        else:
             systList = ["base"]
+        else:
+            systList = eval("syst_%i"%year)
             
         for syst in systList:
             noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,sample,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
