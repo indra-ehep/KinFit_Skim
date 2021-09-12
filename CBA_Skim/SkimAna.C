@@ -205,7 +205,7 @@ Int_t SkimAna::CreateHistoArrays()
 
   minHs = 6*fNBObHists ;
   for(int isyst=minHs;isyst<(minHs+fNBObHists);isyst++){
-    histObs[isyst] = (TH1D *)histObs[isyst-minHs]->Clone(Form("%s_q2fup",histObs[isyst-minHs]->GetName()));
+    histObs[isyst] = (TH1D *)histObs[isyst-minHs]->Clone(Form("%s_q2up",histObs[isyst-minHs]->GetName()));
     histObs[isyst]->SetTitle(Form("%s_q2up",histObs[isyst-minHs]->GetTitle()));
   }
 
