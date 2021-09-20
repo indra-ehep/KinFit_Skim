@@ -16,7 +16,7 @@ import time
 # samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
 # samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
 # samples_2016 = ["HplusM080", "HplusM090", "HplusM100", "HplusM140", "HplusM150", "HplusM155", "HplusM160", "MCQCDMu", "MCQCDEle"]
-samples_2016 = ["HplusM080", "HplusM090", "HplusM100", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
+samples_2016 = ["HplusM120"]
 samples_2017 = ["MCQCDMu", "MCQCDEle"]
 samples_2018 = ["MCQCDMu", "MCQCDEle"]
 
@@ -62,9 +62,9 @@ for year in [2016,2017,2018]:
     jdlFile = open('tmpSubSyst2/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst1"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
-    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst"
+    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst1"
     os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
     jdlFile.write("X=$(step)\n")
     
