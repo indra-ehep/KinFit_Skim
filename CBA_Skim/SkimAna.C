@@ -522,14 +522,46 @@ void SkimAna::SetTrio()
   //selector->QCDselect = true ;
   selector->DDselect = false ;
   selector->mu_RelIso_loose = 0.4;
-    
-  selector->mu_Pt_cut = 30.;
-  selector->mu_Eta_tight = 2.4;
-  selector->ele_Pt_cut = 35.;
-  selector->ele_Eta_cut = 2.4;
-  selector->jet_Pt_cut = 30.;
-  selector->jet_Eta_cut = 2.4;
+
+  // Cuts used for results presented at PAG dated August, 02, 2021
+  // selector->mu_Pt_cut = 30.;
+  // selector->mu_Eta_tight = 2.4;
+  // selector->ele_Pt_cut = 35.;
+  // selector->ele_Eta_cut = 2.4;
+  // selector->jet_Pt_cut = 30.;
+  // selector->jet_Eta_cut = 2.4;
   
+  if(fYear==2016){
+    
+    selector->mu_Pt_cut = 30.;
+    selector->mu_Eta_tight = 2.4;
+    selector->ele_Pt_cut = 35.;
+    selector->ele_Eta_cut = 2.4;
+    selector->jet_Pt_cut = 30.;
+    selector->jet_Eta_cut = 2.4;
+    
+    // selector->mu_Pt_cut = 26.;
+    // selector->mu_Eta_tight = 2.4;
+    // selector->ele_Pt_cut = 30.;
+    // selector->ele_Eta_cut = 2.4;
+    // selector->jet_Pt_cut = 25.;
+    // selector->jet_Eta_cut = 2.4;
+  }else if(fYear==2017){
+    selector->mu_Pt_cut = 30.;
+    selector->mu_Eta_tight = 2.4;
+    selector->ele_Pt_cut = 35.;
+    selector->ele_Eta_cut = 2.4;
+    selector->jet_Pt_cut = 25.;
+    selector->jet_Eta_cut = 2.4;
+  }else if(fYear==2018){
+    selector->mu_Pt_cut = 26.;
+    selector->mu_Eta_tight = 2.4;
+    selector->ele_Pt_cut = 35.;
+    selector->ele_Eta_cut = 2.4;
+    selector->jet_Pt_cut = 25.;
+    selector->jet_Eta_cut = 2.4;
+  }
+
   evtPick->year = Form("%d",fYear);
   evtPick->Njet_ge = 2;
   evtPick->NBjet_ge = 0;
@@ -1452,14 +1484,18 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
   //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0);
-  //bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
-  //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1);
-  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 );
-  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
+  
+  //The following setup is able to produce results presented in August-02 PAG
+  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
+  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
+  
+  // bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
+  // bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
+  
   //////=====================================================
   if(!singleMu and !singleEle) return true;
   //////=====================================================
-
+  
   // if(fProcessed%mod_num==0)
   //   Info("Process","Level 4");
 
@@ -1589,7 +1625,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     hCutFlow[3+3*fNBCFHists]->Fill(2.0);
     hCutFlow[4+3*fNBCFHists]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);
   }
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //////=====================================================

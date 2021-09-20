@@ -294,7 +294,7 @@ void Selector::filter_electrons(){
 	  std::cout << std::setbase(10);
 	    
 	} 
-
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //MinAOD setting as in analysis code
 	// bool ObjectSelector::cutBasedElectronID_Summer16_80X_V1_veto(const MyElectron *e)
@@ -416,8 +416,7 @@ void Selector::filter_electrons(){
         }
         if( eleSel_noIso ){
 	  ElectronsNoIso.push_back(eleInd);
-        }
-	if( eleSel_noIso_loose ){
+        } else if( eleSel_noIso_loose ){
 	  ElectronsNoIsoLoose.push_back(eleInd);
 	}
   }
@@ -468,7 +467,7 @@ void Selector::filter_muons(){
 		      (!QCDselect ? (PFrelIso_corr < mu_RelIso_tight): PFrelIso_corr > mu_RelIso_tight)
 		      && (PFrelIso_corr < mu_RelIso_loose) //for QCD , upper limit of iso of the loose cut
 		      );
-
+    
     bool passLoose = (pt >= mu_PtLoose_cut &&
 		      TMath::Abs(eta) <= mu_Eta_loose &&
 		      looseMuonID &&
@@ -547,20 +546,19 @@ void Selector::filter_muons(){
     } 
     
     bool selectMuon = (isNanoAOD) ? passTight : passMiniAOD_presel ;
-
+    
     if(selectMuon){
       Muons.push_back(muInd);
     }
     else if (passLoose){
       MuonsLoose.push_back(muInd);
     }
-    if(passTight_noIso){
-      MuonsNoIso.push_back(muInd);
-    }
     if(passMiniAOD_presel){
       MuonsMiniAOD.push_back(muInd);
     }
-    if(passLoose_noIso){
+    if(passTight_noIso){
+      MuonsNoIso.push_back(muInd);
+    } else if(passLoose_noIso){
       MuonsNoIsoLoose.push_back(muInd);
     }
   }
