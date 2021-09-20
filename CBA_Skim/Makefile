@@ -1,5 +1,5 @@
-CPPFLAGS=  -Wall -g -O -fPIC
-#CPPFLAGS= -fPIC -g 
+#CPPFLAGS=  -Wall -g -O -fPIC
+CPPFLAGS= -fPIC -g 
 
 all: bin
 #all: lib

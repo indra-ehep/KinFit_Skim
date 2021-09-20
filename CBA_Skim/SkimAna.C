@@ -520,7 +520,7 @@ void SkimAna::SetTrio()
   selector->isNanoAOD = isNanoAOD ;
   
   //selector->QCDselect = true ;
-  selector->DDselect = true ;
+  selector->DDselect = false ;
   selector->mu_RelIso_loose = 0.4;
     
   selector->mu_Pt_cut = 30.;
@@ -529,7 +529,7 @@ void SkimAna::SetTrio()
   selector->ele_Eta_cut = 2.4;
   selector->jet_Pt_cut = 30.;
   selector->jet_Eta_cut = 2.4;
-
+  
   evtPick->year = Form("%d",fYear);
   evtPick->Njet_ge = 2;
   evtPick->NBjet_ge = 0;
@@ -1124,19 +1124,51 @@ void SkimAna::TheoWeights(){
   if(event->nLHEScaleWeight_ >=9 ){
 
     vector<float>     genScaleSystWeights;
+    vector<float>     q2ScaleSystWeights;
     if (event->nLHEScaleWeight_==9){
-      for (int i = 0; i < 9; i++){
-	if(i==2||i==6){continue;}
-	genScaleSystWeights.push_back(event->LHEScaleWeight_[i]);
+      
+      double q2Mean = 0.;
+      
+      for (int j=0; j < int(event->nLHEScaleWeight_); j++ ){
+	//if(j==2||j==6){continue;}
+	if(j==0||j==2||j==6||j==7){continue;}
+	q2ScaleSystWeights.push_back(event->LHEScaleWeight_[j]);
+	q2Mean += event->LHEPdfWeight_[j];
+      }
+
+      q2Mean = q2Mean/q2ScaleSystWeights.size();
+
+      double q2Variance = 0.;
+      for (int j=0; j < int(q2ScaleSystWeights.size()); j++){
+	q2Variance += pow((q2ScaleSystWeights[j]-q2Mean),2.);
       }
     
+      if (TMath::AreEqualAbs(q2Mean,0.0,1.0e-7)) 
+	q2Mean = 1;
+    
+      double _q2uncer = sqrt(q2Variance/q2ScaleSystWeights.size())/q2Mean;
+      double _Q2weight_Up = (1. + _q2uncer);
+      double _Q2weight_Do = (1. - _q2uncer);
+
+      for (int i = 0; i < 9; i++){
+	//if(i==2||i==6){continue;}
+	if(i==0||i==2||i==6||i==7){continue;}
+	genScaleSystWeights.push_back(event->LHEScaleWeight_[i]);
+      }
+      
+      // cout << "Event" << endl;
+      // for(vector<float>::iterator it = genScaleSystWeights.begin() ; it!=genScaleSystWeights.end() ; ++it)
+      // 	cout <<"\t val " << *it << endl;
+
       double nomWeight=event->LHEScaleWeight_[4];
       if (!TMath::AreEqualAbs(nomWeight,0.0,1.e-7)){
 	_q2weight_Up = *max_element(genScaleSystWeights.begin(), genScaleSystWeights.end())/nomWeight;
 	_q2weight_Do = *min_element(genScaleSystWeights.begin(), genScaleSystWeights.end())/nomWeight;
       }
+      // cout << "norm " << nomWeight  << ", _q2weight_Up : " << _q2weight_Up << ", _q2weight_Do : " << _q2weight_Do << endl; 
+      // cout << "q2Mean " << q2Mean << ", _q2weight_Up : " << _Q2weight_Up << ", _q2weight_Do : " << _Q2weight_Do << endl; 
     }
-
+    
     if (event->nLHEScaleWeight_==44){
       genScaleSystWeights.push_back(event->LHEScaleWeight_[0]);
       genScaleSystWeights.push_back(event->LHEScaleWeight_[5]);
@@ -1149,6 +1181,7 @@ void SkimAna::TheoWeights(){
       _q2weight_Do = *min_element(genScaleSystWeights.begin(), genScaleSystWeights.end());
     }
     genScaleSystWeights.clear();
+    q2ScaleSystWeights.clear();
   }
   
   _pdfweight_Up = 1. ;
@@ -1244,7 +1277,19 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   // Set JEC syst
   if( !isData and (systType == kJECUp or systType == kJECDown)){
+    // printf("Processing event : %lld\n",entry);
+    // for(int jetInd = 0; jetInd < event->nJet_ ; ++jetInd){
+    //   printf("Before JEC : (pt,eta,phi) : (%5.2lf, %5.2lf, %5.2lf), (rawfactor,area,rho) : (%5.2lf, %5.2lf, %5.2lf)\n",
+    // 	     entry,event->jetPt_[jetInd],event->jetEta_[jetInd],event->jetPhi_[jetInd],
+    // 	     event->jetRawFactor_[jetInd],event->jetArea_[jetInd],event->rho_);
+    // }
     jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+    // for(int jetInd = 0; jetInd < event->nJet_ ; ++jetInd){
+    //   printf("After JEC : (pt,eta,phi) : (%5.2lf, %5.2lf, %5.2lf), (rawfactor,area,rho) : (%5.2lf, %5.2lf, %5.2lf)\n",
+    // 	     entry,event->jetPt_[jetInd],event->jetEta_[jetInd],event->jetPhi_[jetInd],
+    // 	     event->jetRawFactor_[jetInd],event->jetArea_[jetInd],event->rho_);
+    // }
+
   }
   
   // //Clear selector vectors
@@ -1321,7 +1366,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 
     hCutFlow[0+3*fNBCFHists]->Fill(0.0);
   }
-
+  
   if((evtPick->passTrigger_mu || evtPick->passTrigger_ele) && selector->isPVGood && evtPick->passFilter){
     hCutFlow[0]->Fill(1.0);
 
@@ -1405,9 +1450,11 @@ Bool_t SkimAna::Process(Long64_t entry)
   //MuonsNoIso
   //ElectronsNoIso
 
-  // bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
-  // bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
-  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1);
+  //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
+  //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0);
+  //bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
+  //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1);
+  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 );
   bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
   //////=====================================================
   if(!singleMu and !singleEle) return true;
@@ -1420,6 +1467,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if(!isData){
     if(singleMu) GetMuonEff(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+    //if(singleMu) GetMuonEff(event->muPFRelIso_[selector->Muons.at(0)]);
     if(singleEle) GetElectronEff();
   }
   
@@ -1427,6 +1475,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   bool muonNonIsoCut = false;
   if(singleMu){
     muonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.15) ? true : false; 
+    //muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.15) ? true : false; 
     muonNonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] > 0.15 and event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.4) ? true : false; 
   }
 
@@ -1494,7 +1543,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     histWt[4+2*fNBWtHists]->Fill(_eleEffWeight);
     histWt[4+3*fNBWtHists]->Fill(_eleEffWeight);
   }  
-
+  
   if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
     hCutFlow[0]->Fill(2.0);
     hCutFlow[0+fNBCFHists]->Fill(2.0);
@@ -2283,7 +2332,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 	hCutFlow[1]->Fill(6.0);
 	hCutFlow[2]->Fill(6.0, mu_wt);
 	hCutFlow[5]->Fill(6.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight*_topPtReWeight);
-
+	
 	/////////////// base ///////////////////////
 	histObs[20]->Fill(leptonAF.Pt(), mu_wt);
 	histObs[21]->Fill(leptonAF.Eta(), mu_wt);
@@ -3562,6 +3611,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     _muEta->push_back(event->muEta_[selector->MuonsNoIso.at(0)]);
     _muPhi->push_back(event->muPhi_[selector->MuonsNoIso.at(0)]);
     _muCharge->push_back(event->muCharge_[selector->MuonsNoIso.at(0)]);
+    _muPFRelIso->push_back(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
   }
 
   _nEle = selector->ElectronsNoIso.size();
@@ -3576,6 +3626,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     _eleEta->push_back(event->eleEta_[selector->ElectronsNoIso.at(0)]);
     _elePhi->push_back(event->elePhi_[selector->ElectronsNoIso.at(0)]);
     _eleCharge->push_back(event->eleCharge_[selector->ElectronsNoIso.at(0)]);
+    _elePFRelIso->push_back(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
   }		    
   
 
@@ -4001,7 +4052,7 @@ bool SkimAna::ExecSerial(const char* infile)
   TString option = GetOption();
   Info("ExecSerial", "starting SkimAna with process option: %s", option.Data());
   Info("ExecSerial", "opening file %s", infile);
-       
+  
   TFile *fin = TFile::Open(infile);
   TTree *tree = (TTree *)fin->Get("Events");
   SlaveBegin(tree);
@@ -4009,7 +4060,7 @@ bool SkimAna::ExecSerial(const char* infile)
   Notify();
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 1000 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }

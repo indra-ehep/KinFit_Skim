@@ -1431,10 +1431,10 @@ void SkimAna::Init(TTree *tree)
     tree->SetBranchAddress("HLT_IsoMu24", &(event->HLT_IsoMu24_));
 
   }	
-
+  
   tree->SetBranchStatus("fixedGridRhoFastjetAll",1);
   tree->SetBranchAddress("fixedGridRhoFastjetAll", &(event->rho_));
-
+  
   // tree->SetBranchStatus("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",1);
   // tree->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", &(event->HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_));
     
@@ -1643,6 +1643,7 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("elePt"			, &_elePt			);
     outputTree->Branch("eleEta"			, &_eleEta			); 
     outputTree->Branch("elePhi"			, &_elePhi			); 
+    outputTree->Branch("elePFRelIso"		, &_elePFRelIso			); 
     outputTree->Branch("eleCharge"		, &_eleCharge			);
     
     outputTree->Branch("nMu"			, &_nMu				); 
@@ -1650,9 +1651,10 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("muPt"			, &_muPt			); 
     outputTree->Branch("muEta"			, &_muEta			);
     outputTree->Branch("muPhi"			, &_muPhi			);
-    /* outputTree->Branch("muPFRelIso"		, &_muPFRelIso			); */
+    outputTree->Branch("muPFRelIso"		, &_muPFRelIso			); 
     outputTree->Branch("muCharge"		, &_muCharge			);
-    
+
+
     outputTree->Branch("nJet"			, &_nJet			);
     outputTree->Branch("nBJet"			, &_nBJet			);
     outputTree->Branch("jetPt"			, &_jetPt			);

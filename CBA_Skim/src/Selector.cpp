@@ -41,7 +41,6 @@ Selector::Selector(){
     // DeepCSV
     btag_cut_DeepCSV = 0.6324;  
 
-
     // whether to invert lepton requirements for 
     QCDselect = false;
     DDselect = false;
@@ -485,11 +484,13 @@ void Selector::filter_muons(){
     bool passTight_noIso = (pt >= mu_Pt_cut &&
 			    TMath::Abs(eta) <= mu_Eta_tight &&
 			    tightMuonID
+			    && (PFrelIso_corr < mu_RelIso_loose)
 			    );
     
     bool passLoose_noIso = (pt >= mu_PtLoose_cut &&
 			    TMath::Abs(eta) <= mu_Eta_loose &&
 			    looseMuonID
+			    && (PFrelIso_corr < mu_RelIso_loose)
 			    );
     
     /*
