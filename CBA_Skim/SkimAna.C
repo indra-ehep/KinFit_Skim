@@ -1482,16 +1482,16 @@ Bool_t SkimAna::Process(Long64_t entry)
   //   Info("Process","Level 3");
   //MuonsNoIso
   //ElectronsNoIso
-
+  
   //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
   //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0);
   
   //The following setup is able to produce results presented in August-02 PAG
-  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
-  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
+  // bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
+  // bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
   
-  // bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
-  // bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
+  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
+  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
   
   //////=====================================================
   if(!singleMu and !singleEle) return true;
