@@ -6,29 +6,14 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-# samples_2016 = ["HplusM120", "DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
-# samples_2017 = ["DataEle", "DataMu", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
-# samples_2018 = ["DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
-# samples_2016 = ["HplusM120", "DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-# samples_2017 = ["DataEle", "DataMu", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-# samples_2018 = ["DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-#samples_2016 = ["HplusM120", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-# samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-# samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion"]
-# samples_2016 = ["HplusM080", "HplusM090", "HplusM100", "HplusM140", "HplusM150", "HplusM155", "HplusM160", "MCQCDMu", "MCQCDEle"]
-samples_2016 = ["HplusM120"]
-samples_2017 = ["MCQCDMu", "MCQCDEle"]
-samples_2018 = ["MCQCDMu", "MCQCDEle"]
+samples_2016 = ["HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160", 
+                "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "DataMu"]
+samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "DataMu"]
+samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataMu", "DataEle"]
 
 syst_2016 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
 syst_2017 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
 syst_2018 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown"]
-# syst_2016 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
-# syst_2017 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
-# syst_2018 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown"]
-# syst_2016 = ["jecup", "jecdown"]
-# syst_2017 = ["jecup", "jecdown"]
-# syst_2018 = ["jecup", "jecdown"]
 
 if not os.path.exists("tmpSubSyst/log"):
     os.makedirs("tmpSubSyst/log")
@@ -62,9 +47,9 @@ for year in [2016,2017,2018]:
     jdlFile = open('tmpSubSyst/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_PtCutMiniAOD_MuSel2"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MDtune"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
-    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_PtCutMiniAOD_MuSel2"
+    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MDtune"
     os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
     jdlFile.write("X=$(step)\n")
     

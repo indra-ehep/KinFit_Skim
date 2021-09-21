@@ -407,6 +407,7 @@ void Selector::filter_electrons(){
 	}
 	
 	bool selectEle = (isNanoAOD) ? eleSel : passMiniAOD_presel ;
+	bool selectEleDD = (isNanoAOD) ? eleSel_noIso : passMiniAOD_presel ;
 	
         if( selectEle ){
 	  Electrons.push_back(eleInd);
@@ -414,7 +415,7 @@ void Selector::filter_electrons(){
         else if( looseSel ){ 
 	  ElectronsLoose.push_back(eleInd);
         }
-        if( eleSel_noIso ){
+        if( selectEleDD ){
 	  ElectronsNoIso.push_back(eleInd);
         } else if( eleSel_noIso_loose ){
 	  ElectronsNoIsoLoose.push_back(eleInd);
@@ -546,6 +547,7 @@ void Selector::filter_muons(){
     } 
     
     bool selectMuon = (isNanoAOD) ? passTight : passMiniAOD_presel ;
+    bool selectMuonDD = (isNanoAOD) ? passTight_noIso : passMiniAOD_presel ;
     
     if(selectMuon){
       Muons.push_back(muInd);
@@ -556,7 +558,7 @@ void Selector::filter_muons(){
     if(passMiniAOD_presel){
       MuonsMiniAOD.push_back(muInd);
     }
-    if(passTight_noIso){
+    if(selectMuonDD){
       MuonsNoIso.push_back(muInd);
     } else if(passLoose_noIso){
       MuonsNoIsoLoose.push_back(muInd);
@@ -669,26 +671,36 @@ void Selector::filter_jets(){
 
     bool passDR_lep_jet = true;
 
-    if(!DDselect){
-      //loop over selected electrons
-      for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
-	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-      }
-    }else{
-      for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
-	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-      }      
+    // if(!DDselect){
+    //   //loop over selected electrons
+    //   for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+    // 	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    //   }
+    // }else{
+    //   for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
+    // 	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    //   }      
+    // }
+    
+    // //loop over selected muons
+    // if(!DDselect){
+    //   for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+    // 	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    //   }
+    // }else{
+    //   for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
+    // 	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    //   }
+    // }
+    
+    //loop over selected electrons
+    for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+      if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
     }
     
     //loop over selected muons
-    if(!DDselect){
-      for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-      }
-    }else{
-      for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
-	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-      }
+    for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+      if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
     }
     
     bool jetPresel = (pt >= jet_Pt_cut &&
@@ -713,7 +725,7 @@ void Selector::filter_jets(){
     //     if(looseJetID && jetPt > 25.0) j_i->push_back(i);
     //   }
     // }
-	
+    
     ////------------------------------------------------------------------
     ///https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookNanoAOD#Jets
     ////------------------------------------------------------------------
@@ -755,15 +767,15 @@ void Selector::filter_jets(){
       
     }
 
-        
+    
     bool fwdjetPresel = (pt>= jet_Pt_cut && jetID_pass && TMath::Abs(eta)<=3.0 && TMath::Abs(eta)>2.5 &&
 			 passDR_lep_jet
 			 );
-        
+    
     if(fwdjetPresel){
       FwdJets.push_back(jetInd);
     }
-        
+    
     bool selectJet = (isNanoAOD) ? jetPresel : (passMiniAOD_presel && passDR_lep_jet_miniAOD) ;
 
     if( selectJet ){

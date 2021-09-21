@@ -881,8 +881,11 @@ void SkimAna::LoadLeptonSF(){
 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunGtoH.root",fBasePath.Data()), 
 			 "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio");
       
-      f_trackSF_BCDEF 	= new TFile(Form("%s/../Analysis/Analysis/stack/muonSF/trackingSF_BCDEF.root",fBasePath.Data()));
-      f_trackSF_GH	= new TFile(Form("%s/../Analysis/Analysis/stack/muonSF/trackingSF_GH.root",fBasePath.Data()));
+      // f_trackSF_BCDEF 	= new TFile(Form("%s/../../../Analysis/Analysis/stack/muonSF/trackingSF_BCDEF.root",fBasePath.Data()));
+      // f_trackSF_GH	= new TFile(Form("%s/../../../Analysis/Analysis/stack/muonSF/trackingSF_GH.root",fBasePath.Data()));
+      f_trackSF_BCDEF 	= new TFile(Form("%s/weight/MuEleSF/mu2016_mini/trackingSF_BCDEF.root",fBasePath.Data()));
+      f_trackSF_GH	= new TFile(Form("%s/weight/MuEleSF/mu2016_mini/trackingSF_GH.root",fBasePath.Data()));
+
       tg_trackSF_BCDEF 	= (TGraphAsymmErrors*)f_trackSF_BCDEF->Get("ratio_eff_aeta_dr030e030_corr");
       tg_trackSF_GH 	= (TGraphAsymmErrors*)f_trackSF_GH->Get("ratio_eff_aeta_dr030e030_corr");
       
@@ -1475,23 +1478,15 @@ Bool_t SkimAna::Process(Long64_t entry)
     hCutFlow[4+3*fNBCFHists]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
    }
   
-  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   // if(fProcessed%mod_num==0)
   //   Info("Process","Level 3");
-  //MuonsNoIso
-  //ElectronsNoIso
-  
-  //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
-  //bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0);
   
   //The following setup is able to produce results presented in August-02 PAG
-  // bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
-  // bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsLoose.size() == 0);
+  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
+  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 0 and selector->MuonsLoose.size() == 0);
   
-  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
-  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
   
   //////=====================================================
   if(!singleMu and !singleEle) return true;
@@ -3977,6 +3972,20 @@ void SkimAna::SlaveTerminate()
       }
     }
     printf("\n");
+
+    printf("WtMu & ");
+    for (int ibin=2;ibin<hCutFlow[2]->GetNbinsX();ibin++){
+      if(hCutFlow[2]->GetBinContent(ibin)>0.0 and hCutFlow[2]->GetBinContent(ibin+1)>0.0){
+	if(hCutFlow[2]->GetBinContent(ibin)>1e6){
+	  printf("%.4e & ",hCutFlow[2]->GetBinContent(ibin)); 
+	}else{
+	  printf("%.1f & ",hCutFlow[2]->GetBinContent(ibin));
+	}
+      }else if(hCutFlow[2]->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hCutFlow[2]->GetBinContent(ibin+1),0.0,1.e-5)){
+	printf("%.1f \\\\\\hline ",hCutFlow[2]->GetBinContent(ibin));
+      }
+    }
+    printf("\n");
     
     printf("DataEle & ");
     for (int ibin=2;ibin<hCutFlow[3]->GetNbinsX();ibin++){
@@ -3988,6 +3997,20 @@ void SkimAna::SlaveTerminate()
 	}
       }else if(hCutFlow[3]->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hCutFlow[3]->GetBinContent(ibin+1),0.0,1.e-5)){
 	printf("%.1f \\\\\\hline ",hCutFlow[3]->GetBinContent(ibin));
+      }
+    }
+    printf("\n");
+
+    printf("WtEle & ");
+    for (int ibin=2;ibin<hCutFlow[4]->GetNbinsX();ibin++){
+      if(hCutFlow[4]->GetBinContent(ibin)>0.0 and hCutFlow[4]->GetBinContent(ibin+1)>0.0){
+	if(hCutFlow[4]->GetBinContent(ibin)>1e6){
+	  printf("%.4e & ",hCutFlow[4]->GetBinContent(ibin)); 
+	}else{
+	  printf("%.1f & ",hCutFlow[4]->GetBinContent(ibin));
+	}
+      }else if(hCutFlow[4]->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hCutFlow[4]->GetBinContent(ibin+1),0.0,1.e-5)){
+	printf("%.1f \\\\\\hline ",hCutFlow[4]->GetBinContent(ibin));
       }
     }
     printf("\n");
@@ -4117,7 +4140,7 @@ int main(int argc, char** argv)
   // index=$4
   // syst=$5
 
-  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod",argv[1],argv[2],argv[3],argv[4],argv[5]));
+  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=mini|run=prod",argv[1],argv[2],argv[3],argv[4],argv[5]));
 
   cout << "Input filename: " << argv[3] << endl;
   ifstream fin(argv[3]);
