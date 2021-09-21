@@ -15,14 +15,14 @@ syst_2016 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "elee
 syst_2017 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
 syst_2018 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown"]
 
-if not os.path.exists("tmpSubSyst/log"):
-    os.makedirs("tmpSubSyst/log")
+if not os.path.exists("tmpSubSystMDPt/log"):
+    os.makedirs("tmpSubSystMDPt/log")
 condorLogDir = "log"
-tarFile = "tmpSubSyst/CBA_Skim.tar.gz"
+tarFile = "tmpSubSystMDPt/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmpSubSyst/")
+os.system("cp runCBASkim.sh tmpSubSystMDPt/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -40,16 +40,16 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmpSubSyst/condorSubmit.sh','w')
+subFile = open('tmpSubSystMDPt/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmpSubSyst/%s'%jdlName,'w')
+    jdlFile = open('tmpSubSystMDPt/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MDtune"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MDPt"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
-    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MDtune"
+    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MDPt"
     os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
     jdlFile.write("X=$(step)\n")
     

@@ -4140,7 +4140,7 @@ int main(int argc, char** argv)
   // index=$4
   // syst=$5
 
-  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=mini|run=prod",argv[1],argv[2],argv[3],argv[4],argv[5]));
+  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod",argv[1],argv[2],argv[3],argv[4],argv[5]));
 
   cout << "Input filename: " << argv[3] << endl;
   ifstream fin(argv[3]);
