@@ -242,21 +242,20 @@ void Selector::filter_electrons(){
             passTightID = (passTightID_noIso && 
 			   PFrelIso_corr > (absSCEta < 1.479 ? isoEBcut : isoEECut) );
         }
-
 	
-	bool passVetoIDNoIso = passEleID(eleInd, 1,false); // Ignore iso requirements
+	
+	bool passVetoIDNoIso = passEleID(eleInd, 1,false) && passVetoID; // Ignore iso requirements
 	
 	float vetoIsoEBcut = 0.198 + 0.506/tree->elePt_[eleInd];
 	float vetoIsoEECut = 0.203 + 0.963/tree->elePt_[eleInd];
 	
-	passTightID_noIso = passEleID(eleInd, 4,false);
 	//QCD CR now applies veto iso as upper limit, so Veto leptons are the same as they would be otherwise
 
 	// // if using QCD cr, just use cut without iso requirement
 	// if(QCDselect){
 	//     passVetoID = passVetoIDNoIso;
 	// }
-
+	
         bool eleSel = (passEtaEBEEGap && 
                        absEta <= ele_Eta_cut &&
                        pt >= ele_Pt_cut &&
@@ -281,7 +280,7 @@ void Selector::filter_electrons(){
 	bool eleSel_noIso_loose = (passEtaEBEEGap && 
 				   absEta <= ele_EtaLoose_cut &&
 				   pt >= ele_PtLoose_cut &&
-				   //passVetoID &&
+				   passVetoIDNoIso &&
 				   passD0 &&
 				   passDz);
 	
@@ -671,37 +670,37 @@ void Selector::filter_jets(){
 
     bool passDR_lep_jet = true;
 
-    // if(!DDselect){
-    //   //loop over selected electrons
-    //   for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
-    // 	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-    //   }
-    // }else{
-    //   for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
-    // 	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-    //   }      
-    // }
-    
-    // //loop over selected muons
-    // if(!DDselect){
-    //   for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-    // 	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-    //   }
-    // }else{
-    //   for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
-    // 	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
-    //   }
-    // }
-    
-    //loop over selected electrons
-    for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
-      if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    if(!DDselect){
+      //loop over selected electrons
+      for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+    	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
+    }else{
+      for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
+    	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }      
     }
     
     //loop over selected muons
-    for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-      if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    if(!DDselect){
+      for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+    	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
+    }else{
+      for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
+    	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
     }
+    
+    // //loop over selected electrons
+    // for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+    //   if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    // }
+    
+    // //loop over selected muons
+    // for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+    //   if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    // }
     
     bool jetPresel = (pt >= jet_Pt_cut &&
     		      TMath::Abs(eta) <= jet_Eta_cut &&

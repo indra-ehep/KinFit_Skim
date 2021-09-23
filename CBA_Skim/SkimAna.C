@@ -520,9 +520,9 @@ void SkimAna::SetTrio()
   selector->isNanoAOD = isNanoAOD ;
   
   //selector->QCDselect = true ;
-  selector->DDselect = false ;
+  selector->DDselect = true ;
   selector->mu_RelIso_loose = 0.4;
-
+  
   // Cuts used for results presented at PAG dated August, 02, 2021
   // selector->mu_Pt_cut = 30.;
   // selector->mu_Eta_tight = 2.4;
@@ -1484,8 +1484,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   //   Info("Process","Level 3");
   
   //The following setup is able to produce results presented in August-02 PAG
-  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsLoose.size() == 0);
-  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 0 and selector->MuonsLoose.size() == 0);
+  bool singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
+  bool singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
   
   
   //////=====================================================
@@ -2288,7 +2288,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     }
 
   }  
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // if(ProcessKinFit((singleMu and muonIsoCut), false) and !isLowMET){
@@ -4139,7 +4139,7 @@ int main(int argc, char** argv)
   // input=$3
   // index=$4
   // syst=$5
-
+  
   TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod",argv[1],argv[2],argv[3],argv[4],argv[5]));
 
   cout << "Input filename: " << argv[3] << endl;
