@@ -606,6 +606,7 @@ class SkimAna : public TSelector {
    TString fBasePath ;
    TString fSyst ;
    bool isNanoAOD;
+   bool doTreeSave;
    ////////////////////////////////////////////////////////
 
    ////////////////////////////////////////////////////////
@@ -821,6 +822,7 @@ void SkimAna::Reset()
    fSyst		= "";   
    isData		= false;
    isNanoAOD		= true;
+   doTreeSave		= false;
 }
 //_____________________________________________________________________
 SkimAna::~SkimAna()

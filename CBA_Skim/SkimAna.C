@@ -255,12 +255,17 @@ Int_t SkimAna::CreateHistoArrays()
 
   savedir->cd();
 
+
+
+
   fFile[1]->cd();
   outputTree = new TTree("Kinfit_Reco","Kinfit_Reco");
   outputTree->SetAutoSave();
   InitOutBranches();
-  
   savedir->cd();
+
+
+
 
   return true;
 }
@@ -291,6 +296,8 @@ void SkimAna::GetArguments(){
       fSyst = ((TObjString *) (tok.Tokenize("="))->At(1))->GetString();
     if(tok.BeginsWith("aod"))
       isNanoAOD = (((TObjString *) (tok.Tokenize("="))->At(1))->GetString() == "mini") ? false : true;
+    if(tok.BeginsWith("trs"))
+      doTreeSave = (((TObjString *) (tok.Tokenize("="))->At(1))->GetString() == "yes") ? true : false;
   }
   fSyst.ToLower();
   fIndex++;
@@ -3879,7 +3886,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	  _sjhad_id		= x.sjhad_id ;
 		      
 	  //Fill for non-negative chi2
-	  outputTree->Fill();
+	  if(doTreeSave)
+	    outputTree->Fill();
 	}//DeltaR and pt cuts
       }//iloop == 0 condition      
       iloop++;
@@ -4047,11 +4055,14 @@ void SkimAna::SlaveTerminate()
   for(int ifile=1;ifile<2;ifile++){
     
     savedir->cd();
+    
     fFile[ifile]->cd();
-    outputTree->Write();
+    if(doTreeSave){
+      outputTree->Write();
+    }
     fFile[ifile]->Close();
     savedir->cd();
-    
+
     if (fMode.BeginsWith("proof")) {
       Info("SlaveTerminate", "objects saved into '%s%s': sending related TProofOutputFile ...",
 	   fProofFile[ifile]->GetFileName(), fProofFile[ifile]->GetOptionsAnchor());
@@ -4118,8 +4129,8 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 1000 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
@@ -4140,7 +4151,7 @@ int main(int argc, char** argv)
   // index=$4
   // syst=$5
   
-  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod",argv[1],argv[2],argv[3],argv[4],argv[5]));
+  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod|trs=nope",argv[1],argv[2],argv[3],argv[4],argv[5]));
 
   cout << "Input filename: " << argv[3] << endl;
   ifstream fin(argv[3]);
