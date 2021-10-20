@@ -428,8 +428,8 @@ class SkimAna : public TSelector {
   std::vector<float>	*_btagSF_l_Do = 0 ;
   
   /* Float_t	_muEffWeight = 0 ; */
-  Float_t	_muEffWeight_Up = 0 ;
-  Float_t	_muEffWeight_Do = 0 ;
+  /* Float_t	_muEffWeight_Up = 0 ; */
+  /* Float_t	_muEffWeight_Do = 0 ; */
   
   Float_t	_muEffWeight_IdIso = 0 ;
   Float_t	_muEffWeight_IdIso_Up = 0 ;
@@ -440,8 +440,8 @@ class SkimAna : public TSelector {
   Float_t	_muEffWeight_Trig_Do = 0 ;
   
   /* Float_t	_eleEffWeight = 0 ; */
-  Float_t	_eleEffWeight_Up = 0 ;
-  Float_t	_eleEffWeight_Do = 0 ;
+  /* Float_t	_eleEffWeight_Up = 0 ; */
+  /* Float_t	_eleEffWeight_Do = 0 ; */
   
   Float_t	_eleEffWeight_IdReco = 0 ;
   Float_t	_eleEffWeight_IdReco_Up = 0 ;
@@ -542,7 +542,7 @@ class SkimAna : public TSelector {
 
   Int_t			 _nJet = 0 ;
   Int_t			 _nBJet = 0 ;
-  std::vector<float>	 *_jetPt = 0 ;
+  std::vector<float>	 *_jetPt = 0;
   std::vector<float>	 *_jetEta = 0 ;
   std::vector<float>	 *_jetPhi = 0 ;
   std::vector<float>	 *_jetMass = 0 ;
@@ -605,6 +605,7 @@ class SkimAna : public TSelector {
    bool isData ;
    TString fBasePath ;
    TString fSyst ;
+   char **fSystList;
    bool isNanoAOD;
    bool doTreeSave;
    ////////////////////////////////////////////////////////
@@ -649,10 +650,17 @@ class SkimAna : public TSelector {
 
    //PrefireWeight;
    double _prefireWeight = 1.0;
+   double _prefireWeight_Up = 1.0;
+   double _prefireWeight_Do = 1.0;
 
    //PU
-   PUReweight *PUweighter = 0x0;//, *PUweighterUp, *PUweighterDown;
+   PUReweight *PUweighter = 0x0;//, 
+   PUReweight *PUweighterUp = 0x0;//
+   PUReweight *PUweighterDown = 0x0;//
+
    double _PUWeight = 1.0;
+   double _PUWeight_Up = 1.0;
+   double _PUWeight_Do = 1.0;
 
    //The Trio
    EventTree *event = 0x0;
@@ -666,15 +674,23 @@ class SkimAna : public TSelector {
    BTagCalibration calib;
    BTagCalibrationReader reader;
    TH2D *l_eff = 0x0, *c_eff = 0x0, *b_eff = 0x0;
-   string btagSystType;
-   double _bTagWeight = 1.0;
+   string btagSystType ;
+   double _bTagWeight = 1.0 ;
+   double _bTagWeight_b_Up = 1.0 ;
+   double _bTagWeight_b_Do = 1.0 ;
+   double _bTagWeight_l_Up = 1.0 ;
+   double _bTagWeight_l_Do = 1.0 ;
 
    //Lepton SF
    MuonSF *muSFa = 0x0;
    MuonSF *muSFb = 0x0;
    ElectronSF *eleSF = 0x0;
    double _muEffWeight = 1.0;
+   double _muEffWeight_Up = 1.0;
+   double _muEffWeight_Do = 1.0;
    double _eleEffWeight = 1.0;
+   double _eleEffWeight_Up = 1.0;
+   double _eleEffWeight_Do = 1.0;
    //miniAOD Tracker Eff
    TFile *f_trackSF_BCDEF = 0x0;
    TFile *f_trackSF_GH = 0x0;
@@ -695,6 +711,8 @@ class SkimAna : public TSelector {
 
    ////////////////////////////////////////////////////////
    // Histogram for checking
+   int fNSyst ;
+   int fNDDReg ; 
    int fNBCFHists ;
    int fNCFHists ; 
    TH1D           **hCutFlow;//
@@ -768,7 +786,21 @@ class SkimAna : public TSelector {
    float   topPtReweight();
    void    TheoWeights();
    bool    ProcessKinFit(bool, bool);
+   
+   bool    FillEventCutFlow();
+   bool    FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
+   bool    FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
+   bool    FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   bool    FillBTagCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
 
+   bool    FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   bool    FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   
+   bool    FillEventWt();
+   bool    FillLeptonWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
+   bool    FillNjetWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
+   bool    FillBTagWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   
    bool    ExecSerial(const char* infile);
    
    
@@ -834,7 +866,7 @@ SkimAna::~SkimAna()
     SafeDelete(fFile[1]);
   }
   if (fFile[2]) {
-    SafeDelete(fFile[1]);
+    SafeDelete(fFile[2]);
   }
 }
 //_____________________________________________________________________
@@ -1916,6 +1948,11 @@ Bool_t SkimAna::Notify()
 
     if(PUweighter)
       delete PUweighter;
+    if(PUweighterUp)
+      delete PUweighterUp;
+    if(PUweighterDown)
+      delete PUweighterDown;
+
     LoadPU();
   }//if MC
   

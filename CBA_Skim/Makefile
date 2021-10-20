@@ -5,19 +5,14 @@ all: bin
 #all: lib
 
 bin: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/Selector.o src/EventTree.o src/EventPick.o src/RoccoR.o SkimAna
-lib: libweight.so
+lib: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/Selector.o src/EventTree.o src/EventPick.o src/RoccoR.o libweight.so
 
 ######################## Main library ###############################################
-SkimAna: src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
-#SkimAna: src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o interface/muSF_reader.h interface/eleSF_reader.h src/JetResolution.o
-	g++ $(CPPFLAGS) -o $@ `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
+SkimAna: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
+	g++ $(CPPFLAGS) -o $@ `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
 
-libweight.so: src/PUReweight.o src/BTagCalibrationStandalone.o src/EventTree.o src/Selector.o src/EventPick.o src/JECvariation.o src/RoccoR.o src/JetResolution.o
-	g++ $(CPPFLAGS) -shared -o $@ `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/PUReweight.o src/BTagCalibrationStandalone.o src/EventTree.o src/Selector.o src/EventPick.o src/JECvariation.o src/RoccoR.o src/JetResolution.o src/Utils.cc
-
-
-# libweight.so: src/PUReweight.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/BTagCalibrationStandalone.o src/EventPick.o src/RoccoR.o
-# 	g++ $(CPPFLAGS) -shared -o $@ `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/PUReweight.o src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/BTagCalibrationStandalone.o src/EventTree.o src/Selector.o src/EventPick.o src/RoccoR.o src/Utils.cc
+libweight.so: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
+	g++ $(CPPFLAGS) -shared -o $@ `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/JECvariation.o src/RoccoR.o src/JetResolution.o
 
 ######################## Main library ###############################################
 

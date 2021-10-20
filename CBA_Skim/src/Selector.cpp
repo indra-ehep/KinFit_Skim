@@ -234,6 +234,7 @@ void Selector::filter_electrons(){
 
 	// upper limit on the QCD iso of the vetoID value
 	bool passTightID_noIso = passEleID(eleInd, 4,false) && passVetoID;
+	bool passMediumID_noIso = passEleID(eleInd, 3,false) && passVetoID;
 	
         if (QCDselect){
             Float_t isoEBcut = 0.0287 + 0.506/tree->elePt_[eleInd];
@@ -273,9 +274,16 @@ void Selector::filter_electrons(){
 	bool eleSel_noIso = (passEtaEBEEGap && 
 			     absEta <= ele_Eta_cut &&
 			     pt >= ele_Pt_cut &&
-			     passTightID_noIso &&
+			     passTightID_noIso &&			     
 			     passD0 &&
 			     passDz);
+
+	bool eleSel_Medium_noIso = (passEtaEBEEGap && 
+				    absEta <= ele_Eta_cut &&
+				    pt >= ele_Pt_cut &&
+				    passMediumID_noIso &&
+				    passD0 &&
+				    passDz);
 
 	bool eleSel_noIso_loose = (passEtaEBEEGap && 
 				   absEta <= ele_EtaLoose_cut &&
@@ -406,7 +414,8 @@ void Selector::filter_electrons(){
 	}
 	
 	bool selectEle = (isNanoAOD) ? eleSel : passMiniAOD_presel ;
-	bool selectEleDD = (isNanoAOD) ? eleSel_noIso : passMiniAOD_presel ;
+	//bool selectEleDD = (isNanoAOD) ? eleSel_noIso : passMiniAOD_presel ;
+	bool selectEleDD = (isNanoAOD) ? eleSel_Medium_noIso : passMiniAOD_presel ;
 	
         if( selectEle ){
 	  Electrons.push_back(eleInd);
@@ -486,6 +495,12 @@ void Selector::filter_muons(){
 			    && (PFrelIso_corr < mu_RelIso_loose)
 			    );
     
+    bool passMedium_noIso = (pt >= mu_Pt_cut &&
+			    TMath::Abs(eta) <= mu_Eta_tight &&
+			    mediumMuonID
+			    && (PFrelIso_corr < mu_RelIso_loose)
+			    );
+    
     bool passLoose_noIso = (pt >= mu_PtLoose_cut &&
 			    TMath::Abs(eta) <= mu_Eta_loose &&
 			    looseMuonID
@@ -546,7 +561,8 @@ void Selector::filter_muons(){
     } 
     
     bool selectMuon = (isNanoAOD) ? passTight : passMiniAOD_presel ;
-    bool selectMuonDD = (isNanoAOD) ? passTight_noIso : passMiniAOD_presel ;
+    //bool selectMuonDD = (isNanoAOD) ? passTight_noIso : passMiniAOD_presel ;
+    bool selectMuonDD = (isNanoAOD) ? passMedium_noIso : passMiniAOD_presel ;
     
     if(selectMuon){
       Muons.push_back(muInd);
