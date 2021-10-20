@@ -1,6 +1,6 @@
-int run(const char* opt = "sample=HplusM120|year=2016|input=input/files.txt|index=0|run=prod|mode=proof|workers=4|syst=base|aod=nano|trs=no") // sample = data, bkg, signal
+int run(const char* opt = "sample=HplusM120|year=2016|input=input/files.txt|index=0|run=prod|mode=proof|workers=4|syst=jecup|aod=nano|trs=no") // sample = data, bkg, signal
 {
-
+  
   bool isproof  = false ;
   
   TString options(opt);

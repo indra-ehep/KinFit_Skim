@@ -19,7 +19,7 @@ do
     #tmpdir=$basedir/../tmp_$(date +%Y-%m-%d__%H%M%S)_${year}
     tmpdir=/tmp/tmp_${year}
     if [ ! -d $tmpdir ] ; then
-    	mkdir $tmpdir
+    	mkdir -p $tmpdir
     else
 	rm -rf $tmpdir
 	mkdir $tmpdir
