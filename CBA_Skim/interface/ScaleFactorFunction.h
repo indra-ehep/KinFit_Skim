@@ -24,7 +24,8 @@ void initCrossSections(){
     // // Default setting
     /* crossSections["HplusM080"]               =  {6.77, 6.77, 6.77};  */
     // //MiniAOD setting
-    crossSections["HplusM080"]                  =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM080"]                  =  {21.55, 21.55, 21.55}; //831.76*0.2132*scaleSig; 
+    //with scaleSig = 0.12155 = 2*0.065*(1-0.065), where 6.5% is the observed limit for 90 GeV at 8 TeV
     crossSections["HplusM090"]                  =  {21.55, 21.55, 21.55}; 
     crossSections["HplusM100"]                  =  {21.55, 21.55, 21.55}; 
     crossSections["HplusM120"]                  =  {21.55, 21.55, 21.55}; 

@@ -214,8 +214,8 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + 19] = new TH1D("_FSRweight_Do","_FSRweight_Do",2000, -10, 10);
     histWt[fNWtHists*isyst + 20] = new TH1D("_ISRweight_Up","_ISRweight_Up",2000, -10, 10);
     histWt[fNWtHists*isyst + 21] = new TH1D("_ISRweight_Do","_ISRweight_Do",2000, -10, 10);
-    histWt[fNWtHists*isyst + 22] = new TH1D("_PUweight_Up","_PUweight_Up",2000, -10, 10);
-    histWt[fNWtHists*isyst + 23] = new TH1D("_PUweight_Do","_PUweight_Do",2000, -10, 10);
+    histWt[fNWtHists*isyst + 22] = new TH1D("_PUWeight_Up","_PUWeight_Up",2000, -10, 10);
+    histWt[fNWtHists*isyst + 23] = new TH1D("_PUWeight_Do","_PUWeight_Do",2000, -10, 10);
     histWt[fNWtHists*isyst + 24] = new TH1D("_topPtReweight","_topPtReweight",2000, -10, 10);
     histWt[fNWtHists*isyst + 25] = new TH1D("_muIso","_muIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + 26] = new TH1D("_eleIso","_eleIso", 100, 0., 1.);
@@ -2816,8 +2816,8 @@ bool SkimAna::FillBTagWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, boo
   // histWt[fNWtHists*isyst + 19] = new TH1D("_FSRweight_Do","_FSRweight_Do",2000, -10, 10);
   // histWt[fNWtHists*isyst + 20] = new TH1D("_ISRweight_Up","_ISRweight_Up",2000, -10, 10);
   // histWt[fNWtHists*isyst + 21] = new TH1D("_ISRweight_Do","_ISRweight_Do",2000, -10, 10);
-  // histWt[fNWtHists*isyst + 22] = new TH1D("_PUweight_Up","_PUweight_Up",2000, -10, 10);
-  // histWt[fNWtHists*isyst + 23] = new TH1D("_PUweight_Do","_PUweight_Do",2000, -10, 10);
+  // histWt[fNWtHists*isyst + 22] = new TH1D("_PUWeight_Up","_PUWeight_Up",2000, -10, 10);
+  // histWt[fNWtHists*isyst + 23] = new TH1D("_PUWeight_Do","_PUWeight_Do",2000, -10, 10);
   // histWt[fNWtHists*isyst + 24] = new TH1D("_topPtReweight","_topPtReweight",2000, -10, 10);
   // histWt[fNWtHists*isyst + 25] = new TH1D("_muIso","_muIso", 100, 0., 1.);
   // histWt[fNWtHists*isyst + 26] = new TH1D("_eleIso","_eleIso", 100, 0., 1.);
@@ -2826,7 +2826,7 @@ bool SkimAna::FillBTagWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, boo
   
   for(int isyst=0;isyst<fNSyst;isyst++){
     TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-
+    
     ((TH1D *) list->FindObject("_pdfweight_Up"))->Fill(_pdfweight_Up);
     ((TH1D *) list->FindObject("_pdfweight_Do"))->Fill(_pdfweight_Do);
     ((TH1D *) list->FindObject("_q2weight_Up"))->Fill(_q2weight_Up);
@@ -2926,8 +2926,8 @@ bool SkimAna::FillEventWt(){
     ((TH1D *) list->FindObject("_sampleWeight"))->Fill(_sampleWeight);
     ((TH1D *) list->FindObject("_PUWeight"))->Fill(_PUWeight);
     ((TH1D *) list->FindObject("_prefireWeight"))->Fill(_prefireWeight);
-    ((TH1D *) list->FindObject("_PUweight_Up"))->Fill(_PUweight_Up);
-    ((TH1D *) list->FindObject("_PUweight_Do"))->Fill(_PUweight_Do);
+    ((TH1D *) list->FindObject("_PUWeight_Up"))->Fill(_PUWeight_Up);
+    ((TH1D *) list->FindObject("_PUWeight_Do"))->Fill(_PUWeight_Do);
   }
 
   return true;

@@ -6,9 +6,9 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-# samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", 
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
-samples_2016 = ["DataMu", "DataEle"]
+samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", 
+                 "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
+# samples_2016 = ["DataMu", "DataEle"]
 
 samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "DataMu"]
 samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataMu", "DataEle"]
@@ -53,9 +53,9 @@ for year in [2016,2017,2018]:
     jdlFile = open('tmpSubSystMedID/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MedID"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
-    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_MedID"
+    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
     jdlFile.write("X=$(step)\n")
     
