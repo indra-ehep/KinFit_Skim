@@ -132,10 +132,10 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + 13] = new TH1D("_lb_phi_mu_met","_lb_phi_mu_met", 35, -3.5, 3.5);
     histObs[fNObHists*isyst + 14] = new TH1D("_lb_pt_ele_met","_lb_pt_ele_met",100, 0., 1000.);
     histObs[fNObHists*isyst + 15] = new TH1D("_lb_phi_ele_met","_lb_phi_ele_met", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 16] = new TH1D("_lb_njet_mu","_lb_njet_mu", 20, 0., 20);
-    histObs[fNObHists*isyst + 17] = new TH1D("_lb_nbjet_mu","_lb_nbjet_mu", 20, 0., 20);
-    histObs[fNObHists*isyst + 18] = new TH1D("_lb_njet_ele","_lb_njet_ele", 20, 0., 20);
-    histObs[fNObHists*isyst + 19] = new TH1D("_lb_nbjet_ele","_lb_nbjet_ele", 20, 0., 20);
+    histObs[fNObHists*isyst + 16] = new TH1D("_lb_njet_mu","_lb_njet_mu", 30, 0., 30);
+    histObs[fNObHists*isyst + 17] = new TH1D("_lb_nbjet_mu","_lb_nbjet_mu", 30, 0., 30);
+    histObs[fNObHists*isyst + 18] = new TH1D("_lb_njet_ele","_lb_njet_ele", 30, 0., 30);
+    histObs[fNObHists*isyst + 19] = new TH1D("_lb_nbjet_ele","_lb_nbjet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + 20] = new TH1D("_kb_pt_mu","_kb_pt_mu",100, 0., 1000.);
     histObs[fNObHists*isyst + 21] = new TH1D("_kb_eta_mu","_kb_eta_mu", 30, -3., 3.);
     histObs[fNObHists*isyst + 22] = new TH1D("_kb_phi_mu","_kb_phi_mu", 35, -3.5, 3.5);
@@ -152,10 +152,10 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + 33] = new TH1D("_kb_phi_mu_met","_kb_phi_mu_met", 35, -3.5, 3.5);
     histObs[fNObHists*isyst + 34] = new TH1D("_kb_pt_ele_met","_kb_pt_ele_met",100, 0., 1000.);
     histObs[fNObHists*isyst + 35] = new TH1D("_kb_phi_ele_met","_kb_phi_ele_met", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 36] = new TH1D("_kb_njet_mu","_kb_njet_mu", 20, 0., 20);
-    histObs[fNObHists*isyst + 37] = new TH1D("_kb_nbjet_mu","_kb_nbjet_mu", 20, 0., 20);
-    histObs[fNObHists*isyst + 38] = new TH1D("_kb_njet_ele","_kb_njet_ele", 20, 0., 20);
-    histObs[fNObHists*isyst + 39] = new TH1D("_kb_nbjet_ele","_kb_nbjet_ele", 20, 0., 20);
+    histObs[fNObHists*isyst + 36] = new TH1D("_kb_njet_mu","_kb_njet_mu", 30, 0., 30);
+    histObs[fNObHists*isyst + 37] = new TH1D("_kb_nbjet_mu","_kb_nbjet_mu", 30, 0., 30);
+    histObs[fNObHists*isyst + 38] = new TH1D("_kb_njet_ele","_kb_njet_ele", 30, 0., 30);
+    histObs[fNObHists*isyst + 39] = new TH1D("_kb_nbjet_ele","_kb_nbjet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + 40] = new TH1D("_kb_mjj_mu","_kb_mjj_mu", 50, 0., 250);
     histObs[fNObHists*isyst + 41] = new TH1D("_kb_mjj_ele","_kb_mjj_ele", 50, 0., 250);
     histObs[fNObHists*isyst + 42] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 50, 0., 250);
@@ -423,7 +423,7 @@ void SkimAna::SelectSyst()
   jecvar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   jervar012_g		= 1 ;		// 0:down, 1:norm, 2:up
 
-  fNSyst = 25 ; 
+  fNSyst = 26 ; 
   fSystList = new char*[fNSyst];
   const char *syst[] = {"base", 
 			"puup", "pudown", "mueffup", "mueffdown", 
@@ -431,7 +431,8 @@ void SkimAna::SelectSyst()
 			"jerup", "jerdown", "btagbup", "btagbdown", 
 			"btaglup", "btagldown", "prefireup", "prefiredown",
 			"pdfup", "pdfdown", "q2fup", "q2down",
-			"isrup", "isrdown", "fsrup", "fsrdown"};
+			"isrup", "isrdown", "fsrup", "fsrdown",
+                         "iso20"};
 
   for(int isyst=0;isyst<fNSyst;isyst++){
     fSystList[isyst] = new char[20];
@@ -467,6 +468,11 @@ void SkimAna::SelectSyst()
     jervar012_g = 0;      
     Info("SelectSyst","Syst : %s", fSyst.Data()); 
 
+  } else if (fSyst == "iso20") {
+    
+    systType = kIso20;    
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    
   }
 
   
@@ -1373,9 +1379,13 @@ Bool_t SkimAna::Process(Long64_t entry)
   bool muonIsoCut = false;
   bool muonNonIsoCut = false;
   if(singleMu){
-    muonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.15) ? true : false; 
-    //muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.15) ? true : false; 
-    muonNonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] > 0.15 and event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.4) ? true : false; 
+    if(systType == kIso20){
+      muonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.17) ? true : false; 
+      muonNonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] > 0.17 and event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.4) ? true : false; 
+    }else{
+      muonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.15) ? true : false; 
+      muonNonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] > 0.15 and event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.4) ? true : false; 
+    }
   }
 
   bool eleIsoCut = false;
@@ -1383,30 +1393,34 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(singleEle){
     double SCeta = event->eleEta_[selector->ElectronsNoIso.at(0)] + event->eleDeltaEtaSC_[selector->ElectronsNoIso.at(0)];
     double absSCEta = TMath::Abs(SCeta);
+    if(systType == kIso20){
+      eleIsoCut =  (event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.11) ? true : false;
+      eleNonIsoCut = (event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.11 and event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < 0.3 ) ? true : false;
+    }else{
+      eleIsoCut =  (
+		    (absSCEta <= 1.479 and event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0695) 
+		    or 
+		    (absSCEta > 1.479 and  event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0821)
+		    ) ? true : false;
 
-    eleIsoCut =  (
-  		  (absSCEta <= 1.479 and event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0695) 
-  		  or 
-  		  (absSCEta > 1.479 and  event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0821)
-  		  ) ? true : false;
-
-    eleNonIsoCut =  (
-		     (
-		      absSCEta <= 1.479 
-		      and 
-		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.0695 
-		      and 
-		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
-		      ) 
-		     or 
-		     (
-		      absSCEta > 1.479 
-		      and  
-		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < 0.0821
-		      and
-		      event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
-		      )
-		     ) ? true : false;
+      eleNonIsoCut =  (
+		       (
+			absSCEta <= 1.479 
+			and 
+			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.0695 
+			and 
+			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
+			) 
+		       or 
+		       (
+			absSCEta > 1.479 
+			and  
+			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < 0.0821
+			and
+			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
+			)
+		       ) ? true : false;
+    }
 
   }
   
@@ -1479,7 +1493,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   }
   
-  FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
+  //FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
   FillBTagObs(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
   FillBTagWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1490,11 +1504,112 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   return kTRUE;
+
+}
+//_____________________________________________________________________________
+bool SkimAna::FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1){
+
+  ((TH1D *) list->FindObject(Form("_cutflow_data%s",hist_extn.c_str())))->Fill(value);
+  if(isMu){
+    ((TH1D *) list->FindObject(Form("_cutflowUS_mu%s",hist_extn.c_str())))->Fill(value);
+    ((TH1D *) list->FindObject(Form("_cutflow_mu%s",hist_extn.c_str())))->Fill(value, wt);
+    ((TH1D *) list->FindObject(Form("_cutflow5%s",hist_extn.c_str())))->Fill(value, wt1);
+  }else{
+    ((TH1D *) list->FindObject(Form("_cutflowUS_ele%s",hist_extn.c_str())))->Fill(value);
+    ((TH1D *) list->FindObject(Form("_cutflow_ele%s",hist_extn.c_str())))->Fill(value, wt);
+  }
+  return true;
+}
+
+//_____________________________________________________________________________
+bool SkimAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt){
+  
+  string lep = (isMu) ? "mu" : "ele";
+  
+  ((TH1D *) list->FindObject(Form("_kb_pt_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Pt(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_eta_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Eta(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_phi_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Phi(), wt);
+
+  ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Pt(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Pt(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), wt);
+
+  ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Eta(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Eta(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), wt);
+	    
+  ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Phi(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Phi(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), wt);
+
+  ((TH1D *) list->FindObject(Form("_kb_pt_%s_met%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Pt(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_phi_%s_met%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Phi(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_njet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_nbjet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
+  
+  ((TH1D *) list->FindObject(Form("_kb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
+  
+  return true;
+}
+
+//_____________________________________________________________________________
+bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt){
+  
+  string lep = (isMu) ? "mu" : "ele";
+  
+  if(isMu){
+    ((TH1D *) list->FindObject(Form("_lb_pt_mu%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_eta_mu%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_phi_mu%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
+  }else{
+    ((TH1D *) list->FindObject(Form("_lb_pt_ele%s",hist_extn.c_str())))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_eta_ele%s",hist_extn.c_str())))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_phi_ele%s",hist_extn.c_str())))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], wt);
+  }
+  for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+    int jetInd = selector->Jets.at(ijet);
+    ((TH1D *) list->FindObject(Form("_lb_pt_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->JetsPtSmeared.at(ijet), wt);
+    ((TH1D *) list->FindObject(Form("_lb_eta_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetEta_[jetInd], wt);
+    ((TH1D *) list->FindObject(Form("_lb_phi_%s_jets%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetPhi_[jetInd], wt);
+  }
+  ((TH1D *) list->FindObject(Form("_lb_pt_%s_met%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPt, wt);
+  ((TH1D *) list->FindObject(Form("_lb_phi_%s_met%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPhi, wt);
+  ((TH1D *) list->FindObject(Form("_lb_njet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
+  ((TH1D *) list->FindObject(Form("_lb_nbjet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
+  
+  return true;
+}
+
+//_____________________________________________________________________________
+bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& combined_muwt1, double& combined_elewt){
+
+  double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
+  double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
+  double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
+  double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+  double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
+  if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
+  double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
+  double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
+  double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
+  double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
+
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  
+  return true;
 }
 
 //_____________________________________________________________________________
 
 bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET){
+  
+  double combined_muwt = 1.0,  combined_muwt1 = 1.0, combined_elewt = 1.0;
 
   if(systType == kBase){
 
@@ -1504,91 +1619,26 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer")) {
-	
-	  double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
-	  double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
-	  double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
-	  double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
-	  double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-	  if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-	  double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
-	  double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
-	  double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
-	  double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
-	  
-	  double combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+  
+	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 
 	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 1]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 2]->Fill(6.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5]->Fill(6.0, combined_muwt1);
 
 	    ////////////////// base ////////////////////////////
 	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    ((TH1D *) lIso->FindObject("_kb_pt_mu"))->Fill(leptonAF.Pt(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_mu"))->Fill(leptonAF.Eta(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_mu"))->Fill(leptonAF.Phi(), combined_muwt);
-
-	    ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(bjlepAF.Pt(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(bjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(cjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(sjhadAF.Pt(), combined_muwt);
-
-	    ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(bjlepAF.Eta(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(bjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(cjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(sjhadAF.Eta(), combined_muwt);
-	    
-	    ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(bjlepAF.Phi(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(bjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(cjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(sjhadAF.Phi(), combined_muwt);
-
-	    ((TH1D *) lIso->FindObject("_kb_pt_mu_met"))->Fill(neutrinoAF.Pt(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_mu_met"))->Fill(neutrinoAF.Phi(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_njet_mu"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_nbjet_mu"))->Fill(selector->bJets.size(), combined_muwt);
-
-	    ((TH1D *) lIso->FindObject("_kb_mjj_mu"))->Fill((cjhadAF+sjhadAF).M(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_kb_mjj_bf_mu"))->Fill((cjhadBF+sjhadBF).M(), combined_muwt);
+	    //FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1)
+	    FillCFHists(lIso, "", true, 6.0, combined_muwt, combined_muwt1);
+	    //FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
+	    FillKFHists(lIso,"",true,combined_muwt);
 	    /////////////////////////////////////////////////////
 
 	  }else{
-	    
-	    hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(6.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(6.0, combined_muwt1);
-	    
+
 	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_mu_lmet"))->Fill(leptonAF.Pt(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_mu_lmet"))->Fill(leptonAF.Eta(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_mu_lmet"))->Fill(leptonAF.Phi(), combined_muwt);
+	    FillCFHists(lLowMET,"_lmet", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lLowMET,"_lmet",true,combined_muwt);
 
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_mu_jets_lmet"))->Fill(bjlepAF.Pt(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_mu_jets_lmet"))->Fill(bjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_mu_jets_lmet"))->Fill(cjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_mu_jets_lmet"))->Fill(sjhadAF.Pt(), combined_muwt);
-
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_mu_jets_lmet"))->Fill(bjlepAF.Eta(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_mu_jets_lmet"))->Fill(bjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_mu_jets_lmet"))->Fill(cjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_mu_jets_lmet"))->Fill(sjhadAF.Eta(), combined_muwt);
-	    
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_mu_jets_lmet"))->Fill(bjlepAF.Phi(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_mu_jets_lmet"))->Fill(bjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_mu_jets_lmet"))->Fill(cjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_mu_jets_lmet"))->Fill(sjhadAF.Phi(), combined_muwt);
-
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_mu_met_lmet"))->Fill(neutrinoAF.Pt(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_mu_met_lmet"))->Fill(neutrinoAF.Phi(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_njet_mu_lmet"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_nbjet_mu_lmet"))->Fill(selector->bJets.size(), combined_muwt);
-
-	    ((TH1D *) lLowMET->FindObject("_kb_mjj_mu_lmet"))->Fill((cjhadAF+sjhadAF).M(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_kb_mjj_bf_mu_lmet"))->Fill((cjhadBF+sjhadBF).M(), combined_muwt);
 	  }//lowmet
 	}//not jec jer
       }//syst loop
@@ -1599,90 +1649,21 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer")) {
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
 	
-	  double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
-	  double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
-	  double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
-	  double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
-	  double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-	  if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-	  double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
-	  double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
-	  double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
-	  double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
-	  
-	  double combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 
 	  if(!isLowMET){
 
-	    hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(6.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(6.0, combined_muwt1);
-
 	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_mu_noniso"))->Fill(leptonAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_mu_noniso"))->Fill(leptonAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_mu_noniso"))->Fill(leptonAF.Phi(), combined_muwt);
+	    FillCFHists(lNonIso,"_noniso", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lNonIso,"_noniso",true,combined_muwt);
 
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_mu_jets_noniso"))->Fill(bjlepAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_mu_jets_noniso"))->Fill(bjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_mu_jets_noniso"))->Fill(cjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_mu_jets_noniso"))->Fill(sjhadAF.Pt(), combined_muwt);
-
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_mu_jets_noniso"))->Fill(bjlepAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_mu_jets_noniso"))->Fill(bjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_mu_jets_noniso"))->Fill(cjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_mu_jets_noniso"))->Fill(sjhadAF.Eta(), combined_muwt);
-	    
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_mu_jets_noniso"))->Fill(bjlepAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_mu_jets_noniso"))->Fill(bjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_mu_jets_noniso"))->Fill(cjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_mu_jets_noniso"))->Fill(sjhadAF.Phi(), combined_muwt);
-
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_mu_met_noniso"))->Fill(neutrinoAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_mu_met_noniso"))->Fill(neutrinoAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_njet_mu_noniso"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_nbjet_mu_noniso"))->Fill(selector->bJets.size(), combined_muwt);
-
-	    ((TH1D *) lNonIso->FindObject("_kb_mjj_mu_noniso"))->Fill((cjhadAF+sjhadAF).M(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_kb_mjj_bf_mu_noniso"))->Fill((cjhadBF+sjhadBF).M(), combined_muwt);
-	    
 	  }else{
 
-	    hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(6.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(6.0, combined_muwt1);
-	    
 	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_mu_noniso_lmet"))->Fill(leptonAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_mu_noniso_lmet"))->Fill(leptonAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_mu_noniso_lmet"))->Fill(leptonAF.Phi(), combined_muwt);
-
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_mu_jets_noniso_lmet"))->Fill(bjlepAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_mu_jets_noniso_lmet"))->Fill(bjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_mu_jets_noniso_lmet"))->Fill(cjhadAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_mu_jets_noniso_lmet"))->Fill(sjhadAF.Pt(), combined_muwt);
-
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_mu_jets_noniso_lmet"))->Fill(bjlepAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_mu_jets_noniso_lmet"))->Fill(bjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_mu_jets_noniso_lmet"))->Fill(cjhadAF.Eta(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_mu_jets_noniso_lmet"))->Fill(sjhadAF.Eta(), combined_muwt);
-	    
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_mu_jets_noniso_lmet"))->Fill(bjlepAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_mu_jets_noniso_lmet"))->Fill(bjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_mu_jets_noniso_lmet"))->Fill(cjhadAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_mu_jets_noniso_lmet"))->Fill(sjhadAF.Phi(), combined_muwt);
-
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_mu_met_noniso_lmet"))->Fill(neutrinoAF.Pt(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_mu_met_noniso_lmet"))->Fill(neutrinoAF.Phi(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_njet_mu_noniso_lmet"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_nbjet_mu_noniso_lmet"))->Fill(selector->bJets.size(), combined_muwt);
-
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_mjj_mu_noniso_lmet"))->Fill((cjhadAF+sjhadAF).M(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_mjj_bf_mu_noniso_lmet"))->Fill((cjhadBF+sjhadBF).M(), combined_muwt);
+	    FillCFHists(lNonIsoLowMET,"_noniso_lmet", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lNonIsoLowMET,"_noniso_lmet",true,combined_muwt);
 	    
 	  }//lowmet
 	}//no jec jer
@@ -1696,91 +1677,25 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer")) {
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
 	
-	  double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
-	  double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
-	  double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
-	  double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
-	  double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-	  if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-	  double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
-	  double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
-	  double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
-	  double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
+	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 	  
-	  double combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-
 	  if(!isLowMET){
 	    
-	    hCutFlow[fNCFHists*isyst + 3]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 4]->Fill(6.0, combined_elewt);
-
 	    ////////////////// base ////////////////////////////	    
 	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    ((TH1D *) lIso->FindObject("_kb_pt_ele"))->Fill(leptonAF.Pt(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_ele"))->Fill(leptonAF.Eta(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_ele"))->Fill(leptonAF.Phi(), combined_elewt);
-
-	    ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(bjlepAF.Pt(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(bjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(cjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(sjhadAF.Pt(), combined_elewt);
-
-	    ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(bjlepAF.Eta(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(bjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(cjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(sjhadAF.Eta(), combined_elewt);
-	    
-	    ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(bjlepAF.Phi(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(bjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(cjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(sjhadAF.Phi(), combined_elewt);
-
-	    ((TH1D *) lIso->FindObject("_kb_pt_ele_met"))->Fill(neutrinoAF.Pt(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_phi_ele_met"))->Fill(neutrinoAF.Phi(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_njet_ele"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_nbjet_ele"))->Fill(selector->bJets.size(), combined_elewt);
-
-	    ((TH1D *) lIso->FindObject("_kb_mjj_ele"))->Fill((cjhadAF+sjhadAF).M(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_kb_mjj_bf_ele"))->Fill((cjhadBF+sjhadBF).M(), combined_elewt);
-	    
+	    //FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1)
+	    FillCFHists(lIso,"", false, 6.0, combined_elewt, 1.0);
+	    //FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
+	    FillKFHists(lIso,"",false,combined_elewt);	    
 	    /////////////////////////////////////////////////////
+
 	  }else{
-	    
-	    hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(6.0, combined_elewt);
 
 	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_ele_lmet"))->Fill(leptonAF.Pt(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_ele_lmet"))->Fill(leptonAF.Eta(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_ele_lmet"))->Fill(leptonAF.Phi(), combined_elewt);
-
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_ele_jets_lmet"))->Fill(bjlepAF.Pt(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_ele_jets_lmet"))->Fill(bjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_ele_jets_lmet"))->Fill(cjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_ele_jets_lmet"))->Fill(sjhadAF.Pt(), combined_elewt);
-
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_ele_jets_lmet"))->Fill(bjlepAF.Eta(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_ele_jets_lmet"))->Fill(bjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_ele_jets_lmet"))->Fill(cjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_eta_ele_jets_lmet"))->Fill(sjhadAF.Eta(), combined_elewt);
-	    
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_ele_jets_lmet"))->Fill(bjlepAF.Phi(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_ele_jets_lmet"))->Fill(bjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_ele_jets_lmet"))->Fill(cjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_ele_jets_lmet"))->Fill(sjhadAF.Phi(), combined_elewt);
-
-	    ((TH1D *) lLowMET->FindObject("_kb_pt_ele_met_lmet"))->Fill(neutrinoAF.Pt(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_phi_ele_met_lmet"))->Fill(neutrinoAF.Phi(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_njet_ele_lmet"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_nbjet_ele_lmet"))->Fill(selector->bJets.size(), combined_elewt);
-
-	    ((TH1D *) lLowMET->FindObject("_kb_mjj_ele_lmet"))->Fill((cjhadAF+sjhadAF).M(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_kb_mjj_bf_ele_lmet"))->Fill((cjhadBF+sjhadBF).M(), combined_elewt);
-	    
+	    FillCFHists(lLowMET,"_lmet", false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lLowMET,"_lmet",false,combined_elewt);	    	    
 	    
 	  }//lowmet
 	}//no jec jer
@@ -1793,97 +1708,115 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer")) {
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
 	
-	  double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
-	  double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
-	  double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
-	  double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
-	  double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-	  if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-	  double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
-	  double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
-	  double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
-	  double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
-	  
-	  double combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	  double combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 
 	  if(!isLowMET){
 
-	    hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(6.0, combined_elewt);
-
 	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_ele_noniso"))->Fill(leptonAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_ele_noniso"))->Fill(leptonAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_ele_noniso"))->Fill(leptonAF.Phi(), combined_elewt);
-
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_ele_jets_noniso"))->Fill(bjlepAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_ele_jets_noniso"))->Fill(bjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_ele_jets_noniso"))->Fill(cjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_ele_jets_noniso"))->Fill(sjhadAF.Pt(), combined_elewt);
-
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_ele_jets_noniso"))->Fill(bjlepAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_ele_jets_noniso"))->Fill(bjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_ele_jets_noniso"))->Fill(cjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_eta_ele_jets_noniso"))->Fill(sjhadAF.Eta(), combined_elewt);
+	    FillCFHists(lNonIso,"_noniso", false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lNonIso,"_noniso",false,combined_elewt);	    
 	    
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_ele_jets_noniso"))->Fill(bjlepAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_ele_jets_noniso"))->Fill(bjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_ele_jets_noniso"))->Fill(cjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_ele_jets_noniso"))->Fill(sjhadAF.Phi(), combined_elewt);
-
-	    ((TH1D *) lNonIso->FindObject("_kb_pt_ele_met_noniso"))->Fill(neutrinoAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_phi_ele_met_noniso"))->Fill(neutrinoAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_njet_ele_noniso"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_nbjet_ele_noniso"))->Fill(selector->bJets.size(), combined_elewt);
-
-	    ((TH1D *) lNonIso->FindObject("_kb_mjj_ele_noniso"))->Fill((cjhadAF+sjhadAF).M(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_kb_mjj_bf_ele_noniso"))->Fill((cjhadBF+sjhadBF).M(), combined_elewt);	    
-
 	  }else{
 	    
-	    hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(6.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(6.0, combined_elewt);
-	    
 	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_ele_noniso_lmet"))->Fill(leptonAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_ele_noniso_lmet"))->Fill(leptonAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_ele_noniso_lmet"))->Fill(leptonAF.Phi(), combined_elewt);
-	    
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_ele_jets_noniso_lmet"))->Fill(bjlepAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_ele_jets_noniso_lmet"))->Fill(bjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_ele_jets_noniso_lmet"))->Fill(cjhadAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_ele_jets_noniso_lmet"))->Fill(sjhadAF.Pt(), combined_elewt);
-
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_ele_jets_noniso_lmet"))->Fill(bjlepAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_ele_jets_noniso_lmet"))->Fill(bjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_ele_jets_noniso_lmet"))->Fill(cjhadAF.Eta(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_eta_ele_jets_noniso_lmet"))->Fill(sjhadAF.Eta(), combined_elewt);
-	    
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_ele_jets_noniso_lmet"))->Fill(bjlepAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_ele_jets_noniso_lmet"))->Fill(bjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_ele_jets_noniso_lmet"))->Fill(cjhadAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_ele_jets_noniso_lmet"))->Fill(sjhadAF.Phi(), combined_elewt);
-
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_pt_ele_met_noniso_lmet"))->Fill(neutrinoAF.Pt(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_phi_ele_met_noniso_lmet"))->Fill(neutrinoAF.Phi(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_njet_ele_noniso_lmet"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_nbjet_ele_noniso_lmet"))->Fill(selector->bJets.size(), combined_elewt);
-	    
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_mjj_ele_noniso_lmet"))->Fill((cjhadAF+sjhadAF).M(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_kb_mjj_bf_ele_noniso_lmet"))->Fill((cjhadBF+sjhadBF).M(), combined_elewt);
+	    FillCFHists(lNonIsoLowMET,"_noniso_lmet", false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lNonIsoLowMET,"_noniso_lmet",false,combined_elewt);	    
 	    
 	  }//lowmet
 	}//jec jer condn
       }//syst loop
     }//ele noniso
 
-    }else { //if systType == kBase
+  }else if(systType == kIso20){ //if systType == kBase
 
+    combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
+    combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
+    combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
+    
+    if(ProcessKinFit((singleMu and muonIsoCut), false)){
+      for(int isyst=0;isyst<fNSyst;isyst++){
+	TString systname = fSystList[isyst];
+	if(systname.Contains("iso20")) {
+  	  if(!isLowMET){
+	    ////////////////// base ////////////////////////////
+	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(lIso, "", true, 6.0, combined_muwt, combined_muwt1);
+	    //FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
+	    FillKFHists(lIso,"",true,combined_muwt);
+	    /////////////////////////////////////////////////////
+	  }else{
+	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(lLowMET,"_lmet", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lLowMET,"_lmet",true,combined_muwt);
+	  }//lowmet
+	}//iso20 condn
+      }//syst loop
+    }//muon iso
 	
+    if(ProcessKinFit((singleMu and muonNonIsoCut), false)){
+      for(int isyst=0;isyst<fNSyst;isyst++){
+	TString systname = fSystList[isyst];
+	if(systname.Contains("iso20")) {
+	  if(!isLowMET){
+	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(lNonIso,"_noniso", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lNonIso,"_noniso",true,combined_muwt);
+	  }else{
+	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(lNonIsoLowMET,"_noniso_lmet", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lNonIsoLowMET,"_noniso_lmet",true,combined_muwt);
+	  }//lowmet
+	}//iso20 condn
+      }//syst loop
+    }// muon noniso
+	
+    //elec
+    if(ProcessKinFit(false, (singleEle and eleIsoCut))){
+      for(int isyst=0;isyst<fNSyst;isyst++){
+	TString systname = fSystList[isyst];
+	if(systname.Contains("iso20")) {
+	  if(!isLowMET){	    
+	    ////////////////// base ////////////////////////////	    
+	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    //FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
+	    FillCFHists(lIso,"",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lIso,"",false,combined_elewt);	    
+	    /////////////////////////////////////////////////////
+	  }else{
+	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(lLowMET,"_lmet",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lLowMET,"_lmet",false,combined_elewt);	    	    
+	  }//lowmet
+	}//iso20 condn
+      }//syst loop
+    }//ele iso
+	
+    if(ProcessKinFit(false, (singleEle and eleNonIsoCut))){
+      for(int isyst=0;isyst<fNSyst;isyst++){
+	TString systname = fSystList[isyst];
+	if(systname.Contains("iso20")) {
+	  if(!isLowMET){
+	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(lNonIso,"_noniso",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lNonIso,"_noniso",false,combined_elewt);	    	    
+	  }else{
+	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(lNonIsoLowMET,"_noniso_lmet",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lNonIsoLowMET,"_noniso_lmet",false,combined_elewt);	    
+	  }//lowmet
+	}//iso20 condn
+      }//syst loop
+    }//ele noniso
+
+  }else { //if systType == kBase
+
+    combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
+    combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
+    combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
+
+
     //mu
     if(ProcessKinFit((singleMu and muonIsoCut), false) and !isLowMET){
       
@@ -1892,45 +1825,12 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	TString systname = fSystList[isyst];
 	
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
 	  
-	  double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
-	  double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
-	  double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
-
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(6.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(6.0, combined_muwt);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(6.0, combined_muwt1);
-
 	  ////////////////// base ////////////////////////////
 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  ((TH1D *) lIso->FindObject("_kb_pt_mu"))->Fill(leptonAF.Pt(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_mu"))->Fill(leptonAF.Eta(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_mu"))->Fill(leptonAF.Phi(), combined_muwt);
-	      
-	  ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(bjlepAF.Pt(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(bjhadAF.Pt(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(cjhadAF.Pt(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_pt_mu_jets"))->Fill(sjhadAF.Pt(), combined_muwt);
-	  
-	  ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(bjlepAF.Eta(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(bjhadAF.Eta(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(cjhadAF.Eta(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_mu_jets"))->Fill(sjhadAF.Eta(), combined_muwt);
-	      
-	  ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(bjlepAF.Phi(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(bjhadAF.Phi(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(cjhadAF.Phi(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_mu_jets"))->Fill(sjhadAF.Phi(), combined_muwt);
-	      
-	  ((TH1D *) lIso->FindObject("_kb_pt_mu_met"))->Fill(neutrinoAF.Pt(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_mu_met"))->Fill(neutrinoAF.Phi(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_njet_mu"))->Fill(selector->Jets.size(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_nbjet_mu"))->Fill(selector->bJets.size(), combined_muwt);
-	      
-	  ((TH1D *) lIso->FindObject("_kb_mjj_mu"))->Fill((cjhadAF+sjhadAF).M(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_kb_mjj_bf_mu"))->Fill((cjhadBF+sjhadBF).M(), combined_muwt);  
-	      
+	  FillCFHists(lIso,"",true, 6.0, combined_muwt, combined_muwt1);
+	  FillKFHists(lIso,"",true,combined_muwt);	    
 	  /////////////////////////////////////////////////////
 	  
 	}//jec jer condn
@@ -1947,42 +1847,10 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 	  
-	  double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
-	  double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
-	  double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
-	  
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(6.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(6.0, combined_elewt);
-	  
 	  ////////////////// base ////////////////////////////
-	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();	  
-	  ((TH1D *) lIso->FindObject("_kb_pt_ele"))->Fill(leptonAF.Pt(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_ele"))->Fill(leptonAF.Eta(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_ele"))->Fill(leptonAF.Phi(), combined_elewt);
-	  
-	  ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(bjlepAF.Pt(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(bjhadAF.Pt(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(cjhadAF.Pt(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_pt_ele_jets"))->Fill(sjhadAF.Pt(), combined_elewt);
-	  
-	  ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(bjlepAF.Eta(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(bjhadAF.Eta(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(cjhadAF.Eta(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_eta_ele_jets"))->Fill(sjhadAF.Eta(), combined_elewt);
-	  
-	  ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(bjlepAF.Phi(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(bjhadAF.Phi(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(cjhadAF.Phi(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_ele_jets"))->Fill(sjhadAF.Phi(), combined_elewt);
-	  
-	  ((TH1D *) lIso->FindObject("_kb_pt_ele_met"))->Fill(neutrinoAF.Pt(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_phi_ele_met"))->Fill(neutrinoAF.Phi(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_njet_ele"))->Fill(selector->Jets.size(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_nbjet_ele"))->Fill(selector->bJets.size(), combined_elewt);
-	  
-	  ((TH1D *) lIso->FindObject("_kb_mjj_ele"))->Fill((cjhadAF+sjhadAF).M(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_kb_mjj_bf_ele"))->Fill((cjhadBF+sjhadBF).M(), combined_elewt);
-	  
+	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(lIso,"",false, 6.0, combined_elewt, 1.0);
+	  FillKFHists(lIso,"",false,combined_elewt);	    	  
 	  /////////////////////////////////////////////////////
     	}//jec jer condn
       }//sys loop
@@ -2001,94 +1869,38 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
     TString systname = fSystList[isyst];
 
     double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
     double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
 
     if(systType == kBase){
 
-      if(!systname.Contains("jec") and !systname.Contains("jer")) {
-
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
 	
-	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
-	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
-	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
-	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
-	double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-	if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-	double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
-	double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
-	double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
-	double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
-	
-	combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	
+	GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
+		
 	if(singleMu and muonIsoCut){
 	  if(!isLowMET){
 	    ////////////////// base ////////////////////////////
 	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    ((TH1D *) lIso->FindObject("_lb_pt_mu"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lIso->FindObject("_lb_eta_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lIso->FindObject("_lb_phi_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lIso->FindObject("_lb_pt_mu_jets"))->Fill(selector->JetsPtSmeared.at(ijet), combined_muwt);
-	      ((TH1D *) lIso->FindObject("_lb_eta_mu_jets"))->Fill(event->jetEta_[jetInd], combined_muwt);
-	      ((TH1D *) lIso->FindObject("_lb_phi_mu_jets"))->Fill(event->jetPhi_[jetInd], combined_muwt);
-	    }
-	    ((TH1D *) lIso->FindObject("_lb_pt_mu_met"))->Fill(selector->METPt, combined_muwt);
-	    ((TH1D *) lIso->FindObject("_lb_phi_mu_met"))->Fill(selector->METPhi, combined_muwt);
-	    ((TH1D *) lIso->FindObject("_lb_njet_mu"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_lb_nbjet_mu"))->Fill(selector->bJets.size(), combined_muwt);
+	    FillCFHists(lIso, "", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lIso, "", true, combined_muwt);
 	    /////////////////////////////////////////////////////
 	  }else{
 	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    ((TH1D *) lLowMET->FindObject("_lb_pt_mu_lmet"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_lb_eta_mu_lmet"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_lb_phi_mu_lmet"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lLowMET->FindObject("_lb_pt_mu_jets_lmet"))->Fill(selector->JetsPtSmeared.at(ijet), combined_muwt);
-	      ((TH1D *) lLowMET->FindObject("_lb_eta_mu_jets_lmet"))->Fill(event->jetEta_[jetInd], combined_muwt);
-	      ((TH1D *) lLowMET->FindObject("_lb_phi_mu_jets_lmet"))->Fill(event->jetPhi_[jetInd], combined_muwt);
-	    }
-	    ((TH1D *) lLowMET->FindObject("_lb_pt_mu_met_lmet"))->Fill(selector->METPt, combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_lb_phi_mu_met_lmet"))->Fill(selector->METPhi, combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_lb_njet_mu_lmet"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lLowMET->FindObject("_lb_nbjet_mu_lmet"))->Fill(selector->bJets.size(), combined_muwt);
+	    FillCFHists(lLowMET, "_lmet", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lLowMET, "_lmet", true, combined_muwt);
 	  }//lowmet
 	}
 	
 	if(singleMu and muonNonIsoCut){
 	  if(!isLowMET){
 	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    ((TH1D *) lNonIso->FindObject("_lb_pt_mu_noniso"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_lb_eta_mu_noniso"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_lb_phi_mu_noniso"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lNonIso->FindObject("_lb_pt_mu_jets_noniso"))->Fill(selector->JetsPtSmeared.at(ijet), combined_muwt);
-	      ((TH1D *) lNonIso->FindObject("_lb_eta_mu_jets_noniso"))->Fill(event->jetEta_[jetInd], combined_muwt);
-	      ((TH1D *) lNonIso->FindObject("_lb_phi_mu_jets_noniso"))->Fill(event->jetPhi_[jetInd], combined_muwt);
-	    }
-	    ((TH1D *) lNonIso->FindObject("_lb_pt_mu_met_noniso"))->Fill(selector->METPt, combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_lb_phi_mu_met_noniso"))->Fill(selector->METPhi, combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_lb_njet_mu_noniso"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lNonIso->FindObject("_lb_nbjet_mu_noniso"))->Fill(selector->bJets.size(), combined_muwt);
+	    FillCFHists(lNonIso, "_noniso", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lNonIso, "_noniso", true, combined_muwt);
 	  }else{
 	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_pt_mu_noniso_lmet"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_eta_mu_noniso_lmet"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_phi_mu_noniso_lmet"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lNonIsoLowMET->FindObject("_lb_pt_mu_jets_noniso_lmet"))->Fill(selector->JetsPtSmeared.at(ijet), combined_muwt);
-	      ((TH1D *) lNonIsoLowMET->FindObject("_lb_eta_mu_jets_noniso_lmet"))->Fill(event->jetEta_[jetInd], combined_muwt);
-	      ((TH1D *) lNonIsoLowMET->FindObject("_lb_phi_mu_jets_noniso_lmet"))->Fill(event->jetPhi_[jetInd], combined_muwt);
-	    }
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_pt_mu_met_noniso_lmet"))->Fill(selector->METPt, combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_phi_mu_met_noniso_lmet"))->Fill(selector->METPhi, combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_njet_mu_noniso_lmet"))->Fill(selector->Jets.size(), combined_muwt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_nbjet_mu_noniso_lmet"))->Fill(selector->bJets.size(), combined_muwt);
+	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", true, combined_muwt);
 	  }//lowmet
 	}
 	
@@ -2097,74 +1909,88 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	  if(!isLowMET){
 	    ////////////////// base ////////////////////////////
 	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    ((TH1D *) lIso->FindObject("_lb_pt_ele"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lIso->FindObject("_lb_eta_ele"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lIso->FindObject("_lb_phi_ele"))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lIso->FindObject("_lb_pt_ele_jets"))->Fill(selector->JetsPtSmeared.at(ijet), combined_elewt);
-	      ((TH1D *) lIso->FindObject("_lb_eta_ele_jets"))->Fill(event->jetEta_[jetInd], combined_elewt);
-	      ((TH1D *) lIso->FindObject("_lb_phi_ele_jets"))->Fill(event->jetPhi_[jetInd], combined_elewt);
-	    }
-	    ((TH1D *) lIso->FindObject("_lb_pt_ele_met"))->Fill(selector->METPt, combined_elewt);
-	    ((TH1D *) lIso->FindObject("_lb_phi_ele_met"))->Fill(selector->METPhi, combined_elewt);
-	    ((TH1D *) lIso->FindObject("_lb_njet_ele"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_lb_nbjet_ele"))->Fill(selector->bJets.size(), combined_elewt);
+	    FillCFHists(lIso, "", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lIso, "", false, combined_elewt);
 	    /////////////////////////////////////////////////////
 	  }else{
 	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    ((TH1D *) lLowMET->FindObject("_lb_pt_ele_lmet"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_lb_eta_ele_lmet"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_lb_phi_ele_lmet"))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lLowMET->FindObject("_lb_pt_ele_jets_lmet"))->Fill(selector->JetsPtSmeared.at(ijet), combined_elewt);
-	      ((TH1D *) lLowMET->FindObject("_lb_eta_ele_jets_lmet"))->Fill(event->jetEta_[jetInd], combined_elewt);
-	      ((TH1D *) lLowMET->FindObject("_lb_phi_ele_jets_lmet"))->Fill(event->jetPhi_[jetInd], combined_elewt);
-	    }
-	    ((TH1D *) lLowMET->FindObject("_lb_pt_ele_met_lmet"))->Fill(selector->METPt, combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_lb_phi_ele_met_lmet"))->Fill(selector->METPhi, combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_lb_njet_ele_lmet"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lLowMET->FindObject("_lb_nbjet_ele_lmet"))->Fill(selector->bJets.size(), combined_elewt);
+	    FillCFHists(lLowMET, "_lmet", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lLowMET, "_lmet", false, combined_elewt);
 	  }//lowmet
 	}
 	
 	if(singleEle and eleNonIsoCut){
 	  if(!isLowMET){
 	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    ((TH1D *) lNonIso->FindObject("_lb_pt_ele_noniso"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_lb_eta_ele_noniso"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_lb_phi_ele_noniso"))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lNonIso->FindObject("_lb_pt_ele_jets_noniso"))->Fill(selector->JetsPtSmeared.at(ijet), combined_elewt);
-	      ((TH1D *) lNonIso->FindObject("_lb_eta_ele_jets_noniso"))->Fill(event->jetEta_[jetInd], combined_elewt);
-	      ((TH1D *) lNonIso->FindObject("_lb_phi_ele_jets_noniso"))->Fill(event->jetPhi_[jetInd], combined_elewt);
-	    }
-	    ((TH1D *) lNonIso->FindObject("_lb_pt_ele_met_noniso"))->Fill(selector->METPt, combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_lb_phi_ele_met_noniso"))->Fill(selector->METPhi, combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_lb_njet_ele_noniso"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lNonIso->FindObject("_lb_nbjet_ele_noniso"))->Fill(selector->bJets.size(), combined_elewt);
+	    FillCFHists(lNonIso, "_noniso", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lNonIso, "_noniso", false, combined_elewt);
 	  }else{
 	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_pt_ele_noniso_lmet"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_eta_ele_noniso_lmet"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_phi_ele_noniso_lmet"))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	      int jetInd = selector->Jets.at(ijet);
-	      ((TH1D *) lNonIsoLowMET->FindObject("_lb_pt_ele_jets_noniso_lmet"))->Fill(selector->JetsPtSmeared.at(ijet), combined_elewt);
-	      ((TH1D *) lNonIsoLowMET->FindObject("_lb_eta_ele_jets_noniso_lmet"))->Fill(event->jetEta_[jetInd], combined_elewt);
-	      ((TH1D *) lNonIsoLowMET->FindObject("_lb_phi_ele_jets_noniso_lmet"))->Fill(event->jetPhi_[jetInd], combined_elewt);
-	    }
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_pt_ele_met_noniso_lmet"))->Fill(selector->METPt, combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_phi_ele_met_noniso_lmet"))->Fill(selector->METPhi, combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_njet_ele_noniso_lmet"))->Fill(selector->Jets.size(), combined_elewt);
-	    ((TH1D *) lNonIsoLowMET->FindObject("_lb_nbjet_ele_noniso_lmet"))->Fill(selector->bJets.size(), combined_elewt);
+	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", false, combined_elewt);
 	  }//lowmet
 	}
       }//jec jer condn
 
-    }else { //if(systType == kBase
+    }else if(systType == kIso20){ //if(systType == kBase
+
+      if(systname.Contains("iso20")) {
+	
+	if(singleMu and muonIsoCut){
+	  if(!isLowMET){
+	    ////////////////// base ////////////////////////////
+	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(lIso, "", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lIso, "", true, combined_muwt);
+	    /////////////////////////////////////////////////////
+	  }else{
+	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(lLowMET, "_lmet", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lLowMET, "_lmet", true, combined_muwt);
+	  }//lowmet
+	}
+	
+	if(singleMu and muonNonIsoCut){
+	  if(!isLowMET){
+	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(lNonIso, "_noniso", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lNonIso, "_noniso", true, combined_muwt);
+	  }else{
+	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", true, 5.0, combined_muwt, combined_muwt1);
+	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", true, combined_muwt);
+	  }//lowmet
+	}
+	
+	//elec
+	if(singleEle and eleIsoCut){
+	  if(!isLowMET){
+	    ////////////////// base ////////////////////////////
+	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(lIso, "", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lIso, "", false, combined_elewt);
+	    /////////////////////////////////////////////////////
+	  }else{
+	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(lLowMET, "_lmet", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lLowMET, "_lmet", false, combined_elewt);
+	  }//lowmet
+	}
+	
+	if(singleEle and eleNonIsoCut){
+	  if(!isLowMET){
+	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(lNonIso, "_noniso", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lNonIso, "_noniso", false, combined_elewt);
+	  }else{
+	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", false, 5.0, combined_elewt, 1.0);
+	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", false, combined_elewt);
+	  }//lowmet
+	}
+      }//iso20 condn
+      
+    }else{ //if(systType == kBase
       
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
@@ -2174,19 +2000,8 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 
 	  ////////////////// base ////////////////////////////
 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  ((TH1D *) lIso->FindObject("_lb_pt_mu"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-	  ((TH1D *) lIso->FindObject("_lb_eta_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	  ((TH1D *) lIso->FindObject("_lb_phi_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-	  for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	    int jetInd = selector->Jets.at(ijet);
-	    ((TH1D *) lIso->FindObject("_lb_pt_mu_jets"))->Fill(selector->JetsPtSmeared.at(ijet), combined_muwt);
-	    ((TH1D *) lIso->FindObject("_lb_eta_mu_jets"))->Fill(event->jetEta_[jetInd], combined_muwt);
-	    ((TH1D *) lIso->FindObject("_lb_phi_mu_jets"))->Fill(event->jetPhi_[jetInd], combined_muwt);
-	  }
-	  ((TH1D *) lIso->FindObject("_lb_pt_mu_met"))->Fill(selector->METPt, combined_muwt);
-	  ((TH1D *) lIso->FindObject("_lb_phi_mu_met"))->Fill(selector->METPhi, combined_muwt);
-	  ((TH1D *) lIso->FindObject("_lb_njet_mu"))->Fill(selector->Jets.size(), combined_muwt);
-	  ((TH1D *) lIso->FindObject("_lb_nbjet_mu"))->Fill(selector->bJets.size(), combined_muwt);
+	  FillCFHists(lIso, "", true, 5.0, combined_muwt, combined_muwt1);
+	  FillBTHists(lIso, "", true, combined_muwt);
 	  /////////////////////////////////////////////////////
 
     	}
@@ -2195,19 +2010,8 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	  
 	  ////////////////// base ////////////////////////////
 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  ((TH1D *) lIso->FindObject("_lb_pt_ele"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	  ((TH1D *) lIso->FindObject("_lb_eta_ele"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	  ((TH1D *) lIso->FindObject("_lb_phi_ele"))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], combined_elewt);
-	  for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	    int jetInd = selector->Jets.at(ijet);
-	    ((TH1D *) lIso->FindObject("_lb_pt_ele_jets"))->Fill(selector->JetsPtSmeared.at(ijet), combined_elewt);
-	    ((TH1D *) lIso->FindObject("_lb_eta_ele_jets"))->Fill(event->jetEta_[jetInd], combined_elewt);
-	    ((TH1D *) lIso->FindObject("_lb_phi_ele_jets"))->Fill(event->jetPhi_[jetInd], combined_elewt);
-	  }
-	  ((TH1D *) lIso->FindObject("_lb_pt_ele_met"))->Fill(selector->METPt, combined_elewt);
-	  ((TH1D *) lIso->FindObject("_lb_phi_ele_met"))->Fill(selector->METPhi, combined_elewt);
-	  ((TH1D *) lIso->FindObject("_lb_njet_ele"))->Fill(selector->Jets.size(), combined_elewt);
-	  ((TH1D *) lIso->FindObject("_lb_nbjet_ele"))->Fill(selector->bJets.size(), combined_elewt);
+	  FillCFHists(lIso, "", false, 5.0, combined_elewt, 1.0);
+	  FillBTHists(lIso, "", false, combined_elewt);
 	  /////////////////////////////////////////////////////
     	}
 	
@@ -2219,120 +2023,121 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 }
 
 
-//_____________________________________________________________________________
+// //_____________________________________________________________________________
 
-bool SkimAna::FillBTagCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET){
+// bool SkimAna::FillBTagCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET){
 
-  for(int isyst=0;isyst<fNSyst;isyst++){
+//   for(int isyst=0;isyst<fNSyst;isyst++){
 
-    TString systname = fSystList[isyst];
+//     TString systname = fSystList[isyst];
 
-    if(systType == kBase){
+//     if(systType == kBase){
 
-      if(!systname.Contains("jec") and !systname.Contains("jer")) {
+//       if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
 
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  if(!isLowMET)
-	    hCutFlow[fNCFHists*isyst + 0]->Fill(5.0);
-	  else
-	    hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(5.0);
-	}
-	if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
-	  if(!isLowMET)
-	    hCutFlow[fNCFHists*isyst + 0 + 2*fNBCFHists]->Fill(5.0);
-	  else
-	    hCutFlow[fNCFHists*isyst + 0 + 3*fNBCFHists]->Fill(5.0);
-	}
+// 	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
+// 	  if(!isLowMET)
+// 	    hCutFlow[fNCFHists*isyst + 0]->Fill(5.0);
+// 	  else
+// 	    hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(5.0);
+// 	}
+// 	if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
+// 	  if(!isLowMET)
+// 	    hCutFlow[fNCFHists*isyst + 0 + 2*fNBCFHists]->Fill(5.0);
+// 	  else
+// 	    hCutFlow[fNCFHists*isyst + 0 + 3*fNBCFHists]->Fill(5.0);
+// 	}
 	
-	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
-	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
-	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
-	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
-	double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-	if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-	double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
-	double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
-	double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
-	double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
+// 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
+// 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
+// 	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
+// 	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+// 	double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
+// 	if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
+// 	double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
+// 	double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
+// 	double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
+// 	double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
 	
-	double combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	double combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-	double combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+// 	double combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+// 	double combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+// 	double combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
 
-	if(singleMu and muonIsoCut){
-	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 1]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 2]->Fill(5.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5]->Fill(5.0, combined_muwt1);
-	  }else{
-	    hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(5.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(5.0, combined_muwt1);
-	  }//lowmet
-	}
+// 	if(singleMu and muonIsoCut){
+// 	  if(!isLowMET){
+// 	    hCutFlow[fNCFHists*isyst + 1]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 2]->Fill(5.0, combined_muwt);
+// 	    hCutFlow[fNCFHists*isyst + 5]->Fill(5.0, combined_muwt1);
+// 	  }else{
+// 	    hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(5.0, combined_muwt);
+// 	    hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(5.0, combined_muwt1);
+// 	  }//lowmet
+// 	}
 
-	if(singleMu and muonNonIsoCut){
-	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(5.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(5.0, combined_muwt1);
-	  }else{
-	    hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(5.0, combined_muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(5.0, combined_muwt1);
-	  }//lowmet
-	}
+// 	if(singleMu and muonNonIsoCut){
+// 	  if(!isLowMET){
+// 	    hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(5.0, combined_muwt);
+// 	    hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(5.0, combined_muwt1);
+// 	  }else{
+// 	    hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(5.0, combined_muwt);
+// 	    hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(5.0, combined_muwt1);
+// 	  }//lowmet
+// 	}
   
-	//elec
-	if(singleEle and eleIsoCut){
-	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 3]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 4]->Fill(5.0, combined_elewt);
-	  }else{
-	    hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(5.0, combined_elewt);
-	  }//lowmet
-	}
+// 	//elec
+// 	if(singleEle and eleIsoCut){
+// 	  if(!isLowMET){
+// 	    hCutFlow[fNCFHists*isyst + 3]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 4]->Fill(5.0, combined_elewt);
+// 	  }else{
+// 	    hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(5.0, combined_elewt);
+// 	  }//lowmet
+// 	}
 	
-	if(singleEle and eleNonIsoCut){
-	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(5.0, combined_elewt);
-	  }else{
-	    hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(5.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(5.0, combined_elewt);
-	  }//lowmet
-	}
-      }//jec jer condn
-    }else {//if(systType == kJECUp){
+// 	if(singleEle and eleNonIsoCut){
+// 	  if(!isLowMET){
+// 	    hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(5.0, combined_elewt);
+// 	  }else{
+// 	    hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(5.0);
+// 	    hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(5.0, combined_elewt);
+// 	  }//lowmet
+// 	}
+//       }//jec jer condn
+//     }else {//if(systType == kJECUp){
 
-      if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+//       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+// 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+// 	  or (systType == kIso20 and systname == "iso20")){
 
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  if(!isLowMET)
-	    hCutFlow[fNCFHists*isyst + 0]->Fill(5.0);
-	  else
-	    hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(5.0);
-	}
-	//mu
-	if(singleMu and muonIsoCut and !isLowMET){
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(5.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(5.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight);
+// 	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
+// 	  if(!isLowMET)
+// 	    hCutFlow[fNCFHists*isyst + 0]->Fill(5.0);
+// 	  else
+// 	    hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(5.0);
+// 	}
+// 	//mu
+// 	if(singleMu and muonIsoCut and !isLowMET){
+// 	  hCutFlow[fNCFHists*isyst + 1]->Fill(5.0);
+// 	  hCutFlow[fNCFHists*isyst + 2]->Fill(5.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight);
+// 	  hCutFlow[fNCFHists*isyst + 5]->Fill(5.0, _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight);
 	  
-	}
-	//elec
-	if(singleEle and eleIsoCut and !isLowMET){
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(5.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(5.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight);     
-	}	
-      }//jec jer condn
-    }//systType condn
-  }//syst loop
+// 	}
+// 	//elec
+// 	if(singleEle and eleIsoCut and !isLowMET){
+// 	  hCutFlow[fNCFHists*isyst + 3]->Fill(5.0);
+// 	  hCutFlow[fNCFHists*isyst + 4]->Fill(5.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight);     
+// 	}	
+//       }//jec jer condn
+//     }//systType condn
+//   }//syst loop
   
-  return true;
-}
+//   return true;
+// }
 
 //_____________________________________________________________________________
 
@@ -2342,95 +2147,127 @@ bool SkimAna::FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut,
 
     TString systname = fSystList[isyst];
 
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight;
+
     if(systType == kBase){
 
-      if(!systname.Contains("jec") and !systname.Contains("jer")) {
-
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  if(!isLowMET)
-	    hCutFlow[fNCFHists*isyst + 0]->Fill(4.0);
-	  else
-	    hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(4.0);
-	}
-	if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
-	  if(!isLowMET)
-	    hCutFlow[fNCFHists*isyst + 0 + 2*fNBCFHists]->Fill(4.0);
-	  else
-	    hCutFlow[fNCFHists*isyst + 0 + 3*fNBCFHists]->Fill(4.0);
-	}
-
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+	
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
 	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
 	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+
+	combined_muwt = _sampleWeight*prefirewt*puwt*muwt;
+	combined_muwt1 = _sampleWeight*puwt*muwt;
+	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
 	
 	if(singleMu and muonIsoCut){
 	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 1]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 2]->Fill(4.0, _sampleWeight*prefirewt*puwt*muwt);
-	    hCutFlow[fNCFHists*isyst + 5]->Fill(4.0, _sampleWeight*puwt*muwt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(list, "", true, 4.0, combined_muwt, combined_muwt1);
 	  }else{
-	    hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(4.0, _sampleWeight*prefirewt*puwt*muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(4.0, _sampleWeight*puwt*muwt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(list, "_lmet", true, 4.0, combined_muwt, combined_muwt1);
 	  }//lowmet
 	}
 
 	if(singleMu and muonNonIsoCut){
 	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(4.0, _sampleWeight*prefirewt*puwt*muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(4.0, _sampleWeight*puwt*muwt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(list, "_noniso", true, 4.0, combined_muwt, combined_muwt1);
 	  }else{
-	    hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(4.0, _sampleWeight*prefirewt*puwt*muwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(4.0, _sampleWeight*puwt*muwt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(list, "_noniso_lmet", true, 4.0, combined_muwt, combined_muwt1);
 	  }//lowmet
 	}
   
 	//elec
 	if(singleEle and eleIsoCut){
 	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 3]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 4]->Fill(4.0, _sampleWeight*prefirewt*puwt*elewt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(list, "", false, 4.0, combined_elewt, 1.0);
 	  }else{
-	    hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(4.0, _sampleWeight*prefirewt*puwt*elewt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(list, "_lmet", false, 4.0, combined_elewt, 1.0);
 	  }//lowmet
 	}
 	
 	if(singleEle and eleNonIsoCut){
 	  if(!isLowMET){
-	    hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(4.0, _sampleWeight*prefirewt*puwt*elewt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(list, "_noniso", false, 4.0, combined_elewt, 1.0);
 	  }else{
-	    hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(4.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(4.0, _sampleWeight*prefirewt*puwt*elewt);
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(list, "_noniso_lmet", false, 4.0, combined_elewt, 1.0);
 	  }//lowmet
 	}
       }//jec jer condn
+
+    }else if(systType == kIso20){// if(systType == kBase){
+
+      if(systname.Contains("iso20")) {
+		
+	if(singleMu and muonIsoCut){
+	  if(!isLowMET){
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(list, "", true, 4.0, combined_muwt, combined_muwt1);
+	  }else{
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(list, "_lmet", true, 4.0, combined_muwt, combined_muwt1);
+	  }//lowmet
+	}
+
+	if(singleMu and muonNonIsoCut){
+	  if(!isLowMET){
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(list, "_noniso", true, 4.0, combined_muwt, combined_muwt1);
+	  }else{
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(list, "_noniso_lmet", true, 4.0, combined_muwt, combined_muwt1);
+	  }//lowmet
+	}
+  
+	//elec
+	if(singleEle and eleIsoCut){
+	  if(!isLowMET){
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(list, "", false, 4.0, combined_elewt, 1.0);
+	  }else{
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(list, "_lmet", false, 4.0, combined_elewt, 1.0);
+	  }//lowmet
+	}
+	
+	if(singleEle and eleNonIsoCut){
+	  if(!isLowMET){
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(list, "_noniso", false, 4.0, combined_elewt, 1.0);
+	  }else{
+	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(list, "_noniso_lmet", false, 4.0, combined_elewt, 1.0);
+	  }//lowmet
+	}
+      }//iso20 condn
+      
     }else {// if(systType == kBase){
 
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
-
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  if(!isLowMET)
-	    hCutFlow[fNCFHists*isyst + 0]->Fill(4.0);
-	  else
-	    hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(4.0);
-	}
+	
 	//mu
 	if(singleMu and muonIsoCut and !isLowMET){	  
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(4.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(4.0, _sampleWeight*_PUWeight*_muEffWeight);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 4.0, combined_muwt, combined_muwt1);
 	}
 	//elec
 	if(singleEle and eleIsoCut and !isLowMET){
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(4.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(4.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);    
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 4.0, combined_elewt, 1.0);
 	}
+	
       }//jec jer condn
     }//systType condn
   }//syst loop
@@ -2446,85 +2283,108 @@ bool SkimAna::FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut
 
     TString systname = fSystList[isyst];
 
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight;
+    
     if(systType == kBase){
-
-      if(!systname.Contains("jec") and !systname.Contains("jer")) {
-
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  hCutFlow[fNCFHists*isyst + 0]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(3.0);
-	}
-	if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
-	  hCutFlow[fNCFHists*isyst + 0 + 2*fNBCFHists]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 0 + 3*fNBCFHists]->Fill(3.0);
-	}
-
+      
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+	
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
 	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
 	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+
+	combined_muwt = _sampleWeight*prefirewt*puwt*muwt;
+	combined_muwt1 = _sampleWeight*puwt*muwt;
+	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
 	
 	if(singleMu and muonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(3.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(3.0, _sampleWeight*puwt*muwt);
-
-	  hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(3.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(3.0, _sampleWeight*puwt*muwt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 3.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", true, 3.0, combined_muwt, combined_muwt1);
 	}
 
 	if(singleMu and muonNonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(3.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(3.0, _sampleWeight*puwt*muwt);
-
-	  hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(3.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(3.0, _sampleWeight*puwt*muwt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", true, 3.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", true, 3.0, combined_muwt, combined_muwt1);
 	}
   
 	//elec
 	if(singleEle and eleIsoCut){
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(3.0, _sampleWeight*prefirewt*puwt*elewt);
-    
-	  hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(3.0, _sampleWeight*prefirewt*puwt*elewt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 3.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", false, 3.0, combined_elewt, 1.0);
 	}
 	
 	if(singleEle and eleNonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(3.0, _sampleWeight*prefirewt*puwt*elewt);
-
-	  hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(3.0, _sampleWeight*prefirewt*puwt*elewt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", false, 3.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", false, 3.0, combined_elewt, 1.0);
 	}
       }//jec jer condn
-    }else { // if(systType == kBase){
+
+    }else if(systType == kIso20){// if(systType == kBase){
+
+      if(systname.Contains("iso20")) {
+		
+	if(singleMu and muonIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 3.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", true, 3.0, combined_muwt, combined_muwt1);
+	}
+
+	if(singleMu and muonNonIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", true, 3.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", true, 3.0, combined_muwt, combined_muwt1);
+	}
+  
+	//elec
+	if(singleEle and eleIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 3.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", false, 3.0, combined_elewt, 1.0);
+	}
+	
+	if(singleEle and eleNonIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", false, 3.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", false, 3.0, combined_elewt, 1.0);
+	}
+      }//iso20 condn
+      
+    }else {// if(systType == kBase){
 
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
-
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  hCutFlow[fNCFHists*isyst + 0]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(3.0);
-	}
+	
 	//mu
-	if(singleMu and muonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(3.0, _sampleWeight*_PUWeight*_muEffWeight);
+	if(singleMu and muonIsoCut){	  
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 3.0, combined_muwt, combined_muwt1);
 	}
 	//elec
 	if(singleEle and eleIsoCut){
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(3.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(3.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);    
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 3.0, combined_elewt, 1.0);
 	}
 	
       }//jec jer condn
     }//systType condn
   }//syst loop
+  
+  
   //   }else if(systType == kJECUp){
   //     if(systname == "jecup") {
   //     }
@@ -2548,90 +2408,113 @@ bool SkimAna::FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut
 //_____________________________________________________________________________
 
 bool SkimAna::FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut){
-
+  
+ 
   for(int isyst=0;isyst<fNSyst;isyst++){
 
     TString systname = fSystList[isyst];
 
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight;
+    
     if(systType == kBase){
-
-      if(!systname.Contains("jec") and !systname.Contains("jer")) {
-
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  hCutFlow[fNCFHists*isyst + 0]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(2.0);
-	}
-	if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
-	  hCutFlow[fNCFHists*isyst + 0 + 2*fNBCFHists]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 0 + 3*fNBCFHists]->Fill(2.0);
-	}
-
+      
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+	
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
 	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
 	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+
+	combined_muwt = _sampleWeight*prefirewt*puwt*muwt;
+	combined_muwt1 = _sampleWeight*puwt*muwt;
+	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
 	
 	if(singleMu and muonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(2.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(2.0, _sampleWeight*puwt*muwt);
-
-	  hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(2.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(2.0, _sampleWeight*puwt*muwt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 2.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", true, 2.0, combined_muwt, combined_muwt1);
 	}
 
 	if(singleMu and muonNonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(2.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(2.0, _sampleWeight*puwt*muwt);
-
-	  hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(2.0, _sampleWeight*prefirewt*puwt*muwt);
-	  hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(2.0, _sampleWeight*puwt*muwt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", true, 2.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", true, 2.0, combined_muwt, combined_muwt1);
 	}
   
 	//elec
 	if(singleEle and eleIsoCut){
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(2.0, _sampleWeight*prefirewt*puwt*elewt);
-    
-	  hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(2.0, _sampleWeight*prefirewt*puwt*elewt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 2.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", false, 2.0, combined_elewt, 1.0);
 	}
 	
 	if(singleEle and eleNonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(2.0, _sampleWeight*prefirewt*puwt*elewt);
-
-	  hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(2.0, _sampleWeight*prefirewt*puwt*elewt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", false, 2.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", false, 2.0, combined_elewt, 1.0);
 	}
       }//jec jer condn
-    }else {// if(systType == kBase){
+
+    }else if(systType == kIso20){// if(systType == kBase){
+
+      if(systname.Contains("iso20")) {
+		
+	if(singleMu and muonIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 2.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", true, 2.0, combined_muwt, combined_muwt1);
+	}
+
+	if(singleMu and muonNonIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", true, 2.0, combined_muwt, combined_muwt1);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", true, 2.0, combined_muwt, combined_muwt1);
+	}
+  
+	//elec
+	if(singleEle and eleIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 2.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  FillCFHists(list1, "_lmet", false, 2.0, combined_elewt, 1.0);
+	}
+	
+	if(singleEle and eleNonIsoCut){
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  FillCFHists(list, "_noniso", false, 2.0, combined_elewt, 1.0);
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  FillCFHists(list1, "_noniso_lmet", false, 2.0, combined_elewt, 1.0);
+	}
+      }//iso20 condn
       
+    }else {// if(systType == kBase){
+
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 	
-	if((singleMu and muonIsoCut) or (singleEle and eleIsoCut)){
-	  hCutFlow[fNCFHists*isyst + 0]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(2.0);
-	}
 	//mu
-	if(singleMu and muonIsoCut){
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(2.0, _sampleWeight*_PUWeight*_muEffWeight);
+	if(singleMu and muonIsoCut){	  
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 2.0, combined_muwt, combined_muwt1);
 	}
 	//elec
 	if(singleEle and eleIsoCut){
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(2.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(2.0, _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight);    
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 2.0, combined_elewt, 1.0);
 	}
 	
       }//jec jer condn
     }//systType condn
   }//syst loop
+  
   //   }else if(systType == kJECUp){
   //     if(systname == "jecup") {
   //     }
@@ -2659,64 +2542,41 @@ bool SkimAna::FillEventCutFlow(){
 
     TString systname = fSystList[isyst];
 
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight;
+
     if(systType == kBase){
 
-      if(!systname.Contains("jec") and !systname.Contains("jer")) {
-
-	if(evtPick->passTrigger_mu || evtPick->passTrigger_ele){
-	  hCutFlow[fNCFHists*isyst + 0]->Fill(0.0);  
-	  hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 0 + 2*fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 0 + 3*fNBCFHists]->Fill(0.0);
-	  if(selector->isPVGood && evtPick->passFilter){
-	    hCutFlow[fNCFHists*isyst + 0]->Fill(1.0);  
-	    hCutFlow[fNCFHists*isyst + 0 + fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 0 + 2*fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 0 + 3*fNBCFHists]->Fill(1.0);
-	  }
-	}
-
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
 
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
 	//printf("syst : %s, puwt : %f, prefirewt : %f\n",systname.Data(),puwt,prefirewt);
+
+	combined_muwt = _sampleWeight*prefirewt*puwt;
+	combined_muwt1 = _sampleWeight*puwt;
+	combined_elewt = _sampleWeight*prefirewt*puwt;
     
 	//mu
 	if(evtPick->passTrigger_mu){
       
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(0.0, _sampleWeight*prefirewt*puwt);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(0.0, _sampleWeight*puwt);
-      
-	  hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(0.0, _sampleWeight*prefirewt*puwt);
-	  hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(0.0, _sampleWeight*puwt);
-      
-	  hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(0.0, _sampleWeight*prefirewt*puwt);
-	  hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(0.0, _sampleWeight*puwt);
-      
-	  hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(0.0, _sampleWeight*prefirewt*puwt);
-	  hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(0.0, _sampleWeight*puwt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  
+	  FillCFHists(list, "", true, 0.0, combined_muwt, combined_muwt1);
+	  FillCFHists(list1, "_lmet", true, 0.0, combined_muwt, combined_muwt1);
+	  FillCFHists(list2, "_noniso", true, 0.0, combined_muwt, combined_muwt1);
+	  FillCFHists(list3, "_noniso_lmet", true, 0.0, combined_muwt, combined_muwt1);
       
 	  if(selector->isPVGood and evtPick->passFilter){
 
-	    hCutFlow[fNCFHists*isyst + 1]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 2]->Fill(1.0, _sampleWeight*prefirewt*puwt);
-	    hCutFlow[fNCFHists*isyst + 5]->Fill(1.0, _sampleWeight*puwt);
-	
-	    hCutFlow[fNCFHists*isyst + 1 + fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 2 + fNBCFHists]->Fill(1.0, _sampleWeight*prefirewt*puwt);
-	    hCutFlow[fNCFHists*isyst + 5 + fNBCFHists]->Fill(1.0, _sampleWeight*puwt);
-	
-	    hCutFlow[fNCFHists*isyst + 1 + 2*fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 2*fNBCFHists]->Fill(1.0, _sampleWeight*prefirewt*puwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 2*fNBCFHists]->Fill(1.0, _sampleWeight*puwt);
-	
-	    hCutFlow[fNCFHists*isyst + 1 + 3*fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 2 + 3*fNBCFHists]->Fill(1.0, _sampleWeight*prefirewt*puwt);
-	    hCutFlow[fNCFHists*isyst + 5 + 3*fNBCFHists]->Fill(1.0, _sampleWeight*puwt);
+	    FillCFHists(list, "", true, 1.0, combined_muwt, combined_muwt1);
+	    FillCFHists(list1, "_lmet", true, 1.0, combined_muwt, combined_muwt1);
+	    FillCFHists(list2, "_noniso", true, 1.0, combined_muwt, combined_muwt1);
+	    FillCFHists(list3, "_noniso_lmet", true, 1.0, combined_muwt, combined_muwt1);
 
 	  }
 	}//mu condn
@@ -2724,65 +2584,101 @@ bool SkimAna::FillEventCutFlow(){
 	//elec
 	if(evtPick->passTrigger_ele){
 
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(0.0, _sampleWeight*prefirewt*puwt);
-      
-	  hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(0.0, _sampleWeight*prefirewt*puwt);
-      
-	  hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(0.0, _sampleWeight*prefirewt*puwt);
-      
-	  hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(0.0, _sampleWeight*prefirewt*puwt);
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  
+	  FillCFHists(list, "", false, 0.0, combined_elewt, 1.0);
+	  FillCFHists(list1, "_lmet", false, 0.0, combined_elewt, 1.0);
+	  FillCFHists(list2, "_noniso", false, 0.0, combined_elewt, 1.0);
+	  FillCFHists(list3, "_noniso_lmet", false, 0.0, combined_elewt, 1.0);
       
 	  if(selector->isPVGood and evtPick->passFilter){
-	    hCutFlow[fNCFHists*isyst + 3]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 4]->Fill(1.0, _sampleWeight*prefirewt*puwt);
-	
-	    hCutFlow[fNCFHists*isyst + 3 + fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 4 + fNBCFHists]->Fill(1.0, _sampleWeight*prefirewt*puwt);
-	
-	    hCutFlow[fNCFHists*isyst + 3 + 2*fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 2*fNBCFHists]->Fill(1.0, _sampleWeight*prefirewt*puwt);
+
+	    FillCFHists(list, "", false, 1.0, combined_elewt, 1.0);
+	    FillCFHists(list1, "_lmet", false, 1.0, combined_elewt, 1.0);
+	    FillCFHists(list2, "_noniso", false, 1.0, combined_elewt, 1.0);
+	    FillCFHists(list3, "_noniso_lmet", false, 1.0, combined_elewt, 1.0);
 	    
-	    hCutFlow[fNCFHists*isyst + 3 + 3*fNBCFHists]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 4 + 3*fNBCFHists]->Fill(1.0, _sampleWeight*prefirewt*puwt);
 	  }
 	}//ele condn
       }//no jec and/or jer condn
       
-    }else { //if(systType == kBase){
+    }else if(systType == kIso20){ //if(systType == kBase){
 
+      if(systname.Contains("iso20")) {
+	
+	//mu
+	if(evtPick->passTrigger_mu){
+      
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  
+	  FillCFHists(list, "", true, 0.0, combined_muwt, combined_muwt1);
+	  FillCFHists(list1, "_lmet", true, 0.0, combined_muwt, combined_muwt1);
+	  FillCFHists(list2, "_noniso", true, 0.0, combined_muwt, combined_muwt1);
+	  FillCFHists(list3, "_noniso_lmet", true, 0.0, combined_muwt, combined_muwt1);
+      
+	  if(selector->isPVGood and evtPick->passFilter){
+
+	    FillCFHists(list, "", true, 1.0, combined_muwt, combined_muwt1);
+	    FillCFHists(list1, "_lmet", true, 1.0, combined_muwt, combined_muwt1);
+	    FillCFHists(list2, "_noniso", true, 1.0, combined_muwt, combined_muwt1);
+	    FillCFHists(list3, "_noniso_lmet", true, 1.0, combined_muwt, combined_muwt1);
+
+	  }
+	}//mu condn
+	
+	//elec
+	if(evtPick->passTrigger_ele){
+
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  
+	  FillCFHists(list, "", false, 0.0, combined_elewt, 1.0);
+	  FillCFHists(list1, "_lmet", false, 0.0, combined_elewt, 1.0);
+	  FillCFHists(list2, "_noniso", false, 0.0, combined_elewt, 1.0);
+	  FillCFHists(list3, "_noniso_lmet", false, 0.0, combined_elewt, 1.0);
+      
+	  if(selector->isPVGood and evtPick->passFilter){
+
+	    FillCFHists(list, "", false, 1.0, combined_elewt, 1.0);
+	    FillCFHists(list1, "_lmet", false, 1.0, combined_elewt, 1.0);
+	    FillCFHists(list2, "_noniso", false, 1.0, combined_elewt, 1.0);
+	    FillCFHists(list3, "_noniso_lmet", false, 1.0, combined_elewt, 1.0);
+	    
+	  }
+	}//ele condn
+      }//iso20 condn
+
+    }else { //if(systType == kBase){
+      
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 	
-	if(evtPick->passTrigger_mu || evtPick->passTrigger_ele){
-	  hCutFlow[fNCFHists*isyst + 0]->Fill(0.0);  
-	  if(selector->isPVGood && evtPick->passFilter){
-	    hCutFlow[fNCFHists*isyst + 0]->Fill(1.0);  
-	  }
-	}	
 	//mu
 	if(evtPick->passTrigger_mu){
-	  hCutFlow[fNCFHists*isyst + 1]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 2]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);
-	  hCutFlow[fNCFHists*isyst + 5]->Fill(0.0, _sampleWeight*_PUWeight);
+      	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", true, 0.0, combined_muwt, combined_muwt1);
 	  if(selector->isPVGood and evtPick->passFilter){
-	    hCutFlow[fNCFHists*isyst + 1]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 2]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
-	    hCutFlow[fNCFHists*isyst + 5]->Fill(1.0, _sampleWeight*_PUWeight);
+	    FillCFHists(list, "", true, 1.0, combined_muwt, combined_muwt1);
 	  }
 	}//mu condn
+	
 	//elec
 	if(evtPick->passTrigger_ele){
-	  hCutFlow[fNCFHists*isyst + 3]->Fill(0.0);
-	  hCutFlow[fNCFHists*isyst + 4]->Fill(0.0, _sampleWeight*_prefireWeight*_PUWeight);      
+	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	  FillCFHists(list, "", false, 0.0, combined_elewt, 1.0);
 	  if(selector->isPVGood and evtPick->passFilter){
-	    hCutFlow[fNCFHists*isyst + 3]->Fill(1.0);
-	    hCutFlow[fNCFHists*isyst + 4]->Fill(1.0, _sampleWeight*_prefireWeight*_PUWeight);
+	    FillCFHists(list, "", false, 1.0, combined_elewt, 1.0);	    
 	  }
 	}//ele condn
+	
       }//jec jer condn
     }//systType    
   }//syst loop

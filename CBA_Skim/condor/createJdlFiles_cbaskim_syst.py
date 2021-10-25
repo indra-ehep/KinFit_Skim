@@ -17,9 +17,10 @@ samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 # syst_2017 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown", "prefireup", "prefiredown"]
 # syst_2018 = ["base", "puup", "pudown", "mueffup", "mueffdown", "eleeffup", "eleeffdown",  "jecup", "jecdown", "jerup", "jerdown", "btagbup", "btagbdown", "btaglup", "btagldown"]
 
-syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base"]
-syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base"]
-syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base"]
+syst_2016 = ["iso20"]
+#syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20"]
+syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20"]
+syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20"]
 
 if not os.path.exists("tmpSubSystMedID/log"):
     os.makedirs("tmpSubSystMedID/log")
@@ -53,6 +54,7 @@ for year in [2016,2017,2018]:
     jdlFile = open('tmpSubSystMedID/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
+    #condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"

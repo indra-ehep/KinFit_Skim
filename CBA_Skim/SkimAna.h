@@ -616,7 +616,8 @@ class SkimAna : public TSelector {
    		  kPUDown, kPUUp, kMuEffDown, kMuEffUp, kEleEffDown, kEleEffUp,
    		  kJECUp, kJECDown, kJERUp, kJERDown, kBTagbDown, kBTagbUp,
    		  kBTaglDown, kBTaglUp, kPdfDown, kPdfUp, kQ2Down, kQ2Up,
-   		  kFsrDown, kFsrUp, kIsrDown, kIsrUp, kPreFireUp, kPreFireDown
+   		  kFsrDown, kFsrUp, kIsrDown, kIsrUp, kPreFireUp, kPreFireDown,
+		  kIso20
    };
    
    int puvar012_g ;		// 0:down, 1:norm, 2:up
@@ -791,7 +792,7 @@ class SkimAna : public TSelector {
    bool    FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
    bool    FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
    bool    FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
-   bool    FillBTagCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   //bool    FillBTagCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
 
    bool    FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
    bool    FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
@@ -801,6 +802,12 @@ class SkimAna : public TSelector {
    bool    FillNjetWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
    bool    FillBTagWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
    
+   bool    FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1);
+   bool    FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
+   bool    FillBTHists(TList *list, string hist_extn, bool isMu, double wt);
+
+   bool    GetCombinedWt(TString systname, double& combined_muwt, double& combined_muwt1, double& combined_elewt);
+
    bool    ExecSerial(const char* infile);
    
    
