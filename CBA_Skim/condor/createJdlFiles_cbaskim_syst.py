@@ -22,14 +22,14 @@ syst_2016 = ["iso20"]
 syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20"]
 syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20"]
 
-if not os.path.exists("tmpSubSystMedID/log"):
-    os.makedirs("tmpSubSystMedID/log")
+if not os.path.exists("tmpSubSyst/log"):
+    os.makedirs("tmpSubSyst/log")
 condorLogDir = "log"
-tarFile = "tmpSubSystMedID/CBA_Skim.tar.gz"
+tarFile = "tmpSubSyst/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmpSubSystMedID/")
+os.system("cp runCBASkim.sh tmpSubSyst/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -47,24 +47,24 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmpSubSystMedID/condorSubmit.sh','w')
+subFile = open('tmpSubSyst/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmpSubSystMedID/%s'%jdlName,'w')
+    jdlFile = open('tmpSubSyst/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    #condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
+    condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
+    #condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
-    condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
+    #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     #os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
     jdlFile.write("X=$(step)\n")
     
     for sample in sampleList:
         
         if sample.find('Data') >=0:
-            systList = ["base"]
+            systList = ["base", "iso20"]
         else:
             systList = eval("syst_%i"%year)
             
