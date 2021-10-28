@@ -500,45 +500,45 @@ void SkimAna::SetTrio()
   selector->mu_RelIso_loose = 0.4;
   
   // Cuts used for results presented at PAG dated August, 02, 2021
-  // selector->mu_Pt_cut = 30.;
-  // selector->mu_Eta_tight = 2.4;
-  // selector->ele_Pt_cut = 35.;
-  // selector->ele_Eta_cut = 2.4;
-  // selector->jet_Pt_cut = 30.;
-  // selector->jet_Eta_cut = 2.4;
+  selector->mu_Pt_cut = 30.;
+  selector->mu_Eta_tight = 2.4;
+  selector->ele_Pt_cut = 35.;
+  selector->ele_Eta_cut = 2.4;
+  selector->jet_Pt_cut = 30.;
+  selector->jet_Eta_cut = 2.4;
   
-  if(fYear==2016){
+  // if(fYear==2016){
     
-    // selector->mu_Pt_cut = 30.;
-    // selector->mu_Eta_tight = 2.4;
-    // selector->ele_Pt_cut = 35.;
-    // selector->ele_Eta_cut = 2.4;
-    // selector->jet_Pt_cut = 30.;
-    // selector->jet_Eta_cut = 2.4;
+  //   // selector->mu_Pt_cut = 30.;
+  //   // selector->mu_Eta_tight = 2.4;
+  //   // selector->ele_Pt_cut = 35.;
+  //   // selector->ele_Eta_cut = 2.4;
+  //   // selector->jet_Pt_cut = 30.;
+  //   // selector->jet_Eta_cut = 2.4;
     
-    selector->mu_Pt_cut = 26.;
-    selector->mu_Eta_tight = 2.4;
-    selector->ele_Pt_cut = 30.;
-    selector->ele_Eta_cut = 2.4;
-    selector->jet_Pt_cut = 25.;
-    selector->jet_Eta_cut = 2.4;
+  //   selector->mu_Pt_cut = 26.;
+  //   selector->mu_Eta_tight = 2.4;
+  //   selector->ele_Pt_cut = 30.;
+  //   selector->ele_Eta_cut = 2.4;
+  //   selector->jet_Pt_cut = 25.;
+  //   selector->jet_Eta_cut = 2.4;
     
-  }else if(fYear==2017){
-    selector->mu_Pt_cut = 30.;
-    selector->mu_Eta_tight = 2.4;
-    selector->ele_Pt_cut = 35.;
-    selector->ele_Eta_cut = 2.4;
-    selector->jet_Pt_cut = 25.;
-    selector->jet_Eta_cut = 2.4;
-  }else if(fYear==2018){
-    selector->mu_Pt_cut = 26.;
-    selector->mu_Eta_tight = 2.4;
-    selector->ele_Pt_cut = 35.;
-    selector->ele_Eta_cut = 2.4;
-    selector->jet_Pt_cut = 25.;
-    selector->jet_Eta_cut = 2.4;
-  }
-
+  // }else if(fYear==2017){
+  //   selector->mu_Pt_cut = 30.;
+  //   selector->mu_Eta_tight = 2.4;
+  //   selector->ele_Pt_cut = 35.;
+  //   selector->ele_Eta_cut = 2.4;
+  //   selector->jet_Pt_cut = 25.;
+  //   selector->jet_Eta_cut = 2.4;
+  // }else if(fYear==2018){
+  //   selector->mu_Pt_cut = 26.;
+  //   selector->mu_Eta_tight = 2.4;
+  //   selector->ele_Pt_cut = 35.;
+  //   selector->ele_Eta_cut = 2.4;
+  //   selector->jet_Pt_cut = 25.;
+  //   selector->jet_Eta_cut = 2.4;
+  // }
+  
   evtPick->year = Form("%d",fYear);
   evtPick->Njet_ge = 2;
   evtPick->NBjet_ge = 0;

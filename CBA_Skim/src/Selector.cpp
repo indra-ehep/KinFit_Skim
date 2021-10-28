@@ -414,8 +414,8 @@ void Selector::filter_electrons(){
 	}
 	
 	bool selectEle = (isNanoAOD) ? eleSel : passMiniAOD_presel ;
-	//bool selectEleDD = (isNanoAOD) ? eleSel_noIso : passMiniAOD_presel ;
-	bool selectEleDD = (isNanoAOD) ? eleSel_Medium_noIso : passMiniAOD_presel ;
+	bool selectEleDD = (isNanoAOD) ? eleSel_noIso : passMiniAOD_presel ;
+	//bool selectEleDD = (isNanoAOD) ? eleSel_Medium_noIso : passMiniAOD_presel ;
 	
         if( selectEle ){
 	  Electrons.push_back(eleInd);
@@ -469,7 +469,7 @@ void Selector::filter_muons(){
     bool looseMuonID = tree->muIsPFMuon_[muInd] && (tree->muIsTracker_[muInd] || tree->muIsGlobal_[muInd]);
     bool mediumMuonID = tree->muMediumId_[muInd];
     bool tightMuonID = tree->muTightId_[muInd];
-
+    
     bool passTight = (pt >= mu_Pt_cut &&
 		      TMath::Abs(eta) <= mu_Eta_tight &&
 		      tightMuonID &&
@@ -561,8 +561,8 @@ void Selector::filter_muons(){
     } 
     
     bool selectMuon = (isNanoAOD) ? passTight : passMiniAOD_presel ;
-    //bool selectMuonDD = (isNanoAOD) ? passTight_noIso : passMiniAOD_presel ;
-    bool selectMuonDD = (isNanoAOD) ? passMedium_noIso : passMiniAOD_presel ;
+    bool selectMuonDD = (isNanoAOD) ? passTight_noIso : passMiniAOD_presel ;
+    //bool selectMuonDD = (isNanoAOD) ? passMedium_noIso : passMiniAOD_presel ;
     
     if(selectMuon){
       Muons.push_back(muInd);
