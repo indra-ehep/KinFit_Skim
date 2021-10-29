@@ -32,6 +32,9 @@ do
     echo total number of files $noffiles
     samples=samples_$year
     echo year : $year samples : ${!samples}
+    if [ -f /tmp/idas/missing_${year}.txt ] ; then
+	rm /tmp/idas/missing_${year}.txt
+    fi
     for sample in ${!samples}
     do
 	systs=""
@@ -56,11 +59,15 @@ do
 		do
 		    if [ ! -f $inputdir/$year/${sample}_hist_${syst}_${imiss}of${expected_noffiles}.root ] ; then
 			echo File : $inputdir/$year/${sample}_hist_${syst}_${imiss}of${expected_noffiles}.root is missing.
+			ifindex=$[$imiss-1]
+			# Arguments  = 2017 TTbar input/eos/2017/TTbar_2017.txt $INT(X) jecup 
+			echo "Arguments  = $year ${sample} input/eos/$year/${sample}_${year}.txt $ifindex $syst" >> /tmp/idas/missing_${year}.txt
+			echo "" >> /tmp/idas/missing_${year}.txt
 		    fi
 		done
 	    fi
 	done
-	# Arguments  = 2017 TTbar input/eos/2017/TTbar_2017.txt $INT(X) jecup 
+
 	flist=`ls $inputdir/$year/${sample}_hist_*.root`
 	if [ -f /tmp/idas/fl.txt ] ; then
 	    rm /tmp/idas/fl.txt
@@ -72,8 +79,12 @@ do
 	    echo -e "\t ${file}" >> /tmp/idas/fl.txt
 	done
 	echo -e "Adding files for sample ${sample}"
-	# sh ~/scripts/addhisto_file.sh /tmp/idas/fl.txt > /tmp/idas/out.log 2>&1
-	# cp histo_merged.root $inputdir/$year/all/all_${sample}.root
-	# mv histo_merged.root /tmp/idas/all_${sample}.root	
+	sh ~/scripts/addhisto_file.sh /tmp/idas/fl.txt > /tmp/idas/out.log 2>&1
+	cp histo_merged.root $inputdir/$year/all/all_${sample}.root
+	mv histo_merged.root /tmp/idas/all_${sample}.root	
     done
+    noflines=`wc -l /tmp/idas/missing_${year}.txt`
+    if [ $noflines -gt 0 ] ; then
+	echo "See the input aruments for jdl files at /tmp/idas/missing_${year}.txt"
+    fi
 done
