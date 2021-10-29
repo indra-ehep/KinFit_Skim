@@ -8,8 +8,10 @@
 #samples_2016="DataMu DataEle"
 #samples_2016="HplusM080 HplusM090 HplusM100 HplusM120 HplusM140 HplusM150 HplusM155 HplusM160 TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
 samples_2016="DataMu DataEle HplusM080 HplusM090 HplusM100 HplusM120 HplusM140 HplusM150 HplusM155 HplusM160 TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
-samples_2017="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
-samples_2018="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
+# samples_2017="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
+# samples_2018="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
+samples_2017="DataMu DataEle" 
+samples_2018="DataMu DataEle" 
 
 syst_2016="base jecup jecdown jerup jerdown iso20"
 syst_2017="base jecup jecdown jerup jerdown iso20"
@@ -83,8 +85,10 @@ do
 	cp histo_merged.root $inputdir/$year/all/all_${sample}.root
 	mv histo_merged.root /tmp/idas/all_${sample}.root	
     done
-    noflines=`wc -l /tmp/idas/missing_${year}.txt`
-    if [ $noflines -gt 0 ] ; then
-	echo "See the input aruments for jdl files at /tmp/idas/missing_${year}.txt"
+    if [ -f /tmp/idas/missing_${year}.txt ] ; then
+	noflines=`wc -l /tmp/idas/missing_${year}.txt`
+	if [ $noflines -gt 0 ] ; then
+	    echo "See the input aruments for jdl files at /tmp/idas/missing_${year}.txt"
+	fi
     fi
 done
