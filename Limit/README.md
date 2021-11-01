@@ -27,6 +27,8 @@ source ../../../../impact_plot.sh t2w_combine_datacard_hcs_13TeV_mu_Cat1_Inc_WH8
  To Do:
  ==============
  If one wishes to check the result for election channel, then (s)he might needs to modify two plces,
+ 
  1. comment/uncomment the syst line for appropriate lepton in MyTemplateDataCardNano.txt
  2. Change "_kb_mjj_mu" to "_kb_mjj_ele" in MyLimitComputerNano.py
+ 
  before the running the above mentioned code again.
