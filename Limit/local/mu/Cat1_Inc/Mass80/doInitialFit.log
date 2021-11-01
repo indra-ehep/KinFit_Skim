@@ -1,0 +1,16 @@
+Have POIs: ['BR']
+ <<< Combine >>> 
+>>> random number generator seed is 123456
+   Options for Robust Minimizer :: 
+        Tolerance  0.1
+        Strategy   0
+        Type,Algo  Minuit2,Migrad
+>>> method used is MultiDimFit
+Set Range of Parameter BR To : (-1,1)
+SimNLL created with 1 channels, 0 generic constraints, 44 fast gaussian constraints, 0 fast poisson constraints, 0 fast group constraints, 
+
+ --- MultiDimFit ---
+best fit parameter values and profile-likelihood uncertainties: 
+   BR :    +0.000   -0.037/+0.035 (68%)
+Done in 0.00 min (cpu), 0.00 min (real)
+>> combine -M MultiDimFit -n _initialFit_Test --algo singles --redefineSignalPOIs BR --robustFit 1 -t -1 --setParameterRanges BR=-1,1 -m 80 -d t2w_combine_datacard_hcs_13TeV_mu_Cat1_Inc_WH80.root
