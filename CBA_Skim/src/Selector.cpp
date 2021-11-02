@@ -62,8 +62,8 @@ Selector::Selector(){
     mu_RelIso_loose = 0.25;
     
     mu_Iso_invert = false;
-    //smearJetPt = true; // Deafult
-    smearJetPt = false;
+    smearJetPt = true; // Deafult
+    //smearJetPt = false;
     smearEle = true;
     scaleEle = true;
     
@@ -668,7 +668,7 @@ void Selector::filter_jets(){
 
 	// Default
 	pt = pt*jetSmear;
-	// tree->jetPt_[jetInd] = pt;
+	tree->jetPt_[jetInd] = pt;
 	
 	
 	// pt = tJET.Pt();
