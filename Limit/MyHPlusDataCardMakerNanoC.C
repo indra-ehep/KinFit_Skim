@@ -331,9 +331,7 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
   
   //wh
   baseDir = Form("HplusM%03d",mass);
-  //double sf_wh = 0.12155;
-  double sf_wh = 1.0; 
-  //double sf_wh = 1.0/0.12155; //2*0.065*(1-0.065) 
+  double sf_wh = 1.0/0.12155; //2*0.065*(1-0.065) 
   TH1F* wh = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label, true, sigFile);
   TH1F* wh_JESUp = DC.readWriteHisto(fWH, baseDir+"/jecup"+histSubDir, histName, sf_wh, fout, fTT, label+"_JESUp", true, sigFile);
   TH1F* wh_JESDown = DC.readWriteHisto(fWH, baseDir+"/jecdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_JESDown", true, sigFile);
@@ -415,11 +413,11 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
         out << rate ;
         out << space << wh->Integral()
             << space << ttbar->Integral()
-            << space << wjet->Integral()
-            << space << zjet->Integral()
-            << space << stop->Integral()
-            << space << vv->Integral()
-            << space << qcd_dd->Integral()
+            // << space << wjet->Integral()
+            // << space << zjet->Integral()
+            // << space << stop->Integral()
+            // << space << vv->Integral()
+            // << space << qcd_dd->Integral()
             << endl;
       }
       else if(line.find("CMS_eff_lep")!=string::npos){  
@@ -435,16 +433,16 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
         
         float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag1Up, wjet_bcTag1Down) : 1.00;
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
+        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
        
         float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag1Up, zjet_bcTag1Down) : 1.00;
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
 
         float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag1Up, stop_bcTag1Down) : 1.00; 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
 
         float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag1Up, vv_bcTag1Down) : 1.00;
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_eff_bcInc2")!=string::npos){
@@ -455,16 +453,16 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
         
         float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag2Up, wjet_bcTag2Down) : 1.00;
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
+        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
        
         float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag2Up, zjet_bcTag2Down) : 1.00;
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
         
         float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag2Up, stop_bcTag2Down) : 1.00; 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
 
         float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag2Up, vv_bcTag2Down) : 1.00;
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
         out << line << endl;
       }
       // else if(line.find("CMS_eff_bcInc3")!=string::npos){
@@ -495,16 +493,16 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", PileupUnc_ttbar)) ); 
         
         float PileupUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_PileupUp, wjet_PileupDown) : 1.00;
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", PileupUnc_wjet)) ); 
+        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", PileupUnc_wjet)) ); 
        
         float PileupUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_PileupUp, zjet_PileupDown) : 1.00;
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", PileupUnc_zjet)) ); 
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", PileupUnc_zjet)) ); 
         
         float PileupUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_PileupUp, stop_PileupDown) : 1.00; 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", PileupUnc_stop)) ); 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", PileupUnc_stop)) ); 
 
         float PileupUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_PileupUp, vv_PileupDown) : 1.00;
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", PileupUnc_vv)) ); 
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", PileupUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_scale_j")!=string::npos){
@@ -515,16 +513,16 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JESUnc_ttbar)) ); 
         
         float JESUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JESUp, wjet_JESDown) : 1.00;
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JESUnc_wjet)) ); 
+        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JESUnc_wjet)) ); 
        
         float JESUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JESUp, zjet_JESDown) : 1.00;
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JESUnc_zjet)) ); 
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JESUnc_zjet)) ); 
         
         float JESUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JESUp, stop_JESDown) : 1.00; 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JESUnc_stop)) ); 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JESUnc_stop)) ); 
 
         float JESUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JESUp, vv_JESDown) : 1.00;
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JESUnc_vv)) ); 
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JESUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_res_j")!=string::npos){
@@ -535,20 +533,22 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JERUnc_ttbar)) ); 
         
         float JERUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JERUp, wjet_JERDown) : 1.00;
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
+        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
        
         float JERUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JERUp, zjet_JERDown) : 1.00;
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
         
         float JERUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JERUp, stop_JERDown) : 1.00; 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
 
         float JERUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JERUp, vv_JERDown) : 1.00;
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_norm_qcd")!=string::npos){  
-        line.replace( line.find("QQQQ") , 4 , string(Form("%.3f", qcd_unc)));   
+
+        //line.replace( line.find("QQQQ") , 4 , string(Form("%.3f", qcd_unc)));   
+
         //if(isMuChannel) line.replace( line.find("QQQQ") , 4 , string(Form("%.4f", 1.10)));   
         //else line.replace(line.find("QQQQ") , 4 , string(Form("%.4f", 1.19)));   
         out << line << endl;  

@@ -29,6 +29,8 @@ def moveDataCards(CHANNEL_NAME, HIST_ARRAY, MASS, CAT_DIR, LIMIT_DIR):
 #---------------------------------------------
 def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     t2wDataCardName = "t2w_"+COMB_DATACARD_NAME.replace(".txt",".root")
+    print ("COMB_DATACARD_NAME: %s"%COMB_DATACARD_NAME)
+    print ("t2wDataCardName: %s, MASS : %s, name %s"%(t2wDataCardName,str(MASS),'_hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR))
     execme('text2workspace.py '+COMB_DATACARD_NAME+' -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs -o '+t2wDataCardName )
     execme('combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
     if(isGOF):

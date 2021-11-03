@@ -31,7 +31,7 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   {
   gStyle->SetFrameLineWidth(3);
   TCanvas *c1 = new TCanvas();
-  //gPad->SetLogy();
+  gPad->SetLogy();
   c1->SetGrid(0,0);
   c1->SetFillStyle(4000);
   c1->SetFillColor(10);
@@ -86,14 +86,22 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
     limit->SetBranchAddress("limit",&r);
     for(int k = 0 ; k< limit->GetEntries() ; k++){
       limit->GetEntry(k);
-      if(k==0) expY2sL[i] = r;
-      if(k==1) expY1sL[i] = r;
-      if(k==1) expY1sL_[i] = r;
-      if(k==2) expY[i]    = r;
-      if(k==3) expY1sH[i] = r;
-      if(k==3) expY1sH_[i] = r;
-      if(k==4) expY2sH[i] = r;
-      if(k==5) obsY[i]    = r;
+      // if(k==0) expY2sL[i] = r;
+      // if(k==1) expY1sL[i] = r;
+      // if(k==1) expY1sL_[i] = r;
+      // if(k==2) expY[i]    = r;
+      // if(k==3) expY1sH[i] = r;
+      // if(k==3) expY1sH_[i] = r;
+      // if(k==4) expY2sH[i] = r;
+      // if(k==5) obsY[i]    = r;
+      if(k==0) expY2sL[i] = 100.*r;
+      if(k==1) expY1sL[i] = 100.*r;
+      if(k==1) expY1sL_[i] = 100.*r;
+      if(k==2) expY[i]    = 100.*r;
+      if(k==3) expY1sH[i] = 100.*r;
+      if(k==3) expY1sH_[i] = 100.*r;
+      if(k==4) expY2sH[i] = 100.*r;
+      if(k==5) obsY[i]    = 100.*r;
     }
     //if(massFiles[i].Contains("80")) maxY = expY2sH[i];
     if(massFiles[i].Contains("80")) maxY = 0.38;
@@ -124,8 +132,10 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   if(CHANNEL=="mu") ch_name = "#mu";
   if(CHANNEL=="ele") ch_name = "e";
   if(CHANNEL=="mu_ele") ch_name = "lep";
-  mg->SetMaximum(1.02*maxY);
-
+  //mg->SetMaximum(1.02*maxY);
+  mg->SetMaximum(50.);
+  mg->SetMinimum(0.05);
+  
   TGraphAsymmErrors* expected = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL ,expX1sL , expX1sL, expX1sL);
   TGraphAsymmErrors* oneSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL, expX1sL,  expY1sL, expY1sH);
   TGraphAsymmErrors* twoSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX2sL, expX2sL,  expY2sL, expY2sH);
@@ -167,7 +177,8 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   gPad->SetRightMargin(0.05);
   gStyle->SetFrameLineWidth(3);
   mg->GetXaxis()->SetLimits(75,165);
-  mg->GetYaxis()->SetTitleOffset(1.30);
+  mg->GetYaxis()->SetTitleOffset(1.40);
+  mg->GetYaxis()->SetMoreLogLabels();
   mg->GetYaxis()->SetNdivisions(6);
   mg->GetXaxis()->SetTitleOffset(1.00);
   //mg->SetMinimum(0.);
@@ -227,11 +238,11 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   leg->Draw("SAME");
   
 
-  TF1 *line = new TF1("line","1",100,150);
-  line->SetLineColor(kRed);
-  line->SetLineWidth(2);
+  // TF1 *line = new TF1("line","1",100,150);
+  // line->SetLineColor(kRed);
+  // line->SetLineWidth(2);
+  // line->Draw("SAME");
 
-  line->Draw("SAME");
   gPad->RedrawAxis();
   TString outFile = "limit_"+CHANNEL+"_"+CAT;
   TString outDir = "limit/"+CHANNEL+"/"+CAT;
