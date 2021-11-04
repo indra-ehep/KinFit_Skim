@@ -9,7 +9,8 @@ EventPick::EventPick(std::string titleIn){
     saveCutflows = false;
     
     printEvent = -1;
-    
+    IsDebug = false;
+
     cutFlow_ele = new TH1D("cut_flow_ele","cut flow e+jets",20,-0.5,19.5);
     cutFlow_ele->SetDirectory(0);
     set_cutflow_labels_ele(cutFlow_ele);
@@ -263,13 +264,15 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
     //   passPresel_ele = false; 
     // }
     
+    if(IsDebug) Info("EventPick::process_event","Event and trigger presel applied");
     //Process selector events
     if ( passPresel_ele || passPresel_mu ) {
       selector->process_objects(path,tree);
     } else {
       return;
     }
-    
+    if(IsDebug) Info("EventPick::process_event","Selector process objects complete");
+
     if (int(tree->event_)==printEvent){
 	cout << "Muons     "<< selector->Muons.size() << endl;
 	cout << "  Loose   "<< selector->MuonsLoose.size() << endl;

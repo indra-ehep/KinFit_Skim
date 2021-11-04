@@ -27,7 +27,8 @@ Selector::Selector(){
     //jet_Eta_cut = 5.0;
     
     printEvent = -1;
-
+    IsDebug = false;
+    
     looseJetID = false;
     veto_lep_jet_dR = 0.4; // remove jets with a lepton closer than this cut level
     JERsystLevel  = 1;
@@ -62,8 +63,8 @@ Selector::Selector(){
     mu_RelIso_loose = 0.25;
     
     mu_Iso_invert = false;
-    smearJetPt = true; // Deafult
-    //smearJetPt = false;
+    //smearJetPt = true; // Deafult
+    smearJetPt = false;
     smearEle = true;
     scaleEle = true;
     
@@ -116,23 +117,30 @@ void Selector::init_JER(std::string inputPrefix){
 void Selector::process_objects(string path, EventTree* inp_tree){
     tree = inp_tree;
     clear_vectors();
-    
+    if(IsDebug) Info("Selector::process_objects","Cleared vectors");
+
     if(!rc)
       rc = new RoccoR(Form("%s/weight/RoccoR/RoccoR%s.txt",path.c_str(),year.c_str()));
-    
+    if(IsDebug) Info("Selector::process_objects","Rochester corrections applied.");
+
     //cout << "before selector muons" << endl;
     filter_muons();
+    if(IsDebug) Info("Selector::process_objects","Filtered for muon objects.");
 
     //Electron selection must be after muon selection
     //cout << "before selector electrons" << endl;
     filter_electrons();
+    if(IsDebug) Info("Selector::process_objects","Filtered for electron objects.");
 
     //cout << "before selector jets" << endl;
     filter_jets();
+    if(IsDebug) Info("Selector::process_objects","Filtered for jets.");
 
     filter_jetsNoCorr();
+    if(IsDebug) Info("Selector::process_objects","Filtered for jets no Corr.");
     
     filter_mets();
+    if(IsDebug) Info("Selector::process_objects","Filtered for MET.");
 }
 
 void Selector::clear_vectors(){
@@ -588,10 +596,10 @@ void Selector::filter_jets(){
   if (int(tree->event_)==printEvent){
     cout << "Found Event Staring Jets" << endl;
   }
-
+  
   //TLorentzVector tJET;
-  for(int jetInd = 0; jetInd < int(tree->nJet_); ++jetInd){
-
+  for(int jetInd = 0; jetInd < int(tree->nJet_) and int(tree->nJet_) < 10000000 ; ++jetInd){ //less than 10 million jets since some MCQCD shows unexceptionally number of higher jets
+    
     double pt = tree->jetPt_[jetInd];
     double eta = tree->jetEta_[jetInd];
     double phi = tree->jetPhi_[jetInd];
@@ -623,7 +631,8 @@ void Selector::filter_jets(){
       
       double jetSmear = 1.;
       
-      // cout << "genID : " << tree->jetGenJetIdx_[jetInd] << endl;
+      if(IsDebug) 
+	cout << "\t genID : " << tree->jetGenJetIdx_[jetInd] << ", ngenjet : " << int(tree->nGenJet_) << ", recojet : " << int(tree->nJet_) <<  endl;
       
       int genIdx = tree->jetGenJetIdx_[jetInd];
 
@@ -668,7 +677,8 @@ void Selector::filter_jets(){
 
 	// Default
 	pt = pt*jetSmear;
-	tree->jetPt_[jetInd] = pt;
+	// Uncommenting following line causes "*** Error in `./SkimAna': corrupted size vs. prev_size: 0x000000000662b7c0 ***" sometimes!!
+	//tree->jetPt_[jetInd] = pt;
 	
 	
 	// pt = tJET.Pt();
@@ -827,7 +837,8 @@ void Selector::filter_jets(){
 void Selector::filter_jetsNoCorr(){
   
   //TLorentzVector tJET;
-  for(int jetInd = 0; jetInd < int(tree->nJet_); ++jetInd){
+
+  for(int jetInd = 0; jetInd < int(tree->nJet_) and int(tree->nJet_) < 10000000; ++jetInd){
     
     double pt = tree->jetPt_[jetInd];
     double eta = tree->jetEta_[jetInd];
@@ -835,21 +846,44 @@ void Selector::filter_jetsNoCorr(){
     
     //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
     int jetID_cutBit = 1;
-    if (year=="2016"){ jetID_cutBit = 0; }
+    //if (year=="2016"){ jetID_cutBit = 0; }
 	
     bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 and looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
-    
+    if(IsDebug) Info("Selector::filter_jetsNoCorr","applied filter");
     //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////
     bool passDR_lep_jet = true;
     //loop over selected electrons
-    for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
-      if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    // for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+    //   if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    // }
+    // //loop over selected muons
+    // for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+    //   if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    // }
+    
+    if(!DDselect){
+      //loop over selected electrons
+      for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+    	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
+    }else{
+      for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
+    	if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }      
     }
+
     //loop over selected muons
-    for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-      if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+    if(!DDselect){
+      for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+    	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
+    }else{
+      for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
+    	if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR) passDR_lep_jet = false;
+      }
     }
     bool jetPresel = (pt >= jet_Pt_cut and TMath::Abs(eta) <= jet_Eta_cut and jetID_pass and passDR_lep_jet);
+    if(IsDebug) Info("Selector::filter_jetsNoCorr","Processed nano");
     //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////
 
     
@@ -864,6 +898,7 @@ void Selector::filter_jetsNoCorr(){
     for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
       if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < veto_lep_jet_dR_miniAOD) passDR_lep_jet_miniAOD = false;
     }
+    if(IsDebug) Info("Selector::filter_jetsNoCorr","Processed mini");
     //////////////////////////////////////////////// MiniAOD selection //////////////////////////////////////////////////////////
     
     bool selectJet = (isNanoAOD) ? jetPresel : (passMiniAOD_presel && passDR_lep_jet_miniAOD) ;

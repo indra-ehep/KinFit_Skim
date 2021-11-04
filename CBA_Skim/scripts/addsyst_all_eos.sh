@@ -8,10 +8,10 @@
 #samples_2016="DataMu DataEle"
 #samples_2016="HplusM080 HplusM090 HplusM100 HplusM120 HplusM140 HplusM150 HplusM155 HplusM160 TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
 samples_2016="DataMu DataEle HplusM080 HplusM090 HplusM100 HplusM120 HplusM140 HplusM150 HplusM155 HplusM160 TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
-# samples_2017="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
-# samples_2018="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
-samples_2017="DataMu DataEle" 
-samples_2018="DataMu DataEle" 
+samples_2017="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
+samples_2018="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
+# samples_2017="DataMu DataEle" 
+# samples_2018="DataMu DataEle" 
 
 syst_2016="base jecup jecdown jerup jerdown iso20"
 syst_2017="base jecup jecdown jerup jerdown iso20"
@@ -21,11 +21,12 @@ syst_base="base iso20"
 
 #inputdir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v31_Syst/CBA_Skim_Syst_MedID"
 #inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_EqPAGAug02"
-inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
+#inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
+inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jetsmeared"
 skimflistdir="/eos/user/i/idas/CMS-Analysis/KinFit_Skim/CBA_Skim/input/eos"
 
-#years="2017 2018 2016"
-years="2017"
+years="2017 2018"
+#years="2016"
 
 basedir=`pwd`
 for year in $years

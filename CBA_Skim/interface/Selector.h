@@ -82,7 +82,7 @@ public:
 
 	bool isNanoAOD;
         bool isPVGood;
-
+	
 	double jet_Pt_cut;
 	double jet_Eta_cut;
 	double btag_cut;
@@ -148,6 +148,7 @@ public:
 	std::string year;
 
 	int printEvent;
+	bool IsDebug ;
 
 	void clear_vectors();
 	

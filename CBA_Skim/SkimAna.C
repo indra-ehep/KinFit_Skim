@@ -1111,6 +1111,9 @@ void SkimAna::SlaveBegin(TTree *tree)
   }
   Info("SlaveBegin", "Create Histos");
   CreateHistoArrays();
+  // IsDebug = true;
+  // evtPick->IsDebug = true;
+  // selector->IsDebug = true;
   Info("SlaveBegin", "End of SlaveBegin");
 
        
@@ -1278,18 +1281,21 @@ Bool_t SkimAna::Process(Long64_t entry)
     Info("Process","Processing : %lld(%lld) of number of events : %lld and total number of events : %.0lf, year : %s", 
 	 fProcessed, entry, fChain->GetEntries(), totEventsUS[fSampleType.Data()],evtPick->year.c_str());
   }
-  
+  if(IsDebug) Info("Process","Completed process count");
   
   // Set JEC syst
   if( !isData and (systType == kJECUp or systType == kJECDown)){
     jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
   }
-  
+  if(IsDebug) Info("Process","Completed JEC correction");
+
   // //Clear selector vectors
   selector->clear_vectors();
-  
+  if(IsDebug) Info("Process","Completed cleaning vectors");
+
   // This is main method to process the objects read from tree
   evtPick->process_event(fBasePath.Data(), event, selector, 1.0); // here last argument 1.0 is weight applied to cutflow
+  if(IsDebug) Info("Process","Completed selector process");
 
   //Special case of Wjets and DY
   //if(!isNanoAOD and !isData and fSampleType.Contains("Wjets")){
@@ -1302,13 +1308,15 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(!isData and fSampleType.Contains("DYjetsM50")){
     _local_evtWeight = ScaleLumiZ(event->nLHEPart_) * luminosity/1000.;
     if(fProcessed%100000==0)
-      Info("Notify", "DYjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
+      Info("Process", "DYjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
   }
   
 
   // Sample weight 
   if(!isData)
     _sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
+
+  if(IsDebug) Info("Process","Completed event weight application");
 
   // Access the prefire weight
   if(!isData){
@@ -1329,7 +1337,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   FillEventCutFlow();
   FillEventWt();
-  
+  if(IsDebug) Info("Process","Completed Event filling");
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //The following setup is able to produce results presented in August-02 PAG
@@ -1426,7 +1434,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   FillLeptonCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
   FillLeptonWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
-  
+  if(IsDebug) Info("Process","Completed Lepton processing");
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -1440,6 +1448,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   FillNjetCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
   FillNjetWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
+  if(IsDebug) Info("Process","Completed Njet processing");
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1456,7 +1465,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   FillMETCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
-  
+  if(IsDebug) Info("Process","Completed MET processing");
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////=====================================================
@@ -1496,11 +1506,13 @@ Bool_t SkimAna::Process(Long64_t entry)
   //FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
   FillBTagObs(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
   FillBTagWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);  
+  if(IsDebug) Info("Process","Completed b-jet processing");
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   FillKFCFObs(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
+  if(IsDebug) Info("Process","Completed KinFit processing");
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   return kTRUE;
@@ -3421,7 +3433,7 @@ bool SkimAna::ExecSerial(const char* infile)
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 800000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
-    //cout<<"Procesing : " << ientry << endl;
+  //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }
   SlaveTerminate();

@@ -353,7 +353,7 @@ class SkimAna : public TSelector {
    
    Long64_t        fProcessed;//!
    TTree          *fChain;//!    //pointer to the analyzed TTree or TChain
-   
+   bool           IsDebug;
    /* //Declaration of leaves types */
    /* //////////////////////////////////////////////////////// */
    /* UInt_t          nJet_; */
@@ -850,7 +850,8 @@ void SkimAna::Reset()
    fChain		= 0;
    fProcessed		= 0;
    outputTree           = 0;
-  
+   IsDebug              = false;
+
    fSample		= "";
    fFileName		= "";
    fSampleDir		= "";
