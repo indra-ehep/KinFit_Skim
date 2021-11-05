@@ -1829,45 +1829,177 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
     combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
 
 
-    //mu
-    if(ProcessKinFit((singleMu and muonIsoCut), false) and !isLowMET){
-      
+    if(ProcessKinFit((singleMu and muonIsoCut), false)){
       for(int isyst=0;isyst<fNSyst;isyst++){
-	
 	TString systname = fSystList[isyst];
-	
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
-	  
-	  ////////////////// base ////////////////////////////
-	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(lIso,"",true, 6.0, combined_muwt, combined_muwt1);
-	  FillKFHists(lIso,"",true,combined_muwt);	    
-	  /////////////////////////////////////////////////////
-	  
+  	  if(!isLowMET){
+	    ////////////////// base ////////////////////////////
+	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    FillCFHists(lIso, "", true, 6.0, combined_muwt, combined_muwt1);
+	    //FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
+	    FillKFHists(lIso,"",true,combined_muwt);
+	    /////////////////////////////////////////////////////
+	  }else{
+	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(lLowMET,"_lmet", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lLowMET,"_lmet",true,combined_muwt);
+	  }//lowmet
 	}//jec jer condn
       }//syst loop
     }//muon iso
+	
+    if(ProcessKinFit((singleMu and muonNonIsoCut), false)){
+      for(int isyst=0;isyst<fNSyst;isyst++){
+	TString systname = fSystList[isyst];
+	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+	  if(!isLowMET){
+	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(lNonIso,"_noniso", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lNonIso,"_noniso",true,combined_muwt);
+	  }else{
+	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(lNonIsoLowMET,"_noniso_lmet", true, 6.0, combined_muwt, combined_muwt1);
+	    FillKFHists(lNonIsoLowMET,"_noniso_lmet",true,combined_muwt);
+	  }//lowmet
+	}//jec jer condn
+      }//syst loop
+    }// muon noniso
+
+    // //mu
+    // if(ProcessKinFit((singleMu and muonIsoCut), false) and !isLowMET){      
+    //   for(int isyst=0;isyst<fNSyst;isyst++){
+    // 	TString systname = fSystList[isyst];
+    // 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+    // 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+    // 	  ////////////////// base ////////////////////////////
+    // 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    // 	  FillCFHists(lIso,"",true, 6.0, combined_muwt, combined_muwt1);
+    // 	  FillKFHists(lIso,"",true,combined_muwt);	    
+    // 	  /////////////////////////////////////////////////////
+    // 	}//jec jer condn
+    //   }//syst loop
+    // }//muon iso
 
     //elec
-    if(ProcessKinFit(false, (singleEle and eleIsoCut)) and !isLowMET){
-      
+    if(ProcessKinFit(false, (singleEle and eleIsoCut))){
       for(int isyst=0;isyst<fNSyst;isyst++){
-	
 	TString systname = fSystList[isyst];
-	
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
-	  
-	  ////////////////// base ////////////////////////////
-	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(lIso,"",false, 6.0, combined_elewt, 1.0);
-	  FillKFHists(lIso,"",false,combined_elewt);	    	  
-	  /////////////////////////////////////////////////////
-    	}//jec jer condn
-      }//sys loop
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+	  if(!isLowMET){	    
+	    ////////////////// base ////////////////////////////	    
+	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	    //FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
+	    FillCFHists(lIso,"",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lIso,"",false,combined_elewt);	    
+	    /////////////////////////////////////////////////////
+	  }else{
+	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	    FillCFHists(lLowMET,"_lmet",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lLowMET,"_lmet",false,combined_elewt);	    	    
+	  }//lowmet
+	}//jec jer condn
+      }//syst loop
     }//ele iso
+	
+    if(ProcessKinFit(false, (singleEle and eleNonIsoCut))){
+      for(int isyst=0;isyst<fNSyst;isyst++){
+	TString systname = fSystList[isyst];
+	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+	  if(!isLowMET){
+	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	    FillCFHists(lNonIso,"_noniso",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lNonIso,"_noniso",false,combined_elewt);	    	    
+	  }else{
+	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	    FillCFHists(lNonIsoLowMET,"_noniso_lmet",false, 6.0, combined_elewt, 1.0);
+	    FillKFHists(lNonIsoLowMET,"_noniso_lmet",false,combined_elewt);	    
+	  }//lowmet
+	}//jec jer condn
+      }//syst loop
+    }//ele noniso
+
+    
+    // //elec
+    // if(ProcessKinFit(false, (singleEle and eleIsoCut)) and !isLowMET){
+    //   for(int isyst=0;isyst<fNSyst;isyst++){
+    // 	TString systname = fSystList[isyst];
+    // 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+    // 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+    // 	  ////////////////// base ////////////////////////////
+    // 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    // 	  FillCFHists(lIso,"",false, 6.0, combined_elewt, 1.0);
+    // 	  FillKFHists(lIso,"",false,combined_elewt);	    	  
+    // 	  /////////////////////////////////////////////////////
+    // 	}//jec jer condn
+    //   }//sys loop
+    // }//ele iso
+
   }//syst base vs jec/jer condn
+  
+  return true;
+}
+//_____________________________________________________________________________
+bool SkimAna::FillBTagCFBTHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+				bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET)
+{
+
+  if(singleMu and muonIsoCut){
+    if(!isLowMET){
+      ////////////////// base ////////////////////////////
+      TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+      FillCFHists(lIso, "", true, 5.0, combined_muwt, combined_muwt1);
+      FillBTHists(lIso, "", true, combined_muwt);
+      /////////////////////////////////////////////////////
+    }else{
+      TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+      FillCFHists(lLowMET, "_lmet", true, 5.0, combined_muwt, combined_muwt1);
+      FillBTHists(lLowMET, "_lmet", true, combined_muwt);
+    }//lowmet
+  }
+	
+  if(singleMu and muonNonIsoCut){
+    if(!isLowMET){
+      TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+      FillCFHists(lNonIso, "_noniso", true, 5.0, combined_muwt, combined_muwt1);
+      FillBTHists(lNonIso, "_noniso", true, combined_muwt);
+    }else{
+      TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+      FillCFHists(lNonIsoLowMET, "_noniso_lmet", true, 5.0, combined_muwt, combined_muwt1);
+      FillBTHists(lNonIsoLowMET, "_noniso_lmet", true, combined_muwt);
+    }//lowmet
+  }
+	
+  //elec
+  if(singleEle and eleIsoCut){
+    if(!isLowMET){
+      ////////////////// base ////////////////////////////
+      TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+      FillCFHists(lIso, "", false, 5.0, combined_elewt, 1.0);
+      FillBTHists(lIso, "", false, combined_elewt);
+      /////////////////////////////////////////////////////
+    }else{
+      TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+      FillCFHists(lLowMET, "_lmet", false, 5.0, combined_elewt, 1.0);
+      FillBTHists(lLowMET, "_lmet", false, combined_elewt);
+    }//lowmet
+  }
+	
+  if(singleEle and eleNonIsoCut){
+    if(!isLowMET){
+      TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+      FillCFHists(lNonIso, "_noniso", false, 5.0, combined_elewt, 1.0);
+      FillBTHists(lNonIso, "_noniso", false, combined_elewt);
+    }else{
+      TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+      FillCFHists(lNonIsoLowMET, "_noniso_lmet", false, 5.0, combined_elewt, 1.0);
+      FillBTHists(lNonIsoLowMET, "_noniso_lmet", false, combined_elewt);
+    }//lowmet
+  }
   
   return true;
 }
@@ -1889,117 +2021,16 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
       if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
 	
 	GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
-		
-	if(singleMu and muonIsoCut){
-	  if(!isLowMET){
-	    ////////////////// base ////////////////////////////
-	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(lIso, "", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lIso, "", true, combined_muwt);
-	    /////////////////////////////////////////////////////
-	  }else{
-	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(lLowMET, "_lmet", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lLowMET, "_lmet", true, combined_muwt);
-	  }//lowmet
-	}
-	
-	if(singleMu and muonNonIsoCut){
-	  if(!isLowMET){
-	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(lNonIso, "_noniso", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lNonIso, "_noniso", true, combined_muwt);
-	  }else{
-	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", true, combined_muwt);
-	  }//lowmet
-	}
-	
-	//elec
-	if(singleEle and eleIsoCut){
-	  if(!isLowMET){
-	    ////////////////// base ////////////////////////////
-	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(lIso, "", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lIso, "", false, combined_elewt);
-	    /////////////////////////////////////////////////////
-	  }else{
-	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(lLowMET, "_lmet", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lLowMET, "_lmet", false, combined_elewt);
-	  }//lowmet
-	}
-	
-	if(singleEle and eleNonIsoCut){
-	  if(!isLowMET){
-	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(lNonIso, "_noniso", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lNonIso, "_noniso", false, combined_elewt);
-	  }else{
-	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", false, combined_elewt);
-	  }//lowmet
-	}
+	FillBTagCFBTHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
+
       }//jec jer condn
 
     }else if(systType == kIso20){ //if(systType == kBase
 
       if(systname.Contains("iso20")) {
 	
-	if(singleMu and muonIsoCut){
-	  if(!isLowMET){
-	    ////////////////// base ////////////////////////////
-	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(lIso, "", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lIso, "", true, combined_muwt);
-	    /////////////////////////////////////////////////////
-	  }else{
-	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(lLowMET, "_lmet", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lLowMET, "_lmet", true, combined_muwt);
-	  }//lowmet
-	}
+	FillBTagCFBTHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
 	
-	if(singleMu and muonNonIsoCut){
-	  if(!isLowMET){
-	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(lNonIso, "_noniso", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lNonIso, "_noniso", true, combined_muwt);
-	  }else{
-	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", true, 5.0, combined_muwt, combined_muwt1);
-	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", true, combined_muwt);
-	  }//lowmet
-	}
-	
-	//elec
-	if(singleEle and eleIsoCut){
-	  if(!isLowMET){
-	    ////////////////// base ////////////////////////////
-	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(lIso, "", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lIso, "", false, combined_elewt);
-	    /////////////////////////////////////////////////////
-	  }else{
-	    TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(lLowMET, "_lmet", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lLowMET, "_lmet", false, combined_elewt);
-	  }//lowmet
-	}
-	
-	if(singleEle and eleNonIsoCut){
-	  if(!isLowMET){
-	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(lNonIso, "_noniso", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lNonIso, "_noniso", false, combined_elewt);
-	  }else{
-	    TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(lNonIsoLowMET, "_noniso_lmet", false, 5.0, combined_elewt, 1.0);
-	    FillBTHists(lNonIsoLowMET, "_noniso_lmet", false, combined_elewt);
-	  }//lowmet
-	}
       }//iso20 condn
       
     }else{ //if(systType == kBase
@@ -2007,25 +2038,7 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 
-	//mu
-    	if(singleMu and muonIsoCut and !isLowMET){
-
-	  ////////////////// base ////////////////////////////
-	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(lIso, "", true, 5.0, combined_muwt, combined_muwt1);
-	  FillBTHists(lIso, "", true, combined_muwt);
-	  /////////////////////////////////////////////////////
-
-    	}
-    	//elec
-    	if(singleEle and eleIsoCut and !isLowMET){
-	  
-	  ////////////////// base ////////////////////////////
-	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(lIso, "", false, 5.0, combined_elewt, 1.0);
-	  FillBTHists(lIso, "", false, combined_elewt);
-	  /////////////////////////////////////////////////////
-    	}
+	FillBTagCFBTHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
 	
       }
     }//systType condn
@@ -2150,7 +2163,54 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
   
 //   return true;
 // }
+//_____________________________________________________________________________
+bool SkimAna::FillMETCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+			     bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET)
+{
 
+  if(singleMu and muonIsoCut){
+    if(!isLowMET){
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+      FillCFHists(list, "", true, 4.0, combined_muwt, combined_muwt1);
+    }else{
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+      FillCFHists(list, "_lmet", true, 4.0, combined_muwt, combined_muwt1);
+    }//lowmet
+  }
+
+  if(singleMu and muonNonIsoCut){
+    if(!isLowMET){
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+      FillCFHists(list, "_noniso", true, 4.0, combined_muwt, combined_muwt1);
+    }else{
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+      FillCFHists(list, "_noniso_lmet", true, 4.0, combined_muwt, combined_muwt1);
+    }//lowmet
+  }
+  
+  //elec
+  if(singleEle and eleIsoCut){
+    if(!isLowMET){
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+      FillCFHists(list, "", false, 4.0, combined_elewt, 1.0);
+    }else{
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+      FillCFHists(list, "_lmet", false, 4.0, combined_elewt, 1.0);
+    }//lowmet
+  }
+	
+  if(singleEle and eleNonIsoCut){
+    if(!isLowMET){
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+      FillCFHists(list, "_noniso", false, 4.0, combined_elewt, 1.0);
+    }else{
+      TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+      FillCFHists(list, "_noniso_lmet", false, 4.0, combined_elewt, 1.0);
+    }//lowmet
+  }
+  
+  return true;
+}
 //_____________________________________________________________________________
 
 bool SkimAna::FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET){
@@ -2175,93 +2235,17 @@ bool SkimAna::FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut,
 	combined_muwt = _sampleWeight*prefirewt*puwt*muwt;
 	combined_muwt1 = _sampleWeight*puwt*muwt;
 	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
-	
-	if(singleMu and muonIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(list, "", true, 4.0, combined_muwt, combined_muwt1);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(list, "_lmet", true, 4.0, combined_muwt, combined_muwt1);
-	  }//lowmet
-	}
 
-	if(singleMu and muonNonIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(list, "_noniso", true, 4.0, combined_muwt, combined_muwt1);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(list, "_noniso_lmet", true, 4.0, combined_muwt, combined_muwt1);
-	  }//lowmet
-	}
-  
-	//elec
-	if(singleEle and eleIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(list, "", false, 4.0, combined_elewt, 1.0);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(list, "_lmet", false, 4.0, combined_elewt, 1.0);
-	  }//lowmet
-	}
+	FillMETCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
 	
-	if(singleEle and eleNonIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(list, "_noniso", false, 4.0, combined_elewt, 1.0);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(list, "_noniso_lmet", false, 4.0, combined_elewt, 1.0);
-	  }//lowmet
-	}
       }//jec jer condn
 
     }else if(systType == kIso20){// if(systType == kBase){
 
       if(systname.Contains("iso20")) {
 		
-	if(singleMu and muonIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(list, "", true, 4.0, combined_muwt, combined_muwt1);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(list, "_lmet", true, 4.0, combined_muwt, combined_muwt1);
-	  }//lowmet
-	}
+	FillMETCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
 
-	if(singleMu and muonNonIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(list, "_noniso", true, 4.0, combined_muwt, combined_muwt1);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(list, "_noniso_lmet", true, 4.0, combined_muwt, combined_muwt1);
-	  }//lowmet
-	}
-  
-	//elec
-	if(singleEle and eleIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	    FillCFHists(list, "", false, 4.0, combined_elewt, 1.0);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	    FillCFHists(list, "_lmet", false, 4.0, combined_elewt, 1.0);
-	  }//lowmet
-	}
-	
-	if(singleEle and eleNonIsoCut){
-	  if(!isLowMET){
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	    FillCFHists(list, "_noniso", false, 4.0, combined_elewt, 1.0);
-	  }else{
-	    TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	    FillCFHists(list, "_noniso_lmet", false, 4.0, combined_elewt, 1.0);
-	  }//lowmet
-	}
       }//iso20 condn
       
     }else {// if(systType == kBase){
@@ -2269,20 +2253,48 @@ bool SkimAna::FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut,
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 	
-	//mu
-	if(singleMu and muonIsoCut and !isLowMET){	  
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 4.0, combined_muwt, combined_muwt1);
-	}
-	//elec
-	if(singleEle and eleIsoCut and !isLowMET){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 4.0, combined_elewt, 1.0);
-	}
+	FillMETCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
 	
       }//jec jer condn
     }//systType condn
   }//syst loop
+  
+  return true;
+}
+
+//_____________________________________________________________________________
+bool SkimAna::FillNjetCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+				 bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut)
+{
+
+  if(singleMu and muonIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    FillCFHists(list, "", true, 3.0, combined_muwt, combined_muwt1);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+    FillCFHists(list1, "_lmet", true, 3.0, combined_muwt, combined_muwt1);
+  }
+
+  if(singleMu and muonNonIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+    FillCFHists(list, "_noniso", true, 3.0, combined_muwt, combined_muwt1);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+    FillCFHists(list1, "_noniso_lmet", true, 3.0, combined_muwt, combined_muwt1);
+  }
+  
+  //elec
+  if(singleEle and eleIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    FillCFHists(list, "", false, 3.0, combined_elewt, 1.0);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+    FillCFHists(list1, "_lmet", false, 3.0, combined_elewt, 1.0);
+  }
+	
+  if(singleEle and eleNonIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+    FillCFHists(list, "_noniso", false, 3.0, combined_elewt, 1.0);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+    FillCFHists(list1, "_noniso_lmet", false, 3.0, combined_elewt, 1.0);
+  }
   
   return true;
 }
@@ -2312,68 +2324,16 @@ bool SkimAna::FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut
 	combined_muwt1 = _sampleWeight*puwt*muwt;
 	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
 	
-	if(singleMu and muonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 3.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", true, 3.0, combined_muwt, combined_muwt1);
-	}
-
-	if(singleMu and muonNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", true, 3.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", true, 3.0, combined_muwt, combined_muwt1);
-	}
-  
-	//elec
-	if(singleEle and eleIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 3.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", false, 3.0, combined_elewt, 1.0);
-	}
+	FillNjetCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
 	
-	if(singleEle and eleNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", false, 3.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", false, 3.0, combined_elewt, 1.0);
-	}
       }//jec jer condn
 
     }else if(systType == kIso20){// if(systType == kBase){
 
       if(systname.Contains("iso20")) {
 		
-	if(singleMu and muonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 3.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", true, 3.0, combined_muwt, combined_muwt1);
-	}
+	FillNjetCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
 
-	if(singleMu and muonNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", true, 3.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", true, 3.0, combined_muwt, combined_muwt1);
-	}
-  
-	//elec
-	if(singleEle and eleIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 3.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", false, 3.0, combined_elewt, 1.0);
-	}
-	
-	if(singleEle and eleNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", false, 3.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", false, 3.0, combined_elewt, 1.0);
-	}
       }//iso20 condn
       
     }else {// if(systType == kBase){
@@ -2381,16 +2341,7 @@ bool SkimAna::FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 	
-	//mu
-	if(singleMu and muonIsoCut){	  
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 3.0, combined_muwt, combined_muwt1);
-	}
-	//elec
-	if(singleEle and eleIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 3.0, combined_elewt, 1.0);
-	}
+	FillNjetCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
 	
       }//jec jer condn
     }//systType condn
@@ -2416,7 +2367,42 @@ bool SkimAna::FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut
   return true;
 
 }
+//_____________________________________________________________________________
+bool SkimAna::FillLeptonCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+				bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut)
+{
 
+  if(singleMu and muonIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    FillCFHists(list, "", true, 2.0, combined_muwt, combined_muwt1);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+    FillCFHists(list1, "_lmet", true, 2.0, combined_muwt, combined_muwt1);
+  }
+
+  if(singleMu and muonNonIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+    FillCFHists(list, "_noniso", true, 2.0, combined_muwt, combined_muwt1);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+    FillCFHists(list1, "_noniso_lmet", true, 2.0, combined_muwt, combined_muwt1);
+  }
+  
+  //elec
+  if(singleEle and eleIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    FillCFHists(list, "", false, 2.0, combined_elewt, 1.0);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+    FillCFHists(list1, "_lmet", false, 2.0, combined_elewt, 1.0);
+  }
+	
+  if(singleEle and eleNonIsoCut){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+    FillCFHists(list, "_noniso", false, 2.0, combined_elewt, 1.0);
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+    FillCFHists(list1, "_noniso_lmet", false, 2.0, combined_elewt, 1.0);
+  }
+  
+  return true;
+}
 //_____________________________________________________________________________
 
 bool SkimAna::FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut){
@@ -2442,69 +2428,18 @@ bool SkimAna::FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoC
 	combined_muwt = _sampleWeight*prefirewt*puwt*muwt;
 	combined_muwt1 = _sampleWeight*puwt*muwt;
 	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
-	
-	if(singleMu and muonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 2.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", true, 2.0, combined_muwt, combined_muwt1);
-	}
 
-	if(singleMu and muonNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", true, 2.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", true, 2.0, combined_muwt, combined_muwt1);
-	}
-  
-	//elec
-	if(singleEle and eleIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 2.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", false, 2.0, combined_elewt, 1.0);
-	}
+	FillLeptonCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
+			  
 	
-	if(singleEle and eleNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", false, 2.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", false, 2.0, combined_elewt, 1.0);
-	}
       }//jec jer condn
 
     }else if(systType == kIso20){// if(systType == kBase){
 
       if(systname.Contains("iso20")) {
 		
-	if(singleMu and muonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 2.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", true, 2.0, combined_muwt, combined_muwt1);
-	}
+	FillLeptonCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
 
-	if(singleMu and muonNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", true, 2.0, combined_muwt, combined_muwt1);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", true, 2.0, combined_muwt, combined_muwt1);
-	}
-  
-	//elec
-	if(singleEle and eleIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 2.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  FillCFHists(list1, "_lmet", false, 2.0, combined_elewt, 1.0);
-	}
-	
-	if(singleEle and eleNonIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  FillCFHists(list, "_noniso", false, 2.0, combined_elewt, 1.0);
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  FillCFHists(list1, "_noniso_lmet", false, 2.0, combined_elewt, 1.0);
-	}
       }//iso20 condn
       
     }else {// if(systType == kBase){
@@ -2512,16 +2447,7 @@ bool SkimAna::FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoC
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 	
-	//mu
-	if(singleMu and muonIsoCut){	  
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 2.0, combined_muwt, combined_muwt1);
-	}
-	//elec
-	if(singleEle and eleIsoCut){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 2.0, combined_elewt, 1.0);
-	}
+	FillLeptonCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
 	
       }//jec jer condn
     }//systType condn
@@ -2547,6 +2473,57 @@ bool SkimAna::FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoC
 }
 
 //_____________________________________________________________________________
+bool SkimAna::FillEventCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt){
+
+  //mu
+  if(evtPick->passTrigger_mu){
+      
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+    TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+    TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  
+    FillCFHists(list, "", true, 0.0, combined_muwt, combined_muwt1);
+    FillCFHists(list1, "_lmet", true, 0.0, combined_muwt, combined_muwt1);
+    FillCFHists(list2, "_noniso", true, 0.0, combined_muwt, combined_muwt1);
+    FillCFHists(list3, "_noniso_lmet", true, 0.0, combined_muwt, combined_muwt1);
+      
+    if(selector->isPVGood and evtPick->passFilter){
+
+      FillCFHists(list, "", true, 1.0, combined_muwt, combined_muwt1);
+      FillCFHists(list1, "_lmet", true, 1.0, combined_muwt, combined_muwt1);
+      FillCFHists(list2, "_noniso", true, 1.0, combined_muwt, combined_muwt1);
+      FillCFHists(list3, "_noniso_lmet", true, 1.0, combined_muwt, combined_muwt1);
+
+    }
+  }//mu condn
+
+  //elec
+  if(evtPick->passTrigger_ele){
+
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+    TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+    TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	  
+    FillCFHists(list, "", false, 0.0, combined_elewt, 1.0);
+    FillCFHists(list1, "_lmet", false, 0.0, combined_elewt, 1.0);
+    FillCFHists(list2, "_noniso", false, 0.0, combined_elewt, 1.0);
+    FillCFHists(list3, "_noniso_lmet", false, 0.0, combined_elewt, 1.0);
+      
+    if(selector->isPVGood and evtPick->passFilter){
+
+      FillCFHists(list, "", false, 1.0, combined_elewt, 1.0);
+      FillCFHists(list1, "_lmet", false, 1.0, combined_elewt, 1.0);
+      FillCFHists(list2, "_noniso", false, 1.0, combined_elewt, 1.0);
+      FillCFHists(list3, "_noniso_lmet", false, 1.0, combined_elewt, 1.0);
+	    
+    }
+  }//ele condn
+  
+  return true;
+}
+//_____________________________________________________________________________
 
 bool SkimAna::FillEventCutFlow(){
 
@@ -2569,103 +2546,17 @@ bool SkimAna::FillEventCutFlow(){
 	combined_muwt = _sampleWeight*prefirewt*puwt;
 	combined_muwt1 = _sampleWeight*puwt;
 	combined_elewt = _sampleWeight*prefirewt*puwt;
-    
-	//mu
-	if(evtPick->passTrigger_mu){
-      
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  
-	  FillCFHists(list, "", true, 0.0, combined_muwt, combined_muwt1);
-	  FillCFHists(list1, "_lmet", true, 0.0, combined_muwt, combined_muwt1);
-	  FillCFHists(list2, "_noniso", true, 0.0, combined_muwt, combined_muwt1);
-	  FillCFHists(list3, "_noniso_lmet", true, 0.0, combined_muwt, combined_muwt1);
-      
-	  if(selector->isPVGood and evtPick->passFilter){
+	
+	FillEventCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt);
 
-	    FillCFHists(list, "", true, 1.0, combined_muwt, combined_muwt1);
-	    FillCFHists(list1, "_lmet", true, 1.0, combined_muwt, combined_muwt1);
-	    FillCFHists(list2, "_noniso", true, 1.0, combined_muwt, combined_muwt1);
-	    FillCFHists(list3, "_noniso_lmet", true, 1.0, combined_muwt, combined_muwt1);
-
-	  }
-	}//mu condn
-
-	//elec
-	if(evtPick->passTrigger_ele){
-
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  
-	  FillCFHists(list, "", false, 0.0, combined_elewt, 1.0);
-	  FillCFHists(list1, "_lmet", false, 0.0, combined_elewt, 1.0);
-	  FillCFHists(list2, "_noniso", false, 0.0, combined_elewt, 1.0);
-	  FillCFHists(list3, "_noniso_lmet", false, 0.0, combined_elewt, 1.0);
-      
-	  if(selector->isPVGood and evtPick->passFilter){
-
-	    FillCFHists(list, "", false, 1.0, combined_elewt, 1.0);
-	    FillCFHists(list1, "_lmet", false, 1.0, combined_elewt, 1.0);
-	    FillCFHists(list2, "_noniso", false, 1.0, combined_elewt, 1.0);
-	    FillCFHists(list3, "_noniso_lmet", false, 1.0, combined_elewt, 1.0);
-	    
-	  }
-	}//ele condn
       }//no jec and/or jer condn
       
     }else if(systType == kIso20){ //if(systType == kBase){
 
       if(systname.Contains("iso20")) {
 	
-	//mu
-	if(evtPick->passTrigger_mu){
-      
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  
-	  FillCFHists(list, "", true, 0.0, combined_muwt, combined_muwt1);
-	  FillCFHists(list1, "_lmet", true, 0.0, combined_muwt, combined_muwt1);
-	  FillCFHists(list2, "_noniso", true, 0.0, combined_muwt, combined_muwt1);
-	  FillCFHists(list3, "_noniso_lmet", true, 0.0, combined_muwt, combined_muwt1);
-      
-	  if(selector->isPVGood and evtPick->passFilter){
-
-	    FillCFHists(list, "", true, 1.0, combined_muwt, combined_muwt1);
-	    FillCFHists(list1, "_lmet", true, 1.0, combined_muwt, combined_muwt1);
-	    FillCFHists(list2, "_noniso", true, 1.0, combined_muwt, combined_muwt1);
-	    FillCFHists(list3, "_noniso_lmet", true, 1.0, combined_muwt, combined_muwt1);
-
-	  }
-	}//mu condn
+	FillEventCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt);
 	
-	//elec
-	if(evtPick->passTrigger_ele){
-
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
-	  TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
-	  TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-	  
-	  FillCFHists(list, "", false, 0.0, combined_elewt, 1.0);
-	  FillCFHists(list1, "_lmet", false, 0.0, combined_elewt, 1.0);
-	  FillCFHists(list2, "_noniso", false, 0.0, combined_elewt, 1.0);
-	  FillCFHists(list3, "_noniso_lmet", false, 0.0, combined_elewt, 1.0);
-      
-	  if(selector->isPVGood and evtPick->passFilter){
-
-	    FillCFHists(list, "", false, 1.0, combined_elewt, 1.0);
-	    FillCFHists(list1, "_lmet", false, 1.0, combined_elewt, 1.0);
-	    FillCFHists(list2, "_noniso", false, 1.0, combined_elewt, 1.0);
-	    FillCFHists(list3, "_noniso_lmet", false, 1.0, combined_elewt, 1.0);
-	    
-	  }
-	}//ele condn
       }//iso20 condn
 
     }else { //if(systType == kBase){
@@ -2673,23 +2564,7 @@ bool SkimAna::FillEventCutFlow(){
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
 	
-	//mu
-	if(evtPick->passTrigger_mu){
-      	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", true, 0.0, combined_muwt, combined_muwt1);
-	  if(selector->isPVGood and evtPick->passFilter){
-	    FillCFHists(list, "", true, 1.0, combined_muwt, combined_muwt1);
-	  }
-	}//mu condn
-	
-	//elec
-	if(evtPick->passTrigger_ele){
-	  TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
-	  FillCFHists(list, "", false, 0.0, combined_elewt, 1.0);
-	  if(selector->isPVGood and evtPick->passFilter){
-	    FillCFHists(list, "", false, 1.0, combined_elewt, 1.0);	    
-	  }
-	}//ele condn
+	FillEventCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt);
 	
       }//jec jer condn
     }//systType    

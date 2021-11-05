@@ -797,6 +797,17 @@ class SkimAna : public TSelector {
    bool    FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
    bool    FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
    
+   bool    FillEventCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
+   bool    FillLeptonCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+				   bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
+   bool    FillNjetCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+			   bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
+   bool    FillMETCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+			  bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   bool     FillBTagCFBTHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
+			      bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+
+
    bool    FillEventWt();
    bool    FillLeptonWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
    bool    FillNjetWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);

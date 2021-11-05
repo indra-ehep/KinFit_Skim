@@ -27,26 +27,40 @@
 using namespace std;
 int CreateQCDDD()
 {
-  int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, TH1D *hDD);
+  int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, TH1D *hDD);
   int year = 2016;
 
   // int QCDDDAll(bool isBtag = 1, bool isMu = 1, int htype = 0, int year = 2016)
   //   int QCDDDAll(bool isBtag = 1, bool isMu = 1, int htype = 0, int year = 2016);
   
+  const char *syst[] = {"base", 
+			"puup", "pudown", "mueffup", "mueffdown", 
+			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
+			"jerup", "jerdown", "btagbup", "btagbdown", 
+			"btaglup", "btagldown", "prefireup", "prefiredown",
+			"pdfup", "pdfdown", "q2fup", "q2down",
+			"isrup", "isrdown", "fsrup", "fsrdown", 
+			"iso20"};
+
+  
   TFile *fout = new TFile("all_QCD_dd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
-  TDirectory *d2 = d1->mkdir("base");
-  d2->cd();
-  TDirectory *d3 = d2->mkdir("Iso");
-  d3->cd();
-  TH1D *hDD;
-  int htype_max[2] = {10, 9};
-  for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
-    for(int ismu = 0 ; ismu < 2 ; ismu++)
-      for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++)
-	QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, hDD);
-  d3->Write();
+  
+  for(int isys = 0 ; isys < 26 ; isys++) {
+
+    TDirectory *d2 = d1->mkdir(Form("%s",syst[isys]));
+    d2->cd();
+    TDirectory *d3 = d2->mkdir("Iso");
+    d3->cd();
+    TH1D *hDD;
+    int htype_max[2] = {10, 9};
+    for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
+      for(int ismu = 0 ; ismu < 2 ; ismu++)
+	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++)
+	  QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, syst[isys], hDD);
+    d3->Write();
+  }
   fout->Close();
   delete fout;
 
@@ -84,7 +98,7 @@ string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
   return histname;
 }
 
-int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, TH1D *hDD)
+int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const char *systType, TH1D *hDD)
 {
   
   void makeHistoPositive(TH1D *, bool);
@@ -105,7 +119,8 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, TH1D *
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02";
-  const char* dir = "grid_v34_Syst/CBA_Skim_Syst_jet_tightID_mW140";
+  //const char* dir = "grid_v34_Syst/CBA_Skim_Syst_jet_tightID_mW140";
+  const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -121,52 +136,52 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, TH1D *
   TFile *fin_nano_qcd	= TFile::Open(qcdfile);
   
   ///////////////////////////////////////// Get  the histograms from files //////////////////////////////// 
-  TH1D *hcf_RegA_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname_RegA.c_str()) : Form("DataEle/base/Iso/%s",histname_RegA.c_str())));
+  TH1D *hcf_RegA_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/Iso/%s",systType,histname_RegA.c_str()) : Form("DataEle/%s/Iso/%s",systType,histname_RegA.c_str())));
   TH1D *hcf_RegA_sig = 0x0 ;
   if(year == 2016)
-    hcf_RegA_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",histname_RegA.c_str()));
-  TH1D *hcf_RegA_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",histname_RegA.c_str()));
-  TH1D *hcf_RegA_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",histname_RegA.c_str())); 
-  TH1D *hcf_RegA_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/Iso/%s",histname_RegA.c_str()));
-  TH1D *hcf_RegA_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",histname_RegA.c_str()));
-  TH1D *hcf_RegA_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",histname_RegA.c_str()));
-  TH1D *hcf_RegA_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname_RegA.c_str()) : Form("MCQCDEle/base/Iso/%s",histname_RegA.c_str())));  
+    hcf_RegA_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/Iso/%s",systType,histname_RegA.c_str()));
+  TH1D *hcf_RegA_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/%s/Iso/%s",systType,histname_RegA.c_str()));
+  TH1D *hcf_RegA_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/%s/Iso/%s",systType,histname_RegA.c_str())); 
+  TH1D *hcf_RegA_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/Iso/%s",systType,histname_RegA.c_str()));
+  TH1D *hcf_RegA_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/Iso/%s",systType,histname_RegA.c_str()));
+  TH1D *hcf_RegA_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/Iso/%s",systType,histname_RegA.c_str()));
+  TH1D *hcf_RegA_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/Iso/%s",systType,histname_RegA.c_str()) : Form("MCQCDEle/%s/Iso/%s",systType,histname_RegA.c_str())));  
   
 
-  TH1D *hcf_RegB_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/NonIso/%s",histname_RegB.c_str()) : Form("DataEle/base/NonIso/%s",histname_RegB.c_str())));
+  TH1D *hcf_RegB_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/NonIso/%s",systType,histname_RegB.c_str()) : Form("DataEle/%s/NonIso/%s",systType,histname_RegB.c_str())));
   TH1D *hcf_RegB_sig = 0x0 ;
   if(year == 2016)
-    hcf_RegB_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/NonIso/%s",histname_RegB.c_str()));
-  TH1D *hcf_RegB_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/NonIso/%s",histname_RegB.c_str()));
-  TH1D *hcf_RegB_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/NonIso/%s",histname_RegB.c_str())); 
-  TH1D *hcf_RegB_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/NonIso/%s",histname_RegB.c_str()));
-  TH1D *hcf_RegB_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/NonIso/%s",histname_RegB.c_str()));
-  TH1D *hcf_RegB_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/NonIso/%s",histname_RegB.c_str()));
-  TH1D *hcf_RegB_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/NonIso/%s",histname_RegB.c_str()) : Form("MCQCDEle/base/NonIso/%s",histname_RegB.c_str())));  
+    hcf_RegB_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/NonIso/%s",systType,histname_RegB.c_str()));
+  TH1D *hcf_RegB_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/%s/NonIso/%s",systType,histname_RegB.c_str()));
+  TH1D *hcf_RegB_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/%s/NonIso/%s",systType,histname_RegB.c_str())); 
+  TH1D *hcf_RegB_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/NonIso/%s",systType,histname_RegB.c_str()));
+  TH1D *hcf_RegB_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/NonIso/%s",systType,histname_RegB.c_str()));
+  TH1D *hcf_RegB_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/NonIso/%s",systType,histname_RegB.c_str()));
+  TH1D *hcf_RegB_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/NonIso/%s",systType,histname_RegB.c_str()) : Form("MCQCDEle/%s/NonIso/%s",systType,histname_RegB.c_str())));  
 
   
-  TH1D *hcf_RegC_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/NonIsoLowMET/%s",histname_RegC.c_str()) : Form("DataEle/base/NonIsoLowMET/%s",histname_RegC.c_str())));
+  TH1D *hcf_RegC_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()) : Form("DataEle/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str())));
   TH1D *hcf_RegC_sig = 0x0 ;
   if(year == 2016)
-    hcf_RegC_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/NonIsoLowMET/%s",histname_RegC.c_str()));
-  TH1D *hcf_RegC_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/NonIsoLowMET/%s",histname_RegC.c_str()));
-  TH1D *hcf_RegC_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/NonIsoLowMET/%s",histname_RegC.c_str())); 
-  TH1D *hcf_RegC_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/NonIsoLowMET/%s",histname_RegC.c_str()));
-  TH1D *hcf_RegC_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/NonIsoLowMET/%s",histname_RegC.c_str()));
-  TH1D *hcf_RegC_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/NonIsoLowMET/%s",histname_RegC.c_str()));
-  TH1D *hcf_RegC_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/NonIsoLowMET/%s",histname_RegC.c_str()) : Form("MCQCDEle/base/NonIsoLowMET/%s",histname_RegC.c_str()))); 
+    hcf_RegC_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
+  TH1D *hcf_RegC_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
+  TH1D *hcf_RegC_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str())); 
+  TH1D *hcf_RegC_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
+  TH1D *hcf_RegC_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
+  TH1D *hcf_RegC_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
+  TH1D *hcf_RegC_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()) : Form("MCQCDEle/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()))); 
 
 
-  TH1D *hcf_RegD_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/LowMET/%s",histname_RegD.c_str()) : Form("DataEle/base/LowMET/%s",histname_RegD.c_str())));
+  TH1D *hcf_RegD_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/LowMET/%s",systType,histname_RegD.c_str()) : Form("DataEle/%s/LowMET/%s",systType,histname_RegD.c_str())));
   TH1D *hcf_RegD_sig = 0x0 ;
   if(year == 2016)
-    hcf_RegD_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/LowMET/%s",histname_RegD.c_str()));
-  TH1D *hcf_RegD_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/LowMET/%s",histname_RegD.c_str()));
-  TH1D *hcf_RegD_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/LowMET/%s",histname_RegD.c_str())); 
-  TH1D *hcf_RegD_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/LowMET/%s",histname_RegD.c_str()));
-  TH1D *hcf_RegD_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/LowMET/%s",histname_RegD.c_str()));
-  TH1D *hcf_RegD_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/LowMET/%s",histname_RegD.c_str()));
-  TH1D *hcf_RegD_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/LowMET/%s",histname_RegD.c_str()) : Form("MCQCDEle/base/LowMET/%s",histname_RegD.c_str()))); 
+    hcf_RegD_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/LowMET/%s",systType,histname_RegD.c_str()));
+  TH1D *hcf_RegD_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/%s/LowMET/%s",systType,histname_RegD.c_str()));
+  TH1D *hcf_RegD_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/%s/LowMET/%s",systType,histname_RegD.c_str())); 
+  TH1D *hcf_RegD_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/LowMET/%s",systType,histname_RegD.c_str()));
+  TH1D *hcf_RegD_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/LowMET/%s",systType,histname_RegD.c_str()));
+  TH1D *hcf_RegD_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/LowMET/%s",systType,histname_RegD.c_str()));
+  TH1D *hcf_RegD_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/LowMET/%s",systType,histname_RegD.c_str()) : Form("MCQCDEle/%s/LowMET/%s",systType,histname_RegD.c_str()))); 
   ////////////////////////////////End of getting the histograms from files //////////////////////////////// 
   
   //////////////////////////////// Add the MCs but MCQCD /////////////////////////////////////////////////
@@ -224,13 +239,13 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, TH1D *
   double tmpD = errDiffD/intDiffD;
   double tmpC = errDiffC/intDiffC;
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);
-  printf("SF(%s) : %5.4lf +/- %5.4lf\n",histname.c_str(),SF,SF_error);
+  printf("SF(%20s) : %5.4lf +/- %5.4lf\n",histname.c_str(),SF,SF_error);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /////////////////////////////// Modify the Region B result //////////////////////////////////////////////
   double sError = 0.0;
   double  norm = hcf_RegB_QCD->IntegralAndError(1, hcf_RegB_QCD->GetNbinsX(), sError);
-  cout<<"intB = "<<norm<<", intB_err = "<<sError<<endl;
+  //cout<<"intB = "<<norm<<", intB_err = "<<sError<<endl;
   double tot_bin_cont = 0.0;
   double tot_bin_err = 0.0;
   for(int ibin=1; ibin<hcf_RegB_QCD->GetNbinsX(); ibin++){
@@ -244,7 +259,7 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, TH1D *
       hcf_RegA_QCD->SetBinError(ibin, new_bin_err);
     }
   hcf_RegA_bkg->Add(hcf_RegA_QCD);
-  cout<<"tot_bin_cont= "<<tot_bin_cont<<", tot_bin_err = "<<sqrt(tot_bin_err)<<endl;
+  //cout<<"tot_bin_cont= "<<tot_bin_cont<<", tot_bin_err = "<<sqrt(tot_bin_err)<<endl;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   d3->cd();
   hDD = (TH1D *)hcf_RegA_QCD->Clone(Form("%s",histname.c_str()));
