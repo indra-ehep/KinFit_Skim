@@ -27,11 +27,13 @@
 using namespace std;
 int CreateQCDDD()
 {
-  int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, TH1D *hDD);
-  int year = 2016;
 
-  // int QCDDDAll(bool isBtag = 1, bool isMu = 1, int htype = 0, int year = 2016)
-  //   int QCDDDAll(bool isBtag = 1, bool isMu = 1, int htype = 0, int year = 2016);
+  int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
+
+  int year = 2018;
+  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
+  const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
+
   
   const char *syst[] = {"base", 
 			"puup", "pudown", "mueffup", "mueffdown", 
@@ -58,7 +60,7 @@ int CreateQCDDD()
     for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
       for(int ismu = 0 ; ismu < 2 ; ismu++)
 	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++)
-	  QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, syst[isys], hDD);
+	  QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, syst[isys], hDD);
     d3->Write();
   }
   fout->Close();
@@ -98,7 +100,7 @@ string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
   return histname;
 }
 
-int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const char *systType, TH1D *hDD)
+int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const char* dir, const char *systType, TH1D *hDD)
 {
   
   void makeHistoPositive(TH1D *, bool);
@@ -120,7 +122,7 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02";
   //const char* dir = "grid_v34_Syst/CBA_Skim_Syst_jet_tightID_mW140";
-  const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
+
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -239,7 +241,7 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   double tmpD = errDiffD/intDiffD;
   double tmpC = errDiffC/intDiffC;
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);
-  printf("SF(%20s) : %5.4lf +/- %5.4lf\n",histname.c_str(),SF,SF_error);
+  printf("systType : %10s, SF(%20s) : %5.4lf +/- %5.4lf\n",systType,histname.c_str(),SF,SF_error);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /////////////////////////////// Modify the Region B result //////////////////////////////////////////////

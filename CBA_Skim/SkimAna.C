@@ -115,7 +115,7 @@ Int_t SkimAna::CreateHistoArrays()
     ////////////////////////////////// Observables //////////////////////////////////////
     fFileDir[isyst*fNDDReg + 0]->cd();
     //fFileDir[isyst*fNDDReg + 0]->pwd(); cout <<" path " << fFileDir[isyst*fNDDReg+0]->GetPath() << endl;
-
+    
     histObs[fNObHists*isyst + 0] = new TH1D("_lb_pt_mu","_lb_pt_mu",100, 0., 1000.);
     histObs[fNObHists*isyst + 1] = new TH1D("_lb_eta_mu","_lb_eta_mu", 30, -3., 3.);
     histObs[fNObHists*isyst + 2] = new TH1D("_lb_phi_mu","_lb_phi_mu", 35, -3.5, 3.5);
@@ -156,8 +156,8 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + 37] = new TH1D("_kb_nbjet_mu","_kb_nbjet_mu", 30, 0., 30);
     histObs[fNObHists*isyst + 38] = new TH1D("_kb_njet_ele","_kb_njet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + 39] = new TH1D("_kb_nbjet_ele","_kb_nbjet_ele", 30, 0., 30);
-    histObs[fNObHists*isyst + 40] = new TH1D("_kb_mjj_mu","_kb_mjj_mu", 50, 0., 250);
-    histObs[fNObHists*isyst + 41] = new TH1D("_kb_mjj_ele","_kb_mjj_ele", 50, 0., 250);
+    histObs[fNObHists*isyst + 40] = new TH1D("_kb_mjj_mu","_kb_mjj_mu", 2500, 0., 250);
+    histObs[fNObHists*isyst + 41] = new TH1D("_kb_mjj_ele","_kb_mjj_ele", 2500, 0., 250);
     histObs[fNObHists*isyst + 42] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 50, 0., 250);
     histObs[fNObHists*isyst + 43] = new TH1D("_kb_mjj_bf_ele","_kb_mjj_bf_ele", 50, 0., 250);
     for(int icf=0;icf<fNBObHists;icf++)
