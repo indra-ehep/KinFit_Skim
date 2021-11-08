@@ -617,7 +617,7 @@ class SkimAna : public TSelector {
    		  kJECUp, kJECDown, kJERUp, kJERDown, kBTagbDown, kBTagbUp,
    		  kBTaglDown, kBTaglUp, kPdfDown, kPdfUp, kQ2Down, kQ2Up,
    		  kFsrDown, kFsrUp, kIsrDown, kIsrUp, kPreFireUp, kPreFireDown,
-		  kIso20
+		  kIso20, kMETUp, kMETDown
    };
    
    int puvar012_g ;		// 0:down, 1:norm, 2:up

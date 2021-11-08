@@ -11,7 +11,8 @@ void initCrossSections(){
     crossSections["TTbarPowheg"]		=  {831.76, 831.76, 831.76};  //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675)
     crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315};
     crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352};
-    crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095};
+    crossSections["TTbarMadgraph_inclusive"]    =  {831.76, 831.76, 831.76};
+
     // Obtained using CMSDAS and CMS_XSDB
     //crossSections["TTbarPowheg_Dilepton"]       =  { 88.29, 88.29, 88.29}; //687.1
     //crossSections["TTbarPowheg_Semilept"]       =  {365.34, 365.34, 365.34}; //687.1

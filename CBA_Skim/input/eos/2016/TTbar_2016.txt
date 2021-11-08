@@ -47,3 +47,5 @@ root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/TT
 root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_7of21.root
 root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_8of21.root
 root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_9of21.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/TTbarMadgraph_inclusive_Skim_NanoAOD_1of2.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/TTbarMadgraph_inclusive_Skim_NanoAOD_2of2.root

@@ -79,6 +79,8 @@ public:
 
 	float METPt;
 	float METPhi;
+	float METUnc;
+	bool selectMETUnc ;
 
 	bool isNanoAOD;
         bool isPVGood;
@@ -162,6 +164,7 @@ private:
 	void filter_jets();
 	void filter_jetsNoCorr();
 	void filter_mets();
+	void metWithUncl();
 
 	/* double JER(int jetInd); */
 	

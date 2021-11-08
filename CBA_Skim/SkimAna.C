@@ -423,7 +423,7 @@ void SkimAna::SelectSyst()
   jecvar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   jervar012_g		= 1 ;		// 0:down, 1:norm, 2:up
 
-  fNSyst = 26 ; 
+  fNSyst = 28 ; 
   fSystList = new char*[fNSyst];
   const char *syst[] = {"base", 
 			"puup", "pudown", "mueffup", "mueffdown", 
@@ -432,7 +432,7 @@ void SkimAna::SelectSyst()
 			"btaglup", "btagldown", "prefireup", "prefiredown",
 			"pdfup", "pdfdown", "q2fup", "q2down",
 			"isrup", "isrdown", "fsrup", "fsrdown",
-                         "iso20"};
+			"iso20", "metup", "metdown"};
 
   for(int isyst=0;isyst<fNSyst;isyst++){
     fSystList[isyst] = new char[20];
@@ -473,7 +473,18 @@ void SkimAna::SelectSyst()
     systType = kIso20;    
     Info("SelectSyst","Syst : %s", fSyst.Data()); 
     
+  } else if (fSyst == "metup") {
+
+    systType = kMETUp;
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    
+  } else if (fSyst == "metdown") {
+    
+    systType = kMETDown;
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+
   }
+
 
   
 }
@@ -498,6 +509,17 @@ void SkimAna::SetTrio()
   //selector->QCDselect = true ;
   selector->DDselect = true ;
   selector->mu_RelIso_loose = 0.4;
+
+  if(systType == kMETUp){
+    selector->METUnc = 1.0;
+    selector->selectMETUnc = true;
+  }else if(systType == kMETDown){
+    selector->METUnc = -1.0;
+    selector->selectMETUnc = true;    
+  }else{
+    selector->METUnc = 0.0;
+    selector->selectMETUnc = false;    
+  }
   
   // Cuts used for results presented at PAG dated August, 02, 2021
   // selector->mu_Pt_cut = 30.;
@@ -1631,7 +1653,7 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met")) {
   
 	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 
@@ -1661,7 +1683,7 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met")) {
 	
 	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 
@@ -1689,7 +1711,7 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met")) {
 	
 	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 	  
@@ -1720,7 +1742,7 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 	
 	TString systname = fSystList[isyst];
 	
-	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+	if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met")) {
 	
 	  GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 
@@ -1833,7 +1855,8 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){	    
   	  if(!isLowMET){
 	    ////////////////// base ////////////////////////////
 	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
@@ -1854,7 +1877,9 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){	    
+	    
 	  if(!isLowMET){
 	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
 	    FillCFHists(lNonIso,"_noniso", true, 6.0, combined_muwt, combined_muwt1);
@@ -1873,7 +1898,8 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
     //   for(int isyst=0;isyst<fNSyst;isyst++){
     // 	TString systname = fSystList[isyst];
     // 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-    // 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+    // 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    // or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){	    	    
     // 	  ////////////////// base ////////////////////////////
     // 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
     // 	  FillCFHists(lIso,"",true, 6.0, combined_muwt, combined_muwt1);
@@ -1888,7 +1914,9 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){	    
+	    
 	  if(!isLowMET){	    
 	    ////////////////// base ////////////////////////////	    
 	    TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
@@ -1909,7 +1937,9 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){	    
+	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){	    
+	    
 	  if(!isLowMET){
 	    TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
 	    FillCFHists(lNonIso,"_noniso",false, 6.0, combined_elewt, 1.0);
@@ -1929,7 +1959,8 @@ bool SkimAna::FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
     //   for(int isyst=0;isyst<fNSyst;isyst++){
     // 	TString systname = fSystList[isyst];
     // 	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-    // 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+    // 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+    // or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){	    
     // 	  ////////////////// base ////////////////////////////
     // 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
     // 	  FillCFHists(lIso,"",false, 6.0, combined_elewt, 1.0);
@@ -2018,7 +2049,7 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
 
     if(systType == kBase){
 
-      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met") ) {
 	
 	GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt);
 	FillBTagCFBTHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
@@ -2036,7 +2067,8 @@ bool SkimAna::FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bo
     }else{ //if(systType == kBase
       
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){
 
 	FillBTagCFBTHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
 	
@@ -2225,7 +2257,7 @@ bool SkimAna::FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut,
 
     if(systType == kBase){
 
-      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met")) {
 	
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
@@ -2251,7 +2283,8 @@ bool SkimAna::FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut,
     }else {// if(systType == kBase){
 
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){
 	
 	FillMETCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
 	
@@ -2313,7 +2346,7 @@ bool SkimAna::FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut
     
     if(systType == kBase){
       
-      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met")) {
 	
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
@@ -2339,7 +2372,8 @@ bool SkimAna::FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut
     }else {// if(systType == kBase){
 
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){
 	
 	FillNjetCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
 	
@@ -2418,7 +2452,7 @@ bool SkimAna::FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoC
     
     if(systType == kBase){
       
-      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met")) {
 	
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
@@ -2445,7 +2479,8 @@ bool SkimAna::FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoC
     }else {// if(systType == kBase){
 
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){
 	
 	FillLeptonCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt, singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
 	
@@ -2537,7 +2572,7 @@ bool SkimAna::FillEventCutFlow(){
 
     if(systType == kBase){
 
-      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20")) {
+      if(!systname.Contains("jec") and !systname.Contains("jer") and !systname.Contains("iso20") and !systname.Contains("met") ){
 
 	double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
@@ -2562,7 +2597,8 @@ bool SkimAna::FillEventCutFlow(){
     }else { //if(systType == kBase){
       
       if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
-	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")){
+	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")){
 	
 	FillEventCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt);
 	

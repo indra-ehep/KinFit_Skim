@@ -90,8 +90,8 @@ Selector::Selector(){
     //met defaults
     METPt  = -9999;
     METPhi  = -9999;
-
-
+    METUnc = 1.0;
+    selectMETUnc = false;
 }
 
 void Selector::init_JER(std::string inputPrefix){
@@ -139,7 +139,11 @@ void Selector::process_objects(string path, EventTree* inp_tree){
     filter_jetsNoCorr();
     if(IsDebug) Info("Selector::process_objects","Filtered for jets no Corr.");
     
-    filter_mets();
+    if(!selectMETUnc)
+      filter_mets();
+    else
+      metWithUncl();
+
     if(IsDebug) Info("Selector::process_objects","Filtered for MET.");
 }
 
@@ -1020,6 +1024,167 @@ void Selector::filter_mets(){
   
 }
 
+
+// double UncertaintyComputer::metWithUncl(const vector<MyJet> & vJ, vector<int> *j, const vector<MyMuon> &vMu, vector<int> *m, const vector<MyElectron> &vEle, vector<int> *el, MyMET MET, int unc)
+// {
+//   double metX = MET.p4.px(); 
+//   double metY = MET.p4.py(); 
+
+//   //remove jets
+//   for(size_t i = 0; i < j->size(); i++){  
+//     int j_ind = j->at(i);
+    
+//     metX += vJ[j_ind].p4.px();
+//     metY += vJ[j_ind].p4.py();
+
+//   }
+//   //remove leptons
+//   for(size_t i = 0; i < m->size(); i++){   
+//     int m_ind = m->at(i); 
+
+//     metX += vMu[m_ind].p4.px();
+//     metY += vMu[m_ind].p4.py();
+//   }
+//   for(size_t i = 0; i < el->size(); i++){
+//     int e_ind = el->at(i);
+//     metX += vEle[e_ind].p4.px();
+//     metY += vEle[e_ind].p4.py();
+//   }
+
+//   metX *= (1 + double(unc)*0.1); //vary by 10%
+//   metY *= (1 + double(unc)*0.1);
+
+//   //Re add objects
+//   for(size_t i = 0; i < m->size(); i++){    
+//     int m_ind = m->at(i);  
+ 
+//     metX -= vMu[m_ind].p4.px(); 
+//     metY -= vMu[m_ind].p4.py(); 
+//   } 
+//   for(size_t i = 0; i < el->size(); i++){ 
+//     int e_ind = el->at(i); 
+//     metX -= vEle[e_ind].p4.px(); 
+//     metY -= vEle[e_ind].p4.py(); 
+//   } 
+
+//   for(size_t i = 0; i < j->size(); i++){   
+//     int j_ind = j->at(i); 
+     
+//     metX -= vJ[j_ind].p4.px(); 
+//     metY -= vJ[j_ind].p4.py(); 
+ 
+//   } 
+
+//   return sqrt(metX*metX + metY*metY);
+// }
+
+void Selector::metWithUncl()
+{
+
+  TLorentzVector MET;
+  MET.SetPtEtaPhiM(tree->MET_pt_, 0., tree->MET_phi_, 0.);
+
+  double metX = MET.Px(); 
+  double metY = MET.Py();
+
+  if (!tree->isData_){
+
+    TVector3 jet; 
+    for (unsigned int ijet = 0; ijet < JetsNoCorr.size(); ijet++){		
+      int jetInd = JetsNoCorr.at(ijet);
+      double pt = tree->jetPt_[jetInd];
+      double eta = tree->jetEta_[jetInd];
+      double phi = tree->jetPhi_[jetInd];
+      
+      jet.SetPtEtaPhi(pt,eta,phi);
+      
+      metX += jet.Px(); 
+      metY += jet.Py(); 
+    }
+
+    TVector3 muon; 
+    if(!DDselect){
+      for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+	muon.SetPtEtaPhi(tree->muPt_[*muInd], tree->muEta_[*muInd], tree->muPhi_[*muInd]);
+	metX += muon.Px(); 
+	metY += muon.Py(); 
+      }
+    }else{
+      for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
+	muon.SetPtEtaPhi(tree->muPt_[*muInd], tree->muEta_[*muInd], tree->muPhi_[*muInd]);
+	metX += muon.Px(); 
+	metY += muon.Py(); 
+      }
+    }
+    
+    TVector3 electron; 
+    if(!DDselect){
+      //loop over selected electrons
+      for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+	electron.SetPtEtaPhi(tree->elePt_[*eleInd], tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]);
+	metX += electron.Px(); 
+	metY += electron.Py(); 	
+      }
+    }else{
+      for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
+	electron.SetPtEtaPhi(tree->elePt_[*eleInd], tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]);
+	metX += electron.Px(); 
+	metY += electron.Py(); 	
+      }      
+    }
+    
+    metX *= (1 + METUnc*0.1); //vary by 10%
+    metY *= (1 + METUnc*0.1);
+
+    if(!DDselect){
+      //loop over selected electrons
+      for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
+	electron.SetPtEtaPhi(tree->elePt_[*eleInd], tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]);
+	metX -= electron.Px(); 
+	metY -= electron.Py(); 	
+      }
+    }else{
+      for(std::vector<int>::const_iterator eleInd = ElectronsNoIso.begin(); eleInd != ElectronsNoIso.end(); eleInd++) {
+	electron.SetPtEtaPhi(tree->elePt_[*eleInd], tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]);
+	metX -= electron.Px(); 
+	metY -= electron.Py(); 	
+      }      
+    }
+
+    if(!DDselect){
+      for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
+	muon.SetPtEtaPhi(tree->muPt_[*muInd], tree->muEta_[*muInd], tree->muPhi_[*muInd]);
+	metX -= muon.Px(); 
+	metY -= muon.Py(); 
+      }
+    }else{
+      for(std::vector<int>::const_iterator muInd = MuonsNoIso.begin(); muInd != MuonsNoIso.end(); muInd++) {
+	muon.SetPtEtaPhi(tree->muPt_[*muInd], tree->muEta_[*muInd], tree->muPhi_[*muInd]);
+	metX -= muon.Px(); 
+	metY -= muon.Py(); 
+      }
+    }
+    
+    for (unsigned int ijet = 0; ijet < JetsNoCorr.size(); ijet++){		
+      int jetInd = JetsNoCorr.at(ijet);
+      double pt = tree->jetPt_[jetInd];
+      double eta = tree->jetEta_[jetInd];
+      double phi = tree->jetPhi_[jetInd];
+      
+      jet.SetPtEtaPhi(pt,eta,phi);
+      
+      metX -= jet.Px(); 
+      metY -= jet.Py(); 
+    }
+    
+  }//isMC
+
+  MET.SetXYZM(metX, metY, 0., 0.);
+  
+  METPt  = MET.Pt();
+  METPhi = MET.Phi();
+
+}
 
 bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){
 
