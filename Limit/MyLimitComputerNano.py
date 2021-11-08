@@ -32,7 +32,10 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     print ("COMB_DATACARD_NAME: %s"%COMB_DATACARD_NAME)
     print ("t2wDataCardName: %s, MASS : %s, name %s"%(t2wDataCardName,str(MASS),'_hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR))
     execme('text2workspace.py '+COMB_DATACARD_NAME+' -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs -o '+t2wDataCardName )
-    execme('combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    #execme('combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    #execme('combine  '+t2wDataCardName+' -M AsymptoticLimits --expectSignalMass '+str(MASS)+' -v +2 --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    #execme('combine  '+t2wDataCardName+' -M AsymptoticLimits --expectSignal 0 -v +2 --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    execme('combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --expectSignal 0 --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
     if(isGOF):
         #execme('combine '+t2wDataCardName+' -M GoodnessOfFit --algo saturated -t 1000 -s -1 --mass '+str(MASS)+' --name _hcs_13TeV_toy_'+CHANNEL_NAME+'_'+CAT_DIR)
         #execme('combine '+t2wDataCardName+' -M GoodnessOfFit --algo saturated --mass '+str(MASS)+' --name _hcs_13TeV_data_'+CHANNEL_NAME+'_'+CAT_DIR)
@@ -118,8 +121,10 @@ if __name__=="__main__":
 
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v32_Syst/CBA_Skim_Syst_jet_tightID/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v32_Syst/CBA_Skim_Syst_jet_tightID/2016"
-    # path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02/2016"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v34_Syst/CBA_Skim_Syst_jet_tightID_mW140/2016"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v35_Syst/CBA_Skim_Syst_allDD/2016"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v35_Syst/CBA_Skim_Syst_highreso/2016"
     path_file_dir="input"
     muon_file_dir=path_file_dir+""
     ele_file_dir=path_file_dir+""   

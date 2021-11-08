@@ -53,7 +53,8 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
   TFile *fWH  = TFile::Open(inFileDir+"/"+sigFile);
   cout << "inFileDir : " << inFileDir << ", sigFile : "<<sigFile<<endl;
   //data driven qcd
-  TFile* fQCD_dd = TFile::Open(inFileDir+"/all_QCD_dd.root"); 
+  //TFile* fQCD_dd = TFile::Open(inFileDir+"/all_QCD_dd.root"); 
+  TFile* fQCD_dd = TFile::Open(inFileDir+"/all_QCDdd.root"); 
   
 
   //OUTPUT FILE
@@ -320,6 +321,19 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
   cout<<"qcd = "<<qcd_dd->Integral()<<endl;
   cout << "histname : "<<histName << endl;  
   double qcd_unc = DC.getSysUncQcd(isMuChannel, fData, fTT, fST, fWJ, fDY,  fVV, histSubDir_+"/", histName, false);
+  //qcd_unc *= 1.05;
+  qcd_unc = 1.03;
+
+  TH1F* qcddd_JESUp = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_JESUp", true, sigFile);
+  TH1F* qcddd_JESDown = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_JESDown", true, sigFile);
+  TH1F* qcddd_JERUp = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_JERUp", true, sigFile);
+  TH1F* qcddd_JERDown = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_JERDown", true, sigFile);
+  TH1F* qcddd_PileupUp = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_PileupUp", true, sigFile);
+  TH1F* qcddd_PileupDown = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_PileupDown", true, sigFile);
+  TH1F* qcddd_bcTag1Up = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag1Up", true, sigFile);
+  TH1F* qcddd_bcTag1Down = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag1Down", true, sigFile);
+  TH1F* qcddd_bcTag2Up = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag2Up", true, sigFile);
+  TH1F* qcddd_bcTag2Down = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag2Down", true, sigFile);
 
 
   //Data
@@ -413,11 +427,11 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
         out << rate ;
         out << space << wh->Integral()
             << space << ttbar->Integral()
-            // << space << wjet->Integral()
-            // << space << zjet->Integral()
-            // << space << stop->Integral()
-            // << space << vv->Integral()
-            // << space << qcd_dd->Integral()
+            << space << wjet->Integral()
+            << space << zjet->Integral()
+            << space << stop->Integral()
+            << space << vv->Integral()
+            << space << qcd_dd->Integral()
             << endl;
       }
       else if(line.find("CMS_eff_lep")!=string::npos){  
@@ -427,127 +441,127 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
       }  
       else if(line.find("CMS_eff_bcInc1")!=string::npos){
         float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag1Up, wh_bcTag1Down) : 1.00;
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
+        if(line.find("HHHH")!=string::npos)  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
         
         float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag1Up, ttbar_bcTag1Down) : 1.00; 
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
+        if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
         
         float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag1Up, wjet_bcTag1Down) : 1.00;
-        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
+        if(line.find("WWWW")!=string::npos)  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
        
         float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag1Up, zjet_bcTag1Down) : 1.00;
-        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
+        if(line.find("DDDD")!=string::npos)  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
 
         float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag1Up, stop_bcTag1Down) : 1.00; 
-        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
+        if(line.find("SSSS")!=string::npos)  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
 
         float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag1Up, vv_bcTag1Down) : 1.00;
-        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
+        if(line.find("VVVV")!=string::npos)  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_eff_bcInc2")!=string::npos){
         float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag2Up, wh_bcTag2Down) : 1.00;
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
+        if(line.find("HHHH")!=string::npos)  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
         
         float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag2Up, ttbar_bcTag2Down) : 1.00; 
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
+        if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
         
         float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag2Up, wjet_bcTag2Down) : 1.00;
-        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
+        if(line.find("WWWW")!=string::npos)  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
        
         float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag2Up, zjet_bcTag2Down) : 1.00;
-        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
+        if(line.find("DDDD")!=string::npos)  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
         
         float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag2Up, stop_bcTag2Down) : 1.00; 
-        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
+        if(line.find("SSSS")!=string::npos)  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
 
         float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag2Up, vv_bcTag2Down) : 1.00;
-        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
+        if(line.find("VVVV")!=string::npos)  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
         out << line << endl;
       }
       // else if(line.find("CMS_eff_bcInc3")!=string::npos){
       //   float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag3Up, wh_bcTag3Down) : 1.00;
-      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
+      //   if(line.find("HHHH")!=string::npos)  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
         
       //   float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag3Up, ttbar_bcTag3Down) : 1.00; 
-      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
+      //   if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
         
       //   float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag3Up, wjet_bcTag3Down) : 1.00;
-      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
+      //   if(line.find("WWWW")!=string::npos)  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
        
       //   float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag3Up, zjet_bcTag3Down) : 1.00;
-      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
+      //   if(line.find("DDDD")!=string::npos)  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
         
       //   float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag3Up, stop_bcTag3Down) : 1.00; 
-      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
+      //   if(line.find("SSSS")!=string::npos)  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
 
       //   float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag3Up, vv_bcTag3Down) : 1.00;
-      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
+      //   if(line.find("VVVV")!=string::npos)  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
       //   out << line << endl;
       // }
       else if(line.find("CMS_pileup")!=string::npos){
         float PileupUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_PileupUp, wh_PileupDown) : 1.00;
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", PileupUnc_wh)) );
+        if(line.find("HHHH")!=string::npos)  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", PileupUnc_wh)) );
         
         float PileupUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_PileupUp, ttbar_PileupDown) : 1.00; 
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", PileupUnc_ttbar)) ); 
+        if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", PileupUnc_ttbar)) ); 
         
         float PileupUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_PileupUp, wjet_PileupDown) : 1.00;
-        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", PileupUnc_wjet)) ); 
+        if(line.find("WWWW")!=string::npos)  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", PileupUnc_wjet)) ); 
        
         float PileupUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_PileupUp, zjet_PileupDown) : 1.00;
-        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", PileupUnc_zjet)) ); 
+        if(line.find("DDDD")!=string::npos)  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", PileupUnc_zjet)) ); 
         
         float PileupUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_PileupUp, stop_PileupDown) : 1.00; 
-        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", PileupUnc_stop)) ); 
+        if(line.find("SSSS")!=string::npos)  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", PileupUnc_stop)) ); 
 
         float PileupUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_PileupUp, vv_PileupDown) : 1.00;
-        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", PileupUnc_vv)) ); 
+        if(line.find("VVVV")!=string::npos)  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", PileupUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_scale_j")!=string::npos){
         float JESUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JESUp, wh_JESDown) : 1.00;
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JESUnc_wh)) );
+        if(line.find("HHHH")!=string::npos)  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JESUnc_wh)) );
         
         float JESUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JESUp, ttbar_JESDown) : 1.00; 
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JESUnc_ttbar)) ); 
+        if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JESUnc_ttbar)) ); 
         
         float JESUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JESUp, wjet_JESDown) : 1.00;
-        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JESUnc_wjet)) ); 
+        if(line.find("WWWW")!=string::npos)  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JESUnc_wjet)) ); 
        
         float JESUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JESUp, zjet_JESDown) : 1.00;
-        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JESUnc_zjet)) ); 
+        if(line.find("DDDD")!=string::npos)  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JESUnc_zjet)) ); 
         
         float JESUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JESUp, stop_JESDown) : 1.00; 
-        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JESUnc_stop)) ); 
+        if(line.find("SSSS")!=string::npos)  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JESUnc_stop)) ); 
 
         float JESUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JESUp, vv_JESDown) : 1.00;
-        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JESUnc_vv)) ); 
+        if(line.find("VVVV")!=string::npos)  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JESUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_res_j")!=string::npos){
         float JERUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JERUp, wh_JERDown) : 1.00;
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JERUnc_wh)) );
+        if(line.find("HHHH")!=string::npos)  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JERUnc_wh)) );
         
         float JERUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JERUp, ttbar_JERDown) : 1.00; 
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JERUnc_ttbar)) ); 
+        if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JERUnc_ttbar)) ); 
         
         float JERUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JERUp, wjet_JERDown) : 1.00;
-        //line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
+        if(line.find("WWWW")!=string::npos)  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
        
         float JERUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JERUp, zjet_JERDown) : 1.00;
-        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
+        if(line.find("DDDD")!=string::npos)  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
         
         float JERUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JERUp, stop_JERDown) : 1.00; 
-        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
+        if(line.find("SSSS")!=string::npos)  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
 
         float JERUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JERUp, vv_JERDown) : 1.00;
-        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
+        if(line.find("VVVV")!=string::npos)  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_norm_qcd")!=string::npos){  
-
-        //line.replace( line.find("QQQQ") , 4 , string(Form("%.3f", qcd_unc)));   
+	
+        if(line.find("QQQQ")!=string::npos) line.replace( line.find("QQQQ") , 4 , string(Form("%.3f", qcd_unc)));   
 
         //if(isMuChannel) line.replace( line.find("QQQQ") , 4 , string(Form("%.4f", 1.10)));   
         //else line.replace(line.find("QQQQ") , 4 , string(Form("%.4f", 1.19)));   
@@ -555,25 +569,25 @@ int MyHPlusDataCardMakerNanoC(TString inFileDir="/Data/CMS-Analysis/NanoAOD-Anal
       }
       // else if(line.find("CMS_topPtReweight")!=string::npos){
       //   float topPtUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_topPtUp, wh_topPtDown) : 1.00;
-      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", topPtUnc_wh)) );
+      //   if(line.find("HHHH")!=string::npos)  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", topPtUnc_wh)) );
         
       //   float topPtUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_topPtUp, ttbar_topPtDown) : 1.00; 
-      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", topPtUnc_ttbar)) ); 
+      //   if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", topPtUnc_ttbar)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("scaleRF_tt")!=string::npos){
       //   float scaleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_scaleUp, ttbar_scaleDown) : 1.00; 
-      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", scaleUnc_ttbar)) ); 
+      //   if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", scaleUnc_ttbar)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("hDamp_tt")!=string::npos){
       //   float matchUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_matchingUp, ttbar_matchingDown) : 1.00; 
-      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", matchUnc_ttbar)) ); 
+      //   if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", matchUnc_ttbar)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("topMass_tt")!=string::npos){
       //   float mtopUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_mtop1735, ttbar_mtop1715) : 1.00; 
-      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", mtopUnc_ttbar)) ); 
+      //   if(line.find("TTTT")!=string::npos)  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", mtopUnc_ttbar)) ); 
       //   out << line << endl;
       // }
       else{ //default without changes

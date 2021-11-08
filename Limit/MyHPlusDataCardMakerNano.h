@@ -11,6 +11,8 @@
 #include <time.h>
 #include <algorithm>
 
+#include <TMath.h>
+
 using namespace std;
 double sysSF = 1.0;
 
@@ -27,7 +29,7 @@ class MyHPlusDataCardMakerNano{
   double getQcdDD(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf);
   double getSysUncQcd(bool isMu, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF);
   TH1F* trimHisto(TH1F* hist, TString histName, int binWidth, int xMin, int xMax);
-  TH1F* trimHistoNano(TH1F* hist, TString histName, int binWidth, int xMin, int xMax);
+  TH1F* trimHistoNano(TH1F* hist, TString histName, float binWidth, float xMin, float xMax);
 
  private:
   double dont_use;
@@ -94,7 +96,10 @@ TH1F* MyHPlusDataCardMakerNano::readWriteHisto(TFile *inFile, TString histPath, 
   /*   mjjMin = 10; mjjMax = 165; */
   /* } */
   
-  TH1F* trimmedHist = trimHisto(hist, outHistName, 5, 20, 165);
+  /* TH1F* trimmedHist = trimHisto(hist, outHistName, 5, 20, 170); */
+  /* trimmedHist->Rebin(1); */
+  TH1F* trimmedHist = trimHistoNano(hist, outHistName, 0.1, 20., 170.);
+  trimmedHist->Rebin(30);
   if(isWrite){
     outFile->cd();
     //hist->Write(outHistName);
@@ -133,19 +138,21 @@ TH1F* MyHPlusDataCardMakerNano::trimHisto(TH1F* hist, TString histName, int binW
     return newHisto;
 }
 
-TH1F* MyHPlusDataCardMakerNano::trimHistoNano(TH1F* hist, TString histName, int binWidth, int xMin, int xMax){
-    double nBin = (xMax-xMin)/binWidth;
-    TH1F* newHisto = new TH1F(histName, histName, nBin, xMin, xMax);
-    double initX = xMin/binWidth;
-    double lastX = xMax/binWidth;
-    for(int i = initX; i<lastX; i++){
-      double binVal = hist->GetBinContent(i);
-      double binErr = hist->GetBinError(i);
-      int i_new = i- initX+1;
-      newHisto->SetBinContent(i_new, binVal);
-      newHisto->SetBinError(i_new, binErr);
-    }
-    return newHisto;
+
+TH1F* MyHPlusDataCardMakerNano::trimHistoNano(TH1F* hist, TString histName, float binWidth, float xMin, float xMax){
+
+  int nBin = TMath::Nint((xMax-xMin)/binWidth);
+  TH1F* newHisto = new TH1F(histName, histName, nBin, xMin, xMax);
+  double initX = xMin/binWidth;
+  double lastX = xMax/binWidth;
+  for(int i = initX; i<lastX; i++){
+    double binVal = hist->GetBinContent(i);
+    double binErr = hist->GetBinError(i);
+    int i_new = i - initX+1;
+    newHisto->SetBinContent(i_new, binVal);
+    newHisto->SetBinError(i_new, binErr);
+  }
+  return newHisto;
 }
 
 double MyHPlusDataCardMakerNano::getUncExL(TH1F* yLyMyT, TH1F* yLyMnT, TH1F* yLnMyT, TH1F* yLnMnT){

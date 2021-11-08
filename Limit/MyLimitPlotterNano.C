@@ -122,8 +122,8 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
     expY1sH_[i1] = 100*TMath::Abs(expY1sH_[i1]-expY[i1]);
     expY1sL_[i1] = 100*TMath::Abs(expY1sL_[i1]-expY[i1]);
-    cout<<"$"<<std::setprecision(2)<<100*expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
-    cout<<endl;
+    // cout<<"$"<<std::setprecision(2)<<100*expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
+    // cout<<endl;
   }
   
   TMultiGraph *mg = new TMultiGraph();
