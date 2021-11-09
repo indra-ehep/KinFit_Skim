@@ -47,3 +47,5 @@
 /run/media/indra/DHEP_Storage_2/Data/NanoAOD/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_7of21.root
 /run/media/indra/DHEP_Storage_2/Data/NanoAOD/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_8of21.root
 /run/media/indra/DHEP_Storage_2/Data/NanoAOD/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_9of21.root
+/run/media/indra/DHEP_Storage_2/Data/NanoAOD/Skim_NanoAOD/2016/TTbarMadgraph_inclusive_Skim_NanoAOD_1of2.root
+/run/media/indra/DHEP_Storage_2/Data/NanoAOD/Skim_NanoAOD/2016/TTbarMadgraph_inclusive_Skim_NanoAOD_2of2.root
