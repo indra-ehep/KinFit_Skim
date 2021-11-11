@@ -1461,9 +1461,10 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //////=====================================================
-  if(selector->Jets.size() < 4 ) return true;
+  //if(selector->Jets.size() < 4 ) return true; //original condn
+  if(selector->Jets.size() < 4 or selector->Jets.size() >= 9 ) return true;
   //////=====================================================
-
+  
   
   //Processes after njet >= 4 selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
