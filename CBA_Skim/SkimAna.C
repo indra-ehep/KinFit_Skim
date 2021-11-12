@@ -156,8 +156,8 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + 37] = new TH1D("_kb_nbjet_mu","_kb_nbjet_mu", 30, 0., 30);
     histObs[fNObHists*isyst + 38] = new TH1D("_kb_njet_ele","_kb_njet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + 39] = new TH1D("_kb_nbjet_ele","_kb_nbjet_ele", 30, 0., 30);
-    histObs[fNObHists*isyst + 40] = new TH1D("_kb_mjj_mu","_kb_mjj_mu", 2500, 0., 250);
-    histObs[fNObHists*isyst + 41] = new TH1D("_kb_mjj_ele","_kb_mjj_ele", 2500, 0., 250);
+    histObs[fNObHists*isyst + 40] = new TH1D("_kb_mjj_mu","_kb_mjj_mu", 50, 0., 250);
+    histObs[fNObHists*isyst + 41] = new TH1D("_kb_mjj_ele","_kb_mjj_ele", 50, 0., 250);
     histObs[fNObHists*isyst + 42] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 50, 0., 250);
     histObs[fNObHists*isyst + 43] = new TH1D("_kb_mjj_bf_ele","_kb_mjj_bf_ele", 50, 0., 250);
     for(int icf=0;icf<fNBObHists;icf++)
@@ -1461,8 +1461,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //////=====================================================
-  //if(selector->Jets.size() < 4 ) return true; //original condn
-  if(selector->Jets.size() < 4 or selector->Jets.size() >= 9 ) return true;
+  if(selector->Jets.size() < 4 ) return true; //original condn
+  //if(selector->Jets.size() < 4 or selector->Jets.size() >= 9 ) return true;
   //////=====================================================
   
   
