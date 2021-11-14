@@ -30,10 +30,12 @@ int CreateQCDDD()
 
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
 
-  int year = 2018;
+  int year = 2016;
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
-  const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
-
+  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
+  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
+  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_highreso";
+  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
   
   const char *syst[] = {"base", 
 			"puup", "pudown", "mueffup", "mueffdown", 
@@ -42,14 +44,14 @@ int CreateQCDDD()
 			"btaglup", "btagldown", "prefireup", "prefiredown",
 			"pdfup", "pdfdown", "q2fup", "q2down",
 			"isrup", "isrdown", "fsrup", "fsrdown", 
-			"iso20"};
+			"iso20", "metup", "metdown"};
 
   
-  TFile *fout = new TFile("all_QCD_dd.root","recreate");
+  TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
   
-  for(int isys = 0 ; isys < 26 ; isys++) {
+  for(int isys = 0 ; isys < 28 ; isys++) {
 
     TDirectory *d2 = d1->mkdir(Form("%s",syst[isys]));
     d2->cd();
@@ -122,7 +124,7 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02";
   //const char* dir = "grid_v34_Syst/CBA_Skim_Syst_jet_tightID_mW140";
-
+  string SystType(systType);
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -138,7 +140,12 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   TFile *fin_nano_qcd	= TFile::Open(qcdfile);
   
   ///////////////////////////////////////// Get  the histograms from files //////////////////////////////// 
-  TH1D *hcf_RegA_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/Iso/%s",systType,histname_RegA.c_str()) : Form("DataEle/%s/Iso/%s",systType,histname_RegA.c_str())));
+  TH1D *hcf_RegA_data	= 0x0;
+  if(SystType=="iso20")
+    hcf_RegA_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/Iso/%s",systType,histname_RegA.c_str()) : Form("DataEle/%s/Iso/%s",systType,histname_RegA.c_str())));
+  else
+    hcf_RegA_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname_RegA.c_str()) : Form("DataEle/base/Iso/%s",histname_RegA.c_str())));
+  //TH1D *hcf_RegA_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname_RegA.c_str()) : Form("DataEle/base/Iso/%s",histname_RegA.c_str())));
   TH1D *hcf_RegA_sig = 0x0 ;
   if(year == 2016)
     hcf_RegA_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/Iso/%s",systType,histname_RegA.c_str()));
@@ -149,8 +156,13 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   TH1D *hcf_RegA_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/Iso/%s",systType,histname_RegA.c_str()));
   TH1D *hcf_RegA_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/Iso/%s",systType,histname_RegA.c_str()) : Form("MCQCDEle/%s/Iso/%s",systType,histname_RegA.c_str())));  
   
-
-  TH1D *hcf_RegB_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/NonIso/%s",systType,histname_RegB.c_str()) : Form("DataEle/%s/NonIso/%s",systType,histname_RegB.c_str())));
+  
+  TH1D *hcf_RegB_data	= 0x0;
+  if(SystType=="iso20")
+    hcf_RegB_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/NonIso/%s",systType,histname_RegB.c_str()) : Form("DataEle/%s/NonIso/%s",systType,histname_RegB.c_str())));
+  else
+    hcf_RegB_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/NonIso/%s",histname_RegB.c_str()) : Form("DataEle/base/NonIso/%s",histname_RegB.c_str())));
+  //TH1D *hcf_RegB_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/NonIso/%s",histname_RegB.c_str()) : Form("DataEle/base/NonIso/%s",histname_RegB.c_str())));xs
   TH1D *hcf_RegB_sig = 0x0 ;
   if(year == 2016)
     hcf_RegB_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/NonIso/%s",systType,histname_RegB.c_str()));
@@ -162,7 +174,12 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   TH1D *hcf_RegB_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/NonIso/%s",systType,histname_RegB.c_str()) : Form("MCQCDEle/%s/NonIso/%s",systType,histname_RegB.c_str())));  
 
   
-  TH1D *hcf_RegC_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()) : Form("DataEle/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str())));
+  TH1D *hcf_RegC_data	= 0x0;
+  if(SystType=="iso20")
+    hcf_RegC_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()) : Form("DataEle/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str())));
+  else
+    hcf_RegC_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/NonIsoLowMET/%s",histname_RegC.c_str()) : Form("DataEle/base/NonIsoLowMET/%s",histname_RegC.c_str())));
+  //TH1D *hcf_RegC_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/NonIsoLowMET/%s",histname_RegC.c_str()) : Form("DataEle/base/NonIsoLowMET/%s",histname_RegC.c_str())));
   TH1D *hcf_RegC_sig = 0x0 ;
   if(year == 2016)
     hcf_RegC_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
@@ -174,7 +191,12 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   TH1D *hcf_RegC_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()) : Form("MCQCDEle/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()))); 
 
 
-  TH1D *hcf_RegD_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/LowMET/%s",systType,histname_RegD.c_str()) : Form("DataEle/%s/LowMET/%s",systType,histname_RegD.c_str())));
+  TH1D *hcf_RegD_data	= 0x0;
+  if(SystType=="iso20")
+    hcf_RegD_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/%s/LowMET/%s",systType,histname_RegD.c_str()) : Form("DataEle/%s/LowMET/%s",systType,histname_RegD.c_str())));
+  else
+    hcf_RegD_data = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/LowMET/%s",histname_RegD.c_str()) : Form("DataEle/base/LowMET/%s",histname_RegD.c_str())));
+  // TH1D *hcf_RegD_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/LowMET/%s",histname_RegD.c_str()) : Form("DataEle/base/LowMET/%s",histname_RegD.c_str())));
   TH1D *hcf_RegD_sig = 0x0 ;
   if(year == 2016)
     hcf_RegD_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/%s/LowMET/%s",systType,histname_RegD.c_str()));
@@ -211,6 +233,9 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   hcf_RegD_bkg->Add(hcf_RegD_wjets);
   hcf_RegD_bkg->Add(hcf_RegD_dyjets);
   hcf_RegD_bkg->Add(hcf_RegD_vbf);
+  // printf("systType : %10s, hist : %20s, Data(A,B,C,D) : (%5.4lf, %5.4lf, %5.4lf, %5.4lf), MC(A,B,C,D) : (%5.4lf, %5.4lf, %5.4lf, %5.4lf)\n",
+  // 	 systType, histname.c_str(), hcf_RegA_data->Integral(),hcf_RegB_data->Integral(),hcf_RegB_data->Integral(),hcf_RegD_data->Integral(), 
+  // 	 hcf_RegA_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegD_bkg->Integral());
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////// Get the QCD for regions ////////////////////////////////////////////////
@@ -241,7 +266,9 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   double tmpD = errDiffD/intDiffD;
   double tmpC = errDiffC/intDiffC;
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);
-  printf("systType : %10s, SF(%20s) : %5.4lf +/- %5.4lf\n",systType,histname.c_str(),SF,SF_error);
+  // printf("systType : %10s, intDiffC : %5.4lf +/- %5.4lf, , intDiffC : %5.4lf +/- %5.4lf, SF(%20s) : %5.4lf +/- %5.4lf\n",
+  // 	 systType, intDiffC, errDiffC, intDiffD, errDiffD, histname.c_str(),SF,SF_error);
+  printf("systType : %10s, SF(%20s) : %5.4lf +/- %5.4lf\n",systType, histname.c_str(),SF,SF_error);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /////////////////////////////// Modify the Region B result //////////////////////////////////////////////

@@ -29,12 +29,13 @@ int CutflowNanoAll()
   
   
   int year = 2016;
-  bool isMu = 1;
+  bool isMu = 0;
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
-  const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
+  //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
+  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -49,7 +50,7 @@ int CutflowNanoAll()
   TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir,year));
   TFile *fin_nano_qcd	= TFile::Open(qcdfile);
   TFile *fin_mini_qcd	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");
-
+  
   // // MiniAOD Final
   // const char* dir = "local_v26_Ele";
   // const char* datafile = (isMu) ? Form("root_files/%s/DataMu_weight.root",dir) : Form("root_files/%s/DataEle_weight.root",dir) ;

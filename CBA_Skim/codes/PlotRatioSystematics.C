@@ -27,7 +27,9 @@
 
 using namespace std;
 
-int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
+double lumi_unc = 0.025 ;
+
+int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
 
   // Setters
   int SetGlobalStyle(void);
@@ -36,15 +38,16 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   int SetStatMarkerStyle(TH1D *&, Color_t, Style_t, Size_t);
   int SetSysMarkerStyle(TGraphErrors *&, Color_t, Style_t);
   int SetCanvasStyle(TCanvas *&);
-  int SetLegendStyle(TLegend *&);
+  int SetLegendStyle(TLegend *&, string histname, bool isBlinded);
   int PrintHSeparator(void);
 
-  TPad *PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, const char *cname, bool isLog);
+  TPad *PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, TGraphAsymmErrors *syst, TGraphAsymmErrors *systRatio, const char *cname, bool isLog);
+  TPad* Plot(THStack *hs, TH1D *h1, TGraphAsymmErrors *syst, const char *cname, bool isLog);
 
-  TGraphAsymmErrors *SystGraph(TH1F *hCentral,  vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
-
-
-
+  TH1D *GetUpDownHistDD(vector<TFile *>, const char *, const char *, string);
+  TH1D *GetUpDownHistMC(vector<TFile *>, const char *, const char *, string, bool);  
+  TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
+  
   // ///////////////////////////////////////////////////////////////////////////////////////////  
   int year = 2016;
   float luminosity[3] = {35.9, 41.5, 59.7};
@@ -84,15 +87,19 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2021-11-05/%d/MCQCD/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2021-11-19/P3ch/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
-  const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
+  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
+  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
+  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
+  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
 
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
-  //const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
-  const char* qcdfile = Form("root_files/%s/%d/all_QCD_dd.root",dir,year);
+  const char* qcdfile_mc = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
+  const char* qcdfile = Form("root_files/%s/%d/all_QCDdd.root",dir,year);
+  
   TFile *fin_nano_data	= TFile::Open(datafile);
   TFile *fin_nano_sig = 0x0 ;
   if(year == 2016)
@@ -102,8 +109,17 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/all_Wjets.root",dir,year));
   TFile *fin_nano_dyjets = TFile::Open(Form("root_files/%s/%d/all_DYjets.root",dir,year));
   TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir,year));
+  TFile *fin_nano_qcd_mc = TFile::Open(qcdfile_mc);
   TFile *fin_nano_qcd	= TFile::Open(qcdfile);
   
+  vector<TFile *> files_avmc,files_avdd;
+  files_avmc.push_back(fin_nano_ttbar) ; files_avdd.push_back(fin_nano_ttbar);
+  files_avmc.push_back(fin_nano_stop) ; files_avdd.push_back(fin_nano_stop);
+  files_avmc.push_back(fin_nano_wjets) ; files_avdd.push_back(fin_nano_wjets);
+  files_avmc.push_back(fin_nano_dyjets) ; files_avdd.push_back(fin_nano_dyjets);
+  files_avmc.push_back(fin_nano_vbf) ; files_avdd.push_back(fin_nano_vbf);
+  files_avmc.push_back(fin_nano_qcd_mc) ; files_avdd.push_back(fin_nano_qcd);
+
   TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname.c_str()) : Form("DataEle/base/Iso/%s",histname.c_str())));
   TH1D *hcf_nano_sig = 0x0 ;
   if(year == 2016)
@@ -113,18 +129,99 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   TH1D *hcf_nano_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/Iso/%s",histname.c_str()));
   TH1D *hcf_nano_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",histname.c_str()));
   TH1D *hcf_nano_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",histname.c_str()));
-  //TH1D *hcf_nano_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname.c_str()) : Form("MCQCDEle/base/Iso/%s",histname.c_str())));
+  TH1D *hcf_nano_qcd_mc	= (TH1D *)fin_nano_qcd_mc->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname.c_str()) : Form("MCQCDEle/base/Iso/%s",histname.c_str())));
   TH1D *hcf_nano_qcd	= (TH1D *)fin_nano_qcd->Get(Form("QCDdd/base/Iso/%s",histname.c_str()));
+
+  if(histname.find("_mjj_")!=string::npos){
+    hcf_nano_data->Rebin(50);
+    if(year == 2016)
+      hcf_nano_sig->Rebin(50);
+    hcf_nano_ttbar->Rebin(50);
+    hcf_nano_stop->Rebin(50);
+    hcf_nano_wjets->Rebin(50);
+    hcf_nano_dyjets->Rebin(50);
+    hcf_nano_vbf->Rebin(50);
+    hcf_nano_qcd_mc->Rebin(50);
+    hcf_nano_qcd->Rebin(50);
+  }
   
-  const char *syst[] = {"JES", "Pileup", "JER", "bcTag1", "bcTag2"};
+  //"mueffup", "mueffdown", "eleeffup", "eleeffdown",
+  const char *syst[] = {"pu", "jec", "jer", "btagb", "btagl", "prefire", "met"};
+  TH1D *hPileupUp =  GetUpDownHistDD(files_avdd,syst[0],"up",histname);
+  TH1D *hPileupDown =  GetUpDownHistDD(files_avdd,syst[0],"down",histname);
+  TH1D *hLeptonUp, *hLeptonDown;
+  if(isMu){
+    hLeptonUp = GetUpDownHistDD(files_avdd,"mueff","up",histname);;
+    hLeptonDown = GetUpDownHistDD(files_avdd,"mueff","down",histname);;
+  }else{
+    hLeptonUp = GetUpDownHistDD(files_avdd,"eleeff","up",histname);;
+    hLeptonDown = GetUpDownHistDD(files_avdd,"eleeff","down",histname);;
+  }
+  // TH1D *hJESUp =  GetUpDownHistMC(files_avmc,syst[1],"up",histname,isMu);
+  // TH1D *hJESDown =  GetUpDownHistMC(files_avmc,syst[1],"down",histname,isMu);
+  // TH1D *hJERUp =  GetUpDownHistMC(files_avmc,syst[2],"up",histname,isMu);
+  // TH1D *hJERDown =  GetUpDownHistMC(files_avmc,syst[2],"down",histname,isMu);
 
+  TH1D *hJESUp =  GetUpDownHistDD(files_avdd,syst[1],"up",histname);
+  TH1D *hJESDown =  GetUpDownHistDD(files_avdd,syst[1],"down",histname);
+  TH1D *hJERUp =  GetUpDownHistDD(files_avdd,syst[2],"up",histname);
+  TH1D *hJERDown =  GetUpDownHistDD(files_avdd,syst[2],"down",histname);
 
+  TH1D *hBTagbUp =  GetUpDownHistDD(files_avdd,syst[3],"up",histname);
+  TH1D *hBTagbDown =  GetUpDownHistDD(files_avdd,syst[3],"down",histname);
+  TH1D *hBTaglUp =  GetUpDownHistDD(files_avdd,syst[4],"up",histname);
+  TH1D *hBTaglDown =  GetUpDownHistDD(files_avdd,syst[4],"down",histname);
+  TH1D *hPrefireUp =  GetUpDownHistDD(files_avdd,syst[5],"up",histname);
+  TH1D *hPrefireDown =  GetUpDownHistDD(files_avdd,syst[5],"down",histname);
+  TH1D *hMETUp =  GetUpDownHistDD(files_avdd,syst[6],"up",histname);
+  TH1D *hMETDown =  GetUpDownHistDD(files_avdd,syst[6],"down",histname);
+  
   TH1D *hcf_nano_bkg = (TH1D *)hcf_nano_ttbar->Clone("Bkg");
   hcf_nano_bkg->Add(hcf_nano_stop);
   hcf_nano_bkg->Add(hcf_nano_wjets);
   hcf_nano_bkg->Add(hcf_nano_dyjets);
   hcf_nano_bkg->Add(hcf_nano_vbf);
   hcf_nano_bkg->Add(hcf_nano_qcd);
+  
+  hcf_nano_ttbar->SetName(Form("%s_TTbar",hcf_nano_ttbar->GetName()));
+  hcf_nano_stop->SetName(Form("%s_Stop",hcf_nano_stop->GetName()));
+  hcf_nano_wjets->SetName(Form("%s_Wjets",hcf_nano_wjets->GetName()));
+  hcf_nano_dyjets->SetName(Form("%s_DYjets",hcf_nano_dyjets->GetName()));
+  hcf_nano_vbf->SetName(Form("%s_VBF",hcf_nano_vbf->GetName()));
+  hcf_nano_qcd->SetName(Form("%s_QCD",hcf_nano_qcd->GetName()));
+  
+  vector<TH1D *> vSystUp, vSystDown, vSystNominal;
+  vSystUp.push_back(hPileupUp); vSystDown.push_back(hPileupDown);
+  vSystUp.push_back(hLeptonUp); vSystDown.push_back(hLeptonDown);
+  vSystUp.push_back(hJESUp); vSystDown.push_back(hJESDown);
+  vSystUp.push_back(hJERUp); vSystDown.push_back(hJERDown);
+  vSystUp.push_back(hBTagbUp); vSystDown.push_back(hBTagbDown);
+  vSystUp.push_back(hBTaglUp); vSystDown.push_back(hBTaglDown);
+  if(year == 2017)
+    vSystUp.push_back(hPrefireUp); vSystDown.push_back(hPrefireDown);
+  vSystUp.push_back(hMETUp); vSystDown.push_back(hMETDown);
+
+  if(histname.find("_mjj_")!=string::npos){
+    for(unsigned int isys = 0 ; isys < vSystUp.size() ; isys++){
+      TH1D *hSyst = vSystUp.at(isys);
+      hSyst->Rebin(50);
+    }
+    for(unsigned int isys = 0 ; isys < vSystDown.size() ; isys++){
+      TH1D *hSyst = vSystDown.at(isys);
+      hSyst->Rebin(50);
+    }
+  }
+  
+  vSystNominal.push_back(hcf_nano_ttbar);
+  vSystNominal.push_back(hcf_nano_stop);
+  vSystNominal.push_back(hcf_nano_wjets);
+  vSystNominal.push_back(hcf_nano_dyjets);
+  vSystNominal.push_back(hcf_nano_vbf);
+  vSystNominal.push_back(hcf_nano_qcd);
+  
+
+  TGraphAsymmErrors *grSystFull = SystGraph(hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, true, false);
+  TGraphAsymmErrors *grSystRatio = SystGraph(hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, false, true);
 
   hcf_nano_data->SetMarkerStyle(kFullCircle);
   hcf_nano_data->SetMarkerColor(kBlack);
@@ -160,6 +257,7 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   TH1D *hData = (TH1D*)hcf_nano_data->Clone("hData"); 
   hData->SetTitle("");
   TH1D *hMC = (TH1D*)hcf_nano_bkg->Clone("hMC"); 
+  hMC->SetTitle("");
   ///////////////////////////////////////////////////////////////////////////////////////////  
   const char *hist_num_title = "Data";
   const char *hist_den_title = "All Bkg";
@@ -226,16 +324,17 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   
   // 0:leppt, 1:jetpt, 2:metpt, 3:lepeta, 4:jeteta, 5:lepphi, 6:jetphi, 7:metphi, 8:njet, 9:nbjet, 10:mjj
   float upper_minX = 0.0; float upper_maxX = 500.0;
-  if(htype>=0 and htype<=2){
-    upper_minX = 0.0; upper_maxX = 500.0;   //x-axis range
+  //if(htype>=0 and htype<=2){
+  if(htype==1){
+    upper_minX = 0.0; upper_maxX = 700.0;   //x-axis range
   }else if(htype>=3 and htype<=7){
     upper_minX = -5.0; upper_maxX = 5.0;   //x-axis range
   }else if(htype==8){
-    upper_minX = 0.0; upper_maxX = 16.0;   //x-axis range
+    upper_minX = 0.0; upper_maxX = 20.0;   //x-axis range
   }else if(htype==9){
     upper_minX = 0.0; upper_maxX = 10.0;   //x-axis range
   }else if(htype==10){
-    upper_minX = 0.0; upper_maxX = 200.0;   //x-axis range
+    upper_minX = 0.0; upper_maxX = 180.0;   //x-axis range
   }
 
   float integral_min = upper_minX; float integral_max = upper_maxX; // for integral calculation
@@ -252,12 +351,16 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   hData->SetMaximum(upper_maxY);
   hData->SetMinimum(upper_minY);
   hData->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
+  hMC->SetMaximum(upper_maxY);
+  hMC->SetMinimum(upper_minY);
   hMC->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
   //hData->GetXaxis()->SetRange(hData->FindBin(upper_minX), hData->FindBin(upper_maxX));
   //hMC->GetXaxis()->SetRange(upper_minX, upper_maxX);
   //axis Titles
   hData->GetXaxis()->SetTitle(upper_pad_xaxis_title.c_str());
   hData->GetYaxis()->SetTitle(upper_pad_yaxis_title.c_str());
+  hMC->GetXaxis()->SetTitle(upper_pad_xaxis_title.c_str());
+  hMC->GetYaxis()->SetTitle(upper_pad_yaxis_title.c_str());
   //Now add style and color
   SetStatMarkerStyle(hData, kBlack, kFullCircle, 1);
   SetStatMarkerStyle(hMC, kBlue, kFullSquare, 0.1);  
@@ -266,8 +369,16 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   int canvas_width = TMath::Nint(canvas_scale*900) ;
   int canvas_height = TMath::Nint(canvas_scale*800) ;
   
-  TPad *p = PlotRatio(hs, hData, hMC, "c1", true);
-  
+  // Search and replace != with == of  --histname.find("_mjj_")!=string::npos-- for all following occurances to plot unblinded Mjj
+  bool mass_plot = (histname.find("_mjj_")!=string::npos);
+  bool isBlinded = !(mass_plot) ; 
+  TPad *p = 0x0;
+  if(isBlinded){
+    p = Plot(hs, hMC, grSystFull, "c1", true);
+  }else{
+    p = PlotRatio(hs, hData, hMC, grSystFull, grSystRatio, "c1", true);
+  }
+
   TLegend *leg1 = p->BuildLegend();
   for(int i = 0 ; i < 10 ; i++)
     leg1->DeleteEntry() ;// This is to delete default title of hData
@@ -287,8 +398,10 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
     leg3->DeleteEntry() ;// This is to delete default title of hData  
   leg3->AddEntry(hcf_nano_vbf, Form("VV") ,"f");
   leg3->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");
-  if(year == 2016)
-    leg3->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
+  leg3->AddEntry(grSystFull, Form("Unc") ,"f");
+
+  // if(year == 2016)
+  //   leg3->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
 
   leg1->SetX1(legend_pos1[0]); leg1->SetY1(legend_pos1[1]); 
   leg1->SetX2(legend_pos1[2]); leg1->SetY2(legend_pos1[3]); 
@@ -299,9 +412,9 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   leg3->SetX1(legend_pos3[0]); leg3->SetY1(legend_pos3[1]); 
   leg3->SetX2(legend_pos3[2]); leg3->SetY2(legend_pos3[3]); 
 
-  SetLegendStyle(leg1);
-  SetLegendStyle(leg2);
-  SetLegendStyle(leg3);
+  SetLegendStyle(leg1, histname, isBlinded);
+  SetLegendStyle(leg2, histname, isBlinded);
+  SetLegendStyle(leg3, histname, isBlinded);
 
   leg1->Draw();
   leg2->Draw();
@@ -312,15 +425,23 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
   t1->SetBorderSize(0);
   t1->SetTextFont(42);
   t1->SetTextSize(.05); 
+  if(isBlinded)
+    t1->SetTextSize(.035); 
   t1->SetMargin(0.1);
   t1->AddText(Form("%3.1f fb^{-1} (%d) (13 TeV)",luminosity[year%2016],year));
   t1->Draw();
   
-  TPaveText *t2 = new TPaveText(0.08, 0.78, 0.36, 0.86,"NDC");
+  TPaveText *t2 = 0x0; 
+  if(isBlinded)
+    t2 = new TPaveText(0.11,0.78,0.39,0.86,"NDC");
+  else
+    t2 = new TPaveText(0.08, 0.78, 0.36, 0.86,"NDC");
   t2->SetFillStyle(0);
   t2->SetBorderSize(0);
   t2->SetTextFont(42);
   t2->SetTextSize(.05); 
+  if(isBlinded)
+    t2->SetTextSize(.035); 
   t2->SetMargin(0.1);
   if(isBtag and isMu)
     t2->AddText("BTag: (#mu + jets)");
@@ -332,11 +453,14 @@ int PlotRatioSystematics(bool isBtag = 0, bool isMu = 1, int htype = 10){
     t2->AddText("KinFit: (#it{e} + jets)");
   t2->Draw();
 
-
+  TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
+  canvas->SaveAs(outputpdf.c_str());
+  canvas->SaveAs("output.pdf");
+  
   return true;
 }
 
-TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, const char *cname, bool isLog)
+TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2,TGraphAsymmErrors *syst, TGraphAsymmErrors *systRatio, const char *cname, bool isLog)
 {
 
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject(cname);
@@ -356,8 +480,10 @@ TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, const char *cname, bool isLog)
     pad1->SetTicky();
     h1->SetStats(0);          // No statistics on upper plot
     h1->Draw("e1p");               // Draw h1
+    syst->SetFillColorAlpha(kRed,0.7);
     // h2->Draw("hist same");         // Draw h2 on top of h1
     hs->Draw("same hist");
+    syst->Draw("e2 sames");
     h1->Draw("e1p sames");               // Draw h1
 
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6,8,0)
@@ -378,8 +504,8 @@ TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, const char *cname, bool isLog)
  
     // lower plot will be in pad2
     c->cd();          // Go back to the main canvas before defining pad2
-    TPad *pad2 = new TPad("pad2", "pad2", 0, 0.05, 1, 0.3);
-    pad2->SetTopMargin(0.1);
+    TPad *pad2 = new TPad("pad2", "pad2", 0, 0.01, 1, 0.3);
+    pad2->SetTopMargin(0.05);
     pad2->SetBottomMargin(0.2);
     //pad2->SetGridx(); // vertical grid
     pad2->SetGridy(); // vertical grid
@@ -387,38 +513,58 @@ TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, const char *cname, bool isLog)
     pad2->cd();       // pad2 becomes the current pad
     pad2->SetTickx();
     pad2->SetTicky();
+
+    //pad2->Range(-61.81533,0.01758623,562.5978,1.572414);
+    //pad2->SetFillColor(0);
+    //pad2->SetBorderMode(0);
+    //pad2->SetBorderSize(2);
+    //pad2->SetGridy();
+    //pad2->SetTickx(1);
+    //pad2->SetTicky(1);
+    pad2->SetTopMargin(0.004657352);
+    pad2->SetBottomMargin(0.3102683);
+    //pad2->SetFrameBorderMode(0);
+    //pad2->SetFrameBorderMode(0);
+
  
     // Define the ratio plot
     TH1F *h3 = (TH1F*)h1->Clone("h3");
     h3->SetLineColor(h1->GetLineColor());
-    // h3->SetMinimum(0.2);  // Define Y ..
-    // h3->SetMaximum(1.8); // .. range
+    h3->SetMinimum(0.2);  // Define Y ..
+    h3->SetMaximum(1.8); // .. range
     // h3->SetMinimum(0.93);  // Define Y ..
     // h3->SetMaximum(1.07); // .. range
     // h3->SetMinimum(0.4);  // Define Y ..
     // h3->SetMaximum(1.6); // .. range
     // h3->SetMinimum(0.8);  // Define Y ..
     // h3->SetMaximum(1.2); // .. range
-    h3->SetMinimum(0.5);  // Define Y ..
-    h3->SetMaximum(1.5); // .. range
+    // h3->SetMinimum(0.5);  // Define Y ..
+    // h3->SetMaximum(1.5); // .. range
     h3->Sumw2();
     h3->SetStats(0);      // No statistics on lower plot
     h3->Divide(h2);
     //h3->SetMarkerStyle(21);
     h3->SetMarkerColor(kBlack);
-    h3->SetFillColor(kRed);
-    h3->Draw("e2");       // Draw the ratio plot
+    //h3->SetFillColor(kRed);
+    h3->Draw("p");       // Draw the ratio plot
+    //systRatio->SetFillColorAlpha(kRed-9,0.001);
+    systRatio->SetFillColorAlpha(kRed,0.7);
+    systRatio->Draw("e2 sames");
     h3->Draw("p sames");       // Draw the ratio plot
- 
     // h1 settings
     //h1->SetLineColor(kBlue+1);
     //h1->SetLineWidth(2);
  
     // Y axis h1 plot settings
-    h1->GetYaxis()->SetTitle(Form("Entries / %1.0f GeV",h1->GetBinWidth(2)));
-    h1->GetYaxis()->SetTitleSize(20);
+    //h1->GetYaxis()->SetTitle(Form("Entries / %1.0f GeV",h1->GetBinWidth(2)));
+    h1->GetYaxis()->SetTitle("Entries / bin");
+    h1->GetYaxis()->SetTitleSize(25);
     h1->GetYaxis()->SetTitleFont(43);
     h1->GetYaxis()->SetTitleOffset(1.55);
+    h1->GetYaxis()->SetLabelSize(25);
+
+    h1->GetXaxis()->SetTitleOffset(3.5);
+    h1->GetXaxis()->SetLabelOffset(0.1);
  
     // h2 settings
     //h2->SetLineColor(kRed);
@@ -430,19 +576,19 @@ TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, const char *cname, bool isLog)
     // Y axis ratio plot settings
     h3->GetYaxis()->SetTitle("#frac{Data}{Bkg}");
     h3->GetYaxis()->SetNdivisions(505);
-    h3->GetYaxis()->SetTitleSize(20);
+    h3->GetYaxis()->SetTitleSize(25);
     h3->GetYaxis()->SetTitleFont(43);
-    h3->GetYaxis()->SetTitleOffset(1.55);
+    h3->GetYaxis()->SetTitleOffset(1.3);
     h3->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-    h3->GetYaxis()->SetLabelSize(15);
+    h3->GetYaxis()->SetLabelSize(25);
  
     // X axis ratio plot settings
-    h3->GetXaxis()->SetTitle("m_{jj} (GeV)");
-    h3->GetXaxis()->SetTitleSize(20);
+    h3->GetXaxis()->SetTitle(h1->GetXaxis()->GetTitle());
+    h3->GetXaxis()->SetTitleSize(25);
     h3->GetXaxis()->SetTitleFont(43);
-    h3->GetXaxis()->SetTitleOffset(3.2);
+    h3->GetXaxis()->SetTitleOffset(3.6);
     h3->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-    h3->GetXaxis()->SetLabelSize(15);
+    h3->GetXaxis()->SetLabelSize(25);
     
     pad1->cd();
 
@@ -473,6 +619,115 @@ TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, const char *cname, bool isLog)
   return pad1;
 }
 
+TPad* Plot(THStack *hs, TH1D *h1, TGraphAsymmErrors *syst, const char *cname, bool isLog)
+{
+
+  TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject(cname);
+  TPad *pad1 = 0x0;
+
+  if(!canvas){
+    TCanvas *c = new TCanvas(cname, cname, 800, 800);
+ 
+    // Upper plot will be in pad1
+    pad1 = new TPad("pad1", "pad1", 0, 0.01, 1, 1.0);
+    pad1->SetBottomMargin(0.1); // Upper and lower plot are joined
+    //pad1->SetGridx();         // Vertical grid
+    if(isLog) pad1->SetLogy();
+    pad1->Draw();             // Draw the upper pad: pad1
+    pad1->cd();               // pad1 becomes the current pad
+    pad1->SetTickx();
+    pad1->SetTicky();
+    h1->SetStats(0);          // No statistics on upper plot
+    h1->SetTitle("");
+    h1->Draw("hist");               // Draw h1
+    syst->SetFillColorAlpha(kRed,0.7);
+    hs->Draw("hist same");         // Draw hs on top of h1
+    syst->Draw("e2 sames");
+    //h1->Draw("e1p sames");               // Draw h1
+
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,8,0)
+    // Avoid the first label (0) to be clipped.
+    TAxis *axis = h1->GetYaxis();
+    axis->ChangeLabel(1, -1, -1, -1, -1, -1, " ");
+    axis->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+    axis->SetLabelSize(15);
+#else
+    // Do not draw the Y axis label on the upper plot and redraw a small
+    // axis instead, in order to avoid the first label (0) to be clipped.
+    h1->GetYaxis()->SetLabelSize(0.);
+    TGaxis *axis = new TGaxis( -5, 20, -5, 220, 20,220,510,"");
+    axis->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+    axis->SetLabelSize(15);
+    axis->Draw();
+#endif
+ 
+
+    c->cd();          // Go back to the main canvas before defining pad2
+ 
+    // Y axis h1 plot settings
+    //h1->GetYaxis()->SetTitle(Form("Entries / %1.0f GeV",h1->GetBinWidth(2)));
+    h1->GetYaxis()->SetTitle("Entries / bin");
+    h1->GetYaxis()->SetTitleSize(25);
+    h1->GetYaxis()->SetTitleFont(43);
+    h1->GetYaxis()->SetTitleOffset(1.55);
+    h1->GetYaxis()->SetLabelSize(25);
+
+    //h1->GetXaxis()->SetTitleOffset(3.5);
+    //h1->GetXaxis()->SetLabelOffset(0.1);
+ 
+    // h2 settings
+    //h2->SetLineColor(kRed);
+    //h2->SetLineWidth(2);
+ 
+    // Ratio plot (h3) settings
+    // h3->SetTitle(""); // Remove the ratio title
+ 
+    // // Y axis ratio plot settings
+    // h3->GetYaxis()->SetTitle("#frac{Data}{Bkg}");
+    // h3->GetYaxis()->SetNdivisions(505);
+    // h3->GetYaxis()->SetTitleSize(25);
+    // h3->GetYaxis()->SetTitleFont(43);
+    // h3->GetYaxis()->SetTitleOffset(1.3);
+    // h3->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+    // h3->GetYaxis()->SetLabelSize(25);
+ 
+    // // X axis ratio plot settings
+    // h3->GetXaxis()->SetTitle(h1->GetXaxis()->GetTitle());
+    // h3->GetXaxis()->SetTitleSize(25);
+    // h3->GetXaxis()->SetTitleFont(43);
+    // h3->GetXaxis()->SetTitleOffset(3.6);
+    // h3->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+    // h3->GetXaxis()->SetLabelSize(25);
+    
+    pad1->cd();
+
+    cout<<" nof canvas primitives " << c->GetListOfPrimitives()->GetEntries() << endl ;
+    
+  }else {
+
+    pad1 = (TPad *)canvas->GetListOfPrimitives()->FindObject("pad1") ;
+    pad1->cd();
+    
+    // h1->Draw("hist same");             
+    // h2->Draw("hist same");         
+    
+    // TPad *pad2 = (TPad *)canvas->GetListOfPrimitives()->FindObject("pad2") ;
+    // pad2->cd();
+    
+
+    // TH1F *h3 = (TH1F*)h1->Clone("h3");
+    // h3->SetLineColor(h1->GetLineColor());
+    // h3->Sumw2();
+    // h3->SetStats(0);      // No statistics on lower plot
+    // h3->Divide(h2);
+    // h3->Draw("ep same");       // Draw the ratio plot
+    
+    pad1->cd();
+  }
+
+  return pad1;
+}
+
 int PrintHSeparator(void){
   for (int i=0;i<130;i++) 
     printf("="); 
@@ -480,13 +735,15 @@ int PrintHSeparator(void){
   return true;
 }
 
-int SetLegendStyle(TLegend *& leg)
+int SetLegendStyle(TLegend *& leg, string histname, bool isBlinded)
 {
   
   leg->SetFillStyle(0);
   leg->SetBorderSize(0);
   leg->SetTextFont(42);
   leg->SetTextSize(.04); 
+  if(isBlinded)
+    leg->SetTextSize(.03); 
   leg->SetMargin(0.1);
   leg->SetEntrySeparation(0.2);
   
@@ -670,27 +927,70 @@ int SetStatMarkerStyle(TH1D*& h1, Color_t color, Style_t style, Size_t markerSiz
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-double errBandUp(int iBin, TH1D *hCentral, vector<TH1D *> vSystUp){
+double errBandUp(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp){
   double errUp = 0.0;
   for(unsigned int isys = 0 ; isys < vSystUp.size() ; isys++){
     TH1D *hSyst = vSystUp.at(isys);
-    errUp += pow((hSyst->GetBinContent(iBin+1) - hCentral->GetBinContent(iBin+1)),2) ;
+    errUp += pow(fabs(hSyst->GetBinContent(iBin+1) - hCentral->GetBinContent(iBin+1)),2) ;
   }
-  errUp = sqrt(errUp);
+  errUp += pow(hCentral->GetBinError(iBin+1),2);
+  //errUp += pow(hQCD->GetBinError(iBin+1),2);
+
+  for(unsigned int inom = 0 ; inom < vSystNom.size() ; inom++){
+    TH1D *hNom = vSystNom.at(inom);
+    TString hname = hNom->GetName();
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("TTbar"))
+      errUp += pow(hNom->GetBinContent(iBin+1)*0.061/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("Stop"))
+      errUp += pow(hNom->GetBinContent(iBin+1)*0.05/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("Wjets"))
+      errUp += pow(hNom->GetBinContent(iBin+1)*0.05/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("DYjets"))
+      errUp += pow(hNom->GetBinContent(iBin+1)*0.045/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("VBF"))
+      errUp += pow(hNom->GetBinContent(iBin+1)*0.04/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("QCD"))
+      errUp += pow(hNom->GetBinContent(iBin+1)*0.1/2,2);    
+  }  
+
+  errUp = sqrt(errUp) + 0.5*lumi_unc*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
+
   return errUp;
 }
 
-double errBandDown(int iBin, TH1D *hCentral, vector<TH1D *> vSystDown){
+double errBandDown(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystDown){
   double errDown = 0.0;
   for(unsigned int isys = 0 ; isys < vSystDown.size() ; isys++){
     TH1D *hSyst = vSystDown.at(isys);
-    errDown += pow((hCentral->GetBinContent(iBin+1) - hSyst->GetBinContent(iBin+1)),2) ;
+    errDown += pow(fabs(hCentral->GetBinContent(iBin+1) - hSyst->GetBinContent(iBin+1)),2) ;
   }
-  errDown = sqrt(errDown);
+  errDown += pow(hCentral->GetBinError(iBin+1),2);
+  //errDown += pow(hQCD->GetBinError(iBin+1),2);
+
+  for(unsigned int inom = 0 ; inom < vSystNom.size() ; inom++){
+    TH1D *hNom = vSystNom.at(inom);
+    TString hname = hNom->GetName();
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("TTbar"))
+      errDown += pow(hNom->GetBinContent(iBin+1)*0.061/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("Stop"))
+      errDown += pow(hNom->GetBinContent(iBin+1)*0.05/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("Wjets"))
+      errDown += pow(hNom->GetBinContent(iBin+1)*0.05/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("DYjets"))
+      errDown += pow(hNom->GetBinContent(iBin+1)*0.045/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("VBF"))
+      errDown += pow(hNom->GetBinContent(iBin+1)*0.04/2,2);
+    if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("QCD"))
+      errDown += pow(hNom->GetBinContent(iBin+1)*0.1/2,2);    
+  }  
+
+  errDown = sqrt(errDown) + 0.5*lumi_unc*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
+
   return errDown;
 }
 
-TGraphAsymmErrors *SystGraph(TH1D *hCentral,  vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false){
+TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom,  vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, 
+			     bool isFullGraph = false, bool isRatioGraph = false){
   
   TGraphAsymmErrors *gr;
   int n1 = hCentral->GetNbinsX(); 
@@ -700,28 +1000,41 @@ TGraphAsymmErrors *SystGraph(TH1D *hCentral,  vector<TH1D *> vSystUp, vector<TH1
   XerrorU=new double[n1]; XerrorD=new double[n1]; Xval=new double[n1];
   
   //cout << "No. of bins= " << n1 << endl;
+  int nmax = 0;
   for(int i=0; i<n1; i++){
+    if(!(hCentral->GetBinContent(i+1)>0.0)) continue;
     if(isFullGraph){
       Yval[i]   = hCentral->GetBinContent(i+1);
-      errorU[i] = errBandUp(i, hCentral, vSystUp); 
-      errorD[i] = errBandDown(i, hCentral, vSystDown); 
+      errorU[i] = errBandUp(i, hCentral, hQCD, vSystNom, vSystUp); 
+      errorD[i] = errBandDown(i, hCentral, hQCD, vSystNom, vSystDown); 
+      if(hCentral->GetBinContent(i+1)>0.0) nmax = i+1 ;
+      // if(abs(errorD[i]) > 1.0e3)
+      // 	cout<<i<<", "<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<errorD[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
+	
     }
     if(isRatioGraph){
       Yval[i]   = 1;
-      errorU[i] = errBandUp(i, hCentral, vSystUp); 
-      errorD[i] = errBandDown(i, hCentral, vSystDown); 
+      errorU[i] = errBandUp(i, hCentral, hQCD, vSystNom, vSystUp); 
+      errorD[i] = errBandDown(i, hCentral, hQCD, vSystNom, vSystDown); 
       //cout<<"bin = "<<i<<endl;
       //cout<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
-      errorU[i] = errorU[i]/hCentral->GetBinContent(i+1);
-      errorD[i] = errorD[i]/hCentral->GetBinContent(i+1);
-      //cout<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
+      if(hCentral->GetBinContent(i+1)>0.0){ 
+	errorU[i] = errorU[i]/hCentral->GetBinContent(i+1) ;
+	errorD[i] = errorD[i]/hCentral->GetBinContent(i+1) ;
+	nmax = i+1 ;
+      }else{
+	errorU[i] = 0.0;
+	errorD[i] = 0.0;
+      }
+      // if(abs(errorU[i]) > 1.4)
+      // 	cout<<i<<", "<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<errorD[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
     }
     Xval[i]   = hCentral->GetBinCenter(i+1);
     XerrorU[i]= hCentral->GetBinWidth(i+1)/2;
     XerrorD[i]= hCentral->GetBinWidth(i+1)/2;
   }
   
-  gr = new TGraphAsymmErrors(n1, Xval, Yval, XerrorD, XerrorU, errorD, errorU);
+  gr = new TGraphAsymmErrors(nmax, Xval, Yval, XerrorD, XerrorU, errorD, errorU);
   //delete [] Yval; delete [] errorU; delete [] errorD; delete [] XerrorU; delete [] XerrorD; delete [] Xval;
 
   return gr;
@@ -801,3 +1114,47 @@ TGraphAsymmErrors *SystGraph(TH1D *hCentral,  vector<TH1D *> vSystUp, vector<TH1
 // }
 
 //// The above parts are taken from Ravindra's code
+
+TH1D *GetUpDownHistDD(vector<TFile *> filelist, const char *syst, const char *updown, string histname)
+{
+  TH1D *h1 = 0x0;
+  TH1D *hcf_nano[filelist.size()] ; //_nano_ttbar->Get(Form("TTbar/base/Iso/%s",histname.c_str()));
+  const char *sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "QCDdd"};
+  
+  for(unsigned int ifile=0; ifile < filelist.size() ; ifile++){
+    //cout << filelist[ifile]->GetName() << endl; 
+    TString fname = filelist[ifile]->GetName();
+    for(int isample = 0 ; isample < 6; isample++)
+      if(fname.Contains(sample[isample]))
+	hcf_nano[ifile]	= (TH1D *)filelist[ifile]->Get(Form("%s/%s%s/Iso/%s",sample[isample],syst,updown,histname.c_str()));
+  }
+  h1 = (TH1D *)hcf_nano[0]->Clone(Form("%s%s",syst,updown));
+  for(unsigned int ifile=1; ifile < filelist.size() ; ifile++)
+    h1->Add(hcf_nano[ifile]);
+  
+  return h1;
+}
+
+TH1D *GetUpDownHistMC(vector<TFile *> filelist, const char *syst, const char *updown, string histname, bool isMu)
+{
+
+  TH1D *h1 = 0x0;
+  TH1D *hcf_nano[filelist.size()] ; //_nano_ttbar->Get(Form("TTbar/base/Iso/%s",histname.c_str()));
+  const char *sample1[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu"};
+  const char *sample2[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDEle"};
+  
+  for(unsigned int ifile=0; ifile < filelist.size() ; ifile++){
+    //cout << filelist[ifile]->GetName() << endl; 
+    TString fname = filelist[ifile]->GetName();
+    for(int isample = 0 ; isample < 6; isample++){
+      const char *sample = (isMu) ? sample1[isample] : sample2[isample] ;
+      if(fname.Contains(sample))
+	hcf_nano[ifile]	= (TH1D *)filelist[ifile]->Get(Form("%s/%s%s/Iso/%s",sample,syst,updown,histname.c_str()));
+    }
+  }
+  h1 = (TH1D *)hcf_nano[0]->Clone(Form("%s%s",syst,updown));
+  for(unsigned int ifile=1; ifile < filelist.size() ; ifile++)
+    h1->Add(hcf_nano[ifile]);
+  
+  return h1;
+}
