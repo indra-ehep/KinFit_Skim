@@ -10,7 +10,7 @@ import time
 # samples_2017 = ["DataEle", "DataMu", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
 # samples_2018 = ["DataMu", "DataEle", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
 
-samples_2016 = ["files_pow_tt_v7","files_pow_tt_v7"]
+samples_2016 = ["files_pow_tt_v7","files_pow_tt_v8"]
 
 if not os.path.exists("tmpSub/log"):
     os.makedirs("tmpSub/log")
@@ -54,7 +54,7 @@ for year in [2016]:
         nJob = int(noflines)
         print "%s %s"%(sample,nJob)
         if nJob==1:
-            run_command =  'Arguments  = 1 input/%s.txt \nQueue 1\n\n' %(sample)
+            run_command =  'Arguments  = 0 input/%s.txt \nQueue 1\n\n' %(sample)
         else:
             run_command =  'Arguments  = $INT(X) input/%s.txt \nQueue %i\n\n' %(sample, nJob)
         jdlFile.write(run_command)

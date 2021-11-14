@@ -50,7 +50,7 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
   string s;
   string inputname = inputfile.substr(inputfile.find_last_of("/")+1,inputfile.find_last_of(".")-inputfile.find_last_of("/")-1);
   cout << "input filename name : " << inputname << endl;
-  int i = 1;
+  int i = 0;
   while(getline(fin,s)){
     if(i==index){
       cout << "Processing for index : " << index << " and file : " <<  s << endl;
