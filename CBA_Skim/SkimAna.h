@@ -1950,6 +1950,13 @@ Bool_t SkimAna::Notify()
   if(!isData){
     _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
     
+    if(fSampleType.Contains("TTbarPowheg_Dilepton"))
+      _local_evtWeight = 0.28133 * _local_evtWeight;
+    if(fSampleType.Contains("TTbarPowheg_Hadronic"))
+      _local_evtWeight = 0.00300 * _local_evtWeight;
+    if(fSampleType.Contains("TTbarPowheg_Semilept"))
+      _local_evtWeight = 0.71568 * _local_evtWeight;
+
     //if(!isNanoAOD){
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){
