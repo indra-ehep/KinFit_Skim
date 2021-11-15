@@ -819,6 +819,8 @@ class SkimAna : public TSelector {
 
    bool    GetCombinedWt(TString systname, double& combined_muwt, double& combined_muwt1, double& combined_elewt);
 
+   bool    SelectTTbarChannel();
+
    bool    ExecSerial(const char* infile);
    
    
@@ -1203,6 +1205,9 @@ void SkimAna::Init(TTree *tree)
 
     tree->SetBranchStatus("nLHEPart",1);
     tree->SetBranchAddress("nLHEPart", &(event->nLHEPart_));
+
+    tree->SetBranchStatus("LHEPart_pdgId",1);
+    tree->SetBranchAddress("LHEPart_pdgId", &(event->LHEPart_pdgId_));
 
     tree->SetBranchStatus("nGenPart",1);
     tree->SetBranchAddress("nGenPart", &(event->nGenPart_));
@@ -1948,15 +1953,9 @@ Bool_t SkimAna::Notify()
   
   float _xss = 0.0;
   if(!isData){
+    
     _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
     
-    if(fSampleType.Contains("TTbarPowheg_Dilepton"))
-      _local_evtWeight = 0.28133 * _local_evtWeight;
-    if(fSampleType.Contains("TTbarPowheg_Hadronic"))
-      _local_evtWeight = 0.00300 * _local_evtWeight;
-    if(fSampleType.Contains("TTbarPowheg_Semilept"))
-      _local_evtWeight = 0.71568 * _local_evtWeight;
-
     //if(!isNanoAOD){
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){

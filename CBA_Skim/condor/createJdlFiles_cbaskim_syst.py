@@ -19,14 +19,14 @@ syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "
 syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 
-if not os.path.exists("tmpSubSystlowreso/log"):
-    os.makedirs("tmpSubSystlowreso/log")
+if not os.path.exists("tmpSubSystsplitincl/log"):
+    os.makedirs("tmpSubSystsplitincl/log")
 condorLogDir = "log"
-tarFile = "tmpSubSystlowreso/CBA_Skim.tar.gz"
+tarFile = "tmpSubSystsplitincl/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmpSubSystlowreso/")
+os.system("cp runCBASkim.sh tmpSubSystsplitincl/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -44,14 +44,14 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmpSubSystlowreso/condorSubmit.sh','w')
+subFile = open('tmpSubSystsplitincl/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmpSubSystlowreso/%s'%jdlName,'w')
+    jdlFile = open('tmpSubSystsplitincl/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_lowreso"
+    condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_split_inclusive"
     #condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"

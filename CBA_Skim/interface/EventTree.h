@@ -57,6 +57,7 @@ class EventTree{
 
     // nLHEpart
     UInt_t    nLHEPart_;
+    Int_t		LHEPart_pdgId_[50];
     // genParticle
     
     UInt_t    nGenPart_;
