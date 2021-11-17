@@ -30,6 +30,7 @@ using namespace std;
 int CompareShapesNanoVsMini()
 {
   TPad* PlotRatio(TH1F *h1, TH1F *h2, const char *cname, bool isLog);
+  void SetHistStyle(TH1F *h1, Color_t color, int width, int style);
 
   TFile *fin_nanoexcl = TFile::Open("root_files/test/Shapes_hcs_13TeV_mu___kb_mjj_mu_WH80_exclusive.root");
   TH1F *hNanoexclData = (TH1F *)fin_nanoexcl->Get("data_obs");
@@ -46,6 +47,15 @@ int CompareShapesNanoVsMini()
   // hNanoexclMC->Add(hNanoexclZjet);
   // hNanoexclMC->Add(hNanoexclVV);
   //hNanoexclMC->Add(hNanoexclQCD);
+  
+  TFile *fin_nanoexcl_data = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_DataEle.root");
+  TH1F *hNanoexclData_ch = (TH1F *)fin_nanoexcl_data->Get("DataEle/base/Iso/_kb_mjj_ele");
+  TFile *fin_nanoexcl_dl = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_TTbar_iter1_Dilep.root");
+  TFile *fin_nanoexcl_hd = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_TTbar_iter1_Hadron.root");
+  TFile *fin_nanoexcl_sl = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_TTbar_iter1_Semilept.root");
+  TH1F *hNanoexclTTbar_dl = (TH1F *)fin_nanoexcl_dl->Get("TTbar/base/Iso/_kb_mjj_ele");
+  TH1F *hNanoexclTTbar_hd = (TH1F *)fin_nanoexcl_hd->Get("TTbar/base/Iso/_kb_mjj_ele");
+  TH1F *hNanoexclTTbar_sl = (TH1F *)fin_nanoexcl_sl->Get("TTbar/base/Iso/_kb_mjj_ele");
 
   TFile *fin_nanoincl = TFile::Open("root_files/test/Shapes_hcs_13TeV_mu___kb_mjj_mu_WH80_inclusive.root");
   TH1F *hNanoinclData = (TH1F *)fin_nanoincl->Get("data_obs");
@@ -63,7 +73,11 @@ int CompareShapesNanoVsMini()
   // hNanoinclMC->Add(hNanoinclVV);
   //hNanoinclMC->Add(hNanoinclQCD);
 
-  
+  TFile *fin_nanoincl_ch = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_TTbar.root");
+  TH1F *hNanoinclTTbar_dl = (TH1F *)fin_nanoincl_ch->Get("TTbar/base/Iso/_kb_mjj_ele");
+  TH1F *hNanoinclTTbar_hd = (TH1F *)fin_nanoincl_ch->Get("TTbar/base/Iso/_kb_mjj_ele1");
+  TH1F *hNanoinclTTbar_sl = (TH1F *)fin_nanoincl_ch->Get("TTbar/base/Iso/_kb_mjj_ele2");
+
   TFile *fin_mini = TFile::Open("/Data/CMS-Software/local/CMSSW_10_2_13/src/Analysis/limit/local/mu/Cat1_Inc/Mass80/Shapes_hcs_13TeV_mu_KinFit_mjj_kfit_WH80.root");
   TH1F *hMiniData = (TH1F *)fin_mini->Get("data_obs");
   TH1F *hMiniTTbar = (TH1F *)fin_mini->Get("ttbar");
@@ -112,38 +126,186 @@ int CompareShapesNanoVsMini()
   TH1F *hMiniRatio = (TH1F *)hMiniData->Clone("data/mc (Mini)");
   hMiniRatio->Divide(hMiniMC);
   hMiniRatio->SetTitle("");
-
   TH1F *hNanoexclRatio = (TH1F *)hNanoexclData->Clone("data/mc (Nanoexcl)");
   hNanoexclRatio->Divide(hNanoexclMC);
   hNanoexclRatio->SetTitle("");
-
   TH1F *hNanoinclRatio = (TH1F *)hNanoinclData->Clone("data/mc (Nanoincl)");
   hNanoinclRatio->Divide(hNanoinclMC);
   hNanoinclRatio->SetTitle("");
-  
+
   hMiniRatio->SetLineColor(kRed);
   hNanoexclRatio->SetLineColor(kBlue);
   hNanoinclRatio->SetLineColor(kGreen);
-
   hMiniRatio->SetLineWidth(3);
   hNanoexclRatio->SetLineWidth(3);
   hNanoinclRatio->SetLineWidth(3);
 
+  
+  TH1F *hNanoinclRatio_dl = (TH1F *)hNanoexclData_ch->Clone("data/mc (Nanoincl dl)");
+  hNanoinclRatio_dl->Divide(hNanoinclTTbar_dl);
+  hNanoinclRatio_dl->SetTitle("");
+  TH1F *hNanoinclRatio_hd = (TH1F *)hNanoexclData_ch->Clone("data/mc (Nanoincl hd)");
+  hNanoinclRatio_hd->Divide(hNanoinclTTbar_hd);
+  hNanoinclRatio_hd->SetTitle("");
+  TH1F *hNanoinclRatio_sl = (TH1F *)hNanoexclData_ch->Clone("data/mc (Nanoincl sl)");
+  hNanoinclRatio_sl->Divide(hNanoinclTTbar_sl);
+  hNanoinclRatio_sl->SetTitle("");
+
+  TH1F *hNanoexclRatio_dl = (TH1F *)hNanoexclData_ch->Clone("data/mc (Nanoexcl dl)");
+  hNanoexclRatio_dl->Divide(hNanoexclTTbar_dl);
+  hNanoexclRatio_dl->SetTitle("");
+  TH1F *hNanoexclRatio_hd = (TH1F *)hNanoexclData_ch->Clone("data/mc (Nanoexcl hd)");
+  hNanoexclRatio_hd->Divide(hNanoexclTTbar_hd);
+  hNanoexclRatio_hd->SetTitle("");
+  TH1F *hNanoexclRatio_sl = (TH1F *)hNanoexclData_ch->Clone("data/mc (Nanoexcl sl)");
+  hNanoexclRatio_sl->Divide(hNanoexclTTbar_sl);
+  hNanoexclRatio_sl->SetTitle("");
+
+  SetHistStyle(hNanoexclData_ch, kGreen, 3, 1);
+  SetHistStyle(hNanoinclTTbar_dl, kRed, 3, 1);
+  SetHistStyle(hNanoinclTTbar_hd, kRed, 3, 1);
+  SetHistStyle(hNanoinclTTbar_sl, kRed, 3, 1);
+  SetHistStyle(hNanoexclTTbar_dl, kBlue, 3, 1);
+  SetHistStyle(hNanoexclTTbar_hd, kBlue, 3, 1);
+  SetHistStyle(hNanoexclTTbar_sl, kBlue, 3, 1);
+
+  SetHistStyle(hNanoinclRatio_dl, kRed, 3, 1);
+  SetHistStyle(hNanoinclRatio_hd, kRed, 3, 1);
+  SetHistStyle(hNanoinclRatio_sl, kRed, 3, 1);
+  SetHistStyle(hNanoexclRatio_dl, kBlue, 3, 1);
+  SetHistStyle(hNanoexclRatio_hd, kBlue, 3, 1);
+  SetHistStyle(hNanoexclRatio_sl, kBlue, 3, 1);
+
+  
+  TLegend *leg1 = new TLegend(0.6,0.7,0.99,0.95);
+  leg1->AddEntry(hMiniRatio, "inclusive MiniAOD" ,"lp");
+  leg1->AddEntry(hNanoexclRatio, "exclusive NanoAOD" ,"lp");
+  leg1->AddEntry(hNanoinclRatio, "inclusive NanoAOD" ,"lp");
+  hMiniRatio->SetMinimum(0.5); hMiniRatio->SetMaximum(1.5); 
   TCanvas *c1 = new TCanvas("c1","c1");
   hMiniRatio->Draw("hist");
   hNanoexclRatio->Draw("sames hist");
   hNanoinclRatio->Draw("sames hist");
+  leg1->Draw();
+  hMiniRatio->GetXaxis()->SetTitle("m_{jj} (GeV)");
+  hMiniRatio->GetYaxis()->SetTitle("Data/t#bar{t} (Entries/bin)");
+
+  TVirtualPad *p1 = 0x0;
+  TLegend *leg21 = new TLegend(0.6,0.7,0.99,0.95);
+  leg21->AddEntry(hNanoexclData_ch, "Data" ,"lp");
+  leg21->AddEntry(hNanoinclTTbar_dl, "inclusive dileptonic" ,"lp");
+  leg21->AddEntry(hNanoexclTTbar_dl, "exclusive dileptonic" ,"lp");
+  TLegend *leg22 = new TLegend(0.6,0.7,0.99,0.95);
+  leg22->AddEntry(hNanoinclRatio_dl, "inclusive dileptonic" ,"lp");
+  leg22->AddEntry(hNanoexclRatio_dl, "exclusive dileptonic" ,"lp");
+  TCanvas *c2 = new TCanvas("c2","c2",13,47,1102,554);
+  c2->Divide(2,1);
+  {
+    p1 = c2->cd(1);
+    //p1->SetPad(0.01,0.01,0.49,0.99);
+    p1->SetLeftMargin(0.15);
+    p1->SetRightMargin(0.04);
+    hNanoexclData_ch->Draw("hist");
+    hNanoinclTTbar_dl->Draw("hist sames");
+    hNanoexclTTbar_dl->Draw("hist sames");
+    leg21->Draw();
+    hNanoexclData_ch->GetXaxis()->SetTitle("m_{jj} (GeV)");
+    hNanoexclData_ch->GetYaxis()->SetTitle("Entries/bin");
+  }
+  {
+    c2->cd(2);
+    hNanoinclRatio_dl->Draw("hist");
+    hNanoexclRatio_dl->Draw("sames hist");
+    leg22->Draw();
+    hNanoinclRatio_dl->GetXaxis()->SetTitle("m_{jj} (GeV)");
+    hNanoinclRatio_dl->GetYaxis()->SetTitle("Data/t#bar{t} (Entries/bin)");
+  }
+
+  TLegend *leg31 = new TLegend(0.6,0.7,0.99,0.95);
+  leg31->AddEntry(hNanoexclData_ch, "Data" ,"lp");
+  leg31->AddEntry(hNanoinclTTbar_hd, "inclusive hadronic" ,"lp");
+  leg31->AddEntry(hNanoexclTTbar_hd, "exclusive hadronic" ,"lp");
+  TLegend *leg32 = new TLegend(0.6,0.7,0.99,0.95);
+  leg32->AddEntry(hNanoinclRatio_hd, "inclusive hadronic" ,"lp");
+  leg32->AddEntry(hNanoexclRatio_hd, "exclusive hadronic" ,"lp");
+  TCanvas *c3 = new TCanvas("c3","c3",13,47,1102,554);
+  c3->Divide(2,1);
+  {
+    p1 = c3->cd(1);
+    //p1->SetPad(0.01,0.01,0.49,0.99);
+    p1->SetLeftMargin(0.15);
+    p1->SetRightMargin(0.04);
+    hNanoexclData_ch->Draw("hist");
+    hNanoinclTTbar_hd->Draw("hist sames");
+    hNanoexclTTbar_hd->Draw("hist sames");
+    leg31->Draw();
+    hNanoexclData_ch->GetXaxis()->SetTitle("m_{jj} (GeV)");
+    hNanoexclData_ch->GetYaxis()->SetTitle("Entries/bin");
+  }
+  {
+    p1 = c3->cd(2);
+    p1->SetLeftMargin(0.15);
+    p1->SetRightMargin(0.04);
+    hNanoinclRatio_hd->Draw("hist");
+    hNanoexclRatio_hd->Draw("sames hist");
+    leg32->Draw();
+    hNanoinclRatio_hd->GetXaxis()->SetTitle("m_{jj} (GeV)");
+    hNanoinclRatio_hd->GetYaxis()->SetTitle("Data/t#bar{t} (Entries/bin)");
+  }
+  
+  TLegend *leg41 = new TLegend(0.6,0.7,0.99,0.95);
+  leg41->AddEntry(hNanoexclData_ch, "Data" ,"lp");
+  leg41->AddEntry(hNanoinclTTbar_sl, "inclusive semileptonic" ,"lp");
+  leg41->AddEntry(hNanoexclTTbar_sl, "exclusive semileptonic" ,"lp");
+  TLegend *leg42 = new TLegend(0.6,0.7,0.99,0.95);
+  leg42->AddEntry(hNanoinclRatio_sl, "inclusive semileptonic" ,"lp");
+  leg42->AddEntry(hNanoexclRatio_sl, "exclusive semileptonic" ,"lp");
+  TCanvas *c4 = new TCanvas("c4","c4",13,47,1102,554);
+  c4->Divide(2,1);
+  {
+    p1 = c4->cd(1);
+    //p1->SetPad(0.01,0.01,0.49,0.99);
+    p1->SetLeftMargin(0.15);
+    p1->SetRightMargin(0.04);
+    hNanoexclData_ch->Draw("hist");
+    hNanoinclTTbar_sl->Draw("hist sames");
+    hNanoexclTTbar_sl->Draw("hist sames");
+    leg41->Draw();
+    hNanoexclData_ch->GetXaxis()->SetTitle("m_{jj} (GeV)");
+    hNanoexclData_ch->GetYaxis()->SetTitle("Entries/bin");
+  }
+  {
+    p1 = c4->cd(2);
+    p1->SetLeftMargin(0.15);
+    p1->SetRightMargin(0.04);
+    hNanoinclRatio_sl->Draw("hist");
+    hNanoexclRatio_sl->Draw("sames hist");
+    leg42->Draw();
+    hNanoinclRatio_sl->GetXaxis()->SetTitle("m_{jj} (GeV)");
+    hNanoinclRatio_sl->GetYaxis()->SetTitle("Data/t#bar{t} (Entries/bin)");
+    hNanoinclRatio_sl->SetMinimum(0.5); hNanoinclRatio_sl->SetMaximum(1.8); 
+  }
 
 
-  // PlotRatio(hNanoexclRatio, hMiniRatio, "c2", false);
-  // PlotRatio(hNanoinclRatio, hMiniRatio, "c2", false);
 
-  // PlotRatio( hMiniRatio, hNanoexclRatio, "c3", false);
-  // PlotRatio( hMiniRatio, hNanoinclRatio, "c3", false);
+
+  // PlotRatio(hNanoexclRatio, hMiniRatio, "c4", false);
+  // PlotRatio(hNanoinclRatio, hMiniRatio, "c4", false);
+
+  // PlotRatio( hMiniRatio, hNanoexclRatio, "c4", false);
+  // PlotRatio( hMiniRatio, hNanoinclRatio, "c4", false);
   
   
   
   return true;
+}
+
+void SetHistStyle(TH1F *h1, Color_t color, int width, int style)
+{
+  h1->SetLineColor(color);
+  h1->SetLineWidth(width);
+  h1->SetLineStyle(style);
+  return;
 }
 
 //TPad* PlotRatio(THStack *hs, TH1F *h1, TH1F *h2,TGraphAsymmErrors *syst, TGraphAsymmErrors *systRatio, const char *cname, bool isLog)
@@ -305,3 +467,4 @@ TPad* PlotRatio(TH1F *h1, TH1F *h2, const char *cname, bool isLog)
 
   return pad1;
 }
+

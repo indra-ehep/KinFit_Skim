@@ -35,7 +35,9 @@ int CutflowNanoAll()
   
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
-  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
+  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;

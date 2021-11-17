@@ -28,14 +28,14 @@ Int_t SkimAna::CreateHistoArrays()
 
   fNDDReg = 4;
   ////////////////////////////// Cut flow histograms //////////////////////////////////
-  fNBCFHists = 18;
+  fNBCFHists = 6;//18;
   fNCFHists = fNDDReg*fNBCFHists; // if fNBCFHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   int totNHists = fNCFHists*fNSyst;
   hCutFlow = new TH1D*[totNHists];
   ////////////////////////////// Cut flow histograms //////////////////////////////////
 
   ////////////////////////////////// Observables //////////////////////////////////////
-  fNBObHists = 132;
+  fNBObHists = 44;//132;
   fNObHists = fNDDReg*fNBObHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNObHists*fNSyst;
   histObs = new TH1D*[totNHists];
@@ -82,19 +82,19 @@ Int_t SkimAna::CreateHistoArrays()
     hCutFlow[fNCFHists*isyst + 4] = new TH1D("_cutflow_ele", "_cutflow_ele", 10, 0, 10);
     hCutFlow[fNCFHists*isyst + 5] = new TH1D("_cutflow5", "_cutflow5", 10, 0, 10);
 
-    hCutFlow[fNCFHists*isyst + 6 + 0] = new TH1D("_cutflow_data1", "_cutflow_data1", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 6 + 1] = new TH1D("_cutflowUS_mu1", "_cutflowUS_mu1", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 6 + 2] = new TH1D("_cutflow_mu1", "_cutflow_mu1", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 6 + 3] = new TH1D("_cutflowUS_ele1", "_cutflowUS_ele1", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 6 + 4] = new TH1D("_cutflow_ele1", "_cutflow_ele1", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 6 + 5] = new TH1D("_cutflow51", "_cutflow51", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 6 + 0] = new TH1D("_cutflow_data1", "_cutflow_data1", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 6 + 1] = new TH1D("_cutflowUS_mu1", "_cutflowUS_mu1", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 6 + 2] = new TH1D("_cutflow_mu1", "_cutflow_mu1", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 6 + 3] = new TH1D("_cutflowUS_ele1", "_cutflowUS_ele1", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 6 + 4] = new TH1D("_cutflow_ele1", "_cutflow_ele1", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 6 + 5] = new TH1D("_cutflow51", "_cutflow51", 10, 0, 10);
 
-    hCutFlow[fNCFHists*isyst + 12 + 0] = new TH1D("_cutflow_data2", "_cutflow_data2", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 12 + 1] = new TH1D("_cutflowUS_mu2", "_cutflowUS_mu2", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 12 + 2] = new TH1D("_cutflow_mu2", "_cutflow_mu2", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 12 + 3] = new TH1D("_cutflowUS_ele2", "_cutflowUS_ele2", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 12 + 4] = new TH1D("_cutflow_ele2", "_cutflow_ele2", 10, 0, 10);
-    hCutFlow[fNCFHists*isyst + 12 + 5] = new TH1D("_cutflow52", "_cutflow52", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 12 + 0] = new TH1D("_cutflow_data2", "_cutflow_data2", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 12 + 1] = new TH1D("_cutflowUS_mu2", "_cutflowUS_mu2", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 12 + 2] = new TH1D("_cutflow_mu2", "_cutflow_mu2", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 12 + 3] = new TH1D("_cutflowUS_ele2", "_cutflowUS_ele2", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 12 + 4] = new TH1D("_cutflow_ele2", "_cutflow_ele2", 10, 0, 10);
+    // hCutFlow[fNCFHists*isyst + 12 + 5] = new TH1D("_cutflow52", "_cutflow52", 10, 0, 10);
 
     for(int icf=0;icf<fNBCFHists;icf++)
       hCutFlow[fNCFHists*isyst + icf]->SetDirectory(fFileDir[isyst*fNDDReg + 0]);
@@ -176,95 +176,95 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + 42] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 50, 0., 250);
     histObs[fNObHists*isyst + 43] = new TH1D("_kb_mjj_bf_ele","_kb_mjj_bf_ele", 50, 0., 250);
 
-    histObs[fNObHists*isyst + 44 + 0] = new TH1D("_lb_pt_mu1","_lb_pt_mu1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 1] = new TH1D("_lb_eta_mu1","_lb_eta_mu1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 2] = new TH1D("_lb_phi_mu1","_lb_phi_mu1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 3] = new TH1D("_lb_pt_ele1","_lb_pt_ele1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 4] = new TH1D("_lb_eta_ele1","_lb_eta_ele1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 5] = new TH1D("_lb_phi_ele1","_lb_phi_ele1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 6] = new TH1D("_lb_pt_mu_jets1","_lb_pt_mu_jets1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 7] = new TH1D("_lb_eta_mu_jets1","_lb_eta_mu_jets1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 8] = new TH1D("_lb_phi_mu_jets1","_lb_phi_mu_jets1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 9] = new TH1D("_lb_pt_ele_jets1","_lb_pt_ele_jets1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 10] = new TH1D("_lb_eta_ele_jets1","_lb_eta_ele_jets1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 11] = new TH1D("_lb_phi_ele_jets1","_lb_phi_ele_jets1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 12] = new TH1D("_lb_pt_mu_met1","_lb_pt_mu_met1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 13] = new TH1D("_lb_phi_mu_met1","_lb_phi_mu_met1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 14] = new TH1D("_lb_pt_ele_met1","_lb_pt_ele_met1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 15] = new TH1D("_lb_phi_ele_met1","_lb_phi_ele_met1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 16] = new TH1D("_lb_njet_mu1","_lb_njet_mu1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 17] = new TH1D("_lb_nbjet_mu1","_lb_nbjet_mu1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 18] = new TH1D("_lb_njet_ele1","_lb_njet_ele1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 19] = new TH1D("_lb_nbjet_ele1","_lb_nbjet_ele1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 20] = new TH1D("_kb_pt_mu1","_kb_pt_mu1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 21] = new TH1D("_kb_eta_mu1","_kb_eta_mu1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 22] = new TH1D("_kb_phi_mu1","_kb_phi_mu1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 23] = new TH1D("_kb_pt_ele1","_kb_pt_ele1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 24] = new TH1D("_kb_eta_ele1","_kb_eta_ele1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 25] = new TH1D("_kb_phi_ele1","_kb_phi_ele1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 26] = new TH1D("_kb_pt_mu_jets1","_kb_pt_mu_jets1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 27] = new TH1D("_kb_eta_mu_jets1","_kb_eta_mu_jets1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 28] = new TH1D("_kb_phi_mu_jets1","_kb_phi_mu_jets1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 29] = new TH1D("_kb_pt_ele_jets1","_kb_pt_ele_jets1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 30] = new TH1D("_kb_eta_ele_jets1","_kb_eta_ele_jets1", 30, -3., 3.);
-    histObs[fNObHists*isyst + 44 + 31] = new TH1D("_kb_phi_ele_jets1","_kb_phi_ele_jets1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 32] = new TH1D("_kb_pt_mu_met1","_kb_pt_mu_met1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 33] = new TH1D("_kb_phi_mu_met1","_kb_phi_mu_met1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 34] = new TH1D("_kb_pt_ele_met1","_kb_pt_ele_met1",100, 0., 1000.);
-    histObs[fNObHists*isyst + 44 + 35] = new TH1D("_kb_phi_ele_met1","_kb_phi_ele_met1", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 44 + 36] = new TH1D("_kb_njet_mu1","_kb_njet_mu1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 37] = new TH1D("_kb_nbjet_mu1","_kb_nbjet_mu1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 38] = new TH1D("_kb_njet_ele1","_kb_njet_ele1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 39] = new TH1D("_kb_nbjet_ele1","_kb_nbjet_ele1", 30, 0., 30);
-    histObs[fNObHists*isyst + 44 + 40] = new TH1D("_kb_mjj_mu1","_kb_mjj_mu1", 50, 0., 250);
-    histObs[fNObHists*isyst + 44 + 41] = new TH1D("_kb_mjj_ele1","_kb_mjj_ele1", 50, 0., 250);
-    histObs[fNObHists*isyst + 44 + 42] = new TH1D("_kb_mjj_bf_mu1","_kb_mjj_bf_mu1", 50, 0., 250);
-    histObs[fNObHists*isyst + 44 + 43] = new TH1D("_kb_mjj_bf_ele1","_kb_mjj_bf_ele1", 50, 0., 250);
+    // histObs[fNObHists*isyst + 44 + 0] = new TH1D("_lb_pt_mu1","_lb_pt_mu1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 1] = new TH1D("_lb_eta_mu1","_lb_eta_mu1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 2] = new TH1D("_lb_phi_mu1","_lb_phi_mu1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 3] = new TH1D("_lb_pt_ele1","_lb_pt_ele1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 4] = new TH1D("_lb_eta_ele1","_lb_eta_ele1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 5] = new TH1D("_lb_phi_ele1","_lb_phi_ele1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 6] = new TH1D("_lb_pt_mu_jets1","_lb_pt_mu_jets1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 7] = new TH1D("_lb_eta_mu_jets1","_lb_eta_mu_jets1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 8] = new TH1D("_lb_phi_mu_jets1","_lb_phi_mu_jets1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 9] = new TH1D("_lb_pt_ele_jets1","_lb_pt_ele_jets1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 10] = new TH1D("_lb_eta_ele_jets1","_lb_eta_ele_jets1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 11] = new TH1D("_lb_phi_ele_jets1","_lb_phi_ele_jets1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 12] = new TH1D("_lb_pt_mu_met1","_lb_pt_mu_met1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 13] = new TH1D("_lb_phi_mu_met1","_lb_phi_mu_met1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 14] = new TH1D("_lb_pt_ele_met1","_lb_pt_ele_met1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 15] = new TH1D("_lb_phi_ele_met1","_lb_phi_ele_met1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 16] = new TH1D("_lb_njet_mu1","_lb_njet_mu1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 17] = new TH1D("_lb_nbjet_mu1","_lb_nbjet_mu1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 18] = new TH1D("_lb_njet_ele1","_lb_njet_ele1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 19] = new TH1D("_lb_nbjet_ele1","_lb_nbjet_ele1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 20] = new TH1D("_kb_pt_mu1","_kb_pt_mu1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 21] = new TH1D("_kb_eta_mu1","_kb_eta_mu1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 22] = new TH1D("_kb_phi_mu1","_kb_phi_mu1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 23] = new TH1D("_kb_pt_ele1","_kb_pt_ele1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 24] = new TH1D("_kb_eta_ele1","_kb_eta_ele1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 25] = new TH1D("_kb_phi_ele1","_kb_phi_ele1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 26] = new TH1D("_kb_pt_mu_jets1","_kb_pt_mu_jets1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 27] = new TH1D("_kb_eta_mu_jets1","_kb_eta_mu_jets1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 28] = new TH1D("_kb_phi_mu_jets1","_kb_phi_mu_jets1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 29] = new TH1D("_kb_pt_ele_jets1","_kb_pt_ele_jets1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 30] = new TH1D("_kb_eta_ele_jets1","_kb_eta_ele_jets1", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 44 + 31] = new TH1D("_kb_phi_ele_jets1","_kb_phi_ele_jets1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 32] = new TH1D("_kb_pt_mu_met1","_kb_pt_mu_met1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 33] = new TH1D("_kb_phi_mu_met1","_kb_phi_mu_met1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 34] = new TH1D("_kb_pt_ele_met1","_kb_pt_ele_met1",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 44 + 35] = new TH1D("_kb_phi_ele_met1","_kb_phi_ele_met1", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 44 + 36] = new TH1D("_kb_njet_mu1","_kb_njet_mu1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 37] = new TH1D("_kb_nbjet_mu1","_kb_nbjet_mu1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 38] = new TH1D("_kb_njet_ele1","_kb_njet_ele1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 39] = new TH1D("_kb_nbjet_ele1","_kb_nbjet_ele1", 30, 0., 30);
+    // histObs[fNObHists*isyst + 44 + 40] = new TH1D("_kb_mjj_mu1","_kb_mjj_mu1", 50, 0., 250);
+    // histObs[fNObHists*isyst + 44 + 41] = new TH1D("_kb_mjj_ele1","_kb_mjj_ele1", 50, 0., 250);
+    // histObs[fNObHists*isyst + 44 + 42] = new TH1D("_kb_mjj_bf_mu1","_kb_mjj_bf_mu1", 50, 0., 250);
+    // histObs[fNObHists*isyst + 44 + 43] = new TH1D("_kb_mjj_bf_ele1","_kb_mjj_bf_ele1", 50, 0., 250);
 
-    histObs[fNObHists*isyst + 88 + 0] = new TH1D("_lb_pt_mu2","_lb_pt_mu2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 1] = new TH1D("_lb_eta_mu2","_lb_eta_mu2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 2] = new TH1D("_lb_phi_mu2","_lb_phi_mu2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 3] = new TH1D("_lb_pt_ele2","_lb_pt_ele2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 4] = new TH1D("_lb_eta_ele2","_lb_eta_ele2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 5] = new TH1D("_lb_phi_ele2","_lb_phi_ele2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 6] = new TH1D("_lb_pt_mu_jets2","_lb_pt_mu_jets2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 7] = new TH1D("_lb_eta_mu_jets2","_lb_eta_mu_jets2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 8] = new TH1D("_lb_phi_mu_jets2","_lb_phi_mu_jets2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 9] = new TH1D("_lb_pt_ele_jets2","_lb_pt_ele_jets2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 10] = new TH1D("_lb_eta_ele_jets2","_lb_eta_ele_jets2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 11] = new TH1D("_lb_phi_ele_jets2","_lb_phi_ele_jets2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 12] = new TH1D("_lb_pt_mu_met2","_lb_pt_mu_met2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 13] = new TH1D("_lb_phi_mu_met2","_lb_phi_mu_met2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 14] = new TH1D("_lb_pt_ele_met2","_lb_pt_ele_met2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 15] = new TH1D("_lb_phi_ele_met2","_lb_phi_ele_met2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 16] = new TH1D("_lb_njet_mu2","_lb_njet_mu2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 17] = new TH1D("_lb_nbjet_mu2","_lb_nbjet_mu2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 18] = new TH1D("_lb_njet_ele2","_lb_njet_ele2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 19] = new TH1D("_lb_nbjet_ele2","_lb_nbjet_ele2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 20] = new TH1D("_kb_pt_mu2","_kb_pt_mu2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 21] = new TH1D("_kb_eta_mu2","_kb_eta_mu2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 22] = new TH1D("_kb_phi_mu2","_kb_phi_mu2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 23] = new TH1D("_kb_pt_ele2","_kb_pt_ele2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 24] = new TH1D("_kb_eta_ele2","_kb_eta_ele2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 25] = new TH1D("_kb_phi_ele2","_kb_phi_ele2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 26] = new TH1D("_kb_pt_mu_jets2","_kb_pt_mu_jets2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 27] = new TH1D("_kb_eta_mu_jets2","_kb_eta_mu_jets2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 28] = new TH1D("_kb_phi_mu_jets2","_kb_phi_mu_jets2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 29] = new TH1D("_kb_pt_ele_jets2","_kb_pt_ele_jets2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 30] = new TH1D("_kb_eta_ele_jets2","_kb_eta_ele_jets2", 30, -3., 3.);
-    histObs[fNObHists*isyst + 88 + 31] = new TH1D("_kb_phi_ele_jets2","_kb_phi_ele_jets2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 32] = new TH1D("_kb_pt_mu_met2","_kb_pt_mu_met2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 33] = new TH1D("_kb_phi_mu_met2","_kb_phi_mu_met2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 34] = new TH1D("_kb_pt_ele_met2","_kb_pt_ele_met2",100, 0., 1000.);
-    histObs[fNObHists*isyst + 88 + 35] = new TH1D("_kb_phi_ele_met2","_kb_phi_ele_met2", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + 88 + 36] = new TH1D("_kb_njet_mu2","_kb_njet_mu2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 37] = new TH1D("_kb_nbjet_mu2","_kb_nbjet_mu2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 38] = new TH1D("_kb_njet_ele2","_kb_njet_ele2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 39] = new TH1D("_kb_nbjet_ele2","_kb_nbjet_ele2", 30, 0., 30);
-    histObs[fNObHists*isyst + 88 + 40] = new TH1D("_kb_mjj_mu2","_kb_mjj_mu2", 50, 0., 250);
-    histObs[fNObHists*isyst + 88 + 41] = new TH1D("_kb_mjj_ele2","_kb_mjj_ele2", 50, 0., 250);
-    histObs[fNObHists*isyst + 88 + 42] = new TH1D("_kb_mjj_bf_mu2","_kb_mjj_bf_mu2", 50, 0., 250);
-    histObs[fNObHists*isyst + 88 + 43] = new TH1D("_kb_mjj_bf_ele2","_kb_mjj_bf_ele2", 50, 0., 250);
+    // histObs[fNObHists*isyst + 88 + 0] = new TH1D("_lb_pt_mu2","_lb_pt_mu2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 1] = new TH1D("_lb_eta_mu2","_lb_eta_mu2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 2] = new TH1D("_lb_phi_mu2","_lb_phi_mu2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 3] = new TH1D("_lb_pt_ele2","_lb_pt_ele2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 4] = new TH1D("_lb_eta_ele2","_lb_eta_ele2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 5] = new TH1D("_lb_phi_ele2","_lb_phi_ele2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 6] = new TH1D("_lb_pt_mu_jets2","_lb_pt_mu_jets2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 7] = new TH1D("_lb_eta_mu_jets2","_lb_eta_mu_jets2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 8] = new TH1D("_lb_phi_mu_jets2","_lb_phi_mu_jets2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 9] = new TH1D("_lb_pt_ele_jets2","_lb_pt_ele_jets2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 10] = new TH1D("_lb_eta_ele_jets2","_lb_eta_ele_jets2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 11] = new TH1D("_lb_phi_ele_jets2","_lb_phi_ele_jets2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 12] = new TH1D("_lb_pt_mu_met2","_lb_pt_mu_met2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 13] = new TH1D("_lb_phi_mu_met2","_lb_phi_mu_met2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 14] = new TH1D("_lb_pt_ele_met2","_lb_pt_ele_met2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 15] = new TH1D("_lb_phi_ele_met2","_lb_phi_ele_met2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 16] = new TH1D("_lb_njet_mu2","_lb_njet_mu2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 17] = new TH1D("_lb_nbjet_mu2","_lb_nbjet_mu2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 18] = new TH1D("_lb_njet_ele2","_lb_njet_ele2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 19] = new TH1D("_lb_nbjet_ele2","_lb_nbjet_ele2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 20] = new TH1D("_kb_pt_mu2","_kb_pt_mu2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 21] = new TH1D("_kb_eta_mu2","_kb_eta_mu2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 22] = new TH1D("_kb_phi_mu2","_kb_phi_mu2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 23] = new TH1D("_kb_pt_ele2","_kb_pt_ele2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 24] = new TH1D("_kb_eta_ele2","_kb_eta_ele2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 25] = new TH1D("_kb_phi_ele2","_kb_phi_ele2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 26] = new TH1D("_kb_pt_mu_jets2","_kb_pt_mu_jets2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 27] = new TH1D("_kb_eta_mu_jets2","_kb_eta_mu_jets2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 28] = new TH1D("_kb_phi_mu_jets2","_kb_phi_mu_jets2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 29] = new TH1D("_kb_pt_ele_jets2","_kb_pt_ele_jets2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 30] = new TH1D("_kb_eta_ele_jets2","_kb_eta_ele_jets2", 30, -3., 3.);
+    // histObs[fNObHists*isyst + 88 + 31] = new TH1D("_kb_phi_ele_jets2","_kb_phi_ele_jets2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 32] = new TH1D("_kb_pt_mu_met2","_kb_pt_mu_met2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 33] = new TH1D("_kb_phi_mu_met2","_kb_phi_mu_met2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 34] = new TH1D("_kb_pt_ele_met2","_kb_pt_ele_met2",100, 0., 1000.);
+    // histObs[fNObHists*isyst + 88 + 35] = new TH1D("_kb_phi_ele_met2","_kb_phi_ele_met2", 35, -3.5, 3.5);
+    // histObs[fNObHists*isyst + 88 + 36] = new TH1D("_kb_njet_mu2","_kb_njet_mu2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 37] = new TH1D("_kb_nbjet_mu2","_kb_nbjet_mu2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 38] = new TH1D("_kb_njet_ele2","_kb_njet_ele2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 39] = new TH1D("_kb_nbjet_ele2","_kb_nbjet_ele2", 30, 0., 30);
+    // histObs[fNObHists*isyst + 88 + 40] = new TH1D("_kb_mjj_mu2","_kb_mjj_mu2", 50, 0., 250);
+    // histObs[fNObHists*isyst + 88 + 41] = new TH1D("_kb_mjj_ele2","_kb_mjj_ele2", 50, 0., 250);
+    // histObs[fNObHists*isyst + 88 + 42] = new TH1D("_kb_mjj_bf_mu2","_kb_mjj_bf_mu2", 50, 0., 250);
+    // histObs[fNObHists*isyst + 88 + 43] = new TH1D("_kb_mjj_bf_ele2","_kb_mjj_bf_ele2", 50, 0., 250);
 
     for(int icf=0;icf<fNBObHists;icf++)
       histObs[fNObHists*isyst + icf]->SetDirectory(fFileDir[isyst*fNDDReg + 0]);
@@ -1363,6 +1363,7 @@ void SkimAna::TheoWeights(){
 
 
 }
+
 //_____________________________________________________________________________
 Bool_t SkimAna::Process(Long64_t entry)
 {
@@ -1439,9 +1440,9 @@ Bool_t SkimAna::Process(Long64_t entry)
       Info("Process", "DYjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
   }
 
-  if(!isData and fSampleType.Contains("TTbar")){
-    SelectTTbarChannel();
-  }
+  // if(!isData and fSampleType.Contains("TTbar")){
+  //   SelectTTbarChannel();
+  // }
 
   // Sample weight 
   if(!isData)
@@ -1737,31 +1738,31 @@ bool SkimAna::SelectTTbarChannel(){
 //_____________________________________________________________________________
 bool SkimAna::FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1){
   
-  if(_kFType == 12){
+  // if(_kFType == 12){
     
-    ((TH1D *) list->FindObject(Form("_cutflow_data1%s",hist_extn.c_str())))->Fill(value);
-    if(isMu){
-      ((TH1D *) list->FindObject(Form("_cutflowUS_mu1%s",hist_extn.c_str())))->Fill(value);
-      ((TH1D *) list->FindObject(Form("_cutflow_mu1%s",hist_extn.c_str())))->Fill(value, wt);
-      ((TH1D *) list->FindObject(Form("_cutflow51%s",hist_extn.c_str())))->Fill(value, wt1);
-    }else{
-      ((TH1D *) list->FindObject(Form("_cutflowUS_ele1%s",hist_extn.c_str())))->Fill(value);
-      ((TH1D *) list->FindObject(Form("_cutflow_ele1%s",hist_extn.c_str())))->Fill(value, wt);
-    }
+  //   ((TH1D *) list->FindObject(Form("_cutflow_data1%s",hist_extn.c_str())))->Fill(value);
+  //   if(isMu){
+  //     ((TH1D *) list->FindObject(Form("_cutflowUS_mu1%s",hist_extn.c_str())))->Fill(value);
+  //     ((TH1D *) list->FindObject(Form("_cutflow_mu1%s",hist_extn.c_str())))->Fill(value, wt);
+  //     ((TH1D *) list->FindObject(Form("_cutflow51%s",hist_extn.c_str())))->Fill(value, wt1);
+  //   }else{
+  //     ((TH1D *) list->FindObject(Form("_cutflowUS_ele1%s",hist_extn.c_str())))->Fill(value);
+  //     ((TH1D *) list->FindObject(Form("_cutflow_ele1%s",hist_extn.c_str())))->Fill(value, wt);
+  //   }
 
-  } else if(_kFType == 13){
+  // } else if(_kFType == 13){
 
-    ((TH1D *) list->FindObject(Form("_cutflow_data2%s",hist_extn.c_str())))->Fill(value);
-    if(isMu){
-      ((TH1D *) list->FindObject(Form("_cutflowUS_mu2%s",hist_extn.c_str())))->Fill(value);
-      ((TH1D *) list->FindObject(Form("_cutflow_mu2%s",hist_extn.c_str())))->Fill(value, wt);
-      ((TH1D *) list->FindObject(Form("_cutflow52%s",hist_extn.c_str())))->Fill(value, wt1);
-    }else{
-      ((TH1D *) list->FindObject(Form("_cutflowUS_ele2%s",hist_extn.c_str())))->Fill(value);
-      ((TH1D *) list->FindObject(Form("_cutflow_ele2%s",hist_extn.c_str())))->Fill(value, wt);
-    }    
+  //   ((TH1D *) list->FindObject(Form("_cutflow_data2%s",hist_extn.c_str())))->Fill(value);
+  //   if(isMu){
+  //     ((TH1D *) list->FindObject(Form("_cutflowUS_mu2%s",hist_extn.c_str())))->Fill(value);
+  //     ((TH1D *) list->FindObject(Form("_cutflow_mu2%s",hist_extn.c_str())))->Fill(value, wt);
+  //     ((TH1D *) list->FindObject(Form("_cutflow52%s",hist_extn.c_str())))->Fill(value, wt1);
+  //   }else{
+  //     ((TH1D *) list->FindObject(Form("_cutflowUS_ele2%s",hist_extn.c_str())))->Fill(value);
+  //     ((TH1D *) list->FindObject(Form("_cutflow_ele2%s",hist_extn.c_str())))->Fill(value, wt);
+  //   }    
 
-  }else{
+  // }else{
 
     ((TH1D *) list->FindObject(Form("_cutflow_data%s",hist_extn.c_str())))->Fill(value);
     if(isMu){
@@ -1773,7 +1774,7 @@ bool SkimAna::FillCFHists(TList *list, string hist_extn, bool isMu, double value
       ((TH1D *) list->FindObject(Form("_cutflow_ele%s",hist_extn.c_str())))->Fill(value, wt);
     }
 
-  }
+  // }
   return true;
 }
 
@@ -1782,65 +1783,65 @@ bool SkimAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt){
   
   string lep = (isMu) ? "mu" : "ele";
   
-  if(_kFType == 12){
+  // if(_kFType == 12){
 
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Phi(), wt);
 
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), wt);
 
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), wt);
 	    
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), wt);
 
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_njet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_nbjet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_njet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_nbjet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
   
-    ((TH1D *) list->FindObject(Form("_kb_mjj_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_mjj_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
 
-  }else if(_kFType == 13){
+  // }else if(_kFType == 13){
 
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Phi(), wt);
 
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), wt);
 
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), wt);
 	    
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), wt);
 
-    ((TH1D *) list->FindObject(Form("_kb_pt_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Pt(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_phi_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Phi(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_njet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_nbjet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_pt_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Pt(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_phi_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Phi(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_njet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_nbjet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
   
-    ((TH1D *) list->FindObject(Form("_kb_mjj_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
-    ((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_mjj_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
+  //   ((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
 
-  }else{
+  // }else{
 
     ((TH1D *) list->FindObject(Form("_kb_pt_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Pt(), wt);
     ((TH1D *) list->FindObject(Form("_kb_eta_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Eta(), wt);
@@ -1869,7 +1870,7 @@ bool SkimAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt){
     ((TH1D *) list->FindObject(Form("_kb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
     ((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
 
-  }
+  // }
   
   return true;
 }
@@ -1879,51 +1880,51 @@ bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt){
   
   string lep = (isMu) ? "mu" : "ele";
   
-  if(_kFType == 12){
+  // if(_kFType == 12){
 
-    if(isMu){
-      ((TH1D *) list->FindObject(Form("_lb_pt_mu1%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_eta_mu1%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_phi_mu1%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
-    }else{
-      ((TH1D *) list->FindObject(Form("_lb_pt_ele1%s",hist_extn.c_str())))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_eta_ele1%s",hist_extn.c_str())))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_phi_ele1%s",hist_extn.c_str())))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], wt);
-    }
-    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-      int jetInd = selector->Jets.at(ijet);
-      ((TH1D *) list->FindObject(Form("_lb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->JetsPtSmeared.at(ijet), wt);
-      ((TH1D *) list->FindObject(Form("_lb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetEta_[jetInd], wt);
-      ((TH1D *) list->FindObject(Form("_lb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetPhi_[jetInd], wt);
-    }
-    ((TH1D *) list->FindObject(Form("_lb_pt_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPt, wt);
-    ((TH1D *) list->FindObject(Form("_lb_phi_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPhi, wt);
-    ((TH1D *) list->FindObject(Form("_lb_njet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
-    ((TH1D *) list->FindObject(Form("_lb_nbjet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
+  //   if(isMu){
+  //     ((TH1D *) list->FindObject(Form("_lb_pt_mu1%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_eta_mu1%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_phi_mu1%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
+  //   }else{
+  //     ((TH1D *) list->FindObject(Form("_lb_pt_ele1%s",hist_extn.c_str())))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_eta_ele1%s",hist_extn.c_str())))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_phi_ele1%s",hist_extn.c_str())))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], wt);
+  //   }
+  //   for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+  //     int jetInd = selector->Jets.at(ijet);
+  //     ((TH1D *) list->FindObject(Form("_lb_pt_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->JetsPtSmeared.at(ijet), wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_eta_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetEta_[jetInd], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_phi_%s_jets1%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetPhi_[jetInd], wt);
+  //   }
+  //   ((TH1D *) list->FindObject(Form("_lb_pt_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPt, wt);
+  //   ((TH1D *) list->FindObject(Form("_lb_phi_%s_met1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPhi, wt);
+  //   ((TH1D *) list->FindObject(Form("_lb_njet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
+  //   ((TH1D *) list->FindObject(Form("_lb_nbjet_%s1%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
 
-  } else if(_kFType == 13){
+  // } else if(_kFType == 13){
 
-    if(isMu){
-      ((TH1D *) list->FindObject(Form("_lb_pt_mu2%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_eta_mu2%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_phi_mu2%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
-    }else{
-      ((TH1D *) list->FindObject(Form("_lb_pt_ele2%s",hist_extn.c_str())))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_eta_ele2%s",hist_extn.c_str())))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], wt);
-      ((TH1D *) list->FindObject(Form("_lb_phi_ele2%s",hist_extn.c_str())))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], wt);
-    }
-    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-      int jetInd = selector->Jets.at(ijet);
-      ((TH1D *) list->FindObject(Form("_lb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->JetsPtSmeared.at(ijet), wt);
-      ((TH1D *) list->FindObject(Form("_lb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetEta_[jetInd], wt);
-      ((TH1D *) list->FindObject(Form("_lb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetPhi_[jetInd], wt);
-    }
-    ((TH1D *) list->FindObject(Form("_lb_pt_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPt, wt);
-    ((TH1D *) list->FindObject(Form("_lb_phi_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPhi, wt);
-    ((TH1D *) list->FindObject(Form("_lb_njet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
-    ((TH1D *) list->FindObject(Form("_lb_nbjet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
+  //   if(isMu){
+  //     ((TH1D *) list->FindObject(Form("_lb_pt_mu2%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_eta_mu2%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_phi_mu2%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
+  //   }else{
+  //     ((TH1D *) list->FindObject(Form("_lb_pt_ele2%s",hist_extn.c_str())))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_eta_ele2%s",hist_extn.c_str())))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_phi_ele2%s",hist_extn.c_str())))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], wt);
+  //   }
+  //   for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+  //     int jetInd = selector->Jets.at(ijet);
+  //     ((TH1D *) list->FindObject(Form("_lb_pt_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->JetsPtSmeared.at(ijet), wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_eta_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetEta_[jetInd], wt);
+  //     ((TH1D *) list->FindObject(Form("_lb_phi_%s_jets2%s",lep.c_str(),hist_extn.c_str())))->Fill(event->jetPhi_[jetInd], wt);
+  //   }
+  //   ((TH1D *) list->FindObject(Form("_lb_pt_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPt, wt);
+  //   ((TH1D *) list->FindObject(Form("_lb_phi_%s_met2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->METPhi, wt);
+  //   ((TH1D *) list->FindObject(Form("_lb_njet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
+  //   ((TH1D *) list->FindObject(Form("_lb_nbjet_%s2%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
 
-  }else{
+  // }else{
 
     if(isMu){
       ((TH1D *) list->FindObject(Form("_lb_pt_mu%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
@@ -1945,7 +1946,7 @@ bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt){
     ((TH1D *) list->FindObject(Form("_lb_njet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
     ((TH1D *) list->FindObject(Form("_lb_nbjet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
 
-  }
+  // }
   
   return true;
 }

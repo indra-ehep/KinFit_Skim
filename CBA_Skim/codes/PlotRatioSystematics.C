@@ -56,9 +56,6 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   // bool isBtag = 1 ; // 1 btag, 0 kinfit
   // int htype = 0 ; // 0:leppt, 1:jetpt, 2:metpt, 3:lepeta, 4:jeteta, 5:lepphi, 6:jetphi, 7:metphi, 8:njet, 9:nbjet, 10:mjj
     
-  const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
-  const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
-  const char* leppt = (isMu) ? "_lb_pt_mu" : "_lb_pt_ele";
   string histname;
   histname += (isBtag) ? "_lb" : "_kb" ; 
 
@@ -87,13 +84,14 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2021-11-19/P3ch/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2021-11-19/Njet4to8/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
-  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
+  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
 
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -371,7 +369,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   
   // Search and replace != with == of  --histname.find("_mjj_")!=string::npos-- for all following occurances to plot unblinded Mjj
   bool mass_plot = (histname.find("_mjj_")!=string::npos);
-  bool isBlinded = !(mass_plot) ; 
+  bool isBlinded = (mass_plot) ; 
   TPad *p = 0x0;
   if(isBlinded){
     p = Plot(hs, hMC, grSystFull, "c1", true);

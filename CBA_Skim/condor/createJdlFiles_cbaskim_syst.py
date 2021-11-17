@@ -6,10 +6,14 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", 
-                 "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
-samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "DataMu"]
-samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataMu", "DataEle"]
+# samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", 
+#                  "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
+# samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "DataMu"]
+# samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataMu", "DataEle"]
+
+samples_2016 = ["TTbar"]
+samples_2017 = ["TTbar"]
+samples_2018 = ["TTbar"]
 
 # samples_2016 = ["DataMu", "DataEle"]
 # samples_2017 = ["DataEle", "DataMu"]
@@ -19,14 +23,14 @@ syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "
 syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 
-if not os.path.exists("tmpSubSystsplitincl/log"):
-    os.makedirs("tmpSubSystsplitincl/log")
+if not os.path.exists("tmpSubSystttbarratio/log"):
+    os.makedirs("tmpSubSystttbarratio/log")
 condorLogDir = "log"
-tarFile = "tmpSubSystsplitincl/CBA_Skim.tar.gz"
+tarFile = "tmpSubSystttbarratio/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmpSubSystsplitincl/")
+os.system("cp runCBASkim.sh tmpSubSystttbarratio/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -44,14 +48,14 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmpSubSystsplitincl/condorSubmit.sh','w')
+subFile = open('tmpSubSystttbarratio/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmpSubSystsplitincl/%s'%jdlName,'w')
+    jdlFile = open('tmpSubSystttbarratio/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_split_inclusive"
+    condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ttbar_ratio"
     #condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"

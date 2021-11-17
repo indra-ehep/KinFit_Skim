@@ -35,7 +35,8 @@ int CreateQCDDD()
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_highreso";
-  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
+  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
   
   const char *syst[] = {"base", 
 			"puup", "pudown", "mueffup", "mueffdown", 

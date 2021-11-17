@@ -42,7 +42,7 @@ using namespace std;
 #endif
 
 
-int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
+int MCChannelStudy(int index = 1, string inputfile = "input/files_ttbar_dilep.txt")
 {
   TChain *chain = new TChain("Events");
 
@@ -52,16 +52,20 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
   cout << "input filename name : " << inputname << endl;
   int i = 1;
   while(getline(fin,s)){
-    if(i==index){
-      cout << "Processing for index : " << index << " and file : " <<  s << endl;
-      chain->Add(s.c_str());
-    }
+    //if(i==index){
+    cout << "Processing for index : " << index << " and file : " <<  s << endl;
+    chain->Add(s.c_str());
+    //}
     i++;
   }
   fin.close();
   cout << "Total Events : " << chain->GetEntries() << endl;
   
   TH1D *hEvtCount = new TH1D("hEvtCount","hEvtCount",10,0.,10.);
+  TH1D *hDilepton = new TH1D("hDilepton","hDilepton",10,0.,10.);
+  TH1D *hHadronic = new TH1D("hHadronic","hHadronic",10,0.,10.);
+  TH1D *hSemiLept = new TH1D("hSemiLept","hSemiLept",10,0.,10.);
+  
   UInt_t	nLHEPart_;    
   Float_t	LHEPart_pt_[50];
   Float_t	LHEPart_eta_[50];
@@ -69,19 +73,6 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
   Float_t	LHEPart_mass_[50];
   Int_t		LHEPart_pdgId_[50];
   
-  // TBranch       *br_nLHEPart	  = 0 ;
-  // TBranch       *br_LHEPart_pt	  = 0 ;
-  // TBranch       *br_LHEPart_eta	  = 0 ;
-  // TBranch       *br_LHEPart_phi	  = 0 ;
-  // TBranch       *br_LHEPart_mass  = 0 ;
-  // TBranch       *br_LHEPart_pdgId = 0 ;
-
-  // chain->SetBranchAddress("nLHEPart"		, &nLHEPart_		, &br_nLHEPart		); 
-  // chain->SetBranchAddress("LHEPart_pt"		, &LHEPart_pt_   	, &br_LHEPart_pt	);
-  // chain->SetBranchAddress("LHEPart_eta"		, &LHEPart_eta_		, &br_LHEPart_eta	);
-  // chain->SetBranchAddress("LHEPart_phi"		, &LHEPart_phi_		, &br_LHEPart_phi	);
-  // chain->SetBranchAddress("LHEPart_mass"	, &LHEPart_mass_	, &br_LHEPart_mass	);
-  // chain->SetBranchAddress("LHEPart_pdgId"	, &LHEPart_pdgId_	, &br_LHEPart_pdgId	);
 
   chain->SetBranchAddress("nLHEPart", &nLHEPart_);
   chain->SetBranchAddress("LHEPart_pt", &LHEPart_pt_);
@@ -91,20 +82,16 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
   chain->SetBranchAddress("LHEPart_pdgId", &LHEPart_pdgId_);
   
   Long64_t nofSemiLeptonic = 0 , nofHadronic = 0 , nofDileptonic = 0 ;
+  Long64_t nofDiEle = 0, nofDiMu = 0, nofDiTau = 0, nofEleMu = 0, nofEleTau = 0, nofMuTau = 0;   
+  Long64_t nofHadcs = 0, nofHadFourSep = 0, nofHadTwoOneOne = 0, nofHadTwoTwo = 0;
+  Long64_t nofcsMu = 0, nofcsEle = 0, nofcsTau = 0, nofSlMu = 0, nofSlEle = 0, nofSlTau = 0, nofSlcs = 0 ;
 
   for (Long64_t ievent = 0 ; ievent < chain->GetEntries() ; ievent++ ) {
   //for (Long64_t ievent = 0 ; ievent < 1000 ; ievent++ ) {
     
-    // br_nLHEPart->GetEntry(ievent);
-    // br_LHEPart_pt->GetEntry(ievent);
-    // br_LHEPart_eta->GetEntry(ievent);
-    // br_LHEPart_phi->GetEntry(ievent);
-    // br_LHEPart_mass->GetEntry(ievent);
-    // br_LHEPart_pdgId->GetEntry(ievent);
-
     chain->GetEntry(ievent);
 
-    if(ievent%1000==0)//Print after 10K or one or 10 million
+    if(ievent%100000==0)//Print after 10K or one or 10 million
       printf("Processing Event : %lld of total : %lld\n",ievent,chain->GetEntries());
 
     bool isOne_u = false, isOne_d = false, isOne_c = false, isOne_s = false;
@@ -171,6 +158,14 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
       isDilepton = true;
       nofDileptonic++ ;
       //printf("Event type : dileptonic\n");
+
+      if(isTwo_nu_e and isTwo_e) nofDiEle++;
+      if(isTwo_nu_m and isTwo_m) nofDiMu++;
+      if(isTwo_nu_t and isTwo_t) nofDiTau++;
+
+      if(isOne_e and isOne_nu_e and isOne_m and isOne_nu_m) nofEleMu++;
+      if(isOne_e and isOne_nu_e and isOne_t and isOne_nu_t) nofEleTau++;
+      if(isOne_m and isOne_nu_m and isOne_t and isOne_nu_t) nofMuTau++;
     }
 
     if(!isDilepton){
@@ -184,6 +179,11 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
 	isHadronic = true;
 	nofHadronic++;
 	//printf("Event type : hadronic\n");
+
+	if(isFourHadron1 or (isTwo_u and isOne_c and isOne_s) or (isTwo_d and isOne_c and isOne_s) or (isTwo_c and isOne_d and isOne_s) or (isTwo_c and isTwo_s)) nofHadcs++;
+	if(isFourHadron1) nofHadFourSep++;
+	if(isFourHadron2 or isFourHadron3 or isFourHadron4 or isFourHadron5) nofHadTwoOneOne++;
+	if(isFourHadron6) nofHadTwoTwo++;
       }
     }
 
@@ -194,6 +194,15 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
 	isSemilepton = true;
 	nofSemiLeptonic++;
 	//printf("Event type : semileptonic\n");
+
+	if((isOne_c and isOne_s) and (isOne_e and isOne_nu_e)) nofcsEle++;
+	if((isOne_c and isOne_s) and (isOne_m and isOne_nu_m)) nofcsMu++;
+	if((isOne_c and isOne_s) and (isOne_t and isOne_nu_t)) nofcsTau++;
+	
+	if(isOne_e and isOne_nu_e) nofSlEle++;
+	if(isOne_m and isOne_nu_m) nofSlMu++;
+	if(isOne_t and isOne_nu_t) nofSlTau++;
+	if(isOne_c and isOne_s) nofSlcs++;
       }
     }
 
@@ -226,6 +235,7 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
   printf("Total hadronic : %lld\n",nofHadronic);
   printf("Total semileptonic : %lld\n\n",nofSemiLeptonic);
   
+  /////////////////// Event Histogram ////////////////////////////
   hEvtCount->SetBinContent(1,chain->GetEntries());
   hEvtCount->SetBinContent(2,totalIdentified);
   hEvtCount->SetBinContent(3,chain->GetEntries()-totalIdentified);
@@ -233,6 +243,67 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
   hEvtCount->SetBinContent(5,nofHadronic);
   hEvtCount->SetBinContent(6,nofSemiLeptonic);
   
+  hEvtCount->GetXaxis()->SetBinLabel(1,"Total Events");
+  hEvtCount->GetXaxis()->SetBinLabel(2,"Total Identified");
+  hEvtCount->GetXaxis()->SetBinLabel(3,"Total missed");
+  hEvtCount->GetXaxis()->SetBinLabel(4,"nofDileptonic");
+  hEvtCount->GetXaxis()->SetBinLabel(5,"nofHadronic");
+  hEvtCount->GetXaxis()->SetBinLabel(6,"nofSemiLeptonic");
+
+  /////////////////// Dilepton Histogram ////////////////////////////
+  //Long64_t nofDiEle = 0, nofDiMu = 0, nofDiTau = 0, nofEleMu = 0, nofEleTau = 0, nofMuTau = 0;   
+  hDilepton->SetBinContent(1,nofDileptonic);
+  hDilepton->SetBinContent(2,nofDiEle);
+  hDilepton->SetBinContent(3,nofDiMu);
+  hDilepton->SetBinContent(4,nofDiTau);
+  hDilepton->SetBinContent(5,nofEleMu);
+  hDilepton->SetBinContent(6,nofEleTau);
+  hDilepton->SetBinContent(7,nofMuTau);
+
+  hDilepton->GetXaxis()->SetBinLabel(1,"nofDileptonic");
+  hDilepton->GetXaxis()->SetBinLabel(2,"nofDiEle");
+  hDilepton->GetXaxis()->SetBinLabel(3,"nofDiMu");
+  hDilepton->GetXaxis()->SetBinLabel(4,"nofDiTau");
+  hDilepton->GetXaxis()->SetBinLabel(5,"nofEleMu");
+  hDilepton->GetXaxis()->SetBinLabel(6,"nofEleTau");
+  hDilepton->GetXaxis()->SetBinLabel(7,"nofMuTau");
+  
+  /////////////////// Hadron Histogram ////////////////////////////
+  //Long64_t nofHadcs = 0, nofHadFourSep = 0, nofHadTwoOneOne = 0, nofHadTwoTwo = 0;
+  hHadronic->SetBinContent(1,nofHadronic);
+  hHadronic->SetBinContent(2,nofHadcs);
+  hHadronic->SetBinContent(3,nofHadFourSep);
+  hHadronic->SetBinContent(4,nofHadTwoOneOne);
+  hHadronic->SetBinContent(5,nofHadTwoTwo);
+
+  hHadronic->GetXaxis()->SetBinLabel(1,"nofHadronic");
+  hHadronic->GetXaxis()->SetBinLabel(2,"nofHadcs");
+  hHadronic->GetXaxis()->SetBinLabel(3,"nofHadFourSep");
+  hHadronic->GetXaxis()->SetBinLabel(4,"nofHadTwoOneOne");
+  hHadronic->GetXaxis()->SetBinLabel(5,"nofHadTwoTwo");
+  
+  /////////////////// Semilepton Histogram ////////////////////////////
+  //Long64_t nofcsMu = 0, nofcsEle = 0, nofcsTau = 0, nofSlMu = 0, nofSlEle = 0, nofSlTau = 0, nofSlcs = 0 ;
+  hSemiLept->SetBinContent(1,nofSemiLeptonic);
+  hSemiLept->SetBinContent(2,nofcsEle);
+  hSemiLept->SetBinContent(3,nofcsMu);
+  hSemiLept->SetBinContent(4,nofcsTau);
+  hSemiLept->SetBinContent(5,nofSlEle);
+  hSemiLept->SetBinContent(6,nofSlMu);
+  hSemiLept->SetBinContent(7,nofSlTau);
+  hSemiLept->SetBinContent(8,nofSlcs);
+  
+  hSemiLept->GetXaxis()->SetBinLabel(1,"nofSemiLeptonic");
+  hSemiLept->GetXaxis()->SetBinLabel(2,"nofcsEle");
+  hSemiLept->GetXaxis()->SetBinLabel(3,"nofcsMu");
+  hSemiLept->GetXaxis()->SetBinLabel(4,"nofcsTau");
+  hSemiLept->GetXaxis()->SetBinLabel(5,"nofSlEle");
+  hSemiLept->GetXaxis()->SetBinLabel(6,"nofSlMu");
+  hSemiLept->GetXaxis()->SetBinLabel(7,"nofSlTau");
+  hSemiLept->GetXaxis()->SetBinLabel(8,"nofSlcs");
+
+  
+
   if(totalIdentified == chain->GetEntries()) {
     double total_CS = 831.76;
     printf("Dileptonic CS : %lf\n",total_CS*double(nofDileptonic)/chain->GetEntries());
@@ -244,6 +315,9 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files.txt")
 
   TFile *fout = TFile::Open(Form("EventCount_%s_%02d.root",inputname.c_str(),index),"recreate");
   hEvtCount->Write();
+  hDilepton->Write();
+  hHadronic->Write();
+  hSemiLept->Write();
   fout->Close();
   delete fout;
 
