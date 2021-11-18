@@ -809,6 +809,7 @@ class SkimAna : public TSelector {
 
 
    bool    FillEventWt();
+   bool    FillLeptonIso(bool singleMu, bool singleEle);
    bool    FillLeptonWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
    bool    FillNjetWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
    bool    FillBTagWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);

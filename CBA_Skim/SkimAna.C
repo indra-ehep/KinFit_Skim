@@ -1483,6 +1483,9 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   //Processes after single muon/electron selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  FillLeptonIso(singleMu, singleEle);
+
   if(!isData){
     if(singleMu){
       if(fSyst == "base"){
@@ -1515,7 +1518,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     }
 
   }
-  
+
   bool muonIsoCut = false;
   bool muonNonIsoCut = false;
   if(singleMu){
@@ -3013,6 +3016,22 @@ bool SkimAna::FillNjetWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, boo
 
 //_____________________________________________________________________________
 
+bool SkimAna::FillLeptonIso(bool singleMu, bool singleEle){
+
+  for(int isyst=0;isyst<fNSyst;isyst++){
+    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+  
+    if(singleMu)
+      ((TH1D *) list->FindObject("_muIso"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+    if(singleEle)
+      ((TH1D *) list->FindObject("_eleIso"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+  }
+
+  return true;
+
+}
+//_____________________________________________________________________________
+
 bool SkimAna::FillLeptonWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut){
 
   for(int isyst=0;isyst<fNSyst;isyst++){
@@ -3020,11 +3039,6 @@ bool SkimAna::FillLeptonWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, b
     TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
     TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
     TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
-  
-    if(singleMu)
-      ((TH1D *) list->FindObject("_muIso"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
-    if(singleEle)
-      ((TH1D *) list->FindObject("_eleIso"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
 
     if(singleMu and muonIsoCut){
       ((TH1D *) list->FindObject("_muEffWeight"))->Fill(_muEffWeight);
