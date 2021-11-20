@@ -676,15 +676,15 @@ void SkimAna::SetTrio()
   if (selector->useDeepCSVbTag){
     // While changing cut to L,M,T make sure to change the efficiency file
     //Light
-    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.2219; 
+    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.2217; 
     // if (fYear==2017) selector->btag_cut_DeepCSV = 0.1522;
     // if (fYear==2018) selector->btag_cut_DeepCSV = 0.1241;
     //Medium
-    if (fYear==2016) selector->btag_cut_DeepCSV = 0.6324; //in twiki it is 0.6324 instead of 0.6321
+    if (fYear==2016) selector->btag_cut_DeepCSV = 0.6321; 
     if (fYear==2017) selector->btag_cut_DeepCSV = 0.4941;
     if (fYear==2018) selector->btag_cut_DeepCSV = 0.4184;
     // //Tight
-    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.8958; 
+    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.8953; 
     // if (fYear==2017) selector->btag_cut_DeepCSV = 0.8001;
     // if (fYear==2018) selector->btag_cut_DeepCSV = 0.7527;
     selector->btag_cut = 1.0;
@@ -881,8 +881,19 @@ void SkimAna::LoadBTag()
     // if (fYear==2018){ calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/DeepCSV_102XSF_V1.csv",fBasePath.Data()) ) ;} //DeepCSV_102XSF_V1.csv  
     if (fYear==2016){ 
       Info("LoadBTag","DeepCSV calibration has been selected : 2016");
-      calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_Moriond17_B_H.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_Moriond17_B_H.csv",fBasePath.Data());
+      
+      // if(fSample.BeginsWith("TTbar") or fSample.BeginsWith("singleTop")){
+      // 	calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1_TuneCP5.csv",fBasePath.Data()) ) ;
+      // 	Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1_TuneCP5.csv",fBasePath.Data());
+      // }else{
+      // 	calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data()) ) ;
+      // 	Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data());
+      // }
+      
+      // A temporary workaround the proper implementation should be like above
+      calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data());
+
     }
     if (fYear==2017){ 
       Info("LoadBTag","DeepCSV calibration has been selected : 2017 %s",fBasePath.Data());
@@ -916,10 +927,7 @@ void SkimAna::LoadBTag()
     // else
     //   fName = Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV/%d/Others_btag_efficiency_%d.root",fBasePath.Data(),fYear,fYear);    
     
-    //fName = Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV/btagL/%d/%s_btag_efficiency_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);
     fName = Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV/%d/%s_btag_efficiency_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-    //fName = Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV_hfl/%d/%s_btag_efficiency_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-    //fName = Form("%s/weight/BtagSF/btag_efficiencies_%d.root",fBasePath.Data(),fYear);
   }
   Info("LoadBTag","Efficientcy file : %s",fName.c_str());
   Info("LoadBTag","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
