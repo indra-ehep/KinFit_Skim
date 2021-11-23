@@ -3515,7 +3515,21 @@ void SkimAna::SlaveTerminate()
       fFileDir[isyst*fNDDReg + 1]->Write();
       fFileDir[isyst*fNDDReg + 2]->Write();
       fFileDir[isyst*fNDDReg + 3]->Write();
+      fFileDir[isyst*fNDDReg + 0]->cd();
+      
+      hMinChi2_mu->Write();
+      h2MinChi2_mu->Write();
+      h3MinChi2_mu->Write();
+      h4MinChi2_mu->Write();
+      h5MinChi2_mu->Write();
+      
+      hMinChi2_ele->Write();
+      h2MinChi2_ele->Write();
+      h3MinChi2_ele->Write();
+      h4MinChi2_ele->Write();
+      h5MinChi2_ele->Write();
 
+      fFile[ifile]->cd();
     }
     
     fFile[ifile]->cd();
@@ -3582,17 +3596,6 @@ void SkimAna::SlaveTerminate()
     }
     printf("\n");
     
-    // hMinChi2_mu->Write();
-    // h2MinChi2_mu->Write();
-    // h3MinChi2_mu->Write();
-    // h4MinChi2_mu->Write();
-    // h5MinChi2_mu->Write();
-
-    // hMinChi2_ele->Write();
-    // h2MinChi2_ele->Write();
-    // h3MinChi2_ele->Write();
-    // h4MinChi2_ele->Write();
-    // h5MinChi2_ele->Write();
       
     fFile[ifile]->cd();
     
@@ -3695,8 +3698,8 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 800000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
   //cout<<"Procesing : " << ientry << endl;

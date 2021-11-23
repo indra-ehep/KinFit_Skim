@@ -34,8 +34,8 @@ using namespace std;
 
 #endif
 
-int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/HplusM120_Skim_NanoAOD.root")
-//int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_20of21.root")
+//int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/HplusM120_Skim_NanoAOD.root")
+int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_20of21.root")
 //ReadMCInfoSkim()
 {
   
@@ -142,22 +142,22 @@ int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD
 	}
       }// mc particle loop
 
-    //   //for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
-    //   for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
-    // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
-    // 	if(!partPDG){
-    // 	  printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-    // 		 imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
-    // 		 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-    // 		 );
-    // 	}else{
-    // 	  printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-    // 		 imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
-    // 		 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-    // 		 );
-    // 	}
-    //   }// mc particle loop
-    // // }else{
+      //for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
+      for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
+    	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
+    	if(!partPDG){
+    	  printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+    		 imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
+    		 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+    		 );
+    	}else{
+    	  printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+    		 imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
+    		 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+    		 );
+    	}
+      }// mc particle loop
+    // }else{
       
       if(ievent%10000==0)
 	printf("Processing Event : %03d (total:%lld), npart : %u\n",ievent,tr->GetEntries(),nGenPart_);

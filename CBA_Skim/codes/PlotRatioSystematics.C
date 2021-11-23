@@ -28,6 +28,7 @@
 using namespace std;
 
 double lumi_unc = 0.025 ;
+double qcd_frac = 0.213 ;
 
 int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
 
@@ -49,7 +50,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
   
   // ///////////////////////////////////////////////////////////////////////////////////////////  
-  int year = 2016;
+  int year = 2018;
   float luminosity[3] = {35.9, 41.5, 59.7};
 
   // bool isMu = 1; // 1 muon, 0 ele
@@ -84,15 +85,18 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2021-11-19/Njet4to8/%d/hist%s.pdf",year,histname.c_str());
+  
+  string outputpdf = Form("figs/Week_Work_Report/2021-11-19/lowreso/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
   //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
-  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
-
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
+  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_btagCSV";
+  
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile_mc = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -130,17 +134,18 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   TH1D *hcf_nano_qcd_mc	= (TH1D *)fin_nano_qcd_mc->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname.c_str()) : Form("MCQCDEle/base/Iso/%s",histname.c_str())));
   TH1D *hcf_nano_qcd	= (TH1D *)fin_nano_qcd->Get(Form("QCDdd/base/Iso/%s",histname.c_str()));
 
+  int rebin = 1;
   if(histname.find("_mjj_")!=string::npos){
-    hcf_nano_data->Rebin(50);
+    hcf_nano_data->Rebin(rebin);
     if(year == 2016)
-      hcf_nano_sig->Rebin(50);
-    hcf_nano_ttbar->Rebin(50);
-    hcf_nano_stop->Rebin(50);
-    hcf_nano_wjets->Rebin(50);
-    hcf_nano_dyjets->Rebin(50);
-    hcf_nano_vbf->Rebin(50);
-    hcf_nano_qcd_mc->Rebin(50);
-    hcf_nano_qcd->Rebin(50);
+      hcf_nano_sig->Rebin(rebin);
+    hcf_nano_ttbar->Rebin(rebin);
+    hcf_nano_stop->Rebin(rebin);
+    hcf_nano_wjets->Rebin(rebin);
+    hcf_nano_dyjets->Rebin(rebin);
+    hcf_nano_vbf->Rebin(rebin);
+    hcf_nano_qcd_mc->Rebin(rebin);
+    hcf_nano_qcd->Rebin(rebin);
   }
   
   //"mueffup", "mueffdown", "eleeffup", "eleeffdown",
@@ -195,18 +200,18 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   vSystUp.push_back(hJERUp); vSystDown.push_back(hJERDown);
   vSystUp.push_back(hBTagbUp); vSystDown.push_back(hBTagbDown);
   vSystUp.push_back(hBTaglUp); vSystDown.push_back(hBTaglDown);
-  if(year == 2017)
+  if(year == 2017 || year == 2016)
     vSystUp.push_back(hPrefireUp); vSystDown.push_back(hPrefireDown);
   vSystUp.push_back(hMETUp); vSystDown.push_back(hMETDown);
 
   if(histname.find("_mjj_")!=string::npos){
     for(unsigned int isys = 0 ; isys < vSystUp.size() ; isys++){
       TH1D *hSyst = vSystUp.at(isys);
-      hSyst->Rebin(50);
+      hSyst->Rebin(rebin);
     }
     for(unsigned int isys = 0 ; isys < vSystDown.size() ; isys++){
       TH1D *hSyst = vSystDown.at(isys);
-      hSyst->Rebin(50);
+      hSyst->Rebin(rebin);
     }
   }
   
@@ -948,7 +953,7 @@ double errBandUp(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom,
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("VBF"))
       errUp += pow(hNom->GetBinContent(iBin+1)*0.04/2,2);
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("QCD"))
-      errUp += pow(hNom->GetBinContent(iBin+1)*0.1/2,2);    
+      errUp += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);    
   }  
 
   errUp = sqrt(errUp) + 0.5*lumi_unc*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
@@ -979,7 +984,7 @@ double errBandDown(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNo
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("VBF"))
       errDown += pow(hNom->GetBinContent(iBin+1)*0.04/2,2);
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("QCD"))
-      errDown += pow(hNom->GetBinContent(iBin+1)*0.1/2,2);    
+      errDown += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);    
   }  
 
   errDown = sqrt(errDown) + 0.5*lumi_unc*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated

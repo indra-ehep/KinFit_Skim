@@ -34,6 +34,7 @@ using namespace std;
 
 #endif
 
+//int ChannelBrOfMC(string infile = "root_files/test/EventCount/EventCount_files_pow_tt_v7.root")//"root_files/test/EventCount/EventCount_ttbar_inclusive_skim.root")
 int ChannelBrOfMC(string infile = "root_files/test/EventCount/EventCount_ttbar_inclusive_skim.root")
 {
   
@@ -77,6 +78,11 @@ int ChannelBrOfMC(string infile = "root_files/test/EventCount/EventCount_ttbar_i
   printf("\n");
   if(Total_Found == Total_Events) {
     double total_CS = 831.76;
+    printf("Nof Dileptonic events : %.1lf\n",nofDileptonic);
+    printf("Nof Hadronic events : %.1lf\n",nofHadronic);
+    printf("Nof Semileptonic events : %.1lf\n\n",nofSemiLeptonic);
+    for(int i=0;i<40;i++) printf("//");
+    printf("\n");
     printf("Dileptonic CS : %lf\n",total_CS*nofDileptonic/Total_Found);
     printf("Hadronic CS : %lf\n",total_CS*nofHadronic/Total_Found);
     printf("Semileptonic CS : %lf\n\n",total_CS*nofSemiLeptonic/Total_Found);

@@ -28,15 +28,16 @@
 
 using namespace std;
 
-int PrepMjjSystTable()
+int PrepMjjSystTableV3()
 {
-  string GetInclusive(string, int, bool);
-  string GetDifferential(string rowtitle, int ifile, bool inc);
+  string GetInclusive(string, int, bool, int);
+  string GetDifferential(string rowtitle, int ifile, bool inc, int year);
 
   bool forPaper = false;
   
+  int year = 2018;
   ofstream outFile;
-  outFile.open("mjjTable.tex");
+  outFile.open(Form("syst/mjjTable_%d.tex",year));
   outFile<<"\\documentclass[]{article}"<<endl;
   outFile<<"\\usepackage{amsmath}"<<endl;
   outFile<<"\\usepackage{array}"<<endl;
@@ -64,27 +65,26 @@ int PrepMjjSystTable()
   //CalcSystTable(1);
   int ifile = 1;
   //GetInclusive("$m_{H^+}=80$ GeV", 1);
-  outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year)<<endl;
   outFile<<"\\hline "<<endl;
-  //outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false)<<endl;
-  ifile++;
-  outFile<<GetInclusive("Single ~t", ifile++, false)<<endl;
-  outFile<<GetInclusive("W + jets", ifile++, false)<<endl;
-  outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false)<<endl;
-  outFile<<GetInclusive("VV", ifile++, false)<<endl;
-  outFile<<GetInclusive("MC QCD", ifile++, true)<<endl; ifile++ ;
-  // outFile<<"\\hline "<<endl;
-  // outFile<<GetInclusive("Data", ifile++, true)<<endl; ifile++ ;
+  outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("Single ~t", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("W + jets", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("VV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("DD QCD", ifile++, true, year)<<endl; ifile++ ;
+  outFile<<"\\hline "<<endl;
+  outFile<<GetInclusive("Data", ifile++, true, year)<<endl; ifile++ ;
   // outFile<<getRowInc("All background"              , fMuBkg, fEleBkg, "mjj_kfit")<<endl;
   // outFile<<"\\hline "<<endl;
-  // outFile<<getRowInc("Data"                 , fMuData, fEleData, "mjj_kfit")<<endl;
+  // outFile<<getRowInc("Data" , fMuData, fEleData, "mjj_kfit")<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"\\caption{Event yield for inclusive category.}"<<endl;
@@ -148,22 +148,21 @@ int PrepMjjSystTable()
 
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year)<<endl;
   outFile<<"\\hline "<<endl;
-  // // outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false)<<endl;
-  ifile++;
-  outFile<<GetDifferential("Single ~t", ifile++, false)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false)<<endl;
-  outFile<<GetDifferential("MC QCD", ifile++, true)<<endl; ifile++ ;
+  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("Single ~t", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("W + jets", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("DD QCD", ifile++, true, year)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
@@ -178,9 +177,9 @@ int PrepMjjSystTable()
   return true;
 }
 
-string GetDifferential(string rowtitle, int ifile, bool inc)
+string GetDifferential(string rowtitle, int ifile, bool inc, int year)
 {
-  int CalcSystTable(int ifile, bool isMu, double output[], double error_percnt[]);
+  int CalcSystTable(int ifile, bool isMu, double output[], double error_percnt[], int year);
   
   const int  nofSyst = 10;
   
@@ -189,9 +188,11 @@ string GetDifferential(string rowtitle, int ifile, bool inc)
   double muErr[11]; //nofSyst + stat
   double eleErr[11]; //nofSyst + stat
   
-  CalcSystTable(ifile, 1, muOut, muErr);
+  for(int i=0;i<11;i++) muErr[i] = eleErr[i] = 0.0 ;
+  for(int i=0;i<3;i++) muOut[i] = eleOut[i] = 0.0 ;
+  CalcSystTable(ifile, 1, muOut, muErr,year);
   ifile = (inc) ? ifile+1 : ifile ;
-  CalcSystTable(ifile, 0, eleOut, eleErr);
+  CalcSystTable(ifile, 0, eleOut, eleErr,year);
   
   string combined = rowtitle + " & " + Form("$%2.1f(%2.1f)$",muErr[0],eleErr[0]) 
     + " & " + Form("$%2.1f(%2.1f)$",muErr[1],eleErr[1]) 
@@ -211,18 +212,21 @@ string GetDifferential(string rowtitle, int ifile, bool inc)
   return combined;
 }
 
-string GetInclusive(string rowtitle, int ifile, bool inc)
+string GetInclusive(string rowtitle, int ifile, bool inc, int year)
 {
-  int CalcSystTable(int ifile, bool isMu, double output[], double error_percnt[]);
+  int CalcSystTable(int ifile, bool isMu, double output[], double error_percnt[], int year);
   
   const int  nofSyst = 8;
   double muOut[3];
   double eleOut[3];
   double error_percnt[11]; //nofSyst + stat
 
-  CalcSystTable(ifile, 1, muOut, error_percnt);
+  for(int i=0;i<11;i++) error_percnt[i] = 0.0 ;
+  for(int i=0;i<3;i++) muOut[i] = eleOut[i] = 0.0 ;
+  CalcSystTable(ifile, 1, muOut, error_percnt,year);
   ifile = (inc) ? ifile+1 : ifile ;
-  CalcSystTable(ifile, 0, eleOut, error_percnt);
+  for(int i=0;i<11;i++) error_percnt[i] = 0.0 ;
+  CalcSystTable(ifile, 0, eleOut, error_percnt,year);
   
   string combined = rowtitle +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",muOut[0],muOut[1],100.*muOut[1]/muOut[0],muOut[2],100.*muOut[2]/muOut[0]) 
     +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",eleOut[0],eleOut[1],100.*eleOut[1]/eleOut[0],eleOut[2],100.0*eleOut[2]/eleOut[0]) +"\\\\";
@@ -231,16 +235,21 @@ string GetInclusive(string rowtitle, int ifile, bool inc)
   return combined;
 }
 
-int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[])
+int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[], int year)
 {
   
   int PlotRatio(TH1D *h1, TH1D *h2, const char *cname);
   double CalcSysError(TH1D *, TH1D *, TH1D *);
   
+  // const char *samples_2016[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM120", 
+  // 				"HplusM140", "HplusM150", "HplusM155", "HplusM160",  
+  // 				"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", 
+  // 				"MCQCDMu", "MCQCDEle", "DataMu", "DataEle"};
+
   const char *samples_2016[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM120", 
 				"HplusM140", "HplusM150", "HplusM155", "HplusM160",  
 				"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", 
-				"MCQCDMu", "MCQCDEle", "DataMu", "DataEle"};
+				"QCDdd", "QCDdd", "DataMu", "DataEle"};
   
   const float norm_mu_syst[] = {6.1, 6.1, 6.1, 6.1,
 				6.1, 6.1, 6.1, 6.1,
@@ -270,26 +279,29 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 				 "ISR up", "ISR down", "FSR up", "FSR down"};
   
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v28_Syst/CBA_Skim_Syst" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDtune" ;
-  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso" ;
-  
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v31_Syst/CBA_Skim_Syst_MedID" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v32_Syst/CBA_Skim_Syst_jet_tightID" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_btagCSV" ;
+
   //int isample = 17; 
   isample--;
   //bool isMu = 1 ;
   int ibase = 1; ibase--; 
   
-  const char *histname = (isMu) ? "_kb_mjj_mu" : "_kb_mjj_ele"  ;
+  const char *histname = (isMu) ? Form("%s/%s/Iso/_kb_mjj_mu",samples_2016[isample],syst_2016[ibase]) : Form("%s/%s/Iso/_kb_mjj_ele",samples_2016[isample],syst_2016[ibase])  ;
   
   TFile *finBase = 0x0 ; 
   TFile *finSysUp = 0x0;
   TFile *finSysDown = 0x0;
-
-  finBase = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[ibase])); 
+  
+  finBase = TFile::Open(Form("%s/%d/all_%s.root",inputdir,year,samples_2016[isample])); 
 
   cout<<"Openning file : "<< finBase->GetName() << endl;
   TH1D *hBase = (TH1D *)finBase->Get(histname);
-  //cout<<"and get histo : " << hBase->GetName() << endl;
+  cout<<"and get histo : " << hBase->GetName() << endl;
 
   //const int  sysidlist[] = (isMu) ? {2, 4, 10, 12, 14, 16, 18, 20, 22, 24} : {2, 6, 10, 12, 14, 16, 18, 20, 22, 24};
   
@@ -313,14 +325,15 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 
   double stat_Error = 0.0;
   double Norm = hBase->IntegralAndError(1,hBase->GetNbinsX(),stat_Error); 
-  if(isample>=15){
+  if(isample>=13){
     output[0] = Norm;
     output[1] = stat_Error ;
     output[2] = 0 ;
     return true;
   }
 
-  //cout << "Processing for : "<<samples_2016[isample] << "nof Syst : " << nofSyst << endl;
+  cout << "Processing for : "<<samples_2016[isample] << "nof Syst : " << nofSyst << endl;
+  
   
   for(int idx = 0 ; idx < nofSyst ; idx++){
     
@@ -328,18 +341,18 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
     int isysdown = isysup ;
     isysup--; 
 
-    const char *histnameup = (isysup<=16) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysup]) ;
-    const char *histnamedown = (isysdown<=17) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysdown]) ;
+    const char *histnameup = (isMu) ? Form("%s/%s/Iso/_kb_mjj_mu",samples_2016[isample],syst_2016[isysup]) : Form("%s/%s/Iso/_kb_mjj_ele",samples_2016[isample],syst_2016[isysup]) ;
+    const char *histnamedown = (isMu) ? Form("%s/%s/Iso/_kb_mjj_mu",samples_2016[isample],syst_2016[isysdown]) : Form("%s/%s/Iso/_kb_mjj_ele",samples_2016[isample],syst_2016[isysdown]) ;
     
-    if(isysup<=16)
-      finSysUp = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[isysup])); 
-    else
-      finSysUp = finBase;
+    // if(isysup<=16)
+    //   finSysUp = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[isysup])); 
+    // else
+    finSysUp = finBase;
     
-    if(isysdown<=17)
-      finSysDown = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[isysdown])); 
-    else
-      finSysDown = finBase;
+    // if(isysdown<=17)
+    //   finSysDown = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[isysdown])); 
+    // else
+    finSysDown = finBase;
     
     TH1D *hSysUp = (TH1D *)finSysUp->Get(histnameup);
     TH1D *hSysDown = (TH1D *)finSysDown->Get(histnamedown);

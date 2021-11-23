@@ -26,7 +26,7 @@
 
 using namespace std;
 
-int QCDDD(bool isBtag = 1, bool isMu = 1, int htype = 0)
+int QCDDD(bool isBtag = 0, bool isMu = 1, int htype = 10)
 {
   // Setters
   int SetGlobalStyle(void);

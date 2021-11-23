@@ -85,7 +85,7 @@ int MCChannelStudy(int index = 1, string inputfile = "input/files_ttbar_dilep.tx
   Long64_t nofDiEle = 0, nofDiMu = 0, nofDiTau = 0, nofEleMu = 0, nofEleTau = 0, nofMuTau = 0;   
   Long64_t nofHadcs = 0, nofHadFourSep = 0, nofHadTwoOneOne = 0, nofHadTwoTwo = 0;
   Long64_t nofcsMu = 0, nofcsEle = 0, nofcsTau = 0, nofSlMu = 0, nofSlEle = 0, nofSlTau = 0, nofSlcs = 0 ;
-
+  
   for (Long64_t ievent = 0 ; ievent < chain->GetEntries() ; ievent++ ) {
   //for (Long64_t ievent = 0 ; ievent < 1000 ; ievent++ ) {
     

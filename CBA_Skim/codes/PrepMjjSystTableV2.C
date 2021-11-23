@@ -271,8 +271,9 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDtune" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v31_Syst/CBA_Skim_Syst_MedID" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v32_Syst/CBA_Skim_Syst_jet_tightID" ;
-  
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v32_Syst/CBA_Skim_Syst_jet_tightID" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso" ;
+
   //int isample = 17; 
   isample--;
   //bool isMu = 1 ;
@@ -284,7 +285,7 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   TFile *finSysUp = 0x0;
   TFile *finSysDown = 0x0;
   
-  finBase = TFile::Open(Form("%s/2016/all_%s.root",inputdir,samples_2016[isample])); 
+  finBase = TFile::Open(Form("%s/2018/all_%s.root",inputdir,samples_2016[isample])); 
 
   cout<<"Openning file : "<< finBase->GetName() << endl;
   TH1D *hBase = (TH1D *)finBase->Get(histname);

@@ -53,13 +53,13 @@ int GetNumberOfEvents(string infile = "input/files_ttbar_inclusive.txt")
     TH1D *hEvents = (TH1D*) file->Get("hEvents");
     double nofMCEvents = hEvents->GetEntries()/2.0;
     totalEvents += nofMCEvents;
-    printf("File : %d:%s, %lf, %lf\n",ifile,s.c_str(),nofMCEvents,totalEvents);
+    printf("File : %d:%s, %lf, %10.1lf\n",ifile,s.c_str(),nofMCEvents,totalEvents);
 
     file->Close();
     delete file;
     ifile++;
   }
-  printf("Total Events : %lf\n",totalEvents);
+  printf("Total Events : %10.1lf\n",totalEvents);
 
   return true;
 }

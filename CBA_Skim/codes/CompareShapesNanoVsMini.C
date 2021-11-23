@@ -73,11 +73,28 @@ int CompareShapesNanoVsMini()
   // hNanoinclMC->Add(hNanoinclVV);
   //hNanoinclMC->Add(hNanoinclQCD);
 
-  TFile *fin_nanoincl_ch = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_TTbar.root");
+  TFile *fin_nanoincl_ch = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_TTbar_split_inclusive.root");
   TH1F *hNanoinclTTbar_dl = (TH1F *)fin_nanoincl_ch->Get("TTbar/base/Iso/_kb_mjj_ele");
   TH1F *hNanoinclTTbar_hd = (TH1F *)fin_nanoincl_ch->Get("TTbar/base/Iso/_kb_mjj_ele1");
   TH1F *hNanoinclTTbar_sl = (TH1F *)fin_nanoincl_ch->Get("TTbar/base/Iso/_kb_mjj_ele2");
 
+  TFile *fin_nanoexcl_data_2017 = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2017/all_DataMu.root");
+  TH1F *hNanoexclData_2017 = (TH1F *)fin_nanoexcl_data_2017->Get("DataMu/base/Iso/_kb_mjj_mu");
+  TFile *fin_nanoincl_ttbar_2017 = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2017/all_TTbar.root");
+  TH1F *hNanoexclTTbar_2017 = (TH1F *)fin_nanoincl_ttbar_2017->Get("TTbar/base/Iso/_kb_mjj_mu");
+
+  TFile *fin_nanoexcl_data_2018 = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2018/all_DataMu.root");
+  TH1F *hNanoexclData_2018 = (TH1F *)fin_nanoexcl_data_2018->Get("DataMu/base/Iso/_kb_mjj_mu");
+  TFile *fin_nanoincl_ttbar_2018 = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2018/all_TTbar.root");
+  TH1F *hNanoexclTTbar_2018 = (TH1F *)fin_nanoincl_ttbar_2018->Get("TTbar/base/Iso/_kb_mjj_mu");
+  
+  TFile *fin_nanoexcl_data_2016 = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/all_DataMu.root");
+  TH1F *hNanoexclData_2016 = (TH1F *)fin_nanoexcl_data_2016->Get("DataMu/base/Iso/_kb_mjj_mu");
+  TFile *fin_nanoexcl_ttcomb_2016 = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/base_TTbar_2016_ttbar_combination.root");
+  TH1F *hNanoexclTTbarComb_2016 = (TH1F *)fin_nanoexcl_ttcomb_2016->Get("TTbar/base/Iso/_kb_mjj_mu");
+  TFile *fin_nanoexcl_mixedincl_2016 = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso/2016/base_TTbar_2016_mixedincl1.root");
+  TH1F *hNanoexclmixedincl_2016 = (TH1F *)fin_nanoexcl_ttcomb_2016->Get("TTbar/base/Iso/_kb_mjj_mu");
+  
   TFile *fin_mini = TFile::Open("/Data/CMS-Software/local/CMSSW_10_2_13/src/Analysis/limit/local/mu/Cat1_Inc/Mass80/Shapes_hcs_13TeV_mu_KinFit_mjj_kfit_WH80.root");
   TH1F *hMiniData = (TH1F *)fin_mini->Get("data_obs");
   TH1F *hMiniTTbar = (TH1F *)fin_mini->Get("ttbar");
@@ -122,17 +139,33 @@ int CompareShapesNanoVsMini()
 
   // TCanvas *c3 = new TCanvas("c3","c3");
   // hDataMCRatio->Draw();
+
   
-  TH1F *hMiniRatio = (TH1F *)hMiniData->Clone("data/mc (Mini)");
+  TH1F *hMiniRatio = (TH1F *)hMiniData->Clone("data/mc (Mini 2016)");
   hMiniRatio->Divide(hMiniMC);
   hMiniRatio->SetTitle("");
-  TH1F *hNanoexclRatio = (TH1F *)hNanoexclData->Clone("data/mc (Nanoexcl)");
+  TH1F *hNanoexclRatio = (TH1F *)hNanoexclData->Clone("data/mc (Nanoexcl 2016)");
   hNanoexclRatio->Divide(hNanoexclMC);
   hNanoexclRatio->SetTitle("");
-  TH1F *hNanoinclRatio = (TH1F *)hNanoinclData->Clone("data/mc (Nanoincl)");
+  TH1F *hNanoinclRatio = (TH1F *)hNanoinclData->Clone("data/mc (Nanoincl 2016)");
   hNanoinclRatio->Divide(hNanoinclMC);
   hNanoinclRatio->SetTitle("");
+  
+  TH1F *hNanoexclRatio_2017 = (TH1F *)hNanoexclData_2017->Clone("data/mc (Nanoexcl 2017)");
+  hNanoexclRatio_2017->Divide(hNanoexclTTbar_2017);
+  hNanoexclRatio_2017->SetTitle("");
+  TH1F *hNanoexclRatio_2018 = (TH1F *)hNanoexclData_2018->Clone("data/mc (Nanoexcl 2018)");
+  hNanoexclRatio_2018->Divide(hNanoexclTTbar_2018);
+  hNanoexclRatio_2018->SetTitle("");
+  TH1F *hNanoexclRatioTTComb = (TH1F *)hNanoexclData_2016->Clone("data/mc (Nanoexcl ttcomb 2016)");
+  hNanoexclRatioTTComb->Divide(hNanoexclTTbarComb_2016);
+  hNanoexclRatioTTComb->SetTitle("");
+  TH1F *hNanoexclRatiomixedincl = (TH1F *)hNanoexclData_2016->Clone("data/mc (Nanoexcl ttcomb 2016)");
+  hNanoexclRatiomixedincl->Divide(hNanoexclmixedincl_2016);
+  hNanoexclRatiomixedincl->SetTitle("");
 
+  
+  
   hMiniRatio->SetLineColor(kRed);
   hNanoexclRatio->SetLineColor(kBlue);
   hNanoinclRatio->SetLineColor(kGreen);
@@ -140,6 +173,11 @@ int CompareShapesNanoVsMini()
   hNanoexclRatio->SetLineWidth(3);
   hNanoinclRatio->SetLineWidth(3);
 
+  //SetHistStyle(hNanoexclRatio_2017, kBlack, 3, 1);
+  SetHistStyle(hNanoexclRatio_2018, kMagenta, 3, 1);
+  SetHistStyle(hNanoexclRatioTTComb, kOrange+2, 3, 1);
+  SetHistStyle(hNanoexclRatiomixedincl, kBlack, 3, 1);
+  
   
   TH1F *hNanoinclRatio_dl = (TH1F *)hNanoexclData_ch->Clone("data/mc (Nanoincl dl)");
   hNanoinclRatio_dl->Divide(hNanoinclTTbar_dl);
@@ -186,6 +224,10 @@ int CompareShapesNanoVsMini()
   hMiniRatio->Draw("hist");
   hNanoexclRatio->Draw("sames hist");
   hNanoinclRatio->Draw("sames hist");
+  // //hNanoexclRatio_2017->Draw("sames hist");
+  // hNanoexclRatio_2018->Draw("sames hist");
+  // hNanoexclRatioTTComb->Draw("sames hist");
+  hNanoexclRatiomixedincl->Draw("sames hist");
   leg1->Draw();
   hMiniRatio->GetXaxis()->SetTitle("m_{jj} (GeV)");
   hMiniRatio->GetYaxis()->SetTitle("Data/t#bar{t} (Entries/bin)");
