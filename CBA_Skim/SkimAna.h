@@ -619,7 +619,9 @@ class SkimAna : public TSelector {
    		  kFsrDown, kFsrUp, kIsrDown, kIsrUp, kPreFireUp, kPreFireDown,
 		  kIso20, kMETUp, kMETDown
    };
+   enum SlType { kSlEle, kSlMu, kSlTau, kSlcs, kSlud, kSlus,  kSldc};
    
+
    int puvar012_g ;		// 0:down, 1:norm, 2:up
    int mueffvar012_g ;		// 0:down, 1:norm, 2:up
    int eleeffvar012_g ;		// 0:down, 1:norm, 2:up
@@ -635,7 +637,8 @@ class SkimAna : public TSelector {
    /* int musmear012_g ;	// 0:down, 1:norm, 2: up */
    /* int elesmear012_g ;	// 0:down, 1:norm, 2: up */
    SystType systType;
-   
+   SlType slType;
+
    // input files
    int nFiles;
    char **fileNames = 0x0;
