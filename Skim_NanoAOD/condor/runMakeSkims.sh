@@ -49,7 +49,7 @@ if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
     #xrdcp -f ${sample}_Skim_NanoAOD*.root root://cmseos.fnal.gov/${condorOutDir}/${year}
-    xrdcp -f ${sample}_Skim_NanoAOD*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
+    xrdcp -f ${sample}_Skim_NanoAOD*.root root://eosuser.cern.ch/${condorOutDir1}/${year}_1
     echo "Cleanup"
     rm -rf CMSSW_10_2_14
     rm *.root
