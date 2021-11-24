@@ -3,10 +3,13 @@
 #--------------------------
 #MCType16='RunIISummer16NanoAODv5-PUMoriond17_Nano1June2019_102X_mcRun2_asymptotic_v7-v1'
 MCType16='RunIISummer16NanoAODv6-PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1'
+MCType16v7='RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_backup_102X_mcRun2_asymptotic_v8-v1'
+
 MCType16_ext1=MCType16.replace('-v1','_ext1-v1')
 MCType16_ext2=MCType16.replace('-v1','_ext2-v1')
 MCType16_ext3=MCType16.replace('-v1','_ext3-v1')
 MCType16_noPULabel = MCType16.replace('PUMoriond17_','')
+MCType16_bkp= MCType16.replace('Nano25Oct2019_102X','Nano25Oct2019_backup_102X')
 
 MCType16_v2 = MCType16.replace('-v1','-v2')
 
@@ -39,13 +42,40 @@ sampleList_2016 = {
 # 'Data_SingleEle_g' : '/SingleElectron/Run2016G-'+DataType16+'/NANOAOD',
 # 'Data_SingleEle_h' : '/SingleElectron/Run2016H-'+DataType16+'/NANOAOD',
 
-'TTbarPowheg_inclusive' : '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/'+MCType16_v2+'/NANOAODSIM',
+
 
 # 'TTbarPowheg_Dilepton' : '/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
 # 'TTbarPowheg_Hadronic' : '/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
 # 'TTbarPowheg_Semilept' : '/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
 
 #'TTbarMadgraph_inclusive' : '/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/'+MCType16+'/NANOAODSIM',
+#'TTbarPowheg_inclusive' : '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/'+MCType16_v2+'/NANOAODSIM',
+
+'TTbarPowheg_Dilepton_CP5up'           : '/TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_CP5up_ext1'      : '/TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8/'+MCType16_ext1+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_CP5down'         : '/TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_CP5down_ext1'    : '/TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8/'+MCType16_ext1+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_hdampup'         : '/TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_hdampup_ext1'    : '/TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16_ext1+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_hdampdown'       : '/TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_hdampdown_ext1'  : '/TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16_ext1+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_mtop1695'        : '/TTTo2L2Nu_TuneCP5_PSweights_mtop1695_13TeV-powheg-pythia8/'+MCType16_bkp+'/NANOAODSIM',
+'TTbarPowheg_Dilepton_mtop1755'        : '/TTTo2L2Nu_TuneCP5_PSweights_mtop1755_13TeV-powheg-pythia8/'+MCType16_bkp+'/NANOAODSIM',
+
+'TTbarPowheg_Hadronic_CP5up'           : '/TTToHadronic_TuneCP5up_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Hadronic_CP5down'         : '/TTToHadronic_TuneCP5down_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Hadronic_hdampup'         : '/TTToHadronic_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Hadronic_hdampdown'       : '/TTToHadronic_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Hadronic_mtop1695'        : '/TTToHadronic_TuneCP5_PSweights_mtop1695_13TeV-powheg-pythia8/'+MCType16v7+'/NANOAODSIM',
+'TTbarPowheg_Hadronic_mtop1755'        : '/TTToHadronic_TuneCP5_PSweights_mtop1755_13TeV-powheg-pythia8/'+MCType16v7+'/NANOAODSIM',
+
+'TTbarPowheg_Semilept_CP5up'           : '/TTToSemiLeptonic_TuneCP5up_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Semilept_CP5down'         : '/TTToSemiLeptonic_TuneCP5down_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Semilept_hdampup'         : '/TTToSemiLeptonic_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Semilept_hdampdown'       : '/TTToSemiLeptonic_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8/'+MCType16+'/NANOAODSIM',
+'TTbarPowheg_Semilept_mtop1695'        : '/TTToSemiLeptonic_TuneCP5_PSweights_mtop1695_13TeV-powheg-pythia8/'+MCType16_bkp+'/NANOAODSIM',
+'TTbarPowheg_Semilept_mtop1755'        : '/TTToSemiLeptonic_TuneCP5_PSweights_mtop1755_13TeV-powheg-pythia8/'+MCType16_bkp+'/NANOAODSIM',
+
 
 # 'W1jets'      : '/W1JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/'+MCType16+'/NANOAODSIM',
 # 'W2jets'      : '/W2JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/'+MCType16+'/NANOAODSIM',
