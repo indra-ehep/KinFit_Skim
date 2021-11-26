@@ -1985,6 +1985,11 @@ Bool_t SkimAna::Notify()
     LoadPU();
   }//if MC
   
+  if(fSampleType.Contains("mtop1695"))
+    kinFit.SetTopMass(169.5);
+  if(fSampleType.Contains("mtop1755"))
+    kinFit.SetTopMass(175.5);
+  
   if(fSampleType.Contains("Dilepton"))
     _kFType = 11;
   else if(fSampleType.Contains("Hadronic"))

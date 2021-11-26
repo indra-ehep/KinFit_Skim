@@ -14,6 +14,27 @@ void initCrossSections(){
     crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095};
     crossSections["TTbarMadgraph_inclusive"]    =  {831.76, 831.76, 831.76};
     
+    crossSections["TTbarPowheg_Dilepton_CP5up"]		 =  { 87.315, 87.315, 87.315};
+    crossSections["TTbarPowheg_Dilepton_CP5down"]	 =  { 87.315, 87.315, 87.315};
+    crossSections["TTbarPowheg_Dilepton_hdampup"]	 =  { 87.315, 87.315, 87.315};
+    crossSections["TTbarPowheg_Dilepton_hdampdown"]      =  { 87.315, 87.315, 87.315};
+    crossSections["TTbarPowheg_Dilepton_mtop1695"]       =  { 87.315, 87.315, 87.315};
+    crossSections["TTbarPowheg_Dilepton_mtop1755"]       =  { 87.315, 87.315, 87.315};
+
+    crossSections["TTbarPowheg_Semilept_CP5up"]		 =  {364.352,364.352,364.352};
+    crossSections["TTbarPowheg_Semilept_CP5down"]	 =  {364.352,364.352,364.352};
+    crossSections["TTbarPowheg_Semilept_hdampup"]	 =  {364.352,364.352,364.352};
+    crossSections["TTbarPowheg_Semilept_hdampdown"]      =  {364.352,364.352,364.352};
+    crossSections["TTbarPowheg_Semilept_mtop1695"]       =  {364.352,364.352,364.352};
+    crossSections["TTbarPowheg_Semilept_mtop1755"]       =  {364.352,364.352,364.352};
+    
+    crossSections["TTbarPowheg_Hadronic_CP5up"]		 =  {380.095,380.095,380.095};
+    crossSections["TTbarPowheg_Hadronic_CP5down"]	 =  {380.095,380.095,380.095};
+    crossSections["TTbarPowheg_Hadronic_hdampup"]	 =  {380.095,380.095,380.095};
+    crossSections["TTbarPowheg_Hadronic_hdampdown"]      =  {380.095,380.095,380.095};
+    crossSections["TTbarPowheg_Hadronic_mtop1695"]       =  {380.095,380.095,380.095};
+    crossSections["TTbarPowheg_Hadronic_mtop1755"]       =  {380.095,380.095,380.095};
+    
     // Obtained using CMSDAS and CMS_XSDB
     //crossSections["TTbarPowheg_Dilepton"]       =  { 88.29, 88.29, 88.29}; //687.1
     //crossSections["TTbarPowheg_Semilept"]       =  {365.34, 365.34, 365.34}; //687.1
