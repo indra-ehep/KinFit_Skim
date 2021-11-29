@@ -172,6 +172,9 @@ void Selector::clear_vectors(){
     // JetsPreSel.clear();;
     // JetsCleaning.clear();;
     JetsPtSmeared.clear();
+    jet_resolution.clear();
+    jet_isTagged.clear();
+
     JetsNoCorr.clear();
 }
 
@@ -647,6 +650,10 @@ void Selector::filter_jets(){
       	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
       }
       
+      // Info("Selector::filter_jets","jetInd : %d, (pt,eta,phi) : (%lf,%lf,%lf), resolution : %lf, jetSF : %lf, jetSmear : %lf, btag : %lf", 
+      // 	   jetInd,pt,eta,phi,resolution,jetSF,jetSmear,tree->jetBtagDeepB_[jetInd]);
+      //printf("%lf\t%lf\n", eta, jetSF);
+
       // bool miniAOD_SF_check = false;
       // if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
       // 	double genJetPt = tree->GenJet_pt_[genIdx];

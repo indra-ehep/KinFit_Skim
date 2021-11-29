@@ -3194,6 +3194,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   
 
   jetVectors.clear();
+  jetResVectors.clear();
   jetBtagVectors.clear();
 
   _run = event->run_ ;
@@ -3220,6 +3221,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     int jetInd = selector->Jets.at(ijet);
     jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);
+    //double jetRes = selector->jet_resolution.at(ijet);
+    jetResVectors.push_back( selector->jet_resolution.at(ijet) );
     double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagCSVV2_[jetInd] ;
     jetBtagVectors.push_back( jetBtag );
     
@@ -3264,11 +3267,10 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     _elePhi->push_back(event->elePhi_[selector->ElectronsNoIso.at(0)]);
     _eleCharge->push_back(event->eleCharge_[selector->ElectronsNoIso.at(0)]);
     _elePFRelIso->push_back(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
-  }		    
+  }		      
   
-
   kinFit.SetJetVector(jetVectors);
-  //kinFit.SetJetResVector(jetResolutionVectors);
+  kinFit.SetJetResVector(jetResVectors);
   kinFit.SetBtagVector(jetBtagVectors);
   kinFit.SetLepton(lepVector);
   KinFit::LeptonType ltype = (isEle)?(KinFit::kElectron):(KinFit::kMuon); 
@@ -3522,6 +3524,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   
   kinFit.Clear();
   jetVectors.clear();
+  jetResVectors.clear();
   jetBtagVectors.clear();
   _jetPt->clear() ;
   _jetEta->clear() ;
@@ -3764,7 +3767,7 @@ bool SkimAna::ExecSerial(const char* infile)
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 800000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
-  //cout<<"Procesing : " << ientry << endl;
+    //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }
   SlaveTerminate();

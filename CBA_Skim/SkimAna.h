@@ -734,6 +734,7 @@ class SkimAna : public TSelector {
    ////////////////////////////////////////////////////////
    KinFit kinFit ; 
    std::vector<TLorentzVector> jetVectors;
+   std::vector<double> jetResVectors;
    std::vector<double> jetBtagVectors;
    TLorentzVector jetVector;
    TLorentzVector lepVector;
@@ -2988,141 +2989,142 @@ bool KinFit::Fit(){
   	    //bjlepbtag = btag.at(list2jet[ib1]);// bjhadbtag, cjhadbtag, sjhadbtag;
 
   	    /* cout<<"loop " << loop++ << endl; */
-  	    /* bjlep.Print(); */
-  	    /* bjhad.Print(); */
-  	    /* cjhad.Print(); */
-  	    /* sjhad.Print(); */
+	    /* Info("KinFit::Fit","bjlep : (pt,eta,phi) : (%lf,%lf,%lf), jetres : %lf", bjlep.Pt(), bjlep.Eta(), bjlep.Phi(), jetsRes.at(bj1.first)); */
+	    /* Info("KinFit::Fit","bjhad : (pt,eta,phi) : (%lf,%lf,%lf), jetres : %lf", bjhad.Pt(), bjhad.Eta(), bjhad.Phi(), jetsRes.at(bj2.first)); */
+	    /* Info("KinFit::Fit","cjhad : (pt,eta,phi) : (%lf,%lf,%lf), jetres : %lf", cjhad.Pt(), cjhad.Eta(), cjhad.Phi(), jetsRes.at(lj1.first)); */
+	    /* Info("KinFit::Fit","sjhad : (pt,eta,phi) : (%lf,%lf,%lf), jetres : %lf", sjhad.Pt(), sjhad.Eta(), sjhad.Phi(), jetsRes.at(lj2.first)); */
   	    /* neutrino.Print(); */
   	    /* lepton.Print(); */
-  	    /* cout <<"_nu_pz : " << _nu_pz << " _nu_pz_other : " << _nu_pz_other << endl; */
+  	    /* //cout <<"_nu_pz : " << _nu_pz << " _nu_pz_other : " << _nu_pz_other << endl; */
 	    
   	    ml.Zero() ;  mn.Zero() ;  mbl.Zero() ;  mbh.Zero() ;  mc.Zero() ;  ms.Zero();
 	      
-  	    // This is following covariance matrix setup is using CMS NOTE AN 2005/005.
-  	    ml(0,0) = ErrEt (lepton.Et(), lepton.Eta()); // et
-  	    ml(1,1) = ErrEta(lepton.Et(), lepton.Eta()); // eta
-  	    ml(2,2) = ErrPhi(lepton.Et(), lepton.Eta()); // phi
+  	    /* // This is following covariance matrix setup is using CMS NOTE AN 2005/005. */
+  	    /* ml(0,0) = ErrEt (lepton.Et(), lepton.Eta()); // et */
+  	    /* ml(1,1) = ErrEta(lepton.Et(), lepton.Eta()); // eta */
+  	    /* ml(2,2) = ErrPhi(lepton.Et(), lepton.Eta()); // phi */
 	      
-  	    mn(0,0) = ErrEt (neutrino.Et(), neutrino.Eta()); // et
-  	    mn(1,1) = ErrEta(neutrino.Et(), neutrino.Eta()); // eta
-  	    mn(2,2) = ErrPhi(neutrino.Et(), neutrino.Eta()); // phi
+  	    /* mn(0,0) = ErrEt (neutrino.Et(), neutrino.Eta()); // et */
+  	    /* mn(1,1) = ErrEta(neutrino.Et(), neutrino.Eta()); // eta */
+  	    /* mn(2,2) = ErrPhi(neutrino.Et(), neutrino.Eta()); // phi */
 	      
-  	    mbl(0,0) = ErrEt (bjlep.Et(), bjlep.Eta()); // et
-  	    mbl(1,1) = ErrEta(bjlep.Et(), bjlep.Eta()); // eta
-  	    mbl(2,2) = ErrPhi(bjlep.Et(), bjlep.Eta()); // phi
+  	    /* mbl(0,0) = ErrEt (bjlep.Et(), bjlep.Eta()); // et */
+  	    /* mbl(1,1) = ErrEta(bjlep.Et(), bjlep.Eta()); // eta */
+  	    /* mbl(2,2) = ErrPhi(bjlep.Et(), bjlep.Eta()); // phi */
 	      
-  	    mbh(0,0) = ErrEt (bjhad.Et(), bjhad.Eta()); // et
-  	    mbh(1,1) = ErrEta(bjhad.Et(), bjhad.Eta()); // eta
-  	    mbh(2,2) = ErrPhi(bjhad.Et(), bjhad.Eta()); // phi
+  	    /* mbh(0,0) = ErrEt (bjhad.Et(), bjhad.Eta()); // et */
+  	    /* mbh(1,1) = ErrEta(bjhad.Et(), bjhad.Eta()); // eta */
+  	    /* mbh(2,2) = ErrPhi(bjhad.Et(), bjhad.Eta()); // phi */
 	      
-  	    mc(0,0) = ErrEt (cjhad.Et(), cjhad.Eta()); // et
-  	    mc(1,1) = ErrEta(cjhad.Et(), cjhad.Eta()); // eta
-  	    mc(2,2) = ErrPhi(cjhad.Et(), cjhad.Eta()); // phi
+  	    /* mc(0,0) = ErrEt (cjhad.Et(), cjhad.Eta()); // et */
+  	    /* mc(1,1) = ErrEta(cjhad.Et(), cjhad.Eta()); // eta */
+  	    /* mc(2,2) = ErrPhi(cjhad.Et(), cjhad.Eta()); // phi */
 	      
-  	    ms(0,0) = ErrEt (sjhad.Et(), sjhad.Eta()); // et
-  	    ms(1,1) = ErrEta(sjhad.Et(), sjhad.Eta()); // eta
-  	    ms(2,2) = ErrPhi(sjhad.Et(), sjhad.Eta()); // phi
+  	    /* ms(0,0) = ErrEt (sjhad.Et(), sjhad.Eta()); // et */
+  	    /* ms(1,1) = ErrEta(sjhad.Et(), sjhad.Eta()); // eta */
+  	    /* ms(2,2) = ErrPhi(sjhad.Et(), sjhad.Eta()); // phi */
 	    
-	    reslepEta   = TMath::Sqrt(ml(1,1)) ;
-            reslepPhi   = TMath::Sqrt(ml(2,2)) ;
+	    /* reslepEta   = TMath::Sqrt(ml(1,1)) ; */
+            /* reslepPhi   = TMath::Sqrt(ml(2,2)) ; */
 	    
-            resneuEta   = TMath::Sqrt(mn(1,1)) ;
-            resneuPhi   = TMath::Sqrt(mn(2,2)) ;
+            /* resneuEta   = TMath::Sqrt(mn(1,1)) ; */
+            /* resneuPhi   = TMath::Sqrt(mn(2,2)) ; */
 
-            resbjlepEta = TMath::Sqrt(mbl(1,1)) ;
-            resbjlepPhi = TMath::Sqrt(mbl(2,2)) ;
+            /* resbjlepEta = TMath::Sqrt(mbl(1,1)) ; */
+            /* resbjlepPhi = TMath::Sqrt(mbl(2,2)) ; */
 
-            resbjhadEta = TMath::Sqrt(mbh(1,1)) ;
-            resbjhadPhi = TMath::Sqrt(mbh(2,2)) ;
+            /* resbjhadEta = TMath::Sqrt(mbh(1,1)) ; */
+            /* resbjhadPhi = TMath::Sqrt(mbh(2,2)) ; */
 	    
-            rescjhadEta = TMath::Sqrt(mc(1,1)) ;
-            rescjhadPhi = TMath::Sqrt(mc(2,2)) ;
+            /* rescjhadEta = TMath::Sqrt(mc(1,1)) ; */
+            /* rescjhadPhi = TMath::Sqrt(mc(2,2)) ; */
 
-            ressjhadEta = TMath::Sqrt(ms(1,1)) ;
-            ressjhadPhi = TMath::Sqrt(ms(2,2)) ;
+            /* ressjhadEta = TMath::Sqrt(ms(1,1)) ; */
+            /* ressjhadPhi = TMath::Sqrt(ms(2,2)) ; */
 	    
   	    // This is following covariance matrix setup is using TopQuarkAnalysis/TopKinFitter
   	    if (leptonType != kElectron and leptonType != kMuon) continue;
 	    
-  	    /* if(leptonType == kMuon) */
-  	    /*   muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi); */
-  	    /* if(leptonType == kElectron) */
-  	    /*   elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi); */
+  	    if(leptonType == kMuon)
+  	      muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
+  	    if(leptonType == kElectron)
+  	      elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 	    
-  	    /* ml(0,0)	= TMath::Power(resEt, 2);	// et */
-  	    /* ml(1,1)	= TMath::Power(resEta, 2);	// eta */
-  	    /* ml(2,2)	= TMath::Power(resPhi, 2);	// phi */
+  	    ml(0,0)	= TMath::Power(resEt, 2);	// et
+  	    ml(1,1)	= TMath::Power(resEta, 2);	// eta
+  	    ml(2,2)	= TMath::Power(resPhi, 2);	// phi
 	    
-  	    /* reslepEta	= resEta ; */
-  	    /* reslepPhi	= resPhi ; */
+  	    reslepEta	= resEta ;
+  	    reslepPhi	= resPhi ;
 	    
-  	    /* metResolution(neutrino.Et(), resEt, resEta, resPhi); */
-  	    /* //resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below */
-  	    /* resEta	= 9999.; // This is from miniAOD */
-  	    /* //Error in <TDecompLU::InvertLU>: matrix is singular, 1 diag elements < tolerance of 2.2204e-16 */
-  	    /* mn(0,0)	= TMath::Power(resEt, 2); // et */
-  	    /* mn(1,1)	= TMath::Power(resEta, 2); // eta */
-  	    /* mn(2,2)	= TMath::Power(resPhi, 2); // eta */
-  	    /* /\* cout <<"_nu Et : " << neutrino.Et()  *\/ */
-  	    /* /\* 	 << " _nu E : " << neutrino.E()  *\/ */
-  	    /* /\* 	 << " _nu Pt : " << neutrino.Pt()  *\/ */
-  	    /* /\* 	 << " _nu |P| : " << neutrino.Vect().Mag()  *\/ */
-  	    /* /\* 	 << endl; *\/ */
+  	    metResolution(neutrino.Et(), resEt, resEta, resPhi);
+  	    //resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
+  	    resEta	= 9999.; // This is from miniAOD
+  	    //Error in <TDecompLU::InvertLU>: matrix is singular, 1 diag elements < tolerance of 2.2204e-16
+  	    mn(0,0)	= TMath::Power(resEt, 2); // et
+  	    mn(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mn(2,2)	= TMath::Power(resPhi, 2); // eta
+  	    /* cout <<"_nu Et : " << neutrino.Et()  */
+  	    /* 	 << " _nu E : " << neutrino.E()  */
+  	    /* 	 << " _nu Pt : " << neutrino.Pt()  */
+  	    /* 	 << " _nu |P| : " << neutrino.Vect().Mag()  */
+  	    /* 	 << endl; */
 	    
-  	    /* /\* mn(0,0)	= 9999; // et *\/ */
-  	    /* /\* mn(1,1)	= 9999; // eta *\/ */
-  	    /* /\* mn(2,2)	= TMath::Power(0.54, 2); // phi *\/ */
-  	    /* /\* cout<<"Before fit====="<<endl; *\/ */
-  	    /* /\* mn.Print(); *\/ */
-  	    /* /\* cout<<"Before fit====="<<endl; *\/ */
+  	    /* mn(0,0)	= 9999; // et */
+  	    /* mn(1,1)	= 9999; // eta */
+  	    /* mn(2,2)	= TMath::Power(0.54, 2); // phi */
+  	    /* cout<<"Before fit====="<<endl; */
+  	    /* mn.Print(); */
+  	    /* cout<<"Before fit====="<<endl; */
 	    
-  	    /* resneuEta	= resEta ; */
-  	    /* resneuPhi	= resPhi ; */
+  	    resneuEta	= resEta ;
+  	    resneuPhi	= resPhi ;
 	    
-  	    /* bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi); */
-  	    /* JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup); */
-  	    /* mbl(0,0)	= TMath::Power(resEt, 2); // et */
-  	    /* mbl(0,0)   *= TMath::Power(JERbase, 2); */
-  	    /* //mbl(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib1)), 2); */
-  	    /* mbl(1,1)	= TMath::Power(resEta, 2); // eta */
-  	    /* mbl(2,2)	= TMath::Power(resPhi, 2); // eta */
+  	    bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
+  	    //JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
+	    //mbl(0,0)   *= TMath::Power(JERbase, 2);
+  	    mbl(0,0)	= TMath::Power(resEt, 2); // et
+	    mbl(0,0)   *= TMath::Power(jetsRes.at(bj1.first), 2);
+  	    mbl(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mbl(2,2)	= TMath::Power(resPhi, 2); // eta
 	    
-  	    /* resbjlepEta = resEta ; */
-  	    /* resbjlepPhi = resPhi ; */
+  	    resbjlepEta = resEta ;
+  	    resbjlepPhi = resPhi ;
 	    
-  	    /* bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi); */
-  	    /* JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup); */
-  	    /* mbh(0,0)	= TMath::Power(resEt, 2); // et */
-  	    /* mbh(0,0)   *= TMath::Power(JERbase, 2); */
-  	    /* //mbh(0,0)   *= TMath::Power(jetsRes.at(bjetlist.at(ib2)), 2); */
-  	    /* mbh(1,1)	= TMath::Power(resEta, 2); // eta */
-  	    /* mbh(2,2)	= TMath::Power(resPhi, 2); // eta */
+  	    bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
+  	    //JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
+	    //mbh(0,0)   *= TMath::Power(JERbase, 2);
+  	    mbh(0,0)	= TMath::Power(resEt, 2); // et
+	    mbh(0,0)   *= TMath::Power(jetsRes.at(bj2.first), 2);
+  	    mbh(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mbh(2,2)	= TMath::Power(resPhi, 2); // eta
 
-  	    /* resbjhadEta = resEta ; */
-  	    /* resbjhadPhi = resPhi ; */
+  	    resbjhadEta = resEta ;
+  	    resbjhadPhi = resPhi ;
 	      
-  	    /* udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi); */
-  	    /* JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup); */
-  	    /* mc(0,0)	= TMath::Power(resEt, 2); // et */
-  	    /* mc(0,0)    *= TMath::Power(JERbase, 2); */
-  	    /* //mc(0,0)    *= TMath::Power(jetsRes.at(ij1), 2); */
-  	    /* mc(1,1)	= TMath::Power(resEta, 2); // eta */
-  	    /* mc(2,2)	= TMath::Power(resPhi, 2); // eta */
+  	    udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
+  	    //JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
+	    //mc(0,0)    *= TMath::Power(JERbase, 2);
+  	    mc(0,0)	= TMath::Power(resEt, 2); // et
+	    mc(0,0)   *= TMath::Power(jetsRes.at(lj1.first), 2);
+  	    mc(1,1)	= TMath::Power(resEta, 2); // eta
+  	    mc(2,2)	= TMath::Power(resPhi, 2); // eta
 
-  	    /* rescjhadEta = resEta ; */
-  	    /* rescjhadPhi = resPhi ; */
+  	    rescjhadEta = resEta ;
+  	    rescjhadPhi = resPhi ;
 	      
-  	    /* udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi); */
-  	    /* JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup); */
-  	    /* ms(0,0)	= TMath::Power(resEt, 2); // et */
-  	    /* ms(0,0)    *= TMath::Power(JERbase, 2); */
-  	    /* //ms(0,0)    *= TMath::Power(jetsRes.at(ij2), 2); */
-  	    /* ms(1,1)	= TMath::Power(resEta, 2); // eta */
-  	    /* ms(2,2)	= TMath::Power(resPhi, 2); // eta */
+  	    udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
+  	    //JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
+	    //ms(0,0)    *= TMath::Power(JERbase, 2);
+  	    ms(0,0)	= TMath::Power(resEt, 2); // et
+	    ms(0,0)   *= TMath::Power(jetsRes.at(lj2.first), 2);
+  	    ms(1,1)	= TMath::Power(resEta, 2); // eta
+  	    ms(2,2)	= TMath::Power(resPhi, 2); // eta
 	    
-  	    /* ressjhadEta = resEta ; */
-  	    /* ressjhadPhi = resPhi ; */
+  	    ressjhadEta = resEta ;
+  	    ressjhadPhi = resPhi ;
 	    
+
   	    // For collider setup (Et, eta. phi) setup is suggested in KinFit original document
   	    TFitParticleEtEtaPhi *lep = new TFitParticleEtEtaPhi( "lep", "lep", &lepton,   &ml );
   	    TFitParticleEtEtaPhi *neu = new TFitParticleEtEtaPhi( "neu", "neu", &neutrino, &mn );
@@ -3142,7 +3144,6 @@ bool KinFit::Fit(){
 	    
   	    TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.379); // Values set from PDG 2021 mW = 80.379
   	    lW->addParticles1( lep, neu);
-
 	    
   	    /* TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.); */
   	    /* TFitConstraintEp *sumPyConstr_  = new TFitConstraintEp("SumPy",        "SumPy", nullptr, TFitConstraintEp::pY, 0.); */
