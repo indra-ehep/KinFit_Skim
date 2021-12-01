@@ -620,7 +620,8 @@ void Selector::filter_jets(){
     int jetID_cutBit = 1;
     //if (year=="2016"){ jetID_cutBit = 0; }
     
-    bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
+    //bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
+    bool jetID_pass = (tree->jetID_[jetInd]>>jetID_cutBit & 1);
     
     double jetSF = 1.;
 
