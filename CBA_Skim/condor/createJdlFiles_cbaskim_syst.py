@@ -22,18 +22,27 @@ samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 # samples_2018 = ["DataMu", "DataEle"]
 
 #syst_2016 = ["base"]
-syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
+syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 
-if not os.path.exists("tmpSubSystSlStudy7/log"):
-    os.makedirs("tmpSubSystSlStudy7/log")
+tunedict = {
+    "cp5up" : "CP5up_TTbar",
+    "cp5down" : "CP5down_TTbar",
+    "hdampup" : "hdampup_TTbar",
+    "hdampdown" : "hdampdown_TTbar",
+    "mtopup" : "mtopup_TTbar",
+    "mtopdown" : "mtopdown_TTbar"
+}
+
+if not os.path.exists("tmptunetest1/log"):
+    os.makedirs("tmptunetest1/log")
 condorLogDir = "log"
-tarFile = "tmpSubSystSlStudy7/CBA_Skim.tar.gz"
+tarFile = "tmptunetest1/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmpSubSystSlStudy7/")
+os.system("cp runCBASkim.sh tmptunetest1/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -51,14 +60,14 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmpSubSystSlStudy7/condorSubmit.sh','w')
+subFile = open('tmptunetest1/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmpSubSystSlStudy7/%s'%jdlName,'w')
+    jdlFile = open('tmptunetest1/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_SlStudy7"
+    condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_TuneTest1"
     #condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
@@ -73,13 +82,23 @@ for year in [2016,2017,2018]:
             systList = eval("syst_%i"%year)
             
         for syst in systList:
-            noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,sample,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
-            nJob = int(noflines)
-            print "%s %s %s"%(sample,nJob,syst)
-            if nJob==1:
-                run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, sample, year, syst)
+            if (syst.find('cp5')>=0 or syst.find('hdamp')>=0 or syst.find('mtop')>=0):
+                if sample.find('TTbar') >=0:
+                    noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,tunedict[syst],year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
+                    nJob = int(noflines)
+                    print "%s %s %s"%(sample,nJob,syst)
+                    if nJob==1:
+                        run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, tunedict[syst], year, syst)
+                    else:
+                        run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, tunedict[syst], year, syst, nJob)
             else:
-                run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, sample, year, syst, nJob)
+                noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,sample,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
+                nJob = int(noflines)
+                print "%s %s %s"%(sample,nJob,syst)
+                if nJob==1:
+                    run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, sample, year, syst)
+                else:
+                    run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, sample, year, syst, nJob)
             jdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile
 

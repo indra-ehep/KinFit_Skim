@@ -617,7 +617,8 @@ class SkimAna : public TSelector {
    		  kJECUp, kJECDown, kJERUp, kJERDown, kBTagbDown, kBTagbUp,
    		  kBTaglDown, kBTaglUp, kPdfDown, kPdfUp, kQ2Down, kQ2Up,
    		  kFsrDown, kFsrUp, kIsrDown, kIsrUp, kPreFireUp, kPreFireDown,
-		  kIso20, kMETUp, kMETDown
+		  kIso20, kMETUp, kMETDown,
+		  kCP5Up, kCP5Down, khDampUp, khDampDown, kmTopUp, kmTopDown
    };
    enum SlType { kSlEle, kSlMu, kSlTau, kSlcs, kSlud, kSlus,  kSldc};
    
