@@ -13,8 +13,10 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_2_14
-    cd CMSSW_10_2_14/src
+    # scramv1 project CMSSW CMSSW_10_2_14
+    # cd CMSSW_10_2_14/src
+    scramv1 project CMSSW CMSSW_10_6_19_patch2
+    cd CMSSW_10_6_19_patch2/src
     eval `scramv1 runtime -sh`
     cd ../..
 	tar --strip-components=1 -zxvf Skim_NanoAOD.tar.gz
@@ -44,7 +46,7 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 #condorOutDir=/store/user/rverma/Output/cms-hcs-run2/Skim_NanoAOD
-condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/Skim_NanoAOD"
+condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL"
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
