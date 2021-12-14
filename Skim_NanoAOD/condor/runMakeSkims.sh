@@ -12,11 +12,12 @@ if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
 else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
+    export SCRAM_ARCH=slc7_amd64_gcc700
     source /cvmfs/cms.cern.ch/cmsset_default.sh
     # scramv1 project CMSSW CMSSW_10_2_14
     # cd CMSSW_10_2_14/src
-    scramv1 project CMSSW CMSSW_10_6_19_patch2
-    cd CMSSW_10_6_19_patch2/src
+    scramv1 project CMSSW CMSSW_10_6_29
+    cd CMSSW_10_6_29/src
     eval `scramv1 runtime -sh`
     cd ../..
 	tar --strip-components=1 -zxvf Skim_NanoAOD.tar.gz
