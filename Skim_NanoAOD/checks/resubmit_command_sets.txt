@@ -1,0 +1,5 @@
+jobid=$1
+condor_q $jobid -nobatch  > missed.txt 2>&1
+grep runMake missed.txt |  awk '{for(i=10;i<NF;i++) printf "%s", $i OFS; printf "%s", $NF ORS}' > arg.txt
+while read line ; do echo Arguments = $line ; echo Queue 1 ; echo  ; done < args.txt
+

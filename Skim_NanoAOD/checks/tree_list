@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+#if [ "$ALICE_ROOT" = "" -a "$GEA4" = "" ] ; then
+#    source /Data/ALICE-Software/env/alirootlinuxenv.sh v5-34-08 v1-15_3 vAN-20140620
+#    echo Running AliRoot $ALICE_ROOT
+#fi
+#root -b -l $1 /home/indra/codes/GetTreeCount.C+  << EOF
+
+echo The first input is $1
+echo The second input is $2
+
+if [ $1 -eq 1 ] ; then
+    root -b -l -q $2  ~/codes/GetTreeCount.C+ 
+elif [ $1 -eq 2 ] ; then
+    root -b -l -q $2 ~/codes/GetTreeCountReco.C+ 
+fi

@@ -25,8 +25,9 @@ def returnNotMatches(a, b):
 #-----------------------------------------
 #Path of the output histrograms
 #----------------------------------------
-inHistFullDir = "/eos/uscms/store/user/rverma/Output/cms-hcs-run2/Skim_NanoAOD/%s"%(year)
+#inHistFullDir = "/eos/uscms/store/user/rverma/Output/cms-hcs-run2/Skim_NanoAOD/%s"%(year)
 #inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
+inHistFullDir = "/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/%s"%(year)
 condorLogDir = "tmpSub/log"
 
 #----------------------------------------

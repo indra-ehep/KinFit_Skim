@@ -11,4 +11,4 @@ src/EventPick_Skim.o: src/EventPick_Skim.cpp interface/EventPick_Skim.h
 
 
 clean:
-	rm src/*.o 
+	rm src/*.o makeSkim 
