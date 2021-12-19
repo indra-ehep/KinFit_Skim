@@ -3,7 +3,7 @@
 
 EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileNames, bool isMC){
     chain = new TChain("Events");
-
+    string xrdcp_command;
     std::cout << "Start EventTree" << std::endl;
     chain->SetCacheSize(100*1024*1024);
     if (xRootDAccess){
@@ -11,9 +11,11 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
 	//string dir = "root://cmsxrootd.fnal.gov/";
 	for(int fileI=0; fileI<nFiles; fileI++){
 	    string fName = (string) fileNames[fileI];
-	    chain->Add( (dir + fileNames[fileI]).c_str() );
-	    //cout << dir+fName << "  " << chain->GetEntries() << endl;
-	    cout << (dir + fileNames[fileI]).c_str() << "  " << chain->GetEntries() << endl;
+	    xrdcp_command = "xrdcp " + dir + fName + " " + fName ;
+	    cout << xrdcp_command.c_str() << endl;
+	    system(xrdcp_command.c_str());
+	    chain->Add( fName.c_str() );
+	    cout << fName << "  " << chain->GetEntries() << endl;
 	}
     }
     else{
