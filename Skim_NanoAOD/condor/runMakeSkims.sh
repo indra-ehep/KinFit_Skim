@@ -54,7 +54,7 @@ else
     #xrdcp -f ${sample}_Skim_NanoAOD*.root root://cmseos.fnal.gov/${condorOutDir}/${year}
     xrdcp -f ${sample}_Skim_NanoAOD*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
     echo "Cleanup"
-    rm -rf CMSSW_10_2_14
+    rm -rf CMSSW*
     rm *.root
 fi
 printf "Done ";/bin/date

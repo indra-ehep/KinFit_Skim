@@ -20,6 +20,7 @@ should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Skim_NanoAOD.tar.gz, runMakeSkims.sh\n\
 use_x509userproxy = true\n\
+RequestDisk = 30GB\n\
 +BenchmarkJob = True\n\
 #+JobFlavour = "workday"\n\
 +MaxRuntime = 72000\n\
