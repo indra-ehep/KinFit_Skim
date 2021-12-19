@@ -6,7 +6,7 @@ f2 = open("NanoAOD_Gen_SplitJobs_cff.py", "w")
 allJobs = 0
 allFiles = 0
 #for year in [2016,2017,2018]:
-for year in [2016]:
+for year in [2016,2017,2018]:
     splitJobs = {}
     print '--------------------------'
     print  year 
