@@ -11,6 +11,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
 	//string dir = "root://cmsxrootd.fnal.gov/";
 	for(int fileI=0; fileI<nFiles; fileI++){
 	    string fName = (string) fileNames[fileI];
+	    fName = fName.substr(fName.find_last_of("/"),fName.size());
 	    xrdcp_command = "xrdcp " + dir + fName + " " + fName ;
 	    cout << xrdcp_command.c_str() << endl;
 	    system(xrdcp_command.c_str());
