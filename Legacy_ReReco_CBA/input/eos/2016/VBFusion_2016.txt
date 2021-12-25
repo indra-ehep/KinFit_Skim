@@ -1,0 +1,6 @@
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/WW_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/WW_ext1_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/WZ_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/WZ_ext1_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ZZ_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ZZ_ext1_Skim_NanoAOD.root
