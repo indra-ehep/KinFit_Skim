@@ -1,0 +1,2 @@
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HminusM160_postVFP_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HminusM160_preVFP_Skim_NanoAOD.root

@@ -1,1 +1,0 @@
-/home/indra/temp/lxplus_test/flab/Data_SingleEle_e_Skim_NanoAOD_5of12.root
