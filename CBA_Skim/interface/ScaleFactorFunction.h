@@ -51,7 +51,9 @@ void initCrossSections(){
     //with scaleSig = 0.12155 = 2*0.065*(1-0.065), where 6.5% is the observed limit for 90 GeV at 8 TeV
     crossSections["HplusM090"]                  =  {21.55, 21.55, 21.55}; 
     crossSections["HplusM100"]                  =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM110"]                  =  {21.55, 21.55, 21.55}; 
     crossSections["HplusM120"]                  =  {21.55, 21.55, 21.55}; 
+    crossSections["HplusM130"]                  =  {21.55, 21.55, 21.55}; 
     crossSections["HplusM140"]                  =  {21.55, 21.55, 21.55}; 
     crossSections["HplusM150"]                  =  {21.55, 21.55, 21.55}; 
     crossSections["HplusM155"]                  =  {21.55, 21.55, 21.55}; 

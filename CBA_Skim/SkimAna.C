@@ -742,6 +742,10 @@ void SkimAna::GetNumberofEvents()
       sample = sample.substr(0,sample.find("_ext2_Skim"));
     else if (sample.find("_ext1_Skim") != string::npos)
       sample = sample.substr(0,sample.find("_ext1_Skim"));
+    else if (sample.find("_preVFP_Skim") != string::npos)
+      sample = sample.substr(0,sample.find("_preVFP_Skim"));
+    else if (sample.find("_postVFP_Skim") != string::npos)
+      sample = sample.substr(0,sample.find("_postVFP_Skim"));
     else if (sample.find("_Skim") != string::npos)
       sample = sample.substr(0,sample.find("_Skim"));
     
@@ -1489,6 +1493,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillEventCutFlow();
   FillEventWt();
   if(IsDebug) Info("Process","Completed Event filling");
+  return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //The following setup is able to produce results presented in August-02 PAG

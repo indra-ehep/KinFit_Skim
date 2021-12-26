@@ -118,33 +118,33 @@ void Selector::process_objects(string path, EventTree* inp_tree){
     tree = inp_tree;
     clear_vectors();
     if(IsDebug) Info("Selector::process_objects","Cleared vectors");
-
-    if(!rc)
-      rc = new RoccoR(Form("%s/weight/RoccoR/RoccoR%s.txt",path.c_str(),year.c_str()));
-    if(IsDebug) Info("Selector::process_objects","Rochester corrections applied.");
-
-    //cout << "before selector muons" << endl;
-    filter_muons();
-    if(IsDebug) Info("Selector::process_objects","Filtered for muon objects.");
-
-    //Electron selection must be after muon selection
-    //cout << "before selector electrons" << endl;
-    filter_electrons();
-    if(IsDebug) Info("Selector::process_objects","Filtered for electron objects.");
-
-    //cout << "before selector jets" << endl;
-    filter_jets();
-    if(IsDebug) Info("Selector::process_objects","Filtered for jets.");
-
-    filter_jetsNoCorr();
-    if(IsDebug) Info("Selector::process_objects","Filtered for jets no Corr.");
     
-    if(!selectMETUnc)
-      filter_mets();
-    else
-      metWithUncl();
+    // if(!rc)
+    //   rc = new RoccoR(Form("%s/weight/RoccoR/RoccoR%s.txt",path.c_str(),year.c_str()));
+    // if(IsDebug) Info("Selector::process_objects","Rochester corrections applied.");
 
-    if(IsDebug) Info("Selector::process_objects","Filtered for MET.");
+    // //cout << "before selector muons" << endl;
+    // filter_muons();
+    // if(IsDebug) Info("Selector::process_objects","Filtered for muon objects.");
+
+    // //Electron selection must be after muon selection
+    // //cout << "before selector electrons" << endl;
+    // filter_electrons();
+    // if(IsDebug) Info("Selector::process_objects","Filtered for electron objects.");
+
+    // //cout << "before selector jets" << endl;
+    // filter_jets();
+    // if(IsDebug) Info("Selector::process_objects","Filtered for jets.");
+
+    // filter_jetsNoCorr();
+    // if(IsDebug) Info("Selector::process_objects","Filtered for jets no Corr.");
+    
+    // if(!selectMETUnc)
+    //   filter_mets();
+    // else
+    //   metWithUncl();
+
+    // if(IsDebug) Info("Selector::process_objects","Filtered for MET.");
 }
 
 void Selector::clear_vectors(){

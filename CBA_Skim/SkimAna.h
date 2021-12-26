@@ -652,6 +652,7 @@ class SkimAna : public TSelector {
    float luminosity, lumiFracI, lumiFracII;
    double _local_evtWeight = 1.0;
    double _sampleWeight = 1.0 ; 
+   bool isPreVFP,isPostVFP ;
 
    //PrefireWeight;
    double _prefireWeight = 1.0;
@@ -1937,6 +1938,7 @@ Bool_t SkimAna::Notify()
 //   called when loading a new file
 //   get branch pointers
   
+  isPreVFP = false ; isPostVFP = false ;
   string fname(fChain->GetCurrentFile()->GetName());
   fname = fname.substr(fname.find_last_of("/")+1,fname.size());
   if(fname.find("_ext4_Skim") != string::npos)
@@ -1947,7 +1949,13 @@ Bool_t SkimAna::Notify()
     fname = fname.substr(0,fname.find("_ext2_Skim"));
   else if (fname.find("_ext1_Skim") != string::npos)
     fname = fname.substr(0,fname.find("_ext1_Skim"));
-  else if (fname.find("_Skim") != string::npos)
+  else if (fname.find("_preVFP_Skim") != string::npos){
+    fname = fname.substr(0,fname.find("_preVFP_Skim"));
+    isPreVFP = true;
+  }else if (fname.find("_postVFP_Skim") != string::npos){
+    fname = fname.substr(0,fname.find("_postVFP_Skim"));
+    isPostVFP = true ;
+  }else if (fname.find("_Skim") != string::npos)
     fname = fname.substr(0,fname.find("_Skim"));
   
   fSampleType = fname;

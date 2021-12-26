@@ -1,3 +1,0 @@
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/WW_Skim_NanoAOD.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/WZ_Skim_NanoAOD.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/ZZ_Skim_NanoAOD.root
