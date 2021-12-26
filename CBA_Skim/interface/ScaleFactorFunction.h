@@ -30,61 +30,102 @@ void initCrossSections(){
   crossSections["HplusM155"] = {19.13, 0.0, 0.0};
   crossSections["HplusM160"] = {19.13, 0.0, 0.0};
 
-  crossSections["TTbarPowheg_Dilepton"] = {687.10, 0.0, 0.0};
-  crossSections["TTbarPowheg_Hadronic"] = {687.10, 0.0, 0.0};
-  crossSections["TTbarPowheg_Semilept"] = {687.10, 0.0, 0.0};
-  /* crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095}; */
+  /* crossSections["TTbarPowheg_Dilepton"] = {687.10, 0.0, 0.0}; */
+  /* crossSections["TTbarPowheg_Hadronic"] = {687.10, 0.0, 0.0}; */
+  /* crossSections["TTbarPowheg_Semilept"] = {687.10, 0.0, 0.0}; */
+  crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315};
+  crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352};
+  crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095};
 
-  crossSections["ST_s_channel"] = {3.55, 0.0, 0.0};
-  crossSections["ST_t_channel"] = {113.40, 0.0, 0.0};
-  crossSections["ST_tbar_channel"] = {67.93, 0.0, 0.0};
-  crossSections["ST_tW_channel"] = {32.45, 0.0, 0.0};
-  crossSections["ST_tbarW_channel"] = {32.51, 0.0, 0.0};
+  /* crossSections["ST_s_channel"] = {3.55, 0.0, 0.0}; */
+  /* crossSections["ST_t_channel"] = {113.40, 0.0, 0.0}; */
+  /* crossSections["ST_tbar_channel"] = {67.93, 0.0, 0.0}; */
+  /* crossSections["ST_tW_channel"] = {32.45, 0.0, 0.0}; */
+  /* crossSections["ST_tbarW_channel"] = {32.51, 0.0, 0.0}; */
+  crossSections["ST_s_channel"]		=  {3.36, 3.36, 3.36}; //// Default setting
+  crossSections["ST_t_channel"]		=  {136.02, 136.02, 136.02};
+  crossSections["ST_tbar_channel"]		=  { 80.95,  80.95,  80.95};
+  crossSections["ST_tW_channel"]		=  { 35.85,  35.85,  35.85};
+  crossSections["ST_tbarW_channel"]		=  { 35.85,  35.85,  35.85};
 
-  crossSections["Wjets"] = {53690.00, 0.0, 0.0};
-  crossSections["W1jets"] = {8919.00, 0.0, 0.0};
-  crossSections["W2jets"] = {2824.00, 0.0, 0.0};
-  crossSections["W3jets"] = {822.70, 0.0, 0.0};
-  crossSections["W4jets"] = {389.00, 0.0, 0.0};
+  /* crossSections["Wjets"] = {53690.00, 0.0, 0.0}; */
+  /* crossSections["W1jets"] = {8919.00, 0.0, 0.0}; */
+  /* crossSections["W2jets"] = {2824.00, 0.0, 0.0}; */
+  /* crossSections["W3jets"] = {822.70, 0.0, 0.0}; */
+  /* crossSections["W4jets"] = {389.00, 0.0, 0.0}; */
+  crossSections["Wjets"]			=  {50690., 50690., 50690.};//50380.0;
+  crossSections["W1jets"]			=  {9493.0, 9493.0, 9493.0};//9493.0;
+  crossSections["W2jets"]			=  {3120.0, 3120.0, 3120.0}; //3120.0;
+  crossSections["W3jets"]			=  { 942.3,  942.3,  942.3};//942.3;
+  crossSections["W4jets"]			=  { 524.2,  524.2,  524.2};//524.2;
 
-  crossSections["DYjetsM10to50"] = {15970.00, 0.0, 0.0};
+  /* crossSections["DYjetsM10to50"] = {15970.00, 0.0, 0.0}; */
+  crossSections["DYjetsM10to50"]	=  {15810.0, 15810.0, 15810.0}; //16290.
   crossSections["DY1jetsM10to50"] = {565.30, 0.0, 0.0};
   crossSections["DY2jetsM10to50"] = {314.80, 0.0, 0.0};
   crossSections["DY3jetsM10to50"] = {76.94, 0.0, 0.0};
   crossSections["DY4jetsM10to50"] = {28.61, 0.0, 0.0};
 
-  crossSections["DYjetsM50"] = {5361.00, 0.0, 0.0};
-  crossSections["DY1jetsM50"] = {927.80, 0.0, 0.0};
-  crossSections["DY2jetsM50"] = {292.70, 0.0, 0.0};
-  crossSections["DY3jetsM50"] = {86.27, 0.0, 0.0};
-  crossSections["DY4jetsM50"] = {40.85, 0.0, 0.0};
+  /* crossSections["DYjetsM50"] = {5361.00, 0.0, 0.0}; */
+  /* crossSections["DY1jetsM50"] = {927.80, 0.0, 0.0}; */
+  /* crossSections["DY2jetsM50"] = {292.70, 0.0, 0.0}; */
+  /* crossSections["DY3jetsM50"] = {86.27, 0.0, 0.0}; */
+  /* crossSections["DY4jetsM50"] = {40.85, 0.0, 0.0}; */
+  crossSections["DYjetsM50"]			=  {5343.0, 5343.0, 5343.0}; // 4957. , 6077.22 (NNLO) so kf = 1.2245 for LO=4963
+  crossSections["DY1jetsM50"]			=  {1012.0, 1012.0, 1012.0}; //1003.0
+  crossSections["DY2jetsM50"]			=  { 334.7,  334.7,  334.7}; //336.7
+  crossSections["DY3jetsM50"]			=  { 102.3,  102.3,  102.3}; //102.9
+  crossSections["DY4jetsM50"]			=  { 54.52,  54.52,  54.52}; //54.71
+    
   
-  crossSections["WW"] = {75.59, 0.0, 0.0};
-  crossSections["WZ"] = {27.49, 0.0, 0.0};
-  crossSections["ZZ"] = {12.11, 0.0, 0.0};
+  /* crossSections["WW"] = {75.59, 0.0, 0.0}; */
+  /* crossSections["WZ"] = {27.49, 0.0, 0.0}; */
+  /* crossSections["ZZ"] = {12.11, 0.0, 0.0}; */
+  crossSections["WW"]				= {118.7, 118.7, 118.7};
+  crossSections["WZ"]				= {46.74, 46.74, 46.74};
+  crossSections["ZZ"]				= {17.72, 17.72, 17.72};
 
-  crossSections["QCD_Pt15to20_Mu"] = {2799000.00, 0.0, 0.0};
-  crossSections["QCD_Pt20to30_Mu"] = {2538000.00, 0.0, 0.0};
-  crossSections["QCD_Pt30to50_Mu"] = {1359000.00, 0.0, 0.0};
-  crossSections["QCD_Pt50to80_Mu"] = {377000.00, 0.0, 0.0};
-  crossSections["QCD_Pt80to120_Mu"] = {87470.00, 0.0, 0.0};
-  crossSections["QCD_Pt120to170_Mu"] = {21280.00, 0.0, 0.0};
-  crossSections["QCD_Pt170to300_Mu"] = {7012.00, 0.0, 0.0};
-  crossSections["QCD_Pt300to470_Mu"] = {617.20, 0.0, 0.0};
-  crossSections["QCD_Pt470to600_Mu"] = {59.20, 0.0, 0.0};
-  crossSections["QCD_Pt600to800_Mu"] = {18.20, 0.0, 0.0};
-  crossSections["QCD_Pt800to1000_Mu"] = {3.21, 0.0, 0.0};
-  crossSections["QCD_Pt1000toInf_Mu"] = {1.09, 0.0, 0.0};
+  /* crossSections["QCD_Pt15to20_Mu"] = {2799000.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt20to30_Mu"] = {2538000.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt30to50_Mu"] = {1359000.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt50to80_Mu"] = {377000.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt80to120_Mu"] = {87470.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt120to170_Mu"] = {21280.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt170to300_Mu"] = {7012.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt300to470_Mu"] = {617.20, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt470to600_Mu"] = {59.20, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt600to800_Mu"] = {18.20, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt800to1000_Mu"] = {3.21, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt1000toInf_Mu"] = {1.09, 0.0, 0.0}; */
 
-  crossSections["QCD_Pt20to30_Ele"] = {4865000.00, 0.0, 0.0};
-  crossSections["QCD_Pt30to50_Ele"] = {6287000.00, 0.0, 0.0};
-  crossSections["QCD_Pt50to80_Ele"] = {1990000.00, 0.0, 0.0};
-  crossSections["QCD_Pt80to120_Ele"] = {358600.00, 0.0, 0.0};
-  crossSections["QCD_Pt120to170_Ele"] = {66860.00, 0.0, 0.0};
-  crossSections["QCD_Pt170to300_Ele"] = {16320.00, 0.0, 0.0};
-  crossSections["QCD_Pt300toInf_Ele"] = {1088.00, 0.0, 0.0};
+  /* crossSections["QCD_Pt20to30_Ele"] = {4865000.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt30to50_Ele"] = {6287000.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt50to80_Ele"] = {1990000.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt80to120_Ele"] = {358600.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt120to170_Ele"] = {66860.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt170to300_Ele"] = {16320.00, 0.0, 0.0}; */
+  /* crossSections["QCD_Pt300toInf_Ele"] = {1088.00, 0.0, 0.0}; */
+
+  crossSections["QCD_Pt15to20_Mu"]		= {3819570.0, 3819570.0, 3819570.0};
+  crossSections["QCD_Pt20to30_Mu"]		= {2960198.4   , 2960198.4   , 2960198.4   };
+  crossSections["QCD_Pt30to50_Mu"]		= {1652471.46  , 1652471.46  , 1652471.46  };
+  crossSections["QCD_Pt50to80_Mu"]		= { 437504.1   ,  437504.1   ,  437504.1   };
+  crossSections["QCD_Pt80to120_Mu"]		= { 106033.6648,  106033.6648,  106033.6648};
+  crossSections["QCD_Pt120to170_Mu"]		= {  25190.5151,   25190.5151,   25190.5151};
+  crossSections["QCD_Pt170to300_Mu"]		= {   8654.4932,    8654.4932,    8654.4932};
+  crossSections["QCD_Pt300to470_Mu"]		= {    797.3527,     797.3527,     797.3527};
+  crossSections["QCD_Pt470to600_Mu"]		= {     79.0255,      79.0255,      79.0255};
+  crossSections["QCD_Pt600to800_Mu"]		= {     25.0951,      25.0951,      25.0951};
+  crossSections["QCD_Pt800to1000_Mu"]		= {      4.7074,       4.7074,       4.7074};
+  crossSections["QCD_Pt1000toInf_Mu"]		= {      1.6213,       1.6213,       1.6213};
+
+  crossSections["QCD_Pt20to30_Ele"]		= {5352960., 5352960., 5352960.};
+  crossSections["QCD_Pt30to50_Ele"]		= {9928000., 9928000., 9928000.};
+  crossSections["QCD_Pt50to80_Ele"]		= {2890800., 2890800., 2890800.};
+  crossSections["QCD_Pt80to120_Ele"]		= { 350000.,  350000.,  350000.};
+  crossSections["QCD_Pt120to170_Ele"]		= {  62964.,   62964.,   62964.};
+  crossSections["QCD_Pt170to300_Ele"]		= {  18810.,   18810.,   18810.};
+  crossSections["QCD_Pt300toInf_Ele"]		= {   1350.,    1350.,    1350.};
 
   /* crossSections["TTbarPowheg_inclusive"]     	=  {831.76, 831.76, 831.76};  //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675) */
   /* crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315}; */
