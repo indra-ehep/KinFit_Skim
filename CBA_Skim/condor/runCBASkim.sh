@@ -13,8 +13,8 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_2_14
-    cd CMSSW_10_2_14/src
+    scramv1 project CMSSW CMSSW_10_6_29
+    cd CMSSW_10_6_29/src
     eval `scramv1 runtime -sh`
     cd ../..
     
@@ -45,7 +45,7 @@ else
     #xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
     echo "Cleanup"
-    rm -rf CMSSW_10_2_14
+    rm -rf CMSSW_10_6_29
     rm *.root
 fi
 printf "Done ";/bin/date
