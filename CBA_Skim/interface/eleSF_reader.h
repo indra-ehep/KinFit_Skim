@@ -33,85 +33,151 @@ class ElectronSF
 std::vector<double> ElectronSF::getEleSF(double pt, double eta, int systLevel, bool verbose){
 
 
-    int eleEtaRegion_ID = -1;
-    int elePtRegion_ID = -1;
+    /* int eleEtaRegion_ID = -1; */
+    /* int elePtRegion_ID = -1; */
 
-    int eleEtaRegion_RECO = -1;
-    int elePtRegion_RECO = -1;
+    /* int eleEtaRegion_RECO = -1; */
+    /* int elePtRegion_RECO = -1; */
 
-    int eleEtaRegion_TRIG = -1;
-    int elePtRegion_TRIG = -1;
+    /* int eleEtaRegion_TRIG = -1; */
+    /* int elePtRegion_TRIG = -1; */
 
-    if (eta < -2.000) { eleEtaRegion_ID = 1;}
-    else if (eta < -1.566) { eleEtaRegion_ID = 2;}
-    else if (eta < -1.444) { eleEtaRegion_ID = 3;}
-    else if (eta < -0.800) { eleEtaRegion_ID = 4;}
-    else if (eta < 0.000) { eleEtaRegion_ID = 5;}
-    else if (eta < 0.800) { eleEtaRegion_ID = 6;}
-    else if (eta < 1.444) { eleEtaRegion_ID = 7;}
-    else if (eta < 1.566) { eleEtaRegion_ID = 8;}
-    else if (eta < 2.000) { eleEtaRegion_ID = 9;}
-    else { eleEtaRegion_ID = 10; }
+    /* if (eta < -2.000) { eleEtaRegion_ID = 1;} */
+    /* else if (eta < -1.566) { eleEtaRegion_ID = 2;} */
+    /* else if (eta < -1.444) { eleEtaRegion_ID = 3;} */
+    /* else if (eta < -0.800) { eleEtaRegion_ID = 4;} */
+    /* else if (eta < 0.000) { eleEtaRegion_ID = 5;} */
+    /* else if (eta < 0.800) { eleEtaRegion_ID = 6;} */
+    /* else if (eta < 1.444) { eleEtaRegion_ID = 7;} */
+    /* else if (eta < 1.566) { eleEtaRegion_ID = 8;} */
+    /* else if (eta < 2.000) { eleEtaRegion_ID = 9;} */
+    /* else { eleEtaRegion_ID = 10; } */
 
-    if (pt < 20.) { elePtRegion_ID = 1; }
-    else if (pt < 35.) { elePtRegion_ID = 2; }
-    else if (pt < 50.) { elePtRegion_ID = 3; }
-    else if (pt < 100.) { elePtRegion_ID = 4; }
-    else if (pt < 200.) { elePtRegion_ID = 5; }
-    else { elePtRegion_ID = 6; }
+    /* if (pt < 20.) { elePtRegion_ID = 1; } */
+    /* else if (pt < 35.) { elePtRegion_ID = 2; } */
+    /* else if (pt < 50.) { elePtRegion_ID = 3; } */
+    /* else if (pt < 100.) { elePtRegion_ID = 4; } */
+    /* else if (pt < 200.) { elePtRegion_ID = 5; } */
+    /* else { elePtRegion_ID = 6; } */
 
 
-    if (eta < -2.000) { eleEtaRegion_RECO = 1;}
-    else if (eta < -1.566) { eleEtaRegion_RECO = 2;}
-    else if (eta < -1.444) { eleEtaRegion_RECO = 3;}
-    else if (eta < -1.000) { eleEtaRegion_RECO = 4;}
-    else if (eta < -0.500) { eleEtaRegion_RECO = 5;}
-    else if (eta < 0.000) { eleEtaRegion_RECO = 6;}
-    else if (eta < 0.500) { eleEtaRegion_RECO = 7;}
-    else if (eta < 1.000) { eleEtaRegion_RECO = 8;}
-    else if (eta < 1.444) { eleEtaRegion_RECO = 9;}
-    else if (eta < 1.566) { eleEtaRegion_RECO= 10;}
-    else if (eta < 2.000) { eleEtaRegion_RECO= 11;}
-    else { eleEtaRegion_RECO = 12; }
+    /* if (eta < -2.000) { eleEtaRegion_RECO = 1;} */
+    /* else if (eta < -1.566) { eleEtaRegion_RECO = 2;} */
+    /* else if (eta < -1.444) { eleEtaRegion_RECO = 3;} */
+    /* else if (eta < -1.000) { eleEtaRegion_RECO = 4;} */
+    /* else if (eta < -0.500) { eleEtaRegion_RECO = 5;} */
+    /* else if (eta < 0.000) { eleEtaRegion_RECO = 6;} */
+    /* else if (eta < 0.500) { eleEtaRegion_RECO = 7;} */
+    /* else if (eta < 1.000) { eleEtaRegion_RECO = 8;} */
+    /* else if (eta < 1.444) { eleEtaRegion_RECO = 9;} */
+    /* else if (eta < 1.566) { eleEtaRegion_RECO= 10;} */
+    /* else if (eta < 2.000) { eleEtaRegion_RECO= 11;} */
+    /* else { eleEtaRegion_RECO = 12; } */
 
-    if (pt < 45.) { elePtRegion_RECO = 1; }
-    else if (pt < 75.) { elePtRegion_RECO = 2; }
-    else if (pt < 100.) { elePtRegion_RECO = 3; }
-    else { elePtRegion_RECO = 4; }
+    /* if (pt < 45.) { elePtRegion_RECO = 1; } */
+    /* else if (pt < 75.) { elePtRegion_RECO = 2; } */
+    /* else if (pt < 100.) { elePtRegion_RECO = 3; } */
+    /* else { elePtRegion_RECO = 4; } */
 
    
-    if (eta < -2.000) { eleEtaRegion_TRIG = 1;}
-    else if (eta < -1.566) { eleEtaRegion_TRIG = 2;}
-    else if (eta < -1.444) { eleEtaRegion_TRIG = 3;}
-    else if (eta < -0.800) { eleEtaRegion_TRIG = 4;}
-    else if (eta < 0.000) { eleEtaRegion_TRIG = 5;}
-    else if (eta < 0.800) { eleEtaRegion_TRIG = 6;}
-    else if (eta < 1.444) { eleEtaRegion_TRIG = 7;}
-    else if (eta < 1.566) { eleEtaRegion_TRIG = 8;}
-    else if (eta < 2.000) { eleEtaRegion_TRIG = 9;}
-    else { eleEtaRegion_TRIG = 10; }
+    /* if (eta < -2.000) { eleEtaRegion_TRIG = 1;} */
+    /* else if (eta < -1.566) { eleEtaRegion_TRIG = 2;} */
+    /* else if (eta < -1.444) { eleEtaRegion_TRIG = 3;} */
+    /* else if (eta < -0.800) { eleEtaRegion_TRIG = 4;} */
+    /* else if (eta < 0.000) { eleEtaRegion_TRIG = 5;} */
+    /* else if (eta < 0.800) { eleEtaRegion_TRIG = 6;} */
+    /* else if (eta < 1.444) { eleEtaRegion_TRIG = 7;} */
+    /* else if (eta < 1.566) { eleEtaRegion_TRIG = 8;} */
+    /* else if (eta < 2.000) { eleEtaRegion_TRIG = 9;} */
+    /* else { eleEtaRegion_TRIG = 10; } */
 
-    if (pt < 50.) { elePtRegion_TRIG = 1; }
-    else if (pt < 70.) { elePtRegion_TRIG = 2; }
-    else if (pt < 100.) { elePtRegion_TRIG = 3; }
-    else if (pt < 150.) { elePtRegion_TRIG = 4; }
-    else if (pt < 200.) { elePtRegion_TRIG = 5; }
-    else { elePtRegion_TRIG = 6; }
+    /* if (pt < 50.) { elePtRegion_TRIG = 1; } */
+    /* else if (pt < 70.) { elePtRegion_TRIG = 2; } */
+    /* else if (pt < 100.) { elePtRegion_TRIG = 3; } */
+    /* else if (pt < 150.) { elePtRegion_TRIG = 4; } */
+    /* else if (pt < 200.) { elePtRegion_TRIG = 5; } */
+    /* else { elePtRegion_TRIG = 6; } */
 
 
-    double id_SF_value = idHist->GetBinContent(eleEtaRegion_ID,elePtRegion_ID);
-    double id_SF_error = idHist->GetBinError(eleEtaRegion_ID,elePtRegion_ID);
+    /* double id_SF_value = idHist->GetBinContent(eleEtaRegion_ID,elePtRegion_ID); */
+    /* double id_SF_error = idHist->GetBinError(eleEtaRegion_ID,elePtRegion_ID); */
 
+    /* double id_SF = id_SF_value + (systLevel-1)*id_SF_error; */
+
+    /* double reco_SF_value = recoHist->GetBinContent(eleEtaRegion_RECO,elePtRegion_RECO); */
+    /* double reco_SF_error = recoHist->GetBinError(eleEtaRegion_RECO,elePtRegion_RECO); */
+
+    /* double reco_SF = reco_SF_value + (systLevel-1)*reco_SF_error; */
+
+    /* double trig_SF_value = trigHist->GetBinContent(eleEtaRegion_TRIG,elePtRegion_TRIG); */
+    /* double trig_SF_error = trigHist->GetBinError(eleEtaRegion_TRIG,elePtRegion_TRIG); */
+
+    /* double trig_SF = trig_SF_value + (systLevel-1)*trig_SF_error; */
+
+    //double pt, double eta, int systLevel, bool verbose
+     
+    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for ID /////////////////
+    double etaID, ptID;
+    if(eta < idHist->GetXaxis()->GetXmin())
+      etaID = idHist->GetXaxis()->GetXmin();
+    else if(eta > idHist->GetXaxis()->GetXmax())
+      etaID = idHist->GetXaxis()->GetXmax();
+    else
+      etaID = eta;
+
+    if(pt < idHist->GetYaxis()->GetXmin())
+      ptID = idHist->GetYaxis()->GetXmin();
+    else if(pt > idHist->GetYaxis()->GetXmax())
+      ptID = idHist->GetYaxis()->GetXmax();
+    else
+      ptID = pt;
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for RECO /////////////////
+    double etaRECO, ptRECO;
+    if(eta < recoHist->GetXaxis()->GetXmin())
+      etaRECO = recoHist->GetXaxis()->GetXmin();
+    else if(eta > recoHist->GetXaxis()->GetXmax())
+      etaRECO = recoHist->GetXaxis()->GetXmax();
+    else
+      etaRECO = eta;
+
+    if(pt < recoHist->GetYaxis()->GetXmin())
+      ptRECO = recoHist->GetYaxis()->GetXmin();
+    else if(pt > recoHist->GetYaxis()->GetXmax())
+      ptRECO = recoHist->GetYaxis()->GetXmax();
+    else
+      ptRECO = pt;
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    
+    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for Trigger /////////////
+    double etaTRIG, ptTRIG;
+    if(eta < trigHist->GetXaxis()->GetXmin())
+      etaTRIG = trigHist->GetXaxis()->GetXmin();
+    else if(eta > trigHist->GetXaxis()->GetXmax())
+      etaTRIG = trigHist->GetXaxis()->GetXmax();
+    else
+      etaTRIG = eta;
+
+    if(pt < trigHist->GetYaxis()->GetXmin())
+      ptTRIG = trigHist->GetYaxis()->GetXmin();
+    else if(pt > trigHist->GetYaxis()->GetXmax())
+      ptTRIG = trigHist->GetYaxis()->GetXmax();
+    else
+      ptTRIG = pt;
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    double id_SF_value = idHist->GetBinContent(idHist->FindBin(etaID,ptID));
+    double id_SF_error = idHist->GetBinError(idHist->FindBin(etaID,ptID));
     double id_SF = id_SF_value + (systLevel-1)*id_SF_error;
 
-    double reco_SF_value = recoHist->GetBinContent(eleEtaRegion_RECO,elePtRegion_RECO);
-    double reco_SF_error = recoHist->GetBinError(eleEtaRegion_RECO,elePtRegion_RECO);
-
+    double reco_SF_value = recoHist->GetBinContent(recoHist->FindBin(etaRECO,ptRECO));
+    double reco_SF_error = recoHist->GetBinError(recoHist->FindBin(etaRECO,ptRECO));
     double reco_SF = reco_SF_value + (systLevel-1)*reco_SF_error;
 
-    double trig_SF_value = trigHist->GetBinContent(eleEtaRegion_TRIG,elePtRegion_TRIG);
-    double trig_SF_error = trigHist->GetBinError(eleEtaRegion_TRIG,elePtRegion_TRIG);
-
+    double trig_SF_value = trigHist->GetBinContent(trigHist->FindBin(etaTRIG,ptTRIG));
+    double trig_SF_error = trigHist->GetBinError(trigHist->FindBin(etaTRIG,ptTRIG));
     double trig_SF = trig_SF_value + (systLevel-1)*trig_SF_error;
 
     std::vector<double> eleEffSF {id_SF*reco_SF*trig_SF, id_SF, reco_SF, trig_SF};

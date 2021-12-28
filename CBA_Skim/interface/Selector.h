@@ -101,6 +101,7 @@ public:
 	bool   useDeepCSVbTag;
 	bool   QCDselect;
 	bool   DDselect;
+	bool isPreVFP,isPostVFP ;
 
 	bool  looseJetID_miniAOD;
 
@@ -179,6 +180,8 @@ private:
 	JME::JetParameters jetParam;
 
         RoccoR *rc;
+        RoccoR *rca;
+        RoccoR *rcb;
 
 };
 

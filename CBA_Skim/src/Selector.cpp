@@ -74,6 +74,7 @@ Selector::Selector(){
     rc = 0;
     s = 0 ;
     m = 0;
+    isPreVFP = false ; isPostVFP = false ;
 
     //electron miniAOD MEDIUM
     ele_Pt_cut_miniAOD = 30.0;
@@ -119,18 +120,26 @@ void Selector::process_objects(string path, EventTree* inp_tree){
     clear_vectors();
     if(IsDebug) Info("Selector::process_objects","Cleared vectors");
     
-    // if(!rc)
-    //   rc = new RoccoR(Form("%s/weight/RoccoR/RoccoR%s.txt",path.c_str(),year.c_str()));
-    // if(IsDebug) Info("Selector::process_objects","Rochester corrections applied.");
+    
+    if(year=="2016"){
+      if(!rca)
+	rca = new RoccoR(Form("%s/weightUL/RoccoR/RoccoR%saUL.txt",path.c_str(),year.c_str()));
+      if(!rcb)
+	rcb = new RoccoR(Form("%s/weightUL/RoccoR/RoccoR%sbUL.txt",path.c_str(),year.c_str()));
+    }else if(year=="2017" or year=="2018"){
+      if(!rc)
+	rc = new RoccoR(Form("%s/weightUL/RoccoR/RoccoR%sUL.txt",path.c_str(),year.c_str()));
+    }
+    if(IsDebug) Info("Selector::process_objects","Rochester corrections applied.");
 
-    // //cout << "before selector muons" << endl;
-    // filter_muons();
-    // if(IsDebug) Info("Selector::process_objects","Filtered for muon objects.");
+    //cout << "before selector muons" << endl;
+    filter_muons();
+    if(IsDebug) Info("Selector::process_objects","Filtered for muon objects.");
 
-    // //Electron selection must be after muon selection
-    // //cout << "before selector electrons" << endl;
-    // filter_electrons();
-    // if(IsDebug) Info("Selector::process_objects","Filtered for electron objects.");
+    //Electron selection must be after muon selection
+    //cout << "before selector electrons" << endl;
+    filter_electrons();
+    if(IsDebug) Info("Selector::process_objects","Filtered for electron objects.");
 
     // //cout << "before selector jets" << endl;
     // filter_jets();
@@ -468,14 +477,19 @@ void Selector::filter_muons(){
     
     double eta = tree->muEta_[muInd];
     double pt = tree->muPt_[muInd];
-    
+
     double SFRochCorr = 1.0;
-    if (tree->isData_)
-      SFRochCorr *= rc->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-    else
-      SFRochCorr *= rc->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);;	
-      //SFRochCorr *= rc->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], 0.5, s, m);;	
-    
+    // if (tree->isData_){
+    //   SFRochCorr *= rc->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    // }else{
+    //   if(isPreVFP)
+    // 	SFRochCorr *= rca->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
+    //   else if(isPostVFP)
+    // 	SFRochCorr *= rcb->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+    //   else
+    // 	SFRochCorr *= rc->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+    //   //SFRochCorr *= rc->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], 0.5, s, m);;	
+    // }
     tree->muRoccoR_[muInd] = SFRochCorr;
     pt = pt*SFRochCorr;
     
@@ -1229,5 +1243,11 @@ bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){
 
 
 Selector::~Selector(){
-  delete rc;
+
+  // if(year=="2016"){
+  //   delete rca;  
+  //   delete rcb;
+  // }else
+  //   delete rc;
+  
 }

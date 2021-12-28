@@ -18,7 +18,7 @@
 #include "TPaveStats.h"
 #include "TMath.h"
 #include "TProof.h"
-
+#include "TObjString.h"
 
 //ClassImp(SkimAna)
 
@@ -626,7 +626,9 @@ void SkimAna::SetTrio()
   //selector->QCDselect = true ;
   selector->DDselect = true ;
   selector->mu_RelIso_loose = 0.4;
-
+  isMuTightID = true; //false for mediumID in efficiency
+  isEleTightID = true; //false for mediumID in efficiency
+  
   if(systType == kMETUp){
     selector->METUnc = 1.0;
     selector->selectMETUnc = true;
@@ -638,6 +640,7 @@ void SkimAna::SetTrio()
     selector->selectMETUnc = false;    
   }
   
+  
   // Cuts used for results presented at PAG dated August, 02, 2021
   // selector->mu_Pt_cut = 30.;
   // selector->mu_Eta_tight = 2.4;
@@ -648,6 +651,9 @@ void SkimAna::SetTrio()
   
   if(fYear==2016){
     
+    selector->isPreVFP = isPreVFP ;
+    selector->isPostVFP = isPostVFP ;
+
     // selector->mu_Pt_cut = 30.;
     // selector->mu_Eta_tight = 2.4;
     // selector->ele_Pt_cut = 35.;
@@ -967,23 +973,53 @@ void SkimAna::LoadLeptonSF(){
 
   if (fYear==2016){
     if(isNanoAOD){
-      muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunBCDEF_SF_ID.root",fBasePath.Data()), 
-			 "NUM_TightID_DEN_genTracks_eta_pt",
-			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunBCDEF_SF_ISO.root",fBasePath.Data()), 
-			 "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
-			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunBtoF.root",fBasePath.Data()), 
-			 "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio");
       
-      muSFb = new MuonSF(Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunGH_SF_ID.root",fBasePath.Data()), 
-			 "NUM_TightID_DEN_genTracks_eta_pt",
-			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunGH_SF_ISO.root",fBasePath.Data()), 
-			 "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
-			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunGtoH.root",fBasePath.Data()), 
-			 "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio");
+      // muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunBCDEF_SF_ID.root",fBasePath.Data()), 
+      // 			 "NUM_TightID_DEN_genTracks_eta_pt",
+      // 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunBCDEF_SF_ISO.root",fBasePath.Data()), 
+      // 			 "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
+      // 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunBtoF.root",fBasePath.Data()), 
+      // 			 "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio");
       
-      eleSF = new ElectronSF(Form("%s/weight/MuEleSF/ele2016/2016LegacyReReco_ElectronTight_Fall17V2.root",fBasePath.Data()),
-			     Form("%s/weight/MuEleSF/ele2016/EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root",fBasePath.Data()),
-			     Form("%s/weight/MuEleSF/ele2016/sf_ele_2016_trig_v5.root",fBasePath.Data()));
+      // muSFb = new MuonSF(Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunGH_SF_ID.root",fBasePath.Data()), 
+      // 			 "NUM_TightID_DEN_genTracks_eta_pt",
+      // 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunGH_SF_ISO.root",fBasePath.Data()), 
+      // 			 "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
+      // 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunGtoH.root",fBasePath.Data()), 
+      // 			 "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio");
+      
+      string muPath_preVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_preVFP_Z",fBasePath.Data());
+      string muPath_postVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_postVFP_Z",fBasePath.Data());
+      string muTrigPath_preVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_preVFP_trigger",fBasePath.Data());
+      string muTrigPath_postVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_postVFP_trigger",fBasePath.Data());
+      string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumID_DEN_TrackerMuons_abseta_pt";
+      string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumID_abseta_pt"; //check option of looseISO to use for DD QCD
+      string muTrighist = "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
+      
+      muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID.root",muPath_preVFP.c_str()), muIDhist,
+			 Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ISO.root",muPath_preVFP.c_str()), muISOhist, 
+			 Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_SingleMuonTriggers.root",muTrigPath_preVFP.c_str()), muTrighist); 
+      
+      muSFb = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_ID.root",muPath_postVFP.c_str()), muIDhist,
+			 Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_ISO.root",muPath_postVFP.c_str()), muISOhist, 
+			 Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_SingleMuonTriggers.root",muTrigPath_postVFP.c_str()), muTrighist); 
+      
+      // eleSF = new ElectronSF(Form("%s/weight/MuEleSF/ele2016/2016LegacyReReco_ElectronTight_Fall17V2.root",fBasePath.Data()),
+      // 			     Form("%s/weight/MuEleSF/ele2016/EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root",fBasePath.Data()),
+      // 			     Form("%s/weight/MuEleSF/ele2016/sf_ele_2016_trig_v5.root",fBasePath.Data()));
+      
+      string elePath_UL = Form("%s/weightUL/MuEleSF/ele2016",fBasePath.Data());
+      string elePath_LRR = Form("%s/weight/MuEleSF/ele2016",fBasePath.Data());
+      
+      string eleIDFile_preVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_preVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_preVFP_EGM2D.root";
+      string eleIDFile_postVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_postVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_postVFP_EGM2D.root";
+      string eleRECOFile_preVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016preVFP.root",elePath_UL.c_str());
+      string eleRECOFile_postVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016postVFP.root",elePath_UL.c_str());
+      string eleTrigFile = Form("%s/sf_ele_2016_trig_v5.root",elePath_LRR.c_str()) ;
+      
+      eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile_preVFP.c_str()), eleRECOFile_preVFP, eleTrigFile);
+      eleSFb = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile_postVFP.c_str()), eleRECOFile_postVFP, eleTrigFile);
+      
     }else{
 
       muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunBCDEF_SF_ID.root",fBasePath.Data()), 
@@ -1009,7 +1045,7 @@ void SkimAna::LoadLeptonSF(){
       tg_trackSF_GH 	= (TGraphAsymmErrors*)f_trackSF_GH->Get("ratio_eff_aeta_dr030e030_corr");
       
       //eleSF may not be currect for MiniAOD, take care.
-      eleSF = new ElectronSF(Form("%s/weight/MuEleSF/ele2016/2016LegacyReReco_ElectronMedium_Fall17V2.root",fBasePath.Data()),
+      eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2016/2016LegacyReReco_ElectronMedium_Fall17V2.root",fBasePath.Data()),
 			     Form("%s/weight/MuEleSF/ele2016/EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root",fBasePath.Data()),
 			     Form("%s/weight/MuEleSF/ele2016/sf_ele_2016_trig_v5.root",fBasePath.Data()));
       
@@ -1020,7 +1056,7 @@ void SkimAna::LoadLeptonSF(){
 		       Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ISO.root",fBasePath.Data()), "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
 		       Form("%s/weight/MuEleSF/mu2017/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",fBasePath.Data()), "IsoMu27_PtEtaBins/abseta_pt_ratio");
 	
-    eleSF = new ElectronSF(Form("%s/weight/MuEleSF/ele2017/2017_ElectronTight.root",fBasePath.Data()),
+    eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2017/2017_ElectronTight.root",fBasePath.Data()),
 			   Form("%s/weight/MuEleSF/ele2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root",fBasePath.Data()),
 			   Form("%s/weight/MuEleSF/ele2017/sf_ele_2017_trig_v5.root",fBasePath.Data()));
 
@@ -1040,7 +1076,7 @@ void SkimAna::LoadLeptonSF(){
 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root",fBasePath.Data()), 
 		       "IsoMu24_PtEtaBins/abseta_pt_ratio");
     
-    eleSF = new ElectronSF(Form("%s/weight/MuEleSF/ele2018/2018_ElectronTight.root",fBasePath.Data()),
+    eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2018/2018_ElectronTight.root",fBasePath.Data()),
 			   Form("%s/weight/MuEleSF/ele2018/egammaEffi.txt_EGM2D_updatedAll.root",fBasePath.Data()),
 			   Form("%s/weight/MuEleSF/ele2018/sf_ele_2018_trig_v5.root",fBasePath.Data()));
   }
@@ -1137,9 +1173,17 @@ void SkimAna::GetMuonEff(double iso){
     vector<double> muWeights_a    = muSFa->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_], mueffvar012_g, 2016);
     vector<double> muWeights_b    = muSFb->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_], mueffvar012_g, 2016);
     vector<double> muWeights;
+    
 
     for (int i=0; i < int(muWeights_a.size()); i++)
       muWeights.push_back( muWeights_a.at(i)*lumiFracI + muWeights_b.at(i)*lumiFracII );    
+    
+    // for (int i=0; i < int(muWeights_a.size()); i++){
+    //   if(isPreVFP)
+    // 	muWeights.push_back( muWeights_a.at(i));
+    //   if(isPostVFP)
+    // 	muWeights.push_back( muWeights_b.at(i));
+    // }
     
     if(isNanoAOD){
       _muEffWeight = (iso < 0.15) ? muWeights.at(0) : (muWeights.at(1) * muWeights.at(3));  // if iso>=0.15 then exclude iso eff at(2)
@@ -1156,35 +1200,46 @@ void SkimAna::GetMuonEff(double iso){
 
     muWeights_a.clear(); muWeights_b.clear(); muWeights.clear();
   }
-  if (fYear==2017){    
-    vector<double> muWeights    = muSFa->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_],mueffvar012_g, 2017);
+  if (fYear==2017 or fYear==2018){    
+    vector<double> muWeights    = muSFa->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_],mueffvar012_g, fYear);
 
     _muEffWeight = (iso < 0.15) ? muWeights.at(0) : (muWeights.at(1) * muWeights.at(3)) ;  
     
     muWeights.clear();
-  }
-  if(fYear==2018){
-    vector<double> muWeights_a    = muSFa->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_],mueffvar012_g, 2018);
-    vector<double> muWeights_b    = muSFb->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_],mueffvar012_g, 2018);
-    vector<double> muWeights;
-
-    for (int i=0; i < int(muWeights_a.size()); i++)
-      muWeights.push_back( muWeights_a.at(i)*lumiFracI + muWeights_b.at(i)*lumiFracII );    
-
-    _muEffWeight = (iso < 0.15) ? muWeights.at(0) : (muWeights.at(1) * muWeights.at(3));  // if iso>=0.15 then exclude iso eff at(2)
-
-    muWeights_a.clear(); muWeights_b.clear(); muWeights.clear();
   }
   
 }
 
 //_____________________________________________________________________________
 void SkimAna::GetElectronEff(){
-
+  
   int eleInd_ = selector->ElectronsNoIso.at(0);
-  vector<double> eleWeights    = eleSF->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
-  _eleEffWeight    = eleWeights.at(0);
-  eleWeights.clear();
+  if (fYear==2016){
+    vector<double> eleWeights_a    = eleSFa->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
+    vector<double> eleWeights_b    = eleSFb->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
+    vector<double> eleWeights;
+    eleWeights.clear();
+
+    for (int i=0; i < int(eleWeights_a.size()); i++)
+      eleWeights.push_back( eleWeights_a.at(i)*lumiFracI + eleWeights_b.at(i)*lumiFracII );    
+    
+    // for (int i=0; i < int(eleWeights_a.size()); i++){
+    //   if(isPreVFP)
+    // 	eleWeights.push_back( eleWeights_a.at(i));
+    //   if(isPostVFP)
+    // 	eleWeights.push_back( eleWeights_b.at(i) );
+    // }
+    
+    _eleEffWeight    = eleWeights.at(0);
+
+    eleWeights_a.clear(); eleWeights_b.clear(); eleWeights.clear();
+  }
+  if (fYear==2017 or fYear==2018){    
+    vector<double> eleWeights    = eleSFa->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
+    _eleEffWeight    = eleWeights.at(0);
+    eleWeights.clear();
+  }
+
 }
 
 //_____________________________________________________________________________
@@ -1493,7 +1548,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillEventCutFlow();
   FillEventWt();
   if(IsDebug) Info("Process","Completed Event filling");
-  return true;
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //The following setup is able to produce results presented in August-02 PAG
@@ -1594,7 +1649,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillLeptonCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
   FillLeptonWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
   if(IsDebug) Info("Process","Completed Lepton processing");
-
+  return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //////=====================================================
@@ -3795,8 +3850,10 @@ void SkimAna::SlaveTerminate()
     delete muSFa ;
   if(muSFb)
     delete muSFb ;
-  if(eleSF)
-    delete eleSF ;
+  if(eleSFa)
+    delete eleSFa ;
+  if(eleSFb)
+    delete eleSFb ;
   
   if(f_trackSF_BCDEF)
     delete f_trackSF_BCDEF;

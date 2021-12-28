@@ -690,13 +690,16 @@ class SkimAna : public TSelector {
    //Lepton SF
    MuonSF *muSFa = 0x0;
    MuonSF *muSFb = 0x0;
-   ElectronSF *eleSF = 0x0;
+   ElectronSF *eleSFa = 0x0;
+   ElectronSF *eleSFb = 0x0;
    double _muEffWeight = 1.0;
    double _muEffWeight_Up = 1.0;
    double _muEffWeight_Do = 1.0;
    double _eleEffWeight = 1.0;
    double _eleEffWeight_Up = 1.0;
    double _eleEffWeight_Do = 1.0;
+   bool isMuTightID = false;
+   bool isEleTightID = false;
    //miniAOD Tracker Eff
    TFile *f_trackSF_BCDEF = 0x0;
    TFile *f_trackSF_GH = 0x0;
@@ -1775,7 +1778,7 @@ void SkimAna::InitOutBranches(){
 //_____________________________________________________________________________
 double SkimAna::ScaleLumiW(Int_t nLHEPart){
 
-  Int_t nJets = nLHEPart - 2;
+  Int_t nJets = nLHEPart - 4; //It was nJets = nLHEPart - 2 in Legacy Rereco
   double fracLumiWt = 1.0;
   
   //2.1208, 0.2342, 0.1192, 0.0562, 0.0676 //using dataset similar volume of miniAOD
@@ -1829,7 +1832,7 @@ double SkimAna::ScaleLumiW(Int_t nLHEPart){
 //_____________________________________________________________________________
 double SkimAna::ScaleLumiZ(Int_t nLHEPart){
 
-  Int_t nJets = nLHEPart - 2;
+  Int_t nJets = nLHEPart - 4; //It was nJets = nLHEPart - 2 in Legacy Rereco
   double fracLumiWt = 1.0;
   
   //  0.1175, 0.0161, 0.0170, 0.0175, 0.0135

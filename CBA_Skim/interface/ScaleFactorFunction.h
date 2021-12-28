@@ -23,7 +23,7 @@ void initCrossSections(){
   crossSections["HplusM090"] = {19.13, 0.0, 0.0};
   crossSections["HplusM100"] = {19.13, 0.0, 0.0};
   crossSections["HplusM110"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM120"] = {19.13, 0.0, 0.0};
+  crossSections["HplusM120"] = {19.13, 0.0, 0.0}; //Try 56.15 to get the previous values
   crossSections["HplusM130"] = {19.13, 0.0, 0.0};
   crossSections["HplusM140"] = {19.13, 0.0, 0.0};
   crossSections["HplusM150"] = {19.13, 0.0, 0.0};
@@ -71,7 +71,7 @@ void initCrossSections(){
   /* crossSections["DY2jetsM50"] = {292.70, 0.0, 0.0}; */
   /* crossSections["DY3jetsM50"] = {86.27, 0.0, 0.0}; */
   /* crossSections["DY4jetsM50"] = {40.85, 0.0, 0.0}; */
-  crossSections["DYjetsM50"]			=  {5343.0, 5343.0, 5343.0}; // 4957. , 6077.22 (NNLO) so kf = 1.2245 for LO=4963
+  crossSections["DYjetsM50"]			=  {4963.0, 4963.0, 4963.0}; // 4957. , 6077.22 (NNLO) so kf = 1.2245 for LO=4963
   crossSections["DY1jetsM50"]			=  {1012.0, 1012.0, 1012.0}; //1003.0
   crossSections["DY2jetsM50"]			=  { 334.7,  334.7,  334.7}; //336.7
   crossSections["DY3jetsM50"]			=  { 102.3,  102.3,  102.3}; //102.9
@@ -163,7 +163,7 @@ void initCrossSections(){
   /* // // Default setting */
   /* /\* crossSections["HplusM080"]               =  {6.77, 6.77, 6.77};  *\/ */
   /* // //MiniAOD setting */
-  /* crossSections["HplusM080"]                  =  {21.55, 21.55, 21.55}; //831.76*0.2132*scaleSig;  */
+  /* crossSections["HplusM080"]                  =  {21.55, 21.55, 21.55}; //831.76*0.21322.39*scaleSig;  */
   /* //with scaleSig = 0.12155 = 2*0.065*(1-0.065), where 6.5% is the observed limit for 90 GeV at 8 TeV */
   /* crossSections["HplusM090"]                  =  {21.55, 21.55, 21.55};  */
   /* crossSections["HplusM100"]                  =  {21.55, 21.55, 21.55};  */
