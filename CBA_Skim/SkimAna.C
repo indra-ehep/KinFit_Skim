@@ -626,8 +626,8 @@ void SkimAna::SetTrio()
   //selector->QCDselect = true ;
   selector->DDselect = true ;
   selector->mu_RelIso_loose = 0.4;
-  isMuTightID = true; //false for mediumID in efficiency
-  isEleTightID = true; //false for mediumID in efficiency
+  isMuTightID = false; //false for mediumID in efficiency
+  isEleTightID = false; //false for mediumID in efficiency
   
   if(systType == kMETUp){
     selector->METUnc = 1.0;
@@ -1175,15 +1175,15 @@ void SkimAna::GetMuonEff(double iso){
     vector<double> muWeights;
     
 
-    for (int i=0; i < int(muWeights_a.size()); i++)
-      muWeights.push_back( muWeights_a.at(i)*lumiFracI + muWeights_b.at(i)*lumiFracII );    
+    // for (int i=0; i < int(muWeights_a.size()); i++)
+    //   muWeights.push_back( muWeights_a.at(i)*lumiFracI + muWeights_b.at(i)*lumiFracII );    
     
-    // for (int i=0; i < int(muWeights_a.size()); i++){
-    //   if(isPreVFP)
-    // 	muWeights.push_back( muWeights_a.at(i));
-    //   if(isPostVFP)
-    // 	muWeights.push_back( muWeights_b.at(i));
-    // }
+    for (int i=0; i < int(muWeights_a.size()); i++){
+      if(isPreVFP)
+    	muWeights.push_back( muWeights_a.at(i));
+      if(isPostVFP)
+    	muWeights.push_back( muWeights_b.at(i));
+    }
     
     if(isNanoAOD){
       _muEffWeight = (iso < 0.15) ? muWeights.at(0) : (muWeights.at(1) * muWeights.at(3));  // if iso>=0.15 then exclude iso eff at(2)
@@ -1219,16 +1219,16 @@ void SkimAna::GetElectronEff(){
     vector<double> eleWeights_b    = eleSFb->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
     vector<double> eleWeights;
     eleWeights.clear();
-
-    for (int i=0; i < int(eleWeights_a.size()); i++)
-      eleWeights.push_back( eleWeights_a.at(i)*lumiFracI + eleWeights_b.at(i)*lumiFracII );    
     
-    // for (int i=0; i < int(eleWeights_a.size()); i++){
-    //   if(isPreVFP)
-    // 	eleWeights.push_back( eleWeights_a.at(i));
-    //   if(isPostVFP)
-    // 	eleWeights.push_back( eleWeights_b.at(i) );
-    // }
+    // for (int i=0; i < int(eleWeights_a.size()); i++)
+    //   eleWeights.push_back( eleWeights_a.at(i)*lumiFracI + eleWeights_b.at(i)*lumiFracII );    
+    
+    for (int i=0; i < int(eleWeights_a.size()); i++){
+      if(isPreVFP)
+    	eleWeights.push_back( eleWeights_a.at(i));
+      if(isPostVFP)
+    	eleWeights.push_back( eleWeights_b.at(i) );
+    }
     
     _eleEffWeight    = eleWeights.at(0);
 
