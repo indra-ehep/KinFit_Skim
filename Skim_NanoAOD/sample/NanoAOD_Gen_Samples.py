@@ -33,7 +33,8 @@ old_1_MCType16_preVFP = 'RunIISummer19UL16NanoAODAPVv2-106X_mcRun2_asymptotic_pr
 
 DataType16          ='UL2016_MiniAODv2_NanoAODv9-v1'
 DataType16_hipm     ='HIPM_UL2016_MiniAODv2_NanoAODv9-v1'
-DataType16_hipm_v2  ='ver2_HIPM_UL2016_MiniAODv2_NanoAODv9-v1'
+DataType16_hipm_ver1  ='ver1_HIPM_UL2016_MiniAODv2_NanoAODv9-v1'
+DataType16_hipm_ver2  ='ver2_HIPM_UL2016_MiniAODv2_NanoAODv9-v1'
 #########################################################################################
 
 sampleList_2016 = {
@@ -80,21 +81,25 @@ sampleList_2016 = {
 'HminusM155_postVFP' : '/TTToHminusToCS_M-155_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType16+'/NANOAODSIM',
 'HminusM160_postVFP' : '/TTToHminusToCS_M-160_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType16+'/NANOAODSIM',
 
-'Data_SingleMu_b' : '/SingleMuon/Run2016B-'+DataType16_hipm_v2+'/NANOAOD',
-'Data_SingleMu_c' : '/SingleMuon/Run2016C-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleMu_d' : '/SingleMuon/Run2016D-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleMu_e' : '/SingleMuon/Run2016E-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleMu_f' : '/SingleMuon/Run2016F-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleMu_g' : '/SingleMuon/Run2016G-'+DataType16+'/NANOAOD',
-'Data_SingleMu_h' : '/SingleMuon/Run2016H-'+DataType16+'/NANOAOD',
+'Data_SingleMu_b_ver1_preVFP' : '/SingleMuon/Run2016B-'+DataType16_hipm_ver1+'/NANOAOD',
+'Data_SingleMu_b_ver2_preVFP' : '/SingleMuon/Run2016B-'+DataType16_hipm_ver2+'/NANOAOD',
+'Data_SingleMu_c_preVFP' : '/SingleMuon/Run2016C-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleMu_d_preVFP' : '/SingleMuon/Run2016D-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleMu_e_preVFP' : '/SingleMuon/Run2016E-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleMu_f_preVFP' : '/SingleMuon/Run2016F-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleMu_f_postVFP' : '/SingleMuon/Run2016F-'+DataType16+'/NANOAOD',
+'Data_SingleMu_g_postVFP' : '/SingleMuon/Run2016G-'+DataType16+'/NANOAOD',
+'Data_SingleMu_h_postVFP' : '/SingleMuon/Run2016H-'+DataType16+'/NANOAOD',
 
-'Data_SingleEle_b' : '/SingleElectron/Run2016B-'+DataType16_hipm_v2+'/NANOAOD',
-'Data_SingleEle_c' : '/SingleElectron/Run2016C-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleEle_d' : '/SingleElectron/Run2016D-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleEle_e' : '/SingleElectron/Run2016E-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleEle_f' : '/SingleElectron/Run2016F-'+DataType16_hipm+'/NANOAOD',
-'Data_SingleEle_g' : '/SingleElectron/Run2016G-'+DataType16+'/NANOAOD',
-'Data_SingleEle_h' : '/SingleElectron/Run2016H-'+DataType16+'/NANOAOD',
+'Data_SingleEle_b_ver1_preVFP' : '/SingleElectron/Run2016B-'+DataType16_hipm_ver1+'/NANOAOD',
+'Data_SingleEle_b_ver2_preVFP' : '/SingleElectron/Run2016B-'+DataType16_hipm_ver2+'/NANOAOD',
+'Data_SingleEle_c_preVFP' : '/SingleElectron/Run2016C-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleEle_d_preVFP' : '/SingleElectron/Run2016D-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleEle_e_preVFP' : '/SingleElectron/Run2016E-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleEle_f_preVFP' : '/SingleElectron/Run2016F-'+DataType16_hipm+'/NANOAOD',
+'Data_SingleEle_f_postVFP' : '/SingleElectron/Run2016F-'+DataType16+'/NANOAOD',
+'Data_SingleEle_g_postVFP' : '/SingleElectron/Run2016G-'+DataType16+'/NANOAOD',
+'Data_SingleEle_h_postVFP' : '/SingleElectron/Run2016H-'+DataType16+'/NANOAOD',
 
 'TTbarPowheg_Dilepton_preVFP' : '/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/'+MCType16_preVFP+'/NANOAODSIM',
 'TTbarPowheg_Hadronic_preVFP' : '/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/'+MCType16_preVFP+'/NANOAODSIM',
