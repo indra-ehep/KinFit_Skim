@@ -80,7 +80,18 @@ std::cerr << "ERROR in BTagCalibration: "
           << csvLine;
 throw std::exception();
   }
-  unsigned jf = stoi(vec[3]);
+  unsigned jtflv = stoi(vec[3]);
+
+  //code below to handle the conversion new-->old way of handling the jet flavour
+  unsigned jf = 3;
+  if(jtflv==0)
+    jf = 2;
+  else if(jtflv==4)
+    jf = 1;
+  else if(jtflv==5)
+    jf = 0;
+  /////////////////////////////////////////////////////////////////////////////
+
   if (jf > 2) {
 std::cerr << "ERROR in BTagCalibration: "
           << "Invalid csv line; JetFlavor > 2: "
@@ -281,11 +292,12 @@ BTagCalibration::BTagCalibration(const std::string &taggr,
   tagger_(taggr)
 {
   std::ifstream ifs(filename);
+  //std::cout<<"Reading file : " << filename << std::endl;
   if (!ifs.good()) {
-std::cerr << "ERROR in BTagCalibration: "
-          << "input file not available: "
-          << filename;
-throw std::exception();
+    std::cerr << "ERROR in BTagCalibration: "
+	      << "input file not available: "
+	      << filename;
+    throw std::exception();
   }
   readCSV(ifs);
   ifs.close();

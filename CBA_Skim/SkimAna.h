@@ -675,10 +675,16 @@ class SkimAna : public TSelector {
    
    //JECJER
    JECvariation *jecvar = 0x0;
+   JECvariation *jecvara = 0x0;
+   JECvariation *jecvarb = 0x0;
    
    //Btag
    BTagCalibration calib;
+   BTagCalibration caliba;
+   BTagCalibration calibb;
    BTagCalibrationReader reader;
+   BTagCalibrationReader readera;
+   BTagCalibrationReader readerb;
    TH2D *l_eff = 0x0, *c_eff = 0x0, *b_eff = 0x0;
    string btagSystType ;
    double _bTagWeight = 1.0 ;
@@ -1961,6 +1967,12 @@ Bool_t SkimAna::Notify()
   }else if (fname.find("_Skim") != string::npos)
     fname = fname.substr(0,fname.find("_Skim"));
   
+  selector->isPreVFP = isPreVFP ;
+  selector->isPostVFP = isPostVFP ;
+  if(isPreVFP) selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
+  if(isPostVFP) selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVb ; 
+
+
   fSampleType = fname;
   
   Info("Notify","processing sample %s and file: %s",fSampleType.Data(), fChain->GetCurrentFile()->GetName());  

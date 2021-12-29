@@ -1,5 +1,5 @@
-#ifndef RoccoR_H
-#define RoccoR_H
+#ifndef ElectroWeakAnalysis_RoccoR_H
+#define ElectroWeakAnalysis_RoccoR_H
 
 #include <boost/math/special_functions/erf.hpp>
 

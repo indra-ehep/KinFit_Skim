@@ -89,6 +89,8 @@ public:
 	double jet_Eta_cut;
 	double btag_cut;
 	double btag_cut_DeepCSV;
+        double btag_cut_DeepCSVa;
+        double btag_cut_DeepCSVb;
 	double veto_lep_jet_dR;
 	int JERsystLevel; //0= syst down, 1 = central, 2 = syst up
 	int JECsystLevel;//0= syst down, 1 = central, 2 = syst up
@@ -177,6 +179,10 @@ private:
 	//	bool passEleVetoID(int eleInd, bool doRelisoCut);
 	JME::JetResolution *jetResolution;
 	JME::JetResolutionScaleFactor *jetResolutionScaleFactor;
+	JME::JetResolution *jetResolutiona;
+	JME::JetResolutionScaleFactor *jetResolutionScaleFactora;
+	JME::JetResolution *jetResolutionb;
+	JME::JetResolutionScaleFactor *jetResolutionScaleFactorb;
 	JME::JetParameters jetParam;
 
         RoccoR *rc;

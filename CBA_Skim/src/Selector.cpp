@@ -97,9 +97,18 @@ Selector::Selector(){
 
 void Selector::init_JER(std::string inputPrefix){
   
+    // jetResolution = new JME::JetResolution((inputPrefix+"_MC_PtResolution_AK4PFchs.txt").c_str());
+    // jetResolutionScaleFactor = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK4PFchs.txt").c_str());
+  if(year=="2016"){
+    jetResolutiona = new JME::JetResolution((inputPrefix+"/preVFP_JRV3/Summer20UL16APV_JRV3_MC_PtResolution_AK4PFchs.txt").c_str());
+    jetResolutionScaleFactora = new JME::JetResolutionScaleFactor((inputPrefix+"/preVFP_JRV3/Summer20UL16APV_JRV3_MC_SF_AK4PFchs.txt").c_str());
+
+    jetResolutionb = new JME::JetResolution((inputPrefix+"/postVFP_JRV3/Summer20UL16_JRV3_MC_PtResolution_AK4PFchs.txt").c_str());
+    jetResolutionScaleFactorb = new JME::JetResolutionScaleFactor((inputPrefix+"/postVFP_JRV3/Summer20UL16_JRV3_MC_SF_AK4PFchs.txt").c_str());
+  }else{
     jetResolution = new JME::JetResolution((inputPrefix+"_MC_PtResolution_AK4PFchs.txt").c_str());
     jetResolutionScaleFactor = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK4PFchs.txt").c_str());
-
+  }
     //jetParam = new JME::JetParameters();
 
     // cout << "INIT JER" << endl;
@@ -140,20 +149,20 @@ void Selector::process_objects(string path, EventTree* inp_tree){
     //cout << "before selector electrons" << endl;
     filter_electrons();
     if(IsDebug) Info("Selector::process_objects","Filtered for electron objects.");
-
-    // //cout << "before selector jets" << endl;
-    // filter_jets();
-    // if(IsDebug) Info("Selector::process_objects","Filtered for jets.");
-
-    // filter_jetsNoCorr();
-    // if(IsDebug) Info("Selector::process_objects","Filtered for jets no Corr.");
     
-    // if(!selectMETUnc)
-    //   filter_mets();
-    // else
-    //   metWithUncl();
+    //cout << "before selector jets" << endl;
+    filter_jets();
+    if(IsDebug) Info("Selector::process_objects","Filtered for jets.");
 
-    // if(IsDebug) Info("Selector::process_objects","Filtered for MET.");
+    filter_jetsNoCorr();
+    if(IsDebug) Info("Selector::process_objects","Filtered for jets no Corr.");
+    
+    if(!selectMETUnc)
+      filter_mets();
+    else
+      metWithUncl();
+
+    if(IsDebug) Info("Selector::process_objects","Filtered for MET.");
 }
 
 void Selector::clear_vectors(){
@@ -480,7 +489,12 @@ void Selector::filter_muons(){
 
     double SFRochCorr = 1.0;
     // if (tree->isData_){
-    //   SFRochCorr *= rc->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    //   if(isPreVFP)
+    // 	SFRochCorr *= rca->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    //   else if(isPostVFP)
+    // 	SFRochCorr *= rcb->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    //   else
+    // 	SFRochCorr *= rc->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
     // }else{
     //   if(isPreVFP)
     // 	SFRochCorr *= rca->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
@@ -644,12 +658,27 @@ void Selector::filter_jets(){
       jetParam.setJetPt(tree->jetPt_[jetInd]);
       jetParam.setJetArea(tree->jetArea_[jetInd]);
       jetParam.setRho(tree->rho_);
-      resolution = jetResolution->getResolution(jetParam);
-      
-      if (JERsystLevel==1) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::NOMINAL);
-      if (JERsystLevel==0) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::DOWN);
-      if (JERsystLevel==2) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::UP);
-      
+      if(year=="2016"){
+	if(isPreVFP){
+	  resolution = jetResolutiona->getResolution(jetParam);  
+	  if (JERsystLevel==1) jetSF = jetResolutionScaleFactora->getScaleFactor(jetParam,Variation::NOMINAL);
+	  if (JERsystLevel==0) jetSF = jetResolutionScaleFactora->getScaleFactor(jetParam,Variation::DOWN);
+	  if (JERsystLevel==2) jetSF = jetResolutionScaleFactora->getScaleFactor(jetParam,Variation::UP);
+	}
+	if(isPostVFP){
+	  resolution = jetResolutionb->getResolution(jetParam);  
+	  if (JERsystLevel==1) jetSF = jetResolutionScaleFactorb->getScaleFactor(jetParam,Variation::NOMINAL);
+	  if (JERsystLevel==0) jetSF = jetResolutionScaleFactorb->getScaleFactor(jetParam,Variation::DOWN);
+	  if (JERsystLevel==2) jetSF = jetResolutionScaleFactorb->getScaleFactor(jetParam,Variation::UP);
+	}
+      }else{
+
+	resolution = jetResolution->getResolution(jetParam);  
+	if (JERsystLevel==1) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::NOMINAL);
+	if (JERsystLevel==0) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::DOWN);
+	if (JERsystLevel==2) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::UP);
+
+      }
       double jetSmear = 1.;
       
       if(IsDebug) 
@@ -996,12 +1025,31 @@ void Selector::filter_mets(){
       jetParam.setJetPt(tree->jetPt_[jetInd]);
       jetParam.setJetArea(tree->jetArea_[jetInd]);
       jetParam.setRho(tree->rho_);
-      double resolution = jetResolution->getResolution(jetParam);
-      
+      double resolution = 1.0;
       double jetSF = 1.0;
-      if (JERsystLevel==1) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::NOMINAL);
-      if (JERsystLevel==0) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::DOWN);
-      if (JERsystLevel==2) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::UP);
+      
+      if(year=="2016"){
+	if(isPreVFP){
+	  resolution = jetResolutiona->getResolution(jetParam);  
+	  if (JERsystLevel==1) jetSF = jetResolutionScaleFactora->getScaleFactor(jetParam,Variation::NOMINAL);
+	  if (JERsystLevel==0) jetSF = jetResolutionScaleFactora->getScaleFactor(jetParam,Variation::DOWN);
+	  if (JERsystLevel==2) jetSF = jetResolutionScaleFactora->getScaleFactor(jetParam,Variation::UP);
+	}
+	if(isPostVFP){
+	  resolution = jetResolutionb->getResolution(jetParam);  
+	  if (JERsystLevel==1) jetSF = jetResolutionScaleFactorb->getScaleFactor(jetParam,Variation::NOMINAL);
+	  if (JERsystLevel==0) jetSF = jetResolutionScaleFactorb->getScaleFactor(jetParam,Variation::DOWN);
+	  if (JERsystLevel==2) jetSF = jetResolutionScaleFactorb->getScaleFactor(jetParam,Variation::UP);
+	}
+      }else{
+	
+	resolution = jetResolution->getResolution(jetParam);  
+	if (JERsystLevel==1) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::NOMINAL);
+	if (JERsystLevel==0) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::DOWN);
+	if (JERsystLevel==2) jetSF = jetResolutionScaleFactor->getScaleFactor(jetParam,Variation::UP);
+
+      }
+
       
       int genIdx = tree->jetGenJetIdx_[jetInd];
       double jetSmear = 1.0 ;

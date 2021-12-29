@@ -651,9 +651,6 @@ void SkimAna::SetTrio()
   
   if(fYear==2016){
     
-    selector->isPreVFP = isPreVFP ;
-    selector->isPostVFP = isPostVFP ;
-
     // selector->mu_Pt_cut = 30.;
     // selector->mu_Eta_tight = 2.4;
     // selector->ele_Pt_cut = 35.;
@@ -696,10 +693,18 @@ void SkimAna::SetTrio()
     // if (fYear==2016) selector->btag_cut_DeepCSV = 0.2217; 
     // if (fYear==2017) selector->btag_cut_DeepCSV = 0.1522;
     // if (fYear==2018) selector->btag_cut_DeepCSV = 0.1241;
+    // //Medium
+    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.6321; 
+    // if (fYear==2017) selector->btag_cut_DeepCSV = 0.4941;
+    // if (fYear==2018) selector->btag_cut_DeepCSV = 0.4184;
+
     //Medium
-    if (fYear==2016) selector->btag_cut_DeepCSV = 0.6321; 
-    if (fYear==2017) selector->btag_cut_DeepCSV = 0.4941;
-    if (fYear==2018) selector->btag_cut_DeepCSV = 0.4184;
+    if (fYear==2016){
+      selector->btag_cut_DeepCSVa = 0.6001; 
+      selector->btag_cut_DeepCSVb = 0.5847; 
+    }
+    if (fYear==2017) selector->btag_cut_DeepCSV = 0.4506;
+    if (fYear==2018) selector->btag_cut_DeepCSV = 0.4168;
     // //Tight
     // if (fYear==2016) selector->btag_cut_DeepCSV = 0.8953; 
     // if (fYear==2017) selector->btag_cut_DeepCSV = 0.8001;
@@ -856,9 +861,9 @@ void SkimAna::LoadPU()
 void SkimAna::LoadJECJER()
 {
   if (!isData){
-    if (fYear==2016) selector->init_JER( Form("%s/weight/JetSF/JER/Summer16_25nsV1",fBasePath.Data()) );
-    if (fYear==2017) selector->init_JER( Form("%s/weight/JetSF/JER/Fall17_V3",fBasePath.Data()) );
-    if (fYear==2018) selector->init_JER( Form("%s/weight/JetSF/JER/Autumn18_V7b",fBasePath.Data()) );
+    if (fYear==2016) selector->init_JER( Form("%s/weightUL/JetSF/JER/2016",fBasePath.Data()) );
+    if (fYear==2017) selector->init_JER( Form("%s/weightUL/JetSF/JER/2017/JRV2/Summer19UL17_JRV2",fBasePath.Data()) );
+    if (fYear==2018) selector->init_JER( Form("%s/weightUL/JetSF/JER/2018/JRV2/Summer19UL18_JRV2",fBasePath.Data()) );
     
   
     if (systType == kJECUp or systType == kJECDown) { // if (isMC && jecvar012_g!=1) {
@@ -870,10 +875,12 @@ void SkimAna::LoadJECJER()
             cout << "Exiting" << endl;
             return;
       }
-      if (fYear==2016) jecvar = new JECvariation( Form("%s/weight/JetSF/Summer16_07Aug2017_V11",fBasePath.Data()), !isData, JECsystLevel);
-      if (fYear==2017) jecvar = new JECvariation( Form("%s/weight/JetSF/Fall17_17Nov2017_V32",fBasePath.Data()), !isData, JECsystLevel);
-      if (fYear==2018) jecvar = new JECvariation( Form("%s/weight/JetSF/Autumn18_V19",fBasePath.Data()), !isData, JECsystLevel);
-      cout << "Here I am " << endl;
+      if (fYear==2016){
+	jecvara = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/preVFP_V7/Summer19UL16APV_V7",fBasePath.Data()), !isData, JECsystLevel);
+	jecvarb = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/postVFP_V7/Summer19UL16_V7",fBasePath.Data()), !isData, JECsystLevel);
+      }
+      if (fYear==2017) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2017/V5/Summer19UL17_V5",fBasePath.Data()), !isData, JECsystLevel);
+      if (fYear==2018) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2018/V5/Summer19UL18_V5",fBasePath.Data()), !isData, JECsystLevel);
     }
   }//isData
 
@@ -895,44 +902,59 @@ void SkimAna::LoadBTag()
     if (fYear==2017) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_94XSF_V2_B_F.csv",fBasePath.Data()));
     if (fYear==2018) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_94XSF_V2_B_F.csv",fBasePath.Data()));
     Info("LoadBTag","CSVV2 calibration has been loaded");
+
+    reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
+    reader.load(calib, BTagEntry::FLAV_B,"comb");          
+    reader.load(calib, BTagEntry::FLAV_C, "comb"); 
+    reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
+
   } else {
     Info("LoadBTag","DeepCSV calibration has been selected");
-    // if (fYear==2016){ calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data()) ) ;}
-    // if (fYear==2017){ calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/DeepCSV_94XSF_V3_B_F.csv",fBasePath.Data()) ) ;}
-    // if (fYear==2018){ calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/DeepCSV_102XSF_V1.csv",fBasePath.Data()) ) ;} //DeepCSV_102XSF_V1.csv  
     if (fYear==2016){ 
-      Info("LoadBTag","DeepCSV calibration has been selected : 2016");
-      
-      // if(fSample.BeginsWith("TTbar") or fSample.BeginsWith("singleTop")){
-      // 	calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1_TuneCP5.csv",fBasePath.Data()) ) ;
-      // 	Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1_TuneCP5.csv",fBasePath.Data());
-      // }else{
-      // 	calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data()) ) ;
-      // 	Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data());
-      // }
-      
-      // A temporary workaround the proper implementation should be like above
-      calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data());
+      Info("LoadBTag","DeepCSV calibration has been selected : 2016");      
+      // caliba = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2016/DeepCSV_106XUL16preVFPSF_v1.csv",fBasePath.Data()) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_106XUL16preVFPSF_v1.csv",fBasePath.Data());
+      // calibb = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2016/DeepCSV_106XUL16postVFPSF_v2.csv",fBasePath.Data()) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_106XUL16postVFPSF_v2.csv",fBasePath.Data());
+
+      caliba = BTagCalibration( "deepcsva", Form("%s/weightUL/BtagSF/2016/DeepCSV_preVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_preVFP_formatted.csv",fBasePath.Data());
+      calibb = BTagCalibration( "deepcsvb", Form("%s/weightUL/BtagSF/2016/DeepCSV_postVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_postVFP_formatted.csv",fBasePath.Data());
+
+      readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      readera.load(caliba, BTagEntry::FLAV_B,"comb");          
+      readera.load(caliba, BTagEntry::FLAV_C, "comb"); 
+      readera.load(caliba, BTagEntry::FLAV_UDSG, "incl"); 
+
+      readerb = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      readerb.load(calibb, BTagEntry::FLAV_B,"comb");          
+      readerb.load(calibb, BTagEntry::FLAV_C, "comb"); 
+      readerb.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
 
     }
     if (fYear==2017){ 
       Info("LoadBTag","DeepCSV calibration has been selected : 2017 %s",fBasePath.Data());
-      calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_94XSF_V5_B_F.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_94XSF_V5_B_F.csv",fBasePath.Data());
+      calib = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2017/wp_deepCSV_106XUL17_v3.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/2017/wp_deepCSV_106XUL17_v3.csv",fBasePath.Data());
+
+      reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
+      reader.load(calib, BTagEntry::FLAV_B,"comb");          
+      reader.load(calib, BTagEntry::FLAV_C, "comb"); 
+      reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
     }
     if (fYear==2018){ 
       Info("LoadBTag","DeepCSV calibration has been selected : 2018");
-      calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_102XSF_V2.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_102XSF_V2.csv",fBasePath.Data());
+      calib = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2018/wp_deepCSV_106XUL18_v2.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/2018/wp_deepCSV_106XUL18_v2.csv",fBasePath.Data());
+
+      reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
+      reader.load(calib, BTagEntry::FLAV_B,"comb");          
+      reader.load(calib, BTagEntry::FLAV_C, "comb"); 
+      reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
     } //DeepCSV_102XSF_V1.csv  
   }
   
-  reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
-  
-  reader.load(calib, BTagEntry::FLAV_B,"comb");          
-  reader.load(calib, BTagEntry::FLAV_C, "comb"); 
-  reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
   
   //string year = "2016";
   std::string fName = "" ;
@@ -941,13 +963,7 @@ void SkimAna::LoadBTag()
       fName = Form("%s/weight/BtagSF/btag_efficiencies_%d.root",fBasePath.Data(),fYear);
     else
       fName = Form("%s/weight/BtagSF/Efficiency/MiniAOD/CSVV2/%s_btag_efficiency.root",fBasePath.Data(),fSample.Data());
-  }else{ //DeepCSV
-    
-    // if(fSample.BeginsWith("TTbar") or fSample.BeginsWith("Hplus"))
-    //   fName = Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV/%d/TTB_btag_efficiency_%d.root",fBasePath.Data(),fYear,fYear);    
-    // else
-    //   fName = Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV/%d/Others_btag_efficiency_%d.root",fBasePath.Data(),fYear,fYear);    
-    
+  }else{ //DeepCSV    
     fName = Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV/%d/%s_btag_efficiency_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
   }
   Info("LoadBTag","Efficientcy file : %s",fName.c_str());
@@ -1089,7 +1105,7 @@ void SkimAna::GetBtagSF_1a(){
   double jetEta;
   double jetBtag;
   int jetFlavor;
-  double SFb;
+  double SFb = 1.;
   double Eff;
 
   double pMC = 1.0;
@@ -1119,9 +1135,15 @@ void SkimAna::GetBtagSF_1a(){
     jetFlavor = abs(event->jetPartFlvr_[*jetInd]);
     //jetFlavor = abs(event->jetHadFlvr_[*jetInd]);
     jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagCSVV2_[*jetInd] ;
-
+    
     if (jetFlavor == 5){
-      SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
+      if(fYear==2016){
+	if(isPreVFP)
+	  SFb = readera.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
+	if(isPostVFP)
+	  SFb = readerb.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
+      }else
+	SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = b_eff->GetYaxis()->FindBin(abs(jetEta));
       maxbinX = b_eff->GetXaxis()->GetLast();
@@ -1129,7 +1151,13 @@ void SkimAna::GetBtagSF_1a(){
       Eff = b_eff->GetBinContent(xbin,ybin);
     }
     else if(jetFlavor == 4){
-      SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+      if(fYear==2016){
+	if(isPreVFP)
+	  SFb = readera.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
+	if(isPostVFP)
+	  SFb = readerb.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+      }else
+	SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = c_eff->GetYaxis()->FindBin(abs(jetEta));
       maxbinX = c_eff->GetXaxis()->GetLast();
@@ -1137,7 +1165,13 @@ void SkimAna::GetBtagSF_1a(){
       Eff = c_eff->GetBinContent(xbin,ybin);
     }
     else {
-      SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
+      if(fYear==2016){
+	if(isPreVFP)
+	  SFb = readera.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
+	if(isPostVFP)
+	  SFb = readerb.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
+      }else
+	SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
       maxbinX = l_eff->GetXaxis()->GetLast();
@@ -1492,7 +1526,13 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   // Set JEC syst
   if( !isData and (systType == kJECUp or systType == kJECDown)){
-    jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+    if(fYear==2016){
+      if(isPreVFP)
+	jecvara->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+      if(isPostVFP)
+	jecvarb->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+    }else
+      jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
   }
   if(IsDebug) Info("Process","Completed JEC correction");
 
@@ -1649,7 +1689,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillLeptonCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
   FillLeptonWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut);
   if(IsDebug) Info("Process","Completed Lepton processing");
-  return true;
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //////=====================================================
@@ -1722,6 +1762,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagObs(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
   FillBTagWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);  
   if(IsDebug) Info("Process","Completed b-jet processing");
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -3838,6 +3879,10 @@ void SkimAna::SlaveTerminate()
     
   if(jecvar)
     delete jecvar;
+  if(jecvara)
+    delete jecvar;
+  if(jecvarb)
+    delete jecvar;
   
   if(event)
     delete event;
@@ -3896,8 +3941,8 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 800000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;

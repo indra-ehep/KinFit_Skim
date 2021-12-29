@@ -1,5 +1,5 @@
-//#ifndef ElectroWeakAnalysis_RoccoR
-//#define ElectroWeakAnalysis_RoccoR
+#ifndef ElectroWeakAnalysis_RoccoR
+#define ElectroWeakAnalysis_RoccoR
 
 #include <fstream>
 #include <sstream>
@@ -334,5 +334,5 @@ double RoccoR::kScaleAndSmearMCerror(int Q, double pt, double eta, double phi, i
     return error([this, Q, pt, eta, phi, n, u, w](int s, int m) {return kScaleAndSmearMC(Q, pt, eta, phi, n, u, w, s, m);});
 }
 
-//#endif
+#endif
 
