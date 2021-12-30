@@ -241,6 +241,9 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
   tree->SetBranchStatus("Jet_jetId",1);
   tree->SetBranchAddress("Jet_jetId", &jetID_);
 
+  tree->SetBranchStatus("Jet_puId",1);
+  tree->SetBranchAddress("Jet_puId", &jetPUID_);
+
   tree->SetBranchStatus("Jet_area",1);
   tree->SetBranchAddress("Jet_area", &jetArea_);
 
@@ -767,6 +770,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
   chain->SetBranchStatus("Jet_jetId",1);
   chain->SetBranchAddress("Jet_jetId", &jetID_);
+
+  chain->SetBranchStatus("Jet_puId",1);
+  chain->SetBranchAddress("Jet_puId", &jetPUID_);
 
   chain->SetBranchStatus("Jet_area",1);
   chain->SetBranchAddress("Jet_area", &jetArea_);

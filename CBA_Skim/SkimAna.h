@@ -1181,11 +1181,14 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("Jet_jetId",1);
   tree->SetBranchAddress("Jet_jetId", &(event->jetID_));
 
+  tree->SetBranchStatus("Jet_puId",1);
+  tree->SetBranchAddress("Jet_puId", &(event->jetPUID_));
+
   tree->SetBranchStatus("Jet_area",1);
   tree->SetBranchAddress("Jet_area", &(event->jetArea_));
 
-  tree->SetBranchStatus("Jet_btagCMVA",1);
-  tree->SetBranchAddress("Jet_btagCMVA", &(event->jetBtagCMVA_));
+  /* tree->SetBranchStatus("Jet_btagCMVA",1); */
+  /* tree->SetBranchAddress("Jet_btagCMVA", &(event->jetBtagCMVA_)); */
 
   tree->SetBranchStatus("Jet_btagCSVV2",1);
   tree->SetBranchAddress("Jet_btagCSVV2", &(event->jetBtagCSVV2_));
@@ -1193,8 +1196,8 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("Jet_btagDeepB",1);
   tree->SetBranchAddress("Jet_btagDeepB", &(event->jetBtagDeepB_));
 
-  tree->SetBranchStatus("Jet_btagDeepC",1);
-  tree->SetBranchAddress("Jet_btagDeepC", &(event->jetBtagDeepC_));
+  /* tree->SetBranchStatus("Jet_btagDeepC",1); */
+  /* tree->SetBranchAddress("Jet_btagDeepC", &(event->jetBtagDeepC_)); */
 
   tree->SetBranchStatus("Jet_btagDeepFlavB",1);
   tree->SetBranchAddress("Jet_btagDeepFlavB", &(event->jetBtagDeepFlavB_));

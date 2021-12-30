@@ -38,27 +38,26 @@ int CreateBtagEff()
 {
   
   int year = 2016;
-  //int nofSamples = 27;
-  int nofSamples = 3;
-  const char *Sample[] = {"TTbar", "singleTop", "Wjets"}; 
+  // int nofSamples = 3;
+  // const char *Sample[] = {"TTbar", "singleTop", "Wjets"}; 
   //const char *Sample[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM140", "HplusM150", "HplusM155", "HplusM160"};  //2016
-
-  // const char *Sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", 
-  // 			  "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-  // 			  "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"};  //2016
+  int nofSamples = 27;
+  const char *Sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", 
+  			  "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+  			  "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"};  //2016
 
   //const char *Sample[] = {"HplusM120", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "TTB", "Others"};  //2016
   //const char *Sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "TTB", "Others"};  //2017 and 2018
   
-  const char *MLname = "deepcsv";
-  const char* inputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s_raw",MLname);
-  const char* outputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s",MLname);
+  string MLname = "deepjet";
+  string inputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s_raw",MLname.c_str());
+  string outputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s",MLname.c_str());
 
   for(int ifile = 0 ; ifile < nofSamples ; ifile++ ){
   
     
-    TFile *f = TFile::Open(Form("%s/%d/%s_btag_eff_raw_%d.root",inputpath,year,Sample[ifile],year));    
-    TFile *fout = new TFile(Form("%s/%d/%s_btag_eff_%s_%d.root",outputpath,year,Sample[ifile],MLname,year),"recreate");    
+    TFile *f = TFile::Open(Form("%s/%d/%s_btag_eff_raw_%d.root",inputpath.c_str(),year,Sample[ifile],year));    
+    TFile *fout = new TFile(Form("%s/%d/%s_btag_eff_%s_%d.root",outputpath.c_str(),year,Sample[ifile],MLname.c_str(),year),"recreate");    
     
     if(!f) continue;
 
