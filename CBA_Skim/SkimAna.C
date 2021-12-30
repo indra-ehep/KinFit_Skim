@@ -969,13 +969,11 @@ void SkimAna::LoadBTag()
   Info("LoadBTag","Efficientcy file : %s",fName.c_str());
   Info("LoadBTag","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
   
-  std::string effType = "Other";
-  // if (fSample.BeginsWith("TTbar"))
-  //   effType = "Top";
+  std::string effType = "BTag";
   
-  std::string leffName = effType+"_l_efficiency";
-  std::string ceffName = effType+"_c_efficiency";
-  std::string beffName = effType+"_b_efficiency";
+  std::string leffName = effType+"_l_M_efficiency";
+  std::string ceffName = effType+"_c_M_efficiency";
+  std::string beffName = effType+"_b_M_efficiency";
   
   TFile* inputFile = TFile::Open(fName.c_str(),"read");
   l_eff = (TH2D*) inputFile->Get(leffName.c_str());

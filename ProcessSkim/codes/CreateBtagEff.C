@@ -38,40 +38,36 @@ int CreateBtagEff()
 {
   
   int year = 2016;
-  int nofSamples = 15;
+  //int nofSamples = 27;
+  int nofSamples = 3;
+  const char *Sample[] = {"TTbar", "singleTop", "Wjets"}; 
   //const char *Sample[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM140", "HplusM150", "HplusM155", "HplusM160"};  //2016
-  const char *Sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", 
-			  "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"};  //2016
+
+  // const char *Sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", 
+  // 			  "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+  // 			  "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"};  //2016
+
   //const char *Sample[] = {"HplusM120", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "TTB", "Others"};  //2016
   //const char *Sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "TTB", "Others"};  //2017 and 2018
   
-  
+  const char *MLname = "deepcsv";
+  const char* inputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s_raw",MLname);
+  const char* outputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s",MLname);
+
   for(int ifile = 0 ; ifile < nofSamples ; ifile++ ){
   
-    TH2D *h2_tot_BTagEff_Denom_b = 0x0;
-    TH2D *h2_tot_BTagEff_Denom_c = 0x0;
-    TH2D *h2_tot_BTagEff_Denom_udsg = 0x0;
-    TH2D *h2_tot_BTagEff_Num_b = 0x0;
-    TH2D *h2_tot_BTagEff_Num_c = 0x0;
-    TH2D *h2_tot_BTagEff_Num_udsg = 0x0;
     
-    // TFile *fout = new TFile(Form("root_files/NanoAOD/btag/%d/%s_btag_efficiency_%d.root",year,Sample[ifile],year),"recreate");    
-    // TFile *f = TFile::Open(Form("root_files/NanoAOD/btag_raw/%d/%s_btag_eff_raw_%d.root",year,Sample[ifile],year));
-
-    TFile *fout = new TFile(Form("root_files/NanoAOD/btag/%d/%s_btag_efficiency_%d.root",year,Sample[ifile],year),"recreate");    
-    TFile *f = TFile::Open(Form("root_files/NanoAOD/btag_raw_new/%s_btag_eff_raw_%d.root",Sample[ifile],year));
-
-    // TFile *fout = new TFile(Form("root_files/MiniAOD/btag/%s_btag_efficiency.root",Sample[ifile]),"recreate");
-    // TFile *f = TFile::Open(Form("root_files/MiniAOD/btag_raw/%s_btag_eff_raw_%d.root",Sample[ifile],year));
+    TFile *f = TFile::Open(Form("%s/%d/%s_btag_eff_raw_%d.root",inputpath,year,Sample[ifile],year));    
+    TFile *fout = new TFile(Form("%s/%d/%s_btag_eff_%s_%d.root",outputpath,year,Sample[ifile],MLname,year),"recreate");    
     
     if(!f) continue;
 
-    //TString histPath("myMiniTreeProducer/Jets/");
     TString histPath("");
 
     TH2D *h2_BTagEff_Denom_b              = (TH2D*)(f->Get(histPath+"h2_BTagEff_Denom_b"));
     TH2D *h2_BTagEff_Denom_c              = (TH2D*)(f->Get(histPath+"h2_BTagEff_Denom_c"));
     TH2D *h2_BTagEff_Denom_udsg           = (TH2D*)(f->Get(histPath+"h2_BTagEff_Denom_udsg"));
+
     TH2D *h2_BTagEff_Num_bM               = (TH2D*)(f->Get(histPath+"h2_BTagEff_Num_bM"));
     TH2D *h2_BTagEff_Num_cM               = (TH2D*)(f->Get(histPath+"h2_BTagEff_Num_cM"));
     TH2D *h2_BTagEff_Num_udsgM            = (TH2D*)(f->Get(histPath+"h2_BTagEff_Num_udsgM"));
@@ -82,70 +78,44 @@ int CreateBtagEff()
     h2_BTagEff_Denom_b->Sumw2();
     h2_BTagEff_Denom_c->Sumw2();
     h2_BTagEff_Denom_udsg->Sumw2();
+    
+    TH2D *h2_BTagEff_Ratio_bM = (TH2D*)h2_BTagEff_Num_bM->Clone("BTag_b_M_efficiency");
+    TH2D *h2_BTagEff_Ratio_cM = (TH2D*)h2_BTagEff_Num_cM->Clone("BTag_c_M_efficiency");
+    TH2D *h2_BTagEff_Ratio_udsgM = (TH2D*)h2_BTagEff_Num_udsgM->Clone("BTag_l_M_efficiency");
+    h2_BTagEff_Ratio_bM->Divide(h2_BTagEff_Denom_b);
+    h2_BTagEff_Ratio_cM->Divide(h2_BTagEff_Denom_c);
+    h2_BTagEff_Ratio_udsgM->Divide(h2_BTagEff_Denom_udsg);
 
-    TH2D *h2_BTagEff_Ratio_b = (TH2D*)h2_BTagEff_Num_bM->Clone(Form("%s_b_efficiency",Sample[ifile]));
-    TH2D *h2_BTagEff_Ratio_c = (TH2D*)h2_BTagEff_Num_cM->Clone(Form("%s_c_efficiency",Sample[ifile]));
-    TH2D *h2_BTagEff_Ratio_udsg = (TH2D*)h2_BTagEff_Num_udsgM->Clone(Form("%s_l_efficiency",Sample[ifile]));
-    h2_BTagEff_Ratio_b->Divide(h2_BTagEff_Denom_b);
-    h2_BTagEff_Ratio_c->Divide(h2_BTagEff_Denom_c);
-    h2_BTagEff_Ratio_udsg->Divide(h2_BTagEff_Denom_udsg);
+    TH2D *h2_CTagEff_Denom_b              = (TH2D*)(f->Get(histPath+"h2_CTagEff_Denom_b"));
+    TH2D *h2_CTagEff_Denom_c              = (TH2D*)(f->Get(histPath+"h2_CTagEff_Denom_c"));
+    TH2D *h2_CTagEff_Denom_udsg           = (TH2D*)(f->Get(histPath+"h2_CTagEff_Denom_udsg"));
+
+    TH2D *h2_CTagEff_Num_bL               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_bL"));
+    TH2D *h2_CTagEff_Num_cL               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_cL"));
+    TH2D *h2_CTagEff_Num_udsgL            = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_udsgL"));
+    
+    h2_CTagEff_Num_bL->Sumw2();
+    h2_CTagEff_Num_cL->Sumw2();
+    h2_CTagEff_Num_udsgL->Sumw2();
+    h2_CTagEff_Denom_b->Sumw2();
+    h2_CTagEff_Denom_c->Sumw2();
+    h2_CTagEff_Denom_udsg->Sumw2();
+    
+    TH2D *h2_CTagEff_Ratio_bL = (TH2D*)h2_CTagEff_Num_bL->Clone("CTag_b_L_efficiency");
+    TH2D *h2_CTagEff_Ratio_cL = (TH2D*)h2_CTagEff_Num_cL->Clone("CTag_c_L_efficiency");
+    TH2D *h2_CTagEff_Ratio_udsgL = (TH2D*)h2_CTagEff_Num_udsgL->Clone("CTag_l_L_efficiency");
+    h2_CTagEff_Ratio_bL->Divide(h2_CTagEff_Denom_b);
+    h2_CTagEff_Ratio_cL->Divide(h2_CTagEff_Denom_c);
+    h2_CTagEff_Ratio_udsgL->Divide(h2_CTagEff_Denom_udsg);
 
     fout->cd();
-    h2_BTagEff_Ratio_b->Write();
-    h2_BTagEff_Ratio_c->Write();
-    h2_BTagEff_Ratio_udsg->Write();
+    h2_BTagEff_Ratio_bM->Write();
+    h2_BTagEff_Ratio_cM->Write();
+    h2_BTagEff_Ratio_udsgM->Write();
+    h2_CTagEff_Ratio_bL->Write();
+    h2_CTagEff_Ratio_cL->Write();
+    h2_CTagEff_Ratio_udsgL->Write();
 
-
-    if(!h2_tot_BTagEff_Denom_b)
-      h2_tot_BTagEff_Denom_b = (TH2D *)h2_BTagEff_Denom_b->Clone("h2_tot_BTagEff_Denom_b");
-    else
-      h2_tot_BTagEff_Denom_b->Add(h2_BTagEff_Denom_b);
-    if(!h2_tot_BTagEff_Denom_c)
-      h2_tot_BTagEff_Denom_c = (TH2D *)h2_BTagEff_Denom_c->Clone("h2_tot_BTagEff_Denom_c");
-    else
-      h2_tot_BTagEff_Denom_c->Add(h2_BTagEff_Denom_c);
-    if(!h2_tot_BTagEff_Denom_udsg)
-      h2_tot_BTagEff_Denom_udsg = (TH2D *)h2_BTagEff_Denom_udsg->Clone("h2_tot_BTagEff_Denom_udsg");
-    else
-      h2_tot_BTagEff_Denom_udsg->Add(h2_BTagEff_Denom_udsg);
-    if(!h2_tot_BTagEff_Num_b)
-      h2_tot_BTagEff_Num_b = (TH2D *)h2_BTagEff_Num_bM->Clone("h2_tot_BTagEff_Num_b");
-    else
-      h2_tot_BTagEff_Num_b->Add(h2_BTagEff_Num_bM);
-    if(!h2_tot_BTagEff_Num_c)
-      h2_tot_BTagEff_Num_c = (TH2D *)h2_BTagEff_Num_cM->Clone("h2_tot_BTagEff_Num_c");
-    else
-      h2_tot_BTagEff_Num_c->Add(h2_BTagEff_Num_cM);
-    if(!h2_tot_BTagEff_Num_udsg)
-      h2_tot_BTagEff_Num_udsg = (TH2D *)h2_BTagEff_Num_udsgM->Clone("h2_tot_BTagEff_Num_udsg");
-    else
-      h2_tot_BTagEff_Num_udsg->Add(h2_BTagEff_Num_udsgM);
-
-    // h2_tot_BTagEff_Num_b->Sumw2();
-    // h2_tot_BTagEff_Num_c->Sumw2();
-    // h2_tot_BTagEff_Num_udsg->Sumw2();
-    // h2_tot_BTagEff_Denom_b->Sumw2();
-    // h2_tot_BTagEff_Denom_c->Sumw2();
-    // h2_tot_BTagEff_Denom_udsg->Sumw2();
-  
-    TH2D *h2_Ratio_b = (TH2D *)h2_tot_BTagEff_Num_b->Clone("Other_b_efficiency");
-    TH2D *h2_Ratio_c = (TH2D *)h2_tot_BTagEff_Num_c->Clone("Other_c_efficiency");
-    TH2D *h2_Ratio_l = (TH2D *)h2_tot_BTagEff_Num_udsg->Clone("Other_l_efficiency");
-    
-    h2_Ratio_b->Divide(h2_tot_BTagEff_Denom_b);
-    h2_Ratio_c->Divide(h2_tot_BTagEff_Denom_c);
-    h2_Ratio_l->Divide(h2_tot_BTagEff_Denom_udsg);
-    
-    fout->cd();
-    h2_Ratio_b->Write();
-    h2_Ratio_c->Write();
-    h2_Ratio_l->Write();
-    h2_tot_BTagEff_Num_b->Write();
-    h2_tot_BTagEff_Num_c->Write();
-    h2_tot_BTagEff_Num_udsg->Write();
-    h2_tot_BTagEff_Denom_b->Write();
-    h2_tot_BTagEff_Denom_c->Write();
-    h2_tot_BTagEff_Denom_udsg->Write();
     fout->Close();
     delete fout;
     

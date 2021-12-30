@@ -424,7 +424,19 @@ void ProcessSkim::SlaveTerminate()
     h2_BTagEff_Num_cT->Write();
     h2_BTagEff_Num_udsgT->Write();
     ///////////////////////////////
-      
+    h2_CTagEff_Denom_b->Write();
+    h2_CTagEff_Denom_c->Write();
+    h2_CTagEff_Denom_udsg->Write();
+    h2_CTagEff_Num_bL->Write();
+    h2_CTagEff_Num_cL->Write();
+    h2_CTagEff_Num_udsgL->Write();
+    h2_CTagEff_Num_bM->Write();
+    h2_CTagEff_Num_cM->Write();
+    h2_CTagEff_Num_udsgM->Write();
+    h2_CTagEff_Num_bT->Write();
+    h2_CTagEff_Num_cT->Write();
+    h2_CTagEff_Num_udsgT->Write();
+    ///////////////////////////////
     fFile[ifile]->cd();
     
     savedir->cd();
