@@ -71,7 +71,6 @@ Selector::Selector(){
     ///////// MiniAOD ///////////////////
     //muons miniAOD MEDIUM
     mu_Pt_cut_miniAOD = 26.0;
-    rc = 0;
     s = 0 ;
     m = 0;
     isPreVFP = false ; isPostVFP = false ;
@@ -93,6 +92,8 @@ Selector::Selector(){
     METPhi  = -9999;
     METUnc = 1.0;
     selectMETUnc = false;
+
+  
 }
 
 void Selector::init_JER(std::string inputPrefix){
@@ -124,21 +125,19 @@ void Selector::init_JER(std::string inputPrefix){
     // cout << JetCorrector << endl;
 }
 
+void Selector::init_RoccoR(std::string path)
+{
+  rc16a = RoccoR(Form("%s/weightUL/RoccoR/RoccoR2016aUL.txt",path.c_str()));
+  rc16b = RoccoR(Form("%s/weightUL/RoccoR/RoccoR2016bUL.txt",path.c_str()));
+  rc17 = RoccoR(Form("%s/weightUL/RoccoR/RoccoR2017UL.txt",path.c_str()));
+  rc18 = RoccoR(Form("%s/weightUL/RoccoR/RoccoR2018UL.txt",path.c_str()));
+}
+
 void Selector::process_objects(string path, EventTree* inp_tree){
     tree = inp_tree;
     clear_vectors();
     if(IsDebug) Info("Selector::process_objects","Cleared vectors");
     
-    
-    if(year=="2016"){
-      if(!rca)
-	rca = new RoccoR(Form("%s/weightUL/RoccoR/RoccoR%saUL.txt",path.c_str(),year.c_str()));
-      if(!rcb)
-	rcb = new RoccoR(Form("%s/weightUL/RoccoR/RoccoR%sbUL.txt",path.c_str(),year.c_str()));
-    }else if(year=="2017" or year=="2018"){
-      if(!rc)
-	rc = new RoccoR(Form("%s/weightUL/RoccoR/RoccoR%sUL.txt",path.c_str(),year.c_str()));
-    }
     if(IsDebug) Info("Selector::process_objects","Rochester corrections applied.");
 
     //cout << "before selector muons" << endl;
@@ -488,22 +487,29 @@ void Selector::filter_muons(){
     double pt = tree->muPt_[muInd];
 
     double SFRochCorr = 1.0;
-    // if (tree->isData_){
-    //   if(isPreVFP)
-    // 	SFRochCorr *= rca->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-    //   else if(isPostVFP)
-    // 	SFRochCorr *= rcb->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-    //   else
-    // 	SFRochCorr *= rc->kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-    // }else{
-    //   if(isPreVFP)
-    // 	SFRochCorr *= rca->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
-    //   else if(isPostVFP)
-    // 	SFRochCorr *= rcb->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
-    //   else
-    // 	SFRochCorr *= rc->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
-    //   //SFRochCorr *= rc->kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], 0.5, s, m);;	
-    // }
+    if (tree->isData_){
+      if(year=="2016"){
+	if(isPreVFP)
+	  SFRochCorr *= rc16a.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+	if(isPostVFP)
+	  SFRochCorr *= rc16b.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+      }else if(year=="2017"){
+    	SFRochCorr *= rc17.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+      }else if(year=="2018"){
+	SFRochCorr *= rc18.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+      }
+    }else{
+      if(year=="2016"){
+	if(isPreVFP)
+	  SFRochCorr *= rc16a.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
+	if(isPostVFP)
+	  SFRochCorr *= rc16b.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+      }else if(year=="2017"){
+	SFRochCorr *= rc17.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+      }else if(year=="2018"){
+	SFRochCorr *= rc18.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+      }
+    }
     tree->muRoccoR_[muInd] = SFRochCorr;
     pt = pt*SFRochCorr;
     
@@ -894,18 +900,20 @@ void Selector::filter_jets(){
 void Selector::filter_jetsNoCorr(){
   
   //TLorentzVector tJET;
-
+  
   for(int jetInd = 0; jetInd < int(tree->nJet_) and int(tree->nJet_) < 10000000; ++jetInd){
     
     double pt = tree->jetPt_[jetInd];
     double eta = tree->jetEta_[jetInd];
     double phi = tree->jetPhi_[jetInd];
     
-    //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
-    int jetID_cutBit = 1;
-    //if (year=="2016"){ jetID_cutBit = 0; }
-	
-    bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 and looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
+    // //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
+    // int jetID_cutBit = 1;
+    // //if (year=="2016"){ jetID_cutBit = 0; }	
+    // bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 and looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
+    
+    bool jetID_pass = (tree->jetPUID_[jetInd]>=7 and tree->jetID_[jetInd]>=2) ;
+
     if(IsDebug) Info("Selector::filter_jetsNoCorr","applied filter");
     //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////
     bool passDR_lep_jet = true;

@@ -639,7 +639,7 @@ void SkimAna::SetTrio()
     selector->METUnc = 0.0;
     selector->selectMETUnc = false;    
   }
-  
+  selector->init_RoccoR(fBasePath.Data());
   
   // Cuts used for results presented at PAG dated August, 02, 2021
   // selector->mu_Pt_cut = 30.;

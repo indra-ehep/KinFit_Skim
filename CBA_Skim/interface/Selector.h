@@ -158,6 +158,7 @@ public:
 	void clear_vectors();
 	
 	void init_JER(std::string inputPrefix);
+	void init_RoccoR(std::string inputPath);
 
 
 private:
@@ -184,10 +185,11 @@ private:
 	JME::JetResolution *jetResolutionb;
 	JME::JetResolutionScaleFactor *jetResolutionScaleFactorb;
 	JME::JetParameters jetParam;
-
-        RoccoR *rc;
-        RoccoR *rca;
-        RoccoR *rcb;
+	
+        RoccoR rc17;
+        RoccoR rc18;
+        RoccoR rc16a;
+        RoccoR rc16b;
 
 };
 
