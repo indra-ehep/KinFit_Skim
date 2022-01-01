@@ -487,29 +487,29 @@ void Selector::filter_muons(){
     double pt = tree->muPt_[muInd];
 
     double SFRochCorr = 1.0;
-    if (tree->isData_){
-      if(year=="2016"){
-	if(isPreVFP)
-	  SFRochCorr *= rc16a.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-	if(isPostVFP)
-	  SFRochCorr *= rc16b.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-      }else if(year=="2017"){
-    	SFRochCorr *= rc17.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-      }else if(year=="2018"){
-	SFRochCorr *= rc18.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-      }
-    }else{
-      if(year=="2016"){
-	if(isPreVFP)
-	  SFRochCorr *= rc16a.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
-	if(isPostVFP)
-	  SFRochCorr *= rc16b.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
-      }else if(year=="2017"){
-	SFRochCorr *= rc17.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
-      }else if(year=="2018"){
-	SFRochCorr *= rc18.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
-      }
-    }
+    // if (tree->isData_){
+    //   if(year=="2016"){
+    // 	if(isPreVFP)
+    // 	  SFRochCorr *= rc16a.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    // 	if(isPostVFP)
+    // 	  SFRochCorr *= rc16b.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    //   }else if(year=="2017"){
+    // 	SFRochCorr *= rc17.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    //   }else if(year=="2018"){
+    // 	SFRochCorr *= rc18.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    //   }
+    // }else{
+    //   if(year=="2016"){
+    // 	if(isPreVFP)
+    // 	  SFRochCorr *= rc16a.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
+    // 	if(isPostVFP)
+    // 	  SFRochCorr *= rc16b.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+    //   }else if(year=="2017"){
+    // 	SFRochCorr *= rc17.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+    //   }else if(year=="2018"){
+    // 	SFRochCorr *= rc18.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);	
+    //   }
+    // }
     tree->muRoccoR_[muInd] = SFRochCorr;
     pt = pt*SFRochCorr;
     
@@ -657,7 +657,7 @@ void Selector::filter_jets(){
     // bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
     
     //Applied for UL
-    bool jetID_pass = (tree->jetPUID_[jetInd]>=7 and tree->jetID_[jetInd]>=2) ;
+    bool jetID_pass = (tree->jetID_[jetInd]>=2) ; //(tree->jetPUID_[jetInd]>=7 and tree->jetID_[jetInd]>=2) ;
     
     double jetSF = 1.;
 
@@ -912,7 +912,7 @@ void Selector::filter_jetsNoCorr(){
     // //if (year=="2016"){ jetID_cutBit = 0; }	
     // bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 and looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
     
-    bool jetID_pass = (tree->jetPUID_[jetInd]>=7 and tree->jetID_[jetInd]>=2) ;
+    bool jetID_pass = (tree->jetID_[jetInd]>=2) ; //(tree->jetPUID_[jetInd]>=7 and tree->jetID_[jetInd]>=2) ;
 
     if(IsDebug) Info("Selector::filter_jetsNoCorr","applied filter");
     //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////

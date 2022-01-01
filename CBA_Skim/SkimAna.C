@@ -816,19 +816,24 @@ void SkimAna::LoadPU()
   std::string PUfilename_down;
   
   if (fYear==2016){
-    PUfilename      = Form("%s/weight/PileupSF/Data_2016BCDGH_Pileup.root", fBasePath.Data()) ;
-    PUfilename_up   = Form("%s/weight/PileupSF/Data_2016BCDGH_Pileup_scaledUp.root", fBasePath.Data()) ;
-    PUfilename_down = Form("%s/weight/PileupSF/Data_2016BCDGH_Pileup_scaledDown.root", fBasePath.Data()) ;
+    // PUfilename      = Form("%s/weight/PileupSF/Data_2016BCDGH_Pileup.root", fBasePath.Data()) ;
+    // PUfilename_up   = Form("%s/weight/PileupSF/Data_2016BCDGH_Pileup_scaledUp.root", fBasePath.Data()) ;
+    // PUfilename_down = Form("%s/weight/PileupSF/Data_2016BCDGH_Pileup_scaledDown.root", fBasePath.Data()) ;
+
+    // Obtained from  https://github.com/cms-nanoAOD/nanoAOD-tools/tree/master/python/postprocessing/data/pileup
+    PUfilename      = Form("%s/weightUL/PileupSF/PileupHistogram-UL2016-100bins_withVar.root", fBasePath.Data()) ;
   }
   if (fYear==2017){
-    PUfilename      = Form("%s/weight/PileupSF/Data_2017BCDEF_Pileup.root", fBasePath.Data()) ;
-    PUfilename_up   = Form("%s/weight/PileupSF/Data_2017BCDEF_Pileup_scaledUp.root", fBasePath.Data()) ;
-    PUfilename_down = Form("%s/weight/PileupSF/Data_2017BCDEF_Pileup_scaledDown.root", fBasePath.Data()) ;
+    // PUfilename      = Form("%s/weight/PileupSF/Data_2017BCDEF_Pileup.root", fBasePath.Data()) ;
+    // PUfilename_up   = Form("%s/weight/PileupSF/Data_2017BCDEF_Pileup_scaledUp.root", fBasePath.Data()) ;
+    // PUfilename_down = Form("%s/weight/PileupSF/Data_2017BCDEF_Pileup_scaledDown.root", fBasePath.Data()) ;
+    PUfilename      = Form("%s/weightUL/PileupSF/PileupHistogram-UL2017-100bins_withVar.root", fBasePath.Data()) ;
   }
   if (fYear==2018){
-    PUfilename      = Form("%s/weight/PileupSF/Data_2018ABCD_Pileup.root", fBasePath.Data()) ;
-    PUfilename_up   = Form("%s/weight/PileupSF/Data_2018ABCD_Pileup_scaledUp.root", fBasePath.Data()) ;
-    PUfilename_down = Form("%s/weight/PileupSF/Data_2018ABCD_Pileup_scaledDown.root", fBasePath.Data()) ;
+    // PUfilename      = Form("%s/weight/PileupSF/Data_2018ABCD_Pileup.root", fBasePath.Data()) ;
+    // PUfilename_up   = Form("%s/weight/PileupSF/Data_2018ABCD_Pileup_scaledUp.root", fBasePath.Data()) ;
+    // PUfilename_down = Form("%s/weight/PileupSF/Data_2018ABCD_Pileup_scaledDown.root", fBasePath.Data()) ;
+    PUfilename      = Form("%s/weightUL/PileupSF/PileupHistogram-UL2018-100bins_withVar.root", fBasePath.Data()) ;
   }
   
   vector<string> fnames = fnameList[fSampleType.Data()];
@@ -847,9 +852,13 @@ void SkimAna::LoadPU()
   }
   fnames.clear();
   
-  PUweighterUp = new PUReweight(nFiles, fileNames, PUfilename_up);
-  PUweighterDown = new PUReweight(nFiles, fileNames, PUfilename_down);
-  PUweighter = new PUReweight(nFiles, fileNames, PUfilename);
+  // PUweighterUp = new PUReweight(nFiles, fileNames, PUfilename_up,"pileup");
+  // PUweighterDown = new PUReweight(nFiles, fileNames, PUfilename_down,"pileup");
+  // PUweighter = new PUReweight(nFiles, fileNames, PUfilename,"pileup");
+  
+  PUweighterUp = new PUReweight(nFiles, fileNames, PUfilename,"pileup_plus");
+  PUweighterDown = new PUReweight(nFiles, fileNames, PUfilename,"pileup_minus");
+  PUweighter = new PUReweight(nFiles, fileNames, PUfilename,"pileup");
   
   for(int i = 0; i < nFiles; i++) 
     delete [] fileNames[i];

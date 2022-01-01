@@ -1,11 +1,11 @@
 #include"../interface/PUReweight.h"
 #include<iostream>
 //#include<TCanvas.h> 
-PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
+PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename, std::string PUhistname){
 	PUweightSum = 0.0;
 	events = 0;
 	TFile* pileupFile = new TFile(PUfilename.c_str(),"READ");
-	PUweightHist = (TH1D*)pileupFile->Get("pileup");
+	PUweightHist = (TH1D*)pileupFile->Get(PUhistname.c_str());
 	PUweightHist->SetDirectory(0);
 	pileupFile->Close();
 	TH1D* PUbackup;
@@ -14,7 +14,7 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 
 	if(PUweightHist->GetNbinsX() != 200){
 		std::cout << "Wrong number of bins in the pileup histogram" << std::endl;
-		PUbackup = new TH1D("pileup_new","pileup_new",200,0,200);
+		PUbackup = new TH1D(Form("%s_new",PUhistname.c_str()),Form("%s_new",PUhistname.c_str()),200,0,200);
 		for(int ibin=1; ibin <= PUweightHist->GetNbinsX(); ibin++){
 			PUbackup->SetBinContent(ibin, PUweightHist->GetBinContent(ibin));
 			// assuming the same scale
