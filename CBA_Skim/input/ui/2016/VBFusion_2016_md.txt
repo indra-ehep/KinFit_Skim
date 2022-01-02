@@ -1,3 +1,0 @@
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/WW_Skim_NanoAOD.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/WZ_Skim_NanoAOD.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ZZ_Skim_NanoAOD.root

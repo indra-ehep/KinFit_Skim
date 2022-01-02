@@ -1,9 +1,0 @@
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_s_channel_Skim_NanoAOD_1of2.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_s_channel_Skim_NanoAOD_2of2.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_tW_channel_Skim_NanoAOD.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_tbarW_channel_Skim_NanoAOD_1of2.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_tbarW_channel_Skim_NanoAOD_2of2.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_tbar_channel_Skim_NanoAOD_1of4.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_tbar_channel_Skim_NanoAOD_2of4.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_tbar_channel_Skim_NanoAOD_3of4.root
-root://se01.indiacms.res.in:1094//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2016/ST_tbar_channel_Skim_NanoAOD_4of4.root
