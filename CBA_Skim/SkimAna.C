@@ -482,7 +482,7 @@ void SkimAna::GetArguments(){
     else if(hostname.BeginsWith("lxplus"))
       fBasePath = "/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis";
     else if(hostname.BeginsWith("ui"))
-      fBasePath = "/home/idas/t3store3/NanoAOD-Analysis";
+      fBasePath = "/tmp/idas/CBA_Skim";
     else if(hostname.BeginsWith("lnx3"))
       fBasePath = "/home/indra/CMS-Analysis/NanoAOD-Analysis/KinFit_Skim/CBA_Skim";
     //fBasePath += "/SkimAna";
