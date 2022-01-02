@@ -657,7 +657,7 @@ void Selector::filter_jets(){
     // bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
     
     //Applied for UL
-    bool jetID_pass = (tree->jetID_[jetInd]>=2) ; //(tree->jetPUID_[jetInd]>=7 and tree->jetID_[jetInd]>=2) ;
+    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]==4 or tree->jetPUID_[jetInd]==6 or tree->jetPUID_[jetInd]==7 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
     
     double jetSF = 1.;
 
@@ -912,8 +912,8 @@ void Selector::filter_jetsNoCorr(){
     // //if (year=="2016"){ jetID_cutBit = 0; }	
     // bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 and looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
     
-    bool jetID_pass = (tree->jetID_[jetInd]>=2) ; //(tree->jetPUID_[jetInd]>=7 and tree->jetID_[jetInd]>=2) ;
-
+    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]==4 or tree->jetPUID_[jetInd]==6 or tree->jetPUID_[jetInd]==7 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
+    
     if(IsDebug) Info("Selector::filter_jetsNoCorr","applied filter");
     //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////
     bool passDR_lep_jet = true;
