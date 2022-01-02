@@ -6,14 +6,14 @@
 # **********************************************************************/
 
 #samples_2016="TTbar TTbarincl" 
-#samples_2016="DataMu DataEle HplusM080 HplusM090 HplusM100 HplusM120 HplusM140 HplusM150 HplusM155 HplusM160 singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
-samples_2016="DataMu DataEle" 
+samples_2016="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
+#samples_2016="DataMu DataEle" 
 
 samples_2017="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
 samples_2018="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle" 
 
-#syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown"
-syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown"
+syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown"
+#syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown"
 syst_2017="base jecup jecdown jerup jerdown iso20 metup metdown"
 syst_2018="base jecup jecdown jerup jerdown iso20 metup metdown"
 
@@ -25,7 +25,8 @@ syst_base="base iso20"
 #inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
 #inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_metMG"
 #inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_newTTbar"
-inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_TuneTest1"
+#inputdir="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_TuneTest1"
+inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ULv9_test6"
 skimflistdir="/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 #years="2017 2018"
