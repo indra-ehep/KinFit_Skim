@@ -8,9 +8,9 @@ import time
 
 # samples_2016 = ["TTbar", "TTbarincl", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", 
 #                  "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
-samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "HplusM120"]
-                # "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-                # "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", #"HplusM120"]
+                "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 #samples_2016 = ["TTbar", "DataMu", "DataEle", "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
 samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "DataMu"]
 samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataMu", "DataEle"]
@@ -24,8 +24,8 @@ samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 # samples_2017 = ["DataEle", "DataMu"]
 # samples_2018 = ["DataMu", "DataEle"]
 
-syst_2016 = ["base"]
-#syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+#syst_2016 = ["base"]
+syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]#, "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 
@@ -38,14 +38,14 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-if not os.path.exists("tmptunetest3/log"):
-    os.makedirs("tmptunetest3/log")
+if not os.path.exists("tmplog_long/log"):
+    os.makedirs("tmplog_long/log")
 condorLogDir = "log"
-tarFile = "tmptunetest3/CBA_Skim.tar.gz"
+tarFile = "tmplog_long/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmptunetest3/")
+os.system("cp runCBASkim.sh tmplog_long/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -64,15 +64,15 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmptunetest3/condorSubmit.sh','w')
+subFile = open('tmplog_long/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmptunetest3/%s'%jdlName,'w')
+    jdlFile = open('tmplog_long/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
     #condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_TuneTest1"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ULv9_test16"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ULv9_long"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     #os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
@@ -81,8 +81,8 @@ for year in [2016,2017,2018]:
     for sample in sampleList:
         
         if sample.find('Data') >=0:
-            #systList = ["base", "iso20"]
-            systList = ["base"]
+            systList = ["base", "iso20"]
+            #systList = ["base"]
         else:
             systList = eval("syst_%i"%year)
             
