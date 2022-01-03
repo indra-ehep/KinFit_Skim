@@ -660,7 +660,7 @@ void Selector::filter_jets(){
     //bool jetID_pass = (tree->jetID_[jetInd]>=2) ;    
     //Applied for UL
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
-    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=3 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
+    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=2 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
     //Suggested by RBI
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]==0 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
     
@@ -920,7 +920,7 @@ void Selector::filter_jetsNoCorr(){
     //Default applied for LRR
     //bool jetID_pass = (tree->jetID_[jetInd]>=2) ;    
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
-    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=3 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
+    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=2 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
     //Suggested by RBI
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]==0 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
     
