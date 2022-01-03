@@ -38,14 +38,14 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-if not os.path.exists("tmptunetest1/log"):
-    os.makedirs("tmptunetest1/log")
+if not os.path.exists("tmptunetest2/log"):
+    os.makedirs("tmptunetest2/log")
 condorLogDir = "log"
-tarFile = "tmptunetest1/CBA_Skim.tar.gz"
+tarFile = "tmptunetest2/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmptunetest1/")
+os.system("cp runCBASkim.sh tmptunetest2/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -64,11 +64,11 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmptunetest1/condorSubmit.sh','w')
+subFile = open('tmptunetest2/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmptunetest1/%s'%jdlName,'w')
+    jdlFile = open('tmptunetest2/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
     #condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_TuneTest1"
