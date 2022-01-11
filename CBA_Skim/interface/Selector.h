@@ -188,6 +188,7 @@ private:
 	
         RoccoR rc17;
         RoccoR rc18;
+	RoccoR rc16;
         RoccoR rc16a;
         RoccoR rc16b;
 

@@ -127,6 +127,7 @@ void Selector::init_JER(std::string inputPrefix){
 
 void Selector::init_RoccoR(std::string path)
 {
+  rc16 = RoccoR(Form("%s/weight/RoccoR/RoccoR2016.txt",path.c_str()));
   rc16a = RoccoR(Form("%s/weightUL/RoccoR/RoccoR2016aUL.txt",path.c_str()));
   rc16b = RoccoR(Form("%s/weightUL/RoccoR/RoccoR2016bUL.txt",path.c_str()));
   rc17 = RoccoR(Form("%s/weightUL/RoccoR/RoccoR2017UL.txt",path.c_str()));
@@ -487,6 +488,10 @@ void Selector::filter_muons(){
     double pt = tree->muPt_[muInd];
 
     double SFRochCorr = 1.0;
+    if (tree->isData_)
+      SFRochCorr *= rc16.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
+    else
+      SFRochCorr *= rc16.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
     // if (tree->isData_){
     //   if(year=="2016"){
     // 	if(isPreVFP)
