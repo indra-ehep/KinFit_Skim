@@ -8,9 +8,9 @@ import time
 
 # samples_2016 = ["TTbar", "TTbarincl", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", 
 #                  "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
-samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", #"HplusM120"]
-                "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-                "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "HplusM120"]
+                # "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                # "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 #samples_2016 = ["TTbar", "DataMu", "DataEle", "HplusM080", "HplusM090", "HplusM100", "HplusM120", "HplusM140", "HplusM150", "HplusM155", "HplusM160"]
 samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle", "DataMu"]
 samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataMu", "DataEle"]
@@ -24,8 +24,8 @@ samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 # samples_2017 = ["DataEle", "DataMu"]
 # samples_2018 = ["DataMu", "DataEle"]
 
-#syst_2016 = ["base"]
-syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]#, "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_2016 = ["base"]
+#syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]#, "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_2017 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 syst_2018 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]
 
@@ -72,7 +72,7 @@ for year in [2016,2017,2018]:
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
     #condorOutDir1="/eos/user/i/imirza/idas/Output/cms-hcs-run2/CBA_Skim_Syst_TuneTest1"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ULv9_long"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ULv9_Nmu_t1"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     #os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
@@ -81,8 +81,8 @@ for year in [2016,2017,2018]:
     for sample in sampleList:
         
         if sample.find('Data') >=0:
-            systList = ["base", "iso20"]
-            #systList = ["base"]
+            #systList = ["base", "iso20"]
+            systList = ["base"]
         else:
             systList = eval("syst_%i"%year)
             
