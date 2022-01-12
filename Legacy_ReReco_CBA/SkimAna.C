@@ -18,6 +18,7 @@
 #include "TPaveStats.h"
 #include "TMath.h"
 #include "TProof.h"
+#include "TObjString.h"
 
 
 //ClassImp(SkimAna)
@@ -478,13 +479,13 @@ void SkimAna::GetArguments(){
   TString hostname = gSystem->HostName();
   if(fMode.Contains("proof")){
     if(hostname.BeginsWith("Indra-Rjn"))
-      fBasePath = "/Data/CMS-Analysis/NanoAOD-Analysis/Git_KinFit_Skim/KinFit_Skim/CBA_Skim";
+      fBasePath = "/Data/CMS-Analysis/NanoAOD-Analysis/Git_KinFit_Skim/KinFit_Skim/Legacy_ReReco_CBA";
     else if(hostname.BeginsWith("lxplus"))
-      fBasePath = "/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis";
+      fBasePath = "/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/Legacy_ReReco_CBA";
     else if(hostname.BeginsWith("ui"))
-      fBasePath = "/home/idas/t3store3/NanoAOD-Analysis";
+      fBasePath = "/home/idas/t3store3/NanoAOD-Analysis/Legacy_ReReco_CBA";
     else if(hostname.BeginsWith("lnx3"))
-      fBasePath = "/home/indra/CMS-Analysis/NanoAOD-Analysis/KinFit_Skim/CBA_Skim";
+      fBasePath = "/home/indra/CMS-Analysis/NanoAOD-Analysis/KinFit_Skim/Legacy_ReReco_CBA";
     //fBasePath += "/SkimAna";
   }else{
     fBasePath = gSystem->pwd();
@@ -964,16 +965,20 @@ void SkimAna::LoadLeptonSF(){
   if (fYear==2016){
     if(isNanoAOD){
       muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunBCDEF_SF_ID.root",fBasePath.Data()), 
-			 "NUM_TightID_DEN_genTracks_eta_pt",
+			 //"NUM_TightID_DEN_genTracks_eta_pt",
+			 "NUM_MediumID_DEN_genTracks_eta_pt",
 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunBCDEF_SF_ISO.root",fBasePath.Data()), 
-			 "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
+			 //"NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
+			 "NUM_TightRelIso_DEN_MediumID_eta_pt",
 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunBtoF.root",fBasePath.Data()), 
 			 "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio");
       
       muSFb = new MuonSF(Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunGH_SF_ID.root",fBasePath.Data()), 
-			 "NUM_TightID_DEN_genTracks_eta_pt",
+			 //"NUM_TightID_DEN_genTracks_eta_pt",
+			 "NUM_MediumID_DEN_genTracks_eta_pt",
 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_legacy_rereco_rootfiles_RunGH_SF_ISO.root",fBasePath.Data()), 
-			 "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
+			 //"NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt",
+			 "NUM_TightRelIso_DEN_MediumID_eta_pt",
 			 Form("%s/weight/MuEleSF/mu2016/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunGtoH.root",fBasePath.Data()), 
 			 "IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio");
       
@@ -1662,6 +1667,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagObs(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
   FillBTagWt(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);  
   if(IsDebug) Info("Process","Completed b-jet processing");
+  return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
