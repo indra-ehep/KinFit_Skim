@@ -484,14 +484,22 @@ void Selector::filter_muons(){
   
   for(int muInd = 0; muInd < int(tree->nMuon_); ++muInd){
     
-    double eta = tree->muEta_[muInd];
-    double pt = tree->muPt_[muInd];
-
+    float eta = tree->muEta_[muInd];
+    float pt = tree->muPt_[muInd];
+    float phi = tree->muPhi_[muInd];
+    int nTrackerLayers = tree->munTrackerLayers_[muInd];
+    int charge =  tree->muCharge_[muInd];
+    
+    if(TMath::Abs(charge)!=1 or nTrackerLayers>=20 or nTrackerLayers<0 or !(TMath::Finite(eta)) or !(TMath::Finite(pt)) or !(TMath::Finite(phi)) ) continue; 
+    //max nTrackerLayers should be 18 as seen in data and MC
+    
     double SFRochCorr = 1.0;
-    if (tree->isData_)
-      SFRochCorr *= rc16.kScaleDT(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], s, m);
-    else
-      SFRochCorr *= rc16.kSmearMC(tree->muCharge_[muInd], pt, eta, tree->muPhi_[muInd], tree->munTrackerLayers_[muInd], generator->Rndm(), s, m);
+    if(!TMath::AreEqualAbs(eta,0.0,1.0e-7) and !TMath::AreEqualAbs(pt,0.0,1.0e-7) and !TMath::AreEqualAbs(phi,0.0,1.0e-7)){
+      if (tree->isData_)
+	SFRochCorr *= rc16.kScaleDT(charge, pt, eta, phi, s, m);
+      else
+	SFRochCorr *= rc16.kSmearMC(charge, pt, eta, phi, nTrackerLayers , generator->Rndm(), s, m);
+    }
     // if (tree->isData_){
     //   if(year=="2016"){
     // 	if(isPreVFP)
