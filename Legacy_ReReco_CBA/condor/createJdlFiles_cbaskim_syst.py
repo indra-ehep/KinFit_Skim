@@ -39,16 +39,16 @@ tunedict = {
 if not os.path.exists("tmplog_medmuonid/log"):
     os.makedirs("tmplog_medmuonid/log")
 condorLogDir = "log"
-tarFile = "tmplog_medmuonid/CBA_Skim.tar.gz"
+tarFile = "tmplog_medmuonid/Legacy_ReReco_CBA.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
-os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
+os.system("tar -zcvf %s ../../Legacy_ReReco_CBA --exclude condor"%tarFile)
 os.system("cp runCBASkim.sh tmplog_medmuonid/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
-Transfer_Input_Files = CBA_Skim.tar.gz, runCBASkim.sh\n\
+Transfer_Input_Files = Legacy_ReReco_CBA.tar.gz, runCBASkim.sh\n\
 x509userproxy = $ENV(X509_USER_PROXY)\n\
 use_x509userproxy = true\n\
 +BenchmarkJob = True\n\
