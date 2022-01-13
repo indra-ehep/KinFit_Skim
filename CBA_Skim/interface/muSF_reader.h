@@ -24,7 +24,7 @@ class MuonSF
 	
     }
     std::vector<double> getMuSF(double pt, double eta, int systLevel, int year, bool verbose=false);
-
+    double getMuSF(TH2D *h2, double pt, double eta, int systLevel);
     /* bool splitSystsId = false; */
     /* bool splitSystsIso = false; */
     /* bool splitSystsTrig = false; */
@@ -39,6 +39,43 @@ class MuonSF
     /* string trigName; */
 };
 
+
+double MuonSF::getMuSF(TH2D *h2, double eta, double pt, int systLevel){
+
+  //Get max of x and y range
+  double minX = h2->GetXaxis()->GetBinLowEdge(1);
+  double maxX = h2->GetXaxis()->GetBinLowEdge(h2->GetNbinsX());
+
+  double minY = h2->GetYaxis()->GetBinLowEdge(1);
+  double maxY = h2->GetYaxis()->GetBinLowEdge(h2->GetNbinsY());
+  TAxis *axisX = h2->GetXaxis();
+  TAxis *axisY = h2->GetYaxis();
+  //Get the bin numbers for a given pt, eta
+  //If pt or eta value is out of hist range, choose the last bin
+  Int_t binX = -1;
+  if(eta <= minX)
+    binX = 1;
+  if(eta >= maxX)
+    binX = axisX->FindBin(maxX);
+  else
+    binX = axisX->FindBin(eta);
+
+  Int_t binY = -1;
+  if(pt <= minY)
+    binY = 1;
+  if(pt >= maxY)
+    binY = axisY->FindBin(maxY);
+  else
+    binY = axisY->FindBin(pt);
+
+  //Get the scale factor and error for that bin
+  double sf = h2->GetBinContent(binX, binY);
+  double err = h2->GetBinError(binX, binY);
+  if (sf==0.0 && err==0.0)
+    return 1.0;
+  else
+    return sf + (systLevel -1)*err;
+}
 
 
 std::vector<double> MuonSF::getMuSF(double pt, double eta, int systLevel, int year, bool verbose){
@@ -203,76 +240,115 @@ std::vector<double> MuonSF::getMuSF(double pt, double eta, int systLevel, int ye
     
     //double pt, double eta, int systLevel, int year, bool verbose
     
-    eta = fabs(eta);
+
+    /* //eta = fabs(eta); */
     
-    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for ID /////////////////
-    double etaID, ptID;
-    if(eta > idHist->GetXaxis()->GetXmax())
-      etaID = idHist->GetXaxis()->GetXmax();
-    else
-      etaID = eta;
+    /* ///////// set U/Overflow eta/pt values to the min/max values of TH2 for ID ///////////////// */
+    /* double etaID, ptID; */
+    /* if(eta <= idHist->GetXaxis()->GetXmin()) */
+    /*   etaID = idHist->GetXaxis()->GetXmin(); */
+    /* else if(eta >= idHist->GetXaxis()->GetXmax()) */
+    /*   etaID = idHist->GetXaxis()->GetXmax(); */
+    /* else */
+    /*   etaID = eta; */
 
-    if(pt < idHist->GetYaxis()->GetXmin())
-      ptID = idHist->GetYaxis()->GetXmin();
-    else if(pt > idHist->GetYaxis()->GetXmax())
-      ptID = idHist->GetYaxis()->GetXmax();
-    else
-      ptID = pt;
-    /////////////////////////////////////////////////////////////////////////////////////////////
+    /* if(pt <= idHist->GetYaxis()->GetXmin()) */
+    /*   ptID = idHist->GetYaxis()->GetXmin(); */
+    /* else if(pt >= idHist->GetYaxis()->GetXmax()) */
+    /*   ptID = idHist->GetYaxis()->GetXmax(); */
+    /* else */
+    /*   ptID = pt; */
+    /* ///////////////////////////////////////////////////////////////////////////////////////////// */
 
-    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for ISO /////////////////
-    double etaISO, ptISO;
-    if(eta > isoHist->GetXaxis()->GetXmax())
-      etaISO = isoHist->GetXaxis()->GetXmax();
-    else
-      etaISO = eta;
+    /* ///////// set U/Overflow eta/pt values to the min/max values of TH2 for ISO ///////////////// */
+    /* double etaISO, ptISO; */
+    /* if(eta <= isoHist->GetXaxis()->GetXmin()) */
+    /*   etaISO = isoHist->GetXaxis()->GetXmin(); */
+    /* else if(eta >= isoHist->GetXaxis()->GetXmax()) */
+    /*   etaISO = isoHist->GetXaxis()->GetXmax(); */
+    /* else */
+    /*   etaISO = eta; */
 
-    if(pt < isoHist->GetYaxis()->GetXmin())
-      ptISO = isoHist->GetYaxis()->GetXmin();
-    else if(pt > isoHist->GetYaxis()->GetXmax())
-      ptISO = isoHist->GetYaxis()->GetXmax();
-    else
-      ptISO = pt;
-    /////////////////////////////////////////////////////////////////////////////////////////////
+    /* if(pt <= isoHist->GetYaxis()->GetXmin()) */
+    /*   ptISO = isoHist->GetYaxis()->GetXmin(); */
+    /* else if(pt >= isoHist->GetYaxis()->GetXmax()) */
+    /*   ptISO = isoHist->GetYaxis()->GetXmax(); */
+    /* else */
+    /*   ptISO = pt; */
+    /* ///////////////////////////////////////////////////////////////////////////////////////////// */
     
-    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for Trigger /////////////
-    double etaTRIG, ptTRIG;
-    if(eta > trigHist->GetXaxis()->GetXmax())
-      etaTRIG = trigHist->GetXaxis()->GetXmax();
-    else
-      etaTRIG = eta;
+    /* /////////////////////////////////////////////////////////////////////////////////////////// */
+    /* eta = fabs(eta); */
+    /* ///////// set U/Overflow eta/pt values to the min/max values of TH2 for Trigger ///////////// */
+    /* double etaTRIG, ptTRIG; */
+    /* if(eta <= trigHist->GetXaxis()->GetXmin()) */
+    /*   etaTRIG = trigHist->GetXaxis()->GetXmin(); */
+    /* if(eta >= trigHist->GetXaxis()->GetXmax()) */
+    /*   etaTRIG = trigHist->GetXaxis()->GetXmax(); */
+    /* else */
+    /*   etaTRIG = eta; */
 
-    if(pt < trigHist->GetYaxis()->GetXmin())
-      ptTRIG = trigHist->GetYaxis()->GetXmin();
-    else if(pt > trigHist->GetYaxis()->GetXmax())
-      ptTRIG = trigHist->GetYaxis()->GetXmax();
-    else
-      ptTRIG = pt;
-    /////////////////////////////////////////////////////////////////////////////////////////////
+    /* if(pt <= trigHist->GetYaxis()->GetXmin()) */
+    /*   ptTRIG = trigHist->GetYaxis()->GetXmin(); */
+    /* else if(pt >= trigHist->GetYaxis()->GetXmax()) */
+    /*   ptTRIG = trigHist->GetYaxis()->GetXmax(); */
+    /* else */
+    /*   ptTRIG = pt; */
+    /* ///////////////////////////////////////////////////////////////////////////////////////////// */
 
-    double id_SF_value = idHist->GetBinContent(idHist->FindBin(etaID,ptID));
-    double id_SF_error = idHist->GetBinError(idHist->FindBin(etaID,ptID));
-    double id_SF = id_SF_value + (systLevel-1)*id_SF_error;
+    /* /\* double id_SF_value = idHist->GetBinContent(idHist->FindBin(etaID,ptID)); *\/ */
+    /* /\* double id_SF_error = idHist->GetBinError(idHist->FindBin(etaID,ptID)); *\/ */
+    /* double id_SF_value = idHist->GetBinContent(idHist->GetXaxis()->FindBin(etaID), idHist->GetYaxis()->FindBin(ptID)); */
+    /* double id_SF_error = idHist->GetBinError(idHist->GetXaxis()->FindBin(etaID), idHist->GetYaxis()->FindBin(ptID)); */
+    /* double id_SF = id_SF_value + (systLevel-1)*id_SF_error; */
 
-    double iso_SF_value = isoHist->GetBinContent(isoHist->FindBin(etaISO,ptISO));
-    double iso_SF_error = isoHist->GetBinError(isoHist->FindBin(etaISO,ptISO));
-    double iso_SF = iso_SF_value + (systLevel-1)*iso_SF_error;
+    /* /\* double iso_SF_value = isoHist->GetBinContent(isoHist->FindBin(etaISO,ptISO)); *\/ */
+    /* /\* double iso_SF_error = isoHist->GetBinError(isoHist->FindBin(etaISO,ptISO)); *\/ */
+    /* double iso_SF_value = isoHist->GetBinContent(isoHist->GetXaxis()->FindBin(etaISO), isoHist->GetYaxis()->FindBin(ptISO)); */
+    /* double iso_SF_error = isoHist->GetBinError(isoHist->GetXaxis()->FindBin(etaISO), isoHist->GetYaxis()->FindBin(ptISO)); */
+    /* double iso_SF = iso_SF_value + (systLevel-1)*iso_SF_error; */
 
-    double trig_SF_value = trigHist->GetBinContent(trigHist->FindBin(etaTRIG,ptTRIG));
-    double trig_SF_error = trigHist->GetBinError(trigHist->FindBin(etaTRIG,ptTRIG));
-    double trig_SF = trig_SF_value + (systLevel-1)*trig_SF_error;
+    /* double trig_SF_value = trigHist->GetBinContent(trigHist->GetXaxis()->FindBin(etaTRIG), trigHist->GetYaxis()->FindBin(ptTRIG)); */
+    /* double trig_SF_error = trigHist->GetBinError(trigHist->GetXaxis()->FindBin(etaTRIG), trigHist->GetYaxis()->FindBin(ptTRIG)); */
+    /* double trig_SF = trig_SF_value + (systLevel-1)*trig_SF_error; */
 
-    //    double muEffSF=id_SF*iso_SF*trig_SF;
-    std::vector<double> muSF {id_SF*iso_SF*trig_SF, id_SF, iso_SF, trig_SF};
+    /* //    double muEffSF=id_SF*iso_SF*trig_SF; */
+    /* std::vector<double> muSF {id_SF*iso_SF*trig_SF, id_SF, iso_SF, trig_SF}; */
     
-    if (verbose) { 
-	cout << "Muon Scale Factors: " << endl;
-	cout << "    ID   = " << id_SF << endl;
-	cout << "    Iso  = " << iso_SF << endl;
-	cout << "    Trig = " << trig_SF << endl;
-	cout << "    Total= " << id_SF*iso_SF*trig_SF << endl;
-    }
-    
+    /* if (verbose) { */
+    /* 	cout << "Muon Scale Factors: " << endl; */
+    /* 	cout << "    ID   = " << id_SF << endl; */
+    /* 	cout << "    Iso  = " << iso_SF << endl; */
+    /* 	cout << "    Trig = " << trig_SF << endl; */
+    /* 	cout << "    Total= " << id_SF*iso_SF*trig_SF << endl; */
+    /* } */
+
+  double idSF    = 1.0;
+  double isoSF   = 1.0;
+  double trigSF  = 1.0;
+
+  if (year==2017 || year==2018){//axes are interchanged
+    idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: 0, 2.4
+    isoSF   = getMuSF(isoHist, pt, abs(eta), systLevel);
+    std::cout<<"Here I am "<<std::endl;
+  }
+  else{
+    idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: -2.4, 2.4
+    isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);
+  }
+  trigSF  = getMuSF(trigHist, abs(eta), pt, systLevel);//eta: 0, 2.4
+  vector<double> muSF {idSF*isoSF*trigSF, idSF, isoSF, trigSF};
+  if (verbose){
+    cout<<"----------------------------"<<endl;
+    cout << "Muon Scale Factors: " << endl;
+    cout<<  "    pt   = " <<pt<<endl;
+    cout<<  "    eta   = " <<eta<<endl;
+    cout << "    ID   = " << idSF << endl;
+    cout << "    Iso  = " << isoSF << endl;
+    cout << "    Trig = " << trigSF << endl;
+    cout << "    Total= " << idSF*isoSF*trigSF << endl;
+  }
+
     return muSF;
 
 }

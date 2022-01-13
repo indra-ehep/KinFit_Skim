@@ -21,6 +21,7 @@ class ElectronSF
     }
 
     std::vector<double> getEleSF(double pt, double eta, int systLevel, bool verbose=false);
+    double getEleSF(TH2F *h2, double eta, double pt, int systLevel);
     
  private:
     TH2F* idHist;
@@ -28,6 +29,44 @@ class ElectronSF
     TH2F* trigHist;
 };
 
+double ElectronSF::getEleSF(TH2F *h2, double eta, double pt, int systLevel){
+
+  TAxis *axisX = h2->GetXaxis();
+  TAxis *axisY = h2->GetYaxis();
+
+  //Get max of x and y range
+  double minX = axisX->GetBinCenter(1);
+  double maxX = axisX->GetBinCenter(h2->GetNbinsX());
+  
+  double minY = axisY->GetBinCenter(1);
+  double maxY = axisY->GetBinCenter(h2->GetNbinsY());
+  
+  //Get the bin numbers for a given eta, pt
+  //If pt or eta value is out of hist range, choose the first/last bin
+  Int_t binX = -1;
+  if(eta <= minX)
+    binX = 1;
+  else if(eta >= maxX)
+    binX = h2->GetNbinsX();
+  else
+    binX = axisX->FindBin(eta);
+
+  Int_t binY = -1;
+  if(pt <= minY)
+    binY = 1;
+  else if(pt >= maxY)
+    binY = h2->GetNbinsY();
+  else
+    binY = axisY->FindBin(pt);
+
+  //Get the scale factor and error for that bin
+  double sf = h2->GetBinContent(binX, binY);
+  double err = h2->GetBinError(binX, binY);
+  if (TMath::AreEqualAbs(sf,0.0,1.e-7) and TMath::AreEqualAbs(err,0.0,1.e-7))
+    return 1.0;
+  else
+    return sf + (systLevel -1)*err;
+}
 
 
 std::vector<double> ElectronSF::getEleSF(double pt, double eta, int systLevel, bool verbose){
@@ -114,81 +153,35 @@ std::vector<double> ElectronSF::getEleSF(double pt, double eta, int systLevel, b
 
     /* double trig_SF = trig_SF_value + (systLevel-1)*trig_SF_error; */
 
-    //double pt, double eta, int systLevel, bool verbose
-     
-    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for ID /////////////////
-    double etaID, ptID;
-    if(eta < idHist->GetXaxis()->GetXmin())
-      etaID = idHist->GetXaxis()->GetXmin();
-    else if(eta > idHist->GetXaxis()->GetXmax())
-      etaID = idHist->GetXaxis()->GetXmax();
-    else
-      etaID = eta;
+    /* std::vector<double> eleEffSF {id_SF*reco_SF*trig_SF, id_SF, reco_SF, trig_SF}; */
 
-    if(pt < idHist->GetYaxis()->GetXmin())
-      ptID = idHist->GetYaxis()->GetXmin();
-    else if(pt > idHist->GetYaxis()->GetXmax())
-      ptID = idHist->GetYaxis()->GetXmax();
-    else
-      ptID = pt;
-    /////////////////////////////////////////////////////////////////////////////////////////////
+    /* if (verbose) {  */
+    /* 	cout << "Electron Scale Factors: " << endl; */
+    /* 	cout << "    ID   = " << id_SF << endl; */
+    /* 	cout << "    Reco = " << reco_SF << endl; */
+    /* 	cout << "    Trig = " << trig_SF << endl; */
+    /* 	cout << "    TOTAL= " << eleEffSF.at(0) << endl; */
+    /* } */
 
-    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for RECO /////////////////
-    double etaRECO, ptRECO;
-    if(eta < recoHist->GetXaxis()->GetXmin())
-      etaRECO = recoHist->GetXaxis()->GetXmin();
-    else if(eta > recoHist->GetXaxis()->GetXmax())
-      etaRECO = recoHist->GetXaxis()->GetXmax();
-    else
-      etaRECO = eta;
+  double idSF    = 1.0;
+  double recoSF   = 1.0;
+  double trigSF  = 1.0;
 
-    if(pt < recoHist->GetYaxis()->GetXmin())
-      ptRECO = recoHist->GetYaxis()->GetXmin();
-    else if(pt > recoHist->GetYaxis()->GetXmax())
-      ptRECO = recoHist->GetYaxis()->GetXmax();
-    else
-      ptRECO = pt;
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    
-    ///////// set U/Overflow eta/pt values to the min/max values of TH2 for Trigger /////////////
-    double etaTRIG, ptTRIG;
-    if(eta < trigHist->GetXaxis()->GetXmin())
-      etaTRIG = trigHist->GetXaxis()->GetXmin();
-    else if(eta > trigHist->GetXaxis()->GetXmax())
-      etaTRIG = trigHist->GetXaxis()->GetXmax();
-    else
-      etaTRIG = eta;
+  idSF    = getEleSF(idHist, eta, pt, systLevel);//eta: -2.4, 2.4
+  recoSF   = getEleSF(recoHist, eta, pt, systLevel);
+  trigSF  = getEleSF(trigHist, eta, pt, systLevel);//eta: 0, 2.4
 
-    if(pt < trigHist->GetYaxis()->GetXmin())
-      ptTRIG = trigHist->GetYaxis()->GetXmin();
-    else if(pt > trigHist->GetYaxis()->GetXmax())
-      ptTRIG = trigHist->GetYaxis()->GetXmax();
-    else
-      ptTRIG = pt;
-    /////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    double id_SF_value = idHist->GetBinContent(idHist->FindBin(etaID,ptID));
-    double id_SF_error = idHist->GetBinError(idHist->FindBin(etaID,ptID));
-    double id_SF = id_SF_value + (systLevel-1)*id_SF_error;
-
-    double reco_SF_value = recoHist->GetBinContent(recoHist->FindBin(etaRECO,ptRECO));
-    double reco_SF_error = recoHist->GetBinError(recoHist->FindBin(etaRECO,ptRECO));
-    double reco_SF = reco_SF_value + (systLevel-1)*reco_SF_error;
-
-    double trig_SF_value = trigHist->GetBinContent(trigHist->FindBin(etaTRIG,ptTRIG));
-    double trig_SF_error = trigHist->GetBinError(trigHist->FindBin(etaTRIG,ptTRIG));
-    double trig_SF = trig_SF_value + (systLevel-1)*trig_SF_error;
-
-    std::vector<double> eleEffSF {id_SF*reco_SF*trig_SF, id_SF, reco_SF, trig_SF};
-
-    if (verbose) { 
-	cout << "Electron Scale Factors: " << endl;
-	cout << "    ID   = " << id_SF << endl;
-	cout << "    Reco = " << reco_SF << endl;
-	cout << "    Trig = " << trig_SF << endl;
-	cout << "    TOTAL= " << eleEffSF.at(0) << endl;
-    }
+  vector<double> eleEffSF {idSF*recoSF*trigSF, idSF, recoSF, trigSF};
+  if (verbose){
+    cout<<"----------------------------"<<endl;
+    cout << "Muon Scale Factors: " << endl;
+    cout<<  "    pt   = " <<pt<<endl;
+    cout<<  "    eta   = " <<eta<<endl;
+    cout << "    ID   = " << idSF << endl;
+    cout << "    Reco  = " << recoSF << endl;
+    cout << "    Trig = " << trigSF << endl;
+    cout << "    Total= " << idSF*recoSF*trigSF << endl;
+  }
 
     return eleEffSF;
 

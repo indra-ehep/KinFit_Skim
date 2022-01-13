@@ -1017,8 +1017,8 @@ void SkimAna::LoadLeptonSF(){
     }
   } else if (fYear==2017) {
 	
-    muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ID.root",fBasePath.Data()), "NUM_TightID_DEN_genTracks_pt_abseta",
-		       Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ISO.root",fBasePath.Data()), "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+    muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ID.root",fBasePath.Data()), "NUM_MediumID_DEN_genTracks_pt_abseta", //"NUM_TightID_DEN_genTracks_pt_abseta",
+		       Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ISO.root",fBasePath.Data()), "NUM_TightRelIso_DEN_MediumID_pt_abseta", //"NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
 		       Form("%s/weight/MuEleSF/mu2017/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",fBasePath.Data()), "IsoMu27_PtEtaBins/abseta_pt_ratio");
 	
     eleSF = new ElectronSF(Form("%s/weight/MuEleSF/ele2017/2017_ElectronTight.root",fBasePath.Data()),
@@ -1028,16 +1028,20 @@ void SkimAna::LoadLeptonSF(){
   } else if (fYear==2018) {
 
     muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",fBasePath.Data()),  
-		       "NUM_TightID_DEN_TrackerMuons_pt_abseta",
+		       //"NUM_TightID_DEN_TrackerMuons_pt_abseta",
+		       "NUM_MediumID_DEN_TrackerMuons_pt_abseta",
 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root",fBasePath.Data()), 
-		       "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+		       //"NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+		       "NUM_TightRelIso_DEN_MediumID_pt_abseta",
 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_BeforeMuonHLTUpdate.root",fBasePath.Data()), 
 		       "IsoMu24_PtEtaBins/abseta_pt_ratio");
     
     muSFb = new MuonSF(Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",fBasePath.Data()),  
-		       "NUM_TightID_DEN_TrackerMuons_pt_abseta",
+		       //"NUM_TightID_DEN_TrackerMuons_pt_abseta",
+		       "NUM_MediumID_DEN_TrackerMuons_pt_abseta",
 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root",fBasePath.Data()), 
-		       "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+		       //"NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+		       "NUM_TightRelIso_DEN_MediumID_pt_abseta",
 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root",fBasePath.Data()), 
 		       "IsoMu24_PtEtaBins/abseta_pt_ratio");
     
