@@ -160,15 +160,16 @@ public:
 	void init_JER(std::string inputPrefix);
 	void init_RoccoR(std::string inputPath);
 
-
-private:
-	EventTree* tree;
 	void filter_electrons();
 	void filter_muons();
 	void filter_jets();
 	void filter_jetsNoCorr();
 	void filter_mets();
 	void metWithUncl();
+
+
+private:
+	EventTree* tree;
 
 	/* double JER(int jetInd); */
 	

@@ -264,6 +264,8 @@ class KinFit{
     double              GetResCjHadPhi(unsigned int i)  { return RescjhadPhi.at(i);}
     double              GetResSjHadEta(unsigned int i)  { return RessjhadEta.at(i);}
     double              GetResSjHadPhi(unsigned int i)  { return RessjhadPhi.at(i);}
+    double		GetBtagThresh()                 { return btagThresh; }
+    double		GetTopMass()                    { return mTop; }
 
     /////////////////////////////////////////////////////////////////////////////
     
@@ -335,11 +337,20 @@ class KinFit{
 
 class SkimAna : public TSelector {
    public :
+
+   struct PtDescending
+   { 
+      inline bool operator() (const pair<unsigned int, double>& a, const pair<unsigned int, double>& b)
+      {
+        return (a.second > b.second);
+      }
+    };
    
    //File operation pointers
    ////////////////////////////////////////////////////////
    TFile            *fFile[3];
    TDirectory       **fFileDir;
+   TDirectory       **fSelColDir;
    TProofOutputFile *fProofFile[3]; // For optimized merging of the ntuple
 
    //Declaration of histograms
@@ -605,7 +616,11 @@ class SkimAna : public TSelector {
    bool isData ;
    TString fBasePath ;
    TString fSyst ;
-   char **fSystList;
+   vector<TString> fSystList;
+
+   vector<pair<unsigned int, double>>	ljetlist;
+   vector<pair<unsigned int, double>>	bjetlist;
+
    bool isNanoAOD;
    bool doTreeSave;
    ////////////////////////////////////////////////////////
@@ -711,10 +726,17 @@ class SkimAna : public TSelector {
    TFile *f_trackSF_GH = 0x0;
    TGraphAsymmErrors *tg_trackSF_BCDEF;
    TGraphAsymmErrors *tg_trackSF_GH;
-   
+   bool singleMu = false;
+   bool singleEle = false;
+   bool muonIsoCut = false;
+   bool muonNonIsoCut = false;
+   bool eleIsoCut = false;
+   bool eleNonIsoCut = false;
+
    // MET
    float METThreshold = 20. ;
-   
+   bool isLowMET = false;
+
    //top pt
    double _topPtReWeight = 1.0;
 
@@ -737,6 +759,10 @@ class SkimAna : public TSelector {
    int fNBObHists ; 
    int fNObHists ;
    TH1D           **histObs;//
+   int fNBSelCols;
+   int fNBSelColHists;
+   int fNSelColHists;
+   TH1D           **hControl;//
 
    TH1F           *hMinChi2_mu,  *h2MinChi2_mu, *h3MinChi2_mu, *h4MinChi2_mu, *h5MinChi2_mu;
    TH1F           *hMinChi2_ele,  *h2MinChi2_ele, *h3MinChi2_ele, *h4MinChi2_ele, *h5MinChi2_ele;
@@ -759,6 +785,7 @@ class SkimAna : public TSelector {
 
    double  fmTop ;
    double  kinFitMinChi2 ;
+   bool    hasKFMu = false, hasKFEle = false;
    ////////////////////////////////////////////////////////
    
    SkimAna(TTree *tree=0);
@@ -790,7 +817,8 @@ class SkimAna : public TSelector {
    void    LoadJECJER();
    void    LoadBTag();
    void    LoadLeptonSF();
-   
+   void    Clear(); //clear vector and arrays while read each event
+
    Int_t   CreateHistoArrays();
    
    double  ScaleLumiZ(Int_t nLHEPart);
@@ -802,38 +830,47 @@ class SkimAna : public TSelector {
    float   topPtReweight();
    void    TheoWeights();
    bool    ProcessKinFit(bool, bool);
-   
+
+   /// Fill CutFlow histograms, Note that the cutflow for BTag and KinFit are filled in the object histogram functiuons below
    bool    FillEventCutFlow();
-   bool    FillLeptonCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
-   bool    FillNjetCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
-   bool    FillMETCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
-   //bool    FillBTagCutFlow(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
-
-   bool    FillBTagObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
-   bool    FillKFCFObs(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   bool    FillLeptonCutFlow();
+   bool    FillNjetCutFlow();
+   bool    FillMETCutFlow();
    
+   //// Fill the main physics object histograms 
+   bool    FillBTagObs();
+   bool    FillKFCFObs();
+   
+   /// They are called by above cutflow histograms
    bool    FillEventCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
-   bool    FillLeptonCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
-				   bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
-   bool    FillNjetCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
-			   bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
-   bool    FillMETCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
-			  bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
-   bool     FillBTagCFBTHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt, 
-			      bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
+   bool    FillLeptonCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
+   bool    FillNjetCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
+   bool    FillMETCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
+   bool    FillBTagCFBTHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
 
-
-   bool    FillEventWt();
-   bool    FillLeptonIso(bool singleMu, bool singleEle);
-   bool    FillLeptonWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
-   bool    FillNjetWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut);
-   bool    FillBTagWt(bool singleMu, bool muonIsoCut, bool muonNonIsoCut, bool singleEle, bool eleIsoCut, bool eleNonIsoCut, bool isLowMET);
-   
+   /// These are called by above functions for cutflow and physics object filling functions
    bool    FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1);
    bool    FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
    bool    FillBTHists(TList *list, string hist_extn, bool isMu, double wt);
 
+   /// Fill Wt histograms
+   bool    FillEventWt();
+   bool    FillLeptonIso();
+   bool    FillLeptonWt();
+   bool    FillNjetWt();
+   bool    FillBTagWt();
+   
+   /// Calculate the combine wt
    bool    GetCombinedWt(TString systname, double& combined_muwt, double& combined_muwt1, double& combined_elewt);
+
+   /// Fill the control histograms
+   bool    FillEventControlHists();
+   bool    FillTriggerControlHists();
+   bool    FillLeptonControlHists();
+   bool    FillJetControlHists();
+   bool    FillMETControlHists();
+   bool    FillBTagControlHists();
+   bool    FillKinFitControlHists();
 
    bool    SelectTTbarChannel();
 
@@ -1183,6 +1220,9 @@ void SkimAna::Init(TTree *tree)
 
   tree->SetBranchStatus("Jet_puId",1);
   tree->SetBranchAddress("Jet_puId", &(event->jetPUID_));
+
+  tree->SetBranchStatus("Jet_puIdDisc",1);
+  tree->SetBranchAddress("Jet_puIdDisc", &(event->jetpuIdDisc_));
 
   tree->SetBranchStatus("Jet_area",1);
   tree->SetBranchAddress("Jet_area", &(event->jetArea_));
@@ -1974,7 +2014,9 @@ Bool_t SkimAna::Notify()
   selector->isPostVFP = isPostVFP ;
   if(isPreVFP) selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
   if(isPostVFP) selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVb ; 
-
+  if(isPreVFP or isPostVFP){
+    if(selector->useDeepCSVbTag) kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
+  }
 
   fSampleType = fname;
   
