@@ -489,11 +489,11 @@ void Selector::filter_muons(){
     float phi = tree->muPhi_[muInd];
     int nTrackerLayers = tree->munTrackerLayers_[muInd];
     int charge =  tree->muCharge_[muInd];
-    // float mudxy = tree->mudxy_[muInd];
-    // float mudz = tree->mudz_[muInd];
+    float mudxy = tree->mudxy_[muInd];
+    float mudz = tree->mudz_[muInd];
     
-    if(TMath::Abs(charge)!=1 or nTrackerLayers>=20 or nTrackerLayers<0 or !(TMath::Finite(eta)) or !(TMath::Finite(pt)) or !(TMath::Finite(phi)) ) continue;
-    //       or TMath::Abs(mudxy)>=0.2 or TMath::Abs(mudz)>=0.5) continue; 
+    if(TMath::Abs(charge)!=1 or nTrackerLayers>=20 or nTrackerLayers<0 or !(TMath::Finite(eta)) or !(TMath::Finite(pt)) or !(TMath::Finite(phi)) //) continue;
+       or TMath::Abs(mudxy)>=0.05 or TMath::Abs(mudz)>=0.2) continue; 
     //max nTrackerLayers should be 18 as seen in data and MC
     
     double SFRochCorr = 1.0;

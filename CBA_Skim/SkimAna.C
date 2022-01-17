@@ -438,7 +438,7 @@ Int_t SkimAna::CreateHistoArrays()
   
   if(fSyst=="base"){
     fNBSelCols = 7; //Nof cutflow columns
-    fNBSelColHists = 20; //nof histograms
+    fNBSelColHists = 37; //nof histograms
     fNSelColHists = fNBSelCols*fNBSelColHists;
     hControl = new TH1D*[fNSelColHists];
     const char *cfcols[] = {"Event", "Trigger", "Lepton", "Jet", "MET", "bjet", "KinFit"} ;
@@ -463,6 +463,23 @@ Int_t SkimAna::CreateHistoArrays()
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_ele","pt_ele",200, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_ele","eta_ele", 30, -3., 3.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("iso_ele","iso_ele", 100, .0, 1.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_incl","jetpuid_incl",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt1020","jetpuid_pt2030",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt2030","jetpuid_pt2030",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt3040","jetpuid_pt3040",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt4050","jetpuid_pt4050",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt1020_lwp","jetpuid_pt1020_lwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt2030_lwp","jetpuid_pt2030_lwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt3040_lwp","jetpuid_pt3040_lwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt4050_lwp","jetpuid_pt4050_lwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt1020_mwp","jetpuid_pt1020_mwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt2030_mwp","jetpuid_pt2030_mwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt3040_mwp","jetpuid_pt3040_mwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt4050_mwp","jetpuid_pt4050_mwp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt1020_twp","jetpuid_pt1020_twp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt2030_twp","jetpuid_pt2030_twp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt3040_twp","jetpuid_pt3040_twp",3000, -1.5., 1.5);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt4050_twp","jetpuid_pt4050_twp",3000, -1.5., 1.5);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_bjet","pt_jet1_bjet",200, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_jet1_bjet","eta_jet1_bjet", 30, -3., 3.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet2_bjet","pt_jet2_bjet",200, 0., 1000.);
@@ -1110,12 +1127,12 @@ void SkimAna::LoadLeptonSF(){
       string muPath_postVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_postVFP_Z",fBasePath.Data());
       string muTrigPath_preVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_preVFP_trigger",fBasePath.Data());
       string muTrigPath_postVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_postVFP_trigger",fBasePath.Data());
-      //MediumID
-      string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumID_DEN_TrackerMuons_abseta_pt";
-      string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumID_abseta_pt"; //check option of looseISO to use for DD QCD
-      //MediumPromptID
-      // string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
-      // string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
+      // //MediumID
+      // string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumID_DEN_TrackerMuons_abseta_pt";
+      // string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumID_abseta_pt"; //check option of looseISO to use for DD QCD
+      // MediumPromptID
+      string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
+      string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
       
       string muTrighist = "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
       
@@ -3510,11 +3527,42 @@ bool SkimAna::FillEventControlHists(){
     ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[eleInd], combined_wt);
   }
   
+
   for(unsigned int jetInd = 0; jetInd < event->nJet_ and int(event->nJet_) < 10000000 ; ++jetInd){ //less than 10 million jets since some MCQCD shows unexceptionally number of higher jets
+    double pt = event->jetPt_[jetInd];
+    float pudisc = event->jetpuIdDisc_[jetInd];
+    int puJetwp = event->jetPUID_[jetInd]; 
+
     if (event->jetBtagDeepB_[jetInd] > kinFit.GetBtagThresh())
-      bjetlist.push_back(make_pair(jetInd,event->jetPt_[jetInd]));
+      bjetlist.push_back(make_pair(jetInd, pt));
     else
-      ljetlist.push_back(make_pair(jetInd,event->jetPt_[jetInd]));
+      ljetlist.push_back(make_pair(jetInd, pt));
+
+    ((TH1D *) list->FindObject("jetpuid_incl"))->Fill(pudisc, combined_wt);
+    if(pt>10. and pt<20. and TMath::Abs(event->jetEta_[jetInd])<2.5){
+      ((TH1D *) list->FindObject("jetpuid_pt1020"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=1) ((TH1D *) list->FindObject("jetpuid_pt1020_lwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=3) ((TH1D *) list->FindObject("jetpuid_pt1020_mwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=7) ((TH1D *) list->FindObject("jetpuid_pt1020_twp"))->Fill(pudisc, combined_wt);
+    }
+    if(pt>20. and pt<30. and TMath::Abs(event->jetEta_[jetInd])<2.5){
+      ((TH1D *) list->FindObject("jetpuid_pt2030"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=1) ((TH1D *) list->FindObject("jetpuid_pt2030_lwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=3) ((TH1D *) list->FindObject("jetpuid_pt2030_mwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=7) ((TH1D *) list->FindObject("jetpuid_pt2030_twp"))->Fill(pudisc, combined_wt);
+    }
+    if(pt>30. and pt<40. and TMath::Abs(event->jetEta_[jetInd])<2.5){
+      ((TH1D *) list->FindObject("jetpuid_pt3040"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=1) ((TH1D *) list->FindObject("jetpuid_pt3040_lwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=3) ((TH1D *) list->FindObject("jetpuid_pt3040_mwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=7) ((TH1D *) list->FindObject("jetpuid_pt3040_twp"))->Fill(pudisc, combined_wt);
+    }
+    if(pt>40. and pt<50. and TMath::Abs(event->jetEta_[jetInd])<2.5){
+      ((TH1D *) list->FindObject("jetpuid_pt4050"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=1) ((TH1D *) list->FindObject("jetpuid_pt4050_lwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=3) ((TH1D *) list->FindObject("jetpuid_pt4050_mwp"))->Fill(pudisc, combined_wt);
+      if(puJetwp>=7) ((TH1D *) list->FindObject("jetpuid_pt4050_twp"))->Fill(pudisc, combined_wt);
+    }
   }
   std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
   std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
