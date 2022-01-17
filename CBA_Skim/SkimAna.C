@@ -1111,12 +1111,12 @@ void SkimAna::LoadLeptonSF(){
       string muTrigPath_preVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_preVFP_trigger",fBasePath.Data());
       string muTrigPath_postVFP = Form("%s/weightUL/MuEleSF/mu2016/2016_postVFP_trigger",fBasePath.Data());
       //MediumID
-      // string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumID_DEN_TrackerMuons_abseta_pt";
-      // string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumID_abseta_pt"; //check option of looseISO to use for DD QCD
+      string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumID_DEN_TrackerMuons_abseta_pt";
+      string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumID_abseta_pt"; //check option of looseISO to use for DD QCD
       //MediumPromptID
-      string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
-      string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
-
+      // string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
+      // string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
+      
       string muTrighist = "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
       
       muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID.root",muPath_preVFP.c_str()), muIDhist,
@@ -3883,28 +3883,25 @@ bool SkimAna::FillKinFitControlHists(){
     ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(sjhadAF.Pt(), combined_muwt);
     ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(sjhadAF.Eta(), combined_muwt);
     
-    if( (selector->JetsPtSmeared.at(_bjlep_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjlep_id)]>0.5)
-	and
-	(selector->JetsPtSmeared.at(_bjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjhad_id)]>0.5)
-	and
-	(selector->JetsPtSmeared.at(_cjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_cjhad_id)]>0.5)
-	and
-	(selector->JetsPtSmeared.at(_sjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_sjhad_id)]>0.5)
-	){
+    bool isApplicable[4],hasPassed[4];
+    isApplicable[0] = (selector->JetsPtSmeared.at(_bjlep_id)<50.)? true : false;
+    isApplicable[1] = (selector->JetsPtSmeared.at(_bjhad_id)<50.)? true : false;
+    isApplicable[2] = (selector->JetsPtSmeared.at(_cjhad_id)<50.)? true : false;
+    isApplicable[3] = (selector->JetsPtSmeared.at(_sjhad_id)<50.)? true : false;
+    hasPassed[0] = (event->jetpuIdDisc_[selector->Jets.at(_bjlep_id)]>0.5) ? true : false;
+    hasPassed[1] = (event->jetpuIdDisc_[selector->Jets.at(_bjhad_id)]>0.5) ? true : false;
+    hasPassed[2] = (event->jetpuIdDisc_[selector->Jets.at(_cjhad_id)]>0.5) ? true : false;
+    hasPassed[3] = (event->jetpuIdDisc_[selector->Jets.at(_sjhad_id)]>0.5) ? true : false;
+    
+    if( (isApplicable[0] and hasPassed[0]) and (isApplicable[1] and hasPassed[1]) and  (isApplicable[2] and hasPassed[2]) and (isApplicable[3] and hasPassed[3])){
       ((TH1D *) list->FindObject("pv_npvs_jetpupass"))->Fill(event->nVtx_, combined_muwt);
       ((TH1D *) list->FindObject("pv_z_jetpupass"))->Fill(event->pvZ_, combined_muwt);
     }
-    if( (selector->JetsPtSmeared.at(_bjlep_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjlep_id)]<0.5)
-	or
-	(selector->JetsPtSmeared.at(_bjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjhad_id)]<0.5)
-	or
-	(selector->JetsPtSmeared.at(_cjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_cjhad_id)]<0.5)
-	or
-	(selector->JetsPtSmeared.at(_sjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_sjhad_id)]<0.5)
-	){
+    if( (isApplicable[0] and !hasPassed[0]) or (isApplicable[1] and !hasPassed[1]) or (isApplicable[2] and !hasPassed[2]) or (isApplicable[3] and !hasPassed[3])){
       ((TH1D *) list->FindObject("pv_npvs_jetpufail"))->Fill(event->nVtx_, combined_muwt);
       ((TH1D *) list->FindObject("pv_z_jetpufail"))->Fill(event->pvZ_, combined_muwt);
     }
+
   }
   if(singleEle and hasKFEle){
     ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
@@ -3921,25 +3918,22 @@ bool SkimAna::FillKinFitControlHists(){
     ((TH1D *) list->FindObject("eta_jet1_ljet"))->Fill(cjhadAF.Eta(), combined_elewt);
     ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(sjhadAF.Pt(), combined_elewt);
     ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(sjhadAF.Eta(), combined_elewt);
-    if( (selector->JetsPtSmeared.at(_bjlep_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjlep_id)]>0.5)
-	and
-	(selector->JetsPtSmeared.at(_bjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjhad_id)]>0.5)
-	and
-	(selector->JetsPtSmeared.at(_cjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_cjhad_id)]>0.5)
-	and
-	(selector->JetsPtSmeared.at(_sjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_sjhad_id)]>0.5)
-	){
+
+    bool isApplicable[4],hasPassed[4];
+    isApplicable[0] = (selector->JetsPtSmeared.at(_bjlep_id)<50.)? true : false;
+    isApplicable[1] = (selector->JetsPtSmeared.at(_bjhad_id)<50.)? true : false;
+    isApplicable[2] = (selector->JetsPtSmeared.at(_cjhad_id)<50.)? true : false;
+    isApplicable[3] = (selector->JetsPtSmeared.at(_sjhad_id)<50.)? true : false;
+    hasPassed[0] = (event->jetpuIdDisc_[selector->Jets.at(_bjlep_id)]>0.5) ? true : false;
+    hasPassed[1] = (event->jetpuIdDisc_[selector->Jets.at(_bjhad_id)]>0.5) ? true : false;
+    hasPassed[2] = (event->jetpuIdDisc_[selector->Jets.at(_cjhad_id)]>0.5) ? true : false;
+    hasPassed[3] = (event->jetpuIdDisc_[selector->Jets.at(_sjhad_id)]>0.5) ? true : false;
+    
+    if( (isApplicable[0] and hasPassed[0]) and (isApplicable[1] and hasPassed[1]) and  (isApplicable[2] and hasPassed[2]) and (isApplicable[3] and hasPassed[3])){
       ((TH1D *) list->FindObject("pv_npvs_jetpupass"))->Fill(event->nVtx_, combined_elewt);
       ((TH1D *) list->FindObject("pv_z_jetpupass"))->Fill(event->pvZ_, combined_elewt);
     }
-    if( (selector->JetsPtSmeared.at(_bjlep_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjlep_id)]<0.5)
-	or
-	(selector->JetsPtSmeared.at(_bjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_bjhad_id)]<0.5)
-	or
-	(selector->JetsPtSmeared.at(_cjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_cjhad_id)]<0.5)
-	or
-	(selector->JetsPtSmeared.at(_sjhad_id)<50. and event->jetpuIdDisc_[selector->Jets.at(_sjhad_id)]<0.5)
-	){
+    if( (isApplicable[0] and !hasPassed[0]) or (isApplicable[1] and !hasPassed[1]) or (isApplicable[2] and !hasPassed[2]) or (isApplicable[3] and !hasPassed[3])){
       ((TH1D *) list->FindObject("pv_npvs_jetpufail"))->Fill(event->nVtx_, combined_elewt);
       ((TH1D *) list->FindObject("pv_z_jetpufail"))->Fill(event->pvZ_, combined_elewt);
     }
