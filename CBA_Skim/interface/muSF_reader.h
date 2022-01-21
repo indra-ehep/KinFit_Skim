@@ -42,36 +42,38 @@ class MuonSF
 
 double MuonSF::getMuSF(TH2D *h2, double eta, double pt, int systLevel){
 
-  //Get max of x and y range
-  double minX = h2->GetXaxis()->GetBinLowEdge(1);
-  double maxX = h2->GetXaxis()->GetBinLowEdge(h2->GetNbinsX());
-
-  double minY = h2->GetYaxis()->GetBinLowEdge(1);
-  double maxY = h2->GetYaxis()->GetBinLowEdge(h2->GetNbinsY());
   TAxis *axisX = h2->GetXaxis();
   TAxis *axisY = h2->GetYaxis();
-  //Get the bin numbers for a given pt, eta
-  //If pt or eta value is out of hist range, choose the last bin
+
+  //Get max of x and y range
+  double minX = axisX->GetBinCenter(1);
+  double maxX = axisX->GetBinCenter(h2->GetNbinsX());
+  
+  double minY = axisY->GetBinCenter(1);
+  double maxY = axisY->GetBinCenter(h2->GetNbinsY());
+  
+  //Get the bin numbers for a given eta, pt
+  //If pt or eta value is out of hist range, choose the first/last bin
   Int_t binX = -1;
   if(eta <= minX)
     binX = 1;
-  if(eta >= maxX)
-    binX = axisX->FindBin(maxX);
+  else if(eta >= maxX)
+    binX = h2->GetNbinsX();
   else
     binX = axisX->FindBin(eta);
 
   Int_t binY = -1;
   if(pt <= minY)
     binY = 1;
-  if(pt >= maxY)
-    binY = axisY->FindBin(maxY);
+  else if(pt >= maxY)
+    binY = h2->GetNbinsY();
   else
     binY = axisY->FindBin(pt);
 
   //Get the scale factor and error for that bin
   double sf = h2->GetBinContent(binX, binY);
   double err = h2->GetBinError(binX, binY);
-  if (sf==0.0 && err==0.0)
+  if (TMath::AreEqualAbs(sf,0.0,1.e-7) and TMath::AreEqualAbs(err,0.0,1.e-7))
     return 1.0;
   else
     return sf + (systLevel -1)*err;

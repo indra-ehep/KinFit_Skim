@@ -438,7 +438,7 @@ Int_t SkimAna::CreateHistoArrays()
   
   if(fSyst=="base"){
     fNBSelCols = 7; //Nof cutflow columns
-    fNBSelColHists = 37; //nof histograms
+    fNBSelColHists = 48; //nof histograms
     fNSelColHists = fNBSelCols*fNBSelColHists;
     hControl = new TH1D*[fNSelColHists];
     const char *cfcols[] = {"Event", "Trigger", "Lepton", "Jet", "MET", "bjet", "KinFit"} ;
@@ -457,10 +457,10 @@ Int_t SkimAna::CreateHistoArrays()
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pv_z_jetpupass","pv_z_jetpupass",1000, -20., 20.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pv_npvs_jetpufail","pv_npvs_jetpufail",100, 0., 100.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pv_z_jetpufail","pv_z_jetpufail",1000, -20., 20.);
-      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_mu","pt_mu",200, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_mu","pt_mu",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_mu","eta_mu", 30, -3., 3.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("iso_mu","iso_mu", 100, .0, 1.);
-      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_ele","pt_ele",200, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_ele","pt_ele",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_ele","eta_ele", 30, -3., 3.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("iso_ele","iso_ele", 100, .0, 1.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_incl","jetpuid_incl",3000, -1.5, 1.5);
@@ -480,14 +480,27 @@ Int_t SkimAna::CreateHistoArrays()
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt2030_twp","jetpuid_pt2030_twp",3000, -1.5, 1.5);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt3040_twp","jetpuid_pt3040_twp",3000, -1.5, 1.5);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetpuid_pt4050_twp","jetpuid_pt4050_twp",3000, -1.5, 1.5);
-      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_bjet","pt_jet1_bjet",200, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_bjet","pt_jet1_bjet",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_jet1_bjet","eta_jet1_bjet", 30, -3., 3.);
-      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet2_bjet","pt_jet2_bjet",200, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet2_bjet","pt_jet2_bjet",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_jet2_bjet","eta_jet2_bjet", 30, -3., 3.);
-      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_ljet","pt_jet1_ljet",200, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_ljet","pt_jet1_ljet",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_jet1_ljet","eta_jet1_ljet", 30, -3., 3.);
-      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet2_ljet","pt_jet2_ljet",200, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet2_ljet","pt_jet2_ljet",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_jet2_ljet","eta_jet2_ljet", 30, -3., 3.);
+      
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_chEmEF","jet_chEmEF", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_neEmEF","jet_neEmEF", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_chHEF","jet_chHEF", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_neHEF","jet_neHEF", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_chEmEF_jetid","jet_chEmEF_jetid", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_neEmEF_jetid","jet_neEmEF_jetid", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_chHEF_jetid","jet_chHEF_jetid", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_neHEF_jetid","jet_neHEF_jetid", 1200, 0, 1.2);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_bjet_jetid","pt_jet1_bjet_jetid",1000, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_ljet_jetid","pt_jet1_ljet_jetid",1000, 0., 1000.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetresolution","jetresolution",200, 0., 2.);
+      
     }
   }//fSyst==base
 
@@ -730,7 +743,9 @@ void SkimAna::SetTrio()
   selector->year = Form("%d",fYear);
   selector->looseJetID = false;
   selector->smearJetPt = true; // default setting was false for cutflow and for prining jet pt
-  selector->useDeepCSVbTag = (isNanoAOD) ? true : false ;
+  //selector->useDeepCSVbTag = (isNanoAOD) ? true : false ;
+  //selector->useDeepCSVbTag = true ;
+  selector->useDeepCSVbTag = false ;
   selector->JECsystLevel = jecvar012_g;
   selector->JERsystLevel = jervar012_g;
   selector->isNanoAOD = isNanoAOD ;
@@ -801,14 +816,6 @@ void SkimAna::SetTrio()
   
   if (selector->useDeepCSVbTag){
     // While changing cut to L,M,T make sure to change the efficiency file
-    //Light
-    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.2217; 
-    // if (fYear==2017) selector->btag_cut_DeepCSV = 0.1522;
-    // if (fYear==2018) selector->btag_cut_DeepCSV = 0.1241;
-    // //Medium
-    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.6321; 
-    // if (fYear==2017) selector->btag_cut_DeepCSV = 0.4941;
-    // if (fYear==2018) selector->btag_cut_DeepCSV = 0.4184;
 
     //Medium
     if (fYear==2016){
@@ -817,19 +824,22 @@ void SkimAna::SetTrio()
     }
     if (fYear==2017) selector->btag_cut_DeepCSV = 0.4506;
     if (fYear==2018) selector->btag_cut_DeepCSV = 0.4168;
-    // //Tight
-    // if (fYear==2016) selector->btag_cut_DeepCSV = 0.8953; 
-    // if (fYear==2017) selector->btag_cut_DeepCSV = 0.8001;
-    // if (fYear==2018) selector->btag_cut_DeepCSV = 0.7527;
     selector->btag_cut = 1.0;
     kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
   }else{
-    // CSVv2M
-    if (fYear==2016) selector->btag_cut = 0.8484 ;
-    if (fYear==2017) selector->btag_cut = 0.8838 ;
-    if (fYear==2018) selector->btag_cut = 0.8838 ;
+    // // CSVv2M
+    // if (fYear==2016) selector->btag_cut = 0.8484 ;
+    // if (fYear==2017) selector->btag_cut = 0.8838 ;
+    // if (fYear==2018) selector->btag_cut = 0.8838 ;
+    //Medium
+    if (fYear==2016){
+      selector->btag_cuta = 0.2598 ; 
+      selector->btag_cutb = 0.2489 ; 
+    }
+    if (fYear==2017) selector->btag_cut = 0.3040 ;
+    if (fYear==2018) selector->btag_cut = 0.2783 ;
+    
     selector->btag_cut_DeepCSV = 1.0;
-    // Twiki not found for WP recommendation for CSVv2 for 2018;
     kinFit.SetBtagThresh(selector->btag_cut);
   }
   
@@ -1018,17 +1028,37 @@ void SkimAna::LoadBTag()
   // DeepCSV
   
   if (!selector->useDeepCSVbTag){
-    Info("LoadBTag","CSVV2 calibration has been selected");
-    if (fYear==2016) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_Moriond17_B_H.csv",fBasePath.Data()));
-    if (fYear==2017) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_94XSF_V2_B_F.csv",fBasePath.Data()));
-    if (fYear==2018) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_94XSF_V2_B_F.csv",fBasePath.Data()));
-    Info("LoadBTag","CSVV2 calibration has been loaded");
+    // Info("LoadBTag","CSVV2 calibration has been selected");
+    // if (fYear==2016) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_Moriond17_B_H.csv",fBasePath.Data()));
+    // if (fYear==2017) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_94XSF_V2_B_F.csv",fBasePath.Data()));
+    // if (fYear==2018) calib = BTagCalibration("csvv2", Form("%s/weight/BtagSF/CSVv2_94XSF_V2_B_F.csv",fBasePath.Data()));
+    // Info("LoadBTag","CSVV2 calibration has been loaded");
 
-    reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
-    reader.load(calib, BTagEntry::FLAV_B,"comb");          
-    reader.load(calib, BTagEntry::FLAV_C, "comb"); 
-    reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
+    // reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
+    // reader.load(calib, BTagEntry::FLAV_B,"comb");          
+    // reader.load(calib, BTagEntry::FLAV_C, "comb"); 
+    // reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
 
+    Info("LoadBTag","DeepJet calibration has been selected");
+    if (fYear==2016){ 
+      Info("LoadBTag","DeepJet calibration has been selected : 2016");      
+
+      caliba = BTagCalibration( "deepjeta", Form("%s/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv",fBasePath.Data());
+      calibb = BTagCalibration( "deepjetb", Form("%s/weightUL/BtagSF/2016/DeepJet_postVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepJet_postVFP_formatted.csv",fBasePath.Data());
+
+      readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      readera.load(caliba, BTagEntry::FLAV_B,"comb");          
+      readera.load(caliba, BTagEntry::FLAV_C, "comb"); 
+      readera.load(caliba, BTagEntry::FLAV_UDSG, "incl"); 
+
+      readerb = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      readerb.load(calibb, BTagEntry::FLAV_B,"comb");          
+      readerb.load(calibb, BTagEntry::FLAV_C, "comb"); 
+      readerb.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
+
+    }
   } else {
     Info("LoadBTag","DeepCSV calibration has been selected");
     if (fYear==2016){ 
@@ -1076,14 +1106,14 @@ void SkimAna::LoadBTag()
     } //DeepCSV_102XSF_V1.csv  
   }
   
-  
   //string year = "2016";
   std::string fName = "" ;
   if(!selector->useDeepCSVbTag){ //CSVV2
-    if(fSample.BeginsWith("MCQCD"))
-      fName = Form("%s/weight/BtagSF/btag_efficiencies_%d.root",fBasePath.Data(),fYear);
-    else
-      fName = Form("%s/weight/BtagSF/Efficiency/MiniAOD/CSVV2/%s_btag_efficiency.root",fBasePath.Data(),fSample.Data());
+    // if(fSample.BeginsWith("MCQCD"))
+    //   fName = Form("%s/weight/BtagSF/btag_efficiencies_%d.root",fBasePath.Data(),fYear);
+    // else
+    //   fName = Form("%s/weight/BtagSF/Efficiency/MiniAOD/CSVV2/%s_btag_efficiency.root",fBasePath.Data(),fSample.Data());
+    fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
   }else{ //DeepCSV    
     fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
   }
@@ -1258,7 +1288,8 @@ void SkimAna::GetBtagSF_1a(){
     jetEta = fabs(event->jetEta_[*jetInd]);
     jetFlavor = abs(event->jetPartFlvr_[*jetInd]);
     //jetFlavor = abs(event->jetHadFlvr_[*jetInd]);
-    jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagCSVV2_[*jetInd] ;
+    //jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagCSVV2_[*jetInd] ;
+    jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagDeepFlavB_[*jetInd] ;
     
     if (jetFlavor == 5){
       if(fYear==2016){
@@ -1923,7 +1954,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  //return true;
+  return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -3525,9 +3556,8 @@ bool SkimAna::FillEventControlHists(){
     ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[eleInd], combined_wt);
     ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[eleInd], combined_wt);
     ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[eleInd], combined_wt);
-  }
+  }  
   
-
   for(unsigned int jetInd = 0; jetInd < event->nJet_ and int(event->nJet_) < 10000000 ; ++jetInd){ //less than 10 million jets since some MCQCD shows unexceptionally number of higher jets
     double pt = event->jetPt_[jetInd];
     float pudisc = event->jetpuIdDisc_[jetInd];
@@ -3537,7 +3567,7 @@ bool SkimAna::FillEventControlHists(){
       bjetlist.push_back(make_pair(jetInd, pt));
     else
       ljetlist.push_back(make_pair(jetInd, pt));
-
+    
     ((TH1D *) list->FindObject("jetpuid_incl"))->Fill(pudisc, combined_wt);
     if(pt>10. and pt<20. and TMath::Abs(event->jetEta_[jetInd])<2.5){
       ((TH1D *) list->FindObject("jetpuid_pt1020"))->Fill(pudisc, combined_wt);
@@ -3563,6 +3593,18 @@ bool SkimAna::FillEventControlHists(){
       if(puJetwp>=3) ((TH1D *) list->FindObject("jetpuid_pt4050_mwp"))->Fill(pudisc, combined_wt);
       if(puJetwp>=7) ((TH1D *) list->FindObject("jetpuid_pt4050_twp"))->Fill(pudisc, combined_wt);
     }
+
+    ((TH1D *) list->FindObject("jet_chEmEF"))->Fill(event->jetchEmEF_[jetInd], combined_wt);
+    ((TH1D *) list->FindObject("jet_neEmEF"))->Fill(event->jetneEmEF_[jetInd], combined_wt);
+    ((TH1D *) list->FindObject("jet_chHEF"))->Fill(event->jetchHEF_[jetInd], combined_wt);
+    ((TH1D *) list->FindObject("jet_neHEF"))->Fill(event->jetneHEF_[jetInd], combined_wt);
+    if(event->jetID_[jetInd]>=2){
+      ((TH1D *) list->FindObject("jet_chEmEF_jetid"))->Fill(event->jetchEmEF_[jetInd], combined_wt);
+      ((TH1D *) list->FindObject("jet_neEmEF_jetid"))->Fill(event->jetneEmEF_[jetInd], combined_wt);
+      ((TH1D *) list->FindObject("jet_chHEF_jetid"))->Fill(event->jetchHEF_[jetInd], combined_wt);
+      ((TH1D *) list->FindObject("jet_neHEF_jetid"))->Fill(event->jetneHEF_[jetInd], combined_wt);
+    }
+
   }
   std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
   std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
@@ -3570,6 +3612,8 @@ bool SkimAna::FillEventControlHists(){
   if(bjetlist.size()>=1){
     ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(event->jetPt_[bjetlist.at(0).first], combined_wt);
     ((TH1D *) list->FindObject("eta_jet1_bjet"))->Fill(event->jetEta_[bjetlist.at(0).first], combined_wt);
+    if(event->jetID_[bjetlist.at(0).first]>=2)
+      ((TH1D *) list->FindObject("pt_jet1_bjet_jetid"))->Fill(event->jetPt_[bjetlist.at(0).first], combined_wt);
   }
   if(bjetlist.size()>=2){
     ((TH1D *) list->FindObject("pt_jet2_bjet"))->Fill(event->jetPt_[bjetlist.at(1).first], combined_wt);
@@ -3579,6 +3623,8 @@ bool SkimAna::FillEventControlHists(){
   if(ljetlist.size()>=1){
     ((TH1D *) list->FindObject("pt_jet1_ljet"))->Fill(event->jetPt_[ljetlist.at(0).first], combined_wt);
     ((TH1D *) list->FindObject("eta_jet1_ljet"))->Fill(event->jetEta_[ljetlist.at(0).first], combined_wt);
+    if(event->jetID_[ljetlist.at(0).first]>=2)
+      ((TH1D *) list->FindObject("pt_jet1_ljet_jetid"))->Fill(event->jetPt_[ljetlist.at(0).first], combined_wt);
   }
   if(ljetlist.size()>=2){
     ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(event->jetPt_[ljetlist.at(1).first], combined_wt);
@@ -3718,6 +3764,8 @@ bool SkimAna::FillJetControlHists(){
     	bjetlist.push_back(make_pair(jetInd,selector->JetsPtSmeared.at(ijet)));
       else
     	ljetlist.push_back(make_pair(jetInd,selector->JetsPtSmeared.at(ijet)));
+      
+      ((TH1D *) list->FindObject("jetresolution"))->Fill(selector->jet_resolution.at(ijet), combined_muwt);
     }
     std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
     std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
@@ -3754,6 +3802,7 @@ bool SkimAna::FillJetControlHists(){
     	bjetlist.push_back(make_pair(jetInd,selector->JetsPtSmeared.at(ijet)));
       else
     	ljetlist.push_back(make_pair(jetInd,selector->JetsPtSmeared.at(ijet)));
+      ((TH1D *) list->FindObject("jetresolution"))->Fill(selector->jet_resolution.at(ijet), combined_elewt);
     }
     std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
     std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
@@ -4045,7 +4094,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     jetVectors.push_back(jetVector);
     //double jetRes = selector->jet_resolution.at(ijet);
     jetResVectors.push_back( selector->jet_resolution.at(ijet) );
-    double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagCSVV2_[jetInd] ;
+    //double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagCSVV2_[jetInd] ;
+    double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
     jetBtagVectors.push_back( jetBtag );
     
     _jetPt->push_back(selector->JetsPtSmeared.at(ijet));
@@ -4600,7 +4650,7 @@ bool SkimAna::ExecSerial(const char* infile)
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }

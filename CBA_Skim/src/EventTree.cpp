@@ -255,21 +255,39 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
 
   tree->SetBranchStatus("Jet_btagCSVV2",1);
   tree->SetBranchAddress("Jet_btagCSVV2", &jetBtagCSVV2_);
-
+  
   tree->SetBranchStatus("Jet_btagDeepB",1);
   tree->SetBranchAddress("Jet_btagDeepB", &jetBtagDeepB_);
-
-  tree->SetBranchStatus("Jet_btagDeepC",1);
-  tree->SetBranchAddress("Jet_btagDeepC", &jetBtagDeepC_);
-
+  
+  tree->SetBranchStatus("Jet_btagDeepCvB",1);
+  tree->SetBranchAddress("Jet_btagDeepCvB", &jetBtagDeepCvB_);
+  
+  tree->SetBranchStatus("Jet_btagDeepCvL",1);
+  tree->SetBranchAddress("Jet_btagDeepCvL", &jetBtagDeepCvL_);
+  
+  // tree->SetBranchStatus("Jet_btagDeepC",1);
+  // tree->SetBranchAddress("Jet_btagDeepC", &jetBtagDeepC_);
+  
   tree->SetBranchStatus("Jet_btagDeepFlavB",1);
   tree->SetBranchAddress("Jet_btagDeepFlavB", &jetBtagDeepFlavB_);
-
+  
+  tree->SetBranchStatus("Jet_btagDeepFlavCvB",1);
+  tree->SetBranchAddress("Jet_btagDeepFlavCvB", &jetBtagDeepFlavCvB_);
+  
+  tree->SetBranchStatus("Jet_btagDeepFlavCvL",1);
+  tree->SetBranchAddress("Jet_btagDeepFlavCvL", &jetBtagDeepFlavCvL_);
+  
   tree->SetBranchStatus("Jet_chEmEF",1);
   tree->SetBranchAddress("Jet_chEmEF", &jetchEmEF_);
 
   tree->SetBranchStatus("Jet_neEmEF",1);
   tree->SetBranchAddress("Jet_neEmEF", &jetneEmEF_);
+
+  tree->SetBranchStatus("Jet_chHEF",1);
+  tree->SetBranchAddress("Jet_chHEF", &jetchHEF_);
+
+  tree->SetBranchStatus("Jet_neHEF",1);
+  tree->SetBranchAddress("Jet_neHEF", &jetneHEF_);
 
   if (!isData_){
     tree->SetBranchStatus("Jet_partonFlavour",1);
@@ -791,18 +809,36 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
   chain->SetBranchStatus("Jet_btagDeepB",1);
   chain->SetBranchAddress("Jet_btagDeepB", &jetBtagDeepB_);
-
-  chain->SetBranchStatus("Jet_btagDeepC",1);
-  chain->SetBranchAddress("Jet_btagDeepC", &jetBtagDeepC_);
-
+  
+  chain->SetBranchStatus("Jet_btagDeepCvB",1);
+  chain->SetBranchAddress("Jet_btagDeepCvB", &jetBtagDeepCvB_);
+  
+  chain->SetBranchStatus("Jet_btagDeepCvL",1);
+  chain->SetBranchAddress("Jet_btagDeepCvL", &jetBtagDeepCvL_);
+  
+  // chain->SetBranchStatus("Jet_btagDeepC",1);
+  // chain->SetBranchAddress("Jet_btagDeepC", &jetBtagDeepC_);
+  
   chain->SetBranchStatus("Jet_btagDeepFlavB",1);
   chain->SetBranchAddress("Jet_btagDeepFlavB", &jetBtagDeepFlavB_);
+  
+  chain->SetBranchStatus("Jet_btagDeepFlavCvB",1);
+  chain->SetBranchAddress("Jet_btagDeepFlavCvB", &jetBtagDeepFlavCvB_);
+  
+  chain->SetBranchStatus("Jet_btagDeepFlavCvL",1);
+  chain->SetBranchAddress("Jet_btagDeepFlavCvL", &jetBtagDeepFlavCvL_);
 
   chain->SetBranchStatus("Jet_chEmEF",1);
   chain->SetBranchAddress("Jet_chEmEF", &jetchEmEF_);
 
   chain->SetBranchStatus("Jet_neEmEF",1);
   chain->SetBranchAddress("Jet_neEmEF", &jetneEmEF_);
+
+  chain->SetBranchStatus("Jet_chHEF",1);
+  chain->SetBranchAddress("Jet_chHEF", &jetchHEF_);
+
+  chain->SetBranchStatus("Jet_neHEF",1);
+  chain->SetBranchAddress("Jet_neHEF", &jetneHEF_);
 
   if (!isData_){
     chain->SetBranchStatus("Jet_partonFlavour",1);

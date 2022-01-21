@@ -40,7 +40,7 @@ BTagEntry::BTagEntry(const std::string &csvLine)
   std::stringstream buff(csvLine);
   std::vector<std::string> vec;
   std::string token;
-  while (std::getline(buff, token, ","[0])) {
+  while (std::getline(buff, token, ";"[0])) {
     token = BTagEntry::trimStr(token);
     if (token.empty()) {
       continue;

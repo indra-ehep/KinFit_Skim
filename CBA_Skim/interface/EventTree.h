@@ -155,10 +155,16 @@ class EventTree{
     Float_t         jetBtagCMVA_[200];
     Float_t         jetBtagCSVV2_[200];
     Float_t         jetBtagDeepB_[200];
-    Float_t         jetBtagDeepC_[200];
+    Float_t         jetBtagDeepCvB_[200];
+    Float_t         jetBtagDeepCvL_[200];
+    //Float_t         jetBtagDeepC_[200];
     Float_t         jetBtagDeepFlavB_[200];
+    Float_t         jetBtagDeepFlavCvB_[200];
+    Float_t         jetBtagDeepFlavCvL_[200];
     Float_t         jetchEmEF_[200];
     Float_t         jetneEmEF_[200];
+    Float_t         jetchHEF_[200];
+    Float_t         jetneHEF_[200];
     Int_t           jetHadFlvr_[200];
     Int_t           jetPartFlvr_[200];
     Int_t           jetGenJetIdx_[200];

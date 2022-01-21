@@ -1236,11 +1236,23 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("Jet_btagDeepB",1);
   tree->SetBranchAddress("Jet_btagDeepB", &(event->jetBtagDeepB_));
 
+  tree->SetBranchStatus("Jet_btagDeepCvB",1);
+  tree->SetBranchAddress("Jet_btagDeepCvB", &(event->jetBtagDeepCvB_));
+  
+  tree->SetBranchStatus("Jet_btagDeepCvL",1);
+  tree->SetBranchAddress("Jet_btagDeepCvL", &(event->jetBtagDeepCvL_));
+
   /* tree->SetBranchStatus("Jet_btagDeepC",1); */
   /* tree->SetBranchAddress("Jet_btagDeepC", &(event->jetBtagDeepC_)); */
 
   tree->SetBranchStatus("Jet_btagDeepFlavB",1);
   tree->SetBranchAddress("Jet_btagDeepFlavB", &(event->jetBtagDeepFlavB_));
+
+  tree->SetBranchStatus("Jet_btagDeepFlavCvB",1);
+  tree->SetBranchAddress("Jet_btagDeepFlavCvB", &(event->jetBtagDeepFlavCvB_));
+  
+  tree->SetBranchStatus("Jet_btagDeepFlavCvL",1);
+  tree->SetBranchAddress("Jet_btagDeepFlavCvL", &(event->jetBtagDeepFlavCvL_));
 
   tree->SetBranchStatus("Jet_chEmEF",1);
   tree->SetBranchAddress("Jet_chEmEF", &(event->jetchEmEF_));
@@ -1248,6 +1260,12 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("Jet_neEmEF",1);
   tree->SetBranchAddress("Jet_neEmEF", &(event->jetneEmEF_));
   
+  tree->SetBranchStatus("Jet_chHEF",1);
+  tree->SetBranchAddress("Jet_chHEF", &(event->jetchHEF_));
+
+  tree->SetBranchStatus("Jet_neHEF",1);
+  tree->SetBranchAddress("Jet_neHEF", &(event->jetneHEF_));
+
   if (!isData){
     tree->SetBranchStatus("Jet_partonFlavour",1);
     tree->SetBranchAddress("Jet_partonFlavour", &(event->jetPartFlvr_));
@@ -2012,10 +2030,28 @@ Bool_t SkimAna::Notify()
   
   selector->isPreVFP = isPreVFP ;
   selector->isPostVFP = isPostVFP ;
-  if(isPreVFP) selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
-  if(isPostVFP) selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVb ; 
+  
+
   if(isPreVFP or isPostVFP){
-    if(selector->useDeepCSVbTag) kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
+
+    if(isPreVFP){ 
+      if(selector->useDeepCSVbTag)
+	selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
+      else
+	selector->btag_cut = selector->btag_cuta ; 
+    }
+
+    if(isPostVFP){ 
+      if(selector->useDeepCSVbTag)
+	selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVb ; 
+      else
+	selector->btag_cut = selector->btag_cutb ; 
+    }
+
+    if(selector->useDeepCSVbTag) 
+      kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
+    else
+      kinFit.SetBtagThresh(selector->btag_cut);
   }
 
   fSampleType = fname;

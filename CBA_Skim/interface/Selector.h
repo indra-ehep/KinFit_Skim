@@ -88,6 +88,8 @@ public:
 	double jet_Pt_cut;
 	double jet_Eta_cut;
 	double btag_cut;
+	double btag_cuta;
+	double btag_cutb;
 	double btag_cut_DeepCSV;
         double btag_cut_DeepCSVa;
         double btag_cut_DeepCSVb;
