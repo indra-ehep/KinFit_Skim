@@ -39,7 +39,7 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ULv9_samplewt_pre
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_Skim_Syst_ULv9_DeepJet_mujets
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else

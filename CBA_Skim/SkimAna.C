@@ -1049,12 +1049,12 @@ void SkimAna::LoadBTag()
       Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepJet_postVFP_formatted.csv",fBasePath.Data());
 
       readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readera.load(caliba, BTagEntry::FLAV_B,"comb");          
+      readera.load(caliba, BTagEntry::FLAV_B,"mujets");          
       readera.load(caliba, BTagEntry::FLAV_C, "comb"); 
       readera.load(caliba, BTagEntry::FLAV_UDSG, "incl"); 
 
       readerb = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readerb.load(calibb, BTagEntry::FLAV_B,"comb");          
+      readerb.load(calibb, BTagEntry::FLAV_B,"mujets");          
       readerb.load(calibb, BTagEntry::FLAV_C, "comb"); 
       readerb.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
 
@@ -1074,12 +1074,12 @@ void SkimAna::LoadBTag()
       Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_postVFP_formatted.csv",fBasePath.Data());
 
       readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readera.load(caliba, BTagEntry::FLAV_B,"comb");          
+      readera.load(caliba, BTagEntry::FLAV_B,"mujets");          
       readera.load(caliba, BTagEntry::FLAV_C, "comb"); 
       readera.load(caliba, BTagEntry::FLAV_UDSG, "incl"); 
 
       readerb = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readerb.load(calibb, BTagEntry::FLAV_B,"comb");          
+      readerb.load(calibb, BTagEntry::FLAV_B,"mujets");          
       readerb.load(calibb, BTagEntry::FLAV_C, "comb"); 
       readerb.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
 
@@ -1090,7 +1090,7 @@ void SkimAna::LoadBTag()
       Info("LoadBTag","%s/weightUL/BtagSF/2017/wp_deepCSV_106XUL17_v3.csv",fBasePath.Data());
 
       reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
-      reader.load(calib, BTagEntry::FLAV_B,"comb");          
+      reader.load(calib, BTagEntry::FLAV_B,"mujets");          
       reader.load(calib, BTagEntry::FLAV_C, "comb"); 
       reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
     }
@@ -1100,7 +1100,7 @@ void SkimAna::LoadBTag()
       Info("LoadBTag","%s/weightUL/BtagSF/2018/wp_deepCSV_106XUL18_v2.csv",fBasePath.Data());
 
       reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
-      reader.load(calib, BTagEntry::FLAV_B,"comb");          
+      reader.load(calib, BTagEntry::FLAV_B,"mujets");          
       reader.load(calib, BTagEntry::FLAV_C, "comb"); 
       reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
     } //DeepCSV_102XSF_V1.csv  
@@ -1347,7 +1347,7 @@ void SkimAna::GetBtagSF_1a(){
   
   //   _bTagWeight = pData/pMC;
   if ( TMath::AreEqualAbs(pMC,0.0,1.0e-7) )
-    _bTagWeight = -9999.;
+    _bTagWeight = -1.;
   else 
     _bTagWeight = pData/pMC;
 
@@ -1744,8 +1744,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   // Sample weight 
   if(!isData){
     _sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
-    // if(isPreVFP) _sampleWeight *= lumiFracI;
-    // if(isPostVFP) _sampleWeight *= lumiFracII;     
+    // if(fYear==2016 and isPreVFP) _sampleWeight *= lumiFracI;
+    // if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
   }
   if(IsDebug) Info("Process","Completed event weight application");
 
@@ -1918,7 +1918,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////=====================================================
-  if(selector->bJets.size() < 2 ) return true;
+  if(selector->bJets.size() < 2 or _bTagWeight <= 0.) return true;
   //////=====================================================
   
 
