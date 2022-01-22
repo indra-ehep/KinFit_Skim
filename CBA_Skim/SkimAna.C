@@ -1347,7 +1347,7 @@ void SkimAna::GetBtagSF_1a(){
   
   //   _bTagWeight = pData/pMC;
   if ( TMath::AreEqualAbs(pMC,0.0,1.0e-7) )
-    _bTagWeight = -1.;
+    _bTagWeight = 0.0;
   else 
     _bTagWeight = pData/pMC;
 
@@ -1918,7 +1918,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////=====================================================
-  if(selector->bJets.size() < 2 or _bTagWeight <= 0.) return true;
+  if(selector->bJets.size() < 2) return true;
   //////=====================================================
   
 
@@ -1948,7 +1948,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     btagSystType  = "central" ;
     GetBtagSF_1a();
     //_topPtReWeight = topPtReweight();
-
+    
   }
   
   //FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
