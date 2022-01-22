@@ -1744,9 +1744,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   // Sample weight 
   if(!isData){
     _sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
-    if(isPreVFP) _sampleWeight *= lumiFracI;
-    if(isPostVFP) _sampleWeight *= lumiFracII;
-      
+    // if(isPreVFP) _sampleWeight *= lumiFracI;
+    // if(isPostVFP) _sampleWeight *= lumiFracII;     
   }
   if(IsDebug) Info("Process","Completed event weight application");
 
