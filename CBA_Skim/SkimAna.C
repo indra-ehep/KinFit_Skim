@@ -1882,7 +1882,6 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   //////=====================================================
   if(selector->Jets.size() < 4 ) return true; //original condn
-  //if(selector->Jets.size() < 4 or selector->Jets.size() >= 9 ) return true;
   //////=====================================================
   
   
@@ -1956,7 +1955,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  return true;
+  //return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -4251,8 +4250,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
       dRLepNuBF	= x.leptonBF.DeltaR(x.neutrinoBF); dRLepNuAF = x.leptonAF.DeltaR(x.neutrinoAF);
       //
       
-      //if(iloop == 0 && x.chi2 > -1.0 ){ // Only 1st min chi2
-      if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 20.){ // Only 1st min chi2
+      if(iloop == 0 && x.chi2 >= 0.0 ){ // Only 1st min chi2
+      //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 20.){ // Only 1st min chi2
       //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 8.){ // Only 1st min chi2, tight cut
     	if(
 	   x.leptonAF.Pt() > lepPtThresh and x.neutrinoAF.Pt() > METThreshold 
