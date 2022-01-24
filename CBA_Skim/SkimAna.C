@@ -1347,7 +1347,7 @@ void SkimAna::GetBtagSF_1a(){
   
   //   _bTagWeight = pData/pMC;
   if ( TMath::AreEqualAbs(pMC,0.0,1.0e-7) )
-    _bTagWeight = 0.0;
+    _bTagWeight = -1.;
   else 
     _bTagWeight = pData/pMC;
 
@@ -1926,26 +1926,27 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(!isData){
     if(fSyst == "base"){
       btagSystType  = "b_up" ;
-      GetBtagSF_1a();
+      GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
       _bTagWeight_b_Up = _bTagWeight;
-      
+
+
       btagSystType  = "b_down" ;
-      GetBtagSF_1a();
+      GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
       _bTagWeight_b_Do = _bTagWeight;
       
       btagSystType  = "l_up" ;
-      GetBtagSF_1a();
+      GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
       _bTagWeight_l_Up = _bTagWeight;
       
       btagSystType  = "l_down" ;
-      GetBtagSF_1a();
+      GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
       _bTagWeight_l_Do = _bTagWeight;
       
       TheoWeights();
     }
     
     btagSystType  = "central" ;
-    GetBtagSF_1a();
+    GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
     //_topPtReWeight = topPtReweight();
     
   }
@@ -4065,10 +4066,11 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     lepEtaThresh = (isEle)? selector->ele_Eta_cut_miniAOD : selector->mu_Eta_tight ; //tight for muon in miniAOD is correct
   }
   
-
   jetVectors.clear();
   jetResVectors.clear();
   jetBtagVectors.clear();
+  jetCvsLtagVectors.clear();
+  jetCvsBtagVectors.clear();
 
   _run = event->run_ ;
   _event = event->event_ ;
@@ -4082,12 +4084,12 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   
   //cout<<" _jetPt : " << _jetPt << endl;
   //return true;
-
-  _jetPt->clear() ;
-  _jetEta->clear() ;
-  _jetPhi->clear() ;
-  _jetMass->clear() ;
-  _jetDeepB->clear() ;
+  
+  // _jetPt->clear() ;
+  // _jetEta->clear() ;
+  // _jetPhi->clear() ;
+  // _jetMass->clear() ;
+  // _jetDeepB->clear() ;
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
@@ -4097,49 +4099,52 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     jetResVectors.push_back( selector->jet_resolution.at(ijet) );
     //double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagCSVV2_[jetInd] ;
     double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
+    double jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
+    double jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     jetBtagVectors.push_back( jetBtag );
-    
-    _jetPt->push_back(selector->JetsPtSmeared.at(ijet));
-    _jetEta->push_back(event->jetEta_[jetInd]);
-    _jetPhi->push_back(event->jetPhi_[jetInd]);
-    _jetMass->push_back(event->jetMass_[jetInd]);
-    _jetDeepB->push_back(jetBtag);
+    jetCvsLtagVectors.push_back( jetCvsLtag );
+    jetCvsBtagVectors.push_back( jetCvsBtag );
+    // _jetPt->push_back(selector->JetsPtSmeared.at(ijet));
+    // _jetEta->push_back(event->jetEta_[jetInd]);
+    // _jetPhi->push_back(event->jetPhi_[jetInd]);
+    // _jetMass->push_back(event->jetMass_[jetInd]);
+    // _jetDeepB->push_back(jetBtag);
     if(jetBtag>btagThreshold)
       _nBJet++;
   }
   
   _nMu = selector->MuonsNoIso.size();
-  _muPt->clear();
-  _muEta->clear();
-  _muPhi->clear();
-  _muCharge->clear();
-  _muPFRelIso->clear();
+  // _muPt->clear();
+  // _muEta->clear();
+  // _muPhi->clear();
+  // _muCharge->clear();
+  // _muPFRelIso->clear();
   if(isMuon){
     lepVector.SetPtEtaPhiM( event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], 
 			    event->muEta_[selector->MuonsNoIso.at(0)] , event->muPhi_[selector->MuonsNoIso.at(0)], 
 			    TDatabasePDG::Instance()->GetParticle(13)->Mass());
     
-    _muPt->push_back(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)]);
-    _muEta->push_back(event->muEta_[selector->MuonsNoIso.at(0)]);
-    _muPhi->push_back(event->muPhi_[selector->MuonsNoIso.at(0)]);
-    _muCharge->push_back(event->muCharge_[selector->MuonsNoIso.at(0)]);
-    _muPFRelIso->push_back(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+    // _muPt->push_back(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)]);
+    // _muEta->push_back(event->muEta_[selector->MuonsNoIso.at(0)]);
+    // _muPhi->push_back(event->muPhi_[selector->MuonsNoIso.at(0)]);
+    // _muCharge->push_back(event->muCharge_[selector->MuonsNoIso.at(0)]);
+    // _muPFRelIso->push_back(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
   }
 
   _nEle = selector->ElectronsNoIso.size();
-  _elePt->clear();
-  _eleEta->clear();
-  _elePhi->clear();
-  _eleCharge->clear();
-  _elePFRelIso->clear();
+  // _elePt->clear();
+  // _eleEta->clear();
+  // _elePhi->clear();
+  // _eleCharge->clear();
+  // _elePFRelIso->clear();
   if(isEle){
     lepVector.SetPtEtaPhiM( event->elePt_[selector->ElectronsNoIso.at(0)], event->eleEta_[selector->ElectronsNoIso.at(0)], 
 			    event->elePhi_[selector->ElectronsNoIso.at(0)], TDatabasePDG::Instance()->GetParticle(11)->Mass());
-    _elePt->push_back(event->elePt_[selector->ElectronsNoIso.at(0)]);
-    _eleEta->push_back(event->eleEta_[selector->ElectronsNoIso.at(0)]);
-    _elePhi->push_back(event->elePhi_[selector->ElectronsNoIso.at(0)]);
-    _eleCharge->push_back(event->eleCharge_[selector->ElectronsNoIso.at(0)]);
-    _elePFRelIso->push_back(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+    // _elePt->push_back(event->elePt_[selector->ElectronsNoIso.at(0)]);
+    // _eleEta->push_back(event->eleEta_[selector->ElectronsNoIso.at(0)]);
+    // _elePhi->push_back(event->elePhi_[selector->ElectronsNoIso.at(0)]);
+    // _eleCharge->push_back(event->eleCharge_[selector->ElectronsNoIso.at(0)]);
+    // _elePFRelIso->push_back(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
   }		      
   
   kinFit.SetJetVector(jetVectors);
@@ -4283,83 +4288,51 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	  
 	  isValid		= true;
 	  
-	  //To fill the Tree for DNN other MVA
-	  _chi2			= x.chi2;
-	  _chi2_thad     	= x.chi2_thad;
-	  _chi2_tlep     	= x.chi2_tlep;
-	  _NDF			= x.ndf;
-	  _Nbiter		= x.nb_iter ;
-	  _M_jj			= (x.cjhadBF + x.sjhadBF).M();
-	  _M_jjkF		= x.mass;
-	  
-	  _pfMET		= x.neutrinoBF.Pt() ;
-	  _pfMETPhi		= x.neutrinoBF.Phi() ;
-	  _nu_px		= x.neutrinoBF.Px() ;
-	  _nu_py		= x.neutrinoBF.Py() ;
-	  _nu_pz		= x.neutrinoBF.Pz() ;
-	  //_nu_pz_other	= 0 ;
-	  _jetBlepPtUM		= x.bjlepBF.Pt() ;
-	  _jetBlepEtaUM		= x.bjlepBF.Eta() ;
-	  _jetBlepPhiUM		= x.bjlepBF.Phi() ;
-	  _jetBlepEnergyUM	= x.bjlepBF.E() ;
-	  _jetBhadPtUM		= x.bjhadBF.Pt() ;
-	  _jetBhadEtaUM		= x.bjhadBF.Eta() ;
-	  _jetBhadPhiUM		= x.bjhadBF.Phi() ;
-	  _jetBhadEnergyUM	= x.bjhadBF.E() ;
-	  _jetChadPtUM		= x.cjhadBF.Pt() ;
-	  _jetChadEtaUM		= x.cjhadBF.Eta() ;
-	  _jetChadPhiUM		= x.cjhadBF.Phi() ;
-	  _jetChadEnergyUM	= x.cjhadBF.E() ;
-	  _jetShadPtUM		= x.sjhadBF.Pt() ;
-	  _jetShadEtaUM		= x.sjhadBF.Eta()  ;
-	  _jetShadPhiUM		= x.sjhadBF.Phi()  ;
-	  _jetShadEnergyUM	= x.sjhadBF.E()  ;
-	  
+	  //To fill the Tree for DNN other MVA	  
 	  _lepPt		= x.leptonAF.Pt() ;
 	  _lepEta		= x.leptonAF.Eta() ;
 	  _lepPhi		= x.leptonAF.Phi() ;
 	  _lepEnergy		= x.leptonAF.E() ;
+
 	  _metPx		= x.neutrinoAF.Px() ;
 	  _metPy		= x.neutrinoAF.Py() ;
 	  _metPz		= x.neutrinoAF.Pz() ;
+
 	  _jetBlepPt		= x.bjlepAF.Pt() ;
 	  _jetBlepEta		= x.bjlepAF.Eta() ;
 	  _jetBlepPhi		= x.bjlepAF.Phi() ;
 	  _jetBlepEnergy	= x.bjlepAF.E() ;
+
 	  _jetBhadPt		= x.bjhadAF.Pt() ;
 	  _jetBhadEta		= x.bjhadAF.Eta() ;
 	  _jetBhadPhi		= x.bjhadAF.Phi() ;
 	  _jetBhadEnergy	= x.bjhadAF.E() ;
+
 	  _jetChadPt		= x.cjhadAF.Pt() ;
 	  _jetChadEta		= x.cjhadAF.Eta() ;
 	  _jetChadPhi		= x.cjhadAF.Phi() ;
 	  _jetChadEnergy	= x.cjhadAF.E() ;
+
 	  _jetShadPt		= x.sjhadAF.Pt() ;
 	  _jetShadEta		= x.sjhadAF.Eta()  ;
 	  _jetShadPhi		= x.sjhadAF.Phi()  ;
 	  _jetShadEnergy	= x.sjhadAF.E()  ;
 	  
-	  _reslepEta		= x.reslepEta ;   
-	  _reslepPhi		= x.reslepPhi ;   
-	  _resneuEta		= x.resneuEta ;   
-	  _resneuPhi		= x.resneuPhi ;
-	  _resbjlepEta		= x.resbjlepEta ;
-	  _resbjlepPhi		= x.resbjlepPhi ; 
-	  _resbjhadEta		= x.resbjhadEta ; 
-	  _resbjhadPhi		= x.resbjhadPhi ;
-	  _rescjhadEta		= x.rescjhadEta ; 
-	  _rescjhadPhi		= x.rescjhadPhi ; 
-	  _ressjhadEta		= x.ressjhadEta ; 
-	  _ressjhadPhi		= x.ressjhadPhi ; 
-	  _bjlepDeepCSV		= jetBtagVectors[x.bjlep_id] ;
-	  _bjhadDeepCSV		= jetBtagVectors[x.bjhad_id] ; 
-	  _cjhadDeepCSV		= jetBtagVectors[x.cjhad_id] ;  
-	  _sjhadDeepCSV		= jetBtagVectors[x.sjhad_id] ;
-	  _bjlep_id		= x.bjlep_id ;
-	  _bjhad_id		= x.bjhad_id ;
-	  _cjhad_id		= x.cjhad_id ;
-	  _sjhad_id		= x.sjhad_id ;
-		      
+	  _bjlepBdisc		= jetBtagVectors[x.bjlep_id] ;
+	  _bjhadBdisc		= jetBtagVectors[x.bjhad_id] ; 
+	  _cjhadBdisc		= jetBtagVectors[x.cjhad_id] ;  
+	  _sjhadBdisc		= jetBtagVectors[x.sjhad_id] ;
+
+	  _bjlepCvsLdisc       	= jetCvsLtagVectors[x.bjlep_id] ;
+	  _bjhadCvsLdisc       	= jetCvsLtagVectors[x.bjhad_id] ; 
+	  _cjhadCvsLdisc       	= jetCvsLtagVectors[x.cjhad_id] ;  
+	  _sjhadCvsLdisc       	= jetCvsLtagVectors[x.sjhad_id] ;
+
+	  _bjlepCvsBdisc       	= jetCvsBtagVectors[x.bjlep_id] ;
+	  _bjhadCvsBdisc       	= jetCvsBtagVectors[x.bjhad_id] ; 
+	  _cjhadCvsBdisc       	= jetCvsBtagVectors[x.cjhad_id] ;  
+	  _sjhadCvsBdisc       	= jetCvsBtagVectors[x.sjhad_id] ;
+
 	  //Fill for non-negative chi2
 	  if(doTreeSave)
 	    outputTree->Fill();
@@ -4400,21 +4373,23 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   jetVectors.clear();
   jetResVectors.clear();
   jetBtagVectors.clear();
-  _jetPt->clear() ;
-  _jetEta->clear() ;
-  _jetPhi->clear() ;
-  _jetMass->clear() ;
-  _jetDeepB->clear() ;
-  _muPt->clear();
-  _muEta->clear();
-  _muPhi->clear();
-  _muCharge->clear();
-  _muPFRelIso->clear();
-  _elePt->clear();
-  _eleEta->clear();
-  _elePhi->clear();
-  _eleCharge->clear();
-  _elePFRelIso->clear();
+  jetCvsLtagVectors.clear();
+  jetCvsBtagVectors.clear();
+  // _jetPt->clear() ;
+  // _jetEta->clear() ;
+  // _jetPhi->clear() ;
+  // _jetMass->clear() ;
+  // _jetDeepB->clear() ;
+  // _muPt->clear();
+  // _muEta->clear();
+  // _muPhi->clear();
+  // _muCharge->clear();
+  // _muPFRelIso->clear();
+  // _elePt->clear();
+  // _eleEta->clear();
+  // _elePhi->clear();
+  // _eleCharge->clear();
+  // _elePFRelIso->clear();
 
   return isValid;
 }
@@ -4671,7 +4646,7 @@ int main(int argc, char** argv)
   // index=$4
   // syst=$5
   
-  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod|trs=no",argv[1],argv[2],argv[3],argv[4],argv[5]));
+  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod|trs=yes",argv[1],argv[2],argv[3],argv[4],argv[5]));
 
   cout << "Input filename: " << argv[3] << endl;
   ifstream fin(argv[3]);

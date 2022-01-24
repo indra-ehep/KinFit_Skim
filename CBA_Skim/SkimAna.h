@@ -594,6 +594,9 @@ class SkimAna : public TSelector {
           _rescjhadEta = 0, _rescjhadPhi = 0, _ressjhadEta = 0, _ressjhadPhi = 0; 
 
   double  _bjlepDeepCSV = 0, _bjhadDeepCSV = 0, _cjhadDeepCSV = 0, _sjhadDeepCSV = 0;
+  double  _bjlepBdisc = -20., _bjhadBdisc = -20., _cjhadBdisc = -20., _sjhadBdisc = -20.;
+  double  _bjlepCvsLdisc = -20., _bjhadCvsLdisc = -20., _cjhadCvsLdisc = -20., _sjhadCvsLdisc = -20.;
+  double  _bjlepCvsBdisc = -20., _bjhadCvsBdisc = -20., _cjhadCvsBdisc = -20., _sjhadCvsBdisc = -20.;
 
   double		 _M3 = 0 ;
   double		 _HT = 0 ;
@@ -773,6 +776,8 @@ class SkimAna : public TSelector {
    std::vector<TLorentzVector> jetVectors;
    std::vector<double> jetResVectors;
    std::vector<double> jetBtagVectors;
+   std::vector<double> jetCvsLtagVectors;
+   std::vector<double> jetCvsBtagVectors;
    TLorentzVector jetVector;
    TLorentzVector lepVector;
    TLorentzVector	leptonBF, neutrinoBF, bjlepBF, bjhadBF, cjhadBF, sjhadBF;
@@ -862,7 +867,7 @@ class SkimAna : public TSelector {
    
    /// Calculate the combine wt
    bool    GetCombinedWt(TString systname, double& combined_muwt, double& combined_muwt1, double& combined_elewt);
-
+   
    /// Fill the control histograms
    bool    FillEventControlHists();
    bool    FillTriggerControlHists();
@@ -1600,244 +1605,76 @@ void SkimAna::Init(TTree *tree)
 
 void SkimAna::InitOutBranches(){
   
-    outputTree->Branch("run"			, &_run				);
-    outputTree->Branch("event"			, &_event			);    
-    outputTree->Branch("lumis"			, &_lumis			);
-    outputTree->Branch("isData"			, &_isData			);
+    outputTree->Branch("sampleWeight"    	, &_sampleWeight       		); 
+    outputTree->Branch("prefireWeight"		, &_prefireWeight      		);
+    outputTree->Branch("prefireWeight_Up"	, &_prefireWeight_Up		);
+    outputTree->Branch("prefireWeight_Do"	, &_prefireWeight_Do		);
+    outputTree->Branch("PUWeight"	, &_PUWeight			);
+    outputTree->Branch("PUWeight_Up"	, &_PUWeight_Up			);
+    outputTree->Branch("PUWeight_Do"	, &_PUWeight_Do			);
+
+    outputTree->Branch("singleMu"   	, &singleMu			);
+    outputTree->Branch("singleEle"   	, &singleEle			);
+    outputTree->Branch("muonIsoCut"   	, &muonIsoCut			);
+    outputTree->Branch("muonNonIsoCut"   , &muonNonIsoCut       		);
+    outputTree->Branch("eleIsoCut"   	, &eleIsoCut			);
+    outputTree->Branch("eleNonIsoCut"    , &eleNonIsoCut       		);
+    outputTree->Branch("muEffWeight"   	, &_muEffWeight			);
+    outputTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		);
+    outputTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		);
+    outputTree->Branch("eleEffWeight"  	, &_eleEffWeight		);
+    outputTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		);
+    outputTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		);
     
-    /* outputTree->Branch("PUweight"		, &_PUweight			); */
-    /* //if (!isSystematicRun){ */
-    /* 	outputTree->Branch("PUweight_Up"	, &_PUweight_Up			); */
-    /* 	outputTree->Branch("PUweight_Do"	, &_PUweight_Do			); */
-    /* //} */
-
-    /* //if (!isSystematicRun){ */
-    /* 	outputTree->Branch("q2weight_Up"	, &_q2weight_Up			); */
-    /* 	outputTree->Branch("q2weight_Do"	, &_q2weight_Do			); */
-    /* 	outputTree->Branch("q2weight_nominal"	, &_q2weight_nominal		); */
-    /* 	/\* outputTree->Branch("genScaleSystWeights", &_genScaleSystWeights		); *\/ */
-
-    /* 	outputTree->Branch("pdfWeight"		, &_pdfWeight			); */
-    /* 	outputTree->Branch("pdfuncer"		, &_pdfuncer			); */
-    /* 	outputTree->Branch("pdfweight_Up"	, &_pdfweight_Up		); */
-    /* 	outputTree->Branch("pdfweight_Do"	, &_pdfweight_Do		); */
-    /* 	/\* outputTree->Branch("pdfSystWeight"	, &_pdfSystWeight		); *\/ */
-
-    /* 	outputTree->Branch("ISRweight_Up"	, &_ISRweight_Up		); */
-    /* 	outputTree->Branch("ISRweight_Do"	, &_ISRweight_Do		); */
-
-    /* 	outputTree->Branch("FSRweight_Up"	, &_FSRweight_Up		); */
-    /* 	outputTree->Branch("FSRweight_Do"	, &_FSRweight_Do		); */
-    /*  //} */
-
-    /* /\* outputTree->Branch("prefireSF"		, &_prefireSF			); *\/ */
-    /* /\* if (!isSystematicRun){ *\/ */
-    /* /\* 	outputTree->Branch("prefireSF_Up"	, &_prefireSF_Up		); *\/ */
-    /* /\* 	outputTree->Branch("prefireSF_Do"	, &_prefireSF_Do		); *\/ */
-    /* /\* } *\/ */
-
-    /* outputTree->Branch("btagWeight"		, &_btagWeight			); */
-    /* outputTree->Branch("btagWeight_1a"		, &_btagWeight_1a		); */
-    /* //if (!isSystematicRun){ */
-    /* 	/\* outputTree->Branch("btagWeight_b_Up"	, &_btagWeight_b_Up		); *\/ */
-    /* 	/\* outputTree->Branch("btagWeight_b_Do"	, &_btagWeight_b_Do		); *\/ */
-    /* 	/\* outputTree->Branch("btagWeight_l_Up"	, &_btagWeight_l_Up		); *\/ */
-    /* 	/\* outputTree->Branch("btagWeight_l_Do"	, &_btagWeight_l_Do		); *\/ */
-    /* 	outputTree->Branch("btagWeight_1a_b_Up"	, &_btagWeight_1a_b_Up		); */
-    /* 	outputTree->Branch("btagWeight_1a_b_Do"	, &_btagWeight_1a_b_Do		); */
-    /* 	outputTree->Branch("btagWeight_1a_l_Up"	, &_btagWeight_1a_l_Up		); */
-    /* 	outputTree->Branch("btagWeight_1a_l_Do"	, &_btagWeight_1a_l_Do		); */
-    /* //} */
-    /* /\* outputTree->Branch("btagSF"			, &_btagSF			); *\/ */
-    /* //if (!isSystematicRun){ */
-    /*   outputTree->Branch("btagSF_b_Up"		, &_btagSF_b_Up			); */
-    /*   outputTree->Branch("btagSF_b_Do"		, &_btagSF_b_Do			); */
-    /*   outputTree->Branch("btagSF_l_Up"		, &_btagSF_l_Up			); */
-    /*   outputTree->Branch("btagSF_l_Do"		, &_btagSF_l_Do			); */
-    /* //} */
-    /* outputTree->Branch("muEffWeight"		, &_muEffWeight			); */
-    /* outputTree->Branch("muEffWeight_IdIso"	, &_muEffWeight_IdIso		); */
-    /* outputTree->Branch("muEffWeight_Trig"	, &_muEffWeight_Trig		); */
-    /* //if (!isSystematicRun){ */
-    /* 	outputTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		); */
-    /* 	outputTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		); */
-
-    /* 	outputTree->Branch("muEffWeight_IdIso_Up", &_muEffWeight_IdIso_Up	); */
-    /* 	outputTree->Branch("muEffWeight_IdIso_Do", &_muEffWeight_IdIso_Do	); */
-
-    /* 	outputTree->Branch("muEffWeight_Trig_Up", &_muEffWeight_Trig_Up		); */
-    /* 	outputTree->Branch("muEffWeight_Trig_Do", &_muEffWeight_Trig_Do		); */
-    /* //} */
-    /* outputTree->Branch("eleEffWeight"		, &_eleEffWeight		); */
-    /* outputTree->Branch("eleEffWeight_IdReco"	, &_eleEffWeight_IdReco		); */
-    /* outputTree->Branch("eleEffWeight_Trig"	, &_eleEffWeight_Trig		); */
-    /* //if (!isSystematicRun){ */
-    /* 	outputTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		); */
-    /* 	outputTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		); */
-
-    /* 	outputTree->Branch("eleEffWeight_IdReco_Up", &_eleEffWeight_IdReco_Up	); */
-    /* 	outputTree->Branch("eleEffWeight_IdReco_Do", &_eleEffWeight_IdReco_Do	); */
-
-    /* 	outputTree->Branch("eleEffWeight_Trig_Up", &_eleEffWeight_Trig_Up	); */
-    /* 	outputTree->Branch("eleEffWeight_Trig_Do", &_eleEffWeight_Trig_Do	); */
-    /* //} */
-
-    /* outputTree->Branch("evtWeight"		, &_evtWeight			);       */
-    /* outputTree->Branch("lumiWeight"		, &_lumiWeight			);      */ 
-    /* outputTree->Branch("sampleWeight"    	, &_sampleWeight       		);      */ 
-
-    outputTree->Branch("nVtx"			, &_nVtx			); 
-    outputTree->Branch("nGoodVtx"		, &_nGoodVtx			); 
-    //if (!isSystematicRun){
-	/* outputTree->Branch("genMET"		, &_genMET			);  */
-    //}
-    outputTree->Branch("pfMET"			, &_pfMET			);
-    outputTree->Branch("pfMETPhi"		, &_pfMETPhi			); 
-    outputTree->Branch("nu_px"			, &_nu_px			);
-    outputTree->Branch("nu_py"			, &_nu_py			);
-    outputTree->Branch("nu_pz"			, &_nu_pz			);
-    outputTree->Branch("nu_pz_other"		, &_nu_pz_other			);
-    /* outputTree->Branch("WtransMass"		, &_WtransMass			); */
-
-    /* outputTree->Branch("hasConv"		, &_hasConv			); */
-    /* outputTree->Branch("hasRDPass"	       	, &_hasRDPass			); */
-    /* outputTree->Branch("ltype"		        , &_ltype			); */
-    /* outputTree->Branch("ltypekF"       	        , &_ltypekF			); */
-    outputTree->Branch("kFType"			, &_kFType			);
-    outputTree->Branch("chi2"			, &_chi2			);
-    outputTree->Branch("chi2_thad"		, &_chi2_thad			);
-    outputTree->Branch("chi2_tlep"		, &_chi2_tlep			);
-    outputTree->Branch("NDF"			, &_NDF				);
-    outputTree->Branch("Nbiter"			, &_Nbiter			);
-    outputTree->Branch("M_jj"			, &_M_jj			);
-    outputTree->Branch("M_jjkF"			, &_M_jjkF			);
-    outputTree->Branch("bjlep_id"		, &_bjlep_id			);
-    outputTree->Branch("bjhad_id"		, &_bjhad_id			);
-    outputTree->Branch("cjhad_id"		, &_cjhad_id			);
-    outputTree->Branch("sjhad_id"		, &_sjhad_id			);
+    outputTree->Branch("bTagWeight"		, &_bTagWeight			);
+    outputTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
+    outputTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
+    outputTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
+    outputTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
+    
     outputTree->Branch("lepPt"			, &_lepPt			);
     outputTree->Branch("lepEta"			, &_lepEta			);
     outputTree->Branch("lepPhi"			, &_lepPhi			);
     outputTree->Branch("lepEnergy"		, &_lepEnergy			);
+
     outputTree->Branch("metPx"			, &_metPx			);
     outputTree->Branch("metPy"			, &_metPy			);
     outputTree->Branch("metPz"			, &_metPz			);
+
     outputTree->Branch("jetBlepPt"		, &_jetBlepPt			);
     outputTree->Branch("jetBlepEta"		, &_jetBlepEta			);
     outputTree->Branch("jetBlepPhi"		, &_jetBlepPhi			);
     outputTree->Branch("jetBlepEnergy"		, &_jetBlepEnergy		);
+
     outputTree->Branch("jetBhadPt"		, &_jetBhadPt			);
     outputTree->Branch("jetBhadEta"		, &_jetBhadEta			);
     outputTree->Branch("jetBhadPhi"		, &_jetBhadPhi			);
     outputTree->Branch("jetBhadEnergy"		, &_jetBhadEnergy		);
+
     outputTree->Branch("jetChadPt"		, &_jetChadPt			);
     outputTree->Branch("jetChadEta"		, &_jetChadEta			);
     outputTree->Branch("jetChadPhi"		, &_jetChadPhi			);
     outputTree->Branch("jetChadEnergy"		, &_jetChadEnergy		);
+
     outputTree->Branch("jetShadPt"		, &_jetShadPt			);
     outputTree->Branch("jetShadEta"		, &_jetShadEta			);
     outputTree->Branch("jetShadPhi"		, &_jetShadPhi			);
     outputTree->Branch("jetShadEnergy"		, &_jetShadEnergy		);
-    outputTree->Branch("jetBlepPtUM"		, &_jetBlepPtUM			);
-    outputTree->Branch("jetBlepEtaUM"		, &_jetBlepEtaUM	       	);
-    outputTree->Branch("jetBlepPhiUM"		, &_jetBlepPhiUM       		);
-    outputTree->Branch("jetBlepEnergyUM"	, &_jetBlepEnergyUM		);
-    outputTree->Branch("jetBhadPtUM"		, &_jetBhadPtUM			);
-    outputTree->Branch("jetBhadEtaUM"		, &_jetBhadEtaUM       		);
-    outputTree->Branch("jetBhadPhiUM"		, &_jetBhadPhiUM       		);
-    outputTree->Branch("jetBhadEnergyUM"	, &_jetBhadEnergyUM		);
-    outputTree->Branch("jetChadPtUM"		, &_jetChadPtUM			);
-    outputTree->Branch("jetChadEtaUM"		, &_jetChadEtaUM       		);
-    outputTree->Branch("jetChadPhiUM"		, &_jetChadPhiUM       		);
-    outputTree->Branch("jetChadEnergyUM"	, &_jetChadEnergyUM		);
-    outputTree->Branch("jetShadPtUM"		, &_jetShadPtUM			);
-    outputTree->Branch("jetShadEtaUM"		, &_jetShadEtaUM       		);
-    outputTree->Branch("jetShadPhiUM"		, &_jetShadPhiUM       		);
-    outputTree->Branch("jetShadEnergyUM"	, &_jetShadEnergyUM		);
-    outputTree->Branch("reslepEta"		, &_reslepEta			);
-    outputTree->Branch("reslepPhi"		, &_reslepPhi			);
-    outputTree->Branch("resneuEta"		, &_resneuEta			);
-    outputTree->Branch("resneuPhi"		, &_resneuPhi			);
-    outputTree->Branch("resbjlepEta"		, &_resbjlepEta			);
-    outputTree->Branch("resbjlepPhi"		, &_resbjlepPhi			);
-    outputTree->Branch("resbjhadEta"		, &_resbjhadEta			);
-    outputTree->Branch("resbjhadPhi"		, &_resbjhadPhi			);
-    outputTree->Branch("rescjhadEta"		, &_rescjhadEta			);
-    outputTree->Branch("rescjhadPhi"		, &_rescjhadPhi			);
-    outputTree->Branch("ressjhadEta"		, &_ressjhadEta			);
-    outputTree->Branch("ressjhadPhi"		, &_ressjhadPhi			);
-
-    outputTree->Branch("bjlepDeepCSV"		, &_bjlepDeepCSV       		);
-    outputTree->Branch("bjhadDeepCSV"		, &_bjhadDeepCSV       		);
-    outputTree->Branch("cjhadDeepCSV"		, &_cjhadDeepCSV       		);
-    outputTree->Branch("sjhadDeepCSV"		, &_sjhadDeepCSV       		);
-
-
-    outputTree->Branch("nEle"			, &_nEle			); 
-    /* outputTree->Branch("nEleLoose"		, &_nEleLoose			);  */
-    outputTree->Branch("elePt"			, &_elePt			);
-    outputTree->Branch("eleEta"			, &_eleEta			); 
-    outputTree->Branch("elePhi"			, &_elePhi			); 
-    outputTree->Branch("elePFRelIso"		, &_elePFRelIso			); 
-    outputTree->Branch("eleCharge"		, &_eleCharge			);
     
-    outputTree->Branch("nMu"			, &_nMu				); 
-    /* outputTree->Branch("nMuLoose"		, &_nMuLoose			);  */
-    outputTree->Branch("muPt"			, &_muPt			); 
-    outputTree->Branch("muEta"			, &_muEta			);
-    outputTree->Branch("muPhi"			, &_muPhi			);
-    outputTree->Branch("muPFRelIso"		, &_muPFRelIso			); 
-    outputTree->Branch("muCharge"		, &_muCharge			);
-
-
-    outputTree->Branch("nJet"			, &_nJet			);
-    outputTree->Branch("nBJet"			, &_nBJet			);
-    outputTree->Branch("jetPt"			, &_jetPt			);
-    outputTree->Branch("jetEta"			, &_jetEta			);
-    outputTree->Branch("jetPhi"			, &_jetPhi			);
-    outputTree->Branch("jetMass"		, &_jetMass			);
+    outputTree->Branch("bjlepBdisc"		, &_bjlepBdisc       		);
+    outputTree->Branch("bjhadBdisc"		, &_bjhadBdisc       		);
+    outputTree->Branch("cjhadBdisc"		, &_cjhadBdisc       		);
+    outputTree->Branch("sjhadBdisc"		, &_sjhadBdisc       		);
     
-    /* outputTree->Branch("nfwdJet"		, &_nfwdJet			); */
-    /* outputTree->Branch("fwdJetPt"		, &_fwdJetPt			); */
-    /* outputTree->Branch("fwdJetEta"		, &_fwdJetEta			); */
-    /* outputTree->Branch("fwdJetPhi"		, &_fwdJetPhi			); */
-    /* outputTree->Branch("fwdJetMass"		, &_fwdJetMass			); */
-    /* //if (!isSystematicRun){ */
-    /* 	/\* outputTree->Branch("jetCMVA"		, &_jetCMVA			); *\/ */
-    /* outputTree->Branch("jetCSVV2"       	, &_jetCSVV2			); */
-    outputTree->Branch("jetDeepB"		, &_jetDeepB			);
-    /* 	outputTree->Branch("jetDeepC"		, &_jetDeepC			); */
-    /* 	outputTree->Branch("jetGenJetIdx"	, &_jetGenJetIdx		); */
-    /* //} */
-	
-    /* //if (!tree->isData_ && !isSystematicRun){ */
-    /* 	outputTree->Branch("nGenPart"		, &_nGenPart			);  */
-    /* 	outputTree->Branch("genPt"		, &_genPt			); */
-    /* 	outputTree->Branch("genEta"		, &_genEta			);  */
-    /* 	outputTree->Branch("genPhi"		, &_genPhi			);  */
-    /* 	outputTree->Branch("genMass"		, &_genMass			);  */
-    /* 	outputTree->Branch("genStatus"		, &_genStatus			); */
-    /* 	outputTree->Branch("genStatusFlag"	, &_genStatusFlag		); */
-    /* 	outputTree->Branch("genPDGID"		, &_genPDGID			);  */
-    /* 	outputTree->Branch("genMomIdx"		, &_genMomIdx			); */
-
-    /* 	outputTree->Branch("nGenJet"			, &_nGenJet			);  */
-    /* 	outputTree->Branch("genJetPt"			, &_genJetPt			); */
-    /* 	outputTree->Branch("genJetEta"			, &_genJetEta			);  */
-    /* 	outputTree->Branch("genJetPhi"			, &_genJetPhi			);  */
-    /* 	outputTree->Branch("genJetMass"			, &_genJetMass			);  */
-    /* 	outputTree->Branch("genJetPartonFlavour"	, &_genJetPartonFlavour		);  */
-    /* 	outputTree->Branch("genJetHadronFlavour"	, &_genJetHadronFlavour		);  */
-    /* //} */
-	
-    /* outputTree->Branch("M3"				, &_M3				);  */
-    /* outputTree->Branch("HT"				, &_HT				);  */
+    outputTree->Branch("bjlepCvsLdisc"		, &_bjlepCvsLdisc              	);
+    outputTree->Branch("bjhadCvsLdisc"		, &_bjhadCvsLdisc      		);
+    outputTree->Branch("cjhadCvsLdisc"		, &_cjhadCvsLdisc      		);
+    outputTree->Branch("sjhadCvsLdisc"		, &_sjhadCvsLdisc      		);
     
-/*     outputTree->Branch("passPresel_Ele"			, &_passPresel_Ele		);  */
-/*     outputTree->Branch("passPresel_Mu"			, &_passPresel_Mu		); */
-/*     outputTree->Branch("passAll_Ele"			, &_passAll_Ele			);  */
-/*     outputTree->Branch("passAll_Mu"			, &_passAll_Mu			); */
-/*     outputTree->Branch("selStep"			, &_selStep		); */
+    outputTree->Branch("bjlepCvsBdisc"		, &_bjlepCvsBdisc              	);
+    outputTree->Branch("bjhadCvsBdisc"		, &_bjhadCvsBdisc      		);
+    outputTree->Branch("cjhadCvsBdisc"		, &_cjhadCvsBdisc      		);
+    outputTree->Branch("sjhadCvsBdisc"		, &_sjhadCvsBdisc      		);
 
 }
 
