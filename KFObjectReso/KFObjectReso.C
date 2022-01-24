@@ -305,81 +305,81 @@ Bool_t KFObjectReso::Process(Long64_t entry)
   
   fChain->GetTree()->GetEntry(entry);
   
-  bool hasMu = false;
-  for(int muInd = 0; muInd < int(nMuon_); ++muInd){
-    int genIdx = int(muGenIdx_[muInd]);
-    if ( (genIdx>-1) && (genIdx < int(nGenPart_))){
-      unsigned int imc = genIdx ;
-      TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
-      TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
-      if(!partPDG_mother){
-      }else{
-	// printf("\tMuon PDG : %5d (%7s), Rec:(%5.2f, %5.2f, %5.2f, %1d, %5.2f), Gen:(%5.2f, %5.2f, %5.2f, %1.0f, %5.2f), Mother : %7s\n", 
-	// 	 GenPart_pdgId_[imc], partPDG->GetName(), 
-	// 	 muPt_[muInd], muEta_[muInd] , muPhi_[muInd], muCharge_[muInd], muMass_[muInd],  
-	// 	 GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], partPDG->Charge()/3., GenPart_mass_[imc], 
-	// 	 partPDG_mother->GetName());
-	mujetR.SetPtEtaPhiM(muPt_[muInd], muEta_[muInd] , muPhi_[muInd], muMass_[muInd]);
-	mujetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
-	if(mujetR.DeltaR(mujetG) < 0.1 and muCharge_[muInd]==int(partPDG->Charge()/3. and abs(GenPart_pdgId_[imc])==13)){
-	  hasMu = true;
-	  //cout << "Found muon " << endl;
-	}
-      }
-    }
-  }//muon loop
+  // bool hasMu = false;
+  // for(int muInd = 0; muInd < int(nMuon_); ++muInd){
+  //   int genIdx = int(muGenIdx_[muInd]);
+  //   if ( (genIdx>-1) && (genIdx < int(nGenPart_))){
+  //     unsigned int imc = genIdx ;
+  //     TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
+  //     TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
+  //     if(!partPDG_mother){
+  //     }else{
+  // 	// printf("\tMuon PDG : %5d (%7s), Rec:(%5.2f, %5.2f, %5.2f, %1d, %5.2f), Gen:(%5.2f, %5.2f, %5.2f, %1.0f, %5.2f), Mother : %7s\n", 
+  // 	// 	 GenPart_pdgId_[imc], partPDG->GetName(), 
+  // 	// 	 muPt_[muInd], muEta_[muInd] , muPhi_[muInd], muCharge_[muInd], muMass_[muInd],  
+  // 	// 	 GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], partPDG->Charge()/3., GenPart_mass_[imc], 
+  // 	// 	 partPDG_mother->GetName());
+  // 	mujetR.SetPtEtaPhiM(muPt_[muInd], muEta_[muInd] , muPhi_[muInd], muMass_[muInd]);
+  // 	mujetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+  // 	if(mujetR.DeltaR(mujetG) < 0.1 and muCharge_[muInd]==int(partPDG->Charge()/3. and abs(GenPart_pdgId_[imc])==13)){
+  // 	  hasMu = true;
+  // 	  //cout << "Found muon " << endl;
+  // 	}
+  //     }
+  //   }
+  // }//muon loop
     
-  bool hasEle = false;
-  for(int eleInd = 0; eleInd < int(nEle_); ++eleInd){
-    int genIdx = int(eleGenIdx_[eleInd]);
-    if ( (genIdx>-1) && (genIdx < int(nGenPart_))){
-      unsigned int imc = genIdx ;
-      TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
-      TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
-      if(!partPDG_mother){
-      }else{
-	// printf("\tElectron : PDG : %5d (%7s), Rec:(%5.2f, %5.2f, %5.2f, %1d, %5.2f), Gen:(%5.2f, %5.2f, %5.2f, %5.2f), Mother : %7s\n", 
-	// 	 GenPart_pdgId_[imc], partPDG->GetName(), 
-	// 	 elePt_[eleInd], eleEta_[eleInd] , elePhi_[eleInd], eleCharge_[eleInd], eleMass_[eleInd],  
-	// 	 GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], 
-	// 	 partPDG_mother->GetName());
-	elejetR.SetPtEtaPhiM(elePt_[eleInd], eleEta_[eleInd] , elePhi_[eleInd], eleMass_[eleInd]);
-	elejetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
-	if(elejetR.DeltaR(elejetG) < 0.1 and eleCharge_[eleInd]==int(partPDG->Charge()/3.) and abs(GenPart_pdgId_[imc])==11){
-	  hasEle = true;
-	  //cout << "Found electron " << endl;
-	}
+  // bool hasEle = false;
+  // for(int eleInd = 0; eleInd < int(nEle_); ++eleInd){
+  //   int genIdx = int(eleGenIdx_[eleInd]);
+  //   if ( (genIdx>-1) && (genIdx < int(nGenPart_))){
+  //     unsigned int imc = genIdx ;
+  //     TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
+  //     TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
+  //     if(!partPDG_mother){
+  //     }else{
+  // 	// printf("\tElectron : PDG : %5d (%7s), Rec:(%5.2f, %5.2f, %5.2f, %1d, %5.2f), Gen:(%5.2f, %5.2f, %5.2f, %5.2f), Mother : %7s\n", 
+  // 	// 	 GenPart_pdgId_[imc], partPDG->GetName(), 
+  // 	// 	 elePt_[eleInd], eleEta_[eleInd] , elePhi_[eleInd], eleCharge_[eleInd], eleMass_[eleInd],  
+  // 	// 	 GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], 
+  // 	// 	 partPDG_mother->GetName());
+  // 	elejetR.SetPtEtaPhiM(elePt_[eleInd], eleEta_[eleInd] , elePhi_[eleInd], eleMass_[eleInd]);
+  // 	elejetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+  // 	if(elejetR.DeltaR(elejetG) < 0.1 and eleCharge_[eleInd]==int(partPDG->Charge()/3.) and abs(GenPart_pdgId_[imc])==11){
+  // 	  hasEle = true;
+  // 	  //cout << "Found electron " << endl;
+  // 	}
 	  
-      }
-    }
-  }//electron loop
+  //     }
+  //   }
+  // }//electron loop
     
-  int nbjet = 0, nljet = 0;
-  for(int jetInd = 0; jetInd < int(nJet_); ++jetInd){
-    int genIdx = int(jetGenJetIdx_[jetInd]);
-    if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
-      unsigned int imc = genIdx ;
-      // printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
-      //        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
-      //        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-      if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5){
-	bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-	bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	if(bjetR.DeltaR(bjetG)<0.2)
-	  nbjet++;
-      }//b-jet condition
+  // int nbjet = 0, nljet = 0;
+  // for(int jetInd = 0; jetInd < int(nJet_); ++jetInd){
+  //   int genIdx = int(jetGenJetIdx_[jetInd]);
+  //   if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
+  //     unsigned int imc = genIdx ;
+  //     // printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  //     //        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
+  //     //        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+  //     if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5){
+  // 	bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+  // 	bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+  // 	if(bjetR.DeltaR(bjetG)<0.2)
+  // 	  nbjet++;
+  //     }//b-jet condition
 	
-      if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
-	ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-	ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	if(ljetR.DeltaR(ljetG)<0.2)
-	  nljet++;
-      }//l-jet condition
+  //     if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
+  // 	ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+  // 	ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+  // 	if(ljetR.DeltaR(ljetG)<0.2)
+  // 	  nljet++;
+  //     }//l-jet condition
 	
-    }//found the corresponding genjet 
-  }//jet loop
+  //   }//found the corresponding genjet 
+  // }//jet loop
     
-  if((!hasMu and !hasEle) or (nbjet+nljet) < 4 or nbjet < 2) return true;
+  // if((!hasMu and !hasEle) or (nbjet+nljet) < 4 or nbjet < 2) return true;
 
   // //for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
   // for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
@@ -418,7 +418,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  et = mujetR.Et();
 	  GetHistoBin(hMuEtaETBin, eta, et, binEta, binET);
 	    
-	  double etResoPercent = 100.*(et - mujetG.Et())/et;
+	  double etResoPercent = 100.*(et - mujetG.Et())/mujetG.Et();
 	  double etaReso = mujetR.Eta() - mujetG.Eta();
 	  double phiReso = mujetR.Phi() - mujetG.Phi();
 
@@ -451,7 +451,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  et = elejetR.Et();
 	  GetHistoBin(hEleEtaETBin, eta, et, binEta, binET);
 	    
-	  double etResoPercent = 100.*(et - elejetG.Et())/et;
+	  double etResoPercent = 100.*(et - elejetG.Et())/elejetG.Et();
 	  double etaReso = elejetR.Eta() - elejetG.Eta();
 	  double phiReso = elejetR.Phi() - elejetG.Phi();
 
@@ -473,7 +473,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     
   et = metR.Et();
   binET = GetHistoBin(hMETETBin, et);
-  double etResoPercent = 100.*(et - metG.Et())/et;
+  double etResoPercent = 100.*(et - metG.Et())/metG.Et();
   double phiReso = metR.Phi() - metG.Phi();
   hMETETReso[binET-1]->Fill(etResoPercent);
   hMETPhiReso[binET-1]->Fill(phiReso);
@@ -491,7 +491,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	eta = abs(jetEta_[jetInd]);
 	et = bjetR.Et();
 	GetHistoBin(hJetEtaETBin, eta, et, binEta, binET);
-	double etResoPercent = 100.*(et - bjetG.Et())/et;
+	double etResoPercent = 100.*(et - bjetG.Et())/bjetG.Et();
 	double etaReso = bjetR.Eta() - bjetG.Eta();
 	double phiReso = bjetR.Phi() - bjetG.Phi();
 	if(bjetR.DeltaR(bjetG)<0.2){
@@ -508,7 +508,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	eta = abs(jetEta_[jetInd]);
 	et = ljetR.Et();
 	GetHistoBin(hJetEtaETBin, eta, et, binEta, binET);
-	double etResoPercent = 100.*(et - ljetG.Et())/et;
+	double etResoPercent = 100.*(et - ljetG.Et())/ljetG.Et();
 	double etaReso = ljetR.Eta() - ljetG.Eta();
 	double phiReso = ljetR.Phi() - ljetG.Phi();
 	if(ljetR.DeltaR(ljetG)<0.2){
