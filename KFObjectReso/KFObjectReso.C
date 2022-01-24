@@ -72,28 +72,48 @@ Int_t KFObjectReso::CreateHistoArrays()
 {
   // Create the histogram arrays
 
-  nMuEtaBins = 25;
-  Float_t muEtaBin[26] = {0.0, 0.100, 0.200, 0.300, 0.400, 
-			  0.500, 0.600, 0.700, 0.800, 0.900, 
-			  1.000, 1.100, 1.200, 1.300, 1.400, 
-			  1.500, 1.600, 1.700, 1.800, 1.900, 
-			  2.000, 2.100, 2.200, 2.300, 2.4,
-                          2.5};
+  // nMuEtaBins = 25;
+  // Float_t muEtaBin[26] = {0.0, 0.100, 0.200, 0.300, 0.400, 
+  // 			  0.500, 0.600, 0.700, 0.800, 0.900, 
+  // 			  1.000, 1.100, 1.200, 1.300, 1.400, 
+  // 			  1.500, 1.600, 1.700, 1.800, 1.900, 
+  // 			  2.000, 2.100, 2.200, 2.300, 2.4,
+  //                         2.5};
+  nMuEtaBins = 20;
+  Float_t muEtaBin[21] = {-2.5, -2.2, -1.9, -1.6, -1.3,
+			  -1.0, -0.9, -0.8, -0.6, -0.4,
+			  -0.3, -0.2, -0.1,  0.0,  0.1, 
+			   0.2,  0.3,  0.4,  0.6,  0.8, 
+                           1.0,  1.3,  1.6,  1.9,  2.2, 2.5};
   
-  nEleEtaBins = 24;
-  Float_t eleEtaBin[25] = {0.0, 0.174, 0.261, 0.348, 0.435, 
-			   0.522, 0.609, 0.696, 0.783, 0.870, 
-			   0.957, 1.044, 1.131, 1.218, 1.305, 
-			   1.392, 1.479, 1.653, 1.740, 1.830, 
-			   1.930, 2.043, 2.172, 2.322, 2.5};
+  // nEleEtaBins = 24;
+  // Float_t eleEtaBin[25] = {0.0, 0.174, 0.261, 0.348, 0.435, 
+  // 			   0.522, 0.609, 0.696, 0.783, 0.870, 
+  // 			   0.957, 1.044, 1.131, 1.218, 1.305, 
+  // 			   1.392, 1.479, 1.653, 1.740, 1.830, 
+  // 			   1.930, 2.043, 2.172, 2.322, 2.5};
   
-  nJetEtaBins = 26;
-  Float_t jetEtaBin[27] = {0.0, 0.087, 0.174, 0.261, 0.348, 
-  			   0.435, 0.522, 0.609, 0.696, 0.783, 
-  			   0.870, 0.957, 1.044, 1.131, 1.218, 
-  			   1.305, 1.392, 1.479, 1.566, 1.653, 
-  			   1.740, 1.830, 1.930, 2.043, 2.172, 
-  			   2.322, 2.5};
+  nEleEtaBins = 20;
+  Float_t eleEtaBin[21] = {-2.5, -2.2, -1.9, -1.6, -1.3,
+			  -1.0, -0.9, -0.8, -0.6, -0.4,
+			  -0.3, -0.2, -0.1,  0.0,  0.1, 
+			   0.2,  0.3,  0.4,  0.6,  0.8, 
+                           1.0,  1.3,  1.6,  1.9,  2.2, 2.5};
+
+  // nJetEtaBins = 26;
+  // Float_t jetEtaBin[27] = {0.0, 0.087, 0.174, 0.261, 0.348, 
+  // 			   0.435, 0.522, 0.609, 0.696, 0.783, 
+  // 			   0.870, 0.957, 1.044, 1.131, 1.218, 
+  // 			   1.305, 1.392, 1.479, 1.566, 1.653, 
+  // 			   1.740, 1.830, 1.930, 2.043, 2.172, 
+  // 			   2.322, 2.5};
+  
+  nJetEtaBins = 20;
+  Float_t jetEtaBin[21] = {-2.5, -2.2, -1.9, -1.6, -1.3,
+			  -1.0, -0.9, -0.8, -0.6, -0.4,
+			  -0.3, -0.2, -0.1,  0.0,  0.1, 
+			   0.2,  0.3,  0.4,  0.6,  0.8, 
+                           1.0,  1.3,  1.6,  1.9,  2.2, 2.5};
   
   // nJetEtaBins = 1;
   // Float_t jetEtaBin[2] = {0.435, 0.783};
@@ -103,7 +123,7 @@ Int_t KFObjectReso::CreateHistoArrays()
                        70., 80., 90., 100., 120.,
                        140., 160., 180., 200., 240., 
                        280., 320., 360., 400., 500.};
-
+  
   for(int ifile=0;ifile<1;ifile++){
 
     TDirectory *savedir = gDirectory;
@@ -179,13 +199,13 @@ Int_t KFObjectReso::CreateHistoArrays()
       for(int iet=0;iet<nETBins;iet++){
 	hEleETReso[ieta][iet] = new TH1F(Form("hEleETReso_%d_%d",ieta,iet),
 					 Form("hEleETReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					 200,-20.,20.);
+					 200,-40.,40.);
 	hEleEtaReso[ieta][iet] = new TH1F(Form("hEleEtaReso_%d_%d",ieta,iet),
 					  Form("hEleEtaReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					  200, -0.01, 0.01);
+					  50, -0.05, 0.05);
 	hElePhiReso[ieta][iet] = new TH1F(Form("hElePhiReso_%d_%d",ieta,iet),
 					  Form("hElePhiReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					  200, -0.01, 0.01);
+					  40, -0.05, 0.05);
       }//ele et
     }//ele eta
     hEleEtaETBin = new TH2F("hEleEtaETBin","hEleEtaETBin", nEleEtaBins, eleEtaBin, nETBins, ETBin);
@@ -414,7 +434,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	mujetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
 	if(mujetR.DeltaR(mujetG) < 0.1 and muCharge_[muInd]==int(partPDG->Charge()/3. and abs(GenPart_pdgId_[imc])==13)){
 
-	  eta = abs(muEta_[muInd]);
+	  eta = muEta_[muInd];
 	  et = mujetR.Et();
 	  GetHistoBin(hMuEtaETBin, eta, et, binEta, binET);
 	    
@@ -429,7 +449,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
       }
     }
   }//muon loop
-
+  
   for(int eleInd = 0; eleInd < int(nEle_); ++eleInd){
     int genIdx = int(eleGenIdx_[eleInd]);
     if ( (genIdx>-1) && (genIdx < int(nGenPart_))){
@@ -446,11 +466,11 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	elejetR.SetPtEtaPhiM(elePt_[eleInd], eleEta_[eleInd] , elePhi_[eleInd], eleMass_[eleInd]);
 	elejetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
 	if(elejetR.DeltaR(elejetG) < 0.1 and eleCharge_[eleInd]==int(partPDG->Charge()/3.) and abs(GenPart_pdgId_[imc])==11){
-
-	  eta = abs(eleEta_[eleInd]);
+	  
+	  eta = eleEta_[eleInd];
 	  et = elejetR.Et();
 	  GetHistoBin(hEleEtaETBin, eta, et, binEta, binET);
-	    
+	  
 	  double etResoPercent = 100.*(et - elejetG.Et())/elejetG.Et();
 	  double etaReso = elejetR.Eta() - elejetG.Eta();
 	  double phiReso = elejetR.Phi() - elejetG.Phi();
@@ -464,20 +484,20 @@ Bool_t KFObjectReso::Process(Long64_t entry)
       }
     }
   }//electron loop
-    
+  
   // printf("MET Rec:(%5.2f, %5.2f) Gen:(%5.2f, %5.2f), Reso : (%5.2f,%5.2f)\n",MET_pt_,MET_phi_,GenMET_pt_,GenMET_phi_, 
   // 	   100.*abs(MET_pt_-GenMET_pt_)/MET_pt_, 100.*abs(MET_phi_-GenMET_phi_)/MET_phi_);
-    
+  
   metR.SetPtEtaPhiM(MET_pt_, 0.0, MET_phi_, 0.0);
   metG.SetPtEtaPhiM(GenMET_pt_, 0.0, GenMET_phi_, 0.0);
-    
+  
   et = metR.Et();
   binET = GetHistoBin(hMETETBin, et);
   double etResoPercent = 100.*(et - metG.Et())/metG.Et();
   double phiReso = metR.Phi() - metG.Phi();
   hMETETReso[binET-1]->Fill(etResoPercent);
   hMETPhiReso[binET-1]->Fill(phiReso);
-
+  
   for(int jetInd = 0; jetInd < int(nJet_); ++jetInd){
     int genIdx = int(jetGenJetIdx_[jetInd]);
     if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
@@ -488,7 +508,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
       if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5){
 	bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
 	bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	eta = abs(jetEta_[jetInd]);
+	eta = jetEta_[jetInd];
 	et = bjetR.Et();
 	GetHistoBin(hJetEtaETBin, eta, et, binEta, binET);
 	double etResoPercent = 100.*(et - bjetG.Et())/bjetG.Et();
@@ -501,11 +521,11 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	}
 	//hBJetETDelRReso[binET-1]->Fill(bjetR.DeltaR(bjetG));
       }//b-jet condition
-	
+      
       if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
 	ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
 	ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	eta = abs(jetEta_[jetInd]);
+	eta = jetEta_[jetInd];
 	et = ljetR.Et();
 	GetHistoBin(hJetEtaETBin, eta, et, binEta, binET);
 	double etResoPercent = 100.*(et - ljetG.Et())/ljetG.Et();
