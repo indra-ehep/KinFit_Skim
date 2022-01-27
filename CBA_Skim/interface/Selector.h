@@ -90,6 +90,28 @@ public:
 	double btag_cut;
 	double btag_cuta;
 	double btag_cutb;
+	
+	double ctag_CvsB_L_cut;
+	double ctag_CvsL_L_cut;
+	double ctag_CvsB_M_cut;
+	double ctag_CvsL_M_cut;
+	double ctag_CvsB_T_cut;
+	double ctag_CvsL_T_cut;
+	
+	double ctag_CvsB_L_cuta;
+	double ctag_CvsL_L_cuta;
+	double ctag_CvsB_M_cuta;
+	double ctag_CvsL_M_cuta;
+	double ctag_CvsB_T_cuta;
+	double ctag_CvsL_T_cuta;
+
+	double ctag_CvsB_L_cutb;
+	double ctag_CvsL_L_cutb;
+	double ctag_CvsB_M_cutb;
+	double ctag_CvsL_M_cutb;
+	double ctag_CvsB_T_cutb;
+	double ctag_CvsL_T_cutb;
+
 	double btag_cut_DeepCSV;
         double btag_cut_DeepCSVa;
         double btag_cut_DeepCSVb;

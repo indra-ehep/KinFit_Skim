@@ -487,10 +487,10 @@ class SkimAna : public TSelector {
   int		_Nbiter = 0 ;
   Float_t	_M_jj = 0 ;
   Float_t	_M_jjkF = 0 ;
-  int		_bjlep_id = 0 ;
-  int		_bjhad_id = 0 ;
-  int		_cjhad_id = 0 ;
-  int		_sjhad_id = 0 ;
+  unsigned int		_bjlep_id = 0 ;
+  unsigned int		_bjhad_id = 0 ;
+  unsigned int		_cjhad_id = 0 ;
+  unsigned int		_sjhad_id = 0 ;
 
   Float_t	_lepPt = 0 ;
   Float_t	_lepEta = 0 ;
@@ -703,13 +703,19 @@ class SkimAna : public TSelector {
    BTagCalibrationReader reader;
    BTagCalibrationReader readera;
    BTagCalibrationReader readerb;
+   BTagCalibrationReader reader_CL;
+   BTagCalibrationReader readera_CL;
+   BTagCalibrationReader readerb_CL;
    TH2D *l_eff = 0x0, *c_eff = 0x0, *b_eff = 0x0;
    string btagSystType ;
+   TH2D *l_CL_eff = 0x0, *c_CL_eff = 0x0, *b_CL_eff = 0x0;
+   string ctagLSystType ;
    double _bTagWeight = 1.0 ;
    double _bTagWeight_b_Up = 1.0 ;
    double _bTagWeight_b_Do = 1.0 ;
    double _bTagWeight_l_Up = 1.0 ;
    double _bTagWeight_l_Do = 1.0 ;
+   double _cTagLWeight = 1.0 ;
 
    //Lepton SF
    MuonSF *muSFa = 0x0;
@@ -791,6 +797,7 @@ class SkimAna : public TSelector {
    double  fmTop ;
    double  kinFitMinChi2 ;
    bool    hasKFMu = false, hasKFEle = false;
+   bool    isKFValid = false;
    ////////////////////////////////////////////////////////
    
    SkimAna(TTree *tree=0);
@@ -832,6 +839,7 @@ class SkimAna : public TSelector {
    void    GetMuonEff(double iso);
    void    GetElectronEff();
    void    GetBtagSF_1a();   
+   void    GetCLtagSF_1a();   
    float   topPtReweight();
    void    TheoWeights();
    bool    ProcessKinFit(bool, bool);
@@ -1867,24 +1875,37 @@ Bool_t SkimAna::Notify()
   
   selector->isPreVFP = isPreVFP ;
   selector->isPostVFP = isPostVFP ;
-  
 
   if(isPreVFP or isPostVFP){
 
     if(isPreVFP){ 
       if(selector->useDeepCSVbTag)
 	selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
-      else
+      else{
 	selector->btag_cut = selector->btag_cuta ; 
+	selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cuta ; 
+	selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cuta ; 
+	selector->ctag_CvsL_M_cut = selector->ctag_CvsL_M_cuta ; 
+	selector->ctag_CvsB_M_cut = selector->ctag_CvsB_M_cuta ; 
+	selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cuta ; 
+	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cuta ; 
+      }
     }
 
     if(isPostVFP){ 
       if(selector->useDeepCSVbTag)
 	selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVb ; 
-      else
+      else{
 	selector->btag_cut = selector->btag_cutb ; 
+	selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cutb ; 
+	selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cutb ; 
+	selector->ctag_CvsL_M_cut = selector->ctag_CvsL_M_cutb ; 
+	selector->ctag_CvsB_M_cut = selector->ctag_CvsB_M_cutb ; 
+	selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cutb ; 
+	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cutb ; 
+      }
     }
-
+    
     if(selector->useDeepCSVbTag) 
       kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
     else

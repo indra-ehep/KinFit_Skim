@@ -88,18 +88,16 @@ int CreateBtagEff()
     TH2D *h2_CTagEff_Denom_b              = (TH2D*)(f->Get(histPath+"h2_CTagEff_Denom_b"));
     TH2D *h2_CTagEff_Denom_c              = (TH2D*)(f->Get(histPath+"h2_CTagEff_Denom_c"));
     TH2D *h2_CTagEff_Denom_udsg           = (TH2D*)(f->Get(histPath+"h2_CTagEff_Denom_udsg"));
-
-    TH2D *h2_CTagEff_Num_bL               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_bL"));
-    TH2D *h2_CTagEff_Num_cL               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_cL"));
-    TH2D *h2_CTagEff_Num_udsgL            = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_udsgL"));
-    
-    h2_CTagEff_Num_bL->Sumw2();
-    h2_CTagEff_Num_cL->Sumw2();
-    h2_CTagEff_Num_udsgL->Sumw2();
     h2_CTagEff_Denom_b->Sumw2();
     h2_CTagEff_Denom_c->Sumw2();
     h2_CTagEff_Denom_udsg->Sumw2();
-    
+
+    TH2D *h2_CTagEff_Num_bL               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_bL"));
+    TH2D *h2_CTagEff_Num_cL               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_cL"));
+    TH2D *h2_CTagEff_Num_udsgL            = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_udsgL"));    
+    h2_CTagEff_Num_bL->Sumw2();
+    h2_CTagEff_Num_cL->Sumw2();
+    h2_CTagEff_Num_udsgL->Sumw2();
     TH2D *h2_CTagEff_Ratio_bL = (TH2D*)h2_CTagEff_Num_bL->Clone("CTag_b_L_efficiency");
     TH2D *h2_CTagEff_Ratio_cL = (TH2D*)h2_CTagEff_Num_cL->Clone("CTag_c_L_efficiency");
     TH2D *h2_CTagEff_Ratio_udsgL = (TH2D*)h2_CTagEff_Num_udsgL->Clone("CTag_l_L_efficiency");
@@ -107,6 +105,32 @@ int CreateBtagEff()
     h2_CTagEff_Ratio_cL->Divide(h2_CTagEff_Denom_c);
     h2_CTagEff_Ratio_udsgL->Divide(h2_CTagEff_Denom_udsg);
 
+    TH2D *h2_CTagEff_Num_bM               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_bM"));
+    TH2D *h2_CTagEff_Num_cM               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_cM"));
+    TH2D *h2_CTagEff_Num_udsgM            = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_udsgM"));    
+    h2_CTagEff_Num_bM->Sumw2();
+    h2_CTagEff_Num_cM->Sumw2();
+    h2_CTagEff_Num_udsgM->Sumw2();
+    TH2D *h2_CTagEff_Ratio_bM = (TH2D*)h2_CTagEff_Num_bM->Clone("CTag_b_M_efficiency");
+    TH2D *h2_CTagEff_Ratio_cM = (TH2D*)h2_CTagEff_Num_cM->Clone("CTag_c_M_efficiency");
+    TH2D *h2_CTagEff_Ratio_udsgM = (TH2D*)h2_CTagEff_Num_udsgM->Clone("CTag_l_M_efficiency");
+    h2_CTagEff_Ratio_bM->Divide(h2_CTagEff_Denom_b);
+    h2_CTagEff_Ratio_cM->Divide(h2_CTagEff_Denom_c);
+    h2_CTagEff_Ratio_udsgM->Divide(h2_CTagEff_Denom_udsg);
+
+    TH2D *h2_CTagEff_Num_bT               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_bT"));
+    TH2D *h2_CTagEff_Num_cT               = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_cT"));
+    TH2D *h2_CTagEff_Num_udsgT            = (TH2D*)(f->Get(histPath+"h2_CTagEff_Num_udsgT"));    
+    h2_CTagEff_Num_bT->Sumw2();
+    h2_CTagEff_Num_cT->Sumw2();
+    h2_CTagEff_Num_udsgT->Sumw2();
+    TH2D *h2_CTagEff_Ratio_bT = (TH2D*)h2_CTagEff_Num_bT->Clone("CTag_b_T_efficiency");
+    TH2D *h2_CTagEff_Ratio_cT = (TH2D*)h2_CTagEff_Num_cT->Clone("CTag_c_T_efficiency");
+    TH2D *h2_CTagEff_Ratio_udsgT = (TH2D*)h2_CTagEff_Num_udsgT->Clone("CTag_l_T_efficiency");
+    h2_CTagEff_Ratio_bT->Divide(h2_CTagEff_Denom_b);
+    h2_CTagEff_Ratio_cT->Divide(h2_CTagEff_Denom_c);
+    h2_CTagEff_Ratio_udsgT->Divide(h2_CTagEff_Denom_udsg);
+    
     fout->cd();
     h2_BTagEff_Ratio_bM->Write();
     h2_BTagEff_Ratio_cM->Write();
@@ -114,7 +138,13 @@ int CreateBtagEff()
     h2_CTagEff_Ratio_bL->Write();
     h2_CTagEff_Ratio_cL->Write();
     h2_CTagEff_Ratio_udsgL->Write();
-
+    h2_CTagEff_Ratio_bM->Write();
+    h2_CTagEff_Ratio_cM->Write();
+    h2_CTagEff_Ratio_udsgM->Write();
+    h2_CTagEff_Ratio_bT->Write();
+    h2_CTagEff_Ratio_cT->Write();
+    h2_CTagEff_Ratio_udsgT->Write();
+    
     fout->Close();
     delete fout;
     

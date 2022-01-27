@@ -170,8 +170,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchAddress("Flag_BadPFMuonFilter",&Flag_BadPFMuonFilter_);
 
     if(year =="2017" || year == "2018"){
-	chain->SetBranchStatus("Flag_ecalBadCalibFilterV2",1);
-	chain->SetBranchAddress("Flag_ecalBadCalibFilterV2",&Flag_ecalBadCalibFilterV2_);
+	chain->SetBranchStatus("Flag_ecalBadCalibFilter",1);
+	chain->SetBranchAddress("Flag_ecalBadCalibFilter",&Flag_ecalBadCalibFilterV2_);
     }
 
     //TRIGGERS
