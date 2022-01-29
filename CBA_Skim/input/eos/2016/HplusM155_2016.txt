@@ -1,2 +1,2 @@
-root://eosuser.cern.ch//eos/user/i/imirza/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM155_postVFP_Skim_NanoAOD.root
-root://eosuser.cern.ch//eos/user/i/imirza/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM155_preVFP_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/d/dugad/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM155_postVFP_Skim_NanoAOD.root
+root://eosuser.cern.ch//eos/user/d/dugad/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM155_preVFP_Skim_NanoAOD.root
