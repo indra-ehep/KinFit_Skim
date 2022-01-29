@@ -706,16 +706,26 @@ class SkimAna : public TSelector {
    BTagCalibrationReader reader_CL;
    BTagCalibrationReader readera_CL;
    BTagCalibrationReader readerb_CL;
+   BTagCalibrationReader reader_CM;
+   BTagCalibrationReader readera_CM;
+   BTagCalibrationReader readerb_CM;
+   BTagCalibrationReader reader_CT;
+   BTagCalibrationReader readera_CT;
+   BTagCalibrationReader readerb_CT;
    TH2D *l_eff = 0x0, *c_eff = 0x0, *b_eff = 0x0;
    string btagSystType ;
    TH2D *l_CL_eff = 0x0, *c_CL_eff = 0x0, *b_CL_eff = 0x0;
-   string ctagLSystType ;
+   TH2D *l_CM_eff = 0x0, *c_CM_eff = 0x0, *b_CM_eff = 0x0;
+   TH2D *l_CT_eff = 0x0, *c_CT_eff = 0x0, *b_CT_eff = 0x0;
+   string ctagLSystType, ctagMSystType, ctagTSystType ;
    double _bTagWeight = 1.0 ;
    double _bTagWeight_b_Up = 1.0 ;
    double _bTagWeight_b_Do = 1.0 ;
    double _bTagWeight_l_Up = 1.0 ;
    double _bTagWeight_l_Do = 1.0 ;
    double _cTagLWeight = 1.0 ;
+   double _cTagMWeight = 1.0 ;
+   double _cTagTWeight = 1.0 ;
 
    //Lepton SF
    MuonSF *muSFa = 0x0;
@@ -840,6 +850,8 @@ class SkimAna : public TSelector {
    void    GetElectronEff();
    void    GetBtagSF_1a();   
    void    GetCLtagSF_1a();   
+   void    GetCMtagSF_1a();   
+   void    GetCTtagSF_1a();   
    float   topPtReweight();
    void    TheoWeights();
    bool    ProcessKinFit(bool, bool);
@@ -853,7 +865,8 @@ class SkimAna : public TSelector {
    //// Fill the main physics object histograms 
    bool    FillBTagObs();
    bool    FillKFCFObs();
-   
+   bool    FillCTagObs();   
+
    /// They are called by above cutflow histograms
    bool    FillEventCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
    bool    FillLeptonCFHists(int isyst, double combined_muwt, double combined_muwt1, double combined_elewt);
@@ -865,6 +878,9 @@ class SkimAna : public TSelector {
    bool    FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1);
    bool    FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
    bool    FillBTHists(TList *list, string hist_extn, bool isMu, double wt);
+   bool    FillCTHists(TList *list, string hist_extn, bool isMu, double wt, 
+		       int count_cJetsIncL, int count_cJetsIncM, int count_cJetsIncT, 
+		       bool isIncL, bool isIncM, bool isIncT);
 
    /// Fill Wt histograms
    bool    FillEventWt();
@@ -884,6 +900,7 @@ class SkimAna : public TSelector {
    bool    FillMETControlHists();
    bool    FillBTagControlHists();
    bool    FillKinFitControlHists();
+   bool    FillCTagControlHists();
 
    bool    SelectTTbarChannel();
 

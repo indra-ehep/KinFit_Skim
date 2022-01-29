@@ -49,7 +49,7 @@ int CreateBtagEff()
   //const char *Sample[] = {"HplusM120", "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "TTB", "Others"};  //2016
   //const char *Sample[] = {"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "TTB", "Others"};  //2017 and 2018
   
-  string MLname = "deepjet";
+  string MLname = "deepcsv";
   string inputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s_raw",MLname.c_str());
   string outputpath = Form("/Data/CMS-Analysis/NanoAOD-Analysis/ProcessSkim/root_files/NanoAODUL/btag_%s",MLname.c_str());
 
