@@ -136,19 +136,19 @@ Int_t KFObjectReso::CreateHistoArrays()
   // nJetEtaBins = 1;
   // Float_t jetEtaBin[2] = {0.435, 0.783};
   
-  // nETBins = 19;
-  // Float_t ETBin[20] = {20., 30., 40., 50., 60.,
-  //                      70., 80., 90., 100., 120.,
-  //                      140., 160., 180., 200., 240., 
-  //                      280., 320., 360., 400., 500.};
+  nETBins = 19;
+  Float_t ETBin[20] = {20., 30., 40., 50., 60.,
+                       70., 80., 90., 100., 120.,
+                       140., 160., 180., 200., 240., 
+                       280., 320., 360., 400., 500.};
 
-  nETBins = 29;
-  Float_t ETBin[30] = {20., 30., 40., 50., 60.,
-                       70., 80., 90., 100., 110.,
-                       120., 130., 140., 150., 160., 
-                       170., 180., 190., 200., 210.,
-		       220., 230., 240., 250., 260.,
-		       270., 280., 290., 300., 310};
+  // nETBins = 29;
+  // Float_t ETBin[30] = {20., 30., 40., 50., 60.,
+  //                      70., 80., 90., 100., 110.,
+  //                      120., 130., 140., 150., 160., 
+  //                      170., 180., 190., 200., 210.,
+  // 		       220., 230., 240., 250., 260.,
+  // 		       270., 280., 290., 300., 310};
   
   for(int ifile=0;ifile<1;ifile++){
 
@@ -464,7 +464,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  et = mujetR.Et();
 	  GetHistoBin(hMuEtaETBin, eta, et, binEta, binET);
 	    
-	  double etResoPercent = 100.*(et - mujetG.Et())/mujetG.Et();
+	  //double etResoPercent = 100.*(et - mujetG.Et())/mujetG.Et();
+	  double etResoPercent = (et - mujetG.Et());
 	  double etaReso = mujetR.Eta() - mujetG.Eta();
 	  double phiReso = mujetR.Phi() - mujetG.Phi();
 
@@ -497,7 +498,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  et = elejetR.Et();
 	  GetHistoBin(hEleEtaETBin, eta, et, binEta, binET);
 	  
-	  double etResoPercent = 100.*(et - elejetG.Et())/elejetG.Et();
+	  //double etResoPercent = 100.*(et - elejetG.Et())/elejetG.Et();
+	  double etResoPercent = (et - elejetG.Et());
 	  double etaReso = elejetR.Eta() - elejetG.Eta();
 	  double phiReso = elejetR.Phi() - elejetG.Phi();
 
@@ -537,7 +539,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	eta = jetEta_[jetInd];
 	et = bjetR.Et();
 	GetHistoBin(hJetEtaETBin, eta, et, binEta, binET);
-	double etResoPercent = 100.*(et - bjetG.Et())/bjetG.Et();
+	//double etResoPercent = 100.*(et - bjetG.Et())/bjetG.Et();
+	double etResoPercent = (et - bjetG.Et());
 	double etaReso = bjetR.Eta() - bjetG.Eta();
 	double phiReso = bjetR.Phi() - bjetG.Phi();
 	if(bjetR.DeltaR(bjetG)<0.2){
@@ -554,7 +557,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	eta = jetEta_[jetInd];
 	et = ljetR.Et();
 	GetHistoBin(hJetEtaETBin, eta, et, binEta, binET);
-	double etResoPercent = 100.*(et - ljetG.Et())/ljetG.Et();
+	//double etResoPercent = 100.*(et - ljetG.Et())/ljetG.Et();
+	double etResoPercent = (et - ljetG.Et());
 	double etaReso = ljetR.Eta() - ljetG.Eta();
 	double phiReso = ljetR.Phi() - ljetG.Phi();
 	if(ljetR.DeltaR(ljetG)<0.2){
