@@ -11,7 +11,7 @@ echo The first input is $1
 echo The second input is $2
 
 if [ $1 -eq 1 ] ; then
-    root -b -l -q $2  ~/codes/GetTreeCount.C+ 
+    root -b -l -q $2  GetTreeCount.C+ 
 elif [ $1 -eq 2 ] ; then
-    root -b -l -q $2 ~/codes/GetTreeCountReco.C+ 
+    root -b -l -q $2 GetTreeCountReco.C+ 
 fi

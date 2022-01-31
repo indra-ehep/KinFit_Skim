@@ -83,11 +83,11 @@ for fname in flist:
 
     if storage_type == 1 or storage_type == 3:
         file_size = subprocess.check_output('ls -la %s/%s | awk \'{print $5}\''%(directory,fname),shell=True).split('\n')
-        outlist = subprocess.Popen('tree_list %s %s/%s 2>&1'%(root_filetype,directory,fname),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+        outlist = subprocess.Popen('./tree_list %s %s/%s 2>&1'%(root_filetype,directory,fname),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
     elif storage_type == 2:
         #file_size = subprocess.check_output('xrdfs root://se01.indiacms.res.in ls -l /cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAOD/2018/ | grep ZZTo4L_powheg_ext2_Skim_NanoAOD_9of14.root | | awk \'{print $4}\''%(directory,fname),shell=True).split('\n')
         file_size = subprocess.check_output('xrdfs %s ls -l %s | grep %s | awk \'{print $4}\''%(server,directory,fname),shell=True).split('\n')
-        outlist = subprocess.Popen('tree_list %s %s/%s/%s 2>&1'%(root_filetype, server,directory,fname),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+        outlist = subprocess.Popen('./tree_list %s %s/%s/%s 2>&1'%(root_filetype, server,directory,fname),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
     #print (outlist)
     tree_size = ""
     mu_pt_entries = ""
@@ -136,11 +136,11 @@ localts = time.localtime()
 local_d = "%i-%02i-%02i"%(localts.tm_year, localts.tm_mon, localts.tm_mday)
 local_dt = "%s__%02i%02i%02i"%(local_d, localts.tm_hour, localts.tm_min, localts.tm_sec)
 if storage_type == 1:
-    outpath =  "/Data/root_files/file_stat/Local" + "/" + local_d + "/" + prev_to_last_dir + "/" + last_dir_name
+    outpath =  "." + "/" + local_d + "/" + prev_to_last_dir + "/" + last_dir_name
 elif storage_type == 2:
-    outpath = "/home/idas/t3store3/root_files/file_stat" + "/" + local_d + "/" + prev_to_last_dir + "/" + last_dir_name
+    outpath = "." + "/" + local_d + "/" + prev_to_last_dir + "/" + last_dir_name
 elif storage_type == 3:
-    outpath = "/afs/cern.ch/work/i/idas/root_files/file_stat" + "/" + local_d + "/" + prev_to_last_dir + "/" + last_dir_name
+    outpath = "." + "/" + local_d + "/" + prev_to_last_dir + "/" + last_dir_name
     
 if not os.path.exists(outpath):
     os.makedirs(outpath)

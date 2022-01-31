@@ -47,7 +47,9 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 #condorOutDir=/store/user/rverma/Output/cms-hcs-run2/Skim_NanoAOD
-condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL"
+#condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL"
+condorOutDir1="/eos/cms/store/group/phys_higgs/HiggsExo/idas/cms-hcs-run2/Skim_NanoAODUL"
+
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
