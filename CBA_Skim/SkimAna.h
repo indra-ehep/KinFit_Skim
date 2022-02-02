@@ -867,7 +867,7 @@ class SkimAna : public TSelector {
    void    LoadJECJER();
    void    LoadBTag();
    void    LoadLeptonSF();
-   void    Clear(); //clear vector and arrays while read each event
+   void    Clean(void); //clear vector and arrays while read each event
 
    Int_t   CreateHistoArrays();
    
@@ -1920,7 +1920,8 @@ Bool_t SkimAna::Notify()
   
   selector->isPreVFP = isPreVFP ;
   selector->isPostVFP = isPostVFP ;
-
+  
+  string inputKFResoPath = inputPathReso;
   if(isPreVFP or isPostVFP){
 
     if(isPreVFP){ 
@@ -1935,7 +1936,7 @@ Bool_t SkimAna::Notify()
 	selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cuta ; 
 	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cuta ; 
       }
-      inputPathReso += "/preVFP" ;
+      inputKFResoPath += "/preVFP" ;
     }
 
     if(isPostVFP){ 
@@ -1950,7 +1951,7 @@ Bool_t SkimAna::Notify()
 	selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cutb ; 
 	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cutb ; 
       }
-      inputPathReso += "/postVFP" ;
+      inputKFResoPath += "/postVFP" ;
     }
     
     if(selector->useDeepCSVbTag) 
@@ -1958,7 +1959,7 @@ Bool_t SkimAna::Notify()
     else
       kinFit.SetBtagThresh(selector->btag_cut);
   }
-  kinFit.SetResoInputPath(inputPathReso);
+  kinFit.SetResoInputPath(inputKFResoPath);
   kinFit.UnloadObjReso();
   kinFit.LoadObjReso();
   kinFit.UseExtReso();

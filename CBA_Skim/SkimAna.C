@@ -1969,7 +1969,7 @@ void SkimAna::TheoWeights(){
 }
 //_____________________________________________________________________________
 
-void SkimAna::Clear(){
+void SkimAna::Clean(){
   
   singleMu = false;
   singleEle = false;
@@ -1999,7 +1999,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 {
   // entry is the entry number in the current Tree
   
-  Clear();
+  Clean();
   // to read complete event, call fChain->GetTree()->GetEntry(entry)  
   fChain->GetTree()->GetEntry(entry);  
 
