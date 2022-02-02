@@ -177,8 +177,7 @@ int CompareExclInclObs(bool isBtag = 1, bool isMu = 1, int htype = 8)
   hNanoexclTTbar->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
   hNanoexclTTbar->GetXaxis()->SetTitle(upper_pad_xaxis_title.c_str());
   hNanoexclTTbar->GetYaxis()->SetTitle("Entries/bin");
-  hNanoexclTTbar->SetMinimum(upper_minY); hNanoexclTTbar->SetMaximum(upper_maxY);
-  
+  hNanoexclTTbar->SetMinimum(upper_minY); hNanoexclTTbar->SetMaximum(upper_maxY);  
 
   TVirtualPad *p1 = 0x0;
   TLegend *leg21 = new TLegend(0.36,0.78,0.99,0.93);
@@ -214,7 +213,6 @@ int CompareExclInclObs(bool isBtag = 1, bool isMu = 1, int htype = 8)
     //leg22->Draw();
     gStyle->SetOptStat(kFALSE);
   }
-
   
   string outputpdf = Form("figs/Week_Work_Report/2021-11-19/InclByExcl/%d/hist%s.pdf",year,histname.c_str());
   c2->SaveAs(outputpdf.c_str());

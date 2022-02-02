@@ -28,7 +28,7 @@ using namespace std;
 int EventCountsOneFile(const char *infile = "")
 {
   
-  bool isMu = 1;
+  bool isMu = 0;
   int ftype = 0;// 0 for total, 1 for 5of12, 2 for 6of12
   
   // const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";

@@ -819,6 +819,8 @@ void SkimAna::SetTrio()
   
   float mTop = 172.76;
   kinFit.SetTopMass(mTop);
+
+  inputPathReso = Form("%s/weightUL/KFReso/%d",fBasePath.Data(),fYear);
   
 }
 
@@ -2204,7 +2206,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 		       (
 			absSCEta > 1.479 
 			and  
-			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < 0.0821
+			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.0821
 			and
 			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
 			)
@@ -5140,6 +5142,8 @@ void SkimAna::SlaveTerminate()
   crossSections.clear();
   numberOfEvents.clear();
   LumiWZ.clear();
+  
+  kinFit.UnloadObjReso();
 }
 
 //_____________________________________________________________________________
@@ -5166,8 +5170,8 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;

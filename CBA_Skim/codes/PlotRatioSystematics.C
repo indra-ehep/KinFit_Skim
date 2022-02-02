@@ -28,7 +28,7 @@
 using namespace std;
 
 double lumi_unc = 0.025 ;
-double qcd_frac = 0.213 ;
+double qcd_frac = 0.294 ;
 
 int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
 
@@ -50,7 +50,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
   
   // ///////////////////////////////////////////////////////////////////////////////////////////  
-  int year = 2018;
+  int year = 2016;
   float luminosity[3] = {35.9, 41.5, 59.7};
 
   // bool isMu = 1; // 1 muon, 0 ele
@@ -86,7 +86,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   cout << "Histname : " << histname << endl;
   
   
-  string outputpdf = Form("figs/Week_Work_Report/2021-11-19/lowreso/%d/hist%s.pdf",year,histname.c_str());
+  //string outputpdf = Form("figs/Week_Work_Report/2021-11-19/lowreso/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
@@ -94,8 +94,10 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
   //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
   //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
-  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
   //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_btagCSV";
+  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy2";
+  const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy3";
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -457,7 +459,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   t2->Draw();
 
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
-  canvas->SaveAs(outputpdf.c_str());
+  //canvas->SaveAs(outputpdf.c_str());
   canvas->SaveAs("output.pdf");
   
   return true;
