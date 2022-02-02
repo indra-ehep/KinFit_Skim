@@ -189,6 +189,11 @@ Int_t KFObjectReso::CreateHistoArrays()
     savedir->cd();
 
     fFile[ifile]->cd();
+
+    hNofMu = new TH1F("hNofMu","hNofMu",100,-5,5);
+    hNofEle = new TH1F("hNofEle","hNofEle",100,-5,5);
+    hNofBJets = new TH1F("hNofBJets","hNofBJets",55,-5,50); 
+    hNofLJets = new TH1F("hNofLJets","hNofLJets",55,-5,50);
     
     hBJetETReso = new TH1F**[nJetEtaBins];
     hLJetETReso = new TH1F**[nJetEtaBins];
@@ -234,6 +239,7 @@ Int_t KFObjectReso::CreateHistoArrays()
 	hLJetPhiReso[ieta][iet] = new TH1F(Form("hLJetPhiReso_%d_%d",ieta,iet),
 					   Form("hLJetPhiReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
 					   200, -0.2, 0.2);
+
 	hBJetETRRel[ieta][iet] = new TH1F(Form("hBJetETRRel_%d_%d",ieta,iet),
 					  Form("hBJetETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
 					  200,-200.,200.);
@@ -674,204 +680,213 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     }
   }//electron loop
   
-  if((nofEle!=1 and nofMu!=1) or (nofEle==1 and nofMu==1)) return true;
+  
+  if((nofMu==1 and nofEle==0) or (nofMu==0 and nofEle==1)){
 
-  if(nofMu==1){
-    int genIdx = int(muGenIdx_[muIndex]);
-    unsigned int imc = genIdx ;
-    TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
-    TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
-    
-    mujetR.SetPtEtaPhiM(muPt_[muIndex], muEta_[muIndex] , muPhi_[muIndex], muMass_[muIndex]);
-    mujetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
-    
-    GetHistoBin(hMuEtaETBin, mujetR.Eta(), mujetR.Et(), binEta, binET);
-    
-    double etResoPercent = 100.*(mujetR.Et() - mujetG.Et())/mujetG.Et();
-    double etReso = (mujetR.Et() - mujetG.Et());
-    double etaReso = mujetR.Eta() - mujetG.Eta();
-    double phiReso = mujetR.Phi() - mujetG.Phi();
+    hNofMu->Fill(nofMu);
+    hNofEle->Fill(nofEle);
 
-    hMuETReso[binEta-1][binET-1]->Fill(etReso);
-    hMuEtaReso[binEta-1][binET-1]->Fill(etaReso);
-    hMuPhiReso[binEta-1][binET-1]->Fill(phiReso);
-    hMuETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-    hMuEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/mujetG.Eta());
-    hMuPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/mujetG.Phi());
-  }//muon loop
-
-  if(nofEle==1){
-    int genIdx = int(eleGenIdx_[eleIndex]);
-    unsigned int imc = genIdx ;
-    TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
-    TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
-
-    elejetR.SetPtEtaPhiM(elePt_[eleIndex], eleEta_[eleIndex] , elePhi_[eleIndex], eleMass_[eleIndex]);
-    elejetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
-    
-    GetHistoBin(hEleEtaETBin, elejetR.Eta(), elejetR.Et(), binEta, binET);
-    
-    double etResoPercent = 100.*(elejetR.Et() - elejetG.Et())/elejetG.Et();
-    double etReso = (elejetR.Et() - elejetG.Et());
-    double etaReso = elejetR.Eta() - elejetG.Eta();
-    double phiReso = elejetR.Phi() - elejetG.Phi();
-    
-    hEleETReso[binEta-1][binET-1]->Fill(etReso);
-    hEleEtaReso[binEta-1][binET-1]->Fill(etaReso);
-    hElePhiReso[binEta-1][binET-1]->Fill(phiReso);
-    
-    hEleETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-    hEleEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/elejetG.Eta());
-    hElePhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/elejetG.Phi());
-  }//electron loop
-    
-  int nbjet = 0, nljet = 0;
-  for(int jetInd = 0; jetInd < int(nJet_) and int(nJet_) < 10000000; ++jetInd){
-    int genIdx = int(jetGenJetIdx_[jetInd]);
-    double pt = jetPt_[jetInd];
-    double eta = jetEta_[jetInd];
-    double phi = jetPhi_[jetInd];
-    bool jetID_pass = (jetID_[jetInd]>=2 and (jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
-    bool passDR_lep_jet = true;
-    jetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-    if(nofMu==1)
-      if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
-    if(nofEle==1)
-      if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
-    
-    bool jetPresel = (pt >= jet_Pt_cut &&
-    		      TMath::Abs(eta) <= 2.4 &&
-    		      jetID_pass &&
-    		      passDR_lep_jet
-    		      );
-
-    if(!jetPresel) continue;
-    if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
+    if(nofMu==1){
+      int genIdx = int(muGenIdx_[muIndex]);
       unsigned int imc = genIdx ;
-      // printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
-      //        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
-      //        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-      if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5 and (jetBtagDeepB_[jetInd] > btag_cut_DeepCSV or jetBtagDeepFlavB_[jetInd] > btag_cut)){
-  	bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-  	bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-  	if(bjetR.DeltaR(bjetG)<0.2)
-  	  nbjet++;
-      }//b-jet condition
-	
-      if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
-  	ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-  	ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-  	if(ljetR.DeltaR(ljetG)<0.2)
-  	  nljet++;
-      }//l-jet condition
-	
-    }//found the corresponding genjet 
-  }//jet loop
-  
-  if((nbjet+nljet) < 4 or nbjet < 2) return true;
-  
-  // //for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
-  // for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
-  //   TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
-  //   if(!partPDG){
-  // 	printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-  // 	       imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
-  // 	       GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-  // 	       );
-  //   }else{
-  // 	printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-  // 	       imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
-  // 	       GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-  // 	       );
-  //   }
-  // }// mc particle loop
-
-  
-  
-  // printf("MET Rec:(%5.2f, %5.2f) Gen:(%5.2f, %5.2f), Reso : (%5.2f,%5.2f)\n",MET_pt_,MET_phi_,GenMET_pt_,GenMET_phi_, 
-  // 	   100.*abs(MET_pt_-GenMET_pt_)/MET_pt_, 100.*abs(MET_phi_-GenMET_phi_)/MET_phi_);
-  
-  metR.SetPtEtaPhiM(MET_pt_, 0.0, MET_phi_, 0.0);
-  metG.SetPtEtaPhiM(GenMET_pt_, 0.0, GenMET_phi_, 0.0);
-  
-  binET = GetHistoBin(hMETETBin, metR.Et());
-  double etResoPercent = 100.*(metR.Et() - metG.Et())/metG.Et();
-  double etReso = (metR.Et() - metG.Et());
-  double phiReso = metR.Phi() - metG.Phi();
-  hMETETReso[binET-1]->Fill(etReso);
-  hMETPhiReso[binET-1]->Fill(phiReso);
-  hMETETRRel[binET-1]->Fill(etResoPercent);
-  hMETPhiRRel[binET-1]->Fill(100.*phiReso/metG.Phi());
-  
-  for(int jetInd = 0; jetInd < int(nJet_) and int(nJet_) < 10000000; ++jetInd){
-    int genIdx = int(jetGenJetIdx_[jetInd]);
-    double pt = jetPt_[jetInd];
-    double eta = jetEta_[jetInd];
-    double phi = jetPhi_[jetInd];
-    bool jetID_pass = (jetID_[jetInd]>=2 and (jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
-    bool passDR_lep_jet = true;
-    jetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-    if(nofMu==1)
-      if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
-    if(nofEle==1)
-      if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
+      TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
+      TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
     
-    bool jetPresel = (pt >= jet_Pt_cut &&
-    		      TMath::Abs(eta) <= 2.4 &&
-    		      jetID_pass &&
-    		      passDR_lep_jet
-    		      );
-    if(!jetPresel) continue;
-    if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
+      mujetR.SetPtEtaPhiM(muPt_[muIndex], muEta_[muIndex] , muPhi_[muIndex], muMass_[muIndex]);
+      mujetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+    
+      GetHistoBin(hMuEtaETBin, mujetR.Eta(), mujetR.Et(), binEta, binET);
+    
+      double etResoPercent = 100.*(mujetR.Et() - mujetG.Et())/mujetG.Et();
+      double etReso = (mujetR.Et() - mujetG.Et());
+      double etaReso = mujetR.Eta() - mujetG.Eta();
+      double phiReso = mujetR.Phi() - mujetG.Phi();
+
+      hMuETReso[binEta-1][binET-1]->Fill(etReso);
+      hMuEtaReso[binEta-1][binET-1]->Fill(etaReso);
+      hMuPhiReso[binEta-1][binET-1]->Fill(phiReso);
+      hMuETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+      hMuEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/mujetG.Eta());
+      hMuPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/mujetG.Phi());
+    }//muon loop
+
+    if(nofEle==1){
+      int genIdx = int(eleGenIdx_[eleIndex]);
       unsigned int imc = genIdx ;
-      // printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
-      //        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
-      //        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-      if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5 and (jetBtagDeepB_[jetInd] > btag_cut_DeepCSV or jetBtagDeepFlavB_[jetInd] > btag_cut)){
-	bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-	bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenPart_mass_[imc]);
+      TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
+      TParticlePDG *partPDG_mother = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]]);
 
-	GetHistoBin(hJetEtaETBin, bjetR.Eta(), bjetR.Et(), binEta, binET);
+      elejetR.SetPtEtaPhiM(elePt_[eleIndex], eleEta_[eleIndex] , elePhi_[eleIndex], eleMass_[eleIndex]);
+      elejetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+    
+      GetHistoBin(hEleEtaETBin, elejetR.Eta(), elejetR.Et(), binEta, binET);
+    
+      double etResoPercent = 100.*(elejetR.Et() - elejetG.Et())/elejetG.Et();
+      double etReso = (elejetR.Et() - elejetG.Et());
+      double etaReso = elejetR.Eta() - elejetG.Eta();
+      double phiReso = elejetR.Phi() - elejetG.Phi();
+    
+      hEleETReso[binEta-1][binET-1]->Fill(etReso);
+      hEleEtaReso[binEta-1][binET-1]->Fill(etaReso);
+      hElePhiReso[binEta-1][binET-1]->Fill(phiReso);
+    
+      hEleETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+      hEleEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/elejetG.Eta());
+      hElePhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/elejetG.Phi());
+    }//electron loop
+    
+    int nbjet = 0, nljet = 0;
+    for(int jetInd = 0; jetInd < int(nJet_) and int(nJet_) < 10000000; ++jetInd){
+      int genIdx = int(jetGenJetIdx_[jetInd]);
+      double pt = jetPt_[jetInd];
+      double eta = jetEta_[jetInd];
+      double phi = jetPhi_[jetInd];
+      bool jetID_pass = (jetID_[jetInd]>=2 and (jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
+      bool passDR_lep_jet = true;
+      jetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+      if(nofMu==1)
+	if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
+      if(nofEle==1)
+	if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
+    
+      bool jetPresel = (pt >= jet_Pt_cut &&
+			TMath::Abs(eta) <= 2.4 &&
+			jetID_pass &&
+			passDR_lep_jet
+			);
 
-	double etResoPercent = 100.*(bjetR.Et() - bjetG.Et())/bjetG.Et();
-	double etReso = (bjetR.Et() - bjetG.Et());
-	double etaReso = bjetR.Eta() - bjetG.Eta();
-	double phiReso = bjetR.Phi() - bjetG.Phi();
-	if(bjetR.DeltaR(bjetG)<0.2){
-	  hBJetETReso[binEta-1][binET-1]->Fill(etReso);
-	  hBJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
-	  hBJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
+      if(!jetPresel) continue;
+      if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
+	unsigned int imc = genIdx ;
+	// printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+	//        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
+	//        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5 and (jetBtagDeepB_[jetInd] > btag_cut_DeepCSV or jetBtagDeepFlavB_[jetInd] > btag_cut)){
+	  bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+	  bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+	  if(bjetR.DeltaR(bjetG)<0.2)
+	    nbjet++;
+	}//b-jet condition
+	
+	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
+	  ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+	  ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+	  if(ljetR.DeltaR(ljetG)<0.2)
+	    nljet++;
+	}//l-jet condition
+	
+      }//found the corresponding genjet 
+    }//jet loop
+  
+    if(nljet < 2 or nbjet < 2) return true;
 
-	  hBJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-	  hBJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/bjetG.Eta());
-	  hBJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/bjetG.Phi());
-	}
-	//hBJetETDelRReso[binET-1]->Fill(bjetR.DeltaR(bjetG));
-      }//b-jet condition
+    hNofBJets->Fill(nbjet);
+    hNofLJets->Fill(nljet);
+
+    // //for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
+    // for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
+    //   TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
+    //   if(!partPDG){
+    // 	printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+    // 	       imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
+    // 	       GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+    // 	       );
+    //   }else{
+    // 	printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+    // 	       imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
+    // 	       GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+    // 	       );
+    //   }
+    // }// mc particle loop
+
+  
+  
+    // printf("MET Rec:(%5.2f, %5.2f) Gen:(%5.2f, %5.2f), Reso : (%5.2f,%5.2f)\n",MET_pt_,MET_phi_,GenMET_pt_,GenMET_phi_, 
+    // 	   100.*abs(MET_pt_-GenMET_pt_)/MET_pt_, 100.*abs(MET_phi_-GenMET_phi_)/MET_phi_);
+  
+    metR.SetPtEtaPhiM(MET_pt_, 0.0, MET_phi_, 0.0);
+    metG.SetPtEtaPhiM(GenMET_pt_, 0.0, GenMET_phi_, 0.0);
+  
+    binET = GetHistoBin(hMETETBin, metR.Et());
+    double etResoPercent = 100.*(metR.Et() - metG.Et())/metG.Et();
+    double etReso = (metR.Et() - metG.Et());
+    double phiReso = metR.Phi() - metG.Phi();
+    hMETETReso[binET-1]->Fill(etReso);
+    hMETPhiReso[binET-1]->Fill(phiReso);
+    hMETETRRel[binET-1]->Fill(etResoPercent);
+    hMETPhiRRel[binET-1]->Fill(100.*phiReso/metG.Phi());
+  
+    for(int jetInd = 0; jetInd < int(nJet_) and int(nJet_) < 10000000; ++jetInd){
+      int genIdx = int(jetGenJetIdx_[jetInd]);
+      double pt = jetPt_[jetInd];
+      double eta = jetEta_[jetInd];
+      double phi = jetPhi_[jetInd];
+      bool jetID_pass = (jetID_[jetInd]>=2 and (jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
+      bool passDR_lep_jet = true;
+      jetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+      if(nofMu==1)
+	if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
+      if(nofEle==1)
+	if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
+    
+      bool jetPresel = (pt >= jet_Pt_cut &&
+			TMath::Abs(eta) <= 2.4 &&
+			jetID_pass &&
+			passDR_lep_jet
+			);
+      if(!jetPresel) continue;
+      if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
+	unsigned int imc = genIdx ;
+	// printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+	//        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
+	//        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5 and (jetBtagDeepB_[jetInd] > btag_cut_DeepCSV or jetBtagDeepFlavB_[jetInd] > btag_cut)){
+	  //if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5){
+	  bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+	  bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+
+	  GetHistoBin(hJetEtaETBin, bjetR.Eta(), bjetR.Et(), binEta, binET);
+
+	  double etResoPercent = 100.*(bjetR.Et() - bjetG.Et())/bjetG.Et();
+	  double etReso = (bjetR.Et() - bjetG.Et());
+	  double etaReso = bjetR.Eta() - bjetG.Eta();
+	  double phiReso = bjetR.Phi() - bjetG.Phi();
+	  if(bjetR.DeltaR(bjetG)<0.2){
+	    hBJetETReso[binEta-1][binET-1]->Fill(etReso);
+	    hBJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
+	    hBJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
+
+	    hBJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+	    hBJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/bjetG.Eta());
+	    hBJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/bjetG.Phi());
+	  }
+	  //hBJetETDelRReso[binET-1]->Fill(bjetR.DeltaR(bjetG));
+	}//b-jet condition
       
-      if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
-	ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-	ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenPart_mass_[imc]);
+	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
+	  ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+	  ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
 
-	GetHistoBin(hJetEtaETBin, ljetR.Eta(), ljetR.Et(), binEta, binET);
+	  GetHistoBin(hJetEtaETBin, ljetR.Eta(), ljetR.Et(), binEta, binET);
 
-	double etResoPercent = 100.*(ljetR.Et() - ljetG.Et())/ljetG.Et();
-	double etReso = (ljetR.Et() - ljetG.Et());
-	double etaReso = ljetR.Eta() - ljetG.Eta();
-	double phiReso = ljetR.Phi() - ljetG.Phi();
-	if(ljetR.DeltaR(ljetG)<0.2){
-	  hLJetETReso[binEta-1][binET-1]->Fill(etReso);
-	  hLJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
-	  hLJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
+	  double etResoPercent = 100.*(ljetR.Et() - ljetG.Et())/ljetG.Et();
+	  double etReso = (ljetR.Et() - ljetG.Et());
+	  double etaReso = ljetR.Eta() - ljetG.Eta();
+	  double phiReso = ljetR.Phi() - ljetG.Phi();
+	  if(ljetR.DeltaR(ljetG)<0.2){
+	    hLJetETReso[binEta-1][binET-1]->Fill(etReso);
+	    hLJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
+	    hLJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
 
-	  hLJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-	  hLJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/ljetG.Eta());
-	  hLJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/ljetG.Phi());
-	}
-      }//l-jet condition
+	    hLJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+	    hLJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/ljetG.Eta());
+	    hLJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/ljetG.Phi());
+	  }
+	}//l-jet condition
 	
-    }//found the corresponding genjet 
-  }//jet loop
+      }//found the corresponding genjet 
+    }//jet loop
+  }//if nmu==1 or nele==1
 
   fStatus++;
    
@@ -890,11 +905,16 @@ void KFObjectReso::SlaveTerminate()
   // File closure
   
   for(int ifile=0;ifile<1;ifile++){
-
+    
     TDirectory *savedir = gDirectory;
     savedir->cd();
-
+    
     fFile[ifile]->cd();
+
+    hNofMu->Write();
+    hNofEle->Write();
+    hNofBJets->Write();
+    hNofLJets->Write();
     
     ///////////////////////////////
     for(int ieta=0;ieta<nJetEtaBins;ieta++)
@@ -937,6 +957,47 @@ void KFObjectReso::SlaveTerminate()
       hMETETReso[iet]->Write();
     for(int iet=0;iet<nETBins;iet++)
       hMETPhiReso[iet]->Write();
+    
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hBJetETRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)  
+	hLJetETRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hBJetEtaRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)  
+	hLJetEtaRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hBJetPhiRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)  
+	hLJetPhiRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nMuEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hMuETRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nMuEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hMuEtaRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nMuEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hMuPhiRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nEleEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hEleETRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nEleEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hEleEtaRRel[ieta][iet]->Write();
+    for(int ieta=0;ieta<nEleEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hElePhiRRel[ieta][iet]->Write();  
+    for(int iet=0;iet<nETBins;iet++)
+      hMETETRRel[iet]->Write();
+    for(int iet=0;iet<nETBins;iet++)
+      hMETPhiRRel[iet]->Write();
 
     ///////////////////////////////
     fFile[ifile]->cd();

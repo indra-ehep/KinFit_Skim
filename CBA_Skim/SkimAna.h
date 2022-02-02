@@ -1961,8 +1961,8 @@ Bool_t SkimAna::Notify()
   kinFit.SetResoInputPath(inputPathReso);
   kinFit.UnloadObjReso();
   kinFit.LoadObjReso();
-  /* kinFit.UseExtReso(); */
-
+  kinFit.UseExtReso();
+  
   fSampleType = fname;
   
   Info("Notify","processing sample %s and file: %s",fSampleType.Data(), fChain->GetCurrentFile()->GetName());  
