@@ -127,7 +127,7 @@ class KFObjectReso : public TSelector {
    Bool_t	Flag_HBHENoiseIsoFilter_ ;
    Bool_t	Flag_EcalDeadCellTriggerPrimitiveFilter_ ;
    Bool_t	Flag_BadPFMuonFilter_ ;
-   Bool_t	Flag_ecalBadCalibFilterV2_ ;
+   Bool_t	Flag_ecalBadCalibFilter_ ;
 
    Float_t    pvNDOF_;
    Float_t    pvX_;
@@ -456,8 +456,8 @@ void KFObjectReso::Init(TTree *tree)
   fChain->SetBranchAddress("Flag_BadPFMuonFilter",&Flag_BadPFMuonFilter_);
   
   if(fYear==2017 || fYear==2018){
-    fChain->SetBranchStatus("Flag_ecalBadCalibFilterV2",1);
-    fChain->SetBranchAddress("Flag_ecalBadCalibFilterV2",&Flag_ecalBadCalibFilterV2_);
+    fChain->SetBranchStatus("Flag_ecalBadCalibFilter",1);
+    fChain->SetBranchAddress("Flag_ecalBadCalibFilter",&Flag_ecalBadCalibFilter_);
   }
   
   ///////////////////////////////////////////////////////////////////////////

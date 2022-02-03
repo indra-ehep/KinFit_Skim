@@ -56,8 +56,8 @@ int CreateBtagEff()
   for(int ifile = 0 ; ifile < nofSamples ; ifile++ ){
   
     
-    TFile *f = TFile::Open(Form("%s/%d/%s_btag_eff_raw_%d.root",inputpath.c_str(),year,Sample[ifile],year));    
-    TFile *fout = new TFile(Form("%s/%d/%s_btag_eff_%s_%d.root",outputpath.c_str(),year,Sample[ifile],MLname.c_str(),year),"recreate");    
+    TFile *f = TFile::Open(Form("%s/%d/pre/%s_btag_eff_raw_%d.root",inputpath.c_str(),year,Sample[ifile],year));    
+    TFile *fout = new TFile(Form("%s/%d/pre/%s_btag_eff_%s_%d.root",outputpath.c_str(),year,Sample[ifile],MLname.c_str(),year),"recreate");    
     
     if(!f) continue;
 

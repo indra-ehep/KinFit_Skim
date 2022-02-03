@@ -1419,8 +1419,8 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchAddress("Flag_BadPFMuonFilter", &(event->Flag_BadPFMuonFilter_));
 
   if(fYear ==2017 || fYear == 2018){
-    tree->SetBranchStatus("Flag_ecalBadCalibFilterV2",1);
-    tree->SetBranchAddress("Flag_ecalBadCalibFilterV2", &(event->Flag_ecalBadCalibFilterV2_));
+    tree->SetBranchStatus("Flag_ecalBadCalibFilter",1);
+    tree->SetBranchAddress("Flag_ecalBadCalibFilter", &(event->Flag_ecalBadCalibFilter_));
   }
 
   //TRIGGERS
@@ -1960,9 +1960,9 @@ Bool_t SkimAna::Notify()
       kinFit.SetBtagThresh(selector->btag_cut);
   }
   kinFit.SetResoInputPath(inputKFResoPath);
-  kinFit.UnloadObjReso();
-  kinFit.LoadObjReso();
-  kinFit.UseExtReso();
+  /* kinFit.UnloadObjReso(); */
+  /* kinFit.LoadObjReso(); */
+  //kinFit.UseExtReso();
   
   fSampleType = fname;
   

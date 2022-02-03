@@ -39,13 +39,13 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFNewReso/pre
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFNewReso/pre
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFNewReso
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TestYear
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
     #xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
-    xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
+    #xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
     echo "Cleanup"
     rm -rf CMSSW_10_6_29

@@ -1065,6 +1065,33 @@ void SkimAna::LoadBTag()
       readerb_CT.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
       
     }
+    if (fYear==2017 || fYear==2018){ 
+      Info("LoadBTag","DeepJet calibration has been selected : %d", fYear);      
+      
+      calib = BTagCalibration( "deepjet", Form("%s/weightUL/BtagSF/%d/DeepJet_formatted.csv",fBasePath.Data(),fYear) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/%d/DeepJet_formatted.csv",fBasePath.Data(),fYear);
+      
+      reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      reader.load(calib, BTagEntry::FLAV_B,"mujets");          
+      reader.load(calib, BTagEntry::FLAV_C, "comb"); 
+      reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
+      
+      reader_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
+      reader_CL.load(calib, BTagEntry::FLAV_B,"mujets");          
+      reader_CL.load(calib, BTagEntry::FLAV_C, "comb"); 
+      reader_CL.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
+
+      reader_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      reader_CM.load(calib, BTagEntry::FLAV_B,"mujets");          
+      reader_CM.load(calib, BTagEntry::FLAV_C, "comb"); 
+      reader_CM.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
+
+      reader_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
+      reader_CT.load(calib, BTagEntry::FLAV_B,"mujets");          
+      reader_CT.load(calib, BTagEntry::FLAV_C, "comb"); 
+      reader_CT.load(calib, BTagEntry::FLAV_UDSG, "incl");       
+      
+    }
   } else {
     Info("LoadBTag","DeepCSV calibration has been selected");
     if (fYear==2016){ 
@@ -1115,11 +1142,10 @@ void SkimAna::LoadBTag()
   //string year = "2016";
   std::string fName = "" ;
   if(!selector->useDeepCSVbTag){ //CSVV2
-    // if(fSample.BeginsWith("MCQCD"))
-    //   fName = Form("%s/weight/BtagSF/btag_efficiencies_%d.root",fBasePath.Data(),fYear);
-    // else
-    //   fName = Form("%s/weight/BtagSF/Efficiency/MiniAOD/CSVV2/%s_btag_efficiency.root",fBasePath.Data(),fSample.Data());
-    fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+    if (fYear==2016)
+      fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/inclusive/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+    else
+      fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
   }else{ //DeepCSV    
     fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
   }
@@ -1245,33 +1271,87 @@ void SkimAna::LoadLeptonSF(){
     }
   } else if (fYear==2017) {
 	
-    muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ID.root",fBasePath.Data()), "NUM_TightID_DEN_genTracks_pt_abseta",
-		       Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ISO.root",fBasePath.Data()), "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
-		       Form("%s/weight/MuEleSF/mu2017/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",fBasePath.Data()), "IsoMu27_PtEtaBins/abseta_pt_ratio");
+    // muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ID.root",fBasePath.Data()), "NUM_TightID_DEN_genTracks_pt_abseta",
+    // 		       Form("%s/weight/MuEleSF/mu2017/RunBCDEF_SF_ISO.root",fBasePath.Data()), "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+    // 		       Form("%s/weight/MuEleSF/mu2017/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",fBasePath.Data()), "IsoMu27_PtEtaBins/abseta_pt_ratio");
 	
-    eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2017/2017_ElectronTight.root",fBasePath.Data()),
-			   Form("%s/weight/MuEleSF/ele2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root",fBasePath.Data()),
-			   Form("%s/weight/MuEleSF/ele2017/sf_ele_2017_trig_v5.root",fBasePath.Data()));
+    // eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2017/2017_ElectronTight.root",fBasePath.Data()),
+    // 			    Form("%s/weight/MuEleSF/ele2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root",fBasePath.Data()),
+    // 			    Form("%s/weight/MuEleSF/ele2017/sf_ele_2017_trig_v5.root",fBasePath.Data()));
+
+    string muPath = Form("%s/weightUL/MuEleSF/mu2017/2017_Z",fBasePath.Data());
+    string muTrigPath = Form("%s/weightUL/MuEleSF/mu2017/2017_trigger",fBasePath.Data());
+    // //MediumID
+    // string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumID_DEN_TrackerMuons_abseta_pt";
+    // string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumID_abseta_pt"; //check option of looseISO to use for DD QCD
+    // MediumPromptID
+    string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
+    string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
+      
+    string muTrighist = "NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
+    
+    muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2017_UL_ID.root",muPath.c_str()), muIDhist,
+		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2017_UL_ISO.root",muPath.c_str()), muISOhist, 
+		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2017_UL_SingleMuonTriggers.root",muTrigPath.c_str()), muTrighist); 
+      
+      
+    string elePath_UL = Form("%s/weightUL/MuEleSF/ele2017",fBasePath.Data());
+    string elePath_LRR = Form("%s/weight/MuEleSF/ele2017",fBasePath.Data());
+    
+    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_EGM2D_Tight_UL17.root" : "egammaEffiptxt_EGM2D_Medium_UL17.root";
+    string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2017.root",elePath_UL.c_str());
+
+    string eleTrigFile = Form("%s/sf_ele_2017_trig_v5.root",elePath_LRR.c_str()) ;
+      
+    eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile.c_str()), eleRECOFile, eleTrigFile);
+
+
 
   } else if (fYear==2018) {
 
-    muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",fBasePath.Data()),  
-		       "NUM_TightID_DEN_TrackerMuons_pt_abseta",
-		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root",fBasePath.Data()), 
-		       "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
-		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_BeforeMuonHLTUpdate.root",fBasePath.Data()), 
-		       "IsoMu24_PtEtaBins/abseta_pt_ratio");
+    // muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",fBasePath.Data()),  
+    // 		       "NUM_TightID_DEN_TrackerMuons_pt_abseta",
+    // 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root",fBasePath.Data()), 
+    // 		       "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+    // 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_BeforeMuonHLTUpdate.root",fBasePath.Data()), 
+    // 		       "IsoMu24_PtEtaBins/abseta_pt_ratio");
     
-    muSFb = new MuonSF(Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",fBasePath.Data()),  
-		       "NUM_TightID_DEN_TrackerMuons_pt_abseta",
-		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root",fBasePath.Data()), 
-		       "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
-		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root",fBasePath.Data()), 
-		       "IsoMu24_PtEtaBins/abseta_pt_ratio");
+    // muSFb = new MuonSF(Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",fBasePath.Data()),  
+    // 		       "NUM_TightID_DEN_TrackerMuons_pt_abseta",
+    // 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root",fBasePath.Data()), 
+    // 		       "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
+    // 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root",fBasePath.Data()), 
+    // 		       "IsoMu24_PtEtaBins/abseta_pt_ratio");
     
-    eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2018/2018_ElectronTight.root",fBasePath.Data()),
-			   Form("%s/weight/MuEleSF/ele2018/egammaEffi.txt_EGM2D_updatedAll.root",fBasePath.Data()),
-			   Form("%s/weight/MuEleSF/ele2018/sf_ele_2018_trig_v5.root",fBasePath.Data()));
+    // eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2018/2018_ElectronTight.root",fBasePath.Data()),
+    // 			   Form("%s/weight/MuEleSF/ele2018/egammaEffi.txt_EGM2D_updatedAll.root",fBasePath.Data()),
+    // 			   Form("%s/weight/MuEleSF/ele2018/sf_ele_2018_trig_v5.root",fBasePath.Data()));
+
+    string muPath = Form("%s/weightUL/MuEleSF/mu2018/2018_Z",fBasePath.Data());
+    string muTrigPath = Form("%s/weightUL/MuEleSF/mu2018/2018_trigger",fBasePath.Data());
+    // //MediumID
+    // string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumID_DEN_TrackerMuons_abseta_pt";
+    // string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumID_abseta_pt"; //check option of looseISO to use for DD QCD
+    // MediumPromptID
+    string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
+    string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
+      
+    string muTrighist = "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
+      
+    muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root",muPath.c_str()), muIDhist,
+		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_ISO.root",muPath.c_str()), muISOhist, 
+		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_SingleMuonTriggers.root",muTrigPath.c_str()), muTrighist); 
+      
+      
+    string elePath_UL = Form("%s/weightUL/MuEleSF/ele2018",fBasePath.Data());
+    string elePath_LRR = Form("%s/weight/MuEleSF/ele2018",fBasePath.Data());
+    
+    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_EGM2D.root" : "egammaEffiptxt_Ele_Medium_EGM2D.root";
+    string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2018.root",elePath_UL.c_str());
+
+    string eleTrigFile = Form("%s/sf_ele_2018_trig_v5.root",elePath_LRR.c_str()) ;
+      
+    eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile.c_str()), eleRECOFile, eleTrigFile);
   }
 
 }
@@ -2303,7 +2383,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  //return true;
+  return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -5193,7 +5273,7 @@ int main(int argc, char** argv)
   // index=$4
   // syst=$5
   
-  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod|trs=yes",argv[1],argv[2],argv[3],argv[4],argv[5]));
+  TString op(Form("sample=%s|year=%s|input=%s|index=%s|syst=%s|aod=nano|run=prod|trs=no",argv[1],argv[2],argv[3],argv[4],argv[5]));
 
   cout << "Input filename: " << argv[3] << endl;
   ifstream fin(argv[3]);

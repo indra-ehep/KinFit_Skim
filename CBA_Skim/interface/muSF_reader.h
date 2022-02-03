@@ -14,25 +14,25 @@ class MuonSF
 	   string trig_filename, string trig_histName){
 
 	TFile* idFile = TFile::Open(id_filename.c_str(),"READ");
-	idHist = (TH2D*) idFile->Get(id_histName.c_str());
+	idHist = (TH2F*) idFile->Get(id_histName.c_str());
 
 	TFile* isoFile = TFile::Open(iso_filename.c_str(),"READ");
-	isoHist = (TH2D*) isoFile->Get(iso_histName.c_str());
+	isoHist = (TH2F*) isoFile->Get(iso_histName.c_str());
 
 	TFile* trigFile = TFile::Open(trig_filename.c_str(),"READ");
-	trigHist = (TH2D*) trigFile->Get(trig_histName.c_str());
+	trigHist = (TH2F*) trigFile->Get(trig_histName.c_str());
 	
     }
     std::vector<double> getMuSF(double pt, double eta, int systLevel, int year, bool verbose=false);
-    double getMuSF(TH2D *h2, double pt, double eta, int systLevel);
+    double getMuSF(TH2F *h2, double pt, double eta, int systLevel);
     /* bool splitSystsId = false; */
     /* bool splitSystsIso = false; */
     /* bool splitSystsTrig = false; */
     
  private:
-    TH2D* idHist;
-    TH2D* isoHist;
-    TH2D* trigHist;
+    TH2F* idHist;
+    TH2F* isoHist;
+    TH2F* trigHist;
     
     /* string isoName; */
     /* string idName; */
@@ -40,7 +40,7 @@ class MuonSF
 };
 
 
-double MuonSF::getMuSF(TH2D *h2, double eta, double pt, int systLevel){
+double MuonSF::getMuSF(TH2F *h2, double eta, double pt, int systLevel){
 
   TAxis *axisX = h2->GetXaxis();
   TAxis *axisY = h2->GetYaxis();
@@ -332,7 +332,6 @@ std::vector<double> MuonSF::getMuSF(double pt, double eta, int systLevel, int ye
   if (year==2017 || year==2018){//axes are interchanged
     idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: 0, 2.4
     isoSF   = getMuSF(isoHist, pt, abs(eta), systLevel);
-    std::cout<<"Here I am "<<std::endl;
   }
   else{
     idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: -2.4, 2.4

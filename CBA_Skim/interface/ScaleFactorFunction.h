@@ -8,27 +8,27 @@ std::map<std::string, vector<double> > numberOfEvents;
 
 void initCrossSections(){
 
-  crossSections["HminusM080"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM090"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM100"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM110"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM120"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM130"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM140"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM150"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM155"] = {19.13, 0.0, 0.0};
-  crossSections["HminusM160"] = {19.13, 0.0, 0.0};
+  crossSections["HminusM080"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM090"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM100"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM110"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM120"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM130"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM140"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM150"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM155"] = {19.13, 19.13, 19.13};
+  crossSections["HminusM160"] = {19.13, 19.13, 19.13};
 
-  crossSections["HplusM080"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM090"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM100"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM110"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM120"] = {19.13, 0.0, 0.0}; //Try 56.15 to get the previous values
-  crossSections["HplusM130"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM140"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM150"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM155"] = {19.13, 0.0, 0.0};
-  crossSections["HplusM160"] = {19.13, 0.0, 0.0};
+  crossSections["HplusM080"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM090"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM100"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM110"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM120"] = {19.13, 19.13, 19.13}; //Try 56.15 to get the previous values
+  crossSections["HplusM130"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM140"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM150"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM155"] = {19.13, 19.13, 19.13};
+  crossSections["HplusM160"] = {19.13, 19.13, 19.13};
 
   /* crossSections["TTbarPowheg_Dilepton"] = {687.10, 0.0, 0.0}; */
   /* crossSections["TTbarPowheg_Hadronic"] = {687.10, 0.0, 0.0}; */
@@ -61,10 +61,10 @@ void initCrossSections(){
 
   /* crossSections["DYjetsM10to50"] = {15970.00, 0.0, 0.0}; */
   crossSections["DYjetsM10to50"]	=  {15810.0, 15810.0, 15810.0}; //16290.
-  crossSections["DY1jetsM10to50"] = {565.30, 0.0, 0.0};
-  crossSections["DY2jetsM10to50"] = {314.80, 0.0, 0.0};
-  crossSections["DY3jetsM10to50"] = {76.94, 0.0, 0.0};
-  crossSections["DY4jetsM10to50"] = {28.61, 0.0, 0.0};
+  crossSections["DY1jetsM10to50"] = {565.30, 565.30, 565.30};
+  crossSections["DY2jetsM10to50"] = {314.80, 314.80, 314.80};
+  crossSections["DY3jetsM10to50"] = {76.94, 76.94, 76.94};
+  crossSections["DY4jetsM10to50"] = {28.61, 28.61, 28.61};
 
   /* crossSections["DYjetsM50"] = {5361.00, 0.0, 0.0}; */
   /* crossSections["DY1jetsM50"] = {927.80, 0.0, 0.0}; */
@@ -85,26 +85,26 @@ void initCrossSections(){
   crossSections["WZ"]				= {46.74, 46.74, 46.74};
   crossSections["ZZ"]				= {17.72, 17.72, 17.72};
 
-  crossSections["QCD_Pt15to20_Mu"] = {2799000.00, 0.0, 0.0};
-  crossSections["QCD_Pt20to30_Mu"] = {2538000.00, 0.0, 0.0};
-  crossSections["QCD_Pt30to50_Mu"] = {1359000.00, 0.0, 0.0};
-  crossSections["QCD_Pt50to80_Mu"] = {377000.00, 0.0, 0.0};
-  crossSections["QCD_Pt80to120_Mu"] = {87470.00, 0.0, 0.0};
-  crossSections["QCD_Pt120to170_Mu"] = {21280.00, 0.0, 0.0};
-  crossSections["QCD_Pt170to300_Mu"] = {7012.00, 0.0, 0.0};
-  crossSections["QCD_Pt300to470_Mu"] = {617.20, 0.0, 0.0};
-  crossSections["QCD_Pt470to600_Mu"] = {59.20, 0.0, 0.0};
-  crossSections["QCD_Pt600to800_Mu"] = {18.20, 0.0, 0.0};
-  crossSections["QCD_Pt800to1000_Mu"] = {3.21, 0.0, 0.0};
-  crossSections["QCD_Pt1000toInf_Mu"] = {1.09, 0.0, 0.0};
+  crossSections["QCD_Pt15to20_Mu"] = {2799000.00, 2799000.00, 2799000.00};
+  crossSections["QCD_Pt20to30_Mu"] = {2538000.00, 2538000.00, 2538000.00};
+  crossSections["QCD_Pt30to50_Mu"] = {1359000.00, 1359000.00, 1359000.00};
+  crossSections["QCD_Pt50to80_Mu"] = {377000.00, 377000.00, 377000.00};
+  crossSections["QCD_Pt80to120_Mu"] = {87470.00, 87470.00, 87470.00};
+  crossSections["QCD_Pt120to170_Mu"] = {21280.00, 21280.00, 21280.00};
+  crossSections["QCD_Pt170to300_Mu"] = {7012.00, 7012.00, 7012.00};
+  crossSections["QCD_Pt300to470_Mu"] = {617.20, 617.20, 617.20};
+  crossSections["QCD_Pt470to600_Mu"] = {59.20, 59.20, 59.20};
+  crossSections["QCD_Pt600to800_Mu"] = {18.20, 18.20, 18.20};
+  crossSections["QCD_Pt800to1000_Mu"] = {3.21, 3.21, 3.21};
+  crossSections["QCD_Pt1000toInf_Mu"] = {1.09, 1.09, 1.09};
 
-  crossSections["QCD_Pt20to30_Ele"] = {4865000.00, 0.0, 0.0};
-  crossSections["QCD_Pt30to50_Ele"] = {6287000.00, 0.0, 0.0};
-  crossSections["QCD_Pt50to80_Ele"] = {1990000.00, 0.0, 0.0};
-  crossSections["QCD_Pt80to120_Ele"] = {358600.00, 0.0, 0.0};
-  crossSections["QCD_Pt120to170_Ele"] = {66860.00, 0.0, 0.0};
-  crossSections["QCD_Pt170to300_Ele"] = {16320.00, 0.0, 0.0};
-  crossSections["QCD_Pt300toInf_Ele"] = {1088.00, 0.0, 0.0};
+  crossSections["QCD_Pt20to30_Ele"] = {4865000.00, 4865000.00, 4865000.00};
+  crossSections["QCD_Pt30to50_Ele"] = {6287000.00, 6287000.00, 6287000.00};
+  crossSections["QCD_Pt50to80_Ele"] = {1990000.00, 1990000.00, 1990000.00};
+  crossSections["QCD_Pt80to120_Ele"] = {358600.00, 358600.00, 358600.00};
+  crossSections["QCD_Pt120to170_Ele"] = {66860.00, 66860.00, 66860.00};
+  crossSections["QCD_Pt170to300_Ele"] = {16320.00, 16320.00, 16320.00};
+  crossSections["QCD_Pt300toInf_Ele"] = {1088.00, 1088.00, 1088.00};
 
   /* crossSections["QCD_Pt15to20_Mu"]		= {3819570.0, 3819570.0, 3819570.0}; */
   /* crossSections["QCD_Pt20to30_Mu"]		= {2960198.4   , 2960198.4   , 2960198.4   }; */

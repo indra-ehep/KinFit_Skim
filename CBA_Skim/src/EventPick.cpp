@@ -174,7 +174,7 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 		    tree->Flag_EcalDeadCellTriggerPrimitiveFilter_ &&
 		    tree->Flag_BadPFMuonFilter_ );
 
-    if (year=="2017" || year=="2018"){ filters = filters && tree->Flag_ecalBadCalibFilterV2_ ;}
+    if (year=="2017" || year=="2018"){ filters = filters && tree->Flag_ecalBadCalibFilter_ ;}
     
     passFilter = filters;
     

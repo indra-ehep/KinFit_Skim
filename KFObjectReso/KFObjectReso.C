@@ -452,7 +452,7 @@ bool KFObjectReso::CheckTrigFilterVertex()
     Pass_trigger_mu = ( HLT_IsoMu24_ || HLT_IsoTkMu24_ ) ;
     Pass_trigger_ele = HLT_Ele27_WPTight_Gsf_ ;
   }
-  if (fYear==2016){
+  if (fYear==2017){
     Pass_trigger_mu = HLT_IsoMu27_ ;
 	
     bool allSingleEGL1or = ( L1_SingleEG24_ ||
@@ -501,7 +501,7 @@ bool KFObjectReso::CheckTrigFilterVertex()
 		   Flag_BadPFMuonFilter_ );
   
   if (fYear==2017 || fYear==2018)
-    filters = filters && Flag_ecalBadCalibFilterV2_ ;
+    filters = filters && Flag_ecalBadCalibFilter_ ;
     
   Pass_trigger_mu = Pass_trigger_mu && filters ;
   Pass_trigger_ele = Pass_trigger_ele && filters ;
