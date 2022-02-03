@@ -1213,7 +1213,7 @@ void SkimAna::LoadLeptonSF(){
       string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
       string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
       
-      string muTrighist = "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
+      string muTrighist = "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_eta_pt"; //check option of looseISO to use for DD QCD
       
       muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID.root",muPath_preVFP.c_str()), muIDhist,
 			 Form("%s/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ISO.root",muPath_preVFP.c_str()), muISOhist, 
@@ -1288,7 +1288,7 @@ void SkimAna::LoadLeptonSF(){
     string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
     string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
       
-    string muTrighist = "NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
+    string muTrighist = "NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight_eta_pt"; //check option of looseISO to use for DD QCD
     
     muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2017_UL_ID.root",muPath.c_str()), muIDhist,
 		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2017_UL_ISO.root",muPath.c_str()), muISOhist, 
@@ -1335,8 +1335,8 @@ void SkimAna::LoadLeptonSF(){
     // MediumPromptID
     string muIDhist = (isMuTightID) ? "NUM_TightID_DEN_TrackerMuons_abseta_pt" : "NUM_MediumPromptID_DEN_TrackerMuons_abseta_pt";
     string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
-      
-    string muTrighist = "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt"; //check option of looseISO to use for DD QCD
+    
+    string muTrighist = "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight_eta_pt"; //check option of looseISO to use for DD QCD
       
     muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root",muPath.c_str()), muIDhist,
 		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_ISO.root",muPath.c_str()), muISOhist, 
@@ -2383,7 +2383,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  return true;
+  //return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below

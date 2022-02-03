@@ -1960,9 +1960,9 @@ Bool_t SkimAna::Notify()
       kinFit.SetBtagThresh(selector->btag_cut);
   }
   kinFit.SetResoInputPath(inputKFResoPath);
-  /* kinFit.UnloadObjReso(); */
-  /* kinFit.LoadObjReso(); */
-  //kinFit.UseExtReso();
+  kinFit.UnloadObjReso();
+  kinFit.LoadObjReso();
+  kinFit.UseExtReso();
   
   fSampleType = fname;
   

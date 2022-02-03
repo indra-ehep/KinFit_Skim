@@ -328,16 +328,11 @@ std::vector<double> MuonSF::getMuSF(double pt, double eta, int systLevel, int ye
   double idSF    = 1.0;
   double isoSF   = 1.0;
   double trigSF  = 1.0;
-
-  if (year==2017 || year==2018){//axes are interchanged
-    idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: 0, 2.4
-    isoSF   = getMuSF(isoHist, pt, abs(eta), systLevel);
-  }
-  else{
-    idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: -2.4, 2.4
-    isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);
-  }
-  trigSF  = getMuSF(trigHist, abs(eta), pt, systLevel);//eta: 0, 2.4
+  
+  idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: 0, 2.4
+  isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);//eta: 0, 2.4
+  trigSF  = getMuSF(trigHist, eta, pt, systLevel);//eta: -2.4, 2.4
+  
   vector<double> muSF {idSF*isoSF*trigSF, idSF, isoSF, trigSF};
   if (verbose){
     cout<<"----------------------------"<<endl;
