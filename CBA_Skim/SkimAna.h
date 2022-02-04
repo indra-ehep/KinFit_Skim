@@ -1044,8 +1044,7 @@ void SkimAna::Init(TTree *tree)
     tree->SetBranchStatus("Pileup_nTrueInt",1);
     tree->SetBranchAddress("Pileup_nTrueInt", &(event->nPUTrue_));
   }
-
-	
+  
   // event
 	
   tree->SetBranchStatus("run",1);
@@ -1120,7 +1119,6 @@ void SkimAna::Init(TTree *tree)
     }
 
   }
-
   // MET
   tree->SetBranchStatus("MET_pt",1);
   tree->SetBranchAddress("MET_pt", &(event->MET_pt_));
@@ -1136,7 +1134,6 @@ void SkimAna::Init(TTree *tree)
     tree->SetBranchAddress("GenMET_phi", &(event->GenMET_phi_));
   }
 
-	
   // electrons	
 	
   tree->SetBranchStatus("nElectron",1);
@@ -1652,7 +1649,6 @@ void SkimAna::Init(TTree *tree)
   fChain    = tree;
   tree->GetEntry(0);  //Important to set the events weights via Notify and ScaleLumi metho
   
-  
 }
 //_____________________________________________________________________
 
@@ -1966,7 +1962,7 @@ Bool_t SkimAna::Notify()
   
   fSampleType = fname;
   
-  Info("Notify","processing sample %s and file: %s",fSampleType.Data(), fChain->GetCurrentFile()->GetName());  
+  Info("Notify","processing fSampleType %s and file: %s",fSampleType.Data(), fChain->GetCurrentFile()->GetName());  
   
   /* if(!isData) */
   /*   _local_evtWeight = getEvtWeight(fname, fYear, luminosity); */
@@ -1983,14 +1979,14 @@ Bool_t SkimAna::Notify()
       _local_evtWeight = scalelumi * luminosity/1000.;
       Info("Notify", "Wjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
     }
-  
+    
     if(fSampleType.Contains("DYjetsM50") || fSampleType.Contains("DY1jetsM50") || fSampleType.Contains("DY2jetsM50") || fSampleType.Contains("DY3jetsM50") || fSampleType.Contains("DY4jetsM50")){
       scalelumi = ScaleLumiZ(event->nLHEPart_) ;
       _local_evtWeight = scalelumi * luminosity/1000.;
       Info("Notify", "DYjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
     }
     //}//if MiniAOD
-
+    
     if(PUweighter)
       delete PUweighter;
     if(PUweighterUp)

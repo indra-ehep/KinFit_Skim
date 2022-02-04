@@ -198,7 +198,8 @@ void Selector::clear_vectors(){
     JetsNoCorr.clear();
 }
 
-void Selector::filter_electrons(){
+void Selector::filter_electrons(EventTree *event){
+  tree = event;
   if (int(tree->event_) == printEvent){
 	cout << "Found Event, Starting Electrons" << endl;
 	cout << " nEle=" << tree->nEle_ << endl;
@@ -475,16 +476,19 @@ void Selector::filter_electrons(){
     
 }
 
-void Selector::filter_muons(){
-
+void Selector::filter_muons(EventTree *event){
+  
+  tree = event;
+  
   if (int(tree->event_)==printEvent){
     cout << "Found Event, Starting Muons" << endl;
     cout << " nMu=" << tree->nMuon_ << endl;
   }
   
   //bool passAllMu = true;
-  
-  for(int muInd = 0; muInd < int(tree->nMuon_); ++muInd){
+  //if(!isnormal(float(tree->nMuon_))) return;
+
+  for(int muInd = 0; muInd < int(tree->nMuon_) and int(tree->nMuon_) < 100; ++muInd){
     
     float eta = tree->muEta_[muInd];
     float pt = tree->muPt_[muInd];

@@ -2141,17 +2141,16 @@ Bool_t SkimAna::Process(Long64_t entry)
       jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
   }
   if(IsDebug) Info("Process","Completed JEC correction");
-
+  
   // //Clear selector vectors
   selector->clear_vectors();
   if(IsDebug) Info("Process","Completed cleaning vectors");
-
+  
   // This is main method to process the objects read from tree
   evtPick->process_event(fBasePath.Data(), event, selector, 1.0); // here last argument 1.0 is weight applied to cutflow
   if(IsDebug) Info("Process","Completed selector process");
-
+  
   //Special case of Wjets and DY
-  //if(!isNanoAOD and !isData and fSampleType.Contains("Wjets")){
   if(!isData and fSampleType.Contains("Wjets")){
     _local_evtWeight = ScaleLumiW(event->nLHEPart_) * luminosity/1000.;
     if(fProcessed%100000==0)
@@ -2164,9 +2163,9 @@ Bool_t SkimAna::Process(Long64_t entry)
       Info("Process", "DYjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
   }
   
-  if(!isData and (fSampleType.Contains("TTbar") or fSampleType.Contains("Hplus"))){
-    SelectTTbarChannel();
-  }
+  // if(!isData and (fSampleType.Contains("TTbar") or fSampleType.Contains("Hplus"))){
+  //   SelectTTbarChannel();
+  // }
 
   // Sample weight 
   if(!isData){
@@ -2193,17 +2192,20 @@ Bool_t SkimAna::Process(Long64_t entry)
   //Event level or trigger level conditions will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
+  //if(!(evtPick->passFilter) or !(selector->isPVGood) or !(evtPick->passTrigger_mu) or !(evtPick->passTrigger_ele)) return true;
+
   FillEventCutFlow();
   FillEventWt();
   if(systType == kBase) FillTriggerControlHists();
   if(IsDebug) Info("Process","Completed Event filling");
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  //######################################################
+  selector->filter_muons(event);
+  selector->filter_electrons(event);
+  //######################################################
 
-  //######################################################
-  selector->filter_muons();
-  selector->filter_electrons();
-  //######################################################
   //The following setup is able to produce results presented in August-02 PAG
   singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
   singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);

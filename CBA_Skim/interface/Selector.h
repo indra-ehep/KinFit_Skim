@@ -184,8 +184,8 @@ public:
 	void init_JER(std::string inputPrefix);
 	void init_RoccoR(std::string inputPath);
 
-	void filter_electrons();
-	void filter_muons();
+	void filter_electrons(EventTree* tr);
+	void filter_muons(EventTree* tr);
 	void filter_jets();
 	void filter_jetsNoCorr();
 	void filter_mets();
