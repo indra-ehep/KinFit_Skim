@@ -2192,8 +2192,12 @@ Bool_t SkimAna::Process(Long64_t entry)
   //Event level or trigger level conditions will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  //if(!(evtPick->passFilter) or !(selector->isPVGood) or !(evtPick->passTrigger_mu) or !(evtPick->passTrigger_ele)) return true;
-
+  if(
+     (!(evtPick->passFilter) or !(selector->isPVGood) or !(evtPick->passTrigger_mu)) 
+     and 
+     (!(evtPick->passFilter) or !(selector->isPVGood) or !(evtPick->passTrigger_ele))
+     ) return true;
+  
   FillEventCutFlow();
   FillEventWt();
   if(systType == kBase) FillTriggerControlHists();
@@ -2964,11 +2968,13 @@ bool SkimAna::FillCTagObs(){
 	  ////////////////// base ////////////////////////////
 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lIso, "", true, 7.0, _cTagLWeight*combined_muwt, _cTagLWeight*combined_muwt1);
+	  if(count_cJetsIncM > 0) FillCFHists(lIso, "", true, 8.0, _cTagMWeight*combined_muwt, _cTagMWeight*combined_muwt1);
 	  FillCTHists(lIso,"", true, combined_muwt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	  /////////////////////////////////////////////////////
 	}else{
 	  TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lLowMET,"_lmet", true, 7.0, _cTagLWeight*combined_muwt, _cTagLWeight*combined_muwt1);
+	  if(count_cJetsIncM > 0) FillCFHists(lLowMET,"_lmet", true, 8.0, _cTagMWeight*combined_muwt, _cTagMWeight*combined_muwt1);
 	  FillCTHists(lLowMET,"_lmet", true, combined_muwt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	}//lowmet
       }//syst loop
@@ -2980,11 +2986,13 @@ bool SkimAna::FillCTagObs(){
 	if(!isLowMET){
 	  TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lNonIso,"_noniso", true, 7.0, _cTagLWeight*combined_muwt, _cTagLWeight*combined_muwt1);
+	  if(count_cJetsIncM > 0) FillCFHists(lNonIso,"_noniso", true, 8.0, _cTagMWeight*combined_muwt, _cTagMWeight*combined_muwt1);
 	  FillCTHists(lNonIso,"_noniso", true, combined_muwt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	  /////////////////////////////////////////////////////
 	}else{
 	  TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lNonIsoLowMET,"_noniso_lmet", true, 7.0, _cTagLWeight*combined_muwt, _cTagLWeight*combined_muwt1);
+	  if(count_cJetsIncM > 0) FillCFHists(lNonIsoLowMET,"_noniso_lmet", true, 8.0, _cTagMWeight*combined_muwt, _cTagMWeight*combined_muwt1);
 	  FillCTHists(lNonIsoLowMET,"_noniso_lmet", true, combined_muwt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	}//lowmet
       }//syst loop
@@ -2998,11 +3006,13 @@ bool SkimAna::FillCTagObs(){
 	  ////////////////// base ////////////////////////////
 	  TList *lIso = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lIso, "", false, 7.0, _cTagLWeight*combined_elewt, 1.0);
+	  if(count_cJetsIncM > 0) FillCFHists(lIso, "", false, 8.0, _cTagMWeight*combined_elewt, 1.0);
 	  FillCTHists(lIso,"", false, combined_elewt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	  /////////////////////////////////////////////////////
 	}else{
 	  TList *lLowMET = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lLowMET,"_lmet", false, 7.0, _cTagLWeight*combined_elewt, 1.0);
+	  if(count_cJetsIncM > 0) FillCFHists(lLowMET,"_lmet", false, 8.0, _cTagMWeight*combined_elewt, 1.0);
 	  FillCTHists(lLowMET,"_lmet", false, combined_elewt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	  //FillKFHists(lLowMET,"_lmet",true,combined_muwt);
 	}//lowmet
@@ -3015,11 +3025,13 @@ bool SkimAna::FillCTagObs(){
 	if(!isLowMET){
 	  TList *lNonIso = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lNonIso,"_noniso", false, 7.0, _cTagLWeight*combined_elewt, 1.0);
+	  if(count_cJetsIncM > 0) FillCFHists(lNonIso,"_noniso", false, 8.0, _cTagMWeight*combined_elewt, 1.0);
 	  FillCTHists(lNonIso,"_noniso", false, combined_elewt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	  /////////////////////////////////////////////////////
 	}else{
 	  TList *lNonIsoLowMET = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
 	  if(count_cJetsIncL > 0) FillCFHists(lNonIsoLowMET,"_noniso_lmet", false, 7.0, _cTagLWeight*combined_elewt, 1.0);
+	  if(count_cJetsIncM > 0) FillCFHists(lNonIsoLowMET,"_noniso_lmet", false, 8.0, _cTagMWeight*combined_elewt, 1.0);
 	  FillCTHists(lNonIsoLowMET,"_noniso_lmet", false, combined_elewt, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT, isIncL, isIncM, isIncT);
 	}//lowmet
       }//syst loop

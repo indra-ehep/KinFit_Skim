@@ -28,9 +28,10 @@ samples_2018 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "
 # samples_2017 = ["DataEle", "DataMu"]
 # samples_2018 = ["DataMu", "DataEle"]
 
-syst_2016 = ["base"]
+#syst_2016 = ["base"]
 #syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 #syst_2016 = ["jecup", "jecdown", "jerup", "jerdown", "base", "iso20", "metup", "metdown"]#, "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 
@@ -43,14 +44,14 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-if not os.path.exists("tmplog_2017_18_kfnewreso_it2/log"):
-    os.makedirs("tmplog_2017_18_kfnewreso_it2/log")
+if not os.path.exists("tmplog_ctagm_it1/log"):
+    os.makedirs("tmplog_ctagm_it1/log")
 condorLogDir = "log"
-tarFile = "tmplog_2017_18_kfnewreso_it2/CBA_Skim.tar.gz"
+tarFile = "tmplog_ctagm_it1/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmplog_2017_18_kfnewreso_it2/")
+os.system("cp runCBASkim.sh tmplog_ctagm_it1/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -60,8 +61,8 @@ x509userproxy = $ENV(X509_USER_PROXY)\n\
 use_x509userproxy = true\n\
 +BenchmarkJob = True\n\
 #+JobFlavour = "testmatch"\n\
-+MaxRuntime = 41220\n\
-#+MaxRuntime = 10800\n\
+#+MaxRuntime = 41220\n\
++MaxRuntime = 7200\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
@@ -69,16 +70,16 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmplog_2017_18_kfnewreso_it2/condorSubmit.sh','w')
+subFile = open('tmplog_ctagm_it1/condorSubmit.sh','w')
 for year in [2017,2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmplog_2017_18_kfnewreso_it2/%s'%jdlName,'w')
+    jdlFile = open('tmplog_ctagm_it1/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    # condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFNewReso/pre"
+    # condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagM/pre"
     # os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFNewReso"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagM"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     #os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))

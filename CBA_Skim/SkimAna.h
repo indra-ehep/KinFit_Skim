@@ -1972,7 +1972,6 @@ Bool_t SkimAna::Notify()
     
     _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
     
-    //if(!isNanoAOD){
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){
       scalelumi = ScaleLumiW(event->nLHEPart_);
@@ -1985,7 +1984,6 @@ Bool_t SkimAna::Notify()
       _local_evtWeight = scalelumi * luminosity/1000.;
       Info("Notify", "DYjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
     }
-    //}//if MiniAOD
     
     if(PUweighter)
       delete PUweighter;
