@@ -700,7 +700,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
       double etResoPercent = 100.*(mujetR.Et() - mujetG.Et())/mujetG.Et();
       double etReso = (mujetR.Et() - mujetG.Et());
       double etaReso = mujetR.Eta() - mujetG.Eta();
-      double phiReso = mujetR.Phi() - mujetG.Phi();
+      double phiReso = mujetR.DeltaPhi(mujetG) ; //mujetR.Phi() - mujetG.Phi();
 
       hMuETReso[binEta-1][binET-1]->Fill(etReso);
       hMuEtaReso[binEta-1][binET-1]->Fill(etaReso);
@@ -724,7 +724,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
       double etResoPercent = 100.*(elejetR.Et() - elejetG.Et())/elejetG.Et();
       double etReso = (elejetR.Et() - elejetG.Et());
       double etaReso = elejetR.Eta() - elejetG.Eta();
-      double phiReso = elejetR.Phi() - elejetG.Phi();
+      double phiReso = elejetR.DeltaPhi(elejetG) ; //elejetR.Phi() - elejetG.Phi();
     
       hEleETReso[binEta-1][binET-1]->Fill(etReso);
       hEleEtaReso[binEta-1][binET-1]->Fill(etaReso);
@@ -779,10 +779,10 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     }//jet loop
   
     if(nljet < 2 or nbjet < 2) return true;
-
+    
     hNofBJets->Fill(nbjet);
     hNofLJets->Fill(nljet);
-
+    
     // //for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
     // for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
     //   TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
@@ -798,24 +798,22 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     // 	       );
     //   }
     // }// mc particle loop
-
-  
-  
+    
     // printf("MET Rec:(%5.2f, %5.2f) Gen:(%5.2f, %5.2f), Reso : (%5.2f,%5.2f)\n",MET_pt_,MET_phi_,GenMET_pt_,GenMET_phi_, 
     // 	   100.*abs(MET_pt_-GenMET_pt_)/MET_pt_, 100.*abs(MET_phi_-GenMET_phi_)/MET_phi_);
-  
+    
     metR.SetPtEtaPhiM(MET_pt_, 0.0, MET_phi_, 0.0);
     metG.SetPtEtaPhiM(GenMET_pt_, 0.0, GenMET_phi_, 0.0);
-  
+    
     binET = GetHistoBin(hMETETBin, metR.Et());
     double etResoPercent = 100.*(metR.Et() - metG.Et())/metG.Et();
     double etReso = (metR.Et() - metG.Et());
-    double phiReso = metR.Phi() - metG.Phi();
+    double phiReso = metR.DeltaPhi(metG) ; //metR.Phi() - metG.Phi();
     hMETETReso[binET-1]->Fill(etReso);
     hMETPhiReso[binET-1]->Fill(phiReso);
     hMETETRRel[binET-1]->Fill(etResoPercent);
     hMETPhiRRel[binET-1]->Fill(100.*phiReso/metG.Phi());
-  
+    
     for(int jetInd = 0; jetInd < int(nJet_) and int(nJet_) < 10000000; ++jetInd){
       int genIdx = int(jetGenJetIdx_[jetInd]);
       double pt = jetPt_[jetInd];
@@ -828,7 +826,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
       if(nofEle==1)
 	if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
-    
+      
       bool jetPresel = (pt >= jet_Pt_cut &&
 			TMath::Abs(eta) <= 2.4 &&
 			jetID_pass &&
@@ -850,7 +848,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  double etResoPercent = 100.*(bjetR.Et() - bjetG.Et())/bjetG.Et();
 	  double etReso = (bjetR.Et() - bjetG.Et());
 	  double etaReso = bjetR.Eta() - bjetG.Eta();
-	  double phiReso = bjetR.Phi() - bjetG.Phi();
+	  double phiReso = bjetR.DeltaPhi(bjetG) ; //bjetR.Phi() - bjetG.Phi();
 	  if(bjetR.DeltaR(bjetG)<0.2){
 	    hBJetETReso[binEta-1][binET-1]->Fill(etReso);
 	    hBJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
@@ -872,7 +870,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  double etResoPercent = 100.*(ljetR.Et() - ljetG.Et())/ljetG.Et();
 	  double etReso = (ljetR.Et() - ljetG.Et());
 	  double etaReso = ljetR.Eta() - ljetG.Eta();
-	  double phiReso = ljetR.Phi() - ljetG.Phi();
+	  double phiReso = ljetR.DeltaPhi(ljetG) ; //ljetR.Phi() - ljetG.Phi();
 	  if(ljetR.DeltaR(ljetG)<0.2){
 	    hLJetETReso[binEta-1][binET-1]->Fill(etReso);
 	    hLJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
