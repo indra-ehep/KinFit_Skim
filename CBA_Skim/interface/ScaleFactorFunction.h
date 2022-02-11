@@ -8,27 +8,49 @@ std::map<std::string, vector<double> > numberOfEvents;
 
 void initCrossSections(){
 
-  crossSections["HminusM080"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM090"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM100"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM110"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM120"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM130"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM140"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM150"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM155"] = {19.13, 19.13, 19.13};
-  crossSections["HminusM160"] = {19.13, 19.13, 19.13};
+  /* crossSections["HminusM080"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM090"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM100"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM110"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM120"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM130"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM140"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM150"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM155"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HminusM160"] = {19.13, 19.13, 19.13}; */
 
-  crossSections["HplusM080"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM090"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM100"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM110"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM120"] = {19.13, 19.13, 19.13}; //Try 56.15 to get the previous values
-  crossSections["HplusM130"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM140"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM150"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM155"] = {19.13, 19.13, 19.13};
-  crossSections["HplusM160"] = {19.13, 19.13, 19.13};
+  /* crossSections["HplusM080"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM090"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM100"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM110"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM120"] = {19.13, 19.13, 19.13}; //Try 56.15 to get the previous values */
+  /* crossSections["HplusM130"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM140"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM150"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM155"] = {19.13, 19.13, 19.13}; */
+  /* crossSections["HplusM160"] = {19.13, 19.13, 19.13}; */
+
+  crossSections["HminusM080"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM090"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM100"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM110"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM120"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM130"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM140"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM150"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM155"] = {266.16, 266.16, 266.16};
+  crossSections["HminusM160"] = {266.16, 266.16, 266.16};
+
+  crossSections["HplusM080"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM090"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM100"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM110"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM120"] = {266.16, 266.16, 266.16}; //Try 56.15 to get the previous values
+  crossSections["HplusM130"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM140"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM150"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM155"] = {266.16, 266.16, 266.16};
+  crossSections["HplusM160"] = {266.16, 266.16, 266.16};
 
   /* crossSections["TTbarPowheg_Dilepton"] = {687.10, 0.0, 0.0}; */
   /* crossSections["TTbarPowheg_Hadronic"] = {687.10, 0.0, 0.0}; */
