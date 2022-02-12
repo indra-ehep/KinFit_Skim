@@ -325,6 +325,13 @@ class KinFit{
     TH2F *hMuETRes, *hMuEtaRes, *hMuPhiRes;
     TH2F *hEleETRes, *hEleEtaRes, *hElePhiRes;
     TH1F *hMETETRes, *hMETPhiRes;
+
+    TH2F *hBJetPtDiff, *hBJetEtaDiff, *hBJetPhiDiff, *hBJetEnDiff;
+    TH2F *hLJetPtDiff, *hLJetEtaDiff, *hLJetPhiDiff, *hLJetEnDiff;
+    TH2F *hMuPtDiff, *hMuEtaDiff, *hMuPhiDiff, *hMuEnDiff;
+    TH2F *hElePtDiff, *hEleEtaDiff, *hElePhiDiff, *hEleEnDiff;
+    TH1F *hMETPtDiff, *hMETPhiDiff;
+
     bool useExtReso ; 
     double GetReso2D(TH2F *h2, double eta, double et);
     double GetReso1D(TH1F *h1, double et);
@@ -2896,18 +2903,44 @@ void KinFit::LoadObjReso()
   hBJetETRes = (TH2F *)fResoIn->Get("hBJetETRes");
   hBJetEtaRes = (TH2F *)fResoIn->Get("hBJetEtaRes");
   hBJetPhiRes = (TH2F *)fResoIn->Get("hBJetPhiRes");
+
   hLJetETRes = (TH2F *)fResoIn->Get("hLJetETRes");
   hLJetEtaRes = (TH2F *)fResoIn->Get("hLJetEtaRes");
   hLJetPhiRes = (TH2F *)fResoIn->Get("hLJetPhiRes");
+
   hMuETRes = (TH2F *)fResoIn->Get("hMuETRes");
   hMuEtaRes = (TH2F *)fResoIn->Get("hMuEtaRes");
   hMuPhiRes = (TH2F *)fResoIn->Get("hMuPhiRes");
+
   hEleETRes = (TH2F *)fResoIn->Get("hEleETRes");
   hEleEtaRes = (TH2F *)fResoIn->Get("hEleEtaRes");
   hElePhiRes = (TH2F *)fResoIn->Get("hElePhiRes");
+
   hMETETRes = (TH1F *)fResoIn->Get("hMETETRes");
   hMETPhiRes = (TH1F *)fResoIn->Get("hMETPhiRes");
-    
+
+  hBJetPtDiff = (TH2F *)fResoIn->Get("hBJetPtDiff");
+  hBJetEtaDiff = (TH2F *)fResoIn->Get("hBJetEtaDiff");
+  hBJetPhiDiff = (TH2F *)fResoIn->Get("hBJetPhiDiff");
+  hBJetEnDiff = (TH2F *)fResoIn->Get("hBJetEnDiff");
+
+  hLJetPtDiff = (TH2F *)fResoIn->Get("hLJetPtDiff");
+  hLJetEtaDiff = (TH2F *)fResoIn->Get("hLJetEtaDiff");
+  hLJetPhiDiff = (TH2F *)fResoIn->Get("hLJetPhiDiff");
+  hLJetEnDiff = (TH2F *)fResoIn->Get("hLJetEnDiff");
+
+  hMuPtDiff = (TH2F *)fResoIn->Get("hMuPtDiff");
+  hMuEtaDiff = (TH2F *)fResoIn->Get("hMuEtaDiff");
+  hMuPhiDiff = (TH2F *)fResoIn->Get("hMuPhiDiff");
+  hMuEnDiff = (TH2F *)fResoIn->Get("hMuEnDiff");
+
+  hElePtDiff = (TH2F *)fResoIn->Get("hElePtDiff");
+  hEleEtaDiff = (TH2F *)fResoIn->Get("hEleEtaDiff");
+  hElePhiDiff = (TH2F *)fResoIn->Get("hElePhiDiff");
+  hEleEnDiff = (TH2F *)fResoIn->Get("hEleEnDiff");
+  
+  hMETPtDiff = (TH1F *)fResoIn->Get("hMETPtDiff");
+  hMETPhiDiff = (TH1F *)fResoIn->Get("hMETPhiDiff");
 }
 
 void KinFit::UnloadObjReso(){
@@ -3042,6 +3075,7 @@ bool KinFit::Fit(){
   TLorentzVector		METVector;
   double			reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
   unsigned int			max_nu	  = 2;
+  double ptOffSet, etaOffSet, phiOffSet, enOffSet;
 
   /* metZ.SetLepton(lepton); */
   
@@ -3192,17 +3226,29 @@ bool KinFit::Fit(){
 	    
   	    if(leptonType == kMuon){
 	      
-	      if(useExtReso)
+	      if(useExtReso){
 		muonExtResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
-	      else
+
+		ptOffSet = GetReso2D(hMuPtDiff, lepton.Eta(), lepton.Et());
+		etaOffSet = GetReso2D(hMuEtaDiff, lepton.Eta(), lepton.Et());
+		phiOffSet = GetReso2D(hMuPhiDiff, lepton.Eta(), lepton.Et());
+		enOffSet = GetReso2D(hMuEnDiff, lepton.Eta(), lepton.Et());
+		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
+	      }else
 		muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
-	      
+
 	    }
   	    if(leptonType == kElectron){
-
-	      if(useExtReso)
+	      
+	      if(useExtReso){
 		elecExtResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
-	      else
+		
+		ptOffSet = GetReso2D(hElePtDiff, lepton.Eta(), lepton.Et());
+		etaOffSet = GetReso2D(hEleEtaDiff, lepton.Eta(), lepton.Et());
+		phiOffSet = GetReso2D(hElePhiDiff, lepton.Eta(), lepton.Et());
+		enOffSet = GetReso2D(hEleEnDiff, lepton.Eta(), lepton.Et());
+		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
+	      }else
 		elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 	      
 	    }	    
@@ -3213,10 +3259,15 @@ bool KinFit::Fit(){
   	    reslepEta	= resEta ;
   	    reslepPhi	= resPhi ;
 	    
-	    if(useExtReso)
+	    if(useExtReso){
 	      metExtResolution(neutrino.Et(), resEt, resEta, resPhi);
-	    else
+	      
+	      ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et()); 
+	      phiOffSet = GetReso1D(hMETPhiDiff, neutrino.Et()); 
+	      neutrino.SetPtEtaPhiM(neutrino.Pt()-ptOffSet, 0.0, neutrino.Phi()-phiOffSet, 0.0);
+	    }else
 	      metResolution(neutrino.Et(), resEt, resEta, resPhi);
+
 
   	    //resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
   	    resEta	= 9999.; // This is from miniAOD
@@ -3240,12 +3291,19 @@ bool KinFit::Fit(){
   	    resneuEta	= resEta ;
   	    resneuPhi	= resPhi ;
 	    
-	    if(useExtReso)
+	    if(useExtReso){
 	      bjetExtResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
-	    else
+	      
+	      ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
+	      etaOffSet = GetReso2D(hBJetEtaDiff, bjlep.Eta(), bjlep.Et());
+	      phiOffSet = GetReso2D(hBJetPhiDiff, bjlep.Eta(), bjlep.Et());
+	      enOffSet = GetReso2D(hBJetEnDiff, bjlep.Eta(), bjlep.Et());
+	      bjlep.SetPtEtaPhiE(bjlep.Pt()-ptOffSet, bjlep.Eta()-etaOffSet, bjlep.Phi()-phiOffSet, bjlep.E()-enOffSet);
+	    }else
 	      bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
 	    //mbl(0,0)   *= TMath::Power(JERbase, 2);
+
   	    mbl(0,0)	= TMath::Power(resEt, 2); // et
 	    if(!useExtReso)
 	      mbl(0,0)   *= TMath::Power(jetsRes.at(bj1.first), 2);
@@ -3255,9 +3313,15 @@ bool KinFit::Fit(){
   	    resbjlepEta = resEta ;
   	    resbjlepPhi = resPhi ;
 	    
-	    if(useExtReso)
+	    if(useExtReso){
 	      bjetExtResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
-	    else
+	      
+	      ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
+	      etaOffSet = GetReso2D(hBJetEtaDiff, bjhad.Eta(), bjhad.Et());
+	      phiOffSet = GetReso2D(hBJetPhiDiff, bjhad.Eta(), bjhad.Et());
+	      enOffSet = GetReso2D(hBJetEnDiff, bjhad.Eta(), bjhad.Et());
+	      bjhad.SetPtEtaPhiE(bjhad.Pt()-ptOffSet, bjhad.Eta()-etaOffSet, bjhad.Phi()-phiOffSet, bjhad.E()-enOffSet);
+	    }else
 	      bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
 	    //mbh(0,0)   *= TMath::Power(JERbase, 2);
@@ -3270,9 +3334,15 @@ bool KinFit::Fit(){
   	    resbjhadEta = resEta ;
   	    resbjhadPhi = resPhi ;
 	      
-	    if(useExtReso)
+	    if(useExtReso){
 	      udscExtResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
-	    else
+	      
+	      ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
+	      etaOffSet = GetReso2D(hBJetEtaDiff, cjhad.Eta(), cjhad.Et());
+	      phiOffSet = GetReso2D(hBJetPhiDiff, cjhad.Eta(), cjhad.Et());
+	      enOffSet = GetReso2D(hBJetEnDiff, cjhad.Eta(), cjhad.Et());
+	      cjhad.SetPtEtaPhiE(cjhad.Pt()-ptOffSet, cjhad.Eta()-etaOffSet, cjhad.Phi()-phiOffSet, cjhad.E()-enOffSet);
+	    }else
 	      udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
 	    //mc(0,0)    *= TMath::Power(JERbase, 2);
@@ -3285,9 +3355,15 @@ bool KinFit::Fit(){
   	    rescjhadEta = resEta ;
   	    rescjhadPhi = resPhi ;
 	      
-	    if(useExtReso)
+	    if(useExtReso){
 	      udscExtResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
-	    else
+	      
+	      ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
+	      etaOffSet = GetReso2D(hBJetEtaDiff, sjhad.Eta(), sjhad.Et());
+	      phiOffSet = GetReso2D(hBJetPhiDiff, sjhad.Eta(), sjhad.Et());
+	      enOffSet = GetReso2D(hBJetEnDiff, sjhad.Eta(), sjhad.Et());
+	      sjhad.SetPtEtaPhiE(sjhad.Pt()-ptOffSet, sjhad.Eta()-etaOffSet, sjhad.Phi()-phiOffSet, sjhad.E()-enOffSet);
+	    }else
 	      udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
 	    //ms(0,0)    *= TMath::Power(JERbase, 2);
