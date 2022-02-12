@@ -201,12 +201,16 @@ Int_t KFObjectReso::CreateHistoArrays()
     hLJetEtaReso = new TH1F**[nJetEtaBins];
     hBJetPhiReso = new TH1F**[nJetEtaBins];
     hLJetPhiReso = new TH1F**[nJetEtaBins];
-    hBJetETRRel = new TH1F**[nJetEtaBins];
-    hLJetETRRel = new TH1F**[nJetEtaBins];
-    hBJetEtaRRel = new TH1F**[nJetEtaBins];
-    hLJetEtaRRel = new TH1F**[nJetEtaBins];
-    hBJetPhiRRel = new TH1F**[nJetEtaBins];
-    hLJetPhiRRel = new TH1F**[nJetEtaBins];
+    hBJetPtReso = new TH1F**[nJetEtaBins];
+    hLJetPtReso = new TH1F**[nJetEtaBins];
+    hBJetEnReso = new TH1F**[nJetEtaBins];
+    hLJetEnReso = new TH1F**[nJetEtaBins];
+    // hBJetETRRel = new TH1F**[nJetEtaBins];
+    // hLJetETRRel = new TH1F**[nJetEtaBins];
+    // hBJetEtaRRel = new TH1F**[nJetEtaBins];
+    // hLJetEtaRRel = new TH1F**[nJetEtaBins];
+    // hBJetPhiRRel = new TH1F**[nJetEtaBins];
+    // hLJetPhiRRel = new TH1F**[nJetEtaBins];
     for(int ieta=0;ieta<nJetEtaBins;ieta++){
       hBJetETReso[ieta] = new TH1F*[nETBins];
       hLJetETReso[ieta] = new TH1F*[nETBins];
@@ -214,12 +218,16 @@ Int_t KFObjectReso::CreateHistoArrays()
       hLJetEtaReso[ieta] = new TH1F*[nETBins];
       hBJetPhiReso[ieta] = new TH1F*[nETBins];
       hLJetPhiReso[ieta] = new TH1F*[nETBins];
-      hBJetETRRel[ieta] = new TH1F*[nETBins];
-      hLJetETRRel[ieta] = new TH1F*[nETBins];
-      hBJetEtaRRel[ieta] = new TH1F*[nETBins];
-      hLJetEtaRRel[ieta] = new TH1F*[nETBins];
-      hBJetPhiRRel[ieta] = new TH1F*[nETBins];
-      hLJetPhiRRel[ieta] = new TH1F*[nETBins];
+      hBJetPtReso[ieta] = new TH1F*[nETBins];
+      hLJetPtReso[ieta] = new TH1F*[nETBins];
+      hBJetEnReso[ieta] = new TH1F*[nETBins];
+      hLJetEnReso[ieta] = new TH1F*[nETBins];
+      // hBJetETRRel[ieta] = new TH1F*[nETBins];
+      // hLJetETRRel[ieta] = new TH1F*[nETBins];
+      // hBJetEtaRRel[ieta] = new TH1F*[nETBins];
+      // hLJetEtaRRel[ieta] = new TH1F*[nETBins];
+      // hBJetPhiRRel[ieta] = new TH1F*[nETBins];
+      // hLJetPhiRRel[ieta] = new TH1F*[nETBins];
       for(int iet=0;iet<nETBins;iet++){
 	hBJetETReso[ieta][iet] = new TH1F(Form("hBJetETReso_%d_%d",ieta,iet),
 					  Form("hBJetETReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
@@ -239,25 +247,37 @@ Int_t KFObjectReso::CreateHistoArrays()
 	hLJetPhiReso[ieta][iet] = new TH1F(Form("hLJetPhiReso_%d_%d",ieta,iet),
 					   Form("hLJetPhiReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
 					   200, -0.2, 0.2);
+	hBJetPtReso[ieta][iet] = new TH1F(Form("hBJetPtReso_%d_%d",ieta,iet),
+					  Form("hBJetPtReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+					  200,-200.,200.);
+	hLJetPtReso[ieta][iet] = new TH1F(Form("hLJetPtReso_%d_%d",ieta,iet),
+					  Form("hLJetPtReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+					  200,-200.,200.);
+	hBJetEnReso[ieta][iet] = new TH1F(Form("hBJetEnReso_%d_%d",ieta,iet),
+					  Form("hBJetEnReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+					  200,-200.,200.);
+	hLJetEnReso[ieta][iet] = new TH1F(Form("hLJetEnReso_%d_%d",ieta,iet),
+					  Form("hLJetEnReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+					  200,-200.,200.);
 
-	hBJetETRRel[ieta][iet] = new TH1F(Form("hBJetETRRel_%d_%d",ieta,iet),
-					  Form("hBJetETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					  200,-200.,200.);
-	hLJetETRRel[ieta][iet] = new TH1F(Form("hLJetETRRel_%d_%d",ieta,iet),
-					  Form("hLJetETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					  200,-200.,200.);
-	hBJetEtaRRel[ieta][iet] = new TH1F(Form("hBJetEtaRRel_%d_%d",ieta,iet),
-					   Form("hBJetEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					   200, -0.2, 0.2);
-	hLJetEtaRRel[ieta][iet] = new TH1F(Form("hLJetEtaRRel_%d_%d",ieta,iet),
-					   Form("hLJetEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					   200, -0.2, 0.2);
-	hBJetPhiRRel[ieta][iet] = new TH1F(Form("hBJetPhiRRel_%d_%d",ieta,iet),
-					   Form("hBJetPhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					   200, -0.2, 0.2);
-	hLJetPhiRRel[ieta][iet] = new TH1F(Form("hLJetPhiRRel_%d_%d",ieta,iet),
-					   Form("hLJetPhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					   200, -0.2, 0.2);
+	// hBJetETRRel[ieta][iet] = new TH1F(Form("hBJetETRRel_%d_%d",ieta,iet),
+	// 				  Form("hBJetETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				  200,-200.,200.);
+	// hLJetETRRel[ieta][iet] = new TH1F(Form("hLJetETRRel_%d_%d",ieta,iet),
+	// 				  Form("hLJetETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				  200,-200.,200.);
+	// hBJetEtaRRel[ieta][iet] = new TH1F(Form("hBJetEtaRRel_%d_%d",ieta,iet),
+	// 				   Form("hBJetEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				   200, -0.2, 0.2);
+	// hLJetEtaRRel[ieta][iet] = new TH1F(Form("hLJetEtaRRel_%d_%d",ieta,iet),
+	// 				   Form("hLJetEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				   200, -0.2, 0.2);
+	// hBJetPhiRRel[ieta][iet] = new TH1F(Form("hBJetPhiRRel_%d_%d",ieta,iet),
+	// 				   Form("hBJetPhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				   200, -0.2, 0.2);
+	// hLJetPhiRRel[ieta][iet] = new TH1F(Form("hLJetPhiRRel_%d_%d",ieta,iet),
+	// 				   Form("hLJetPhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",jetEtaBin[ieta],jetEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				   200, -0.2, 0.2);
 	// hBJetETDelRReso[iet] = new TH1F(Form("hBJetETDelRReso_0_%d",iet),Form("hBJetETDelRReso_0_%d",iet), 200, 0.,1.);
       }// jet et
     }//jet eta
@@ -266,16 +286,20 @@ Int_t KFObjectReso::CreateHistoArrays()
     hMuETReso = new TH1F**[nMuEtaBins];
     hMuEtaReso = new TH1F**[nMuEtaBins];
     hMuPhiReso = new TH1F**[nMuEtaBins];
-    hMuETRRel = new TH1F**[nMuEtaBins];
-    hMuEtaRRel = new TH1F**[nMuEtaBins];
-    hMuPhiRRel = new TH1F**[nMuEtaBins];
+    hMuPtReso = new TH1F**[nMuEtaBins];
+    hMuEnReso = new TH1F**[nMuEtaBins];
+    // hMuETRRel = new TH1F**[nMuEtaBins];
+    // hMuEtaRRel = new TH1F**[nMuEtaBins];
+    // hMuPhiRRel = new TH1F**[nMuEtaBins];
     for(int ieta=0;ieta<nMuEtaBins;ieta++){
       hMuETReso[ieta] = new TH1F*[nETBins];
       hMuEtaReso[ieta] = new TH1F*[nETBins];
       hMuPhiReso[ieta] = new TH1F*[nETBins];
-      hMuETRRel[ieta] = new TH1F*[nETBins];
-      hMuEtaRRel[ieta] = new TH1F*[nETBins];
-      hMuPhiRRel[ieta] = new TH1F*[nETBins];
+      hMuPtReso[ieta] = new TH1F*[nETBins];
+      hMuEnReso[ieta] = new TH1F*[nETBins];
+      // hMuETRRel[ieta] = new TH1F*[nETBins];
+      // hMuEtaRRel[ieta] = new TH1F*[nETBins];
+      // hMuPhiRRel[ieta] = new TH1F*[nETBins];
       for(int iet=0;iet<nETBins;iet++){
 	hMuETReso[ieta][iet] = new TH1F(Form("hMuETReso_%d_%d",ieta,iet),
 					Form("hMuETReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
@@ -286,15 +310,21 @@ Int_t KFObjectReso::CreateHistoArrays()
 	hMuPhiReso[ieta][iet] = new TH1F(Form("hMuPhiReso_%d_%d",ieta,iet),
 					 Form("hMuPhiReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
 					 200, -0.05, 0.05);
-	hMuETRRel[ieta][iet] = new TH1F(Form("hMuETRRel_%d_%d",ieta,iet),
-					Form("hMuETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	hMuPtReso[ieta][iet] = new TH1F(Form("hMuPtReso_%d_%d",ieta,iet),
+					Form("hMuPtReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
 					200,-50.,50.);
-	hMuEtaRRel[ieta][iet] = new TH1F(Form("hMuEtaRRel_%d_%d",ieta,iet),
-					 Form("hMuEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					 200, -0.05, 0.05);
-	hMuPhiRRel[ieta][iet] = new TH1F(Form("hMuPhiRRel_%d_%d",ieta,iet),
-					 Form("hMuPhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					 200, -0.05, 0.05);
+	hMuEnReso[ieta][iet] = new TH1F(Form("hMuEnReso_%d_%d",ieta,iet),
+					Form("hMuEnReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+					200,-50.,50.);
+	// hMuETRRel[ieta][iet] = new TH1F(Form("hMuETRRel_%d_%d",ieta,iet),
+	// 				Form("hMuETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				200,-50.,50.);
+	// hMuEtaRRel[ieta][iet] = new TH1F(Form("hMuEtaRRel_%d_%d",ieta,iet),
+	// 				 Form("hMuEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				 200, -0.05, 0.05);
+	// hMuPhiRRel[ieta][iet] = new TH1F(Form("hMuPhiRRel_%d_%d",ieta,iet),
+	// 				 Form("hMuPhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",muEtaBin[ieta],muEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				 200, -0.05, 0.05);
       }//mu et
     }//mu eta
     hMuEtaETBin = new TH2F("hMuEtaETBin","hMuEtaETBin", nMuEtaBins, muEtaBin, nETBins, ETBin);
@@ -302,16 +332,20 @@ Int_t KFObjectReso::CreateHistoArrays()
     hEleETReso = new TH1F**[nEleEtaBins];
     hEleEtaReso = new TH1F**[nEleEtaBins];
     hElePhiReso = new TH1F**[nEleEtaBins];
-    hEleETRRel = new TH1F**[nEleEtaBins];
-    hEleEtaRRel = new TH1F**[nEleEtaBins];
-    hElePhiRRel = new TH1F**[nEleEtaBins];
+    hElePtReso = new TH1F**[nEleEtaBins];
+    hEleEnReso = new TH1F**[nEleEtaBins];
+    // hEleETRRel = new TH1F**[nEleEtaBins];
+    // hEleEtaRRel = new TH1F**[nEleEtaBins];
+    // hElePhiRRel = new TH1F**[nEleEtaBins];
     for(int ieta=0;ieta<nEleEtaBins;ieta++){
       hEleETReso[ieta] = new TH1F*[nETBins];
       hEleEtaReso[ieta] = new TH1F*[nETBins];
       hElePhiReso[ieta] = new TH1F*[nETBins];
-      hEleETRRel[ieta] = new TH1F*[nETBins];
-      hEleEtaRRel[ieta] = new TH1F*[nETBins];
-      hElePhiRRel[ieta] = new TH1F*[nETBins];
+      hElePtReso[ieta] = new TH1F*[nETBins];
+      hEleEnReso[ieta] = new TH1F*[nETBins];
+      // hEleETRRel[ieta] = new TH1F*[nETBins];
+      // hEleEtaRRel[ieta] = new TH1F*[nETBins];
+      // hElePhiRRel[ieta] = new TH1F*[nETBins];
       for(int iet=0;iet<nETBins;iet++){
 	hEleETReso[ieta][iet] = new TH1F(Form("hEleETReso_%d_%d",ieta,iet),
 					 Form("hEleETReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
@@ -322,26 +356,34 @@ Int_t KFObjectReso::CreateHistoArrays()
 	hElePhiReso[ieta][iet] = new TH1F(Form("hElePhiReso_%d_%d",ieta,iet),
 					  Form("hElePhiReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
 					  200, -0.05, 0.05);
-	hEleETRRel[ieta][iet] = new TH1F(Form("hEleETRRel_%d_%d",ieta,iet),
-					 Form("hEleETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	hElePtReso[ieta][iet] = new TH1F(Form("hElePtReso_%d_%d",ieta,iet),
+					 Form("hElePtReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
 					 200,-50.,50.);
-	hEleEtaRRel[ieta][iet] = new TH1F(Form("hEleEtaRRel_%d_%d",ieta,iet),
-					  Form("hEleEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					  200, -0.05, 0.05);
-	hElePhiRRel[ieta][iet] = new TH1F(Form("hElePhiRRel_%d_%d",ieta,iet),
-					  Form("hElePhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
-					  200, -0.05, 0.05);
+	hEleEnReso[ieta][iet] = new TH1F(Form("hEleEnReso_%d_%d",ieta,iet),
+					 Form("hEleEnReso #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+					 200,-50.,50.);
+	// hEleETRRel[ieta][iet] = new TH1F(Form("hEleETRRel_%d_%d",ieta,iet),
+	// 				 Form("hEleETRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				 200,-50.,50.);
+	// hEleEtaRRel[ieta][iet] = new TH1F(Form("hEleEtaRRel_%d_%d",ieta,iet),
+	// 				  Form("hEleEtaRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				  200, -0.05, 0.05);
+	// hElePhiRRel[ieta][iet] = new TH1F(Form("hElePhiRRel_%d_%d",ieta,iet),
+	// 				  Form("hElePhiRRel #eta:(%4.3f-%4.3f) E_{T}:(%2.0f-%2.0f) GeV",eleEtaBin[ieta],eleEtaBin[ieta+1],ETBin[iet],ETBin[iet+1]),
+	// 				  200, -0.05, 0.05);
       }//ele et
     }//ele eta
     hEleEtaETBin = new TH2F("hEleEtaETBin","hEleEtaETBin", nEleEtaBins, eleEtaBin, nETBins, ETBin);
 
     hMETETReso = new TH1F*[nETBins];
     hMETPhiReso = new TH1F*[nETBins];
+    hMETPtReso = new TH1F*[nETBins];
     hMETETRRel = new TH1F*[nETBins];
     hMETPhiRRel = new TH1F*[nETBins];
     for(int iet=0;iet<nETBins;iet++){
       hMETETReso[iet] = new TH1F(Form("hMETETReso_%d",iet),Form("hMETETReso_%d E_{T}:(%2.0f-%2.0f) GeV",iet,ETBin[iet],ETBin[iet+1]),400,-400.,400.);
       hMETPhiReso[iet] = new TH1F(Form("hMETPhiReso_%d",iet),Form("hMETPhiReso_%d E_{T}:(%2.0f-%2.0f) GeV",iet,ETBin[iet],ETBin[iet+1]),200, -2.0, 2.0);
+      hMETPtReso[iet] = new TH1F(Form("hMETPtReso_%d",iet),Form("hMETPtReso_%d E_{T}:(%2.0f-%2.0f) GeV",iet,ETBin[iet],ETBin[iet+1]),400,-400.,400.);
       hMETETRRel[iet] = new TH1F(Form("hMETETRRel_%d",iet),Form("hMETETRRel_%d E_{T}:(%2.0f-%2.0f) GeV",iet,ETBin[iet],ETBin[iet+1]),400,-400.,400.);
       hMETPhiRRel[iet] = new TH1F(Form("hMETPhiRRel_%d",iet),Form("hMETPhiRRel_%d E_{T}:(%2.0f-%2.0f) GeV",iet,ETBin[iet],ETBin[iet+1]),200, -2.0, 2.0);
     }
@@ -699,15 +741,20 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     
       double etResoPercent = 100.*(mujetR.Et() - mujetG.Et())/mujetG.Et();
       double etReso = (mujetR.Et() - mujetG.Et());
+      double ptReso = (mujetR.Pt() - mujetG.Pt());
+      double enReso = (mujetR.E() - mujetG.E());
       double etaReso = mujetR.Eta() - mujetG.Eta();
       double phiReso = mujetR.DeltaPhi(mujetG) ; //mujetR.Phi() - mujetG.Phi();
 
       hMuETReso[binEta-1][binET-1]->Fill(etReso);
       hMuEtaReso[binEta-1][binET-1]->Fill(etaReso);
       hMuPhiReso[binEta-1][binET-1]->Fill(phiReso);
-      hMuETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-      hMuEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/mujetG.Eta());
-      hMuPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/mujetG.Phi());
+
+      hMuPtReso[binEta-1][binET-1]->Fill(ptReso);
+      hMuEnReso[binEta-1][binET-1]->Fill(enReso);
+      // hMuETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+      // hMuEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/mujetG.Eta());
+      // hMuPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/mujetG.Phi());
     }//muon loop
 
     if(nofEle==1){
@@ -723,16 +770,20 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     
       double etResoPercent = 100.*(elejetR.Et() - elejetG.Et())/elejetG.Et();
       double etReso = (elejetR.Et() - elejetG.Et());
+      double ptReso = elejetR.Pt() - elejetG.Pt();
+      double enReso = elejetR.E() - elejetG.E();
       double etaReso = elejetR.Eta() - elejetG.Eta();
       double phiReso = elejetR.DeltaPhi(elejetG) ; //elejetR.Phi() - elejetG.Phi();
     
       hEleETReso[binEta-1][binET-1]->Fill(etReso);
       hEleEtaReso[binEta-1][binET-1]->Fill(etaReso);
       hElePhiReso[binEta-1][binET-1]->Fill(phiReso);
-    
-      hEleETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-      hEleEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/elejetG.Eta());
-      hElePhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/elejetG.Phi());
+
+      hElePtReso[binEta-1][binET-1]->Fill(ptReso);
+      hEleEnReso[binEta-1][binET-1]->Fill(enReso);
+      // hEleETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+      // hEleEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/elejetG.Eta());
+      // hElePhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/elejetG.Phi());
     }//electron loop
     
     int nbjet = 0, nljet = 0;
@@ -808,9 +859,11 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     binET = GetHistoBin(hMETETBin, metR.Et());
     double etResoPercent = 100.*(metR.Et() - metG.Et())/metG.Et();
     double etReso = (metR.Et() - metG.Et());
+    double ptReso = (metR.Pt() - metG.Pt());
     double phiReso = metR.DeltaPhi(metG) ; //metR.Phi() - metG.Phi();
     hMETETReso[binET-1]->Fill(etReso);
     hMETPhiReso[binET-1]->Fill(phiReso);
+    hMETPtReso[binET-1]->Fill(ptReso);
     hMETETRRel[binET-1]->Fill(etResoPercent);
     hMETPhiRRel[binET-1]->Fill(100.*phiReso/metG.Phi());
     
@@ -847,6 +900,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 
 	  double etResoPercent = 100.*(bjetR.Et() - bjetG.Et())/bjetG.Et();
 	  double etReso = (bjetR.Et() - bjetG.Et());
+	  double ptReso = (bjetR.Pt() - bjetG.Pt());
+	  double enReso = (bjetR.E() - bjetG.E());
 	  double etaReso = bjetR.Eta() - bjetG.Eta();
 	  double phiReso = bjetR.DeltaPhi(bjetG) ; //bjetR.Phi() - bjetG.Phi();
 	  if(bjetR.DeltaR(bjetG)<0.2){
@@ -854,9 +909,11 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	    hBJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
 	    hBJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
 
-	    hBJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-	    hBJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/bjetG.Eta());
-	    hBJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/bjetG.Phi());
+	    hBJetPtReso[binEta-1][binET-1]->Fill(ptReso);
+	    hBJetEnReso[binEta-1][binET-1]->Fill(enReso);
+	    // hBJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+	    // hBJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/bjetG.Eta());
+	    // hBJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/bjetG.Phi());
 	  }
 	  //hBJetETDelRReso[binET-1]->Fill(bjetR.DeltaR(bjetG));
 	}//b-jet condition
@@ -869,16 +926,21 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 
 	  double etResoPercent = 100.*(ljetR.Et() - ljetG.Et())/ljetG.Et();
 	  double etReso = (ljetR.Et() - ljetG.Et());
+	  double ptReso = (ljetR.Pt() - ljetG.Pt());
+	  double enReso = (ljetR.E() - ljetG.E());
 	  double etaReso = ljetR.Eta() - ljetG.Eta();
 	  double phiReso = ljetR.DeltaPhi(ljetG) ; //ljetR.Phi() - ljetG.Phi();
+
 	  if(ljetR.DeltaR(ljetG)<0.2){
 	    hLJetETReso[binEta-1][binET-1]->Fill(etReso);
 	    hLJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
 	    hLJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
-
-	    hLJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
-	    hLJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/ljetG.Eta());
-	    hLJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/ljetG.Phi());
+	    
+	    hLJetPtReso[binEta-1][binET-1]->Fill(ptReso);
+	    hLJetEnReso[binEta-1][binET-1]->Fill(enReso);
+	    // hLJetETRRel[binEta-1][binET-1]->Fill(etResoPercent);
+	    // hLJetEtaRRel[binEta-1][binET-1]->Fill(100.*etaReso/ljetG.Eta());
+	    // hLJetPhiRRel[binEta-1][binET-1]->Fill(100.*phiReso/ljetG.Phi());
 	  }
 	}//l-jet condition
 	
@@ -955,47 +1017,74 @@ void KFObjectReso::SlaveTerminate()
       hMETETReso[iet]->Write();
     for(int iet=0;iet<nETBins;iet++)
       hMETPhiReso[iet]->Write();
+
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hBJetPtReso[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)  
+	hLJetPtReso[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hBJetEnReso[ieta][iet]->Write();
+    for(int ieta=0;ieta<nJetEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)  
+	hLJetEnReso[ieta][iet]->Write();
+    for(int ieta=0;ieta<nMuEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hMuPtReso[ieta][iet]->Write();
+    for(int ieta=0;ieta<nMuEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hMuEnReso[ieta][iet]->Write();
+    for(int ieta=0;ieta<nEleEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hElePtReso[ieta][iet]->Write();
+    for(int ieta=0;ieta<nEleEtaBins;ieta++)
+      for(int iet=0;iet<nETBins;iet++)
+	hEleEnReso[ieta][iet]->Write();
+    for(int iet=0;iet<nETBins;iet++)
+      hMETPtReso[iet]->Write();
     
-    for(int ieta=0;ieta<nJetEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hBJetETRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nJetEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)  
-	hLJetETRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nJetEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hBJetEtaRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nJetEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)  
-	hLJetEtaRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nJetEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hBJetPhiRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nJetEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)  
-	hLJetPhiRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nMuEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hMuETRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nMuEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hMuEtaRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nMuEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hMuPhiRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nEleEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hEleETRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nEleEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hEleEtaRRel[ieta][iet]->Write();
-    for(int ieta=0;ieta<nEleEtaBins;ieta++)
-      for(int iet=0;iet<nETBins;iet++)
-	hElePhiRRel[ieta][iet]->Write();  
-    for(int iet=0;iet<nETBins;iet++)
-      hMETETRRel[iet]->Write();
-    for(int iet=0;iet<nETBins;iet++)
-      hMETPhiRRel[iet]->Write();
+    // for(int ieta=0;ieta<nJetEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hBJetETRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nJetEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)  
+    // 	hLJetETRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nJetEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hBJetEtaRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nJetEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)  
+    // 	hLJetEtaRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nJetEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hBJetPhiRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nJetEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)  
+    // 	hLJetPhiRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nMuEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hMuETRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nMuEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hMuEtaRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nMuEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hMuPhiRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nEleEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hEleETRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nEleEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hEleEtaRRel[ieta][iet]->Write();
+    // for(int ieta=0;ieta<nEleEtaBins;ieta++)
+    //   for(int iet=0;iet<nETBins;iet++)
+    // 	hElePhiRRel[ieta][iet]->Write();  
+    // for(int iet=0;iet<nETBins;iet++)
+    //   hMETETRRel[iet]->Write();
+    // for(int iet=0;iet<nETBins;iet++)
+    //   hMETPhiRRel[iet]->Write();
 
     ///////////////////////////////
     fFile[ifile]->cd();

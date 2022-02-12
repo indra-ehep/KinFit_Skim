@@ -38,18 +38,21 @@ class KFObjectReso : public TSelector {
    //Declaration of histograms
    ////////////////////////////////////////////////////////   
    TH1F ***hBJetETReso, ***hLJetETReso, ***hBJetEtaReso, ***hLJetEtaReso, ***hBJetPhiReso, ***hLJetPhiReso;
-   TH1F ***hBJetETRRel, ***hLJetETRRel, ***hBJetEtaRRel, ***hLJetEtaRRel, ***hBJetPhiRRel, ***hLJetPhiRRel;
+   //TH1F ***hBJetETRRel, ***hLJetETRRel, ***hBJetEtaRRel, ***hLJetEtaRRel, ***hBJetPhiRRel, ***hLJetPhiRRel;
+   TH1F ***hBJetPtReso, ***hLJetPtReso, ***hBJetEnReso, ***hLJetEnReso;
    TH2F *hJetEtaETBin ;
    
    TH1F ***hMuETReso, ***hMuEtaReso, ***hMuPhiReso;
-   TH1F ***hMuETRRel, ***hMuEtaRRel, ***hMuPhiRRel;
+   //TH1F ***hMuETRRel, ***hMuEtaRRel, ***hMuPhiRRel;
+   TH1F ***hMuPtReso, ***hMuEnReso;
    TH2F *hMuEtaETBin ;
    
    TH1F ***hEleETReso, ***hEleEtaReso, ***hElePhiReso;
-   TH1F ***hEleETRRel, ***hEleEtaRRel, ***hElePhiRRel;
+   //TH1F ***hEleETRRel, ***hEleEtaRRel, ***hElePhiRRel;
+   TH1F ***hElePtReso, ***hEleEnReso;
    TH2F *hEleEtaETBin ;
    
-   TH1F **hMETETReso, **hMETPhiReso;
+   TH1F **hMETETReso, **hMETPtReso, **hMETPhiReso;
    TH1F **hMETETRRel, **hMETPhiRRel;
    TH1F *hMETETBin ;
    
