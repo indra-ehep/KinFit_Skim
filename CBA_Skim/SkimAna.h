@@ -1681,6 +1681,7 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
     outputTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
     
+    outputTree->Branch("chi2"			, &kinFitMinChi2       		);
     outputTree->Branch("lepPt"			, &_lepPt			);
     outputTree->Branch("lepEta"			, &_lepEta			);
     outputTree->Branch("lepPhi"			, &_lepPhi			);
