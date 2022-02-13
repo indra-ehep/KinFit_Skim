@@ -24,205 +24,180 @@
 
 using namespace std;
 
-int CutflowNanoAll()
+int CutflowNanoSignal()
 {  
   
   int year = 2017;
-  bool isMu = 0;
+  bool isMu = 1;
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
-  //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
-  //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_btagCSV";
-  //const char* dir = "proof_v37_SlStudy/CBA_Skim_Syst_SlStudy1"; will not work but it is same as btagCSV
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy7";
-  //const char* dir = "grid_v38_Syst/CBA_Skim_Syst_TuneTest1";
-  //const char* dir = "grid_v39_Syst/ULv9_long";
-  //const char* dir = "grid_v39_Syst/Leg_muMedID";
-
-  //const char* dir = "proof_v40_cutflow/Cutflow_test1";
-  //const char* dir = "proof_v40_cutflow/Cutflow_test2_LevelMu";
-
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t4";
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t5_mediumPromptID";
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t6_IsSolvedMuon";
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t7_Jet";
-  //const char* dir = "grid_v39_Syst/ULv9_ctrl_twikicut_med_prompt";
-  //const char* dir = "grid_v39_Syst/ULv9_PAG_med_noprompt";
-  //const char* dir = "grid_v39_Syst/ULv9_miniAOD_med_prompt";
-  //const char* dir = "grid_v39_Syst/ULv9_DeepJet";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_pre";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_post";
-  // const char* dir = "grid_v39_Syst/ULv9_samplewt_noscale_pre";
-  // const char* dir = "grid_v39_Syst/ULv9_samplewt_noscale_post";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_mujets";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_jetpuid_lwp";
-  //const char* dir = "grid_v39_Syst/CBA_KinFit_ULv9";
-  //const char* dir = "grid_v39_Syst/CBA_KinFit_ULv9/pre";
-  //const char* dir = "grid_v39_Syst/CBA_KinFit_ULv9/post";
-  //const char* dir = "grid_v39_Syst/CBA_CTag_ULv9_iter1";
-  //const char* dir = "grid_v39_Syst/CBA_CTag_ULv9_iter1/pre";
-  //const char* dir = "grid_v39_Syst/CBA_CTag_ULv9_iter1/post";
   //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
-  //const char* dir = "grid_v39_Syst/CBA_KFNewReso/pre";
-  //const char* dir = "grid_v39_Syst/CBA_KFNewReso/post";
-  //const char* dir = "grid_v39_Syst/CBA_TestYear";
-  //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
   //const char* dir = "grid_v39_Syst/CBA_CTagM/pre";
-  const char* dir = "grid_v39_Syst/CBA_CTagM";
+  //const char* dir = "grid_v39_Syst/CBA_CTagM";
+  const char* dir = "grid_v39_Syst/CBA_ModSigCS";
   
-  const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
-  const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
-  TFile *fin_nano_data	= TFile::Open(datafile);
-  TFile *fin_nano_sig = 0x0 ;
-  if(year == 2016)
-    fin_nano_sig	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
-  TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/all_TTbar.root",dir,year));
-  TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/all_singleTop.root",dir,year));
-  TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/all_Wjets.root",dir,year));
-  TFile *fin_nano_dyjets = TFile::Open(Form("root_files/%s/%d/all_DYjets.root",dir,year));
-  TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir,year));
-  TFile *fin_nano_qcd	= TFile::Open(qcdfile);
-  TFile *fin_mini_qcd	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");
+  int mpoint[10] = {80, 90, 100, 110, 120, 130, 140, 150, 155, 160};
+  //const char *htype = "HminusM";
+  const char *htype = "HplusM";
   
-  // // MiniAOD Final
-  // const char* dir = "local_v26_Ele";
-  // const char* datafile = (isMu) ? Form("root_files/%s/DataMu_weight.root",dir) : Form("root_files/%s/DataEle_weight.root",dir) ;
-  // const char* qcdfile = (isMu) ? Form("root_files/%s/MCQCDMu_weight.root",dir) : Form("root_files/%s/MCQCDEle_weight.root",dir) ;
+  for(int imass=0;imass<10;imass++){
+    //string mval = Form("$m_{H^-} = %d$ GeV",mpoint[imass]);
+    string mval = Form("$m_{H^+} = %d$ GeV",mpoint[imass]);
+    //cout << fname << endl;
+    TFile *fin_nano_sig = TFile::Open(Form("root_files/%s/%d/all_%s%03d.root",dir,year,htype,mpoint[imass]));
+    TH1D *hcf_nano_sig = (TH1D *)fin_nano_sig->Get(Form("%s%03d/base/Iso/%s",htype,mpoint[imass],cutflow));
+    //hcf_nano_sig->SetBinContent(1,0.0);
+
+    printf("%s & ",mval.data());
+    for (int ibin=2;ibin<=hcf_nano_sig->GetNbinsX();ibin++){
+      if(ibin==8) continue;
+      if(hcf_nano_sig->GetBinContent(ibin)>0.0 and hcf_nano_sig->GetBinContent(ibin+1)>0.0){
+    	if(hcf_nano_sig->GetBinContent(ibin)>1e6){
+    	  printf("%.4e & ",hcf_nano_sig->GetBinContent(ibin));
+    	}else{
+    	  printf("%.1f & ",hcf_nano_sig->GetBinContent(ibin));
+    	}
+      }else if(hcf_nano_sig->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hcf_nano_sig->GetBinContent(ibin+1),0.0,1.e-5)){
+    	printf("%.1f \\\\\\hline ",hcf_nano_sig->GetBinContent(ibin));	
+      }
+    }
+    printf("\n");
+  }
+  
+  // const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
+  // const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
   // TFile *fin_nano_data	= TFile::Open(datafile);
-  // TFile *fin_nano_sig	= TFile::Open("root_files/local_v26_Ele/HplusM120_weight.root");
-  // TFile *fin_nano_ttbar = TFile::Open("root_files/local_v26_Ele/TTbar_weight.root");
-  // TFile *fin_nano_stop	= TFile::Open("root_files/local_v26_Ele/singleTop_weight.root");
-  // TFile *fin_nano_wjets	= TFile::Open("root_files/local_v26_Ele/Wjets_weight.root");
-  // //TFile *fin_nano_wjets	= TFile::Open("root_files/local_v26_Ele/Wjets_weight_2016.root");
-  // TFile *fin_nano_dyjets = TFile::Open("root_files/local_v26_Ele/DYjets_weight.root");
-  // TFile *fin_nano_vbf	= TFile::Open("root_files/local_v26_Ele/VBFusion_weight.root");
+  // TFile *fin_nano_sig = 0x0 ;
+  // if(year == 2016)
+  //   fin_nano_sig	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
+  // TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/all_TTbar.root",dir,year));
+  // TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/all_singleTop.root",dir,year));
+  // TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/all_Wjets.root",dir,year));
+  // TFile *fin_nano_dyjets = TFile::Open(Form("root_files/%s/%d/all_DYjets.root",dir,year));
+  // TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir,year));
   // TFile *fin_nano_qcd	= TFile::Open(qcdfile);
   // TFile *fin_mini_qcd	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");
-
-
-  TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",cutflowUS) : Form("DataEle/base/Iso/%s",cutflowUS)));
-  TH1D *hcf_nano_sig = 0x0 ;
-  if(year == 2016)
-    hcf_nano_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",cutflow));
-  TH1D *hcf_nano_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",cutflow));
-  TH1D *hcf_nano_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",cutflow)); 
-  TH1D *hcf_nano_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/Iso/%s",cutflow));
-  TH1D *hcf_nano_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",cutflow));
-  TH1D *hcf_nano_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",cutflow));
-  TH1D *hcf_nano_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",cutflow) : Form("MCQCDEle/base/Iso/%s",cutflow)));
-  TH1F *hcf_mini_qcd	= (TH1F *)fin_mini_qcd->Get("base/Iso/cutflow");
-  // TH1D *hcf_nano_qcd	= (TH1D *)hcf_nano_vbf->Clone("hcf_nano_qcd");
-  // for (int ibin=2;ibin<hcf_nano_qcd->GetNbinsX();ibin++)
-  //   hcf_nano_qcd->SetBinContent(ibin, hcf_mini_qcd->GetBinContent(ibin-1));
   
 
-  // hcf_nano_data->SetBinContent(2,hcf_nano_data->GetBinContent(0));
-  // hcf_nano_sig->SetBinContent(2,hcf_nano_sig->GetBinContent(0));
-  // hcf_nano_ttbar->SetBinContent(2,hcf_nano_ttbar->GetBinContent(0));
-  // hcf_nano_stop->SetBinContent(2,hcf_nano_stop->GetBinContent(0));
-  // hcf_nano_wjets->SetBinContent(2,hcf_nano_wjets->GetBinContent(0));
-  // hcf_nano_dyjets->SetBinContent(2,hcf_nano_dyjets->GetBinContent(0));
-  // hcf_nano_vbf->SetBinContent(2,hcf_nano_vbf->GetBinContent(0));
-
-  //cout << "Wjets  : " << hcf_nano_wjets->GetBinContent(1) << endl;
-  
-  hcf_nano_data->SetBinContent(1,0.0);
-  if(year == 2016)
-    hcf_nano_sig->SetBinContent(1,0.0);
-  hcf_nano_ttbar->SetBinContent(1,0.0);
-  hcf_nano_stop->SetBinContent(1,0.0);
-  hcf_nano_wjets->SetBinContent(1,0.0);
-  hcf_nano_dyjets->SetBinContent(1,0.0);
-  hcf_nano_vbf->SetBinContent(1,0.0);
-  hcf_nano_qcd->SetBinContent(1,0.0);
-  
-  TH1D *hcf_nano_bkg = (TH1D *)hcf_nano_ttbar->Clone("Bkg");
-  hcf_nano_bkg->Add(hcf_nano_stop);
-  hcf_nano_bkg->Add(hcf_nano_wjets);
-  hcf_nano_bkg->Add(hcf_nano_dyjets);
-  hcf_nano_bkg->Add(hcf_nano_vbf);
-  hcf_nano_bkg->Add(hcf_nano_qcd);
-  
-  int WeightedCounts(int, string, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *);
-  WeightedCounts(year, cutflow, hcf_nano_data, hcf_nano_bkg, hcf_nano_sig, hcf_nano_ttbar, hcf_nano_stop, hcf_nano_wjets, hcf_nano_dyjets, hcf_nano_vbf, hcf_nano_qcd);
-  
-  hcf_nano_data->SetMarkerStyle(kFullCircle);
-  hcf_nano_data->SetMarkerColor(kBlack);
-  hcf_nano_data->SetMarkerSize(1.2);
-  
-  if(year == 2016){
-    hcf_nano_sig->SetLineStyle(kDashed);
-    hcf_nano_sig->SetLineColor(kRed);
-    hcf_nano_sig->SetLineWidth(2);
-  }
-
-  hcf_nano_ttbar->SetFillColor(kCyan+1);
-  
-  hcf_nano_stop->SetFillColor(kViolet);
-
-  hcf_nano_wjets->SetFillColor(kYellow);
-
-  hcf_nano_dyjets->SetFillColor(kOrange+1);
-  
-  hcf_nano_vbf->SetFillColor(kGreen+2);
-
-  hcf_nano_qcd->SetFillColor(kRed);
-  
-  THStack *hs = new THStack("hs","");
-  hs->Add(hcf_nano_vbf);
-  hs->Add(hcf_nano_dyjets);
-  hs->Add(hcf_nano_wjets);
-  hs->Add(hcf_nano_qcd);
-  hs->Add(hcf_nano_stop);
-  hs->Add(hcf_nano_ttbar);
-
-  TLegend *leg = new TLegend(0.6962751,0.5611814,0.8925501,0.8924051);
-  leg->SetFillColor(10);
-  leg->AddEntry(hcf_nano_data, Form("Data") ,"lp");
-  leg->AddEntry(hcf_nano_ttbar, Form("#it{t}#bar{#it{t}}") ,"f");
-  leg->AddEntry(hcf_nano_stop, Form("Single #it{t}") ,"f");
-  leg->AddEntry(hcf_nano_wjets, Form("#it{W} + jets") ,"f");
-  leg->AddEntry(hcf_nano_dyjets, Form("#it{Z}/#gamma + jets") ,"f");
-  leg->AddEntry(hcf_nano_vbf, Form("VV") ,"f");
-  leg->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");
-  if(year == 2016)
-    leg->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
-  
-  const char *cutnames[10] = {"Trigger", Form("Nof #mu = 1"), "No. of jets #geq 4", "MET #geq 20 GeV", "No. of #it{b}-jets #geq 2", "KinFit Sel.", "", "" ,"",""};
-  for (int ibin=2;ibin<hcf_nano_data->GetNbinsX();ibin++){
-    hcf_nano_data->GetXaxis()->SetBinLabel(ibin, cutnames[ibin-2]);
-  }
-
-  hcf_nano_data->SetMinimum(1.0e-1);
-  hcf_nano_data->SetMaximum(1.0e12);
-  //hcf_nano_data->SetMaximum(1.0e9);
+  // TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",cutflowUS) : Form("DataEle/base/Iso/%s",cutflowUS)));
+  // TH1D *hcf_nano_sig = 0x0 ;
+  // if(year == 2016)
+  //   hcf_nano_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",cutflow));
+  // TH1D *hcf_nano_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",cutflow));
+  // TH1D *hcf_nano_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",cutflow)); 
+  // TH1D *hcf_nano_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/Iso/%s",cutflow));
+  // TH1D *hcf_nano_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",cutflow));
+  // TH1D *hcf_nano_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",cutflow));
+  // TH1D *hcf_nano_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",cutflow) : Form("MCQCDEle/base/Iso/%s",cutflow)));
+  // TH1F *hcf_mini_qcd	= (TH1F *)fin_mini_qcd->Get("base/Iso/cutflow");
+  // // TH1D *hcf_nano_qcd	= (TH1D *)hcf_nano_vbf->Clone("hcf_nano_qcd");
+  // // for (int ibin=2;ibin<hcf_nano_qcd->GetNbinsX();ibin++)
+  // //   hcf_nano_qcd->SetBinContent(ibin, hcf_mini_qcd->GetBinContent(ibin-1));
   
 
-  TCanvas *c1 = new TCanvas("c1","c1");
-  gStyle->SetOptStat(0);
-  gStyle->SetOptTitle(0);
-  c1->SetLogy();
-  c1->SetTickx();
-  c1->SetTicky();
-  hcf_nano_data->Draw("e1p");
-  hs->Draw("same hist");
-  // hcf_nano_qcd->Draw("same hist");
-  // hcf_nano_ttbar->Draw("same hist");
-  // hcf_nano_stop->Draw("same hist");
-  // hcf_nano_wjets->Draw("same hist");
-  // hcf_nano_dyjets->Draw("same hist");
-  // hcf_nano_vbf->Draw("same hist");
-  //hcf_nano_stop->Draw("same hist");
-  if(year == 2016)
-    hcf_nano_sig->Draw("same hist");
-  hcf_nano_data->Draw("e1p same");
-  leg->Draw();
-  c1->Update();
+  // // hcf_nano_data->SetBinContent(2,hcf_nano_data->GetBinContent(0));
+  // // hcf_nano_sig->SetBinContent(2,hcf_nano_sig->GetBinContent(0));
+  // // hcf_nano_ttbar->SetBinContent(2,hcf_nano_ttbar->GetBinContent(0));
+  // // hcf_nano_stop->SetBinContent(2,hcf_nano_stop->GetBinContent(0));
+  // // hcf_nano_wjets->SetBinContent(2,hcf_nano_wjets->GetBinContent(0));
+  // // hcf_nano_dyjets->SetBinContent(2,hcf_nano_dyjets->GetBinContent(0));
+  // // hcf_nano_vbf->SetBinContent(2,hcf_nano_vbf->GetBinContent(0));
+
+  // //cout << "Wjets  : " << hcf_nano_wjets->GetBinContent(1) << endl;
+  
+  // hcf_nano_data->SetBinContent(1,0.0);
+  // if(year == 2016)
+  //   hcf_nano_sig->SetBinContent(1,0.0);
+  // hcf_nano_ttbar->SetBinContent(1,0.0);
+  // hcf_nano_stop->SetBinContent(1,0.0);
+  // hcf_nano_wjets->SetBinContent(1,0.0);
+  // hcf_nano_dyjets->SetBinContent(1,0.0);
+  // hcf_nano_vbf->SetBinContent(1,0.0);
+  // hcf_nano_qcd->SetBinContent(1,0.0);
+  
+  // TH1D *hcf_nano_bkg = (TH1D *)hcf_nano_ttbar->Clone("Bkg");
+  // hcf_nano_bkg->Add(hcf_nano_stop);
+  // hcf_nano_bkg->Add(hcf_nano_wjets);
+  // hcf_nano_bkg->Add(hcf_nano_dyjets);
+  // hcf_nano_bkg->Add(hcf_nano_vbf);
+  // hcf_nano_bkg->Add(hcf_nano_qcd);
+  
+  // int WeightedCounts(int, string, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *);
+  // WeightedCounts(year, cutflow, hcf_nano_data, hcf_nano_bkg, hcf_nano_sig, hcf_nano_ttbar, hcf_nano_stop, hcf_nano_wjets, hcf_nano_dyjets, hcf_nano_vbf, hcf_nano_qcd);
+  
+  // hcf_nano_data->SetMarkerStyle(kFullCircle);
+  // hcf_nano_data->SetMarkerColor(kBlack);
+  // hcf_nano_data->SetMarkerSize(1.2);
+  
+  // if(year == 2016){
+  //   hcf_nano_sig->SetLineStyle(kDashed);
+  //   hcf_nano_sig->SetLineColor(kRed);
+  //   hcf_nano_sig->SetLineWidth(2);
+  // }
+
+  // hcf_nano_ttbar->SetFillColor(kCyan+1);
+  
+  // hcf_nano_stop->SetFillColor(kViolet);
+
+  // hcf_nano_wjets->SetFillColor(kYellow);
+
+  // hcf_nano_dyjets->SetFillColor(kOrange+1);
+  
+  // hcf_nano_vbf->SetFillColor(kGreen+2);
+
+  // hcf_nano_qcd->SetFillColor(kRed);
+  
+  // THStack *hs = new THStack("hs","");
+  // hs->Add(hcf_nano_vbf);
+  // hs->Add(hcf_nano_dyjets);
+  // hs->Add(hcf_nano_wjets);
+  // hs->Add(hcf_nano_qcd);
+  // hs->Add(hcf_nano_stop);
+  // hs->Add(hcf_nano_ttbar);
+
+  // TLegend *leg = new TLegend(0.6962751,0.5611814,0.8925501,0.8924051);
+  // leg->SetFillColor(10);
+  // leg->AddEntry(hcf_nano_data, Form("Data") ,"lp");
+  // leg->AddEntry(hcf_nano_ttbar, Form("#it{t}#bar{#it{t}}") ,"f");
+  // leg->AddEntry(hcf_nano_stop, Form("Single #it{t}") ,"f");
+  // leg->AddEntry(hcf_nano_wjets, Form("#it{W} + jets") ,"f");
+  // leg->AddEntry(hcf_nano_dyjets, Form("#it{Z}/#gamma + jets") ,"f");
+  // leg->AddEntry(hcf_nano_vbf, Form("VV") ,"f");
+  // leg->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");
+  // if(year == 2016)
+  //   leg->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
+  
+  // const char *cutnames[10] = {"Trigger", Form("Nof #mu = 1"), "No. of jets #geq 4", "MET #geq 20 GeV", "No. of #it{b}-jets #geq 2", "KinFit Sel.", "", "" ,"",""};
+  // for (int ibin=2;ibin<hcf_nano_data->GetNbinsX();ibin++){
+  //   hcf_nano_data->GetXaxis()->SetBinLabel(ibin, cutnames[ibin-2]);
+  // }
+
+  // hcf_nano_data->SetMinimum(1.0e-1);
+  // hcf_nano_data->SetMaximum(1.0e12);
+  // //hcf_nano_data->SetMaximum(1.0e9);
+  
+
+  // TCanvas *c1 = new TCanvas("c1","c1");
+  // gStyle->SetOptStat(0);
+  // gStyle->SetOptTitle(0);
+  // c1->SetLogy();
+  // c1->SetTickx();
+  // c1->SetTicky();
+  // hcf_nano_data->Draw("e1p");
+  // hs->Draw("same hist");
+  // // hcf_nano_qcd->Draw("same hist");
+  // // hcf_nano_ttbar->Draw("same hist");
+  // // hcf_nano_stop->Draw("same hist");
+  // // hcf_nano_wjets->Draw("same hist");
+  // // hcf_nano_dyjets->Draw("same hist");
+  // // hcf_nano_vbf->Draw("same hist");
+  // //hcf_nano_stop->Draw("same hist");
+  // if(year == 2016)
+  //   hcf_nano_sig->Draw("same hist");
+  // hcf_nano_data->Draw("e1p same");
+  // leg->Draw();
+  // c1->Update();
 
   return true;
 }

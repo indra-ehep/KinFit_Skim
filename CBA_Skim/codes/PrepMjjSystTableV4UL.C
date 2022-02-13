@@ -28,14 +28,14 @@
 
 using namespace std;
 
-int PrepMjjSystTableV3()
+int PrepMjjSystTableV4UL()
 {
   string GetInclusive(string, int, bool, int);
   string GetDifferential(string rowtitle, int ifile, bool inc, int year);
 
   bool forPaper = false;
   
-  int year = 2016;
+  int year = 2017;
   ofstream outFile;
   outFile.open(Form("syst/mjjTable_%d.tex",year));
   outFile<<"\\documentclass[]{article}"<<endl;
@@ -64,15 +64,18 @@ int PrepMjjSystTableV3()
   
   //CalcSystTable(1);
   int ifile = 1;
-  //GetInclusive("$m_{H^+}=80$ GeV", 1);
-  outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year)<<endl;
+  //GetInclusive("$m_{H^-}=80$ GeV", 1);
+  outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^-}=100$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^-}=120$ GeV", ifile++, false, year)<<endl;
+  cout<<"Hello here 0."<<endl;
+  outFile<<GetInclusive("$m_{H^-}=140$ GeV", ifile++, false, year)<<endl;
+  cout<<"Hello here 1."<<endl;
+  outFile<<GetInclusive("$m_{H^-}=150$ GeV", ifile++, false, year)<<endl;
+  cout<<"Hello here 2."<<endl;
+  outFile<<GetInclusive("$m_{H^-}=155$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetInclusive("$m_{H^-}=160$ GeV", ifile++, false, year)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year)<<endl;
   outFile<<GetInclusive("Single ~t", ifile++, false, year)<<endl;
@@ -106,14 +109,14 @@ int PrepMjjSystTableV3()
   // outFile<<" & $\\mu$ + jets &  e + jets\\\\"<<endl;
   // outFile<<"\\hline "<<endl;
   // outFile<<"\\hline "<<endl;
-  // outFile<<getRowInc("$m_{H^+}=80$ GeV", fMuWH80, fEleWH80, "mjj_kfit_CTagIncL")<<endl;
-  // outFile<<getRowInc("$m_{H^+}=90$ GeV", fMuWH90, fEleWH90, "mjj_kfit_CTagIncL")<<endl;
-  // outFile<<getRowInc("$m_{H^+}=100$ GeV", fMuWH100, fEleWH100, "mjj_kfit_CTagIncL")<<endl;
-  // outFile<<getRowInc("$m_{H^+}=120$ GeV", fMuWH120, fEleWH120, "mjj_kfit_CTagIncL")<<endl;
-  // outFile<<getRowInc("$m_{H^+}=140$ GeV", fMuWH140, fEleWH140, "mjj_kfit_CTagIncL")<<endl;
-  // outFile<<getRowInc("$m_{H^+}=150$ GeV", fMuWH150, fEleWH150, "mjj_kfit_CTagIncL")<<endl;
-  // outFile<<getRowInc("$m_{H^+}=155$ GeV", fMuWH155, fEleWH155, "mjj_kfit_CTagIncL")<<endl;
-  // outFile<<getRowInc("$m_{H^+}=160$ GeV", fMuWH160, fEleWH160, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=80$ GeV", fMuWH80, fEleWH80, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=90$ GeV", fMuWH90, fEleWH90, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=100$ GeV", fMuWH100, fEleWH100, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=120$ GeV", fMuWH120, fEleWH120, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=140$ GeV", fMuWH140, fEleWH140, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=150$ GeV", fMuWH150, fEleWH150, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=155$ GeV", fMuWH155, fEleWH155, "mjj_kfit_CTagIncL")<<endl;
+  // outFile<<getRowInc("$m_{H^-}=160$ GeV", fMuWH160, fEleWH160, "mjj_kfit_CTagIncL")<<endl;
   // outFile<<"\\hline "<<endl;
   // outFile<<getRowInc("SM $t\\bar{t}$ + jets", fMuTT, fEleTT, "mjj_kfit_CTagIncL")<<endl;
   // outFile<<getRowInc("Single ~t"            , fMuST, fEleST, "mjj_kfit_CTagIncL")<<endl;
@@ -148,14 +151,14 @@ int PrepMjjSystTableV3()
 
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=80$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=90$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=100$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=120$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=140$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=150$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=155$ GeV", ifile++, false, year)<<endl;
+  outFile<<GetDifferential("$m_{H^-}=160$ GeV", ifile++, false, year)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year)<<endl;
   outFile<<GetDifferential("Single ~t", ifile++, false, year)<<endl;
@@ -246,10 +249,15 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   // 				"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", 
   // 				"MCQCDMu", "MCQCDEle", "DataMu", "DataEle"};
 
-  const char *samples_2016[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM120", 
-				"HplusM140", "HplusM150", "HplusM155", "HplusM160",  
+  const char *samples_2016[] = {"HminusM080", "HminusM090", "HminusM100", "HminusM120", 
+				"HminusM140", "HminusM150", "HminusM155", "HminusM160",  
 				"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", 
 				"QCDdd", "QCDdd", "DataMu", "DataEle"};
+
+  // const char *samples_2016[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM120", 
+  // 				"HplusM140", "HplusM150", "HplusM155", "HplusM160",  
+  // 				"TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", 
+  // 				"QCDdd", "QCDdd", "DataMu", "DataEle"};
   
   const float norm_mu_syst[] = {6.1, 6.1, 6.1, 6.1,
 				6.1, 6.1, 6.1, 6.1,
@@ -285,7 +293,9 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v32_Syst/CBA_Skim_Syst_jet_tightID" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_lowreso" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v36_Syst/CBA_Skim_Syst_btagCSV" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_KFNewReso" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_KFNewReso" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_1718_Resubmit" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagM" ;
 
   //int isample = 17; 
   isample--;

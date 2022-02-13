@@ -30,7 +30,7 @@ int CreateQCDDD()
 
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
 
-  int year = 2016;
+  int year = 2017;
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
@@ -46,8 +46,11 @@ int CreateQCDDD()
   //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy6";
   //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy7";
   //const char* dir = "grid_v38_Syst/CBA_Skim_Syst_TuneTest1";
-  const char* dir = "grid_v39_Syst/ULv9_long";
-  
+  //const char* dir = "grid_v39_Syst/ULv9_long";
+  //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
+  //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
+  const char* dir = "grid_v39_Syst/CBA_CTagM";
+
   const char *syst[] = {"base", 
 			"puup", "pudown", "mueffup", "mueffdown", 
 			"eleeffup", "eleeffdown",  "jecup", "jecdown", 

@@ -380,7 +380,7 @@ Int_t SkimAna::CreateHistoArrays()
   
   if(fSyst=="base"){
     fNBSelCols = 7; //Nof cutflow columns
-    fNBSelColHists = 48; //nof histograms
+    fNBSelColHists = 49; //nof histograms
     fNSelColHists = fNBSelCols*fNBSelColHists;
     hControl = new TH1D*[fNSelColHists];
     const char *cfcols[] = {"Event", "Trigger", "Lepton", "Jet", "MET", "bjet", "KinFit"} ;
@@ -440,7 +440,8 @@ Int_t SkimAna::CreateHistoArrays()
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jet_neHEF_jetid","jet_neHEF_jetid", 1200, 0, 1.2);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_bjet_jetid","pt_jet1_bjet_jetid",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_ljet_jetid","pt_jet1_ljet_jetid",1000, 0., 1000.);
-      hControl[iscl*fNBSelColHists + 47] = new TH1D("jetresolution","jetresolution",200, 0., 2.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("mjj_test_mu","mjj_test_mu",50, 0., 250.);
+      hControl[iscl*fNBSelColHists + 48] = new TH1D("jetresolution","jetresolution",200, 0., 2.);
       
     }
   }//fSyst==base
@@ -4595,7 +4596,7 @@ bool SkimAna::FillKinFitControlHists(){
   
   int iscl = 6 ; //6 for KinFit
   TList *list = (TList *)fSelColDir[iscl]->GetList();
-  if(singleMu and hasKFMu){
+  if(singleMu and hasKFMu and muonIsoCut and !isLowMET){
     ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
     ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
     ((TH1D *) list->FindObject("pt_mu"))->Fill(leptonAF.Pt(), combined_muwt);
@@ -4610,7 +4611,9 @@ bool SkimAna::FillKinFitControlHists(){
     ((TH1D *) list->FindObject("eta_jet1_ljet"))->Fill(cjhadAF.Eta(), combined_muwt);
     ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(sjhadAF.Pt(), combined_muwt);
     ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(sjhadAF.Eta(), combined_muwt);
-    
+
+    ((TH1D *) list->FindObject("mjj_test_mu"))->Fill((sjhadAF+cjhadAF).M(), combined_muwt);
+
     bool isApplicable[4],hasPassed[4];
     isApplicable[0] = (selector->JetsPtSmeared.at(_bjlep_id)<50.)? true : false;
     isApplicable[1] = (selector->JetsPtSmeared.at(_bjhad_id)<50.)? true : false;

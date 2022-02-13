@@ -68,7 +68,8 @@ void readmasshisto_v02(){
 
   //Uncomment following lines when you process ttbar data sample
   //sprintf(fin_name, "result_m172.6_chi2020_pt020-10000_h01-h17.root");
-  sprintf(fin_name, "result_m172.6_chi2020_pt020-10000_ttbar_wt_btagwt_correction.root");
+  //sprintf(fin_name, "result_m172.6_chi2020_pt020-10000_ttbar_wt_btagwt_correction.root");
+  sprintf(fin_name, "/Data/CMS-Analysis/NanoAOD-Analysis/KineFit/proof_2/root_files/result_m172.6_chi2020_pt020-10000_ttbar_wt_btagwt_correction.root");
   sprintf(npdf_s, "Indra_TTbar_wt_cor.pdf(");
   sprintf(npdf_m, "Indra_TTbar_wt_cor.pdf");
   sprintf(npdf_e, "Indra_TTbar_wt_cor.pdf)");

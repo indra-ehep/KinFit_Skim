@@ -117,11 +117,11 @@ Float_t ETBin[20] = {20., 30., 40., 50., 60.,
   // 		       220., 230., 240., 250., 260.,
   // 		       270., 280., 290., 300., 310};
 
-TH1F *hBJetETReso[nJetEtaBins][nETBins], *hLJetETReso[nJetEtaBins][nETBins], 
-  *hBJetEtaReso[nJetEtaBins][nETBins], *hLJetEtaReso[nJetEtaBins][nETBins], 
-  *hBJetPhiReso[nJetEtaBins][nETBins], *hLJetPhiReso[nJetEtaBins][nETBins];
+TH1F *hBJetETReso[nJetEtaBins][nETBins], *hLJetETReso[nJetEtaBins][nETBins], *hBJetEtaReso[nJetEtaBins][nETBins], *hLJetEtaReso[nJetEtaBins][nETBins], *hBJetPhiReso[nJetEtaBins][nETBins], *hLJetPhiReso[nJetEtaBins][nETBins];
+TH1F *hBJetPtReso[nJetEtaBins][nETBins], *hLJetPtReso[nJetEtaBins][nETBins], *hBJetEnReso[nJetEtaBins][nETBins], *hLJetEnReso[nJetEtaBins][nETBins];
 TH1F *hBJetETResult[nJetEtaBins], *hLJetETResult[nJetEtaBins], *hBJetEtaResult[nJetEtaBins], *hLJetEtaResult[nJetEtaBins], *hBJetPhiResult[nJetEtaBins], *hLJetPhiResult[nJetEtaBins];
 TH1F *hBJetETResultNF[nJetEtaBins], *hLJetETResultNF[nJetEtaBins], *hBJetEtaResultNF[nJetEtaBins], *hLJetEtaResultNF[nJetEtaBins], *hBJetPhiResultNF[nJetEtaBins], *hLJetPhiResultNF[nJetEtaBins];
+TH1F *hBJetPtResultNF[nJetEtaBins], *hLJetPtResultNF[nJetEtaBins], *hBJetEnResultNF[nJetEtaBins], *hLJetEnResultNF[nJetEtaBins];
 
 double BJetETPar[nJetEtaBins][3],BJetETParErr[nJetEtaBins][3], LJetETPar[nJetEtaBins][3], LJetETParErr[nJetEtaBins][3];
 double BJetEtaPar[nJetEtaBins][2],BJetEtaParErr[nJetEtaBins][2], LJetEtaPar[nJetEtaBins][2], LJetEtaParErr[nJetEtaBins][2];
@@ -133,23 +133,29 @@ TF1 *fnETEle, *fnEtaEle, *fnPhiEle;
 TF1 *fnETMET, *fnPhiMET;
 
 TH1F *hMuETReso[nMuEtaBins][nETBins], *hMuEtaReso[nMuEtaBins][nETBins], *hMuPhiReso[nMuEtaBins][nETBins];
+TH1F *hMuPtReso[nMuEtaBins][nETBins], *hMuEnReso[nMuEtaBins][nETBins];
 TH1F *hMuETResult[nMuEtaBins], *hMuEtaResult[nMuEtaBins], *hMuPhiResult[nMuEtaBins];
 TH1F *hMuETResultNF[nMuEtaBins], *hMuEtaResultNF[nMuEtaBins], *hMuPhiResultNF[nMuEtaBins];
+TH1F *hMuPtResultNF[nMuEtaBins], *hMuEnResultNF[nMuEtaBins];
 
 double MuETPar[nMuEtaBins][2],MuETParErr[nMuEtaBins][2];
 double MuEtaPar[nMuEtaBins][3],MuEtaParErr[nMuEtaBins][3];
 double MuPhiPar[nMuEtaBins][3],MuPhiParErr[nMuEtaBins][3];
 
 TH1F *hEleETReso[nEleEtaBins][nETBins], *hEleEtaReso[nEleEtaBins][nETBins], *hElePhiReso[nEleEtaBins][nETBins];
+TH1F *hElePtReso[nMuEtaBins][nETBins], *hEleEnReso[nMuEtaBins][nETBins];
 TH1F *hEleETResult[nEleEtaBins], *hEleEtaResult[nEleEtaBins], *hElePhiResult[nEleEtaBins];
 TH1F *hEleETResultNF[nEleEtaBins], *hEleEtaResultNF[nEleEtaBins], *hElePhiResultNF[nEleEtaBins];
+TH1F *hElePtResultNF[nEleEtaBins], *hEleEnResultNF[nEleEtaBins];
 
 double EleETPar[nEleEtaBins][2],EleETParErr[nEleEtaBins][2];
 double EleEtaPar[nEleEtaBins][3],EleEtaParErr[nEleEtaBins][3];
 double ElePhiPar[nEleEtaBins][3],ElePhiParErr[nEleEtaBins][3];
 
 TH1F *hMETETReso[nETBins], *hMETPhiReso[nETBins];
+TH1F *hMETPtReso[nETBins];
 TH1F *hMETETResultNF, *hMETPhiResultNF;
+TH1F *hMETPtResultNF;
 
 int udscResolution(double et, double eta, double& resEt, double& resEta, double& resPhi);
 int bjetResolution(double et, double eta, double& resEt, double& resEta, double& resPhi);
@@ -157,7 +163,7 @@ int muonResolution(double et, double eta, double& resEt, double& resEta, double&
 int elecResolution(double et, double eta, double& resEt, double& resEta, double& resPhi);
 int metResolution(double et, double& resEt, double& resEta, double& resPhi);
 
-int ReadKinFitObjectResolution(int year = 2017)
+int ReadKFMean(int year = 2017)
 {
 
   int PrintBJet(void);
@@ -169,49 +175,39 @@ int ReadKinFitObjectResolution(int year = 2017)
   int PlotEle(void);
   int PlotMET(void);
   
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/Resolution_long_RefANEta.root";
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/Resolution_test.root";
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/TTbar_KFObjectsReso_2016.root";
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/TTbar_KFObjectsReso_sl_2016.root";
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/TTbar_KFObjectsReso_2016.root";
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/TTbar_KFObjectsReso_2016_MuReso.root";
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/TTbar_KFObjectsReso_2016_KFCompareReso.root";
-  //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/test/TTbar_KFObjectsReso_2016_KFCompareReso_EqualETbins.root";
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/pre/TTbar_KFObjectsReso_2016.root"; //It is all merged, wrong naming
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/post/TTbar_KFObjectsReso_2016.root"; //It is all merged, wrong naming
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2017/AllBkg_KFObjectsReso_2017.root";
   //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
   string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
-
-  TH2F *hBJetETRes = new TH2F("hBJetETRes","hBJetETRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  TH2F *hBJetEtaRes = new TH2F("hBJetEtaRes","hBJetEtaRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  TH2F *hBJetPhiRes = new TH2F("hBJetPhiRes","hBJetPhiRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  TH2F *hLJetETRes = new TH2F("hLJetETRes","hLJetETRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  TH2F *hLJetEtaRes = new TH2F("hLJetEtaRes","hLJetEtaRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  TH2F *hLJetPhiRes = new TH2F("hLJetPhiRes","hLJetPhiRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  TH2F *hMuETRes = new TH2F("hMuETRes","hMuETRes",nMuEtaBins,muEtaBin,nETBins,ETBin);
-  TH2F *hMuEtaRes = new TH2F("hMuEtaRes","hMuEtaRes",nMuEtaBins,muEtaBin,nETBins,ETBin);
-  TH2F *hMuPhiRes = new TH2F("hMuPhiRes","hMuPhiRes",nMuEtaBins,muEtaBin,nETBins,ETBin);
-  TH2F *hEleETRes = new TH2F("hEleETRes","hEleETRes",nEleEtaBins,eleEtaBin,nETBins,ETBin);
-  TH2F *hEleEtaRes = new TH2F("hEleEtaRes","hEleEtaRes",nEleEtaBins,eleEtaBin,nETBins,ETBin);
-  TH2F *hElePhiRes = new TH2F("hElePhiRes","hElePhiRes",nEleEtaBins,eleEtaBin,nETBins,ETBin);
-  TH1F *hMETETRes = new TH1F("hMETETRes","hMETETRes",nETBins,ETBin);
-  TH1F *hMETPhiRes = new TH1F("hMETPhiRes","hMETPhiRes",nETBins,ETBin);
   
-  // TH2F *hBJetETResErr = new TH2F("hBJetETResErr","hBJetETResErr",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  // TH2F *hBJetEtaResErr = new TH2F("hBJetEtaResErr","hBJetEtaResErr",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  // TH2F *hBJetPhiResErr = new TH2F("hBJetPhiResErr","hBJetPhiResErr",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  // TH2F *hLJetETResErr = new TH2F("hLJetETResErr","hLJetETResErr",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  // TH2F *hLJetEtaResErr = new TH2F("hLJetEtaResErr","hLJetEtaResErr",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  // TH2F *hLJetPhiResErr = new TH2F("hLJetPhiResErr","hLJetPhiResErr",nJetEtaBins,jetEtaBin,nETBins,ETBin);
-  // TH2F *hMuETResErr = new TH2F("hMuETResErr","hMuETResErr",nMuEtaBins,muEtaBin,nETBins,ETBin);
-  // TH2F *hMuEtaResErr = new TH2F("hMuEtaResErr","hMuEtaResErr",nMuEtaBins,muEtaBin,nETBins,ETBin);
-  // TH2F *hMuPhiResErr = new TH2F("hMuPhiResErr","hMuPhiResErr",nMuEtaBins,muEtaBin,nETBins,ETBin);
-  // TH2F *hEleETResErr = new TH2F("hEleETResErr","hEleETResErr",nEleEtaBins,eleEtaBin,nETBins,ETBin);
-  // TH2F *hEleEtaResErr = new TH2F("hEleEtaResErr","hEleEtaResErr",nEleEtaBins,eleEtaBin,nETBins,ETBin);
-  // TH2F *hElePhiResErr = new TH2F("hElePhiResErr","hElePhiResErr",nEleEtaBins,eleEtaBin,nETBins,ETBin);
-  // TH1F *hMETETResErr = new TH1F("hMETETResErr","hMETETResErr",nETBins,ETBin);
-  // TH1F *hMETPhiResErr = new TH1F("hMETPhiResErr","hMETPhiResErr",nETBins,ETBin);
+  TH2F *hBJetETDiff = new TH2F("hBJetETDiff","hBJetETDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hBJetEtaDiff = new TH2F("hBJetEtaDiff","hBJetEtaDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hBJetPhiDiff = new TH2F("hBJetPhiDiff","hBJetPhiDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hBJetPtDiff = new TH2F("hBJetPtDiff","hBJetPtDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hBJetEnDiff = new TH2F("hBJetEnDiff","hBJetEnDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+
+  TH2F *hLJetETDiff = new TH2F("hLJetETDiff","hLJetETDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hLJetEtaDiff = new TH2F("hLJetEtaDiff","hLJetEtaDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hLJetPhiDiff = new TH2F("hLJetPhiDiff","hLJetPhiDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hLJetPtDiff = new TH2F("hLJetPtDiff","hLJetPtDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hLJetEnDiff = new TH2F("hLJetEnDiff","hLJetEnDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+
+  TH2F *hMuETDiff = new TH2F("hMuETDiff","hMuETDiff",nMuEtaBins,muEtaBin,nETBins,ETBin);
+  TH2F *hMuEtaDiff = new TH2F("hMuEtaDiff","hMuEtaDiff",nMuEtaBins,muEtaBin,nETBins,ETBin);
+  TH2F *hMuPhiDiff = new TH2F("hMuPhiDiff","hMuPhiDiff",nMuEtaBins,muEtaBin,nETBins,ETBin);
+  TH2F *hMuPtDiff = new TH2F("hMuPtDiff","hMuPtDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hMuEnDiff = new TH2F("hMuEnDiff","hMuEnDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+
+  TH2F *hEleETDiff = new TH2F("hEleETDiff","hEleETDiff",nEleEtaBins,eleEtaBin,nETBins,ETBin);
+  TH2F *hEleEtaDiff = new TH2F("hEleEtaDiff","hEleEtaDiff",nEleEtaBins,eleEtaBin,nETBins,ETBin);
+  TH2F *hElePhiDiff = new TH2F("hElePhiDiff","hElePhiDiff",nEleEtaBins,eleEtaBin,nETBins,ETBin);
+  TH2F *hElePtDiff = new TH2F("hElePtDiff","hElePtDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+  TH2F *hEleEnDiff = new TH2F("hEleEnDiff","hEleEnDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
+
+  TH1F *hMETETDiff = new TH1F("hMETETDiff","hMETETDiff",nETBins,ETBin);
+  TH1F *hMETPhiDiff = new TH1F("hMETPhiDiff","hMETPhiDiff",nETBins,ETBin);
+  TH1F *hMETPtDiff = new TH1F("hMETPtDiff","hMETPtDiff",nETBins,ETBin);
   
   TFile *fin = TFile::Open(infile.c_str());
   
@@ -231,6 +227,10 @@ int ReadKinFitObjectResolution(int year = 2017)
     hLJetEtaResultNF[ieta] = new TH1F(Form("hLJetEtaResultNF_%d",ieta),Form("hLJetEtaResultNF for #eta : (%3.3f - %3.3f)",jetEtaBin[ieta],jetEtaBin[ieta+1]), nETBins, ETBin);
     hBJetPhiResultNF[ieta] = new TH1F(Form("hBJetPhiResultNF_%d",ieta),Form("hBJetPhiResultNF for #eta : (%3.3f - %3.3f)",jetEtaBin[ieta],jetEtaBin[ieta+1]), nETBins, ETBin);
     hLJetPhiResultNF[ieta] = new TH1F(Form("hLJetPhiResultNF_%d",ieta),Form("hLJetPhiResultNF for #eta : (%3.3f - %3.3f)",jetEtaBin[ieta],jetEtaBin[ieta+1]), nETBins, ETBin);
+    hBJetPtResultNF[ieta] = new TH1F(Form("hBJetPtResultNF_%d",ieta),Form("hBJetPtResultNF for #eta : (%3.3f - %3.3f)",jetEtaBin[ieta],jetEtaBin[ieta+1]), nETBins, ETBin);
+    hLJetPtResultNF[ieta] = new TH1F(Form("hLJetPtResultNF_%d",ieta),Form("hLJetPtResultNF for #eta : (%3.3f - %3.3f)",jetEtaBin[ieta],jetEtaBin[ieta+1]), nETBins, ETBin);
+    hBJetEnResultNF[ieta] = new TH1F(Form("hBJetEnResultNF_%d",ieta),Form("hBJetEnResultNF for #eta : (%3.3f - %3.3f)",jetEtaBin[ieta],jetEtaBin[ieta+1]), nETBins, ETBin);
+    hLJetEnResultNF[ieta] = new TH1F(Form("hLJetEnResultNF_%d",ieta),Form("hLJetEnResultNF for #eta : (%3.3f - %3.3f)",jetEtaBin[ieta],jetEtaBin[ieta+1]), nETBins, ETBin);
     
     for(int iet=0;iet<nETBins;iet++){
       hBJetETReso[ieta][iet] = (TH1F *)fin->Get(Form("hBJetETReso_%d_%d",ieta,iet));
@@ -239,6 +239,10 @@ int ReadKinFitObjectResolution(int year = 2017)
       hLJetEtaReso[ieta][iet] = (TH1F *)fin->Get(Form("hLJetEtaReso_%d_%d",ieta,iet));
       hBJetPhiReso[ieta][iet] = (TH1F *)fin->Get(Form("hBJetPhiReso_%d_%d",ieta,iet)); 
       hLJetPhiReso[ieta][iet] = (TH1F *)fin->Get(Form("hLJetPhiReso_%d_%d",ieta,iet)); 
+      hBJetPtReso[ieta][iet] = (TH1F *)fin->Get(Form("hBJetPtReso_%d_%d",ieta,iet));
+      hLJetPtReso[ieta][iet] = (TH1F *)fin->Get(Form("hLJetPtReso_%d_%d",ieta,iet)); 
+      hBJetEnReso[ieta][iet] = (TH1F *)fin->Get(Form("hBJetEnReso_%d_%d",ieta,iet));
+      hLJetEnReso[ieta][iet] = (TH1F *)fin->Get(Form("hLJetEnReso_%d_%d",ieta,iet)); 
     }//et
   }//eta
   
@@ -249,66 +253,84 @@ int ReadKinFitObjectResolution(int year = 2017)
       fn->SetRange(hBJetETReso[0][0]->GetXaxis()->GetBinCenter(1),hBJetETReso[0][0]->GetXaxis()->GetBinCenter(hBJetETReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,1);
       hBJetETReso[ieta][iet]->Fit("fn","NQLR");
-      hBJetETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hBJetETResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hBJetETResultNF[ieta]->SetBinContent(iet+1,hBJetETReso[ieta][iet]->GetRMS());
-      hBJetETResultNF[ieta]->SetBinError(iet+1,hBJetETReso[ieta][iet]->GetRMSError());
-      hBJetETRes->SetBinContent(ieta+1, iet+1, hBJetETReso[ieta][iet]->GetRMS());
-      hBJetETRes->SetBinError(ieta+1, iet+1, hBJetETReso[ieta][iet]->GetRMSError());
-      //hBJetETResErr->SetBinContent(ieta+1, iet+1, hBJetETReso[ieta][iet]->GetRMSError());
+      hBJetETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hBJetETResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hBJetETResultNF[ieta]->SetBinContent(iet+1,hBJetETReso[ieta][iet]->GetMean());
+      hBJetETResultNF[ieta]->SetBinError(iet+1,hBJetETReso[ieta][iet]->GetMeanError());
+      hBJetETDiff->SetBinContent(ieta+1, iet+1, hBJetETReso[ieta][iet]->GetMean());
+      hBJetETDiff->SetBinError(ieta+1, iet+1, hBJetETReso[ieta][iet]->GetMeanError());
+      //hBJetETResErr->SetBinContent(ieta+1, iet+1, hBJetETReso[ieta][iet]->GetMeanError());
 
       fn->SetParameters(1,0,1);
       hLJetETReso[ieta][iet]->Fit("fn","NQLR");
-      hLJetETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hLJetETResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hLJetETResultNF[ieta]->SetBinContent(iet+1,hLJetETReso[ieta][iet]->GetRMS());
-      hLJetETResultNF[ieta]->SetBinError(iet+1,hLJetETReso[ieta][iet]->GetRMSError());
-      hLJetETRes->SetBinContent(ieta+1, iet+1, hLJetETReso[ieta][iet]->GetRMS());
-      hLJetETRes->SetBinError(ieta+1, iet+1, hLJetETReso[ieta][iet]->GetRMSError());
-      //hLJetETResErr->SetBinContent(ieta+1, iet+1, hLJetETReso[ieta][iet]->GetRMSError());
+      hLJetETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hLJetETResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hLJetETResultNF[ieta]->SetBinContent(iet+1,hLJetETReso[ieta][iet]->GetMean());
+      hLJetETResultNF[ieta]->SetBinError(iet+1,hLJetETReso[ieta][iet]->GetMeanError());
+      hLJetETDiff->SetBinContent(ieta+1, iet+1, hLJetETReso[ieta][iet]->GetMean());
+      hLJetETDiff->SetBinError(ieta+1, iet+1, hLJetETReso[ieta][iet]->GetMeanError());
+      //hLJetETResErr->SetBinContent(ieta+1, iet+1, hLJetETReso[ieta][iet]->GetMeanError());
 
       fn->SetRange(hBJetEtaReso[0][0]->GetXaxis()->GetBinCenter(1),hBJetEtaReso[0][0]->GetXaxis()->GetBinCenter(hBJetEtaReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,1);
       hBJetEtaReso[ieta][iet]->Fit("fn","NQLR");
-      hBJetEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hBJetEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hBJetEtaResultNF[ieta]->SetBinContent(iet+1,hBJetEtaReso[ieta][iet]->GetRMS());
-      hBJetEtaResultNF[ieta]->SetBinError(iet+1,hBJetEtaReso[ieta][iet]->GetRMSError());
-      hBJetEtaRes->SetBinContent(ieta+1, iet+1, hBJetEtaReso[ieta][iet]->GetRMS());
-      hBJetEtaRes->SetBinError(ieta+1, iet+1, hBJetEtaReso[ieta][iet]->GetRMSError());
-      //hBJetEtaResErr->SetBinContent(ieta+1, iet+1, hBJetEtaReso[ieta][iet]->GetRMSError());      
+      hBJetEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hBJetEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hBJetEtaResultNF[ieta]->SetBinContent(iet+1,hBJetEtaReso[ieta][iet]->GetMean());
+      hBJetEtaResultNF[ieta]->SetBinError(iet+1,hBJetEtaReso[ieta][iet]->GetMeanError());
+      hBJetEtaDiff->SetBinContent(ieta+1, iet+1, hBJetEtaReso[ieta][iet]->GetMean());
+      hBJetEtaDiff->SetBinError(ieta+1, iet+1, hBJetEtaReso[ieta][iet]->GetMeanError());
+      //hBJetEtaResErr->SetBinContent(ieta+1, iet+1, hBJetEtaReso[ieta][iet]->GetMeanError());      
 
       fn->SetParameters(1,0,10);
       hLJetEtaReso[ieta][iet]->Fit("fn","NQLR");
-      hLJetEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hLJetEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hLJetEtaResultNF[ieta]->SetBinContent(iet+1,hLJetEtaReso[ieta][iet]->GetRMS());
-      hLJetEtaResultNF[ieta]->SetBinError(iet+1,hLJetEtaReso[ieta][iet]->GetRMSError());
-      hLJetEtaRes->SetBinContent(ieta+1, iet+1, hLJetEtaReso[ieta][iet]->GetRMS());
-      hLJetEtaRes->SetBinError(ieta+1, iet+1, hLJetEtaReso[ieta][iet]->GetRMSError());
-      //hLJetEtaResErr->SetBinContent(ieta+1, iet+1, hLJetEtaReso[ieta][iet]->GetRMSError());
+      hLJetEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hLJetEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hLJetEtaResultNF[ieta]->SetBinContent(iet+1,hLJetEtaReso[ieta][iet]->GetMean());
+      hLJetEtaResultNF[ieta]->SetBinError(iet+1,hLJetEtaReso[ieta][iet]->GetMeanError());
+      hLJetEtaDiff->SetBinContent(ieta+1, iet+1, hLJetEtaReso[ieta][iet]->GetMean());
+      hLJetEtaDiff->SetBinError(ieta+1, iet+1, hLJetEtaReso[ieta][iet]->GetMeanError());
+      //hLJetEtaResErr->SetBinContent(ieta+1, iet+1, hLJetEtaReso[ieta][iet]->GetMeanError());
       
       fn->SetRange(hBJetPhiReso[0][0]->GetXaxis()->GetBinCenter(1),hBJetPhiReso[0][0]->GetXaxis()->GetBinCenter(hBJetPhiReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,1);
       hBJetPhiReso[ieta][iet]->Fit("fn","NQLR");
-      hBJetPhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hBJetPhiResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hBJetPhiResultNF[ieta]->SetBinContent(iet+1,hBJetPhiReso[ieta][iet]->GetRMS());
-      hBJetPhiResultNF[ieta]->SetBinError(iet+1,hBJetPhiReso[ieta][iet]->GetRMSError());
-      hBJetPhiRes->SetBinContent(ieta+1, iet+1, hBJetPhiReso[ieta][iet]->GetRMS());
-      hBJetPhiRes->SetBinError(ieta+1, iet+1, hBJetPhiReso[ieta][iet]->GetRMSError());
-      //hBJetPhiResErr->SetBinContent(ieta+1, iet+1, hBJetPhiReso[ieta][iet]->GetRMSError());
+      hBJetPhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hBJetPhiResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hBJetPhiResultNF[ieta]->SetBinContent(iet+1,hBJetPhiReso[ieta][iet]->GetMean());
+      hBJetPhiResultNF[ieta]->SetBinError(iet+1,hBJetPhiReso[ieta][iet]->GetMeanError());
+      hBJetPhiDiff->SetBinContent(ieta+1, iet+1, hBJetPhiReso[ieta][iet]->GetMean());
+      hBJetPhiDiff->SetBinError(ieta+1, iet+1, hBJetPhiReso[ieta][iet]->GetMeanError());
+      //hBJetPhiResErr->SetBinContent(ieta+1, iet+1, hBJetPhiReso[ieta][iet]->GetMeanError());
 
       fn->SetParameters(1,0,1);
       hLJetPhiReso[ieta][iet]->Fit("fn","NQLR");
-      hLJetPhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hLJetPhiResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hLJetPhiResultNF[ieta]->SetBinContent(iet+1,hLJetPhiReso[ieta][iet]->GetRMS());
-      hLJetPhiResultNF[ieta]->SetBinError(iet+1,hLJetPhiReso[ieta][iet]->GetRMSError());
-      hLJetPhiRes->SetBinContent(ieta+1, iet+1, hLJetPhiReso[ieta][iet]->GetRMS());
-      hLJetPhiRes->SetBinError(ieta+1, iet+1, hLJetPhiReso[ieta][iet]->GetRMSError());
-      //hLJetPhiResErr->SetBinContent(ieta+1, iet+1, hLJetPhiReso[ieta][iet]->GetRMSError());
+      hLJetPhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hLJetPhiResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hLJetPhiResultNF[ieta]->SetBinContent(iet+1,hLJetPhiReso[ieta][iet]->GetMean());
+      hLJetPhiResultNF[ieta]->SetBinError(iet+1,hLJetPhiReso[ieta][iet]->GetMeanError());
+      hLJetPhiDiff->SetBinContent(ieta+1, iet+1, hLJetPhiReso[ieta][iet]->GetMean());
+      hLJetPhiDiff->SetBinError(ieta+1, iet+1, hLJetPhiReso[ieta][iet]->GetMeanError());
+      //hLJetPhiResErr->SetBinContent(ieta+1, iet+1, hLJetPhiReso[ieta][iet]->GetMeanError());
 
+
+      hBJetPtResultNF[ieta]->SetBinContent(iet+1,hBJetPtReso[ieta][iet]->GetMean());
+      hBJetPtResultNF[ieta]->SetBinError(iet+1,hBJetPtReso[ieta][iet]->GetMeanError());
+      hBJetEnResultNF[ieta]->SetBinContent(iet+1,hBJetEnReso[ieta][iet]->GetMean());
+      hBJetEnResultNF[ieta]->SetBinError(iet+1,hBJetEnReso[ieta][iet]->GetMeanError());
+      hBJetPtDiff->SetBinContent(ieta+1, iet+1, hBJetPtReso[ieta][iet]->GetMean());
+      hBJetPtDiff->SetBinError(ieta+1, iet+1, hBJetPtReso[ieta][iet]->GetMeanError());
+      hBJetEnDiff->SetBinContent(ieta+1, iet+1, hBJetEnReso[ieta][iet]->GetMean());
+      hBJetEnDiff->SetBinError(ieta+1, iet+1, hBJetEnReso[ieta][iet]->GetMeanError());
+
+      hLJetPtResultNF[ieta]->SetBinContent(iet+1,hLJetPtReso[ieta][iet]->GetMean());
+      hLJetPtResultNF[ieta]->SetBinError(iet+1,hLJetPtReso[ieta][iet]->GetMeanError());
+      hLJetEnResultNF[ieta]->SetBinContent(iet+1,hLJetEnReso[ieta][iet]->GetMean());
+      hLJetEnResultNF[ieta]->SetBinError(iet+1,hLJetEnReso[ieta][iet]->GetMeanError());
+      hLJetPtDiff->SetBinContent(ieta+1, iet+1, hLJetPtReso[ieta][iet]->GetMean());
+      hLJetPtDiff->SetBinError(ieta+1, iet+1, hLJetPtReso[ieta][iet]->GetMeanError());
+      hLJetEnDiff->SetBinContent(ieta+1, iet+1, hLJetEnReso[ieta][iet]->GetMean());
+      hLJetEnDiff->SetBinError(ieta+1, iet+1, hLJetEnReso[ieta][iet]->GetMeanError());
     }//et
   }//eta
   
@@ -375,11 +397,15 @@ int ReadKinFitObjectResolution(int year = 2017)
     hMuETResultNF[ieta] = new TH1F(Form("hMuETResultNF_%d",ieta),Form("hMuETResultNF for #eta : (%3.3f - %3.3f)",muEtaBin[ieta],muEtaBin[ieta+1]), nETBins, ETBin);
     hMuEtaResultNF[ieta] = new TH1F(Form("hMuEtaResultNF_%d",ieta),Form("hMuEtaResultNF for #eta : (%3.3f - %3.3f)",muEtaBin[ieta],muEtaBin[ieta+1]), nETBins, ETBin);
     hMuPhiResultNF[ieta] = new TH1F(Form("hMuPhiResultNF_%d",ieta),Form("hMuPhiResultNF for #eta : (%3.3f - %3.3f)",muEtaBin[ieta],muEtaBin[ieta+1]), nETBins, ETBin);
-    
+    hMuPtResultNF[ieta] = new TH1F(Form("hMuPtResultNF_%d",ieta),Form("hMuPtResultNF for #eta : (%3.3f - %3.3f)",muEtaBin[ieta],muEtaBin[ieta+1]), nETBins, ETBin);
+    hMuEnResultNF[ieta] = new TH1F(Form("hMuEnResultNF_%d",ieta),Form("hMuEnResultNF for #eta : (%3.3f - %3.3f)",muEtaBin[ieta],muEtaBin[ieta+1]), nETBins, ETBin);
+
     for(int iet=0;iet<nETBins;iet++){
       hMuETReso[ieta][iet] = (TH1F *)fin->Get(Form("hMuETReso_%d_%d",ieta,iet));
       hMuEtaReso[ieta][iet] = (TH1F *)fin->Get(Form("hMuEtaReso_%d_%d",ieta,iet));
       hMuPhiReso[ieta][iet] = (TH1F *)fin->Get(Form("hMuPhiReso_%d_%d",ieta,iet)); 
+      hMuPtReso[ieta][iet] = (TH1F *)fin->Get(Form("hMuPtReso_%d_%d",ieta,iet));
+      hMuEnReso[ieta][iet] = (TH1F *)fin->Get(Form("hMuEnReso_%d_%d",ieta,iet));
     }//et
   }//eta
   
@@ -388,36 +414,46 @@ int ReadKinFitObjectResolution(int year = 2017)
       fn->SetRange(hMuETReso[0][0]->GetXaxis()->GetBinCenter(1),hMuETReso[0][0]->GetXaxis()->GetBinCenter(hMuETReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,.001);
       hMuETReso[ieta][iet]->Fit("fn","NQLR");
-      hMuETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hMuETResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hMuETResultNF[ieta]->SetBinContent(iet+1,hMuETReso[ieta][iet]->GetRMS());
-      hMuETResultNF[ieta]->SetBinError(iet+1,hMuETReso[ieta][iet]->GetRMSError());
-      hMuETRes->SetBinContent(ieta+1, iet+1, hMuETReso[ieta][iet]->GetRMS());
-      hMuETRes->SetBinError(ieta+1, iet+1, hMuETReso[ieta][iet]->GetRMSError());
-      //hMuETResErr->SetBinContent(ieta+1, iet+1, hMuETReso[ieta][iet]->GetRMSError());
+      hMuETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hMuETResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hMuETResultNF[ieta]->SetBinContent(iet+1,hMuETReso[ieta][iet]->GetMean());
+      hMuETResultNF[ieta]->SetBinError(iet+1,hMuETReso[ieta][iet]->GetMeanError());
+      hMuETDiff->SetBinContent(ieta+1, iet+1, hMuETReso[ieta][iet]->GetMean());
+      hMuETDiff->SetBinError(ieta+1, iet+1, hMuETReso[ieta][iet]->GetMeanError());
+      //hMuETResErr->SetBinContent(ieta+1, iet+1, hMuETReso[ieta][iet]->GetMeanError());
 
       fn->SetRange(hMuEtaReso[0][0]->GetXaxis()->GetBinCenter(1),hMuEtaReso[0][0]->GetXaxis()->GetBinCenter(hMuEtaReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,.001);
       hMuEtaReso[ieta][iet]->Fit("fn","NQLR");
-      hMuEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hMuEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hMuEtaResultNF[ieta]->SetBinContent(iet+1,hMuEtaReso[ieta][iet]->GetRMS());
-      hMuEtaResultNF[ieta]->SetBinError(iet+1,hMuEtaReso[ieta][iet]->GetRMSError());
-      hMuEtaRes->SetBinContent(ieta+1, iet+1, hMuEtaReso[ieta][iet]->GetRMS());
-      hMuEtaRes->SetBinError(ieta+1, iet+1, hMuEtaReso[ieta][iet]->GetRMSError());
-      //hMuEtaResErr->SetBinContent(ieta+1, iet+1, hMuEtaReso[ieta][iet]->GetRMSError());
+      hMuEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hMuEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hMuEtaResultNF[ieta]->SetBinContent(iet+1,hMuEtaReso[ieta][iet]->GetMean());
+      hMuEtaResultNF[ieta]->SetBinError(iet+1,hMuEtaReso[ieta][iet]->GetMeanError());
+      hMuEtaDiff->SetBinContent(ieta+1, iet+1, hMuEtaReso[ieta][iet]->GetMean());
+      hMuEtaDiff->SetBinError(ieta+1, iet+1, hMuEtaReso[ieta][iet]->GetMeanError());
+      //hMuEtaResErr->SetBinContent(ieta+1, iet+1, hMuEtaReso[ieta][iet]->GetMeanError());
       
       fn->SetRange(hMuPhiReso[0][0]->GetXaxis()->GetBinCenter(1),hMuPhiReso[0][0]->GetXaxis()->GetBinCenter(hMuPhiReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,.001);
       hMuPhiReso[ieta][iet]->Fit("fn","NQLR");
-      hMuPhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hMuPhiResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hMuPhiResultNF[ieta]->SetBinContent(iet+1,hMuPhiReso[ieta][iet]->GetRMS());
-      hMuPhiResultNF[ieta]->SetBinError(iet+1,hMuPhiReso[ieta][iet]->GetRMSError());
-      hMuPhiRes->SetBinContent(ieta+1, iet+1, hMuPhiReso[ieta][iet]->GetRMS());
-      hMuPhiRes->SetBinError(ieta+1, iet+1, hMuPhiReso[ieta][iet]->GetRMSError());
-      //hMuPhiResErr->SetBinContent(ieta+1, iet+1, hMuPhiReso[ieta][iet]->GetRMSError());
-      
+      hMuPhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hMuPhiResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hMuPhiResultNF[ieta]->SetBinContent(iet+1,hMuPhiReso[ieta][iet]->GetMean());
+      hMuPhiResultNF[ieta]->SetBinError(iet+1,hMuPhiReso[ieta][iet]->GetMeanError());
+      hMuPhiDiff->SetBinContent(ieta+1, iet+1, hMuPhiReso[ieta][iet]->GetMean());
+      hMuPhiDiff->SetBinError(ieta+1, iet+1, hMuPhiReso[ieta][iet]->GetMeanError());
+      //hMuPhiResErr->SetBinContent(ieta+1, iet+1, hMuPhiReso[ieta][iet]->GetMeanError());
+
+
+      hMuPtResultNF[ieta]->SetBinContent(iet+1,hMuPtReso[ieta][iet]->GetMean());
+      hMuPtResultNF[ieta]->SetBinError(iet+1,hMuPtReso[ieta][iet]->GetMeanError());
+      hMuEnResultNF[ieta]->SetBinContent(iet+1,hMuEnReso[ieta][iet]->GetMean());
+      hMuEnResultNF[ieta]->SetBinError(iet+1,hMuEnReso[ieta][iet]->GetMeanError());    
+      hMuPtDiff->SetBinContent(ieta+1, iet+1, hMuPtReso[ieta][iet]->GetMean());
+      hMuPtDiff->SetBinError(ieta+1, iet+1, hMuPtReso[ieta][iet]->GetMeanError());
+      hMuEnDiff->SetBinContent(ieta+1, iet+1, hMuEnReso[ieta][iet]->GetMean());
+      hMuEnDiff->SetBinError(ieta+1, iet+1, hMuEnReso[ieta][iet]->GetMeanError());
+
     }//et
   }//eta
   
@@ -467,11 +503,15 @@ int ReadKinFitObjectResolution(int year = 2017)
     hEleETResultNF[ieta] = new TH1F(Form("hEleETResultNF_%d",ieta),Form("hEleETResultNF for #eta : (%3.3f - %3.3f)",eleEtaBin[ieta],eleEtaBin[ieta+1]), nETBins, ETBin);
     hEleEtaResultNF[ieta] = new TH1F(Form("hEleEtaResultNF_%d",ieta),Form("hEleEtaResultNF for #eta : (%3.3f - %3.3f)",eleEtaBin[ieta],eleEtaBin[ieta+1]), nETBins, ETBin);
     hElePhiResultNF[ieta] = new TH1F(Form("hElePhiResultNF_%d",ieta),Form("hElePhiResultNF for #eta : (%3.3f - %3.3f)",eleEtaBin[ieta],eleEtaBin[ieta+1]), nETBins, ETBin);
-    
+    hElePtResultNF[ieta] = new TH1F(Form("hElePtResultNF_%d",ieta),Form("hElePtResultNF for #eta : (%3.3f - %3.3f)",eleEtaBin[ieta],eleEtaBin[ieta+1]), nETBins, ETBin);
+    hEleEnResultNF[ieta] = new TH1F(Form("hEleEnResultNF_%d",ieta),Form("hEleEnResultNF for #eta : (%3.3f - %3.3f)",eleEtaBin[ieta],eleEtaBin[ieta+1]), nETBins, ETBin);
+
     for(int iet=0;iet<nETBins;iet++){
       hEleETReso[ieta][iet] = (TH1F *)fin->Get(Form("hEleETReso_%d_%d",ieta,iet));
       hEleEtaReso[ieta][iet] = (TH1F *)fin->Get(Form("hEleEtaReso_%d_%d",ieta,iet));
       hElePhiReso[ieta][iet] = (TH1F *)fin->Get(Form("hElePhiReso_%d_%d",ieta,iet)); 
+      hElePtReso[ieta][iet] = (TH1F *)fin->Get(Form("hElePtReso_%d_%d",ieta,iet));
+      hEleEnReso[ieta][iet] = (TH1F *)fin->Get(Form("hEleEnReso_%d_%d",ieta,iet));
     }//et
   }//eta
   
@@ -480,36 +520,45 @@ int ReadKinFitObjectResolution(int year = 2017)
       fn->SetRange(hEleETReso[0][0]->GetXaxis()->GetBinCenter(1),hEleETReso[0][0]->GetXaxis()->GetBinCenter(hEleETReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,.001);
       hEleETReso[ieta][iet]->Fit("fn","NQLR");
-      hEleETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hEleETResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hEleETResultNF[ieta]->SetBinContent(iet+1,hEleETReso[ieta][iet]->GetRMS());
-      hEleETResultNF[ieta]->SetBinError(iet+1,hEleETReso[ieta][iet]->GetRMSError());
-      hEleETRes->SetBinContent(ieta+1, iet+1, hEleETReso[ieta][iet]->GetRMS());
-      hEleETRes->SetBinError(ieta+1, iet+1, hEleETReso[ieta][iet]->GetRMSError());
-      //hEleETResErr->SetBinContent(ieta+1, iet+1, hEleETReso[ieta][iet]->GetRMSError());
+      hEleETResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hEleETResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hEleETResultNF[ieta]->SetBinContent(iet+1,hEleETReso[ieta][iet]->GetMean());
+      hEleETResultNF[ieta]->SetBinError(iet+1,hEleETReso[ieta][iet]->GetMeanError());
+      hEleETDiff->SetBinContent(ieta+1, iet+1, hEleETReso[ieta][iet]->GetMean());
+      hEleETDiff->SetBinError(ieta+1, iet+1, hEleETReso[ieta][iet]->GetMeanError());
+      //hEleETResErr->SetBinContent(ieta+1, iet+1, hEleETReso[ieta][iet]->GetMeanError());
       
       fn->SetRange(hEleEtaReso[0][0]->GetXaxis()->GetBinCenter(1),hEleEtaReso[0][0]->GetXaxis()->GetBinCenter(hEleEtaReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,.001);
       hEleEtaReso[ieta][iet]->Fit("fn","NQLR");
-      hEleEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hEleEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hEleEtaResultNF[ieta]->SetBinContent(iet+1,hEleEtaReso[ieta][iet]->GetRMS());
-      hEleEtaResultNF[ieta]->SetBinError(iet+1,hEleEtaReso[ieta][iet]->GetRMSError());
-      hEleEtaRes->SetBinContent(ieta+1, iet+1, hEleEtaReso[ieta][iet]->GetRMS());
-      hEleEtaRes->SetBinError(ieta+1, iet+1, hEleEtaReso[ieta][iet]->GetRMSError());
-      //hEleEtaResErr->SetBinContent(ieta+1, iet+1, hEleEtaReso[ieta][iet]->GetRMSError());
+      hEleEtaResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hEleEtaResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hEleEtaResultNF[ieta]->SetBinContent(iet+1,hEleEtaReso[ieta][iet]->GetMean());
+      hEleEtaResultNF[ieta]->SetBinError(iet+1,hEleEtaReso[ieta][iet]->GetMeanError());
+      hEleEtaDiff->SetBinContent(ieta+1, iet+1, hEleEtaReso[ieta][iet]->GetMean());
+      hEleEtaDiff->SetBinError(ieta+1, iet+1, hEleEtaReso[ieta][iet]->GetMeanError());
+      //hEleEtaResErr->SetBinContent(ieta+1, iet+1, hEleEtaReso[ieta][iet]->GetMeanError());
       
       fn->SetRange(hElePhiReso[0][0]->GetXaxis()->GetBinCenter(1),hElePhiReso[0][0]->GetXaxis()->GetBinCenter(hElePhiReso[0][0]->GetNbinsX()));
       fn->SetParameters(1,0,.001);
       hElePhiReso[ieta][iet]->Fit("fn","NQLR");
-      hElePhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(2));
-      hElePhiResult[ieta]->SetBinError(iet+1,fn->GetParError(2));
-      hElePhiResultNF[ieta]->SetBinContent(iet+1,hElePhiReso[ieta][iet]->GetRMS());
-      hElePhiResultNF[ieta]->SetBinError(iet+1,hElePhiReso[ieta][iet]->GetRMSError());
-      hElePhiRes->SetBinContent(ieta+1, iet+1, hElePhiReso[ieta][iet]->GetRMS());
-      hElePhiRes->SetBinError(ieta+1, iet+1, hElePhiReso[ieta][iet]->GetRMSError());
-      //hElePhiResErr->SetBinContent(ieta+1, iet+1, hElePhiReso[ieta][iet]->GetRMSError());
+      hElePhiResult[ieta]->SetBinContent(iet+1,fn->GetParameter(1));
+      hElePhiResult[ieta]->SetBinError(iet+1,fn->GetParError(1));
+      hElePhiResultNF[ieta]->SetBinContent(iet+1,hElePhiReso[ieta][iet]->GetMean());
+      hElePhiResultNF[ieta]->SetBinError(iet+1,hElePhiReso[ieta][iet]->GetMeanError());
+      hElePhiDiff->SetBinContent(ieta+1, iet+1, hElePhiReso[ieta][iet]->GetMean());
+      hElePhiDiff->SetBinError(ieta+1, iet+1, hElePhiReso[ieta][iet]->GetMeanError());
+      //hElePhiResErr->SetBinContent(ieta+1, iet+1, hElePhiReso[ieta][iet]->GetMeanError());
       
+      hElePtResultNF[ieta]->SetBinContent(iet+1,hElePtReso[ieta][iet]->GetMean());
+      hElePtResultNF[ieta]->SetBinError(iet+1,hElePtReso[ieta][iet]->GetMeanError());
+      hEleEnResultNF[ieta]->SetBinContent(iet+1,hEleEnReso[ieta][iet]->GetMean());
+      hEleEnResultNF[ieta]->SetBinError(iet+1,hEleEnReso[ieta][iet]->GetMeanError());    
+      hElePtDiff->SetBinContent(ieta+1, iet+1, hElePtReso[ieta][iet]->GetMean());
+      hElePtDiff->SetBinError(ieta+1, iet+1, hElePtReso[ieta][iet]->GetMeanError());
+      hEleEnDiff->SetBinContent(ieta+1, iet+1, hEleEnReso[ieta][iet]->GetMean());
+      hEleEnDiff->SetBinError(ieta+1, iet+1, hEleEnReso[ieta][iet]->GetMeanError());
+
     }//et
   }//eta
   
@@ -551,20 +600,27 @@ int ReadKinFitObjectResolution(int year = 2017)
   ///////////////////////////////////////// MET ////////////////////////////////////////////////////////////////////////////////////////////////////////
   hMETETResultNF = new TH1F("hMETETResultNF","hMETETResultNF", nETBins, ETBin);
   hMETPhiResultNF = new TH1F("hMETPhiResultNF","hMETPhiResultNF", nETBins, ETBin);    
+  hMETPtResultNF = new TH1F("hMETPtResultNF","hMETPtResultNF", nETBins, ETBin);
   for(int iet=0;iet<nETBins;iet++){
     hMETETReso[iet] = (TH1F *)fin->Get(Form("hMETETReso_%d",iet));
     hMETPhiReso[iet] = (TH1F *)fin->Get(Form("hMETPhiReso_%d",iet)); 
+    hMETPtReso[iet] = (TH1F *)fin->Get(Form("hMETPtReso_%d",iet));
 
-    hMETETResultNF->SetBinContent(iet+1,hMETETReso[iet]->GetRMS());
-    hMETETResultNF->SetBinError(iet+1,hMETETReso[iet]->GetRMSError());
-    hMETETRes->SetBinContent(iet+1, hMETETReso[iet]->GetRMS());
-    hMETETRes->SetBinError(iet+1, hMETETReso[iet]->GetRMSError());
+    hMETETResultNF->SetBinContent(iet+1,hMETETReso[iet]->GetMean());
+    hMETETResultNF->SetBinError(iet+1,hMETETReso[iet]->GetMeanError());
+    hMETETDiff->SetBinContent(iet+1, hMETETReso[iet]->GetMean());
+    hMETETDiff->SetBinError(iet+1, hMETETReso[iet]->GetMeanError());
 
-    hMETPhiResultNF->SetBinContent(iet+1,hMETPhiReso[iet]->GetRMS());
-    hMETPhiResultNF->SetBinError(iet+1,hMETPhiReso[iet]->GetRMSError());
-    hMETPhiRes->SetBinContent(iet+1, hMETPhiReso[iet]->GetRMS());
-    hMETPhiRes->SetBinError(iet+1, hMETPhiReso[iet]->GetRMSError());
-
+    hMETPhiResultNF->SetBinContent(iet+1,hMETPhiReso[iet]->GetMean());
+    hMETPhiResultNF->SetBinError(iet+1,hMETPhiReso[iet]->GetMeanError());
+    hMETPhiDiff->SetBinContent(iet+1, hMETPhiReso[iet]->GetMean());
+    hMETPhiDiff->SetBinError(iet+1, hMETPhiReso[iet]->GetMeanError());
+    
+    hMETPtResultNF->SetBinContent(iet+1,hMETPtReso[iet]->GetMean());
+    hMETPtResultNF->SetBinError(iet+1,hMETPtReso[iet]->GetMeanError());
+    hMETPtDiff->SetBinContent(iet+1, hMETPtReso[iet]->GetMean());
+    hMETPtDiff->SetBinError(iet+1, hMETPtReso[iet]->GetMeanError());
+    
   }//et
   PlotMET();
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -573,27 +629,46 @@ int ReadKinFitObjectResolution(int year = 2017)
   int ieta = 2;
   for(int iet=0;iet<nETBins;iet++){
     printf("value 1: %f +/- %f, value 2: %f +/- %f, diff: %f +/- %f\n",hBJetEtaResultNF[ieta]->GetBinContent(iet+1), hBJetEtaResultNF[ieta]->GetBinError(iet+1), 
-	   hBJetEtaRes->GetBinContent(ieta+1, iet+1), hBJetEtaRes->GetBinError(ieta+1, iet+1), 
-  	   hBJetEtaRes->GetBinContent(ieta+1, iet+1)-hBJetEtaResultNF[ieta]->GetBinContent(iet+1),
-	   hBJetEtaRes->GetBinError(ieta+1, iet+1)-hBJetEtaResultNF[ieta]->GetBinError(iet+1)
+	   hBJetEtaDiff->GetBinContent(ieta+1, iet+1), hBJetEtaDiff->GetBinError(ieta+1, iet+1), 
+  	   hBJetEtaDiff->GetBinContent(ieta+1, iet+1)-hBJetEtaResultNF[ieta]->GetBinContent(iet+1),
+	   hBJetEtaDiff->GetBinError(ieta+1, iet+1)-hBJetEtaResultNF[ieta]->GetBinError(iet+1)
 	   );
   }
   //////////////////////////////////////// Save Histograms /////////////////////////////////////////////////////
-  TFile *fout = new TFile(Form("KinFitRes_%d.root",year),"recreate");
-  hBJetETRes->Write();
-  hBJetEtaRes->Write();
-  hBJetPhiRes->Write();
-  hLJetETRes->Write();
-  hLJetEtaRes->Write();
-  hLJetPhiRes->Write();
-  hMuETRes->Write();
-  hMuEtaRes->Write();
-  hMuPhiRes->Write();
-  hEleETRes->Write();
-  hEleEtaRes->Write();
-  hElePhiRes->Write();
-  hMETETRes->Write();
-  hMETPhiRes->Write();
+  TFile *fout = new TFile(Form("KinFitDiff_%d.root",year),"recreate");
+  hBJetETDiff->Write();
+  hBJetEtaDiff->Write();
+  hBJetPhiDiff->Write();
+  hLJetETDiff->Write();
+  hLJetEtaDiff->Write();
+  hLJetPhiDiff->Write();
+  hMuETDiff->Write();
+  hMuEtaDiff->Write();
+  hMuPhiDiff->Write();
+  hEleETDiff->Write();
+  hEleEtaDiff->Write();
+  hElePhiDiff->Write();
+  hMETETDiff->Write();
+  hMETPhiDiff->Write();
+  
+  hBJetPtDiff->Write();
+  hBJetPtDiff->Write();
+  hBJetEnDiff->Write();
+  hBJetEnDiff->Write();
+  hLJetPtDiff->Write();
+  hLJetPtDiff->Write();
+  hLJetEnDiff->Write();
+  hLJetEnDiff->Write();
+  hMuPtDiff->Write();
+  hMuPtDiff->Write();
+  hMuEnDiff->Write();
+  hMuEnDiff->Write();
+  hElePtDiff->Write();
+  hElePtDiff->Write();
+  hEleEnDiff->Write();
+  hEleEnDiff->Write();
+  hMETPtDiff->Write();
+  hMETPtDiff->Write();
   
   // hBJetETResErr->Write(); 
   // hBJetEtaResErr->Write(); 
@@ -675,14 +750,14 @@ int PlotBJet(void)
   //Obtained from Shashi-ji's code
   //////////////////////////////////////////////////////
   char npdf_s[100], npdf_m[100], npdf_e[100];
-  sprintf(npdf_s, "BJetPlots.pdf(");
-  sprintf(npdf_m, "BJetPlots.pdf");
-  sprintf(npdf_e, "BJetPlots.pdf)");
+  sprintf(npdf_s, "BJetPlotsDiff.pdf(");
+  sprintf(npdf_m, "BJetPlotsDiff.pdf");
+  sprintf(npdf_e, "BJetPlotsDiff.pdf)");
   //////////////////////////////////////////////////////
 
   TF1 *fnETb = (TF1 *)fnET->Clone("fnETb");
   TF1 *fnETl = (TF1 *)fnET->Clone("fnETl");
-  TLegend *legETReso = new TLegend(0.639399,0.6268657,0.9799666,0.9402985);
+  TLegend *legETReso = new TLegend(0.689399,0.6868657,0.9799666,0.9402985);
 
   fnETb->SetLineColor(kRed);
   fnETl->SetLineColor(kBlue);
@@ -739,13 +814,28 @@ int PlotBJet(void)
     hLJetETResultNF[ieta]->SetLineColor(kBlue); hLJetETResultNF[ieta]->SetLineWidth(2); 
     hBJetETResultNF[ieta]->SetMarkerStyle(kFullCircle); hBJetETResultNF[ieta]->SetMarkerColor(kRed); hBJetETResultNF[ieta]->SetMarkerSize(2);
     hLJetETResultNF[ieta]->SetMarkerStyle(kFullSquare); hLJetETResultNF[ieta]->SetMarkerColor(kBlue); hLJetETResultNF[ieta]->SetMarkerSize(2);
+    
+    hBJetPtResultNF[ieta]->SetLineColor(kGreen+1); hBJetPtResultNF[ieta]->SetLineWidth(2); 
+    hBJetPtResultNF[ieta]->SetMarkerStyle(kFullStar); hBJetPtResultNF[ieta]->SetMarkerColor(kGreen+1); hBJetPtResultNF[ieta]->SetMarkerSize(3);
+    hBJetEnResultNF[ieta]->SetLineColor(kYellow+3); hBJetEnResultNF[ieta]->SetLineWidth(2); 
+    hBJetEnResultNF[ieta]->SetMarkerStyle(kFullCross); hBJetEnResultNF[ieta]->SetMarkerColor(kYellow+3); hBJetEnResultNF[ieta]->SetMarkerSize(3);
+
+    hLJetPtResultNF[ieta]->SetLineColor(kBlack); hLJetPtResultNF[ieta]->SetLineWidth(2); 
+    hLJetPtResultNF[ieta]->SetMarkerStyle(kFullDiamond); hLJetPtResultNF[ieta]->SetMarkerColor(kBlack); hLJetPtResultNF[ieta]->SetMarkerSize(3);
+    hLJetEnResultNF[ieta]->SetLineColor(kMagenta); hLJetEnResultNF[ieta]->SetLineWidth(2); 
+    hLJetEnResultNF[ieta]->SetMarkerStyle(kFullTriangleUp); hLJetEnResultNF[ieta]->SetMarkerColor(kMagenta); hLJetEnResultNF[ieta]->SetMarkerSize(3);
+
     //legETReso->Reset();
     legETReso->Clear();
     legETReso->SetFillColor(10);
-    legETReso->AddEntry(hBJetETResultNF[ieta], "bjet: RMS" ,"lp");
-    legETReso->AddEntry(hLJetETResultNF[ieta], "ljet: RMS" ,"lp");
-    legETReso->AddEntry(grBET[ieta], "bjet: MiniAOD 2016" ,"l");
-    legETReso->AddEntry(grLET[ieta], "ljet: MiniAOD 2016" ,"l");
+    legETReso->AddEntry(hBJetETResultNF[ieta], "bjet: ET Mean" ,"lp");
+    legETReso->AddEntry(hLJetETResultNF[ieta], "ljet: ET Mean" ,"lp");
+    legETReso->AddEntry(hBJetPtResultNF[ieta], "bjet: Pt Mean" ,"lp");
+    legETReso->AddEntry(hLJetPtResultNF[ieta], "ljet: Pt Mean" ,"lp");
+    legETReso->AddEntry(hBJetEnResultNF[ieta], "bjet: En Mean" ,"lp");
+    legETReso->AddEntry(hLJetEnResultNF[ieta], "ljet: En Mean" ,"lp");
+    // legETReso->AddEntry(grBET[ieta], "bjet: MiniAOD 2016" ,"l");
+    // legETReso->AddEntry(grLET[ieta], "ljet: MiniAOD 2016" ,"l");
     // legETReso->AddEntry(fnETb, "#sqrt{ a^{2} + b^{2}/x + c^{2}/x^{2} }" ,"f");
     // legETReso->AddEntry(fnETl, "#sqrt{ a^{2} + b^{2}/x + c^{2}/x^{2} }" ,"f");
     // legETReso->AddEntry((TObject*)0, Form("bjet a : %5.3f +/- %5.3f(%5.3f\%)",fnETb->GetParameter(0), fnETb->GetParError(0), 100.*fnETb->GetParError(0)/fnETb->GetParameter(0)) ,"");
@@ -754,19 +844,23 @@ int PlotBJet(void)
     // legETReso->AddEntry((TObject*)0, Form("ljet a : %5.3f +/- %5.3f(%5.3f\%)",fnETl->GetParameter(0), fnETl->GetParError(0), 100.*fnETl->GetParError(0)/fnETl->GetParameter(0)) ,"");
     // legETReso->AddEntry((TObject*)0, Form("ljet b : %5.3f +/- %5.3f(%5.3f\%)",fnETl->GetParameter(1), fnETl->GetParError(1), 100.*fnETl->GetParError(1)/fnETl->GetParameter(1)) ,"");
     // legETReso->AddEntry((TObject*)0, Form("ljet c : %5.3f +/- %5.3f(%5.3f\%)",fnETl->GetParameter(2), fnETl->GetParError(2), 100.*fnETl->GetParError(2)/fnETl->GetParameter(2)) ,"");
-    hBJetETResultNF[ieta]->SetMinimum(0.0);
-    hBJetETResultNF[ieta]->SetMaximum(70.0);
+    hBJetETResultNF[ieta]->SetMinimum(-10.0);
+    hBJetETResultNF[ieta]->SetMaximum(25.0);
     c50[ieta] = new TCanvas(Form("c50_%d",ieta),Form("c50_%d",ieta),1200,800);
     hBJetETResultNF[ieta]->Draw("ep");
     hLJetETResultNF[ieta]->Draw("ep sames");
+    hBJetPtResultNF[ieta]->Draw("ep sames");
+    hBJetEnResultNF[ieta]->Draw("ep sames");
+    hLJetPtResultNF[ieta]->Draw("ep sames");
+    hLJetEnResultNF[ieta]->Draw("ep sames");
     // fnETb->Draw("same");
     // fnETl->Draw("same");
-    grBET[ieta]->Draw("C sames");
-    grLET[ieta]->Draw("C sames");
+    // grBET[ieta]->Draw("C sames");
+    // grLET[ieta]->Draw("C sames");
     legETReso->Draw();
     hBJetETResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     //hBJetETResultNF[ieta]->GetYaxis()->SetTitle("Relative E_{T} resolution (%)");
-    hBJetETResultNF[ieta]->GetYaxis()->SetTitle("Absolute E_{T} resolution");
+    hBJetETResultNF[ieta]->GetYaxis()->SetTitle("<#DeltaE_{T}>, <#Deltap_{T}>, <#DeltaE>");
     if(ieta==0)
       c50[ieta]->SaveAs(npdf_s);
     else
@@ -776,7 +870,7 @@ int PlotBJet(void)
 
   TF1 *fnEtab = (TF1 *)fnEta->Clone("fnEtab");
   TF1 *fnEtal = (TF1 *)fnEta->Clone("fnEtal");
-  TLegend *legEtaReso = new TLegend(0.639399,0.6268657,0.9799666,0.9402985);
+  TLegend *legEtaReso = new TLegend(0.689399,0.7568657,0.9799666,0.9402985);
 
   fnEtab->SetLineColor(kRed);
   fnEtal->SetLineColor(kBlue);
@@ -794,34 +888,34 @@ int PlotBJet(void)
     //legEtaReso->Reset();
     legEtaReso->Clear();
     legEtaReso->SetFillColor(10);
-    legEtaReso->AddEntry(hBJetEtaResultNF[ieta], "bjet: RMS" ,"lp");
-    legEtaReso->AddEntry(hLJetEtaResultNF[ieta], "ljet: RMS" ,"lp");
-    legEtaReso->AddEntry(grBEta[ieta], "bjet : MiniAOD 2016" ,"l");
-    legEtaReso->AddEntry(grLEta[ieta], "ljet : MiniAOD 2016" ,"l");
+    legEtaReso->AddEntry(hBJetEtaResultNF[ieta], "bjet: Mean" ,"lp");
+    legEtaReso->AddEntry(hLJetEtaResultNF[ieta], "ljet: Mean" ,"lp");
+    // legEtaReso->AddEntry(grBEta[ieta], "bjet : MiniAOD 2016" ,"l");
+    // legEtaReso->AddEntry(grLEta[ieta], "ljet : MiniAOD 2016" ,"l");
     // legEtaReso->AddEntry(fnEtab, "#sqrt{ a^{2} + b^{2}/x^{2} }" ,"f");
     // legEtaReso->AddEntry(fnEtal, "#sqrt{ a^{2} + b^{2}/x^{2} }" ,"f");
     // legEtaReso->AddEntry((TObject*)0, Form("bjet a : %5.3f +/- %5.3f(%5.3f\%)",fnEtab->GetParameter(0), fnEtab->GetParError(0), 100.*fnEtab->GetParError(0)/fnEtab->GetParameter(0)) ,"");
     // legEtaReso->AddEntry((TObject*)0, Form("bjet b : %5.3f +/- %5.3f(%5.3f\%)",fnEtab->GetParameter(1), fnEtab->GetParError(1), 100.*fnEtab->GetParError(1)/fnEtab->GetParameter(1)) ,"");
     // legEtaReso->AddEntry((TObject*)0, Form("ljet a : %5.3f +/- %5.3f(%5.3f\%)",fnEtal->GetParameter(0), fnEtal->GetParError(0), 100.*fnEtal->GetParError(0)/fnEtal->GetParameter(0)) ,"");
     // legEtaReso->AddEntry((TObject*)0, Form("ljet b : %5.3f +/- %5.3f(%5.3f\%)",fnEtal->GetParameter(1), fnEtal->GetParError(1), 100.*fnEtal->GetParError(1)/fnEtal->GetParameter(1)) ,"");
-    hBJetEtaResultNF[ieta]->SetMinimum(0.0);
+    hBJetEtaResultNF[ieta]->SetMinimum(-0.04);
     hBJetEtaResultNF[ieta]->SetMaximum(0.07);
     c51[ieta] = new TCanvas(Form("c51_%d",ieta),Form("c51_%d",ieta),1200,800);
     hBJetEtaResultNF[ieta]->Draw("ep");
     hLJetEtaResultNF[ieta]->Draw("ep sames");
     // fnEtab->Draw("same");
     // fnEtal->Draw("same");
-    grBEta[ieta]->Draw("C sames");
-    grLEta[ieta]->Draw("C sames");
+    // grBEta[ieta]->Draw("C sames");
+    // grLEta[ieta]->Draw("C sames");
     legEtaReso->Draw();
     hBJetEtaResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
-    hBJetEtaResultNF[ieta]->GetYaxis()->SetTitle("Ansolute #eta resolution");
+    hBJetEtaResultNF[ieta]->GetYaxis()->SetTitle("<#Delta#eta>");
     c51[ieta]->SaveAs(npdf_m);
   }
 
   TF1 *fnPhib = (TF1 *)fnPhi->Clone("fnPhib");
   TF1 *fnPhil = (TF1 *)fnPhi->Clone("fnPhil");
-  TLegend *legPhiReso = new TLegend(0.639399,0.6268657,0.9799666,0.9402985);
+  TLegend *legPhiReso = new TLegend(0.689399,0.7568657,0.9799666,0.9402985);
 
   fnPhib->SetLineColor(kRed);
   fnPhil->SetLineColor(kBlue);
@@ -839,10 +933,10 @@ int PlotBJet(void)
     //legPhiReso->Reset();
     legPhiReso->Clear();
     legPhiReso->SetFillColor(10);
-    legPhiReso->AddEntry(hBJetPhiResultNF[ieta], "bjet: RMS" ,"lp");
-    legPhiReso->AddEntry(hLJetPhiResultNF[ieta], "ljet: RMS" ,"lp");
-    legPhiReso->AddEntry(grBPhi[ieta], "bjet : MiniAOD 2016" ,"l");
-    legPhiReso->AddEntry(grLPhi[ieta], "ljet : MiniAOD 2016" ,"l");
+    legPhiReso->AddEntry(hBJetPhiResultNF[ieta], "bjet: Mean" ,"lp");
+    legPhiReso->AddEntry(hLJetPhiResultNF[ieta], "ljet: Mean" ,"lp");
+    // legPhiReso->AddEntry(grBPhi[ieta], "bjet : MiniAOD 2016" ,"l");
+    // legPhiReso->AddEntry(grLPhi[ieta], "ljet : MiniAOD 2016" ,"l");
 
     // legPhiReso->AddEntry(fnPhib, "#sqrt{ a^{2} + b^{2}/x^{2} }" ,"f");
     // legPhiReso->AddEntry(fnPhil, "#sqrt{ a^{2} + b^{2}/x^{2} }" ,"f");
@@ -850,18 +944,18 @@ int PlotBJet(void)
     // legPhiReso->AddEntry((TObject*)0, Form("bjet b : %5.3f +/- %5.3f(%5.3f\%)",fnPhib->GetParameter(1), fnPhib->GetParError(1), 100.*fnPhib->GetParError(1)/fnPhib->GetParameter(1)) ,"");
     // legPhiReso->AddEntry((TObject*)0, Form("ljet a : %5.3f +/- %5.3f(%5.3f\%)",fnPhil->GetParameter(0), fnPhil->GetParError(0), 100.*fnPhil->GetParError(0)/fnPhil->GetParameter(0)) ,"");
     // legPhiReso->AddEntry((TObject*)0, Form("ljet b : %5.3f +/- %5.3f(%5.3f\%)",fnPhil->GetParameter(1), fnPhil->GetParError(1), 100.*fnPhil->GetParError(1)/fnPhil->GetParameter(1)) ,"");
-    hBJetPhiResultNF[ieta]->SetMinimum(0.0);
+    hBJetPhiResultNF[ieta]->SetMinimum(-0.07);
     hBJetPhiResultNF[ieta]->SetMaximum(0.07);
     c52[ieta] = new TCanvas(Form("c52_%d",ieta),Form("c52_%d",ieta),1200,800);
     hBJetPhiResultNF[ieta]->Draw("ep");
     hLJetPhiResultNF[ieta]->Draw("ep sames");
     // fnPhib->Draw("same");
     // fnPhil->Draw("same");
-    grBPhi[ieta]->Draw("C sames");
-    grLPhi[ieta]->Draw("C sames");
+    // grBPhi[ieta]->Draw("C sames");
+    // grLPhi[ieta]->Draw("C sames");
     legPhiReso->Draw();
     hBJetPhiResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
-    hBJetPhiResultNF[ieta]->GetYaxis()->SetTitle("Absolute #phi resolution");
+    hBJetPhiResultNF[ieta]->GetYaxis()->SetTitle("<#Delta#phi>");
     if(ieta==(nJetEtaBins-1))
       c52[ieta]->SaveAs(npdf_e);
     else
@@ -878,16 +972,16 @@ int PlotMu(void)
   //Obtained from Shashi-ji's code
   //////////////////////////////////////////////////////
   char npdf_s[100], npdf_m[100], npdf_e[100];
-  sprintf(npdf_s, "MuPlots.pdf(");
-  sprintf(npdf_m, "MuPlots.pdf");
-  sprintf(npdf_e, "MuPlots.pdf)");
+  sprintf(npdf_s, "MuPlotsDiff.pdf(");
+  sprintf(npdf_m, "MuPlotsDiff.pdf");
+  sprintf(npdf_e, "MuPlotsDiff.pdf)");
   //////////////////////////////////////////////////////
 
   TF1 *fnMuET = (TF1 *)fnETMu->Clone("fnMuET");
   fnMuET->SetLineColor(kRed);
   fnMuET->SetLineWidth(2);
 
-  TLegend *legMuReso = new TLegend(0.639399,0.6268657,0.9799666,0.9402985);
+  TLegend *legMuReso = new TLegend(0.689399,0.7568657,0.9799666,0.9402985);
 
 
   int nstep = 1000;
@@ -922,22 +1016,32 @@ int PlotMu(void)
     hMuETResult[ieta]->SetMarkerStyle(kFullCircle); hMuETResult[ieta]->SetMarkerColor(kRed); hMuETResult[ieta]->SetMarkerSize(2.0);
     hMuETResultNF[ieta]->SetLineColor(kBlue); hMuETResultNF[ieta]->SetLineWidth(2); 
     hMuETResultNF[ieta]->SetMarkerStyle(kFullSquare); hMuETResultNF[ieta]->SetMarkerColor(kBlue); hMuETResultNF[ieta]->SetMarkerSize(2.0);
+
+    hMuPtResultNF[ieta]->SetLineColor(kGreen+1); hMuPtResultNF[ieta]->SetLineWidth(2); 
+    hMuPtResultNF[ieta]->SetMarkerStyle(kFullStar); hMuPtResultNF[ieta]->SetMarkerColor(kGreen+1); hMuPtResultNF[ieta]->SetMarkerSize(3);
+    hMuEnResultNF[ieta]->SetLineColor(kYellow+3); hMuEnResultNF[ieta]->SetLineWidth(2); 
+    hMuEnResultNF[ieta]->SetMarkerStyle(kFullCross); hMuEnResultNF[ieta]->SetMarkerColor(kYellow+3); hMuEnResultNF[ieta]->SetMarkerSize(3);
+
     legMuReso->Clear();
     legMuReso->SetFillColor(10);
-    legMuReso->AddEntry(hMuETResult[ieta], "muon : fitted sigma" ,"lp");
-    legMuReso->AddEntry(hMuETResultNF[ieta], "muon : RMS" ,"lp");
-    legMuReso->AddEntry(grET[ieta], "muon : MiniAOD 2016" ,"l");
+    legMuReso->AddEntry(hMuETResult[ieta], "muon : fitted mean" ,"lp");
+    legMuReso->AddEntry(hMuETResultNF[ieta], "muon : Et Mean" ,"lp");
+    legMuReso->AddEntry(hMuPtResultNF[ieta], "muon : Pt Mean" ,"lp");
+    legMuReso->AddEntry(hMuEnResultNF[ieta], "muon : En Mean" ,"lp");
+    //legMuReso->AddEntry(grET[ieta], "muon : MiniAOD 2016" ,"l");
     // legMuReso->AddEntry(fnMuET, "a + b*x" ,"f");
     // legMuReso->AddEntry((TObject*)0, Form("bjet a : %5.3f +/- %5.3f(%5.3f\%)",fnMuET->GetParameter(0), fnMuET->GetParError(0), 100.*fnMuET->GetParError(0)/fnMuET->GetParameter(0)) ,"");
     // legMuReso->AddEntry((TObject*)0, Form("bjet b : %5.3f +/- %5.3f(%5.3f\%)",fnMuET->GetParameter(1), fnMuET->GetParError(1), 100.*fnMuET->GetParError(1)/fnMuET->GetParameter(1)) ,"");
-    hMuETResultNF[ieta]->SetMinimum(0.0);
+    hMuETResultNF[ieta]->SetMinimum(-10.0);
     hMuETResultNF[ieta]->SetMaximum(50.);
     c100[ieta] = new TCanvas(Form("c100_%d",ieta),Form("c100_%d",ieta),1200,800);
     // hMuETResult[ieta]->Draw("ep");
     // hMuETResultNF[ieta]->Draw("ep sames");
     hMuETResultNF[ieta]->Draw("ep");
     hMuETResult[ieta]->Draw("ep sames");
-    grET[ieta]->Draw("C sames");
+    hMuPtResultNF[ieta]->Draw("ep sames");
+    hMuEnResultNF[ieta]->Draw("ep sames");
+    // grET[ieta]->Draw("C sames");
     // fnMuET->Draw("same");
     legMuReso->Draw();
     //hMuETResult[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
@@ -945,7 +1049,7 @@ int PlotMu(void)
     //hMuETResult[ieta]->GetYaxis()->SetTitle("Absolute E_{T} resolution");
     hMuETResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     //hMuETResultNF[ieta]->GetYaxis()->SetTitle("Relative E_{T} resolution (%)");
-    hMuETResultNF[ieta]->GetYaxis()->SetTitle("Absolute E_{T} resolution");
+    hMuETResultNF[ieta]->GetYaxis()->SetTitle("<#DeltaE_{T}>");
     if(ieta==0)
       c100[ieta]->SaveAs(npdf_s);
     else
@@ -961,23 +1065,23 @@ int PlotMu(void)
     hMuEtaResultNF[ieta]->SetMarkerStyle(kFullSquare); hMuEtaResultNF[ieta]->SetMarkerColor(kBlue); hMuEtaResultNF[ieta]->SetMarkerSize(2.0);
     legMuReso->Clear();
     legMuReso->SetFillColor(10);
-    legMuReso->AddEntry(hMuEtaResult[ieta], "muon : fitted sigma" ,"lp");
-    legMuReso->AddEntry(hMuEtaResultNF[ieta], "muon : RMS" ,"lp");
-    legMuReso->AddEntry(grEta[ieta], "muon : MiniAOD 2016" ,"l");
-    hMuEtaResultNF[ieta]->SetMinimum(0.0);
+    legMuReso->AddEntry(hMuEtaResult[ieta], "muon : fitted mean" ,"lp");
+    legMuReso->AddEntry(hMuEtaResultNF[ieta], "muon : Mean" ,"lp");
+    //legMuReso->AddEntry(grEta[ieta], "muon : MiniAOD 2016" ,"l");
+    hMuEtaResultNF[ieta]->SetMinimum(-0.004);
     hMuEtaResultNF[ieta]->SetMaximum(0.004);
     c101[ieta] = new TCanvas(Form("c101_%d",ieta),Form("c101_%d",ieta),1200,800);
     // hMuEtaResult[ieta]->Draw("ep");
     // hMuEtaResultNF[ieta]->Draw("ep sames");
     hMuEtaResultNF[ieta]->Draw("ep");
     hMuEtaResult[ieta]->Draw("ep sames");
-    grEta[ieta]->Draw("C sames");
+    // grEta[ieta]->Draw("C sames");
     legMuReso->Draw();
     // hMuEtaResult[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     // hMuEtaResult[ieta]->GetYaxis()->SetTitle("Absolute #eta resolution");
     // hMuEtaResult[ieta]->GetYaxis()->SetTitleOffset(1.4);
     hMuEtaResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
-    hMuEtaResultNF[ieta]->GetYaxis()->SetTitle("Absolute #eta resolution");
+    hMuEtaResultNF[ieta]->GetYaxis()->SetTitle("<#Delta#eta>");
     hMuEtaResultNF[ieta]->GetYaxis()->SetTitleOffset(1.4);
 
     // if(ieta==nMuEtaBins-1)
@@ -994,22 +1098,23 @@ int PlotMu(void)
     hMuPhiResultNF[ieta]->SetMarkerStyle(kFullSquare); hMuPhiResultNF[ieta]->SetMarkerColor(kBlue); hMuPhiResultNF[ieta]->SetMarkerSize(2.0);
     legMuReso->Clear();
     legMuReso->SetFillColor(10);
-    legMuReso->AddEntry(hMuPhiResult[ieta], "muon : fitted sigma" ,"lp");
-    legMuReso->AddEntry(hMuPhiResultNF[ieta], "muon : RMS" ,"lp");
-    legMuReso->AddEntry(grPhi[ieta], "muon : MiniAOD 2016" ,"l");
-    hMuPhiResultNF[ieta]->SetMinimum(-0.0001);
+    legMuReso->AddEntry(hMuPhiResult[ieta], "muon : fitted mean" ,"lp");
+    legMuReso->AddEntry(hMuPhiResultNF[ieta], "muon : Mean" ,"lp");
+    //legMuReso->AddEntry(grPhi[ieta], "muon : MiniAOD 2016" ,"l");
+    hMuPhiResultNF[ieta]->SetMinimum(-0.001);
     hMuPhiResultNF[ieta]->SetMaximum(0.005);
     c102[ieta] = new TCanvas(Form("c102_%d",ieta),Form("c102_%d",ieta),1200,800);
     // hMuPhiResult[ieta]->Draw("ep");
     // hMuPhiResultNF[ieta]->Draw("ep sames");
     hMuPhiResultNF[ieta]->Draw("ep");
     hMuPhiResult[ieta]->Draw("ep sames");
-    grPhi[ieta]->Draw("C sames");
+    // grPhi[ieta]->Draw("C sames");
     legMuReso->Draw();
     // hMuPhiResult[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     // hMuPhiResult[ieta]->GetYaxis()->SetTitle("Absolute #phi resolution");
     hMuPhiResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
-    hMuPhiResultNF[ieta]->GetYaxis()->SetTitle("Absolute #phi resolution");
+    hMuPhiResultNF[ieta]->GetYaxis()->SetTitle("<#Delta#phi>");
+    hMuPhiResultNF[ieta]->GetYaxis()->SetTitleOffset(1.2);
     if(ieta==nMuEtaBins-1)
       c102[ieta]->SaveAs(npdf_e);
     else
@@ -1024,16 +1129,16 @@ int PlotEle(void)
   //Obtained from Shashi-ji's code
   //////////////////////////////////////////////////////
   char npdf_s[100], npdf_m[100], npdf_e[100];
-  sprintf(npdf_s, "ElePlots.pdf(");
-  sprintf(npdf_m, "ElePlots.pdf");
-  sprintf(npdf_e, "ElePlots.pdf)");
+  sprintf(npdf_s, "ElePlotsDiff.pdf(");
+  sprintf(npdf_m, "ElePlotsDiff.pdf");
+  sprintf(npdf_e, "ElePlotsDiff.pdf)");
   //////////////////////////////////////////////////////
 
   TF1 *fnEleET = (TF1 *)fnETEle->Clone("fnEleET");
   fnEleET->SetLineColor(kRed);
   fnEleET->SetLineWidth(2);
 
-  TLegend *legEleReso = new TLegend(0.639399,0.6268657,0.9799666,0.9402985);
+  TLegend *legEleReso = new TLegend(0.689399,0.7568657,0.9799666,0.9402985);
 
 
   int nstep = 1000;
@@ -1064,26 +1169,37 @@ int PlotEle(void)
   
   TCanvas *c200[nEleEtaBins];
   for(int ieta=0;ieta<nEleEtaBins;ieta++){
+
     hEleETResult[ieta]->SetLineColor(kRed); hEleETResult[ieta]->SetLineWidth(2); 
     hEleETResult[ieta]->SetMarkerStyle(kFullCircle); hEleETResult[ieta]->SetMarkerColor(kRed); hEleETResult[ieta]->SetMarkerSize(2.0);
     hEleETResultNF[ieta]->SetLineColor(kBlue); hEleETResultNF[ieta]->SetLineWidth(2); 
     hEleETResultNF[ieta]->SetMarkerStyle(kFullSquare); hEleETResultNF[ieta]->SetMarkerColor(kBlue); hEleETResultNF[ieta]->SetMarkerSize(2.0);
+
+    hElePtResultNF[ieta]->SetLineColor(kGreen+1); hElePtResultNF[ieta]->SetLineWidth(2); 
+    hElePtResultNF[ieta]->SetMarkerStyle(kFullStar); hElePtResultNF[ieta]->SetMarkerColor(kGreen+1); hElePtResultNF[ieta]->SetMarkerSize(3);
+    hEleEnResultNF[ieta]->SetLineColor(kYellow+3); hEleEnResultNF[ieta]->SetLineWidth(2); 
+    hEleEnResultNF[ieta]->SetMarkerStyle(kFullCross); hEleEnResultNF[ieta]->SetMarkerColor(kYellow+3); hEleEnResultNF[ieta]->SetMarkerSize(3);
+
     legEleReso->Clear();
     legEleReso->SetFillColor(10);
-    legEleReso->AddEntry(hEleETResult[ieta], "elec: fitted sigma" ,"lp");
-    legEleReso->AddEntry(hEleETResultNF[ieta], "elec: RMS" ,"lp");
-    legEleReso->AddEntry(grEleET[ieta], "elec: MiniAOD 2016" ,"l");
+    legEleReso->AddEntry(hEleETResult[ieta], "elec: fitted mean" ,"lp");
+    legEleReso->AddEntry(hEleETResultNF[ieta], "elec: Et Mean" ,"lp");
+    legEleReso->AddEntry(hElePtResultNF[ieta], "elec: Pt Mean" ,"lp");
+    legEleReso->AddEntry(hEleEnResultNF[ieta], "elec: En Mean" ,"lp");
+    //legEleReso->AddEntry(grEleET[ieta], "elec: MiniAOD 2016" ,"l");
     // legEleReso->AddEntry(fnEleET, "a + b*x" ,"f");
     // legEleReso->AddEntry((TObject*)0, Form("bjet a : %5.3f +/- %5.3f(%5.3f\%)",fnEleET->GetParameter(0), fnEleET->GetParError(0), 100.*fnEleET->GetParError(0)/fnEleET->GetParameter(0)) ,"");
     // legEleReso->AddEntry((TObject*)0, Form("bjet b : %5.3f +/- %5.3f(%5.3f\%)",fnEleET->GetParameter(1), fnEleET->GetParError(1), 100.*fnEleET->GetParError(1)/fnEleET->GetParameter(1)) ,"");
-    hEleETResultNF[ieta]->SetMinimum(0.0);
-    hEleETResultNF[ieta]->SetMaximum(30.);
+    hEleETResultNF[ieta]->SetMinimum(-5.0);
+    hEleETResultNF[ieta]->SetMaximum(15.);
     c200[ieta] = new TCanvas(Form("c200_%d",ieta),Form("c200_%d",ieta),1200,800);
     // hEleETResult[ieta]->Draw("ep");
     // hEleETResultNF[ieta]->Draw("ep sames");
     hEleETResultNF[ieta]->Draw("ep");
     hEleETResult[ieta]->Draw("ep sames");
-    grEleET[ieta]->Draw("C sames");
+    hElePtResultNF[ieta]->Draw("ep sames");
+    hEleEnResultNF[ieta]->Draw("ep sames");
+    // grEleET[ieta]->Draw("C sames");
     // fnEleET->Draw("same");
     legEleReso->Draw();
     //hEleETResult[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
@@ -1091,7 +1207,7 @@ int PlotEle(void)
     //hEleETResult[ieta]->GetYaxis()->SetTitle("Absolute E_{T} resolution");
     hEleETResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     //hEleETResultNF[ieta]->GetYaxis()->SetTitle("Relative E_{T} resolution (%)");
-    hEleETResultNF[ieta]->GetYaxis()->SetTitle("Absolute E_{T} resolution");
+    hEleETResultNF[ieta]->GetYaxis()->SetTitle("<#DeltaE_{T}>");
     if(ieta==0)
       c200[ieta]->SaveAs(npdf_s);
     else
@@ -1106,23 +1222,23 @@ int PlotEle(void)
     hEleEtaResultNF[ieta]->SetMarkerStyle(kFullSquare); hEleEtaResultNF[ieta]->SetMarkerColor(kBlue); hEleEtaResultNF[ieta]->SetMarkerSize(2.0);
     legEleReso->Clear();
     legEleReso->SetFillColor(10);
-    legEleReso->AddEntry(hEleEtaResult[ieta], "elec:fitted sigma" ,"lp");
-    legEleReso->AddEntry(hEleEtaResultNF[ieta], "elec:RMS" ,"lp");
-    legEleReso->AddEntry(grEleEta[ieta], "elec:MiniAOD 2016" ,"l");
-    hEleEtaResultNF[ieta]->SetMinimum(0.0);
+    legEleReso->AddEntry(hEleEtaResult[ieta], "elec:fitted mean" ,"lp");
+    legEleReso->AddEntry(hEleEtaResultNF[ieta], "elec:Mean" ,"lp");
+    //legEleReso->AddEntry(grEleEta[ieta], "elec:MiniAOD 2016" ,"l");
+    hEleEtaResultNF[ieta]->SetMinimum(-0.001);
     hEleEtaResultNF[ieta]->SetMaximum(0.006);
     c201[ieta] = new TCanvas(Form("c201_%d",ieta),Form("c201_%d",ieta),1200,800);
     // hEleEtaResult[ieta]->Draw("ep");
     // hEleEtaResultNF[ieta]->Draw("ep sames");
     hEleEtaResultNF[ieta]->Draw("ep");
     hEleEtaResult[ieta]->Draw("ep sames");
-    grEleEta[ieta]->Draw("C sames");
+    // grEleEta[ieta]->Draw("C sames");
     legEleReso->Draw();
     // hEleEtaResult[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     // hEleEtaResult[ieta]->GetYaxis()->SetTitle("Absolute #eta resolution");
     // hEleEtaResult[ieta]->GetYaxis()->SetTitleOffset(1.4);
     hEleEtaResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
-    hEleEtaResultNF[ieta]->GetYaxis()->SetTitle("Absolute #eta resolution");
+    hEleEtaResultNF[ieta]->GetYaxis()->SetTitle("<#Delta#eta>");
     hEleEtaResultNF[ieta]->GetYaxis()->SetTitleOffset(1.4);
 
     // if(ieta==nEleEtaBins-1)
@@ -1139,22 +1255,22 @@ int PlotEle(void)
     hElePhiResultNF[ieta]->SetMarkerStyle(kFullSquare); hElePhiResultNF[ieta]->SetMarkerColor(kBlue); hElePhiResultNF[ieta]->SetMarkerSize(2.0);
     legEleReso->Clear();
     legEleReso->SetFillColor(10);
-    legEleReso->AddEntry(hElePhiResult[ieta], "elec:fitted sigma" ,"lp");
-    legEleReso->AddEntry(hElePhiResultNF[ieta], "elec:RMS" ,"lp");
-    legEleReso->AddEntry(grElePhi[ieta], "elec:MiniAOD 2016" ,"l");
-    hElePhiResultNF[ieta]->SetMinimum(-0.0001);
+    legEleReso->AddEntry(hElePhiResult[ieta], "elec:fitted mean" ,"lp");
+    legEleReso->AddEntry(hElePhiResultNF[ieta], "elec:Mean" ,"lp");
+    //legEleReso->AddEntry(grElePhi[ieta], "elec:MiniAOD 2016" ,"l");
+    hElePhiResultNF[ieta]->SetMinimum(-0.005);
     hElePhiResultNF[ieta]->SetMaximum(0.01);
     c202[ieta] = new TCanvas(Form("c202_%d",ieta),Form("c202_%d",ieta),1200,800);
     // hElePhiResult[ieta]->Draw("ep");
     // hElePhiResultNF[ieta]->Draw("ep sames");
     hElePhiResultNF[ieta]->Draw("ep");
     hElePhiResult[ieta]->Draw("ep sames");
-    grElePhi[ieta]->Draw("C sames");
+    // grElePhi[ieta]->Draw("C sames");
     legEleReso->Draw();
     // hElePhiResult[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     // hElePhiResult[ieta]->GetYaxis()->SetTitle("Absolute #phi resolution");
     hElePhiResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
-    hElePhiResultNF[ieta]->GetYaxis()->SetTitle("Absolute #phi resolution");
+    hElePhiResultNF[ieta]->GetYaxis()->SetTitle("<#Delta#phi>");
     if(ieta==nEleEtaBins-1)
       c202[ieta]->SaveAs(npdf_e);
     else
@@ -1169,9 +1285,9 @@ int PlotMET(void)
   //Obtained from Shashi-ji's code
   //////////////////////////////////////////////////////
   char npdf_s[100], npdf_m[100], npdf_e[100];
-  sprintf(npdf_s, "METPlots.pdf(");
-  sprintf(npdf_m, "METPlots.pdf");
-  sprintf(npdf_e, "METPlots.pdf)");
+  sprintf(npdf_s, "METPlotsDiff.pdf(");
+  sprintf(npdf_m, "METPlotsDiff.pdf");
+  sprintf(npdf_e, "METPlotsDiff.pdf)");
   //////////////////////////////////////////////////////
 
   // TF1 *fnMETET = (TF1 *)fnETMET->Clone("fnMETET");
@@ -1202,24 +1318,29 @@ int PlotMET(void)
   TCanvas *c300;
   hMETETResultNF->SetLineColor(kBlue); hMETETResultNF->SetLineWidth(2); 
   hMETETResultNF->SetMarkerStyle(kFullSquare); hMETETResultNF->SetMarkerColor(kBlue); hMETETResultNF->SetMarkerSize(2.0);
+  hMETPtResultNF->SetLineColor(kRed); hMETPtResultNF->SetLineWidth(2); 
+  hMETPtResultNF->SetMarkerStyle(kFullCircle); hMETPtResultNF->SetMarkerColor(kRed); hMETPtResultNF->SetMarkerSize(2.0);
+
   legMETReso->Clear();
   legMETReso->SetFillColor(10);
   //legMETReso->AddEntry(hMETETResult, "Missing E_{T}: fitted sigma" ,"lp");
-  legMETReso->AddEntry(hMETETResultNF, "Missing E_{T}: RMS" ,"lp");
-  legMETReso->AddEntry(grMETET, "Missing E_{T}: MiniAOD 2016" ,"l");
-  hMETETResultNF->SetMinimum(0.0);
-  hMETETResultNF->SetMaximum(100.);
+  legMETReso->AddEntry(hMETETResultNF, "Missing E_{T}: Mean" ,"lp");
+  legMETReso->AddEntry(hMETPtResultNF, "Missing p_{T}: Mean" ,"lp");
+  //legMETReso->AddEntry(grMETET, "Missing E_{T}: MiniAOD 2016" ,"l");
+  hMETETResultNF->SetMinimum(-10.0);
+  hMETETResultNF->SetMaximum(50.);
   c300 = new TCanvas("c300","c300",1200,800);
   // hMETETResult->Draw("ep");
   // hMETETResultNF->Draw("ep sames");
   hMETETResultNF->Draw("ep");
+  hMETPtResultNF->Draw("ep sames");
   //hMETETResult->Draw("ep sames");
-  grMETET->Draw("C sames");
+  // grMETET->Draw("C sames");
   // fnMETET->Draw("same");
   legMETReso->Draw();
   hMETETResultNF->GetXaxis()->SetTitle("E_{T} (GeV)");
   //hMETETResultNF->GetYaxis()->SetTitle("Relative E_{T} resolution (%)");
-  hMETETResultNF->GetYaxis()->SetTitle("Absolute E_{T} resolution");
+  hMETETResultNF->GetYaxis()->SetTitle("<#DeltaE_{T}>");
   c300->SaveAs(npdf_s);
 
   TCanvas *c301;
@@ -1228,21 +1349,21 @@ int PlotMET(void)
   legMETReso->Clear();
   legMETReso->SetFillColor(10);
   //legMETReso->AddEntry(hMETPhiResult, "Missing E_{T}: fitted sigma" ,"lp");
-  legMETReso->AddEntry(hMETPhiResultNF, "Missing E_{T}: RMS" ,"lp");
-  legMETReso->AddEntry(grMETPhi, "Missing E_{T}: MiniAOD 2016" ,"l");
-  hMETPhiResultNF->SetMinimum(0.0);
+  legMETReso->AddEntry(hMETPhiResultNF, "Missing E_{T}: Mean" ,"lp");
+  //legMETReso->AddEntry(grMETPhi, "Missing E_{T}: MiniAOD 2016" ,"l");
+  hMETPhiResultNF->SetMinimum(-1.0);
   hMETPhiResultNF->SetMaximum(1.0);
   c301 = new TCanvas("c301","c301",1200,800);
   // hMETPhiResult->Draw("ep");
   // hMETPhiResultNF->Draw("ep sames");
   hMETPhiResultNF->Draw("ep");
   //hMETPhiResult->Draw("ep sames");
-  grMETPhi->Draw("C sames");
+  // grMETPhi->Draw("C sames");
   // fnMETPhi->Draw("same");
   legMETReso->Draw();
   hMETPhiResultNF->GetXaxis()->SetTitle("E_{T} (GeV)");
   //hMETPhiResultNF->GetYaxis()->SetTitle("Relative E_{T} resolution (%)");
-  hMETPhiResultNF->GetYaxis()->SetTitle("Absolute #phi resolution");
+  hMETPhiResultNF->GetYaxis()->SetTitle("<#Delta#phi>");
   c301->SaveAs(npdf_e);
   
 

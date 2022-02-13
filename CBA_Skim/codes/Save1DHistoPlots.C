@@ -31,7 +31,9 @@ int Save1DHistoPlots()
   gStyle->SetOptFit(11);
 
   //TFile *fin = TFile::Open("root_files/test/TTbar_KFObjectsReso_2016.root");
-  TFile *fin = TFile::Open("root_files/test/TTbar_KFObjectsReso_2016_KFCompareReso.root");
+  //TFile *fin = TFile::Open("root_files/test/TTbar_KFObjectsReso_2016_KFCompareReso.root");
+  //TFile *fin = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2017/AllBkg_KFObjectsReso_2017.root");
+  TFile *fin = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/pre/TTbar_KFObjectsReso_2016.root");
   
   int nofHists = 0;
   TIter nextkeyTest(fin->GetListOfKeys());

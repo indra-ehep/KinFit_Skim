@@ -1675,6 +1675,7 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("muonNonIsoCut"   , &muonNonIsoCut       		);
     outputTree->Branch("eleIsoCut"   	, &eleIsoCut			);
     outputTree->Branch("eleNonIsoCut"    , &eleNonIsoCut       		);
+    outputTree->Branch("isLowMET"    , &isLowMET       		);
     outputTree->Branch("muEffWeight"   	, &_muEffWeight			);
     outputTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		);
     outputTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		);
@@ -3075,7 +3076,8 @@ bool KinFit::Fit(){
   TLorentzVector		METVector;
   double			reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
   unsigned int			max_nu	  = 2;
-  double ptOffSet, etaOffSet, phiOffSet, enOffSet;
+  //double ptOffSet, etaOffSet, phiOffSet, enOffSet;
+  double ptOffSet, enOffSet;
 
   /* metZ.SetLepton(lepton); */
   
@@ -3230,10 +3232,11 @@ bool KinFit::Fit(){
 		muonExtResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 
 		ptOffSet = GetReso2D(hMuPtDiff, lepton.Eta(), lepton.Et());
-		etaOffSet = GetReso2D(hMuEtaDiff, lepton.Eta(), lepton.Et());
-		phiOffSet = GetReso2D(hMuPhiDiff, lepton.Eta(), lepton.Et());
+		/* etaOffSet = GetReso2D(hMuEtaDiff, lepton.Eta(), lepton.Et()); */
+		/* phiOffSet = GetReso2D(hMuPhiDiff, lepton.Eta(), lepton.Et()); */
 		enOffSet = GetReso2D(hMuEnDiff, lepton.Eta(), lepton.Et());
-		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
+		//lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
+		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta(), lepton.Phi(), lepton.E()-enOffSet);
 	      }else
 		muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 
@@ -3244,10 +3247,11 @@ bool KinFit::Fit(){
 		elecExtResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 		
 		ptOffSet = GetReso2D(hElePtDiff, lepton.Eta(), lepton.Et());
-		etaOffSet = GetReso2D(hEleEtaDiff, lepton.Eta(), lepton.Et());
-		phiOffSet = GetReso2D(hElePhiDiff, lepton.Eta(), lepton.Et());
+		/* etaOffSet = GetReso2D(hEleEtaDiff, lepton.Eta(), lepton.Et()); */
+		/* phiOffSet = GetReso2D(hElePhiDiff, lepton.Eta(), lepton.Et()); */
 		enOffSet = GetReso2D(hEleEnDiff, lepton.Eta(), lepton.Et());
-		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
+		//lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
+		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta(), lepton.Phi(), lepton.E()-enOffSet);
 	      }else
 		elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 	      
@@ -3263,8 +3267,9 @@ bool KinFit::Fit(){
 	      metExtResolution(neutrino.Et(), resEt, resEta, resPhi);
 	      
 	      ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et()); 
-	      phiOffSet = GetReso1D(hMETPhiDiff, neutrino.Et()); 
-	      neutrino.SetPtEtaPhiM(neutrino.Pt()-ptOffSet, 0.0, neutrino.Phi()-phiOffSet, 0.0);
+	      //phiOffSet = GetReso1D(hMETPhiDiff, neutrino.Et()); 
+	      //neutrino.SetPtEtaPhiM(neutrino.Pt()-ptOffSet, 0.0, neutrino.Phi()-phiOffSet, 0.0);
+	      neutrino.SetPtEtaPhiM(neutrino.Pt()-ptOffSet, 0.0, neutrino.Phi(), 0.0);
 	    }else
 	      metResolution(neutrino.Et(), resEt, resEta, resPhi);
 
@@ -3295,10 +3300,11 @@ bool KinFit::Fit(){
 	      bjetExtResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
 	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
-	      etaOffSet = GetReso2D(hBJetEtaDiff, bjlep.Eta(), bjlep.Et());
-	      phiOffSet = GetReso2D(hBJetPhiDiff, bjlep.Eta(), bjlep.Et());
+	      /* etaOffSet = GetReso2D(hBJetEtaDiff, bjlep.Eta(), bjlep.Et()); */
+	      /* phiOffSet = GetReso2D(hBJetPhiDiff, bjlep.Eta(), bjlep.Et()); */
 	      enOffSet = GetReso2D(hBJetEnDiff, bjlep.Eta(), bjlep.Et());
-	      bjlep.SetPtEtaPhiE(bjlep.Pt()-ptOffSet, bjlep.Eta()-etaOffSet, bjlep.Phi()-phiOffSet, bjlep.E()-enOffSet);
+	      //bjlep.SetPtEtaPhiE(bjlep.Pt()-ptOffSet, bjlep.Eta()-etaOffSet, bjlep.Phi()-phiOffSet, bjlep.E()-enOffSet);
+	      bjlep.SetPtEtaPhiE(bjlep.Pt()-ptOffSet, bjlep.Eta(), bjlep.Phi(), bjlep.E()-enOffSet);
 	    }else
 	      bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
@@ -3317,10 +3323,11 @@ bool KinFit::Fit(){
 	      bjetExtResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
 	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
-	      etaOffSet = GetReso2D(hBJetEtaDiff, bjhad.Eta(), bjhad.Et());
-	      phiOffSet = GetReso2D(hBJetPhiDiff, bjhad.Eta(), bjhad.Et());
+	      /* etaOffSet = GetReso2D(hBJetEtaDiff, bjhad.Eta(), bjhad.Et()); */
+	      /* phiOffSet = GetReso2D(hBJetPhiDiff, bjhad.Eta(), bjhad.Et()); */
 	      enOffSet = GetReso2D(hBJetEnDiff, bjhad.Eta(), bjhad.Et());
-	      bjhad.SetPtEtaPhiE(bjhad.Pt()-ptOffSet, bjhad.Eta()-etaOffSet, bjhad.Phi()-phiOffSet, bjhad.E()-enOffSet);
+	      //bjhad.SetPtEtaPhiE(bjhad.Pt()-ptOffSet, bjhad.Eta()-etaOffSet, bjhad.Phi()-phiOffSet, bjhad.E()-enOffSet);
+	      bjhad.SetPtEtaPhiE(bjhad.Pt()-ptOffSet, bjhad.Eta(), bjhad.Phi(), bjhad.E()-enOffSet);
 	    }else
 	      bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
@@ -3338,10 +3345,11 @@ bool KinFit::Fit(){
 	      udscExtResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
 	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
-	      etaOffSet = GetReso2D(hBJetEtaDiff, cjhad.Eta(), cjhad.Et());
-	      phiOffSet = GetReso2D(hBJetPhiDiff, cjhad.Eta(), cjhad.Et());
+	      /* etaOffSet = GetReso2D(hBJetEtaDiff, cjhad.Eta(), cjhad.Et()); */
+	      /* phiOffSet = GetReso2D(hBJetPhiDiff, cjhad.Eta(), cjhad.Et()); */
 	      enOffSet = GetReso2D(hBJetEnDiff, cjhad.Eta(), cjhad.Et());
-	      cjhad.SetPtEtaPhiE(cjhad.Pt()-ptOffSet, cjhad.Eta()-etaOffSet, cjhad.Phi()-phiOffSet, cjhad.E()-enOffSet);
+	      //cjhad.SetPtEtaPhiE(cjhad.Pt()-ptOffSet, cjhad.Eta()-etaOffSet, cjhad.Phi()-phiOffSet, cjhad.E()-enOffSet);
+	      cjhad.SetPtEtaPhiE(cjhad.Pt()-ptOffSet, cjhad.Eta(), cjhad.Phi(), cjhad.E()-enOffSet);
 	    }else
 	      udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
@@ -3359,10 +3367,11 @@ bool KinFit::Fit(){
 	      udscExtResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
 	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
-	      etaOffSet = GetReso2D(hBJetEtaDiff, sjhad.Eta(), sjhad.Et());
-	      phiOffSet = GetReso2D(hBJetPhiDiff, sjhad.Eta(), sjhad.Et());
+	      /* etaOffSet = GetReso2D(hBJetEtaDiff, sjhad.Eta(), sjhad.Et()); */
+	      /* phiOffSet = GetReso2D(hBJetPhiDiff, sjhad.Eta(), sjhad.Et()); */
 	      enOffSet = GetReso2D(hBJetEnDiff, sjhad.Eta(), sjhad.Et());
-	      sjhad.SetPtEtaPhiE(sjhad.Pt()-ptOffSet, sjhad.Eta()-etaOffSet, sjhad.Phi()-phiOffSet, sjhad.E()-enOffSet);
+	      //sjhad.SetPtEtaPhiE(sjhad.Pt()-ptOffSet, sjhad.Eta()-etaOffSet, sjhad.Phi()-phiOffSet, sjhad.E()-enOffSet);
+	      sjhad.SetPtEtaPhiE(sjhad.Pt()-ptOffSet, sjhad.Eta(), sjhad.Phi(), sjhad.E()-enOffSet);
 	    }else
 	      udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);

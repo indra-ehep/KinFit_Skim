@@ -21,6 +21,7 @@
 #include <TAttLine.h>
 #include <TRatioPlot.h>
 #include <TPaveText.h>
+#include <TROOT.h>
 
 #include <iostream>
 
@@ -42,7 +43,7 @@ int QCDDDV2(bool isBtag = 0, bool isMu = 0, int htype = 10)
   double getStatUnc(TH1D *, double);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////  
-  int year = 2018;
+  int year = 2016;
   float luminosity[3] = {35.9, 41.5, 59.7};
 
   string histname;
@@ -79,7 +80,10 @@ int QCDDDV2(bool isBtag = 0, bool isMu = 0, int htype = 10)
   const char *outputpdf = Form("figs/Week_Work_Report/2021-08-27/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v27_DD";
   //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_btagCSV";
-  const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
+  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
+  //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
+  //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
+  const char* dir = "grid_v39_Syst/CBA_CTagM";
 
   const char *systType = "base";
   string SystType(systType);
