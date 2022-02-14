@@ -40,6 +40,8 @@ int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD
 {
   
   bool ishplus = 0; //Use this switch to run for hplus or ttbar
+  TH1F *hWPlus = new TH1F("hWPlus","hWPlus",250,0,250);
+  TH1F *hWMinus = new TH1F("hWMinus","hWMinus",250,0,250);
 
   int momPDG = (ishplus) ? 37 : 24 ; //hplus or W+
   // string infile;
@@ -111,9 +113,10 @@ int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD
     hCostheta = new TH1F("hCostheta","m_{H^{+}} = 120 GeV", 80, -2.0, 2.0);
   else
     hCostheta = new TH1F("hCostheta","SM t#bar{t}", 80, -2.0, 2.0);
+
   
-  for(int ievent = 0 ; ievent < 10; ievent++){
-  //for(int ievent = 0 ; ievent < tr->GetEntries() ; ievent++){
+  //for(int ievent = 0 ; ievent < 10; ievent++){
+  for(int ievent = 0 ; ievent < tr->GetEntries() ; ievent++){
     
     tr->GetEntry(ievent);
     
@@ -124,21 +127,21 @@ int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD
     // 			 6, momPDG, 4, -3, 
     // 			 cosTheta)){
       
-      //if(ievent%10000==0)
+    if(ievent%10000==0)
       printf("Event : %03d, npart : %u\n",ievent,nGenPart_);
 
       for (unsigned int imc = 0 ; imc < nLHEPart_ ; imc++ ){      
       //for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(LHEPart_pdgId_[imc]);
 	if(!partPDG){
-	  printf("\t LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
-		 imc, LHEPart_pdgId_[imc], LHEPart_pt_[imc], 
-		 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
+	  // printf("\t LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
+	  // 	 imc, LHEPart_pdgId_[imc], LHEPart_pt_[imc], 
+	  // 	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
 
 	}else{
-	  printf("\t LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
-		 imc, LHEPart_pdgId_[imc], partPDG->GetName(), LHEPart_pt_[imc],
-		 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
+	  // printf("\t LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
+	  // 	 imc, LHEPart_pdgId_[imc], partPDG->GetName(), LHEPart_pt_[imc],
+	  // 	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
 	}
       }// mc particle loop
 
@@ -146,16 +149,18 @@ int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD
       for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
     	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
     	if(!partPDG){
-    	  printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-    		 imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
-    		 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-    		 );
+    	  // printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+    	  // 	 imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
+    	  // 	 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+    	  // 	 );
     	}else{
-    	  printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-    		 imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
-    		 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-    		 );
+    	  // printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+    	  // 	 imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
+    	  // 	 GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+    	  // 	 );
     	}
+	if(GenPart_pdgId_[imc]==24) hWPlus->Fill(GenPart_mass_[imc]);
+	if(GenPart_pdgId_[imc]==-24) hWMinus->Fill(GenPart_mass_[imc]);
       }// mc particle loop
     // }else{
       
@@ -175,6 +180,16 @@ int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD
 
   fin->Close();
   delete fin;
+
+  hWPlus->SetLineColor(kRed);
+  hWMinus->SetLineColor(kBlue);
+  
+  TCanvas *c1 = new TCanvas("c1","c1");
+  c1->Divide(2,1);
+  c1->cd(1);
+  hWPlus->Draw();
+  c1->cd(2);
+  hWMinus->Draw();
 
   return true;
 } 

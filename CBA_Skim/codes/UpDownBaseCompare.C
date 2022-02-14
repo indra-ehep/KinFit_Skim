@@ -19,6 +19,7 @@
 #include <TGraphErrors.h>
 #include <TAttMarker.h>
 #include <TAttLine.h>
+#include <TROOT.h>
 
 #include <TRatioPlot.h>
 
@@ -42,20 +43,25 @@ int UpDownBaseCompare(int isysup = 2){
 			     "jerup", "jerdown", "btagbup", "btagbdown", 
 			     "btaglup", "btagldown", "prefireup", "prefiredown",
                              "pdfup", "pdfdown", "q2fup", "q2down",
-			     "isrup", "isrdown", "fsrup", "fsrdown"};
-
+			     "isrup", "isrdown", "fsrup", "fsrdown",
+			     "cp5up", "cp5down", "hdampup", "hdampdown",
+                             "mtopup", "mtopdown"};
+  
   const char *systname_2016[] = {"nominal", 
 				 "pileup up", "pileup down", "muon efficiency up", "muon efficiency down", 
 				 "electron efficiency up", "electron efficiency down",  "jet energy correction up", "jet energy correction down", 
 				 "jet energy resolution up", "jet energy resolution down", "btag b-quark up", "btag b-quark down", 
 				 "btag l-quark up", "btag l-quark down", "prefire up", "prefire down",
 				 "PDF up", "PDF down", "renormalization up", "renormalization down",
-				 "ISR up", "ISR down", "FSR up", "FSR down"};
-  
+				 "ISR up", "ISR down", "FSR up", "FSR down",
+				 "CP5tune up", "CP5tune down", "hdamp up", "hdamp down",
+				 "mtop1695 up", "mtop1755 down"};
+
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v28_Syst/CBA_Skim_Syst" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagM" ;
   
-  int isample = 8; isample--;
+  int isample = 11; isample--;
   int ibase = 1; ibase--;
   int isysdown = isysup ;
   //int isysup = 2; 
@@ -68,23 +74,13 @@ int UpDownBaseCompare(int isysup = 2){
 
   cout << "isample : "<<isample << ", ibase : "<<ibase << ", isysup : "<< isysup << ", isysdown : " << isysdown << endl;
   
-  TFile *finBase = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[ibase])); 
-  TFile *finSysUp = 0x0;
-
-  if(isysup<=16)
-    finSysUp = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[isysup])); 
-  else
-    finSysUp = finBase;
-
-  TFile *finSysDown = 0x0;
-  if(isysdown<=17)
-    finSysDown = TFile::Open(Form("%s/2016/%s_%s.root",inputdir,samples_2016[isample],syst_2016[isysdown])); 
-  else
-    finSysDown = finBase;
-
-  TH1D *hBase = (TH1D *)finBase->Get(histname);
-  TH1D *hSysUp = (TH1D *)finSysUp->Get(histnameup);
-  TH1D *hSysDown = (TH1D *)finSysDown->Get(histnamedown);
+  TFile *finBase = TFile::Open(Form("%s/2016/all_%s.root",inputdir,samples_2016[isample])); 
+  TFile *finSysUp = finBase; 
+  TFile *finSysDown = finBase;
+ 
+  TH1D *hBase = (TH1D *)finBase->Get(Form("%s/base/Iso/%s",samples_2016[isample],histname));
+  TH1D *hSysUp = (TH1D *)finSysUp->Get(Form("%s/%s/Iso/%s",samples_2016[isample],syst_2016[isysup],histname));
+  TH1D *hSysDown = (TH1D *)finSysDown->Get(Form("%s/%s/Iso/%s",samples_2016[isample],syst_2016[isysdown],histname));
 
   // hBase->Sumw2();
   // hSysUp->Sumw2();
@@ -105,7 +101,7 @@ int UpDownBaseCompare(int isysup = 2){
   // rpd->Draw("same");
   // c1->Update();
 
-  TLegend *leg = new TLegend(0.1441103,0.6150556,0.5401003,0.8631309);
+  TLegend *leg = new TLegend(0.6729323,0.803838,0.9974937,0.9957356);
   leg->SetFillColor(10);
   //leg->SetHeader("m_{H^{+}} = 120 GeV, #mu + jets (2016)");
   leg->SetHeader("m_{H^{+}} = 120 GeV, #it{e} + jets (2016)");
@@ -114,7 +110,7 @@ int UpDownBaseCompare(int isysup = 2){
   leg->AddEntry(hSysDown, Form("%s",systname_2016[isysdown]) ,"lfp");
 
   
-  hSysUp->SetMaximum(1900);
+  hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(80.0)));
   hSysUp->SetTitle("");
   hSysUp->GetXaxis()->SetRangeUser(0.,170.);
   PlotRatio(hSysUp, hBase, "c1");
@@ -179,8 +175,10 @@ int PlotRatio(TH1D *h1, TH1D *h2, const char *cname)
     // Define the ratio plot
     TH1F *h3 = (TH1F*)h1->Clone("h3");
     h3->SetLineColor(h1->GetLineColor());
-    h3->SetMinimum(0.2);  // Define Y ..
-    h3->SetMaximum(1.8); // .. range
+    // h3->SetMinimum(0.2);  // Define Y ..
+    // h3->SetMaximum(1.8); // .. range
+    h3->SetMinimum(0.8);  // Define Y ..
+    h3->SetMaximum(1.2); // .. range
     h3->Sumw2();
     h3->SetStats(0);      // No statistics on lower plot
     h3->Divide(h2);
