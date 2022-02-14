@@ -38,10 +38,10 @@ using namespace std;
 
 int KinTreeMjj()
 {
-  TH1F *mjj = new TH1F("mjj","mjj (Inclussive)", 50, 0., 250.);
-  TH1F *mjj_cut1 = new TH1F("mjj_cut1","mjj (#chi^2 < 50.)", 50, 0., 250.);
-  TH1F *mjj_cut2 = new TH1F("mjj_cut2","mjj (#chi^2 < 20.)", 50, 0., 250.);
-  TH1F *mjj_cut3 = new TH1F("mjj_cut3","mjj (#chi^2 < 8.)", 50, 0., 250.);
+  TH1F *mjj = new TH1F("mjj","mjj (Inclussive)", 250, 0., 250.);
+  TH1F *mjj_cut1 = new TH1F("mjj_cut1","mjj (#chi^2 < 50.)", 250, 0., 250.);
+  TH1F *mjj_cut2 = new TH1F("mjj_cut2","mjj (#chi^2 < 20.)", 250, 0., 250.);
+  TH1F *mjj_cut3 = new TH1F("mjj_cut3","mjj (#chi^2 < 8.)", 250, 0., 250.);
 
   Double_t  chi2;
   Float_t   jetChadPt;
@@ -76,8 +76,9 @@ int KinTreeMjj()
   // TFile *fin	= TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/Git_KinFit_Skim/KinFit_Skim/CBA_Skim/TTbar_tree_base_1of2.root");
   // TFile *finhist      = TFile::Open("/Data/CMS-Analysis/NanoAOD-Analysis/Git_KinFit_Skim/KinFit_Skim/CBA_Skim/TTbar_hist_base_1of2.root");
 
-  TFile *fin	= TFile::Open("/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFTest1/2017/TTbar_Before_OffSet.root");
-  TFile *finhist      = TFile::Open("/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFTest1/2017/all/all_TTbar.root");
+  // TFile *fin	= TFile::Open("/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFTest1/2017/TTbar_Before_OffSet.root");
+  // TFile *finhist      = TFile::Open("/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFTest1/2017/all/all_TTbar.root");
+
 
   // TFile *fin	= TFile::Open("/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFTest2/2017/TTbar_Apres_NegOffSet.root");
   // TFile *finhist      = TFile::Open("/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFTest2/2017/all/all_TTbar.root");
@@ -85,15 +86,27 @@ int KinTreeMjj()
   // TFile *fin	= TFile::Open("/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFTest3/2017/TTbar_Apres_PosOffSet.root");
   // TFile *finhist      = TFile::Open("/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFTest3/2017/all/all_TTbar.root");
 
+  // TFile *fin	= TFile::Open("/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFTest1/2017/HplusM160_tree_base_1of1.root");
+  // TFile *finhist      = TFile::Open("/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFTest1/2017/HplusM160_hist_base_1of1.root");
+
+  TFile *fin	= TFile::Open("/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_KFTest2/2017/HplusM160_tree_base_1of1.root");
+  TFile *finhist      = TFile::Open("/eos/user/i/idas/Output/cms-hcs-run2/CBA_KFTest2/2017/HplusM160_hist_base_1of1.root");
 
   cout<<"filename : " << fin->GetName() << endl;
   TTree *tr	= (TTree*)fin->Get("Kinfit_Reco");
-  TH1F *hMjjSaved = (TH1F *)finhist->Get("TTbar/base/Iso/_kb_mjj_mu");
-  TH1F *hChi2Min1 = (TH1F *)finhist->Get("TTbar/base/Iso/hMinChi2_mu");
-  TH1F *hChi2Min2 = (TH1F *)finhist->Get("TTbar/base/Iso/h2MinChi2_mu");
-  TH1F *hChi2Min3 = (TH1F *)finhist->Get("TTbar/base/Iso/h3MinChi2_mu");
-  TH1F *hChi2Min4 = (TH1F *)finhist->Get("TTbar/base/Iso/h4MinChi2_mu");
-  TH1F *hChi2Min5 = (TH1F *)finhist->Get("TTbar/base/Iso/h5MinChi2_mu");
+  // TH1F *hMjjSaved = (TH1F *)finhist->Get("TTbar/base/Iso/_kb_mjj_mu");
+  // TH1F *hChi2Min1 = (TH1F *)finhist->Get("TTbar/base/Iso/hMinChi2_mu");
+  // TH1F *hChi2Min2 = (TH1F *)finhist->Get("TTbar/base/Iso/h2MinChi2_mu");
+  // TH1F *hChi2Min3 = (TH1F *)finhist->Get("TTbar/base/Iso/h3MinChi2_mu");
+  // TH1F *hChi2Min4 = (TH1F *)finhist->Get("TTbar/base/Iso/h4MinChi2_mu");
+  // TH1F *hChi2Min5 = (TH1F *)finhist->Get("TTbar/base/Iso/h5MinChi2_mu");
+
+  TH1F *hMjjSaved = (TH1F *)finhist->Get("HplusM160/base/Iso/_kb_mjj_mu");
+  TH1F *hChi2Min1 = (TH1F *)finhist->Get("HplusM160/base/Iso/hMinChi2_mu");
+  TH1F *hChi2Min2 = (TH1F *)finhist->Get("HplusM160/base/Iso/h2MinChi2_mu");
+  TH1F *hChi2Min3 = (TH1F *)finhist->Get("HplusM160/base/Iso/h3MinChi2_mu");
+  TH1F *hChi2Min4 = (TH1F *)finhist->Get("HplusM160/base/Iso/h4MinChi2_mu");
+  TH1F *hChi2Min5 = (TH1F *)finhist->Get("HplusM160/base/Iso/h5MinChi2_mu");
   
   tr->SetBranchAddress("chi2"		, &chi2);
   tr->SetBranchAddress("jetChadPt"	, &jetChadPt);
@@ -133,8 +146,8 @@ int KinTreeMjj()
 
     weight = sampleWeight*prefireWeight*PUWeight*muEffWeight*bTagWeight;
     mjjKF = (chad+shad).M();
-    if(singleMu and !singleEle and muonIsoCut and !isLowMET){
-    //if(singleMu and !singleEle and muonIsoCut and met.Pt()>20.0){
+    //if(singleMu and !singleEle and muonIsoCut and !isLowMET){
+    if(singleMu and !singleEle and muonIsoCut and met.Pt()>20.0){
       mjj->Fill(mjjKF,weight);
       if(chi2<50.) mjj_cut1->Fill(mjjKF,weight);
       if(chi2<20.) mjj_cut2->Fill(mjjKF,weight);
@@ -163,12 +176,12 @@ int KinTreeMjj()
   mjj_cut1->Draw("hist sames");
   mjj_cut2->Draw("hist sames");
   mjj_cut3->Draw("hist sames");
-  hMjjSaved->Draw("hist sames");
+  //hMjjSaved->Draw("hist sames");
   mjj->Fit("fn","LR");
   mjj_cut1->Fit("fn","LR");
   mjj_cut2->Fit("fn","LR");
   mjj_cut3->Fit("fn","LR");
-  hMjjSaved->Fit("fn","LR");
+  //hMjjSaved->Fit("fn","LR");
   
   hChi2Min1->SetLineColor(kRed);
   hChi2Min1->SetLineWidth(2);
