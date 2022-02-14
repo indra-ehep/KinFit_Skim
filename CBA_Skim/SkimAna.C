@@ -4925,7 +4925,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	  sjhadBF		= x.sjhadBF;
 	  
 	  isKFValid		= true;
-	  
+	  isLowMET		= (x.neutrinoAF.Pt<20) ? true : false ;
+
 	  //To fill the Tree for DNN other MVA	  
 	  _lepPt		= x.leptonAF.Pt() ;
 	  _lepEta		= x.leptonAF.Eta() ;
