@@ -4897,7 +4897,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
       //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 20.){ // Only 1st min chi2
       //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 8.){ // Only 1st min chi2, tight cut
     	if(
-	   x.leptonAF.Pt() > lepPtThresh and x.neutrinoAF.Pt() > METThreshold 
+	   x.leptonAF.Pt() > lepPtThresh //and x.neutrinoAF.Pt() > METThreshold 
 	   and 
 	   x.bjhadAF.Pt()  > jetPtThresh and x.bjlepAF.Pt() > jetPtThresh and x.cjhadAF.Pt() > jetPtThresh and x.sjhadAF.Pt() > jetPtThresh 
 	   and
