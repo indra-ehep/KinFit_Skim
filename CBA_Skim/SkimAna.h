@@ -399,6 +399,7 @@ class SkimAna : public TSelector {
    Long64_t        fProcessed;//!
    TTree          *fChain;//!    //pointer to the analyzed TTree or TChain
    bool           IsDebug;
+   int            nCTag;
    /* //Declaration of leaves types */
    /* //////////////////////////////////////////////////////// */
    /* UInt_t          nJet_; */
@@ -1396,10 +1397,10 @@ void SkimAna::Init(TTree *tree)
 	
     tree->SetBranchStatus("GenJet_hadronFlavour",1);
     brAddrStatus = tree->SetBranchAddress("GenJet_hadronFlavour", &(event->GenJet_hadronFlavour_));
-    if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
-      event->GenJet_hadronFlavour_[0] =  0 ;
-      Info("Init", "Setting event->GenJet_hadronFlavour_ =  0x0");
-    }
+    /* if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){ */
+    /*   event->GenJet_hadronFlavour_[0] =  0 ; */
+    /*   Info("Init", "Setting event->GenJet_hadronFlavour_ =  0x0"); */
+    /* } */
 
   }
 

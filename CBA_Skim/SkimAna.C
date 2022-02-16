@@ -19,6 +19,8 @@
 #include "TMath.h"
 #include "TProof.h"
 #include "TObjString.h"
+#include "TParticlePDG.h"
+#include "TDatabasePDG.h"
 
 //ClassImp(SkimAna)
 
@@ -1928,8 +1930,8 @@ void SkimAna::SlaveBegin(TTree *tree)
   // evtPick->IsDebug = true;
   // selector->IsDebug = true;
   Info("SlaveBegin", "End of SlaveBegin");
-
-       
+  
+  nCTag = 0;
 
 }
 
@@ -2398,7 +2400,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillKFCFObs();
   if(systType == kBase) FillKinFitControlHists();
   if(IsDebug) Info("Process","Completed KinFit processing");
-  if(!isKFValid) return kTRUE;
+  if(!isKFValid or isLowMET or eleNonIsoCut or muonNonIsoCut) return kTRUE;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //Processes for CTagging will be placed in block below
@@ -2922,7 +2924,13 @@ bool SkimAna::FillCTagObs(){
   double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_M_cut  ;
   double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_T_cut  ;
   double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_T_cut  ;
-  
+  // Info("FillCTagObs","");
+  // Info("FillCTagObs","Event : %d (%d), Mu : %d, Ele : %d",fProcessed,nCTag++,hasKFMu,hasKFEle);
+  // Info("FillCTagObs","bjlep : %d, bjhad : %d, cjhad : %d, sjhad : %d",_bjlep_id,_bjhad_id,_cjhad_id,_sjhad_id);
+  // Info("FillCTagObs","Loose (cVsB/cVsL) : (%4.3f, %4.3f), Medium (cVsB/cVsL) : (%4.3f, %4.3f), Tight (cVsB/cVsL) : (%4.3f, %4.3f)",
+  //      ctagTh_CvsB_L,ctagTh_CvsL_L, ctagTh_CvsB_M,ctagTh_CvsL_M, ctagTh_CvsB_T,ctagTh_CvsL_T);
+  // Info("FillCTagObs","KF jet1 : (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", cjhadAF.Pt(), cjhadAF.Eta() , cjhadAF.Phi() , cjhadAF.M());
+  // Info("FillCTagObs","KF jet2 : (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", sjhadAF.Pt(), sjhadAF.Eta() , sjhadAF.Phi() , sjhadAF.M());
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
     int jetInd = selector->Jets.at(ijet);
@@ -2940,7 +2948,46 @@ bool SkimAna::FillCTagObs(){
       isIncT = true;
       count_cJetsIncT++;	
     }
-  }
+    // if(jet_CvsL > ctagTh_CvsL_L and jet_CvsB > ctagTh_CvsB_L){
+    //   Info("FillCTagObs","JA : Loose for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+    // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+    // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+    //   int genIdx = int(event->jetGenJetIdx_[jetInd]);
+    //   if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+    // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+    // 	Info("FillCTagObs","\tJA : Loose Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+    // 	     partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+    // 	     //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+    // 	     event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+    //   }
+    // }
+    // if(jet_CvsL > ctagTh_CvsL_M and jet_CvsB > ctagTh_CvsB_M){
+    //   Info("FillCTagObs","JA : Medium for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+    // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+    // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+    //   int genIdx = int(event->jetGenJetIdx_[jetInd]);
+    //   if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+    // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+    // 	Info("FillCTagObs","\tJA : Medium Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+    // 	     partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+    // 	     //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+    // 	     event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+    //   }
+    // }
+    // if(jet_CvsL > ctagTh_CvsL_T and jet_CvsB > ctagTh_CvsB_T){
+    //   Info("FillCTagObs","JA : Tight for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+    // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+    // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+    //   int genIdx = int(event->jetGenJetIdx_[jetInd]);
+    //   if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+    // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+    // 	Info("FillCTagObs","\tJA : Tight Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+    // 	     partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+    // 	     //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+    // 	     event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+    //   }
+    // }
+  }//jet loop
   
   //ctagLSystType  = "central" ;
   if(!isData){    
@@ -4870,8 +4917,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
       Chi2ToMass.cjhad_id		= kinFit.GetJetID_CHad(i);
       Chi2ToMass.sjhad_id		= kinFit.GetJetID_SHad(i);
       
-      Chi2ToMass_arr.push_back(Chi2ToMass);
-      
+      Chi2ToMass_arr.push_back(Chi2ToMass);      
       
     }// for loop over all kinfit combinations
     
@@ -5269,10 +5315,10 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }

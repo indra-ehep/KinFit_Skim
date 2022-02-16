@@ -78,8 +78,8 @@ class EventTree{
     Float_t   GenJet_eta_[100];
     Float_t   GenJet_phi_[100];
     Float_t   GenJet_mass_[100];
-    Float_t   GenJet_partonFlavour_[100];
-    Float_t   GenJet_hadronFlavour_[100];
+    Int_t   GenJet_partonFlavour_[100];
+    UChar_t   GenJet_hadronFlavour_[100];
 
     // PU
     Int_t    nPU_;  
