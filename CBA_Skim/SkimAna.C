@@ -381,11 +381,14 @@ Int_t SkimAna::CreateHistoArrays()
   savedir->cd();
   
   if(fSyst=="base"){
-    fNBSelCols = 7; //Nof cutflow columns
+    fNBSelCols = 9; //Nof cutflow columns
     fNBSelColHists = 49; //nof histograms
     fNSelColHists = fNBSelCols*fNBSelColHists;
     hControl = new TH1D*[fNSelColHists];
-    const char *cfcols[] = {"Event", "Trigger", "Lepton", "Jet", "MET", "bjet", "KinFit"} ;
+    fNBSelColProfiles = 7; //nof TProfiles
+    fNSelColProfiles = fNBSelCols*fNBSelColProfiles;
+    pControl = new TProfile*[fNSelColProfiles];
+    const char *cfcols[] = {"Event", "Trigger", "Lepton", "Jet", "MET", "bjet", "KinFit", "ctagL", "ctagM"} ;
     
     fSelColDir = new TDirectory*[fNBSelCols];  
     
@@ -444,7 +447,15 @@ Int_t SkimAna::CreateHistoArrays()
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_ljet_jetid","pt_jet1_ljet_jetid",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("mjj_test_mu","mjj_test_mu",50, 0., 250.);
       hControl[iscl*fNBSelColHists + 48] = new TH1D("jetresolution","jetresolution",200, 0., 2.);
-      
+
+      hidx = 0;
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_s","ctagL_s",100, 0., 1000., 0., 4.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_s_p","ctagL_s_p",100, 0., 1000., 0., 4.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_s_f","ctagL_s_f",100, 0., 1000., 0., 4.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_d","ctagL_d",100, 0., 1000., 0., 4.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_d_pp","ctagL_d_pp",100, 0., 1000., 0., 4.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_d_pf","ctagL_d_pf",100, 0., 1000., 0., 4.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_d_ff","ctagL_d_ff",100, 0., 1000., 0., 4.);
     }
   }//fSyst==base
 
@@ -1386,7 +1397,8 @@ void SkimAna::GetBtagSF_1a(){
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   
   int xbin,ybin;
-  int maxbinX, maxbinY;
+  //int maxbinX, maxbinY;
+  double maxbinX, maxbinY;
   
   for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
     
@@ -1407,8 +1419,10 @@ void SkimAna::GetBtagSF_1a(){
 	SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = b_eff->GetYaxis()->FindBin(abs(jetEta));
-      maxbinX = b_eff->GetXaxis()->GetLast();
-      maxbinY = b_eff->GetYaxis()->GetLast();
+      // maxbinX = b_eff->GetXaxis()->GetLast();
+      // maxbinY = b_eff->GetYaxis()->GetLast();
+      maxbinX = b_eff->GetXaxis()->GetBinUpEdge(b_eff->GetNbinsX());
+      maxbinY = b_eff->GetYaxis()->GetBinUpEdge(b_eff->GetNbinsY());
       Eff = b_eff->GetBinContent(xbin,ybin);
     }
     else if(jetFlavor == 4){
@@ -1421,8 +1435,10 @@ void SkimAna::GetBtagSF_1a(){
 	SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = c_eff->GetYaxis()->FindBin(abs(jetEta));
-      maxbinX = c_eff->GetXaxis()->GetLast();
-      maxbinY = c_eff->GetYaxis()->GetLast();
+      // maxbinX = c_eff->GetXaxis()->GetLast();
+      // maxbinY = c_eff->GetYaxis()->GetLast();
+      maxbinX = c_eff->GetXaxis()->GetBinUpEdge(c_eff->GetNbinsX());
+      maxbinY = c_eff->GetYaxis()->GetBinUpEdge(c_eff->GetNbinsY());
       Eff = c_eff->GetBinContent(xbin,ybin);
     }
     else {
@@ -1435,12 +1451,14 @@ void SkimAna::GetBtagSF_1a(){
 	SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
-      maxbinX = l_eff->GetXaxis()->GetLast();
-      maxbinY = l_eff->GetYaxis()->GetLast();
+      // maxbinX = l_eff->GetXaxis()->GetLast();
+      // maxbinY = l_eff->GetYaxis()->GetLast();
+      maxbinX = c_eff->GetXaxis()->GetBinUpEdge(c_eff->GetNbinsX());
+      maxbinY = c_eff->GetYaxis()->GetBinUpEdge(c_eff->GetNbinsY());
       Eff = l_eff->GetBinContent(xbin,ybin);
     }
 	
-    if( (xbin==0 or xbin>maxbinX or ybin==0 or ybin>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
+    if( (xbin<1 or jetPt>maxbinX or ybin<1 or abs(jetEta)>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
 
     if (jetBtag > btagThreshold ){
       pMC *= Eff;
@@ -1509,6 +1527,7 @@ void SkimAna::GetCLtagSF_1a(){
 	  SFc = readerb_CL.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       }else
 	SFc = reader_CL.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
+      
       xbin = b_CL_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = b_CL_eff->GetYaxis()->FindBin(abs(jetEta));
       maxbinX = b_CL_eff->GetXaxis()->GetLast();
@@ -1543,13 +1562,17 @@ void SkimAna::GetCLtagSF_1a(){
       maxbinY = l_CL_eff->GetYaxis()->GetLast();
       Eff = l_CL_eff->GetBinContent(xbin,ybin);
     }
-	
+    
     if( (xbin==0 or xbin>maxbinX or ybin==0 or ybin>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
 
+
+
     if (jetCvsLtag > ctagThresholdCvsLL and jetCvsBtag > ctagThresholdCvsBL ){
+      //cout << "As cjet : SFc : " << SFc << ", Eff : " <<  Eff << endl;
       pMC *= Eff;
       pData *= Eff*SFc;
     } else {
+      //cout << "As otherjet : SFc : " << SFc << ", Eff : " <<  Eff << endl;
       pMC *= 1. - Eff;
       pData *= 1. - (Eff*SFc);
     }
@@ -2995,6 +3018,7 @@ bool SkimAna::FillCTagObs(){
     if(count_cJetsIncL > 0){
       GetCLtagSF_1a(); 
       if(_cTagLWeight < 0.) return kTRUE;
+      // Info("FillCTagObs","_cTagLWeight %5.2f", _cTagLWeight);
     }
     if(count_cJetsIncM > 0){
       GetCMtagSF_1a(); 
@@ -4723,6 +4747,146 @@ bool SkimAna::FillKinFitControlHists(){
 //_____________________________________________________________________________
 bool SkimAna::FillCTagControlHists()
 {
+  int count_cJetsIncL   = 0;
+  int count_cJetsIncM   = 0;
+  int count_cJetsIncT   = 0;
+
+  bool isIncL = false;
+  bool isIncM = false;
+  bool isIncT = false;
+
+  int iscl = 7 ; //7 for CTagL
+  TList *listL = (TList *)fSelColDir[iscl]->GetList();
+  iscl = 8 ; //8 for CTagM
+  TList *listM = (TList *)fSelColDir[iscl]->GetList();
+
+  double ctagTh_CvsL_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_L_cut  ;
+  double ctagTh_CvsB_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_L_cut  ;
+  double ctagTh_CvsL_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_M_cut  ;
+  double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_M_cut  ;
+  double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_T_cut  ;
+  double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_T_cut  ;
+
+  // Info("FillCTagControlHists","");
+  // Info("FillCTagControlHists","Event : %d (%d), Mu : %d, Ele : %d",fProcessed,nCTag++,hasKFMu,hasKFEle);
+  // Info("FillCTagControlHists","bjlep : %d, bjhad : %d, cjhad : %d, sjhad : %d",_bjlep_id,_bjhad_id,_cjhad_id,_sjhad_id);
+  // Info("FillCTagControlHists","Loose (cVsB/cVsL) : (%4.3f, %4.3f), Medium (cVsB/cVsL) : (%4.3f, %4.3f), Tight (cVsB/cVsL) : (%4.3f, %4.3f)",
+  //      ctagTh_CvsB_L,ctagTh_CvsL_L, ctagTh_CvsB_M,ctagTh_CvsL_M, ctagTh_CvsB_T,ctagTh_CvsL_T);
+  // Info("FillCTagControlHists","KF jet1 : (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", cjhadAF.Pt(), cjhadAF.Eta() , cjhadAF.Phi() , cjhadAF.M());
+  // Info("FillCTagControlHists","KF jet2 : (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", sjhadAF.Pt(), sjhadAF.Eta() , sjhadAF.Phi() , sjhadAF.M());
+  bool found[2], match[2];
+  double ljet_pt[2];
+  found[0] = false, found[1] = false;
+  match[0] = false, match[1] = false;
+  for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+    if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
+    int jetInd = selector->Jets.at(ijet);
+    double jet_CvsL = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
+    double jet_CvsB = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
+    if(jet_CvsL > ctagTh_CvsL_L and jet_CvsB > ctagTh_CvsB_L) {
+      isIncL = true;
+      count_cJetsIncL++;
+    }
+    if(jet_CvsL > ctagTh_CvsL_M and jet_CvsB > ctagTh_CvsB_M){
+      isIncM = true;
+      count_cJetsIncM++;
+    }
+    if(jet_CvsL > ctagTh_CvsL_T and jet_CvsB > ctagTh_CvsB_T){
+      isIncT = true;
+      count_cJetsIncT++;	
+    }
+    if(jet_CvsL > ctagTh_CvsL_L and jet_CvsB > ctagTh_CvsB_L){
+      // Info("FillCTagControlHists","JA : Loose for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+      // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+      // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+      if(count_cJetsIncL==1) {
+	found[0] = true;
+	ljet_pt[0] = selector->JetsPtSmeared.at(ijet);
+      }
+      if(count_cJetsIncL==2) {
+	found[1] = true;
+	ljet_pt[1] = selector->JetsPtSmeared.at(ijet);
+      }
+      int genIdx = int(event->jetGenJetIdx_[jetInd]);
+      if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+    	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+    	// Info("FillCTagControlHists","\tJA : Loose Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+    	//      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+    	//      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+    	//      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+	if(count_cJetsIncL==1){
+	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[0] = true;
+	}
+	if(count_cJetsIncL==2){
+	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[1] = true;
+	}
+      }
+    }
+    // if(jet_CvsL > ctagTh_CvsL_M and jet_CvsB > ctagTh_CvsB_M){
+    //   Info("FillCTagControlHists","JA : Medium for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+    // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+    // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+    //   int genIdx = int(event->jetGenJetIdx_[jetInd]);
+    //   if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+    // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+    // 	Info("FillCTagControlHists","\tJA : Medium Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+    // 	     partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+    // 	     //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+    // 	     event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+    //   }
+    // }
+    // if(jet_CvsL > ctagTh_CvsL_T and jet_CvsB > ctagTh_CvsB_T){
+    //   Info("FillCTagControlHists","JA : Tight for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+    // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+    // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+    //   int genIdx = int(event->jetGenJetIdx_[jetInd]);
+    //   if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+    // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+    // 	Info("FillCTagControlHists","\tJA : Tight Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+    // 	     partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+    // 	     //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+    // 	     event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+    //   }
+    // }
+  }//jet loop
+  
+  //ctagLSystType  = "central" ;
+  if(!isData){    
+    
+    if(count_cJetsIncL > 0){
+      GetCLtagSF_1a(); 
+      if(_cTagLWeight < 0.) return kTRUE;
+      //Info("FillCTagControlHists","_cTagLWeight %5.2f", _cTagLWeight);
+      if(found[0] and !found[1]){
+	((TProfile *) listL->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
+	if(match[0])
+	  ((TProfile *) listL->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
+	else
+	  ((TProfile *) listL->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
+      }
+      if(found[0] and found[1]){
+	((TProfile *) listL->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+	if(match[0] and match[1])
+	  ((TProfile *) listL->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+	if(match[0] and !match[1])
+	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
+	if(!match[0] and match[1])
+	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
+	if(!match[0] and !match[1])
+	  ((TProfile *) listL->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+      }
+    }
+    if(count_cJetsIncM > 0){
+      GetCMtagSF_1a(); 
+      if(_cTagMWeight < 0.) return kTRUE;
+    }
+    if(count_cJetsIncT > 0){
+      GetCTtagSF_1a(); 
+      if(_cTagTWeight < 0.) return kTRUE;
+    }
+    
+  }//isMC
+
   return true;
 }
 
@@ -5315,10 +5479,10 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }

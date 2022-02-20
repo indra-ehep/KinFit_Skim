@@ -18,6 +18,7 @@
 #include <TSelector.h>
 #include <TGraphAsymmErrors.h>
 #include <TH2.h>
+#include <TProfile.h>
 #include <TParticlePDG.h>
 #include <TDatabasePDG.h>
 #include <TRandom3.h>
@@ -816,7 +817,10 @@ class SkimAna : public TSelector {
    int fNBSelCols;
    int fNBSelColHists;
    int fNSelColHists;
+   int fNBSelColProfiles;
+   int fNSelColProfiles;
    TH1D           **hControl;//
+   TProfile       **pControl;//
 
    TH1F           *hMinChi2_mu,  *h2MinChi2_mu, *h3MinChi2_mu, *h4MinChi2_mu, *h5MinChi2_mu;
    TH1F           *hMinChi2_ele,  *h2MinChi2_ele, *h3MinChi2_ele, *h4MinChi2_ele, *h5MinChi2_ele;
