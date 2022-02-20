@@ -102,12 +102,13 @@ Float_t jetEtaBin[53] = {-2.500, -2.322,
 
 // const Int_t nJetEtaBins = 1;
 // Float_t jetEtaBin[2] = {0.435, 0.783};
-  
-const Int_t nETBins = 19;
-Float_t ETBin[20] = {20., 30., 40., 50., 60.,
-		     70., 80., 90., 100., 120.,
-		     140., 160., 180., 200., 240., 
-		     280., 320., 360., 400., 500.};
+
+  const Int_t nETBins = 37;
+  Float_t ETBin[38] = {25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,  
+                       110., 120., 130., 140., 150., 160., 170., 180., 190., 200.,
+	               220., 240., 260., 280., 300.,
+	               330., 360., 390., 420.,
+                       440., 480., 520.}; 
 
   // const Int_t nETBins = 29;
   // Float_t ETBin[30] = {20., 30., 40., 50., 60.,
@@ -179,7 +180,7 @@ int ReadKFMean(int year = 2017)
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/post/TTbar_KFObjectsReso_2016.root"; //It is all merged, wrong naming
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2017/AllBkg_KFObjectsReso_2017.root";
   //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
-  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
+  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d_post/AllBkg_KFObjectsReso_%d.root",year,year);
   
   TH2F *hBJetETDiff = new TH2F("hBJetETDiff","hBJetETDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
   TH2F *hBJetEtaDiff = new TH2F("hBJetEtaDiff","hBJetEtaDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);

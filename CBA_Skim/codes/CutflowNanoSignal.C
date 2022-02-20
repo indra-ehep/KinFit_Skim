@@ -35,8 +35,9 @@ int CutflowNanoSignal()
   //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
   //const char* dir = "grid_v39_Syst/CBA_CTagM/pre";
   //const char* dir = "grid_v39_Syst/CBA_CTagM";
-  const char* dir = "grid_v39_Syst/CBA_ModSigCS";
-  
+  //const char* dir = "grid_v39_Syst/CBA_ModSigCS";
+  const char* dir = "grid_v39_Syst/CBA_AllButBC";
+
   int mpoint[10] = {80, 90, 100, 110, 120, 130, 140, 150, 155, 160};
   //const char *htype = "HminusM";
   const char *htype = "HplusM";

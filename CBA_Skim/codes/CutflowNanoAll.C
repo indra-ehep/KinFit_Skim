@@ -27,8 +27,8 @@ using namespace std;
 int CutflowNanoAll()
 {  
   
-  int year = 2017;
-  bool isMu = 0;
+  int year = 2018;
+  bool isMu = 1;
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
@@ -73,7 +73,8 @@ int CutflowNanoAll()
   //const char* dir = "grid_v39_Syst/CBA_TestYear";
   //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
   //const char* dir = "grid_v39_Syst/CBA_CTagM/pre";
-  const char* dir = "grid_v39_Syst/CBA_CTagM";
+  //const char* dir = "grid_v39_Syst/CBA_CTagM";
+  const char* dir = "grid_v39_Syst/CBA_AllButBC";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
