@@ -624,6 +624,25 @@ Bool_t ProcessSkim::Process(Long64_t entry)
     }else{ // for MiniAOD
       for(unsigned int ijet = 0 ; ijet<nJet_ and int(nJet_) < 10000000; ijet++){
 
+	double pt = jetPt_[ijet];
+	double eta = jetEta_[ijet];
+	double phi = jetPhi_[ijet];
+	bool jetID_pass = (jetID_[ijet]>=2 and (jetPUID_[ijet]>=1 or pt>=50.0)) ; //lwp
+	bool passDR_lep_jet = true;
+	jetR.SetPtEtaPhiM(jetPt_[ijet], jetEta_[ijet] , jetPhi_[ijet], jetMass_[ijet]);
+	if(nofMu==1)
+	  if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
+	if(nofEle==1)
+	  if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
+    
+	bool jetPresel = (pt >= jet_Pt_cut &&
+			  TMath::Abs(eta) <= 2.4 &&
+			  jetID_pass &&
+			  passDR_lep_jet
+			  );
+	
+	if(!jetPresel) continue;
+
 	double partonFlavor = jetPartFlvr_[ijet];
 	double deepflavb = jetBtagDeepFlavB_[ijet];
 	double deepflavcvb = jetBtagDeepFlavCvB_[ijet];
