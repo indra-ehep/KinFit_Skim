@@ -500,8 +500,27 @@ Bool_t ProcessSkim::Process(Long64_t entry)
     bool isDeepCSV = false;
     /////////////////////////////////////////////////
     if(isDeepCSV){
-    
+      
       for(unsigned int ijet = 0 ; ijet<nJet_ and int(nJet_) < 10000000; ijet++){
+
+	double pt = jetPt_[jetInd];
+	double eta = jetEta_[jetInd];
+	double phi = jetPhi_[jetInd];
+	bool jetID_pass = (jetID_[jetInd]>=2 and (jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
+	bool passDR_lep_jet = true;
+	jetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+	if(nofMu==1)
+	  if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
+	if(nofEle==1)
+	  if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
+    
+	bool jetPresel = (pt >= jet_Pt_cut &&
+			  TMath::Abs(eta) <= 2.4 &&
+			  jetID_pass &&
+			  passDR_lep_jet
+			  );
+	
+	if(!jetPresel) continue;
     
 	double partonFlavor = jetPartFlvr_[ijet];
 	double hadronFlavor = jetHadFlvr_[ijet];
