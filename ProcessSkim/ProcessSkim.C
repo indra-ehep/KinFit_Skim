@@ -461,31 +461,40 @@ Bool_t ProcessSkim::Process(Long64_t entry)
 			jetID_pass &&
 			passDR_lep_jet
 			);
-
+      
       if(!jetPresel) continue;
-      if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
-	unsigned int imc = genIdx ;
-	// printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
-	//        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
-	//        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5 and (jetBtagDeepB_[jetInd] > btag_cut_DeepCSV or jetBtagDeepFlavB_[jetInd] > btag_cut)){
-	  bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-	  bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	  if(bjetR.DeltaR(bjetG)<0.2)
-	    nbjet++;
-	}//b-jet condition
+      nljet++;
+      // if ( (genIdx>-1) && (genIdx < int(nGenJet_))){
+      // 	unsigned int imc = genIdx ;
+      // 	// printf("\tJet : Rec:(%2d, %5.2f, %5.2f, %5.2f, %5.2f), Gen:(%2d, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+      // 	//        jetPartFlvr_[jetInd],jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd],  
+      // 	//        GenJet_partonFlavour_[genIdx],GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+      // 	// if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5 and (jetBtagDeepB_[jetInd] > btag_cut_DeepCSV or jetBtagDeepFlavB_[jetInd] > btag_cut)){
+      // 	//   bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+      // 	//   bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+      // 	//   if(bjetR.DeltaR(bjetG)<0.2)
+      // 	//     nbjet++;
+      // 	// }//b-jet condition
 	
-	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
-	  ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
-	  ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	  if(ljetR.DeltaR(ljetG)<0.2)
-	    nljet++;
-	}//l-jet condition
+      // 	// if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
+      // 	//   ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+      // 	//   ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+      // 	//   if(ljetR.DeltaR(ljetG)<0.2)
+      // 	//     nljet++;
+      // 	// }//l-jet condition
 	
-      }//found the corresponding genjet 
+      // 	// if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx]){ //u,d,s,c,g
+      // 	//   ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
+      // 	//   ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
+      // 	//   if(ljetR.DeltaR(ljetG)<0.2)
+      // 	//     nljet++;
+      // 	// }//l-jet condition
+	
+      // }//found the corresponding genjet 
     }//jet loop
-  
-    if(nljet < 2 or nbjet < 2) return true;
+    
+    // if(nljet < 2 or nbjet < 2) return true;
+    if(nljet < 4) return true; // Events with atleast 4 jets
 
     ////////// Important line ///////////////////////
     bool isDeepCSV = false;
