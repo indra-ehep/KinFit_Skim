@@ -341,10 +341,10 @@ Bool_t ProcessSkim::Process(Long64_t entry)
     double PFrelIso_corr = muPFRelIso_[muInd];
     bool mediumMuonID = muMediumId_[muInd];
     bool passMedium_Iso = (pt >= mu_Pt_cut &&
-			   TMath::Abs(eta) <= 2.4 &&
-			   mediumMuonID
-			   && (PFrelIso_corr < 0.4)
-			   );
+  			   TMath::Abs(eta) <= 2.4 &&
+  			   mediumMuonID
+  			   && (PFrelIso_corr < 0.4)
+  			   );
     
     if(TMath::Abs(charge)!=1 or nTrackerLayers>=20 or nTrackerLayers<0 
        or !(TMath::Finite(eta)) or !(TMath::Finite(pt)) or !(TMath::Finite(phi)) 
@@ -365,8 +365,8 @@ Bool_t ProcessSkim::Process(Long64_t entry)
   	mujetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
   	if(mujetR.DeltaR(mujetG) < 0.1 and muCharge_[muInd]==int(partPDG->Charge()/3. and abs(GenPart_pdgId_[imc])==13)){
   	  hasMu = true;
-	  nofMu++;
-	  muIndex = muInd;
+  	  nofMu++;
+  	  muIndex = muInd;
   	  //cout << "Found muon " << endl;
   	}
       }
@@ -400,18 +400,18 @@ Bool_t ProcessSkim::Process(Long64_t entry)
     
     // D0 and Dz cuts are different for barrel and endcap
     bool passD0 = ((absSCEta < 1.479 && abs(eleD0_[eleInd]) < 0.05) ||
-		   (absSCEta > 1.479 && abs(eleD0_[eleInd]) < 0.1));
+  		   (absSCEta > 1.479 && abs(eleD0_[eleInd]) < 0.1));
     bool passDz = ((absSCEta < 1.479 && abs(eleDz_[eleInd]) < 0.1) ||
-		   (absSCEta > 1.479 && abs(eleDz_[eleInd]) < 0.2));
+  		   (absSCEta > 1.479 && abs(eleDz_[eleInd]) < 0.2));
     bool passMediumID_noIso = passEleID(eleInd, 3,false) && passVetoID;
     
     bool eleSel_Medium_noIso = (passEtaEBEEGap && 
-				absSCEta <= 2.4 &&
-				pt >= ele_Pt_cut &&
-				passMediumID_noIso &&
-				elePFRelIso_[eleInd] < 0.3 && 
-				passD0 &&
-				passDz);
+  				absSCEta <= 2.4 &&
+  				pt >= ele_Pt_cut &&
+  				passMediumID_noIso &&
+  				elePFRelIso_[eleInd] < 0.3 && 
+  				passD0 &&
+  				passDz);
     
     if(!eleSel_Medium_noIso) continue;
     if ( (genIdx>-1) && (genIdx < int(nGenPart_))){
@@ -430,8 +430,8 @@ Bool_t ProcessSkim::Process(Long64_t entry)
   	if(elejetR.DeltaR(elejetG) < 0.1 and eleCharge_[eleInd]==int(partPDG->Charge()/3.) and abs(GenPart_pdgId_[imc])==11){
   	  hasEle = true;
   	  nofEle++;
-	  eleIndex = eleInd;
-	  //cout << "Found electron " << endl;
+  	  eleIndex = eleInd;
+  	  //cout << "Found electron " << endl;
   	}
 	  
       }
@@ -452,15 +452,15 @@ Bool_t ProcessSkim::Process(Long64_t entry)
       bool passDR_lep_jet = true;
       jetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
       if(nofMu==1)
-	if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
+  	if ( jetR.DeltaR(mujetR) < 0.4) passDR_lep_jet = false;
       if(nofEle==1)
-	if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
+  	if ( jetR.DeltaR(elejetR) < 0.4) passDR_lep_jet = false;
     
       bool jetPresel = (pt >= jet_Pt_cut &&
-			TMath::Abs(eta) <= 2.4 &&
-			jetID_pass &&
-			passDR_lep_jet
-			);
+  			TMath::Abs(eta) <= 2.4 &&
+  			jetID_pass &&
+  			passDR_lep_jet
+  			);
       
       if(!jetPresel) continue;
       nljet++;
@@ -582,8 +582,8 @@ Bool_t ProcessSkim::Process(Long64_t entry)
 	  deepcvb_T =  0.288 ;
 	}
 	//b-quarks
-	if( abs(partonFlavor)==5 ){
-	  //if( abs(hadronFlavor)==5 ){
+	//if( abs(partonFlavor)==5 ){
+	if( abs(hadronFlavor)==5 ){
 	  h2_BTagEff_Denom_b->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepb > deepbL ) h2_BTagEff_Num_bL->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepb > deepbM ) h2_BTagEff_Num_bM->Fill(jetPt_[ijet], jetEta_[ijet]);
@@ -595,8 +595,8 @@ Bool_t ProcessSkim::Process(Long64_t entry)
 	  if( deepcvl > deepcvl_T and deepcvb > deepcvb_T  ) h2_CTagEff_Num_bT->Fill(jetPt_[ijet], jetEta_[ijet]);
 	}
 	//c-quarks
-	else if( abs(partonFlavor)==4 ){
-	  //else if( abs(hadronFlavor)==4 ){
+	//else if( abs(partonFlavor)==4 ){
+        else if( abs(hadronFlavor)==4 ){
 	  h2_BTagEff_Denom_c->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepb > deepbL ) h2_BTagEff_Num_cL->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepb > deepbM ) h2_BTagEff_Num_cM->Fill(jetPt_[ijet], jetEta_[ijet]);
@@ -644,6 +644,7 @@ Bool_t ProcessSkim::Process(Long64_t entry)
 	if(!jetPresel) continue;
 
 	double partonFlavor = jetPartFlvr_[ijet];
+	double hadronFlavor = jetHadFlvr_[ijet];
 	double deepflavb = jetBtagDeepFlavB_[ijet];
 	double deepflavcvb = jetBtagDeepFlavCvB_[ijet];
 	double deepflavcvl = jetBtagDeepFlavCvL_[ijet];
@@ -702,8 +703,8 @@ Bool_t ProcessSkim::Process(Long64_t entry)
 	  deepflavcvb_T =  0.267 ;
 	}
 
-	if( abs(partonFlavor)==5 ){
-	  //if( abs(hadronFlavor)==5 ){
+	//if( abs(partonFlavor)==5 ){
+	if( abs(hadronFlavor)==5 ){
 	  h2_BTagEff_Denom_b->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepflavb > deepflavbL ) h2_BTagEff_Num_bL->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepflavb > deepflavbM ) h2_BTagEff_Num_bM->Fill(jetPt_[ijet], jetEta_[ijet]);
@@ -715,8 +716,8 @@ Bool_t ProcessSkim::Process(Long64_t entry)
 	  if( deepflavcvl > deepflavcvl_T and deepflavcvb > deepflavcvb_T ) h2_CTagEff_Num_bT->Fill(jetPt_[ijet], jetEta_[ijet]);
 	}
 	//c-quarks
-	else if( abs(partonFlavor)==4 ){
-	  //else if( abs(hadronFlavor)==4 ){
+	//else if( abs(partonFlavor)==4 ){
+	else if( abs(hadronFlavor)==4 ){
 	  h2_BTagEff_Denom_c->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepflavb > deepflavbL ) h2_BTagEff_Num_cL->Fill(jetPt_[ijet], jetEta_[ijet]);
 	  if( deepflavb > deepflavbM ) h2_BTagEff_Num_cM->Fill(jetPt_[ijet], jetEta_[ijet]);
@@ -743,7 +744,7 @@ Bool_t ProcessSkim::Process(Long64_t entry)
 
       }//jet loop
 
-    }
+    }//if DeepCSV or DeepJet
   }//lepton == 1 condn
 
   fStatus++;

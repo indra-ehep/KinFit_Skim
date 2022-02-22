@@ -578,7 +578,7 @@ std::pair<float, float> BTagCalibrationReader::BTagCalibrationReaderImpl::min_ma
   if (useAbsEta_[jf] && eta < 0) {
     eta = -eta;
   }
-  
+
   const auto &entries = tmpData_.at(jf);
   float min_pt = -1., max_pt = -1.;
   for (const auto & e: entries) {

@@ -1033,10 +1033,11 @@ void SkimAna::LoadBTag()
     if (fYear==2016){ 
       Info("LoadBTag","DeepJet calibration has been selected : 2016");      
       
-      caliba = BTagCalibration( "deepjeta", Form("%s/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv",fBasePath.Data());
-      calibb = BTagCalibration( "deepjetb", Form("%s/weightUL/BtagSF/2016/DeepJet_postVFP_formatted.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepJet_postVFP_formatted.csv",fBasePath.Data());      
+      caliba = BTagCalibration( "deepjeta", Form("%s/weightUL/BtagSF/SF/2016/DeepJet_preVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/DeepJet_preVFP_formatted.csv",fBasePath.Data());
+      calibb = BTagCalibration( "deepjetb", Form("%s/weightUL/BtagSF/SF/2016/DeepJet_postVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/DeepJet_postVFP_formatted.csv",fBasePath.Data());      
+
       
       readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
       readera.load(caliba, BTagEntry::FLAV_B,"mujets");          
@@ -1048,77 +1049,85 @@ void SkimAna::LoadBTag()
       readerb.load(calibb, BTagEntry::FLAV_C, "comb"); 
       readerb.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
       
+      calibCa = BTagCalibration( "deepjetCa", Form("%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data());
+      calibCb = BTagCalibration( "deepjetCb", Form("%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data());      
+      
       readera_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-      readera_CL.load(caliba, BTagEntry::FLAV_B,"mujets");          
-      readera_CL.load(caliba, BTagEntry::FLAV_C, "comb"); 
-      readera_CL.load(caliba, BTagEntry::FLAV_UDSG, "incl"); 
+      readera_CL.load(calibCa, BTagEntry::FLAV_B,"TnP");          
+      readera_CL.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      readera_CL.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
 
       readerb_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-      readerb_CL.load(calibb, BTagEntry::FLAV_B,"mujets");          
-      readerb_CL.load(calibb, BTagEntry::FLAV_C, "comb"); 
-      readerb_CL.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
+      readerb_CL.load(calibCb, BTagEntry::FLAV_B,"TnP");          
+      readerb_CL.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      readerb_CL.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
 
       readera_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readera_CM.load(caliba, BTagEntry::FLAV_B,"mujets");          
-      readera_CM.load(caliba, BTagEntry::FLAV_C, "comb"); 
-      readera_CM.load(caliba, BTagEntry::FLAV_UDSG, "incl"); 
+      readera_CM.load(calibCa, BTagEntry::FLAV_B,"TnP");          
+      readera_CM.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      readera_CM.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
 
       readerb_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readerb_CM.load(calibb, BTagEntry::FLAV_B,"mujets");          
-      readerb_CM.load(calibb, BTagEntry::FLAV_C, "comb"); 
-      readerb_CM.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
+      readerb_CM.load(calibCb, BTagEntry::FLAV_B,"TnP");          
+      readerb_CM.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      readerb_CM.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
 
       readera_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
-      readera_CT.load(caliba, BTagEntry::FLAV_B,"mujets");          
-      readera_CT.load(caliba, BTagEntry::FLAV_C, "comb"); 
-      readera_CT.load(caliba, BTagEntry::FLAV_UDSG, "incl"); 
+      readera_CT.load(calibCa, BTagEntry::FLAV_B,"TnP");          
+      readera_CT.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      readera_CT.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
       
       readerb_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
-      readerb_CT.load(calibb, BTagEntry::FLAV_B,"mujets");          
-      readerb_CT.load(calibb, BTagEntry::FLAV_C, "comb"); 
-      readerb_CT.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
+      readerb_CT.load(calibCb, BTagEntry::FLAV_B,"TnP");          
+      readerb_CT.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      readerb_CT.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
       
     }
     if (fYear==2017 || fYear==2018){ 
       Info("LoadBTag","DeepJet calibration has been selected : %d", fYear);      
       
-      calib = BTagCalibration( "deepjet", Form("%s/weightUL/BtagSF/%d/DeepJet_formatted.csv",fBasePath.Data(),fYear) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/%d/DeepJet_formatted.csv",fBasePath.Data(),fYear);
+      calib = BTagCalibration( "deepjet", Form("%s/weightUL/BtagSF/SF/%d/DeepJet_formatted.csv",fBasePath.Data(),fYear) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/DeepJet_formatted.csv",fBasePath.Data(),fYear);
       
       reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
       reader.load(calib, BTagEntry::FLAV_B,"mujets");          
       reader.load(calib, BTagEntry::FLAV_C, "comb"); 
       reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
       
+      calibC = BTagCalibration( "deepjetC", Form("%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear);
+      
       reader_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-      reader_CL.load(calib, BTagEntry::FLAV_B,"mujets");          
-      reader_CL.load(calib, BTagEntry::FLAV_C, "comb"); 
-      reader_CL.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
+      reader_CL.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      reader_CL.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      reader_CL.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
 
       reader_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      reader_CM.load(calib, BTagEntry::FLAV_B,"mujets");          
-      reader_CM.load(calib, BTagEntry::FLAV_C, "comb"); 
-      reader_CM.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
+      reader_CM.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      reader_CM.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      reader_CM.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
 
       reader_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
-      reader_CT.load(calib, BTagEntry::FLAV_B,"mujets");          
-      reader_CT.load(calib, BTagEntry::FLAV_C, "comb"); 
-      reader_CT.load(calib, BTagEntry::FLAV_UDSG, "incl");       
+      reader_CT.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      reader_CT.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      reader_CT.load(calibC, BTagEntry::FLAV_UDSG, "incl");       
       
     }
   } else {
     Info("LoadBTag","DeepCSV calibration has been selected");
     if (fYear==2016){ 
       Info("LoadBTag","DeepCSV calibration has been selected : 2016");      
-      // caliba = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2016/DeepCSV_106XUL16preVFPSF_v1.csv",fBasePath.Data()) ) ;
-      // Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_106XUL16preVFPSF_v1.csv",fBasePath.Data());
-      // calibb = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2016/DeepCSV_106XUL16postVFPSF_v2.csv",fBasePath.Data()) ) ;
-      // Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_106XUL16postVFPSF_v2.csv",fBasePath.Data());
+      // caliba = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/SF/2016/DeepCSV_106XUL16preVFPSF_v1.csv",fBasePath.Data()) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/DeepCSV_106XUL16preVFPSF_v1.csv",fBasePath.Data());
+      // calibb = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/SF/2016/DeepCSV_106XUL16postVFPSF_v2.csv",fBasePath.Data()) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/DeepCSV_106XUL16postVFPSF_v2.csv",fBasePath.Data());
 
-      caliba = BTagCalibration( "deepcsva", Form("%s/weightUL/BtagSF/2016/DeepCSV_preVFP_formatted.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_preVFP_formatted.csv",fBasePath.Data());
-      calibb = BTagCalibration( "deepcsvb", Form("%s/weightUL/BtagSF/2016/DeepCSV_postVFP_formatted.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/2016/DeepCSV_postVFP_formatted.csv",fBasePath.Data());
+      caliba = BTagCalibration( "deepcsva", Form("%s/weightUL/BtagSF/SF/2016/DeepCSV_preVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/DeepCSV_preVFP_formatted.csv",fBasePath.Data());
+      calibb = BTagCalibration( "deepcsvb", Form("%s/weightUL/BtagSF/SF/2016/DeepCSV_postVFP_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/DeepCSV_postVFP_formatted.csv",fBasePath.Data());
 
       readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
       readera.load(caliba, BTagEntry::FLAV_B,"mujets");          
@@ -1133,8 +1142,8 @@ void SkimAna::LoadBTag()
     }
     if (fYear==2017){ 
       Info("LoadBTag","DeepCSV calibration has been selected : 2017 %s",fBasePath.Data());
-      calib = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2017/wp_deepCSV_106XUL17_v3.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/2017/wp_deepCSV_106XUL17_v3.csv",fBasePath.Data());
+      calib = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/SF/2017/wp_deepCSV_106XUL17_v3.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2017/wp_deepCSV_106XUL17_v3.csv",fBasePath.Data());
 
       reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
       reader.load(calib, BTagEntry::FLAV_B,"mujets");          
@@ -1143,8 +1152,8 @@ void SkimAna::LoadBTag()
     }
     if (fYear==2018){ 
       Info("LoadBTag","DeepCSV calibration has been selected : 2018");
-      calib = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/2018/wp_deepCSV_106XUL18_v2.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/2018/wp_deepCSV_106XUL18_v2.csv",fBasePath.Data());
+      calib = BTagCalibration( "deepcsv", Form("%s/weightUL/BtagSF/SF/2018/wp_deepCSV_106XUL18_v2.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2018/wp_deepCSV_106XUL18_v2.csv",fBasePath.Data());
 
       reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
       reader.load(calib, BTagEntry::FLAV_B,"mujets");          
@@ -1154,45 +1163,6 @@ void SkimAna::LoadBTag()
   }
   
   //string year = "2016";
-  std::string fName = "" ;
-  if(!selector->useDeepCSVbTag){ //CSVV2
-    if (fYear==2016)
-      fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/inclusive/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-    else
-      fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-  }else{ //DeepCSV    
-    fName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-  }
-  Info("LoadBTag","Efficientcy file : %s",fName.c_str());
-  Info("LoadBTag","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
-  
-  std::string effType = "BTag";
-  std::string effCType = "CTag";
-  
-  std::string leffName = effType+"_l_M_efficiency";
-  std::string ceffName = effType+"_c_M_efficiency";
-  std::string beffName = effType+"_b_M_efficiency";
-
-  std::string leffCName = effCType+"_l_L_efficiency";
-  std::string ceffCName = effCType+"_c_L_efficiency";
-  std::string beffCName = effCType+"_b_L_efficiency";
-  
-  TFile* inputFile = TFile::Open(fName.c_str(),"read");
-  l_eff = (TH2D*) inputFile->Get(leffName.c_str());
-  c_eff = (TH2D*) inputFile->Get(ceffName.c_str());
-  b_eff = (TH2D*) inputFile->Get(beffName.c_str());
-
-  l_CL_eff = (TH2D*) inputFile->Get(leffCName.c_str());
-  c_CL_eff = (TH2D*) inputFile->Get(ceffCName.c_str());
-  b_CL_eff = (TH2D*) inputFile->Get(beffCName.c_str());
-
-  l_CM_eff = (TH2D*) inputFile->Get(Form("%s_l_M_efficiency",effCType.c_str()));
-  c_CM_eff = (TH2D*) inputFile->Get(Form("%s_c_M_efficiency",effCType.c_str()));
-  b_CM_eff = (TH2D*) inputFile->Get(Form("%s_b_M_efficiency",effCType.c_str()));
-
-  l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str()));
-  c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str()));
-  b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str()));
   
 }
 
@@ -1404,8 +1374,8 @@ void SkimAna::GetBtagSF_1a(){
     
     jetPt = event->jetPt_[*jetInd];
     jetEta = fabs(event->jetEta_[*jetInd]);
-    jetFlavor = abs(event->jetPartFlvr_[*jetInd]);
-    //jetFlavor = abs(event->jetHadFlvr_[*jetInd]);
+    //jetFlavor = abs(event->jetPartFlvr_[*jetInd]);
+    jetFlavor = abs(event->jetHadFlvr_[*jetInd]);
     //jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagCSVV2_[*jetInd] ;
     jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagDeepFlavB_[*jetInd] ;
     
@@ -1463,9 +1433,11 @@ void SkimAna::GetBtagSF_1a(){
     if (jetBtag > btagThreshold ){
       pMC *= Eff;
       pData *= Eff*SFb;
+      //cout << "Tagged as bjet : SFb : " << SFb << ", Eff : " <<  Eff << ", pMC :" << pMC << ", pData : " << pData << ", weight : " << pData/pMC << endl;
     } else {
       pMC *= 1. - Eff;
       pData *= 1. - (Eff*SFb);
+      //cout << "Otherjet : SFb : " << SFb << ", 1 - Eff : " <<  (1. - Eff) << ", pMC :" << pMC << ", pData : " << pData << ", weight : " << pData/pMC << endl;	    
     }
   }//end of jet loop
   
@@ -1514,8 +1486,8 @@ void SkimAna::GetCLtagSF_1a(){
     int jetInd = selector->Jets.at(ijet);
     jetPt = event->jetPt_[jetInd];
     jetEta = fabs(event->jetEta_[jetInd]);
-    jetFlavor = abs(event->jetPartFlvr_[jetInd]);
-    //jetFlavor = abs(event->jetHadFlvr_[jetInd]);
+    //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
+    jetFlavor = abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     
@@ -1533,6 +1505,7 @@ void SkimAna::GetCLtagSF_1a(){
       maxbinX = b_CL_eff->GetXaxis()->GetLast();
       maxbinY = b_CL_eff->GetYaxis()->GetLast();
       Eff = b_CL_eff->GetBinContent(xbin,ybin);
+      //cout << "bjet : (pt,eta) : (" << jetPt << "," << jetEta << "), SFc : " << SFc << ", Eff : " <<  Eff << endl;
     }
     else if(jetFlavor == 4){
       if(fYear==2016){
@@ -1547,6 +1520,7 @@ void SkimAna::GetCLtagSF_1a(){
       maxbinX = c_CL_eff->GetXaxis()->GetLast();
       maxbinY = c_CL_eff->GetYaxis()->GetLast();
       Eff = c_CL_eff->GetBinContent(xbin,ybin);
+      //cout << "cjet : (pt,eta) : (" << jetPt << "," << jetEta << "), SFc : " << SFc << ", Eff : " <<  Eff << endl;
     }
     else {
       if(fYear==2016){
@@ -1561,6 +1535,7 @@ void SkimAna::GetCLtagSF_1a(){
       maxbinX = l_CL_eff->GetXaxis()->GetLast();
       maxbinY = l_CL_eff->GetYaxis()->GetLast();
       Eff = l_CL_eff->GetBinContent(xbin,ybin);
+      //cout << "ljet : (pt,eta) : (" << jetPt << "," << jetEta << "), SFc : " << SFc << ", Eff : " <<  Eff << endl;
     }
     
     if( (xbin==0 or xbin>maxbinX or ybin==0 or ybin>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
@@ -1568,13 +1543,13 @@ void SkimAna::GetCLtagSF_1a(){
 
 
     if (jetCvsLtag > ctagThresholdCvsLL and jetCvsBtag > ctagThresholdCvsBL ){
-      //cout << "As cjet : SFc : " << SFc << ", Eff : " <<  Eff << endl;
       pMC *= Eff;
       pData *= Eff*SFc;
+      //cout << "Tagged as cjet : pt : " << jetPt << ", SFc : " << SFc << ", Eff : " <<  Eff << ", pMC :" << pMC << ", pData : " << pData << ", weight : " << pData/pMC << endl;
     } else {
-      //cout << "As otherjet : SFc : " << SFc << ", Eff : " <<  Eff << endl;
       pMC *= 1. - Eff;
       pData *= 1. - (Eff*SFc);
+      //cout << "Otherjet : : pt : " << jetPt << ", SFc : " << SFc << ", 1 - Eff : " <<  (1. - Eff) << ", pMC :" << pMC << ", pData : " << pData << ", weight : " << pData/pMC << endl;
     }
   }//end of jet loop
   
@@ -1624,8 +1599,8 @@ void SkimAna::GetCMtagSF_1a(){
     int jetInd = selector->Jets.at(ijet);
     jetPt = event->jetPt_[jetInd];
     jetEta = fabs(event->jetEta_[jetInd]);
-    jetFlavor = abs(event->jetPartFlvr_[jetInd]);
-    //jetFlavor = abs(event->jetHadFlvr_[jetInd]);
+    //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
+    jetFlavor = abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     
@@ -1729,8 +1704,8 @@ void SkimAna::GetCTtagSF_1a(){
     int jetInd = selector->Jets.at(ijet);
     jetPt = event->jetPt_[jetInd];
     jetEta = fabs(event->jetEta_[jetInd]);
-    jetFlavor = abs(event->jetPartFlvr_[jetInd]);
-    //jetFlavor = abs(event->jetHadFlvr_[jetInd]);
+    //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
+    jetFlavor = abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     
@@ -4774,10 +4749,18 @@ bool SkimAna::FillCTagControlHists()
   //      ctagTh_CvsB_L,ctagTh_CvsL_L, ctagTh_CvsB_M,ctagTh_CvsL_M, ctagTh_CvsB_T,ctagTh_CvsL_T);
   // Info("FillCTagControlHists","KF jet1 : (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", cjhadAF.Pt(), cjhadAF.Eta() , cjhadAF.Phi() , cjhadAF.M());
   // Info("FillCTagControlHists","KF jet2 : (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", sjhadAF.Pt(), sjhadAF.Eta() , sjhadAF.Phi() , sjhadAF.M());
+
   bool found[2], match[2];
   double ljet_pt[2];
+  bool foundM[2], matchM[2];
+  double ljet_ptM[2];
+
   found[0] = false, found[1] = false;
   match[0] = false, match[1] = false;
+
+  foundM[0] = false, foundM[1] = false;
+  matchM[0] = false, matchM[1] = false;
+
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
     int jetInd = selector->Jets.at(ijet);
@@ -4796,8 +4779,9 @@ bool SkimAna::FillCTagControlHists()
       count_cJetsIncT++;	
     }
     if(jet_CvsL > ctagTh_CvsL_L and jet_CvsB > ctagTh_CvsB_L){
-      // Info("FillCTagControlHists","JA : Loose for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+      // Info("FillCTagControlHists","JA : Loose for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
       // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+      // 	   event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd],
       // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
       if(count_cJetsIncL==1) {
 	found[0] = true;
@@ -4822,19 +4806,33 @@ bool SkimAna::FillCTagControlHists()
 	}
       }
     }
-    // if(jet_CvsL > ctagTh_CvsL_M and jet_CvsB > ctagTh_CvsB_M){
-    //   Info("FillCTagControlHists","JA : Medium for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
-    // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
-    // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
-    //   int genIdx = int(event->jetGenJetIdx_[jetInd]);
-    //   if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
-    // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
-    // 	Info("FillCTagControlHists","\tJA : Medium Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
-    // 	     partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
-    // 	     //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
-    // 	     event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
-    //   }
-    // }
+    if(jet_CvsL > ctagTh_CvsL_M and jet_CvsB > ctagTh_CvsB_M){
+      // Info("FillCTagControlHists","JA : Medium for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
+      // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
+      // 	   selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+      if(count_cJetsIncM==1) {
+	foundM[0] = true;
+	ljet_ptM[0] = selector->JetsPtSmeared.at(ijet);
+      }
+      if(count_cJetsIncM==2) {
+	foundM[1] = true;
+	ljet_ptM[1] = selector->JetsPtSmeared.at(ijet);
+      }
+      int genIdx = int(event->jetGenJetIdx_[jetInd]);
+      if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+    	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+    	// Info("FillCTagControlHists","\tJA : Medium Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+    	//      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+    	//      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+    	//      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+	if(count_cJetsIncM==1){
+	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[0] = true;
+	}
+	if(count_cJetsIncM==2){
+	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[1] = true;
+	}
+      }
+    }
     // if(jet_CvsL > ctagTh_CvsL_T and jet_CvsB > ctagTh_CvsB_T){
     //   Info("FillCTagControlHists","JA : Tight for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
     // 	   ijet, jetInd, jet_CvsB, jet_CvsL,
@@ -4856,7 +4854,7 @@ bool SkimAna::FillCTagControlHists()
     if(count_cJetsIncL > 0){
       GetCLtagSF_1a(); 
       if(_cTagLWeight < 0.) return kTRUE;
-      //Info("FillCTagControlHists","_cTagLWeight %5.2f", _cTagLWeight);
+      // Info("FillCTagControlHists","_cTagLWeight_L %5.2f", _cTagLWeight);
       if(found[0] and !found[1]){
 	((TProfile *) listL->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
 	if(match[0])
@@ -4879,6 +4877,25 @@ bool SkimAna::FillCTagControlHists()
     if(count_cJetsIncM > 0){
       GetCMtagSF_1a(); 
       if(_cTagMWeight < 0.) return kTRUE;
+      //Info("FillCTagControlHists","_cTagLWeight_M %5.2f", _cTagLWeight);
+      if(found[0] and !foundM[1]){
+	((TProfile *) listM->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
+	if(matchM[0])
+	  ((TProfile *) listM->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
+	else
+	  ((TProfile *) listM->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
+      }
+      if(foundM[0] and foundM[1]){
+	((TProfile *) listM->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+	if(matchM[0] and matchM[1])
+	  ((TProfile *) listM->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+	if(matchM[0] and !matchM[1])
+	  ((TProfile *) listM->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
+	if(!matchM[0] and matchM[1])
+	  ((TProfile *) listM->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
+	if(!matchM[0] and !matchM[1])
+	  ((TProfile *) listM->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+      }
     }
     if(count_cJetsIncT > 0){
       GetCTtagSF_1a(); 
@@ -5041,6 +5058,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
       Chi2ToMass.A			= 1.;
       Chi2ToMass.B			= 1.;
       Chi2ToMass.ndf			= kinFit.GetNDF(i);
+      //cout<<" NDF " << kinFit.GetNDF(i) << endl;
       Chi2ToMass.nb_iter		= kinFit.GetNumberOfIter(i);
       Chi2ToMass.chi2_thad		= kinFit.GetChi2_thad(i);
       Chi2ToMass.chi2_tlep		= kinFit.GetChi2_tlep(i);
