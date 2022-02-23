@@ -756,15 +756,41 @@ class SkimAna : public TSelector {
    TH2D *l_CL_eff = 0x0, *c_CL_eff = 0x0, *b_CL_eff = 0x0;
    TH2D *l_CM_eff = 0x0, *c_CM_eff = 0x0, *b_CM_eff = 0x0;
    TH2D *l_CT_eff = 0x0, *c_CT_eff = 0x0, *b_CT_eff = 0x0;
-   string ctagLSystType, ctagMSystType, ctagTSystType ;
+   //string ctagLSystType, ctagMSystType, ctagTSystType ;
+   string ctagSystType;
    double _bTagWeight = 1.0 ;
    double _bTagWeight_b_Up = 1.0 ;
    double _bTagWeight_b_Do = 1.0 ;
    double _bTagWeight_l_Up = 1.0 ;
    double _bTagWeight_l_Do = 1.0 ;
+   double _bTagWeight_bc1_Up = 1.0 ;
+   double _bTagWeight_bc1_Do = 1.0 ;
+   double _bTagWeight_bc2_Up = 1.0 ;
+   double _bTagWeight_bc2_Do = 1.0 ;
+   double _bTagWeight_bc3_Up = 1.0 ;
+   double _bTagWeight_bc3_Do = 1.0 ;
+
    double _cTagLWeight = 1.0 ;
+   double _cTagLWeight_bc1_Up = 1.0 ;
+   double _cTagLWeight_bc1_Do = 1.0 ;
+   double _cTagLWeight_bc2_Up = 1.0 ;
+   double _cTagLWeight_bc2_Do = 1.0 ;
+   double _cTagLWeight_bc3_Up = 1.0 ;
+   double _cTagLWeight_bc3_Do = 1.0 ;
    double _cTagMWeight = 1.0 ;
+   double _cTagMWeight_bc1_Up = 1.0 ;
+   double _cTagMWeight_bc1_Do = 1.0 ;
+   double _cTagMWeight_bc2_Up = 1.0 ;
+   double _cTagMWeight_bc2_Do = 1.0 ;
+   double _cTagMWeight_bc3_Up = 1.0 ;
+   double _cTagMWeight_bc3_Do = 1.0 ;
    double _cTagTWeight = 1.0 ;
+   double _cTagTWeight_bc1_Up = 1.0 ;
+   double _cTagTWeight_bc1_Do = 1.0 ;
+   double _cTagTWeight_bc2_Up = 1.0 ;
+   double _cTagTWeight_bc2_Do = 1.0 ;
+   double _cTagTWeight_bc3_Up = 1.0 ;
+   double _cTagTWeight_bc3_Do = 1.0 ;
 
    //Lepton SF
    MuonSF *muSFa = 0x0;
@@ -921,10 +947,11 @@ class SkimAna : public TSelector {
    bool    FillCFHists(TList *list, string hist_extn, bool isMu, double value, double wt, double wt1);
    bool    FillKFHists(TList *list, string hist_extn, bool isMu, double wt);
    bool    FillBTHists(TList *list, string hist_extn, bool isMu, double wt);
-   bool    FillCTHists(TList *list, string hist_extn, bool isMu, double wt, 
+   bool    FillCTHists(TList *list, string hist_extn, bool isMu, double wt,
 		       int count_cJetsIncL, int count_cJetsIncM, int count_cJetsIncT, 
-		       bool isIncL, bool isIncM, bool isIncT);
-
+		       bool isIncL, bool isIncM, bool isIncT,
+		       double ctagLwt, double ctagMwt, double ctagTwt);
+   
    /// Fill Wt histograms
    bool    FillEventWt();
    bool    FillLeptonIso();
@@ -934,6 +961,7 @@ class SkimAna : public TSelector {
    
    /// Calculate the combine wt
    bool    GetCombinedWt(TString systname, double& combined_muwt, double& combined_muwt1, double& combined_elewt);
+   bool    GetCTagWt(char CType, TString systname, double& ctagwt);
    
    /// Fill the control histograms
    bool    FillEventControlHists();
@@ -1696,6 +1724,36 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
     outputTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
     outputTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
+    outputTree->Branch("bTagWeight_bc1_Up"	, &_bTagWeight_bc1_Up		);
+    outputTree->Branch("bTagWeight_bc1_Do"	, &_bTagWeight_bc1_Do		);
+    outputTree->Branch("bTagWeight_bc2_Up"	, &_bTagWeight_bc2_Up		);
+    outputTree->Branch("bTagWeight_bc2_Do"	, &_bTagWeight_bc2_Do		);
+    outputTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
+    outputTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
+
+    outputTree->Branch("cTagLWeight"		, &_cTagLWeight			);
+    outputTree->Branch("cTagLWeight_bc1_Up"	, &_cTagLWeight_bc1_Up		);
+    outputTree->Branch("cTagLWeight_bc1_Do"	, &_cTagLWeight_bc1_Do		);
+    outputTree->Branch("cTagLWeight_bc2_Up"	, &_cTagLWeight_bc2_Up		);
+    outputTree->Branch("cTagLWeight_bc2_Do"	, &_cTagLWeight_bc2_Do		);
+    outputTree->Branch("cTagLWeight_bc3_Up"	, &_cTagLWeight_bc3_Up		);
+    outputTree->Branch("cTagLWeight_bc3_Do"	, &_cTagLWeight_bc3_Do		);
+
+    outputTree->Branch("cTagMWeight"		, &_cTagMWeight			);
+    outputTree->Branch("cTagMWeight_bc1_Up"	, &_cTagMWeight_bc1_Up		);
+    outputTree->Branch("cTagMWeight_bc1_Do"	, &_cTagMWeight_bc1_Do		);
+    outputTree->Branch("cTagMWeight_bc2_Up"	, &_cTagMWeight_bc2_Up		);
+    outputTree->Branch("cTagMWeight_bc2_Do"	, &_cTagMWeight_bc2_Do		);
+    outputTree->Branch("cTagMWeight_bc3_Up"	, &_cTagMWeight_bc3_Up		);
+    outputTree->Branch("cTagMWeight_bc3_Do"	, &_cTagMWeight_bc3_Do		);
+
+    outputTree->Branch("cTagTWeight"		, &_cTagTWeight			);
+    outputTree->Branch("cTagTWeight_bc1_Up"	, &_cTagTWeight_bc1_Up		);
+    outputTree->Branch("cTagTWeight_bc1_Do"	, &_cTagTWeight_bc1_Do		);
+    outputTree->Branch("cTagTWeight_bc2_Up"	, &_cTagTWeight_bc2_Up		);
+    outputTree->Branch("cTagTWeight_bc2_Do"	, &_cTagTWeight_bc2_Do		);
+    outputTree->Branch("cTagTWeight_bc3_Up"	, &_cTagTWeight_bc3_Up		);
+    outputTree->Branch("cTagTWeight_bc3_Do"	, &_cTagTWeight_bc3_Do		);
     
     outputTree->Branch("chi2"			, &kinFitMinChi2       		);
     outputTree->Branch("lepPt"			, &_lepPt			);
