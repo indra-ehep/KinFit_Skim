@@ -2045,7 +2045,8 @@ Bool_t SkimAna::Notify()
   float _xss = 0.0;
   if(!isData){
     
-    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
+    //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
+    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
     
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){
