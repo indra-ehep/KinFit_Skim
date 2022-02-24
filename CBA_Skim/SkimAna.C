@@ -876,8 +876,8 @@ void SkimAna::GetNumberofEvents()
     
     TFile *file = TFile::Open(s.c_str(),"read");
     TH1D *hEvents = (TH1D*) file->Get("hEvents"); 
-    double nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights Method 1 and 3
-    //double nMC_thisFile = (hEvents->GetBinContent(3) - hEvents->GetBinContent(1)); //diff of gen weights Method2
+    //double nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights Method 1 and 3
+    double nMC_thisFile = (hEvents->GetBinContent(3) - hEvents->GetBinContent(1)); //diff of gen weights Method2
     
     totEvents[sample] += nMC_thisFile;
     totEventsUS[sample] += hEvents->GetEntries()/2.0;
