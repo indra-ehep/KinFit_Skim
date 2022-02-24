@@ -895,13 +895,13 @@ void SkimAna::GetNumberofEvents()
       cout<<"sample  \""<< evIt->first <<"\" has number of events = " << evIt->second << endl;
       if(fSample.Contains("Wjets")){
 	double kf  = 1.21377; 
-	LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
-	//LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	//LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
       }
       if(fSample.Contains("DYjets")){
 	double kf  = 1.1777; 
-	LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
-	//LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	//LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
       }
     }
   }
@@ -2264,9 +2264,9 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   // Sample weight 
   if(!isData){
-    _sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
+    //_sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
     //_sampleWeight = _local_evtWeight ; //Method 1 and 2
-    //_sampleWeight = _local_evtWeight * event->genWeight_; //Method 3
+    _sampleWeight = _local_evtWeight * event->genWeight_; //Method 3
     if(fYear==2016 and isPreVFP) _sampleWeight *= lumiFracI;
     if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
   }

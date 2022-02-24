@@ -6,9 +6,9 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-# samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
+                "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 # samples_2017 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
 #                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
 #                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
@@ -20,9 +20,9 @@ import time
 # samples_2017 = ["TTbar"]
 # samples_2018 = ["TTbar"]
 
-samples_2016 = ["DataMu", "DataEle"]
-samples_2017 = ["DataMu", "DataEle"]
-samples_2018 = ["DataMu", "DataEle"]
+# samples_2016 = ["DataMu", "DataEle"]
+# samples_2017 = ["DataMu", "DataEle"]
+# samples_2018 = ["DataMu", "DataEle"]
 
 # samples_2016 = ["HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
 #                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
@@ -31,25 +31,25 @@ samples_2018 = ["DataMu", "DataEle"]
 # samples_2018 = ["HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
 #                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 
-syst_2016 = ["base"]
-syst_2017 = ["base"]
-syst_2018 = ["base"]
+# syst_2016 = ["base"]
+# syst_2017 = ["base"]
+# syst_2018 = ["base"]
 
-syst_long_2016 = ["base"]
-syst_long_2017 = ["base"]
-syst_long_2018 = ["base"]
+# syst_long_2016 = ["base"]
+# syst_long_2017 = ["base"]
+# syst_long_2018 = ["base"]
 
 # syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 # syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 # syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 
-# syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
-# syst_long_2016 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2017 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2018 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_long_2016 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_long_2017 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_long_2018 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
 tunedict = {
     "cp5up" : "CP5up_TTbar",
@@ -60,14 +60,14 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-if not os.path.exists("tmplog_MiniAODEqV_post_it3/log"):
-    os.makedirs("tmplog_MiniAODEqV_post_it3/log")
+if not os.path.exists("tmplog_GenWt_post_it1/log"):
+    os.makedirs("tmplog_GenWt_post_it1/log")
 condorLogDir = "log"
-tarFile = "tmplog_MiniAODEqV_post_it3/CBA_Skim.tar.gz"
+tarFile = "tmplog_GenWt_post_it1/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmplog_MiniAODEqV_post_it3/")
+os.system("cp runCBASkim.sh tmplog_GenWt_post_it1/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -86,18 +86,18 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmplog_MiniAODEqV_post_it3/condorSubmit.sh','w')
+subFile = open('tmplog_GenWt_post_it1/condorSubmit.sh','w')
 #for year in [2017,2018]:
 for year in [2016]:
 #for year in [2017]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmplog_MiniAODEqV_post_it3/%s'%jdlName,'w')
+    jdlFile = open('tmplog_GenWt_post_it1/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_MiniAODEqV/post"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_GenWt/post"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_MiniAODEqV/post"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_GenWt/post"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     #os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
