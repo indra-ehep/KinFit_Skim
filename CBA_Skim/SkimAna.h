@@ -2045,8 +2045,8 @@ Bool_t SkimAna::Notify()
   float _xss = 0.0;
   if(!isData){
     
-    //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
-    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
+    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
+    //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
     
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){
@@ -2095,51 +2095,53 @@ Bool_t SkimAna::Notify()
   else
     _kFType = 0; // initial value
   
-  
-  std::string fBCEffFileName = "" ;
-  if(!selector->useDeepCSVbTag){ //Deepjet
-    if (fYear==2016){
-      if(isPreVFP)
-	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/pre/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-      if(isPostVFP)
-	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/post/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-    }else{
-      fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+  if(!isData){
+    
+    std::string fBCEffFileName = "" ;
+    if(!selector->useDeepCSVbTag){ //Deepjet
+      if (fYear==2016){
+	if(isPreVFP)
+	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/pre/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+	if(isPostVFP)
+	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/post/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+      }else{
+	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+      }
+    }else{ //DeepCSV    
+      fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
     }
-  }else{ //DeepCSV    
-    fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+  
+    Info("Notify","Efficientcy file : %s",fBCEffFileName.c_str());
+    Info("Notify","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
+  
+    std::string effType = "BTag";
+    std::string effCType = "CTag";
+  
+    std::string leffName = effType+"_l_M_efficiency";
+    std::string ceffName = effType+"_c_M_efficiency";
+    std::string beffName = effType+"_b_M_efficiency";
+
+    std::string leffCName = effCType+"_l_L_efficiency";
+    std::string ceffCName = effCType+"_c_L_efficiency";
+    std::string beffCName = effCType+"_b_L_efficiency";
+  
+    TFile* inputFile = TFile::Open(fBCEffFileName.c_str(),"read");
+    l_eff = (TH2D*) inputFile->Get(leffName.c_str());
+    c_eff = (TH2D*) inputFile->Get(ceffName.c_str());
+    b_eff = (TH2D*) inputFile->Get(beffName.c_str());
+
+    l_CL_eff = (TH2D*) inputFile->Get(leffCName.c_str());
+    c_CL_eff = (TH2D*) inputFile->Get(ceffCName.c_str());
+    b_CL_eff = (TH2D*) inputFile->Get(beffCName.c_str());
+
+    l_CM_eff = (TH2D*) inputFile->Get(Form("%s_l_M_efficiency",effCType.c_str()));
+    c_CM_eff = (TH2D*) inputFile->Get(Form("%s_c_M_efficiency",effCType.c_str()));
+    b_CM_eff = (TH2D*) inputFile->Get(Form("%s_b_M_efficiency",effCType.c_str()));
+
+    l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str()));
+    c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str()));
+    b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str()));
   }
-  
-  Info("LoadBTag","Efficientcy file : %s",fBCEffFileName.c_str());
-  Info("LoadBTag","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
-  
-  std::string effType = "BTag";
-  std::string effCType = "CTag";
-  
-  std::string leffName = effType+"_l_M_efficiency";
-  std::string ceffName = effType+"_c_M_efficiency";
-  std::string beffName = effType+"_b_M_efficiency";
-
-  std::string leffCName = effCType+"_l_L_efficiency";
-  std::string ceffCName = effCType+"_c_L_efficiency";
-  std::string beffCName = effCType+"_b_L_efficiency";
-  
-  TFile* inputFile = TFile::Open(fBCEffFileName.c_str(),"read");
-  l_eff = (TH2D*) inputFile->Get(leffName.c_str());
-  c_eff = (TH2D*) inputFile->Get(ceffName.c_str());
-  b_eff = (TH2D*) inputFile->Get(beffName.c_str());
-
-  l_CL_eff = (TH2D*) inputFile->Get(leffCName.c_str());
-  c_CL_eff = (TH2D*) inputFile->Get(ceffCName.c_str());
-  b_CL_eff = (TH2D*) inputFile->Get(beffCName.c_str());
-
-  l_CM_eff = (TH2D*) inputFile->Get(Form("%s_l_M_efficiency",effCType.c_str()));
-  c_CM_eff = (TH2D*) inputFile->Get(Form("%s_c_M_efficiency",effCType.c_str()));
-  b_CM_eff = (TH2D*) inputFile->Get(Form("%s_b_M_efficiency",effCType.c_str()));
-
-  l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str()));
-  c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str()));
-  b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str()));
 
   return kTRUE;
 }
