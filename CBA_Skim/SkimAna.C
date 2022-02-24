@@ -876,8 +876,8 @@ void SkimAna::GetNumberofEvents()
     
     TFile *file = TFile::Open(s.c_str(),"read");
     TH1D *hEvents = (TH1D*) file->Get("hEvents"); 
-    //double nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights Method 1 and 3
-    double nMC_thisFile = (hEvents->GetBinContent(3) - hEvents->GetBinContent(1)); //diff of gen weights Method2
+    double nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights Method 1 and 3
+    //double nMC_thisFile = (hEvents->GetBinContent(3) - hEvents->GetBinContent(1)); //diff of gen weights Method2
     
     totEvents[sample] += nMC_thisFile;
     totEventsUS[sample] += hEvents->GetEntries()/2.0;
@@ -887,7 +887,7 @@ void SkimAna::GetNumberofEvents()
     delete file;
   }
   fin.close();
-
+  
   LumiWZ.clear();
   map<string,double>::iterator evIt;
   for(evIt = totEvents.begin(); evIt != totEvents.end(); evIt++){
@@ -2265,8 +2265,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   // Sample weight 
   if(!isData){
     //_sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
-    _sampleWeight = _local_evtWeight ; //Method 1 and 2
-    //_sampleWeight = _local_evtWeight * event->genWeight_; //Method 3
+    //_sampleWeight = _local_evtWeight ; //Method 1 and 2
+    _sampleWeight = _local_evtWeight * event->genWeight_; //Method 3
     if(fYear==2016 and isPreVFP) _sampleWeight *= lumiFracI;
     if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
   }
