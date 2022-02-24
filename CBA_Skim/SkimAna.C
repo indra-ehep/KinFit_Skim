@@ -895,13 +895,13 @@ void SkimAna::GetNumberofEvents()
       cout<<"sample  \""<< evIt->first <<"\" has number of events = " << evIt->second << endl;
       if(fSample.Contains("Wjets")){
 	double kf  = 1.21377; 
-	//LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
-	LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	//LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
       }
       if(fSample.Contains("DYjets")){
 	double kf  = 1.1777; 
-	//LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
-	LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	LumiWZ[evIt->first] = totEventsUS[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
+	//LumiWZ[evIt->first] = totEvents[evIt->first] / ( kf * crossSections[evIt->first].at(0)); // Here at(0) is for year 2016, but we consider it same for all years
       }
     }
   }
@@ -2264,9 +2264,9 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   // Sample weight 
   if(!isData){
-    //_sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
+    _sampleWeight = _local_evtWeight * ((event->genWeight_ >= 0) ? 1.0 : -1.0) ; //_sampleWeight should mimic the MiniAOD
     //_sampleWeight = _local_evtWeight ; //Method 1 and 2
-    _sampleWeight = _local_evtWeight * event->genWeight_; //Method 3
+    //_sampleWeight = _local_evtWeight * event->genWeight_; //Method 3
     if(fYear==2016 and isPreVFP) _sampleWeight *= lumiFracI;
     if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
   }
@@ -2509,7 +2509,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  return true;
+  //return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -4976,20 +4976,22 @@ bool SkimAna::FillCTagControlHists()
 	found[1] = true;
 	ljet_pt[1] = selector->JetsPtSmeared.at(ijet);
       }
-      int genIdx = int(event->jetGenJetIdx_[jetInd]);
-      if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
-    	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
-    	// Info("FillCTagControlHists","\tJA : Loose Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
-    	//      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
-    	//      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
-    	//      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
-	if(count_cJetsIncL==1){
-	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[0] = true;
+      if(!isData){
+	int genIdx = int(event->jetGenJetIdx_[jetInd]);
+	if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+	  TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+	  // Info("FillCTagControlHists","\tJA : Loose Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+	  //      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+	  //      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+	  //      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+	  if(count_cJetsIncL==1){
+	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[0] = true;
+	  }
+	  if(count_cJetsIncL==2){
+	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[1] = true;
+	  }
 	}
-	if(count_cJetsIncL==2){
-	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[1] = true;
-	}
-      }
+      }//if MC
     }
     if(jet_CvsL > ctagTh_CvsL_M and jet_CvsB > ctagTh_CvsB_M){
       // Info("FillCTagControlHists","JA : Medium for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
@@ -5003,20 +5005,22 @@ bool SkimAna::FillCTagControlHists()
 	foundM[1] = true;
 	ljet_ptM[1] = selector->JetsPtSmeared.at(ijet);
       }
-      int genIdx = int(event->jetGenJetIdx_[jetInd]);
-      if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
-    	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
-    	// Info("FillCTagControlHists","\tJA : Medium Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
-    	//      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
-    	//      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
-    	//      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
-	if(count_cJetsIncM==1){
-	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[0] = true;
+      if(!isData){
+	int genIdx = int(event->jetGenJetIdx_[jetInd]);
+	if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+	  TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+	  // Info("FillCTagControlHists","\tJA : Medium Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+	  //      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+	  //      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+	  //      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+	  if(count_cJetsIncM==1){
+	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[0] = true;
+	  }
+	  if(count_cJetsIncM==2){
+	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[1] = true;
+	  }
 	}
-	if(count_cJetsIncM==2){
-	  if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[1] = true;
-	}
-      }
+      }//if MC
     }
     // if(jet_CvsL > ctagTh_CvsL_T and jet_CvsB > ctagTh_CvsB_T){
     //   Info("FillCTagControlHists","JA : Tight for ijet : %d, jetInd : %d, (jet_CvsB,jet_CvsL) = (%4.3f, %4.3f), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)", 
