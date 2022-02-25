@@ -45,7 +45,7 @@ void initCrossSections(){
   crossSections["HplusM090"] = {266.16, 266.16, 266.16};
   crossSections["HplusM100"] = {266.16, 266.16, 266.16};
   crossSections["HplusM110"] = {266.16, 266.16, 266.16};
-  crossSections["HplusM120"] = {266.16, 266.16, 266.16}; //Try 56.15 to get the previous values
+  crossSections["HplusM120"] = {266.16, 266.16, 266.16}; 
   crossSections["HplusM130"] = {266.16, 266.16, 266.16};
   crossSections["HplusM140"] = {266.16, 266.16, 266.16};
   crossSections["HplusM150"] = {266.16, 266.16, 266.16};
@@ -79,17 +79,19 @@ void initCrossSections(){
   crossSections["TTbarPowheg_Hadronic_hdampdown"]      =  {380.095,380.095,380.095};
   crossSections["TTbarPowheg_Hadronic_mtop1695"]       =  {380.095,380.095,380.095};
   crossSections["TTbarPowheg_Hadronic_mtop1755"]       =  {380.095,380.095,380.095};
-
-  /* crossSections["ST_s_channel"] = {3.55, 0.0, 0.0}; */
-  /* crossSections["ST_t_channel"] = {113.40, 0.0, 0.0}; */
-  /* crossSections["ST_tbar_channel"] = {67.93, 0.0, 0.0}; */
-  /* crossSections["ST_tW_channel"] = {32.45, 0.0, 0.0}; */
-  /* crossSections["ST_tbarW_channel"] = {32.51, 0.0, 0.0}; */
-  crossSections["ST_s_channel"]		=  {3.36, 3.36, 3.36}; //// Default setting
-  crossSections["ST_t_channel"]		=  {136.02, 136.02, 136.02};
-  crossSections["ST_tbar_channel"]		=  { 80.95,  80.95,  80.95};
-  crossSections["ST_tW_channel"]		=  { 35.85,  35.85,  35.85};
-  crossSections["ST_tbarW_channel"]		=  { 35.85,  35.85,  35.85};
+  
+  //UL
+  crossSections["ST_s_channel"] = {3.55, 3.55, 3.55};
+  crossSections["ST_t_channel"] = {113.40, 113.40, 113.40};
+  crossSections["ST_tbar_channel"] = {67.93, 67.93, 67.93};
+  crossSections["ST_tW_channel"] = {32.45, 32.45, 32.45};
+  crossSections["ST_tbarW_channel"] = {32.51, 32.51, 32.51};
+  //MiniAOD
+  /* crossSections["ST_s_channel"]		=  {3.36, 3.36, 3.36}; //// Default setting */
+  /* crossSections["ST_t_channel"]		=  {136.02, 136.02, 136.02}; */
+  /* crossSections["ST_tbar_channel"]		=  { 80.95,  80.95,  80.95}; */
+  /* crossSections["ST_tW_channel"]		=  { 35.85,  35.85,  35.85}; */
+  /* crossSections["ST_tbarW_channel"]		=  { 35.85,  35.85,  35.85}; */
 
   //UL
   crossSections["Wjets"] = {53690.00, 53690.00, 53690.00};
@@ -123,15 +125,17 @@ void initCrossSections(){
   /* crossSections["DY2jetsM50"]			=  { 334.7,  334.7,  334.7}; //336.7 */
   /* crossSections["DY3jetsM50"]			=  { 102.3,  102.3,  102.3}; //102.9 */
   /* crossSections["DY4jetsM50"]			=  { 54.52,  54.52,  54.52}; //54.71 */
-    
   
-  /* crossSections["WW"] = {75.59, 0.0, 0.0}; */
-  /* crossSections["WZ"] = {27.49, 0.0, 0.0}; */
-  /* crossSections["ZZ"] = {12.11, 0.0, 0.0}; */
-  crossSections["WW"]				= {118.7, 118.7, 118.7};
-  crossSections["WZ"]				= {46.74, 46.74, 46.74};
-  crossSections["ZZ"]				= {17.72, 17.72, 17.72};
+  //UL
+  crossSections["WW"] = {75.59, 75.59, 75.59};
+  crossSections["WZ"] = {27.49, 27.49, 27.49};
+  crossSections["ZZ"] = {12.11, 12.11, 12.11};
+  //MiniAOD
+  /* crossSections["WW"]				= {118.7, 118.7, 118.7}; */
+  /* crossSections["WZ"]				= {46.74, 46.74, 46.74}; */
+  /* crossSections["ZZ"]				= {17.72, 17.72, 17.72}; */
 
+  //UL
   crossSections["QCD_Pt15to20_Mu"] = {2799000.00, 2799000.00, 2799000.00};
   crossSections["QCD_Pt20to30_Mu"] = {2538000.00, 2538000.00, 2538000.00};
   crossSections["QCD_Pt30to50_Mu"] = {1359000.00, 1359000.00, 1359000.00};
