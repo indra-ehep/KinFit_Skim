@@ -2046,7 +2046,10 @@ Bool_t SkimAna::Notify()
   if(!isData){
     
     //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
-    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
+    if(fSampleType.Contains("Hplus") or fSampleType.Contains("Hminus"))
+      _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
+    else
+      _local_evtWeight = luminosity * TMath::Abs(event->genWeight_) / totEvents[fname];
     
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){
