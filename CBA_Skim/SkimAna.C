@@ -2509,7 +2509,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  return true;
+  //return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -5093,6 +5093,38 @@ bool SkimAna::FillCTagControlHists()
     
   }//isMC
 
+  // if(!isData){    
+
+  //   for (unsigned int imc = 0 ; imc < vent->nLHEPart_ ; imc++ ){      
+  //     //for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
+  // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(LHEPart_pdgId_[imc]);
+  // 	if(!partPDG){
+  // 	  printf("\t LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  // 	  	 imc, LHEPart_pdgId_[imc], LHEPart_pt_[imc], 
+  // 	  	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
+
+  // 	}else{
+  // 	  printf("\t LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  // 	  	 imc, LHEPart_pdgId_[imc], partPDG->GetName(), LHEPart_pt_[imc],
+  // 	  	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
+  // 	}
+  //     }// mc particle loop
+
+  //   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+  //     if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
+  //     int jetInd = selector->Jets.at(ijet);
+  //     int genIdx = int(event->jetGenJetIdx_[jetInd]);
+  //     if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+  // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+  // 	// Info("FillCTagControlHists","\tJA : Loose Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
+  // 	//      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+  // 	//      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+  // 	//      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+  //     }
+  //   }
+
+  // }//if MC
+
   return true;
 }
 
@@ -5247,7 +5279,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
       Chi2ToMass.A			= 1.;
       Chi2ToMass.B			= 1.;
       Chi2ToMass.ndf			= kinFit.GetNDF(i);
-      //cout<<" NDF " << kinFit.GetNDF(i) << endl;
+      //cout<<"chi2 : "<< kinFit.GetChi2(i) << ", NDF : " << kinFit.GetNDF(i) << ", prob : " << TMath::Prob(kinFit.GetChi2(i),kinFit.GetNDF(i)) << endl;
       Chi2ToMass.nb_iter		= kinFit.GetNumberOfIter(i);
       Chi2ToMass.chi2_thad		= kinFit.GetChi2_thad(i);
       Chi2ToMass.chi2_tlep		= kinFit.GetChi2_tlep(i);
@@ -5686,10 +5718,10 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }
