@@ -46,6 +46,7 @@
 #include "TMath.h"
 #include "TLorentzVector.h"
 #include "PhysicsTools/KinFitter/interface/TFitConstraintM.h"
+#include "PhysicsTools/KinFitter/interface/TFitConstraintMGaus.h"
 #include "PhysicsTools/KinFitter/interface/TFitConstraintEp.h"
 #include "PhysicsTools/KinFitter/interface/TFitParticleEtEtaPhi.h"
 #include "PhysicsTools/KinFitter/interface/TFitParticleEScaledMomDev.h"
@@ -1383,6 +1384,18 @@ void SkimAna::Init(TTree *tree)
 
     tree->SetBranchStatus("LHEPart_pdgId",1);
     tree->SetBranchAddress("LHEPart_pdgId", &(event->LHEPart_pdgId_));
+
+    tree->SetBranchStatus("LHEPart_pt",1);
+    tree->SetBranchAddress("LHEPart_pt", &(event->LHEPart_pt_));
+
+    tree->SetBranchStatus("LHEPart_eta",1);
+    tree->SetBranchAddress("LHEPart_eta", &(event->LHEPart_eta_));
+
+    tree->SetBranchStatus("LHEPart_phi",1);
+    tree->SetBranchAddress("LHEPart_phi", &(event->LHEPart_phi_));
+
+    tree->SetBranchStatus("LHEPart_mass",1);
+    tree->SetBranchAddress("LHEPart_mass", &(event->LHEPart_mass_));
 
     tree->SetBranchStatus("nGenPart",1);
     tree->SetBranchAddress("nGenPart", &(event->nGenPart_));
@@ -3193,7 +3206,7 @@ bool KinFit::Fit(){
   unsigned int			max_nu	  = 2;
   //double ptOffSet, etaOffSet, phiOffSet, enOffSet;
   double ptOffSet, enOffSet;
-
+  double modpt ;
   /* metZ.SetLepton(lepton); */
   
   /* if(leptonType == kElectron) */
@@ -3345,28 +3358,20 @@ bool KinFit::Fit(){
 	      
 	      if(useExtReso){
 		muonExtResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
-
-		ptOffSet = GetReso2D(hMuPtDiff, lepton.Eta(), lepton.Et());
-		/* etaOffSet = GetReso2D(hMuEtaDiff, lepton.Eta(), lepton.Et()); */
-		/* phiOffSet = GetReso2D(hMuPhiDiff, lepton.Eta(), lepton.Et()); */
-		enOffSet = GetReso2D(hMuEnDiff, lepton.Eta(), lepton.Et());
-		//lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
-		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta(), lepton.Phi(), lepton.E()-enOffSet);
+		/* ptOffSet = GetReso2D(hMuPtDiff, lepton.Eta(), lepton.Et()); */
+		/* modpt = ((lepton.Pt()-ptOffSet)>0.0) ? (lepton.Pt()-ptOffSet) : 0.0; */
+		/* lepton.SetPtEtaPhiM(modpt, lepton.Eta(), lepton.Phi(), lepton.M()); */
 	      }else
 		muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 
 	    }
   	    if(leptonType == kElectron){
-	      
+	     
 	      if(useExtReso){
-		elecExtResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
-		
-		ptOffSet = GetReso2D(hElePtDiff, lepton.Eta(), lepton.Et());
-		/* etaOffSet = GetReso2D(hEleEtaDiff, lepton.Eta(), lepton.Et()); */
-		/* phiOffSet = GetReso2D(hElePhiDiff, lepton.Eta(), lepton.Et()); */
-		enOffSet = GetReso2D(hEleEnDiff, lepton.Eta(), lepton.Et());
-		//lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta()-etaOffSet, lepton.Phi()-phiOffSet, lepton.E()-enOffSet);
-		lepton.SetPtEtaPhiE(lepton.Pt()-ptOffSet, lepton.Eta(), lepton.Phi(), lepton.E()-enOffSet);
+		elecExtResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);		
+		/* ptOffSet = GetReso2D(hElePtDiff, lepton.Eta(), lepton.Et()); */
+		/* modpt = ((lepton.Pt()-ptOffSet)>0.0) ? (lepton.Pt()-ptOffSet) : 0.0; */
+		/* lepton.SetPtEtaPhiM(modpt, lepton.Eta(), lepton.Phi(), lepton.M()); */
 	      }else
 		elecResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
 	      
@@ -3380,11 +3385,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      metExtResolution(neutrino.Et(), resEt, resEta, resPhi);
-	      
 	      ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et()); 
-	      //phiOffSet = GetReso1D(hMETPhiDiff, neutrino.Et()); 
-	      //neutrino.SetPtEtaPhiM(neutrino.Pt()-ptOffSet, 0.0, neutrino.Phi()-phiOffSet, 0.0);
-	      neutrino.SetPtEtaPhiM(neutrino.Pt()-ptOffSet, 0.0, neutrino.Phi(), 0.0);
+	      modpt = ((neutrino.Pt()-ptOffSet)>0.0) ? (neutrino.Pt()-ptOffSet) : 0.0;
+	      neutrino.SetPtEtaPhiM(modpt, 0.0, neutrino.Phi(), 0.0);
 	    }else
 	      metResolution(neutrino.Et(), resEt, resEta, resPhi);
 
@@ -3413,13 +3416,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
-	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
-	      /* etaOffSet = GetReso2D(hBJetEtaDiff, bjlep.Eta(), bjlep.Et()); */
-	      /* phiOffSet = GetReso2D(hBJetPhiDiff, bjlep.Eta(), bjlep.Et()); */
-	      enOffSet = GetReso2D(hBJetEnDiff, bjlep.Eta(), bjlep.Et());
-	      //bjlep.SetPtEtaPhiE(bjlep.Pt()-ptOffSet, bjlep.Eta()-etaOffSet, bjlep.Phi()-phiOffSet, bjlep.E()-enOffSet);
-	      bjlep.SetPtEtaPhiE(bjlep.Pt()-ptOffSet, bjlep.Eta(), bjlep.Phi(), bjlep.E()-enOffSet);
+	      modpt = ((bjlep.Pt()-ptOffSet)>0.0) ? (bjlep.Pt()-ptOffSet) : 0.0;
+	      bjlep.SetPtEtaPhiM(modpt, bjlep.Eta(), bjlep.Phi(), bjlep.M());
 	    }else
 	      bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
@@ -3436,13 +3435,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
-	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
-	      /* etaOffSet = GetReso2D(hBJetEtaDiff, bjhad.Eta(), bjhad.Et()); */
-	      /* phiOffSet = GetReso2D(hBJetPhiDiff, bjhad.Eta(), bjhad.Et()); */
-	      enOffSet = GetReso2D(hBJetEnDiff, bjhad.Eta(), bjhad.Et());
-	      //bjhad.SetPtEtaPhiE(bjhad.Pt()-ptOffSet, bjhad.Eta()-etaOffSet, bjhad.Phi()-phiOffSet, bjhad.E()-enOffSet);
-	      bjhad.SetPtEtaPhiE(bjhad.Pt()-ptOffSet, bjhad.Eta(), bjhad.Phi(), bjhad.E()-enOffSet);
+	      modpt = ((bjhad.Pt()-ptOffSet)>0.0) ? (bjhad.Pt()-ptOffSet) : 0.0;
+	      bjhad.SetPtEtaPhiM(modpt, bjhad.Eta(), bjhad.Phi(), bjhad.M());
 	    }else
 	      bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
@@ -3452,19 +3447,15 @@ bool KinFit::Fit(){
 	      mbh(0,0)   *= TMath::Power(jetsRes.at(bj2.first), 2);
   	    mbh(1,1)	= TMath::Power(resEta, 2); // eta
   	    mbh(2,2)	= TMath::Power(resPhi, 2); // eta
-
+	    
   	    resbjhadEta = resEta ;
   	    resbjhadPhi = resPhi ;
-	      
+	    
 	    if(useExtReso){
 	      udscExtResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
-	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
-	      /* etaOffSet = GetReso2D(hBJetEtaDiff, cjhad.Eta(), cjhad.Et()); */
-	      /* phiOffSet = GetReso2D(hBJetPhiDiff, cjhad.Eta(), cjhad.Et()); */
-	      enOffSet = GetReso2D(hBJetEnDiff, cjhad.Eta(), cjhad.Et());
-	      //cjhad.SetPtEtaPhiE(cjhad.Pt()-ptOffSet, cjhad.Eta()-etaOffSet, cjhad.Phi()-phiOffSet, cjhad.E()-enOffSet);
-	      cjhad.SetPtEtaPhiE(cjhad.Pt()-ptOffSet, cjhad.Eta(), cjhad.Phi(), cjhad.E()-enOffSet);
+	      modpt = ((cjhad.Pt()-ptOffSet)>0.0) ? (cjhad.Pt()-ptOffSet) : 0.0;
+	      cjhad.SetPtEtaPhiM(modpt, cjhad.Eta(), cjhad.Phi(), cjhad.M());
 	    }else
 	      udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
@@ -3480,13 +3471,9 @@ bool KinFit::Fit(){
 	      
 	    if(useExtReso){
 	      udscExtResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
-	      
 	      ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
-	      /* etaOffSet = GetReso2D(hBJetEtaDiff, sjhad.Eta(), sjhad.Et()); */
-	      /* phiOffSet = GetReso2D(hBJetPhiDiff, sjhad.Eta(), sjhad.Et()); */
-	      enOffSet = GetReso2D(hBJetEnDiff, sjhad.Eta(), sjhad.Et());
-	      //sjhad.SetPtEtaPhiE(sjhad.Pt()-ptOffSet, sjhad.Eta()-etaOffSet, sjhad.Phi()-phiOffSet, sjhad.E()-enOffSet);
-	      sjhad.SetPtEtaPhiE(sjhad.Pt()-ptOffSet, sjhad.Eta(), sjhad.Phi(), sjhad.E()-enOffSet);
+	      modpt = ((sjhad.Pt()-ptOffSet)>0.0) ? (sjhad.Pt()-ptOffSet) : 0.0;
+	      sjhad.SetPtEtaPhiM(modpt, sjhad.Eta(), sjhad.Phi(), sjhad.M());
 	    }else
 	      udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
@@ -3512,13 +3499,16 @@ bool KinFit::Fit(){
   	    TFitParticleEtEtaPhi *sj  = new TFitParticleEtEtaPhi( "sj",  "sj",  &sjhad,    &ms );
 	    
   	    //leptoniccally decayed top constrain
-  	    TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
+  	    //TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
+  	    TFitConstraintMGaus *ltop = new TFitConstraintMGaus( "ltop", "leptonic top", 0, 0 , mTop, 6.9); // Values set from PDG 2021 mTop = 172.76
   	    ltop->addParticles1( lep, neu, bl );
   	    //hadronically decayed top constrain
-  	    TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
+  	    //TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
+  	    TFitConstraintMGaus *htop = new TFitConstraintMGaus( "htop", "hadronic top", 0, 0 , mTop, 6.9); // Values set from PDG 2021 mTop = 172.76
   	    htop->addParticles1( bh, cj, sj );
 	    
-  	    TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.379); // Values set from PDG 2021 mW = 80.379
+  	    //TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.379); // Values set from PDG 2021 mW = 80.379
+  	    TFitConstraintMGaus *lW = new TFitConstraintMGaus( "lW", "W mass", 0, 0 , 80.379, 6.4); // Values set from PDG 2021 mW = 80.379
   	    lW->addParticles1( lep, neu);
 	    
   	    /* TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.); */

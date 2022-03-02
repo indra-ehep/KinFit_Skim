@@ -2517,7 +2517,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillKFCFObs();
   if(systType == kBase) FillKinFitControlHists();
   if(IsDebug) Info("Process","Completed KinFit processing");
-  if(!isKFValid or isLowMET or eleNonIsoCut or muonNonIsoCut) return kTRUE;
+  if(!isKFValid) return kTRUE;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //Processes for CTagging will be placed in block below
@@ -4814,7 +4814,24 @@ bool SkimAna::FillBTagControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
     }
   }
-  
+
+  // if(!isData){    
+
+  //   for (unsigned int imc = 0 ; imc < event->nLHEPart_ ; imc++ ){      
+  //     TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->LHEPart_pdgId_[imc]);
+  //     if(!partPDG){
+  // 	printf("\t BTag : LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  // 	       imc, event->LHEPart_pdgId_[imc], event->LHEPart_pt_[imc], 
+  // 	       event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
+	
+  //     }else{
+  // 	printf("\t Btag : LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  // 	       imc, event->LHEPart_pdgId_[imc], partPDG->GetName(), event->LHEPart_pt_[imc],
+  // 	       event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
+  //     }
+  //   }// mc particle loop
+  // }//if MC
+
   return true;
 }
 
@@ -5094,34 +5111,86 @@ bool SkimAna::FillCTagControlHists()
   }//isMC
 
   // if(!isData){    
-
-  //   for (unsigned int imc = 0 ; imc < vent->nLHEPart_ ; imc++ ){      
-  //     //for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
-  // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(LHEPart_pdgId_[imc]);
-  // 	if(!partPDG){
-  // 	  printf("\t LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
-  // 	  	 imc, LHEPart_pdgId_[imc], LHEPart_pt_[imc], 
-  // 	  	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
-
-  // 	}else{
-  // 	  printf("\t LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
-  // 	  	 imc, LHEPart_pdgId_[imc], partPDG->GetName(), LHEPart_pt_[imc],
-  // 	  	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
-  // 	}
-  //     }// mc particle loop
+    
+  //   TLorentzVector bjet1,bjet2,ljet1,ljet2,lep,neu;
+  //   for (unsigned int imc = 0 ; imc < event->nLHEPart_ ; imc++ ){      
+  //     TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->LHEPart_pdgId_[imc]);
+  //     if(!partPDG){
+  // 	printf("\t CTag : LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  // 	       imc, event->LHEPart_pdgId_[imc], event->LHEPart_pt_[imc], 
+  // 	       event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
+	
+  //     }else{
+  // 	printf("\t Ctag : LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  // 	       imc, event->LHEPart_pdgId_[imc], partPDG->GetName(), event->LHEPart_pt_[imc],
+  // 	       event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
+  //     }
+  //     if(event->LHEPart_pdgId_[imc]==5 and imc>=2) 
+  // 	bjet1.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+  //     if(event->LHEPart_pdgId_[imc]==-5 and imc>=2) 
+  // 	bjet2.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+  //     if((abs(event->LHEPart_pdgId_[imc])==11 or abs(event->LHEPart_pdgId_[imc])==12 or abs(event->LHEPart_pdgId_[imc])==15) and imc>=2) 
+  // 	lep.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+  //     if((abs(event->LHEPart_pdgId_[imc])==12 or abs(event->LHEPart_pdgId_[imc])==12 or abs(event->LHEPart_pdgId_[imc])==12) and imc>=2) 
+  // 	neu.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+  //     if((event->LHEPart_pdgId_[imc]>=1 and event->LHEPart_pdgId_[imc]<=4) and imc>=2) 
+  // 	ljet1.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+  //     if((event->LHEPart_pdgId_[imc]>=-4 and event->LHEPart_pdgId_[imc]<=-1) and imc>=2) 
+  // 	ljet2.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+  //   }// mc particle loop
 
   //   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-  //     if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
+  //     //if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
   //     int jetInd = selector->Jets.at(ijet);
-  //     int genIdx = int(event->jetGenJetIdx_[jetInd]);
-  //     if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
-  // 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
-  // 	// Info("FillCTagControlHists","\tJA : Loose Genjet for particle : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f)",
-  // 	//      partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
-  // 	//      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
-  // 	//      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
-  //     }
+  //     if( (abs(event->jetPartFlvr_[jetInd])>=1 and abs(event->jetPartFlvr_[jetInd])<=4) or abs(event->jetPartFlvr_[jetInd])==21) 
+  // 	printf("\t ljet JetArray : (flav, btag) : (%d, %3.2f), (pt,eta,phi,M,R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  // 	       event->jetPartFlvr_[jetInd], event->jetBtagDeepFlavB_[jetInd],
+  // 	       selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd],
+  // 	       TMath::Sqrt(event->jetEta_[jetInd]*event->jetEta_[jetInd] + event->jetPhi_[jetInd]*event->jetPhi_[jetInd]));
   //   }
+
+  //   TLorentzVector jet;
+  //   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+  //     //if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
+  //     int jetInd = selector->Jets.at(ijet);
+      
+  //     if(ijet == _cjhad_id){
+  // 	jet.SetPtEtaPhiE(_jetChadPt, _jetChadEta , _jetChadPhi , _jetChadEnergy);
+  // 	Info("FillCTagControlHists","ljet1 KinFit : (pt,eta,phi,M,R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)", 
+  // 	     _jetChadPt, _jetChadEta , _jetChadPhi , jet.M(),
+  // 	     TMath::Sqrt(_jetChadEta*_jetChadEta + _jetChadPhi*_jetChadPhi));
+  // 	// Info("FillCTagControlHists","ljet1 JetArray : (pt,eta,phi,M,R,btag) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f, %3.2f)", 
+  // 	//      selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd],
+  // 	//      TMath::Sqrt(event->jetEta_[jetInd]*event->jetEta_[jetInd] + event->jetPhi_[jetInd]*event->jetPhi_[jetInd]), event->jetBtagDeepFlavB_[jetInd]);
+  // 	// int genIdx = int(event->jetGenJetIdx_[jetInd]);
+  // 	// if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+  // 	//   TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+  // 	//   Info("FillCTagControlHists","ljet1 GenJet : (flav,pt,eta,phi,M) = (%d, %5.2f, %5.2f, %5.2f, %5.2f)",
+  // 	//        //partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+  // 	//        event->GenJet_partonFlavour_[genIdx],
+  // 	//        event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+  // 	// }//genIdx
+  //     }//if ljet 1
+      
+  //     if(ijet == _sjhad_id){
+  // 	jet.SetPtEtaPhiE(_jetShadPt, _jetShadEta , _jetShadPhi , _jetShadEnergy);
+  // 	Info("FillCTagControlHists","ljet2 KinFit : (pt,eta,phi,M,R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)", 
+  // 	     _jetShadPt, _jetShadEta , _jetShadPhi , jet.M(),
+  // 	     TMath::Sqrt(_jetShadEta*_jetShadEta + _jetShadPhi*_jetShadPhi));
+  // 	// Info("FillCTagControlHists","ljet2 JetArray : (pt,eta,phi,M,R,btag) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f, %3.2f)", 
+  // 	//      selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd],
+  // 	//      TMath::Sqrt(event->jetEta_[jetInd]*event->jetEta_[jetInd] + event->jetPhi_[jetInd]*event->jetPhi_[jetInd]), event->jetBtagDeepFlavB_[jetInd]);
+  // 	// int genIdx = int(event->jetGenJetIdx_[jetInd]);
+  // 	// if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+  // 	//   TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+  // 	//   Info("FillCTagControlHists","ljet2 GenJet : (flav,pt,eta,phi,M) = (%d, %5.2f, %5.2f, %5.2f, %5.2f)",
+  // 	//        //partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+  // 	//        event->GenJet_partonFlavour_[genIdx],
+  // 	//        event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+  // 	// }//genIdx
+  //     }//if ljet 1
+
+  //   }//jet loop
 
   // }//if MC
 
@@ -5170,7 +5239,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   
   //cout<<" _jetPt : " << _jetPt << endl;
   //return true;
-  
+
   // _jetPt->clear() ;
   // _jetEta->clear() ;
   // _jetPhi->clear() ;
@@ -5721,7 +5790,7 @@ bool SkimAna::ExecSerial(const char* infile)
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 50 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }

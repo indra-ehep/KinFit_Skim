@@ -60,14 +60,14 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-if not os.path.exists("tmplog_ULXS_post_it1/log"):
-    os.makedirs("tmplog_ULXS_post_it1/log")
+if not os.path.exists("tmplog_CTagDD_post_it1/log"):
+    os.makedirs("tmplog_CTagDD_post_it1/log")
 condorLogDir = "log"
-tarFile = "tmplog_ULXS_post_it1/CBA_Skim.tar.gz"
+tarFile = "tmplog_CTagDD_post_it1/CBA_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmplog_ULXS_post_it1/")
+os.system("cp runCBASkim.sh tmplog_CTagDD_post_it1/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -86,18 +86,18 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmplog_ULXS_post_it1/condorSubmit.sh','w')
+subFile = open('tmplog_CTagDD_post_it1/condorSubmit.sh','w')
 #for year in [2017,2018]:
 for year in [2016]:
 #for year in [2017]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmplog_ULXS_post_it1/%s'%jdlName,'w')
+    jdlFile = open('tmplog_CTagDD_post_it1/%s'%jdlName,'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ULXS/post"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagDD/post"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_ULXS/post"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagDD/post"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
     #os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))

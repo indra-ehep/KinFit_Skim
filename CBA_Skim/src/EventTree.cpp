@@ -309,6 +309,18 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
     tree->SetBranchStatus("LHEPart_pdgId",1);
     tree->SetBranchAddress("LHEPart_pdgId", &LHEPart_pdgId_);
 
+    tree->SetBranchStatus("LHEPart_pt",1);
+    tree->SetBranchAddress("LHEPart_pt", &LHEPart_pt_);
+
+    tree->SetBranchStatus("LHEPart_eta",1);
+    tree->SetBranchAddress("LHEPart_eta", &LHEPart_eta_);
+
+    tree->SetBranchStatus("LHEPart_phi",1);
+    tree->SetBranchAddress("LHEPart_phi", &LHEPart_phi_);
+
+    tree->SetBranchStatus("LHEPart_mass",1);
+    tree->SetBranchAddress("LHEPart_mass", &LHEPart_mass_);
+
     tree->SetBranchStatus("nGenPart",1);
     tree->SetBranchAddress("nGenPart", &nGenPart_);
 	
@@ -860,6 +872,18 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("LHEPart_pdgId",1);
     chain->SetBranchAddress("LHEPart_pdgId", &LHEPart_pdgId_);
     
+    chain->SetBranchStatus("LHEPart_pt",1);
+    chain->SetBranchAddress("LHEPart_pt", &LHEPart_pt_);
+
+    chain->SetBranchStatus("LHEPart_eta",1);
+    chain->SetBranchAddress("LHEPart_eta", &LHEPart_eta_);
+
+    chain->SetBranchStatus("LHEPart_phi",1);
+    chain->SetBranchAddress("LHEPart_phi", &LHEPart_phi_);
+    
+    chain->SetBranchStatus("LHEPart_mass",1);
+    chain->SetBranchAddress("LHEPart_mass", &LHEPart_mass_);
+
     chain->SetBranchStatus("nGenPart",1);
     chain->SetBranchAddress("nGenPart", &nGenPart_);
 	
