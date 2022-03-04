@@ -524,6 +524,7 @@ class SkimAna : public TSelector {
   int		_Nbiter = 0 ;
   Float_t	_M_jj = 0 ;
   Float_t	_M_jjkF = 0 ;
+  double        _prob = -1.0;
   unsigned int		_bjlep_id = 0 ;
   unsigned int		_bjhad_id = 0 ;
   unsigned int		_cjhad_id = 0 ;
@@ -1769,6 +1770,8 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("cTagTWeight_bc3_Do"	, &_cTagTWeight_bc3_Do		);
     
     outputTree->Branch("chi2"			, &kinFitMinChi2       		);
+    outputTree->Branch("ndf"			, &_NDF         		);
+    outputTree->Branch("prob"			, &_prob         		);
     outputTree->Branch("lepPt"			, &_lepPt			);
     outputTree->Branch("lepEta"			, &_lepEta			);
     outputTree->Branch("lepPhi"			, &_lepPhi			);

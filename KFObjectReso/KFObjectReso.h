@@ -57,6 +57,7 @@ class KFObjectReso : public TSelector {
    TH1F *hMETETBin ;
    
    TH1F *hNofMu, *hNofEle, *hNofBJets, *hNofLJets;
+   TH1F *hDelRMu, *hDelREle,  *hDelRMET, *hDelRBJets, *hDelRLJets;
    ////////////////////////////////////////////////////////
 
    Long64_t        fProcessed;//!

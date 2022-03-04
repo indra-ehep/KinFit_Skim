@@ -382,10 +382,10 @@ Int_t SkimAna::CreateHistoArrays()
   
   if(fSyst=="base"){
     fNBSelCols = 9; //Nof cutflow columns
-    fNBSelColHists = 49; //nof histograms
+    fNBSelColHists = 62; //nof histograms 
     fNSelColHists = fNBSelCols*fNBSelColHists;
     hControl = new TH1D*[fNSelColHists];
-    fNBSelColProfiles = 7; //nof TProfiles
+    fNBSelColProfiles = 10; //nof TProfiles 
     fNSelColProfiles = fNBSelCols*fNBSelColProfiles;
     pControl = new TProfile*[fNSelColProfiles];
     const char *cfcols[] = {"Event", "Trigger", "Lepton", "Jet", "MET", "bjet", "KinFit", "ctagL", "ctagM"} ;
@@ -446,7 +446,20 @@ Int_t SkimAna::CreateHistoArrays()
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_bjet_jetid","pt_jet1_bjet_jetid",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_jet1_ljet_jetid","pt_jet1_ljet_jetid",1000, 0., 1000.);
       hControl[iscl*fNBSelColHists + hidx++] = new TH1D("mjj_test_mu","mjj_test_mu",50, 0., 250.);
-      hControl[iscl*fNBSelColHists + 48] = new TH1D("jetresolution","jetresolution",200, 0., 2.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("jetresolution","jetresolution",200, 0., 2.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("delRLHEGen","delRLHEGen",100, 0.0, 1.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("delRGenRec","delRGenRec",100, 0.0, 1.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("delRRecKF","delRRecKF",100, 0.0, 1.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("delRGenRecUS","delRGenRecUS",100, 0.0, 1.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("delRRecKFUS","delRRecKFUS",100, 0.0, 1.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("lheFlav","lheFlav",44, -22.0, 22.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("genFlav","genFlav",44, -22.0, 22.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("recoFlav","recoFlav",44, -22.0, 22.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("kfFlav","kfFlav",44, -22.0, 22.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("recoFlavUS","recoFlavUS",44, -22.0, 22.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("kfFlavUS","kfFlavUS",44, -22.0, 22.0);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("kfProb","kfProb",200, -0.5, 1.5);
+      hControl[iscl*fNBSelColHists + 61] = new TH1D("kfProbUS","kfProbUS",200, -0.5, 1.5);
 
       hidx = 0;
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_s","ctagL_s",100, 0., 1000., 0., 4.);
@@ -456,6 +469,9 @@ Int_t SkimAna::CreateHistoArrays()
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_d_pp","ctagL_d_pp",100, 0., 1000., 0., 4.);
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_d_pf","ctagL_d_pf",100, 0., 1000., 0., 4.);
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_d_ff","ctagL_d_ff",100, 0., 1000., 0., 4.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probDelRRecKF","probDelRRecKF",200, -0.5, 1.5, 0., 0.6);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probDelRRecKFUS","probDelRRecKFUS",200, -0.5, 1.5, 0., 0.6);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMatch","probMatch",200, -0.5, 1.5, 0., 5.);
     }
   }//fSyst==base
 
@@ -2134,6 +2150,10 @@ void SkimAna::Clean(){
   hasKFMu = false;
   hasKFEle = false;
   
+  kinFitMinChi2	= -1.0;
+  _NDF		= -1.0;
+  _prob		= -1.0;
+
   _bjlepBdisc = -20., _bjhadBdisc = -20., _cjhadBdisc = -20., _sjhadBdisc = -20.;
   _bjlepCvsLdisc = -20., _bjhadCvsLdisc = -20., _cjhadCvsLdisc = -20., _sjhadCvsLdisc = -20.;
   _bjlepCvsBdisc = -20., _bjhadCvsBdisc = -20., _cjhadCvsBdisc = -20., _sjhadCvsBdisc = -20.;
@@ -2495,7 +2515,7 @@ Bool_t SkimAna::Process(Long64_t entry)
       GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
       _bTagWeight_bc3_Do = _bTagWeight;
 
-      TheoWeights();
+      //TheoWeights();
     }
     
     btagSystType  = "central" ;
@@ -4917,6 +4937,114 @@ bool SkimAna::FillKinFitControlHists(){
       ((TH1D *) list->FindObject("pv_z_jetpufail"))->Fill(event->pvZ_, combined_elewt);
     }
   }
+  
+  if(!isData){    
+    
+    int nofLHEljets = 0;
+    int ljetsLHEPDG[10];
+    TLorentzVector ljetsLHE[10];
+    for (unsigned int imc = 0 ; imc < event->nLHEPart_ ; imc++ ){      
+      TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->LHEPart_pdgId_[imc]);
+      // if(!partPDG){
+      // 	printf("\t CTag : LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+      // 	       imc, event->LHEPart_pdgId_[imc], event->LHEPart_pt_[imc], 
+      // 	       event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
+	
+      // }else{
+      // 	printf("\t Ctag : LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+      // 	       imc, event->LHEPart_pdgId_[imc], partPDG->GetName(), event->LHEPart_pt_[imc],
+      // 	       event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
+      // }      
+      if(((abs(event->LHEPart_pdgId_[imc])>=1 and abs(event->LHEPart_pdgId_[imc])<=4) or event->LHEPart_pdgId_[imc]==21) and imc>=2) {
+  	// printf("\t Ljet : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  	//        imc, event->LHEPart_pdgId_[imc], partPDG->GetName(), event->LHEPart_pt_[imc],
+  	//        event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
+  	ljetsLHE[nofLHEljets].SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+	ljetsLHEPDG[nofLHEljets] = event->LHEPart_pdgId_[imc];
+	if(singleMu and muonIsoCut and !isLowMET)
+	  ((TH1D *) list->FindObject("lheFlav"))->Fill(event->LHEPart_pdgId_[imc], combined_muwt);
+	nofLHEljets++;
+      }//found light jet
+    }// LHE particle loop
+    
+    const int maxNJets = 20;
+    int nofRecoljets = 0;
+    int ljetsRecoPDG[maxNJets];
+    TLorentzVector ljetsReco[maxNJets];
+    int nofGenljets = 0;
+    int ljetsGenPDG[maxNJets];
+    TLorentzVector ljetsGen[maxNJets];
+    int LHEindex = -1;
+    double DelRLHEGenJet = -1.0;
+    for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+      int jetInd = selector->Jets.at(ijet);
+      if( (abs(event->jetPartFlvr_[jetInd])>=1 and abs(event->jetPartFlvr_[jetInd])<=4) or abs(event->jetPartFlvr_[jetInd])==21){
+  	// printf("\t ljet JetArray : (flav, btag) : (%d, %3.2f), (pt,eta,phi,M,R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
+  	//        event->jetPartFlvr_[jetInd], event->jetBtagDeepFlavB_[jetInd],
+  	//        selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd],
+  	//        TMath::Sqrt(event->jetEta_[jetInd]*event->jetEta_[jetInd] + event->jetPhi_[jetInd]*event->jetPhi_[jetInd]));
+	ljetsReco[nofRecoljets].SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd]);
+	int genIdx = int(event->jetGenJetIdx_[jetInd]);
+	if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))){
+	  TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenJet_partonFlavour_[genIdx]);
+	  ljetsGen[nofGenljets].SetPtEtaPhiM(event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
+	  DelRLHEGenJet = -1.0;
+	  for(int imc=0;imc<nofLHEljets;imc++){
+	    if(ljetsLHEPDG[imc]==event->GenJet_partonFlavour_[genIdx]){
+	      DelRLHEGenJet = ljetsLHE[imc].DeltaR(ljetsGen[nofGenljets]);
+	      LHEindex = imc;
+	    }
+	  }
+	  // printf("\t  Genjet : \"%s\", (pflav/hflav) : (%d/%d), (pt,eta,phi,M) = (%5.2f, %5.2f, %5.2f, %5.2f), DeltaR : %5.3f, DeltaRGenLHE : %5.2f\n",
+	  // 	 partPDG->GetName(),event->GenJet_partonFlavour_[genIdx], event->GenJet_hadronFlavour_[genIdx], 
+	  // 	 //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
+	  // 	 event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx],
+	  // 	 ljetsReco[nofRecoljets].DeltaR(ljetsGen[nofGenljets]), DelRLHEGenJet);	  
+	  
+	  if(singleMu and muonIsoCut and !isLowMET){
+	    ((TH1D *) list->FindObject("delRGenRec"))->Fill(ljetsReco[nofRecoljets].DeltaR(ljetsGen[nofGenljets]), combined_muwt);
+	    ((TH1D *) list->FindObject("delRGenRecUS"))->Fill(ljetsReco[nofRecoljets].DeltaR(ljetsGen[nofGenljets]));
+	    ((TH1D *) list->FindObject("genFlav"))->Fill(event->GenJet_partonFlavour_[genIdx], combined_muwt);
+	    if(LHEindex>-1) {
+	      ((TH1D *) list->FindObject("delRLHEGen"))->Fill(DelRLHEGenJet, combined_muwt);
+	    }
+	  }//if Muon KF
+
+	  nofGenljets++;
+	}//GenJet
+	
+	// pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMatch","probMatch",200, -0.5, 1.5, 0., 5.);
+	
+	if(singleMu and muonIsoCut and !isLowMET){
+	  ((TH1D *) list->FindObject("recoFlav"))->Fill(event->jetPartFlvr_[jetInd], combined_muwt);
+	  ((TH1D *) list->FindObject("recoFlavUS"))->Fill(event->jetPartFlvr_[jetInd]);
+	  if(hasKFMu){
+	    if(ijet == _cjhad_id) {
+	      ((TH1D *) list->FindObject("delRRecKF"))->Fill(cjhadAF.DeltaR(ljetsReco[nofRecoljets]), combined_muwt);
+	      ((TH1D *) list->FindObject("delRRecKFUS"))->Fill(cjhadAF.DeltaR(ljetsReco[nofRecoljets]));
+	      ((TH1D *) list->FindObject("kfFlav"))->Fill(event->jetPartFlvr_[jetInd], combined_muwt);
+	      ((TH1D *) list->FindObject("kfFlavUS"))->Fill(event->jetPartFlvr_[jetInd]);
+	      ((TProfile *) list->FindObject("probDelRRecKF"))->Fill(_prob, cjhadAF.DeltaR(ljetsReco[nofRecoljets]), combined_muwt);
+	      ((TProfile *) list->FindObject("probDelRRecKFUS"))->Fill(_prob, cjhadAF.DeltaR(ljetsReco[nofRecoljets]));
+	    }
+	    if(ijet == _sjhad_id){
+	      ((TH1D *) list->FindObject("delRRecKF"))->Fill(sjhadAF.DeltaR(ljetsReco[nofRecoljets]), combined_muwt);
+	      ((TH1D *) list->FindObject("delRRecKFUS"))->Fill(sjhadAF.DeltaR(ljetsReco[nofRecoljets]));
+	      ((TH1D *) list->FindObject("kfFlav"))->Fill(event->jetPartFlvr_[jetInd], combined_muwt);
+	      ((TH1D *) list->FindObject("kfFlavUS"))->Fill(event->jetPartFlvr_[jetInd]);
+	      ((TProfile *) list->FindObject("probDelRRecKF"))->Fill(_prob, sjhadAF.DeltaR(ljetsReco[nofRecoljets]), combined_muwt);
+	      ((TProfile *) list->FindObject("probDelRRecKFUS"))->Fill(_prob, sjhadAF.DeltaR(ljetsReco[nofRecoljets]));
+	    }
+	  }//has Muon KF
+	}//SingleMu
+	nofRecoljets++;
+      }//condn for light jet or gluon
+    }//Reco jet loop
+    if(singleMu and hasKFMu and muonIsoCut and !isLowMET){
+      ((TH1D *) list->FindObject("kfProb"))->Fill(_prob, combined_muwt);
+      ((TH1D *) list->FindObject("kfProbUS"))->Fill(_prob);
+    }
+  }//IsData
 
   return true;
 }
@@ -5109,6 +5237,7 @@ bool SkimAna::FillCTagControlHists()
     }
     
   }//isMC
+
 
   // if(!isData){    
     
@@ -5429,6 +5558,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     	  //hMjjkFsc->Fill(x.mass);
 	  
 	  kinFitMinChi2		= x.chi2;
+	  _NDF                  = x.ndf;
+	  _prob                 = TMath::Prob(x.chi2,x.ndf);
 	  
 	  leptonAF		= x.leptonAF;
 	  neutrinoAF		= x.neutrinoAF;
@@ -5787,9 +5918,9 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 50 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);

@@ -27,8 +27,8 @@ using namespace std;
 int CutflowNanoAll()
 {  
   
-  int year = 2018;
-  bool isMu = 1;
+  int year = 2016;
+  bool isMu = 0;
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
@@ -74,13 +74,20 @@ int CutflowNanoAll()
   //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
   //const char* dir = "grid_v39_Syst/CBA_CTagM/pre";
   //const char* dir = "grid_v39_Syst/CBA_CTagM";
-  const char* dir = "grid_v39_Syst/CBA_AllButBC";
+  //const char* dir = "grid_v39_Syst/CBA_AllButBC";
+  //const char* dir = "grid_v39_Syst/CBA_MiniAODEqV";
+  //const char* dir = "grid_v39_Syst/CBA_CFGenWt";
+  //const char* dir = "grid_v39_Syst/CBA_CFGenWt_Method2";
+  //const char* dir = "grid_v39_Syst/CBA_CFGenWt_Method3";
+  //const char* dir = "grid_v39_Syst/CBA_ULXS";
+  //const char* dir = "grid_v39_Syst/CBA_GeneratorWt";
+  const char* dir = "grid_v39_Syst/CBA_CTagDD";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
   TFile *fin_nano_data	= TFile::Open(datafile);
   TFile *fin_nano_sig = 0x0 ;
-  if(year == 2016)
+  if(year == 2016 or year == 2017 or year == 2018)
     fin_nano_sig	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
   TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/all_TTbar.root",dir,year));
   TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/all_singleTop.root",dir,year));
@@ -108,7 +115,7 @@ int CutflowNanoAll()
 
   TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",cutflowUS) : Form("DataEle/base/Iso/%s",cutflowUS)));
   TH1D *hcf_nano_sig = 0x0 ;
-  if(year == 2016)
+  if(year == 2016 or year == 2017 or year == 2018)
     hcf_nano_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",cutflow));
   TH1D *hcf_nano_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",cutflow));
   TH1D *hcf_nano_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",cutflow)); 
@@ -133,7 +140,7 @@ int CutflowNanoAll()
   //cout << "Wjets  : " << hcf_nano_wjets->GetBinContent(1) << endl;
   
   hcf_nano_data->SetBinContent(1,0.0);
-  if(year == 2016)
+  if(year == 2016 or year == 2017 or year == 2018)
     hcf_nano_sig->SetBinContent(1,0.0);
   hcf_nano_ttbar->SetBinContent(1,0.0);
   hcf_nano_stop->SetBinContent(1,0.0);
@@ -156,7 +163,7 @@ int CutflowNanoAll()
   hcf_nano_data->SetMarkerColor(kBlack);
   hcf_nano_data->SetMarkerSize(1.2);
   
-  if(year == 2016){
+  if(year == 2016 or year == 2017 or year == 2018){
     hcf_nano_sig->SetLineStyle(kDashed);
     hcf_nano_sig->SetLineColor(kRed);
     hcf_nano_sig->SetLineWidth(2);
@@ -191,7 +198,7 @@ int CutflowNanoAll()
   leg->AddEntry(hcf_nano_dyjets, Form("#it{Z}/#gamma + jets") ,"f");
   leg->AddEntry(hcf_nano_vbf, Form("VV") ,"f");
   leg->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");
-  if(year == 2016)
+  if(year == 2016 or year == 2017 or year == 2018)
     leg->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
   
   const char *cutnames[10] = {"Trigger", Form("Nof #mu = 1"), "No. of jets #geq 4", "MET #geq 20 GeV", "No. of #it{b}-jets #geq 2", "KinFit Sel.", "", "" ,"",""};
@@ -219,7 +226,7 @@ int CutflowNanoAll()
   // hcf_nano_dyjets->Draw("same hist");
   // hcf_nano_vbf->Draw("same hist");
   //hcf_nano_stop->Draw("same hist");
-  if(year == 2016)
+  if(year == 2016 or year == 2017 or year == 2018)
     hcf_nano_sig->Draw("same hist");
   hcf_nano_data->Draw("e1p same");
   leg->Draw();
@@ -486,12 +493,12 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
 
   }else{
 
-    if(year==2016){
+    if(year == 2016 or year == 2017 or year == 2018){
       TFile *fin = TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_Hplus120.root");
       TH1F *hMAODCF = (TH1F *)fin->Get("base/Iso/cutflow");
       printf("Signal Integral & ");
       for (int ibin=2;ibin<hcf_nano_sig->GetNbinsX();ibin++){
-	if(ibin==8) continue;
+	// if(ibin==8) continue;
 	if(hcf_nano_sig->GetBinContent(ibin)>0.0 and hcf_nano_sig->GetBinContent(ibin+1)>0.0){
 	  if(hcf_nano_sig->GetBinContent(ibin)>1e6){
 	    printf("%.4e & ",hcf_nano_sig->GetBinContent(ibin));
@@ -513,7 +520,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
     TH1F *hMAODCF = (TH1F *)fin->Get("base/Iso/cutflow");
     printf("SM $t\\bar{t}$ & ");
     for (int ibin=2;ibin<hcf_nano_ttbar->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_ttbar->GetBinContent(ibin)>0.0 and hcf_nano_ttbar->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_ttbar->GetBinContent(ibin)>1e6){
 	  printf("%.4e & ",hcf_nano_ttbar->GetBinContent(ibin)); 
@@ -533,7 +540,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
     hMAODCF = (TH1F *)fin->Get("base/Iso/cutflow");
     printf("Single $t$ & ");
     for (int ibin=2;ibin<hcf_nano_stop->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_stop->GetBinContent(ibin)>0.0 and hcf_nano_stop->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_stop->GetBinContent(ibin)>1e6){
 	  printf("%.4e & ",hcf_nano_stop->GetBinContent(ibin)); 
@@ -553,7 +560,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
     hMAODCF = (TH1F *)fin->Get("base/Iso/cutflow");
     printf("W + jets & ");
     for (int ibin=2;ibin<hcf_nano_wjets->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_wjets->GetBinContent(ibin)>0.0 and hcf_nano_wjets->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_wjets->GetBinContent(ibin)>1e6){
 	  printf("%.4e & ",hcf_nano_wjets->GetBinContent(ibin)); 
@@ -574,7 +581,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
     hMAODCF = (TH1F *)fin->Get("base/Iso/cutflow");
     printf("Z/$\\gamma$ + jets & ");
     for (int ibin=2;ibin<hcf_nano_dyjets->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_dyjets->GetBinContent(ibin)>0.0 and hcf_nano_dyjets->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_dyjets->GetBinContent(ibin)>1e6){
 	  printf("%.4e & ",hcf_nano_dyjets->GetBinContent(ibin)); 
@@ -594,7 +601,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
     hMAODCF = (TH1F *)fin->Get("base/Iso/cutflow");
     printf("VV & ");
     for (int ibin=2;ibin<hcf_nano_vbf->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_vbf->GetBinContent(ibin)>0.0 and hcf_nano_vbf->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_vbf->GetBinContent(ibin)>1e6){
 	  printf("%.4e & ",hcf_nano_vbf->GetBinContent(ibin)); 
@@ -617,7 +624,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
     printf("MC QCD & ");
     for (int ibin=2;ibin<hcf_nano_qcd->GetNbinsX();ibin++){
     //for (int ibin=2;ibin<lastbin;ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_qcd->GetBinContent(ibin)>0.0 and hcf_nano_qcd->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_qcd->GetBinContent(ibin)>1e6){
 	  printf("%.4e & ",hcf_nano_qcd->GetBinContent(ibin));
@@ -652,7 +659,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
 
     printf("ALL BKG & ");
     for (int ibin=2;ibin<hcf_nano_bkg->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
     //for (int ibin=2;ibin<lastbin;ibin++){
       if(hcf_nano_bkg->GetBinContent(ibin)>0.0 and hcf_nano_bkg->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_bkg->GetBinContent(ibin)>1e6){
@@ -670,7 +677,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
     hMAODCF = (TH1F *)fin->Get("base/Iso/cutflow");
     printf("Data & ");
     for (int ibin=2;ibin<hcf_nano_data->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_data->GetBinContent(ibin)>0.0 and hcf_nano_data->GetBinContent(ibin+1)>0.0){
 	if(hcf_nano_data->GetBinContent(ibin)>1e6){
 	  printf("%.4e & ",hcf_nano_data->GetBinContent(ibin)); 
@@ -688,7 +695,7 @@ int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano
 
     printf("Data/Bkg & ");
     for (int ibin=2;ibin<hcf_nano_data->GetNbinsX();ibin++){
-      if(ibin==8) continue;
+      // if(ibin==8) continue;
       if(hcf_nano_data->GetBinContent(ibin)>0.0 and hcf_nano_data->GetBinContent(ibin+1)>0.0){
 	printf("%.4f & ",hcf_nano_data->GetBinContent(ibin)/hcf_nano_bkg->GetBinContent(ibin));
       }else if(hcf_nano_data->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hcf_nano_data->GetBinContent(ibin+1),0.0,1.e-5)){

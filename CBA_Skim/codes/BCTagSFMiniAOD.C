@@ -1,6 +1,6 @@
 /**********************************************************************
- Created on : 17/02/2022
- Purpose    : Understand the application of btag scale factor
+ Created on : 22/02/2022
+ Purpose    : Understand the application of btag/ctag scale factor of MiniAOD
               (Note : Run this code with standalone ROOT instead of ROOT of CMSSW)
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
@@ -19,7 +19,7 @@
 #define BTagEntry_H
 
 /**
- *
+ * https://github.com/cms-sw/cmssw/tree/CMSSW_8_0_X/CondTools/BTau/test 
  * BTagEntry
  *
  * Represents one pt- or discriminator-dependent calibration function.
@@ -191,11 +191,11 @@ public:
                           float eta,
                           float pt,
                           float discr=0.) const;
-  std::string formula(const std::string & sys,BTagEntry::JetFlavor jf);
-  
+
   std::pair<float, float> min_max_pt(BTagEntry::JetFlavor jf,
                                      float eta,
                                      float discr=0.) const;
+
 protected:
   std::shared_ptr<BTagCalibrationReaderImpl> pimpl;
 };
@@ -240,19 +240,18 @@ BTagEntry::BTagEntry(const std::string &csvLine)
   std::stringstream buff(csvLine);
   std::vector<std::string> vec;
   std::string token;
-  while (std::getline(buff, token, ";"[0])) {
+  while (std::getline(buff, token, ","[0])) {
     token = BTagEntry::trimStr(token);
     if (token.empty()) {
       continue;
     }
-    //std::cout<<"token " << token << std::endl;
     vec.push_back(token);
   }
   if (vec.size() != 11) {
-    std::cerr << "ERROR in BTagCalibration: "
-	      << "Invalid csv line; num tokens != 11: "
-	      << csvLine;
-    throw std::exception();
+std::cerr << "ERROR in BTagCalibration: "
+          << "Invalid csv line; num tokens != 11: "
+          << csvLine;
+throw std::exception();
   }
 
   // clean string values
@@ -265,63 +264,41 @@ BTagEntry::BTagEntry(const std::string &csvLine)
 
   // make formula
   formula = vec[10];
-  //std::cout << "formula " << formula << std::endl;
   TF1 f1("", formula.c_str());  // compile formula to check validity
   if (f1.IsZombie()) {
-    std::cerr << "ERROR in BTagCalibration: "
-	      << "Invalid csv line; formula does not compile: "
-	      << csvLine;
-    throw std::exception();
+std::cerr << "ERROR in BTagCalibration: "
+          << "Invalid csv line; formula does not compile: "
+          << csvLine;
+throw std::exception();
   }
 
   // make parameters
   unsigned op = stoi(vec[0]);
-  // if(vec[0]=="L")
-  //   op = BTagEntry::OP_LOOSE ;
-  // else if (vec[0]=="M") 
-  //   op = BTagEntry::OP_MEDIUM ;
-  // else if (vec[0]=="T") 
-  //   op = BTagEntry::OP_TIGHT ;
-  // else
-  //   op = BTagEntry::OP_RESHAPING ;
-  
   if (op > 3) {
-    std::cerr << "ERROR in BTagCalibration: "
-	      << "Invalid csv line; OperatingPoint > 3: "
-	      << csvLine;
-    throw std::exception();
+std::cerr << "ERROR in BTagCalibration: "
+          << "Invalid csv line; OperatingPoint > 3: "
+          << csvLine;
+throw std::exception();
   }
-
-
-  unsigned jtflv = stoi(vec[3]);
-  //code below to handle the conversion new-->old way of handling the jet flavour
-  unsigned jf = 3;
-  if(jtflv==0)
-    jf = 2;
-  else if(jtflv==4)
-    jf = 1;
-  else if(jtflv==5)
-    jf = 0;
-  /////////////////////////////////////////////////////////////////////////////
-
+  unsigned jf = stoi(vec[3]);
   if (jf > 2) {
-    std::cerr << "ERROR in BTagCalibration: "
-	      << "Invalid csv line; JetFlavor > 2: "
-	      << csvLine;
-    throw std::exception();
+std::cerr << "ERROR in BTagCalibration: "
+          << "Invalid csv line; JetFlavor > 2: "
+          << csvLine;
+throw std::exception();
   }
   params = BTagEntry::Parameters(
-				 BTagEntry::OperatingPoint(op),
-				 vec[1],
-				 vec[2],
-				 BTagEntry::JetFlavor(jf),
-				 stof(vec[4]),
-				 stof(vec[5]),
-				 stof(vec[6]),
-				 stof(vec[7]),
-				 stof(vec[8]),
-				 stof(vec[9])
-				 );
+    BTagEntry::OperatingPoint(op),
+    vec[1],
+    vec[2],
+    BTagEntry::JetFlavor(jf),
+    stof(vec[4]),
+    stof(vec[5]),
+    stof(vec[6]),
+    stof(vec[7]),
+    stof(vec[8]),
+    stof(vec[9])
+  );
 }
 
 BTagEntry::BTagEntry(const std::string &func, BTagEntry::Parameters p):
@@ -464,6 +441,7 @@ std::string BTagEntry::makeCSVHeader()
 std::string BTagEntry::makeCSVLine() const
 {
   std::stringstream buff;
+
   buff << params.operatingPoint
        << ", " << params.measurementType
        << ", " << params.sysType
@@ -504,6 +482,7 @@ BTagCalibration::BTagCalibration(const std::string &taggr,
   tagger_(taggr)
 {
   std::ifstream ifs(filename);
+  ///std::cout<<"CSV file filename = "<<filename<<std::endl;
   if (!ifs.good()) {
 std::cerr << "ERROR in BTagCalibration: "
           << "input file not available: "
@@ -624,13 +603,8 @@ private:
                           float pt,
                           float discr) const;
 
-  std::string formula(const std::string & sys,BTagEntry::JetFlavor jf);
-
   std::pair<float, float> min_max_pt(BTagEntry::JetFlavor jf,
                                      float eta,
-                                     float discr) const;
- 
-  std::pair<float, float> min_max_eta(BTagEntry::JetFlavor jf,
                                      float discr) const;
 
   BTagEntry::OperatingPoint op_;
@@ -668,7 +642,7 @@ void BTagCalibrationReader::BTagCalibrationReaderImpl::load(
                                              BTagEntry::JetFlavor jf,
                                              std::string measurementType)
 {
-  if (!tmpData_[jf].empty()) {
+  if (tmpData_[jf].size()) {
 std::cerr << "ERROR in BTagCalibration: "
           << "Data for this jet-flavor is already loaded: "
           << jf;
@@ -710,32 +684,6 @@ throw std::exception();
   }
 }
 
-std::string BTagCalibrationReader::BTagCalibrationReaderImpl::formula(
-								      const std::string & sys,
-								      BTagEntry::JetFlavor jf)
-{
-  // std::cout <<"sysType_ " << sysType_ << std::endl;
-  // std::cout <<"count up :" << otherSysTypeReaders_.count("up") << std::endl;
-  // std::cout <<"count down :" << otherSysTypeReaders_.count("down") << std::endl;
-  // //std::cout <<"Other sysType_ 2 : " <<otherSysTypeReaders_[sys]->formula("up",jf) << std::endl;
-  // const auto &entries = tmpData_.at(jf);
-  // std::cout << "entries.size() " << entries.size() << std::endl;
-  // std::cout << "entries " << (otherSysTypeReaders_["down"]->tmpData_.at(jf)).at(0).func.GetTitle() << std::endl;
-  // for (unsigned i=0; i<entries.size(); ++i) {
-  //   const auto &e = entries.at(i);
-  //   if (sys == sysType_)
-  //     return e.func.GetTitle();
-  // }
-  
-  if(sys=="central"){
-    return tmpData_.at(jf).at(0).func.GetTitle() ;
-  }else if(sys=="up" or sys=="down"){
-    return (otherSysTypeReaders_[sys]->tmpData_.at(jf)).at(5).func.GetTitle();
-  }
-
-  return "";
-}
-
 double BTagCalibrationReader::BTagCalibrationReaderImpl::eval(
                                              BTagEntry::JetFlavor jf,
                                              float eta,
@@ -753,7 +701,7 @@ double BTagCalibrationReader::BTagCalibrationReaderImpl::eval(
   for (unsigned i=0; i<entries.size(); ++i) {
     const auto &e = entries.at(i);
     if (
-      e.etaMin <= eta && eta <= e.etaMax                   // find eta
+      e.etaMin <= eta && eta < e.etaMax                   // find eta
       && e.ptMin < pt && pt <= e.ptMax                    // check pt
     ){
       if (use_discr) {                                    // discr. reshaping?
@@ -776,29 +724,10 @@ double BTagCalibrationReader::BTagCalibrationReaderImpl::eval_auto_bounds(
                                              float pt,
                                              float discr) const
 {
-  auto sf_bounds_eta = min_max_eta(jf, discr);
-  bool eta_is_out_of_bounds = false;
-
-  if (sf_bounds_eta.first < 0) sf_bounds_eta.first = -sf_bounds_eta.second;  
-
-  if (useAbsEta_[jf] && eta < 0) {
-      eta = -eta;
-  } 
- 
-  if (eta <= sf_bounds_eta.first || eta > sf_bounds_eta.second ) {
-    eta_is_out_of_bounds = true;
-  }
-   
-  if (eta_is_out_of_bounds) {
-    return 1.;
-  }
-
-
-   auto sf_bounds = min_max_pt(jf, eta, discr);
-   float pt_for_eval = pt;
-   bool is_out_of_bounds = false;
-
-   if (pt <= sf_bounds.first) {
+  auto sf_bounds = min_max_pt(jf, eta, discr);
+  float pt_for_eval = pt;
+  bool is_out_of_bounds = false;
+  if (pt < sf_bounds.first) {
     pt_for_eval = sf_bounds.first + .0001;
     is_out_of_bounds = true;
   } else if (pt > sf_bounds.second) {
@@ -811,7 +740,6 @@ double BTagCalibrationReader::BTagCalibrationReaderImpl::eval_auto_bounds(
   if (sys == sysType_) {
     return sf;
   }
-
   // get sys SF (and maybe return)
   if (!otherSysTypeReaders_.count(sys)) {
 std::cerr << "ERROR in BTagCalibration: "
@@ -838,19 +766,18 @@ std::pair<float, float> BTagCalibrationReader::BTagCalibrationReaderImpl::min_ma
   if (useAbsEta_[jf] && eta < 0) {
     eta = -eta;
   }
-
+  
   const auto &entries = tmpData_.at(jf);
   float min_pt = -1., max_pt = -1.;
   for (const auto & e: entries) {
     if (
-      e.etaMin <= eta && eta <=e.etaMax                   // find eta
+      e.etaMin <= eta && eta < e.etaMax                   // find eta
     ){
       if (min_pt < 0.) {                                  // init
         min_pt = e.ptMin;
         max_pt = e.ptMax;
         continue;
       }
-
       if (use_discr) {                                    // discr. reshaping?
         if (e.discrMin <= discr && discr < e.discrMax) {  // check discr
           min_pt = min_pt < e.ptMin ? min_pt : e.ptMin;
@@ -866,31 +793,6 @@ std::pair<float, float> BTagCalibrationReader::BTagCalibrationReaderImpl::min_ma
   return std::make_pair(min_pt, max_pt);
 }
 
-std::pair<float, float> BTagCalibrationReader::BTagCalibrationReaderImpl::min_max_eta(
-                                               BTagEntry::JetFlavor jf,
-                                               float discr) const
-{
-  bool use_discr = (op_ == BTagEntry::OP_RESHAPING);
-
-  const auto &entries = tmpData_.at(jf);
-  float min_eta = 0., max_eta = 0.;
-  for (const auto & e: entries) {
-
-      if (use_discr) {                                    // discr. reshaping?
-        if (e.discrMin <= discr && discr < e.discrMax) {  // check discr
-          min_eta = min_eta < e.etaMin ? min_eta : e.etaMin;
-          max_eta = max_eta > e.etaMax ? max_eta : e.etaMax;
-        }
-      } else {
-        min_eta = min_eta < e.etaMin ? min_eta : e.etaMin;
-        max_eta = max_eta > e.etaMax ? max_eta : e.etaMax;
-      }
-    }
-
-
-  return std::make_pair(min_eta, max_eta);
-}
-
 
 BTagCalibrationReader::BTagCalibrationReader(BTagEntry::OperatingPoint op,
                                              const std::string & sysType,
@@ -902,12 +804,6 @@ void BTagCalibrationReader::load(const BTagCalibration & c,
                                  const std::string & measurementType)
 {
   pimpl->load(c, jf, measurementType);
-}
-
-std::string BTagCalibrationReader::formula(const std::string & sys,
-					   BTagEntry::JetFlavor jf)
-{
-  return pimpl->formula(sys, jf);
 }
 
 double BTagCalibrationReader::eval(BTagEntry::JetFlavor jf,
@@ -934,33 +830,34 @@ std::pair<float, float> BTagCalibrationReader::min_max_pt(BTagEntry::JetFlavor j
   return pimpl->min_max_pt(jf, eta, discr);
 }
 
+
+
 //////////////////////////// End of Cpp file ///////////////////////////////////////////////////////////////////
 
-int BTagSF()
+int BCTagSFMiniAOD()
 {
   std::cout << "Hello there " << std::endl;
   BTagCalibration caliba;
-  caliba = BTagCalibration( "deepjeta", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv") ) ;
+  caliba = BTagCalibration( "deepcsv", Form("/Data/CMS-Analysis/NanoAOD-Analysis/Analysis/Analysis/stack/CSVv2_Moriond17_B_H.csv") ) ;
 
   BTagCalibration calibb;
-  //calibb = BTagCalibration( "deepcsvb", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2016/DeepCSV_preVFP_formatted.csv") ) ;
-  //calibb = BTagCalibration( "deepjet", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2017/DeepJet_formatted.csv") ) ;
-  calibb = BTagCalibration( "deepjetb", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv") ) ;
-
+  calibb = BTagCalibration( "ctag", Form("/Data/CMS-Analysis/NanoAOD-Analysis/Analysis/Analysis/stack/ctagger_Moriond17_B_H.csv") ) ;
+  
   BTagCalibrationReader readera ;
   readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-  readera.load(caliba, BTagEntry::FLAV_B,"mujets");          
+  readera.load(caliba, BTagEntry::FLAV_B,"comb");          
   readera.load(caliba, BTagEntry::FLAV_C,"comb");          
   readera.load(caliba, BTagEntry::FLAV_UDSG,"incl");          
 
   BTagCalibrationReader readerb ;
   readerb = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-  readerb.load(calibb, BTagEntry::FLAV_B,"comb");          
+  readerb.load(calibb, BTagEntry::FLAV_B,"TnP");          
   readerb.load(calibb, BTagEntry::FLAV_C,"comb");          
   readerb.load(calibb, BTagEntry::FLAV_UDSG,"incl");          
   
   //std::cout << "Formula : " << readera.formula("up", BTagEntry::FLAV_B) << endl ;  
   // std::cout << "SF :  " << readera.eval_auto_bounds("central", BTagEntry::FLAV_B, 2.0, 700) << std::endl;
+
 
   double pt = 10.;
   double SF = 1.0, SF_up = 1.0, SF_down = 1.0;
@@ -975,7 +872,6 @@ int BTagSF()
   TGraph *gr12 = new TGraph(npoints);
   TGraph *gr13 = new TGraph(npoints);
   double eta = 2.0;
-
   for(int ip=0;ip<npoints;ip++){
     pt = ptMin + ip*step;
     SF = readera.eval_auto_bounds("central", BTagEntry::FLAV_B, eta, pt);
@@ -983,65 +879,19 @@ int BTagSF()
     // SF_down = readera.eval_auto_bounds("down", BTagEntry::FLAV_B, eta, pt);
     SF_up = readera.eval_auto_bounds("central", BTagEntry::FLAV_C, eta, pt);
     SF_down = readera.eval_auto_bounds("central", BTagEntry::FLAV_UDSG, eta, pt);
-    gr1->SetPoint(ip+1, pt , SF);
-    gr2->SetPoint(ip+1, pt , SF_up);
-    gr3->SetPoint(ip+1, pt , SF_down);
+    gr1->SetPoint(ip, pt , SF);
+    gr2->SetPoint(ip, pt , SF_up);
+    gr3->SetPoint(ip, pt , SF_down);
 
     SF = readerb.eval_auto_bounds("central", BTagEntry::FLAV_B, eta, pt);
     SF_up = readerb.eval_auto_bounds("central", BTagEntry::FLAV_C, eta, pt);
     SF_down = readerb.eval_auto_bounds("central", BTagEntry::FLAV_UDSG, eta, pt);
-    gr11->SetPoint(ip+1, pt , SF);
-    gr12->SetPoint(ip+1, pt , SF_up);
-    gr13->SetPoint(ip+1, pt , SF_down);
+    gr11->SetPoint(ip, pt , SF);
+    gr12->SetPoint(ip, pt , SF_up);
+    gr13->SetPoint(ip, pt , SF_down);
     //cout << "pt " << pt << ", SF : " << SF << endl;
   }
   
-  string formula = readera.formula("central", BTagEntry::FLAV_B);
-  string formula1 = readera.formula("central", BTagEntry::FLAV_C);
-  string formula2 = readera.formula("central", BTagEntry::FLAV_UDSG);
-
-  string formulab = readerb.formula("central", BTagEntry::FLAV_B);
-  string formulab1 = readerb.formula("central", BTagEntry::FLAV_C);
-  string formulab2 = readerb.formula("central", BTagEntry::FLAV_UDSG);
-
-  TF1 *fn1 = new TF1("fn1",formula.c_str(),0.0, 1000.);
-  TF1 *fn2 = new TF1("fn2",formula1.c_str(),0.0, 1000.);
-  TF1 *fn3 = new TF1("fn3",formula2.c_str(),0.0, 1000.);
-
-  TF1 *fn11 = new TF1("fn11",formulab.c_str(),0.0, 1000.);
-  TF1 *fn12 = new TF1("fn12",formulab1.c_str(),0.0, 1000.);
-  TF1 *fn13 = new TF1("fn13",formulab2.c_str(),0.0, 1000.);
-
-  fn1->SetLineWidth(3);
-  fn1->SetLineColor(kRed);
-  fn2->SetLineWidth(3);
-  fn2->SetLineColor(kBlue);
-  fn3->SetLineWidth(3);
-  fn3->SetLineColor(kGreen);
-
-  fn11->SetLineWidth(4);
-  fn11->SetLineColor(kRed);
-  fn11->SetLineStyle(kDashed);
-  fn12->SetLineWidth(4);
-  fn12->SetLineColor(kBlue);
-  fn12->SetLineStyle(kDashed);
-  fn13->SetLineWidth(4);
-  fn13->SetLineColor(kGreen);
-  fn13->SetLineStyle(kDashed);
-
-  // gr1->SetMarkerColor(kRed);
-  // gr1->SetMarkerStyle(kFullCircle);
-  // gr2->SetMarkerColor(kBlue);
-  // gr2->SetMarkerStyle(kFullCircle);
-  // gr3->SetMarkerColor(kGreen);
-  // gr3->SetMarkerStyle(kFullCircle);
-
-  // gr11->SetMarkerColor(kRed);
-  // gr11->SetMarkerStyle(kFullSquare);
-  // gr12->SetMarkerColor(kBlue);
-  // gr12->SetMarkerStyle(kFullSquare);
-  // gr13->SetMarkerColor(kGreen);
-  // gr13->SetMarkerStyle(kFullSquare);
 
   gr1->SetMarkerColor(kRed);
   gr1->SetMarkerStyle(kFullCircle);
@@ -1065,35 +915,16 @@ int BTagSF()
 
   TLegend *leg = new TLegend(0.3194842,0.7531646,0.9799427,0.9240506);
   leg->SetFillColor(10);
-  //leg->SetHeader("m_{H^{+}} = 120 GeV, #it{e} + jets (2016)");
-  // leg->AddEntry(fn1, "deepjet : fn for b-jet (med,mujets,central)","lfp");
-  // leg->AddEntry(fn2, "deepjet : fn for c-jet (med,comb,central)","lfp");
-  // leg->AddEntry(fn3, "deepjet : fn for udsg (med,incl,central)","lfp");
-  // leg->AddEntry(fn11, "deepcsv : fn for b-jet (med,mujets,central)","lfp");
-  // leg->AddEntry(fn12, "deepcsv : fn for c-jet (med,comb,central)","lfp");
-  // leg->AddEntry(fn13, "deepcsv : fn for udsg (med,incl,central)","lfp");
-  // leg->AddEntry(gr1, "deepjet : SF eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr2, "deepjet : SF eval_auto_bounds(up)" ,"lfp");
-  // leg->AddEntry(gr3, "deepjet : SF eval_auto_bounds(down)" ,"lfp");
-  // leg->AddEntry(gr1, "deepjet : SF bjet eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr2, "deepjet : SF cjet eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr3, "deepjet : SF udsg eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr11, "deepcsv : SF bjet eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr12, "deepcsv : SF cjet eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr13, "deepcsv : SF udsg eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr11, "deepjet 2017 : SF bjet eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr12, "deepjet 2017 : SF cjet eval_auto_bounds(central)" ,"lfp");
-  // leg->AddEntry(gr13, "deepjet 2017 : SF udsg eval_auto_bounds(central)" ,"lfp");
+  leg->AddEntry(gr1, Form("MiniAOD btag (comp,M) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta) ,"lfp");
+  leg->AddEntry(gr2, Form("MiniAOD btag (comp,M) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  leg->AddEntry(gr3, Form("MiniAOD btag (incl,M) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  leg->AddEntry(gr11, Form("MiniAOD cTag (TnP,L) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  leg->AddEntry(gr12, Form("MiniAOD cTag (comp,L) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  leg->AddEntry(gr13, Form("MiniAOD cTag (incl,L) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
 
-  leg->AddEntry(gr1, Form("UL Deepjet btag (mujets for comb,M) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta) ,"lfp");
-  leg->AddEntry(gr2, Form("UL Deepjet btag (comb,M) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr3, Form("UL Deepjet btag (incl,M) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr11, Form("UL Deepjet cTag (comb instead of TnP,L) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr12, Form("UL Deepjet cTag (comp,L) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr13, Form("UL Deepjet cTag (incl,L) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
 
-  fn1->SetMinimum(0.);
-  fn1->SetMaximum(2.);
+  // fn1->SetMinimum(0.);
+  // fn1->SetMaximum(2.);
   gr1->SetMinimum(0.);
   gr1->SetMaximum(2.);
   TCanvas *c1 = new TCanvas("c1","c1");
@@ -1112,8 +943,8 @@ int BTagSF()
   gr13->Draw("LP sames");
 
   leg->Draw();
-  fn1->GetXaxis()->SetTitle("p_{T} (GeV)");
-  fn1->GetYaxis()->SetTitle("SF");
+  // fn1->GetXaxis()->SetTitle("p_{T} (GeV)");
+  // fn1->GetYaxis()->SetTitle("SF");
   gr1->GetXaxis()->SetTitle("p_{T} (GeV)");
   gr1->GetYaxis()->SetTitle("SF");
   gr11->GetXaxis()->SetTitle("p_{T} (GeV)");

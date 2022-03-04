@@ -27,9 +27,9 @@
 using namespace std;
 int CreateQCDDD()
 {
-
+  
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
-
+  
   int year = 2017;
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
@@ -49,8 +49,10 @@ int CreateQCDDD()
   //const char* dir = "grid_v39_Syst/ULv9_long";
   //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
   //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
-  const char* dir = "grid_v39_Syst/CBA_CTagM";
-
+  //const char* dir = "grid_v39_Syst/CBA_CTagM";
+  //const char* dir = "grid_v39_Syst/CBA_GeneratorWt";
+  const char* dir = "grid_v39_Syst/CBA_CTagDD";
+  
   const char *syst[] = {"base", 
 			"puup", "pudown", "mueffup", "mueffdown", 
 			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
@@ -58,21 +60,23 @@ int CreateQCDDD()
 			"btaglup", "btagldown", "prefireup", "prefiredown",
 			"pdfup", "pdfdown", "q2fup", "q2down",
 			"isrup", "isrdown", "fsrup", "fsrdown", 
-			"iso20", "metup", "metdown"};
+			"iso20", "metup", "metdown",
+			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
+			"bctag3up", "bctag3down"};
 
   
   TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
   
-  for(int isys = 0 ; isys < 28 ; isys++) {
+  for(int isys = 0 ; isys < 34 ; isys++) {
 
     TDirectory *d2 = d1->mkdir(Form("%s",syst[isys]));
     d2->cd();
     TDirectory *d3 = d2->mkdir("Iso");
     d3->cd();
     TH1D *hDD;
-    int htype_max[2] = {10, 9};
+    int htype_max[2] = {16, 9};
     for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
       for(int ismu = 0 ; ismu < 2 ; ismu++)
 	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++)
@@ -112,7 +116,19 @@ string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
     histname += (isMu) ? "_nbjet_mu" : "_nbjet_ele" ;  
   else if (htype==10)
     histname += (isMu) ? "_mjj_mu" : "_mjj_ele" ;  
-  
+  else if (htype==11)
+    histname = (isMu) ? "_ct_IncL_mjj_mu" : "_ct_IncL_mjj_ele" ;  
+  else if (htype==12)
+    histname = (isMu) ? "_ct_IncM_mjj_mu" : "_ct_IncM_mjj_ele" ;  
+  else if (htype==13)
+    histname = (isMu) ? "_ct_IncT_mjj_mu" : "_ct_IncT_mjj_ele" ;  
+  else if (htype==14)
+    histname = (isMu) ? "_ct_ExcL_mjj_mu" : "_ct_ExcL_mjj_ele" ;  
+  else if (htype==15)
+    histname = (isMu) ? "_ct_ExcM_mjj_mu" : "_ct_ExcM_mjj_ele" ;  
+  else if (htype==16)
+    histname = (isMu) ? "_ct_ExcT_mjj_mu" : "_ct_ExcT_mjj_ele" ;  
+
   return histname;
 }
 

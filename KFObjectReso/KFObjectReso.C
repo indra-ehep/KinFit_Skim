@@ -196,6 +196,12 @@ Int_t KFObjectReso::CreateHistoArrays()
     hNofBJets = new TH1F("hNofBJets","hNofBJets",55,-5,50); 
     hNofLJets = new TH1F("hNofLJets","hNofLJets",55,-5,50);
     
+    hDelRMu = new TH1F("hDelRMu","hDelRMu",100,0.,1.);
+    hDelREle = new TH1F("hDelREle","hDelREle",100,0.,1.);
+    hDelRMET = new TH1F("hDelRMET","hDelRMET",100,0.,1.); 
+    hDelRBJets = new TH1F("hDelRBJets","hDelRBJets",100,0.,1.); 
+    hDelRLJets = new TH1F("hDelRLJets","hDelRLJets",100,0.,1.);
+    
     hBJetETReso = new TH1F**[nJetEtaBins];
     hLJetETReso = new TH1F**[nJetEtaBins];
     hBJetEtaReso = new TH1F**[nJetEtaBins];
@@ -649,6 +655,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
   	mujetR.SetPtEtaPhiM(muPt_[muInd], muEta_[muInd] , muPhi_[muInd], muMass_[muInd]);
   	mujetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
   	if(mujetR.DeltaR(mujetG) < 0.1 and muCharge_[muInd]==int(partPDG->Charge()/3. and abs(GenPart_pdgId_[imc])==13)){
+	//if(mujetR.DeltaR(mujetG) < 0.4 and muCharge_[muInd]==int(partPDG->Charge()/3. and abs(GenPart_pdgId_[imc])==13)){ //larger Delta R
+	//if(muCharge_[muInd]==int(partPDG->Charge()/3. and abs(GenPart_pdgId_[imc])==13)){ //no Delta R
   	  hasMu = true;
 	  nofMu++;
 	  muIndex = muInd;
@@ -713,6 +721,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
   	elejetR.SetPtEtaPhiM(elePt_[eleInd], eleEta_[eleInd] , elePhi_[eleInd], eleMass_[eleInd]);
   	elejetG.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
   	if(elejetR.DeltaR(elejetG) < 0.1 and eleCharge_[eleInd]==int(partPDG->Charge()/3.) and abs(GenPart_pdgId_[imc])==11){
+  	//if(elejetR.DeltaR(elejetG) < 0.4 and eleCharge_[eleInd]==int(partPDG->Charge()/3.) and abs(GenPart_pdgId_[imc])==11){ //larger deltaR
+	//if(eleCharge_[eleInd]==int(partPDG->Charge()/3.) and abs(GenPart_pdgId_[imc])==11){ //no deltaR
   	  hasEle = true;
   	  nofEle++;
 	  eleIndex = eleInd;
@@ -746,6 +756,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
       double enReso = (mujetR.E() - mujetG.E());
       double etaReso = mujetR.Eta() - mujetG.Eta();
       double phiReso = mujetR.DeltaPhi(mujetG) ; //mujetR.Phi() - mujetG.Phi();
+      
+      hDelRMu->Fill(mujetR.DeltaR(mujetG));
 
       hMuETReso[binEta-1][binET-1]->Fill(etReso);
       hMuEtaReso[binEta-1][binET-1]->Fill(etaReso);
@@ -776,6 +788,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
       double etaReso = elejetR.Eta() - elejetG.Eta();
       double phiReso = elejetR.DeltaPhi(elejetG) ; //elejetR.Phi() - elejetG.Phi();
     
+      hDelREle->Fill(elejetR.DeltaR(elejetG));
+      
       hEleETReso[binEta-1][binET-1]->Fill(etReso);
       hEleEtaReso[binEta-1][binET-1]->Fill(etaReso);
       hElePhiReso[binEta-1][binET-1]->Fill(phiReso);
@@ -816,14 +830,18 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and abs(jetPartFlvr_[jetInd])==5 and (jetBtagDeepB_[jetInd] > btag_cut_DeepCSV or jetBtagDeepFlavB_[jetInd] > btag_cut)){
 	  bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
 	  bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	  if(bjetR.DeltaR(bjetG)<0.2)
-	    nbjet++;
+	  hDelRBJets->Fill(bjetR.DeltaR(bjetG)); 
+	  //if(bjetR.DeltaR(bjetG)<0.2)
+	  if(bjetR.DeltaR(bjetG)<0.4) //Driven by Jet Rec-Gen DeltaR	    
+	     nbjet++;
 	}//b-jet condition
 	
 	if(jetPartFlvr_[jetInd]==GenJet_partonFlavour_[genIdx] and ((abs(jetPartFlvr_[jetInd])>=1 and abs(jetPartFlvr_[jetInd])<=4) or abs(jetPartFlvr_[jetInd])==21) ){ //u,d,s,c,g
 	  ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
 	  ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
-	  if(ljetR.DeltaR(ljetG)<0.2)
+	  hDelRLJets->Fill(ljetR.DeltaR(ljetG));
+	  //if(ljetR.DeltaR(ljetG)<0.2)
+	  if(ljetR.DeltaR(ljetG)<0.4) //Driven by Jet Rec-Gen DeltaR
 	    nljet++;
 	}//l-jet condition
 	
@@ -862,6 +880,7 @@ Bool_t KFObjectReso::Process(Long64_t entry)
     double etReso = (metR.Et() - metG.Et());
     double ptReso = (metR.Pt() - metG.Pt());
     double phiReso = metR.DeltaPhi(metG) ; //metR.Phi() - metG.Phi();
+    hDelRMET->Fill(metR.DeltaR(metG));
     hMETETReso[binET-1]->Fill(etReso);
     hMETPhiReso[binET-1]->Fill(phiReso);
     hMETPtReso[binET-1]->Fill(ptReso);
@@ -905,7 +924,9 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  double enReso = (bjetR.E() - bjetG.E());
 	  double etaReso = bjetR.Eta() - bjetG.Eta();
 	  double phiReso = bjetR.DeltaPhi(bjetG) ; //bjetR.Phi() - bjetG.Phi();
-	  if(bjetR.DeltaR(bjetG)<0.2){
+	  
+	  //if(bjetR.DeltaR(bjetG)<0.2){
+	  if(bjetR.DeltaR(bjetG)<0.4){ //Driven by Jet Rec-Gen DeltaR
 	    hBJetETReso[binEta-1][binET-1]->Fill(etReso);
 	    hBJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
 	    hBJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
@@ -932,7 +953,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  double etaReso = ljetR.Eta() - ljetG.Eta();
 	  double phiReso = ljetR.DeltaPhi(ljetG) ; //ljetR.Phi() - ljetG.Phi();
 
-	  if(ljetR.DeltaR(ljetG)<0.2){
+	  //if(ljetR.DeltaR(ljetG)<0.2){
+	  if(ljetR.DeltaR(ljetG)<0.4){ //Driven by Jet Rec-Gen DeltaR
 	    hLJetETReso[binEta-1][binET-1]->Fill(etReso);
 	    hLJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
 	    hLJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
@@ -976,7 +998,13 @@ void KFObjectReso::SlaveTerminate()
     hNofEle->Write();
     hNofBJets->Write();
     hNofLJets->Write();
-    
+
+    hDelRMu->Write();
+    hDelREle->Write();
+    hDelRMET->Write();
+    hDelRBJets->Write();
+    hDelRLJets->Write();
+
     ///////////////////////////////
     for(int ieta=0;ieta<nJetEtaBins;ieta++)
       for(int iet=0;iet<nETBins;iet++)

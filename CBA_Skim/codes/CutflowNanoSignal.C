@@ -27,8 +27,9 @@ using namespace std;
 int CutflowNanoSignal()
 {  
   
-  int year = 2017;
-  bool isMu = 1;
+  int year = 2018;
+  bool isMu = 0;
+  bool isHplus = 1;
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
@@ -36,23 +37,29 @@ int CutflowNanoSignal()
   //const char* dir = "grid_v39_Syst/CBA_CTagM/pre";
   //const char* dir = "grid_v39_Syst/CBA_CTagM";
   //const char* dir = "grid_v39_Syst/CBA_ModSigCS";
-  const char* dir = "grid_v39_Syst/CBA_AllButBC";
-
-  int mpoint[10] = {80, 90, 100, 110, 120, 130, 140, 150, 155, 160};
-  //const char *htype = "HminusM";
-  const char *htype = "HplusM";
+  //const char* dir = "grid_v39_Syst/CBA_AllButBC";
+  const char* dir = "grid_v39_Syst/CBA_GeneratorWt";
   
+  int mpoint[10] = {80, 90, 100, 110, 120, 130, 140, 150, 155, 160};
+  string htype = "";
+  if(isHplus)
+    htype = "HplusM";
+  else
+    htype = "HminusM";
   for(int imass=0;imass<10;imass++){
-    //string mval = Form("$m_{H^-} = %d$ GeV",mpoint[imass]);
-    string mval = Form("$m_{H^+} = %d$ GeV",mpoint[imass]);
+    string mval = "";
+    if(isHplus)
+      mval = Form("$m_{H^+} = %d$ GeV",mpoint[imass]);
+    else
+      mval = Form("$m_{H^-} = %d$ GeV",mpoint[imass]);
+
     //cout << fname << endl;
-    TFile *fin_nano_sig = TFile::Open(Form("root_files/%s/%d/all_%s%03d.root",dir,year,htype,mpoint[imass]));
-    TH1D *hcf_nano_sig = (TH1D *)fin_nano_sig->Get(Form("%s%03d/base/Iso/%s",htype,mpoint[imass],cutflow));
+    TFile *fin_nano_sig = TFile::Open(Form("root_files/%s/%d/all_%s%03d.root",dir,year,htype.c_str(),mpoint[imass]));
+    TH1D *hcf_nano_sig = (TH1D *)fin_nano_sig->Get(Form("%s%03d/base/Iso/%s",htype.c_str(),mpoint[imass],cutflow));
     //hcf_nano_sig->SetBinContent(1,0.0);
 
     printf("%s & ",mval.data());
     for (int ibin=2;ibin<=hcf_nano_sig->GetNbinsX();ibin++){
-      if(ibin==8) continue;
       if(hcf_nano_sig->GetBinContent(ibin)>0.0 and hcf_nano_sig->GetBinContent(ibin+1)>0.0){
     	if(hcf_nano_sig->GetBinContent(ibin)>1e6){
     	  printf("%.4e & ",hcf_nano_sig->GetBinContent(ibin));
