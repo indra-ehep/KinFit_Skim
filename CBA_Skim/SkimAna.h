@@ -530,6 +530,11 @@ class SkimAna : public TSelector {
   unsigned int		_cjhad_id = 0 ;
   unsigned int		_sjhad_id = 0 ;
 
+  Float_t	_Rdiffbjlep = 0 ;
+  Float_t	_Rdiffbjhad = 0 ;
+  Float_t	_Rdiffcjhad = 0 ;
+  Float_t	_Rdiffsjhad = 0 ;
+
   Float_t	_lepPt = 0 ;
   Float_t	_lepEta = 0 ;
   Float_t	_lepPhi = 0 ;
@@ -1772,6 +1777,11 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("chi2"			, &kinFitMinChi2       		);
     outputTree->Branch("ndf"			, &_NDF         		);
     outputTree->Branch("prob"			, &_prob         		);
+    outputTree->Branch("Rdiffbjlep"		, &_Rdiffbjlep         		);
+    outputTree->Branch("Rdiffbjhad"		, &_Rdiffbjhad         		);
+    outputTree->Branch("Rdiffcjhad"		, &_Rdiffcjhad         		);
+    outputTree->Branch("Rdiffsjhad"		, &_Rdiffsjhad         		);
+    
     outputTree->Branch("lepPt"			, &_lepPt			);
     outputTree->Branch("lepEta"			, &_lepEta			);
     outputTree->Branch("lepPhi"			, &_lepPhi			);

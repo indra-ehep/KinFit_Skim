@@ -831,8 +831,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  bjetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
 	  bjetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
 	  hDelRBJets->Fill(bjetR.DeltaR(bjetG)); 
-	  //if(bjetR.DeltaR(bjetG)<0.2)
-	  if(bjetR.DeltaR(bjetG)<0.4) //Driven by Jet Rec-Gen DeltaR	    
+	  if(bjetR.DeltaR(bjetG)<0.2)
+	  //if(bjetR.DeltaR(bjetG)<0.4) //Driven by Jet Rec-Gen DeltaR	    
 	     nbjet++;
 	}//b-jet condition
 	
@@ -840,8 +840,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  ljetR.SetPtEtaPhiM(jetPt_[jetInd], jetEta_[jetInd] , jetPhi_[jetInd], jetMass_[jetInd]);
 	  ljetG.SetPtEtaPhiM(GenJet_pt_[genIdx], GenJet_eta_[genIdx] , GenJet_phi_[genIdx], GenJet_mass_[genIdx]);
 	  hDelRLJets->Fill(ljetR.DeltaR(ljetG));
-	  //if(ljetR.DeltaR(ljetG)<0.2)
-	  if(ljetR.DeltaR(ljetG)<0.4) //Driven by Jet Rec-Gen DeltaR
+	  if(ljetR.DeltaR(ljetG)<0.2)
+	  //if(ljetR.DeltaR(ljetG)<0.4) //Driven by Jet Rec-Gen DeltaR
 	    nljet++;
 	}//l-jet condition
 	
@@ -925,8 +925,8 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  double etaReso = bjetR.Eta() - bjetG.Eta();
 	  double phiReso = bjetR.DeltaPhi(bjetG) ; //bjetR.Phi() - bjetG.Phi();
 	  
-	  //if(bjetR.DeltaR(bjetG)<0.2){
-	  if(bjetR.DeltaR(bjetG)<0.4){ //Driven by Jet Rec-Gen DeltaR
+	  if(bjetR.DeltaR(bjetG)<0.2){
+	  //if(bjetR.DeltaR(bjetG)<0.4){ //Driven by Jet Rec-Gen DeltaR
 	    hBJetETReso[binEta-1][binET-1]->Fill(etReso);
 	    hBJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
 	    hBJetPhiReso[binEta-1][binET-1]->Fill(phiReso);
@@ -952,9 +952,9 @@ Bool_t KFObjectReso::Process(Long64_t entry)
 	  double enReso = (ljetR.E() - ljetG.E());
 	  double etaReso = ljetR.Eta() - ljetG.Eta();
 	  double phiReso = ljetR.DeltaPhi(ljetG) ; //ljetR.Phi() - ljetG.Phi();
-
-	  //if(ljetR.DeltaR(ljetG)<0.2){
-	  if(ljetR.DeltaR(ljetG)<0.4){ //Driven by Jet Rec-Gen DeltaR
+	  
+	  if(ljetR.DeltaR(ljetG)<0.2){
+	  //if(ljetR.DeltaR(ljetG)<0.4){ //Driven by Jet Rec-Gen DeltaR
 	    hLJetETReso[binEta-1][binET-1]->Fill(etReso);
 	    hLJetEtaReso[binEta-1][binET-1]->Fill(etaReso);
 	    hLJetPhiReso[binEta-1][binET-1]->Fill(phiReso);

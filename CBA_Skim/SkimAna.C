@@ -385,7 +385,7 @@ Int_t SkimAna::CreateHistoArrays()
     fNBSelColHists = 62; //nof histograms 
     fNSelColHists = fNBSelCols*fNBSelColHists;
     hControl = new TH1D*[fNSelColHists];
-    fNBSelColProfiles = 10; //nof TProfiles 
+    fNBSelColProfiles = 11; //nof TProfiles 
     fNSelColProfiles = fNBSelCols*fNBSelColProfiles;
     pControl = new TProfile*[fNSelColProfiles];
     const char *cfcols[] = {"Event", "Trigger", "Lepton", "Jet", "MET", "bjet", "KinFit", "ctagL", "ctagM"} ;
@@ -472,6 +472,7 @@ Int_t SkimAna::CreateHistoArrays()
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probDelRRecKF","probDelRRecKF",200, -0.5, 1.5, 0., 0.6);
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probDelRRecKFUS","probDelRRecKFUS",200, -0.5, 1.5, 0., 0.6);
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMatch","probMatch",200, -0.5, 1.5, 0., 5.);
+      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMjj","probMjj",200, -0.5, 1.5, 0., 200.);
     }
   }//fSyst==base
 
@@ -2153,6 +2154,11 @@ void SkimAna::Clean(){
   kinFitMinChi2	= -1.0;
   _NDF		= -1.0;
   _prob		= -1.0;
+
+  _Rdiffbjlep = -1.0 ;
+  _Rdiffbjhad = -1.0 ;
+  _Rdiffcjhad = -1.0 ;
+  _Rdiffsjhad = -1.0 ;
 
   _bjlepBdisc = -20., _bjhadBdisc = -20., _cjhadBdisc = -20., _sjhadBdisc = -20.;
   _bjlepCvsLdisc = -20., _bjhadCvsLdisc = -20., _cjhadCvsLdisc = -20., _sjhadCvsLdisc = -20.;
@@ -4976,6 +4982,7 @@ bool SkimAna::FillKinFitControlHists(){
     TLorentzVector ljetsGen[maxNJets];
     int LHEindex = -1;
     double DelRLHEGenJet = -1.0;
+    int nofmatch = 0;
     for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
       int jetInd = selector->Jets.at(ijet);
       if( (abs(event->jetPartFlvr_[jetInd])>=1 and abs(event->jetPartFlvr_[jetInd])<=4) or abs(event->jetPartFlvr_[jetInd])==21){
@@ -5013,7 +5020,6 @@ bool SkimAna::FillKinFitControlHists(){
 	  nofGenljets++;
 	}//GenJet
 	
-	// pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMatch","probMatch",200, -0.5, 1.5, 0., 5.);
 	
 	if(singleMu and muonIsoCut and !isLowMET){
 	  ((TH1D *) list->FindObject("recoFlav"))->Fill(event->jetPartFlvr_[jetInd], combined_muwt);
@@ -5026,6 +5032,10 @@ bool SkimAna::FillKinFitControlHists(){
 	      ((TH1D *) list->FindObject("kfFlavUS"))->Fill(event->jetPartFlvr_[jetInd]);
 	      ((TProfile *) list->FindObject("probDelRRecKF"))->Fill(_prob, cjhadAF.DeltaR(ljetsReco[nofRecoljets]), combined_muwt);
 	      ((TProfile *) list->FindObject("probDelRRecKFUS"))->Fill(_prob, cjhadAF.DeltaR(ljetsReco[nofRecoljets]));
+	      for(int imc=0;imc<nofLHEljets;imc++){
+		if(ljetsLHEPDG[imc]==event->jetPartFlvr_[jetInd] and ljetsLHE[imc].DeltaR(cjhadAF) < 0.4)
+		  nofmatch++;
+	      }
 	    }
 	    if(ijet == _sjhad_id){
 	      ((TH1D *) list->FindObject("delRRecKF"))->Fill(sjhadAF.DeltaR(ljetsReco[nofRecoljets]), combined_muwt);
@@ -5034,6 +5044,10 @@ bool SkimAna::FillKinFitControlHists(){
 	      ((TH1D *) list->FindObject("kfFlavUS"))->Fill(event->jetPartFlvr_[jetInd]);
 	      ((TProfile *) list->FindObject("probDelRRecKF"))->Fill(_prob, sjhadAF.DeltaR(ljetsReco[nofRecoljets]), combined_muwt);
 	      ((TProfile *) list->FindObject("probDelRRecKFUS"))->Fill(_prob, sjhadAF.DeltaR(ljetsReco[nofRecoljets]));
+	      for(int imc=0;imc<nofLHEljets;imc++){
+		if(ljetsLHEPDG[imc]==event->jetPartFlvr_[jetInd] and ljetsLHE[imc].DeltaR(sjhadAF) < 0.4)
+		  nofmatch++;
+	      }
 	    }
 	  }//has Muon KF
 	}//SingleMu
@@ -5043,9 +5057,11 @@ bool SkimAna::FillKinFitControlHists(){
     if(singleMu and hasKFMu and muonIsoCut and !isLowMET){
       ((TH1D *) list->FindObject("kfProb"))->Fill(_prob, combined_muwt);
       ((TH1D *) list->FindObject("kfProbUS"))->Fill(_prob);
+      ((TProfile *) list->FindObject("probMatch"))->Fill(_prob, nofmatch/2.);
+      ((TProfile *) list->FindObject("probMjj"))->Fill(_prob, (cjhadAF+sjhadAF).M(), combined_muwt);
     }
   }//IsData
-
+  
   return true;
 }
 
@@ -5561,6 +5577,11 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	  _NDF                  = x.ndf;
 	  _prob                 = TMath::Prob(x.chi2,x.ndf);
 	  
+	  _Rdiffbjlep		= Rdiffbjlep ;
+	  _Rdiffbjhad		= Rdiffbjhad ;
+	  _Rdiffcjhad		= Rdiffcjhad ;
+	  _Rdiffsjhad		= Rdiffsjhad ;
+	  
 	  leptonAF		= x.leptonAF;
 	  neutrinoAF		= x.neutrinoAF;
 	  
@@ -5918,9 +5939,9 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
-  for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 50 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
