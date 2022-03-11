@@ -189,7 +189,8 @@ int ReadKinFitObjectResolution(int year = 2017)
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/post/TTbar_KFObjectsReso_2016.root"; //It is all merged, wrong naming
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2017/AllBkg_KFObjectsReso_2017.root";
   //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
-  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d_post/AllBkg_KFObjectsReso_%d.root",year,year);
+  //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d_post/AllBkg_KFObjectsReso_%d.root",year,year);
+  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
 
   TH2F *hBJetETRes = new TH2F("hBJetETRes","hBJetETRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
   TH2F *hBJetEtaRes = new TH2F("hBJetEtaRes","hBJetEtaRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
@@ -774,7 +775,8 @@ int PlotBJet(void)
     legETReso->Draw();
     hBJetETResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     //hBJetETResultNF[ieta]->GetYaxis()->SetTitle("Relative E_{T} resolution (%)");
-    hBJetETResultNF[ieta]->GetYaxis()->SetTitle("Absolute E_{T} resolution");
+    //hBJetETResultNF[ieta]->GetYaxis()->SetTitle("Absolute E_{T} resolution");
+    hBJetETResultNF[ieta]->GetYaxis()->SetTitle("RMS of #DeltaE_{T} (GeV)");
     if(ieta==0)
       c50[ieta]->SaveAs(npdf_s);
     else

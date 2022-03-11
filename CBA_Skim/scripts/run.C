@@ -1,5 +1,5 @@
-int run(const char* opt = "sample=HplusM120|year=2016|input=input/inlap/2016/HplusM120_2016.txt|index=0|run=prod|mode=proof|workers=4|syst=base|aod=nano|trs=no") // sample = data, bkg, signal
-//int run(const char* opt = "sample=VBFusion|year=2016|input=input/inlap/2016/VBFusion_2016.txt|index=0|run=prod|mode=proof|workers=4|syst=base|aod=nano|trs=no") // sample = data, bkg, signal
+//int run(const char* opt = "sample=HplusM120|year=2016|input=input/inlap/2016/HplusM120_2016.txt|index=0|run=prod|mode=proof|workers=4|syst=base|aod=nano|trs=no") // sample = data, bkg, signal
+int run(const char* opt = "sample=MCQCDEle|year=2018|input=input/inlap/2018/MCQCDEle_2018.txt|index=0|run=prod|mode=proof|workers=1|syst=base|aod=nano|trs=no") // sample = data, bkg, signal
 {
   
   bool isproof  = false ;

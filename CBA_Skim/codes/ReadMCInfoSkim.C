@@ -43,8 +43,8 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
   bool ishplus = 0; //Use this switch to run for hplus or ttbar
   TH1F *hWPlus = new TH1F("hWPlus","hWPlus",250,0,250);
   TH1F *hWMinus = new TH1F("hWMinus","hWMinus",250,0,250);
-  // TH1F *hTopPlus = new TH1F("hTopPlus","top",250,0,250);
-  // TH1F *hTopMinus = new TH1F("hTopMinus","anti-top",250,0,250);
+  // TH1F *hTopPlus = new TH1F("hTopPlus","top",100,150.,200.);
+  // TH1F *hTopMinus = new TH1F("hTopMinus","anti-top",100,150.,200.);
   TH1F *hTopPlus = new TH1F("hTopPlus","top",500,0,500);
   TH1F *hTopMinus = new TH1F("hTopMinus","anti-top",500,0,500);
   TH1F *hTopPlusNoG = new TH1F("hTopPlusNoG","top (events with no prompt gluon)",250,0,250);
@@ -125,7 +125,7 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
     hCostheta = new TH1F("hCostheta","SM t#bar{t}", 80, -2.0, 2.0);
 
   
-  //for(int ievent = 0 ; ievent < 100; ievent++){
+  //for(int ievent = 0 ; ievent < 10000; ievent++){
   for(int ievent = 0 ; ievent < tr->GetEntries() ; ievent++){
     
     tr->GetEntry(ievent);
@@ -220,7 +220,7 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
       //}
   }//event loop
 
-
+  
   // TFile *fout = new TFile("output.root","recreate");
   // hCostheta->Write();
   // fout->Close();
@@ -231,7 +231,8 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
 
   hWPlus->SetLineColor(kRed);
   hWMinus->SetLineColor(kBlue);
-  
+
+
   TCanvas *c1 = new TCanvas("c1","c1");
   c1->Divide(2,1);
   c1->cd(1);
@@ -242,18 +243,33 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
   hWMinus->Draw();
   hWMinus->GetXaxis()->SetTitle("mass (GeV)");
   hWMinus->GetYaxis()->SetTitle("Entries");
-
+  
+  TF1 *fnBW = new TF1("fnBW","[0]*TMath::BreitWigner(x,[1],[2])",100.,240.);
+  TF1 *fnGaus = new TF1("fnGaus","[0]*TMath::Gaus(x,[1],[2],0)",0.,250.);
+  fnBW->SetParameters(646387.,172.,6.);
+  fnGaus->SetParameters(646387.,172.,6.);
+  
   TCanvas *c2 = new TCanvas("c2","c2");
   c2->Divide(2,1);
   c2->cd(1);
   hTopPlus->Draw();
+  hTopPlus->Fit("fnBW","LR");
   hTopPlus->GetXaxis()->SetTitle("mass (GeV)");
   hTopPlus->GetYaxis()->SetTitle("Entries");
   c2->cd(2);
   hTopMinus->Draw();
+  hTopMinus->Fit("fnGaus");
+  TF1 *fnGausCl = (TF1 *)fnGaus->Clone("fnCl");
+  //fnGaus->DrawClone("sames");
+  fnGausCl->SetParameter(2,hTopMinus->GetRMS());
+  fnGausCl->SetLineColor(kBlue);
+  fnGausCl->Print();
+  cout<<"pars ("<<fnGausCl->GetParameter(0)<<", "<<fnGausCl->GetParameter(1)<<", "<<fnGausCl->GetParameter(2)<<") "<<endl;
+  fnGausCl->Draw("sames");
   hTopMinus->GetXaxis()->SetTitle("mass (GeV)");
   hTopMinus->GetYaxis()->SetTitle("Entries");
-  
+
+
   TCanvas *c3 = new TCanvas("c3","c3");
   hPtPromptGluon->Draw();
   hPtPromptGluon->GetXaxis()->SetTitle("p_{T} (GeV/c)");
@@ -280,6 +296,27 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
   hTopMinusWtG->Draw();
   hTopMinusWtG->GetXaxis()->SetTitle("mass (GeV)");
   hTopMinusWtG->GetYaxis()->SetTitle("Entries");
+  
+  TH1F *hTTbar = (TH1F *)hTopPlus->Clone("ttbar");
+  hTTbar->Add(hTopMinus);
+  hTTbar->SetTitle("#it{t/#bar{t}}");
+  TH1F *hWPM = (TH1F *)hWPlus->Clone("WPlusMinus");
+  hWPM->Add(hWMinus);
+  hWPM->SetTitle("#it{W^{#pm}}");
+
+  TCanvas *c6 = new TCanvas("c6","c6");
+  c6->Divide(2,1);
+  c6->cd(1)->SetLogy();
+  hTTbar->Draw();
+  c6->cd(2)->SetLogy();
+  hWPM->Draw();
+  
+
+  TFile *fout = TFile::Open("Kinout.root","recreate");
+  hTTbar->Write();
+  hWPM->Write();
+  fout->Close();
+  delete fout;
 
   return true;
 } 

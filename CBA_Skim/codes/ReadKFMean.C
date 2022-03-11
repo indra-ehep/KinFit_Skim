@@ -179,8 +179,8 @@ int ReadKFMean(int year = 2017)
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/pre/TTbar_KFObjectsReso_2016.root"; //It is all merged, wrong naming
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/post/TTbar_KFObjectsReso_2016.root"; //It is all merged, wrong naming
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2017/AllBkg_KFObjectsReso_2017.root";
-  //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
-  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d_post/AllBkg_KFObjectsReso_%d.root",year,year);
+  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
+  //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d_post/AllBkg_KFObjectsReso_%d.root",year,year);
   
   TH2F *hBJetETDiff = new TH2F("hBJetETDiff","hBJetETDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
   TH2F *hBJetEtaDiff = new TH2F("hBJetEtaDiff","hBJetEtaDiff",nJetEtaBins,jetEtaBin,nETBins,ETBin);
@@ -831,10 +831,10 @@ int PlotBJet(void)
     legETReso->SetFillColor(10);
     legETReso->AddEntry(hBJetETResultNF[ieta], "bjet: ET Mean" ,"lp");
     legETReso->AddEntry(hLJetETResultNF[ieta], "ljet: ET Mean" ,"lp");
-    legETReso->AddEntry(hBJetPtResultNF[ieta], "bjet: Pt Mean" ,"lp");
-    legETReso->AddEntry(hLJetPtResultNF[ieta], "ljet: Pt Mean" ,"lp");
-    legETReso->AddEntry(hBJetEnResultNF[ieta], "bjet: En Mean" ,"lp");
-    legETReso->AddEntry(hLJetEnResultNF[ieta], "ljet: En Mean" ,"lp");
+    // legETReso->AddEntry(hBJetPtResultNF[ieta], "bjet: Pt Mean" ,"lp");
+    // legETReso->AddEntry(hLJetPtResultNF[ieta], "ljet: Pt Mean" ,"lp");
+    // legETReso->AddEntry(hBJetEnResultNF[ieta], "bjet: En Mean" ,"lp");
+    // legETReso->AddEntry(hLJetEnResultNF[ieta], "ljet: En Mean" ,"lp");
     // legETReso->AddEntry(grBET[ieta], "bjet: MiniAOD 2016" ,"l");
     // legETReso->AddEntry(grLET[ieta], "ljet: MiniAOD 2016" ,"l");
     // legETReso->AddEntry(fnETb, "#sqrt{ a^{2} + b^{2}/x + c^{2}/x^{2} }" ,"f");
@@ -850,10 +850,10 @@ int PlotBJet(void)
     c50[ieta] = new TCanvas(Form("c50_%d",ieta),Form("c50_%d",ieta),1200,800);
     hBJetETResultNF[ieta]->Draw("ep");
     hLJetETResultNF[ieta]->Draw("ep sames");
-    hBJetPtResultNF[ieta]->Draw("ep sames");
-    hBJetEnResultNF[ieta]->Draw("ep sames");
-    hLJetPtResultNF[ieta]->Draw("ep sames");
-    hLJetEnResultNF[ieta]->Draw("ep sames");
+    // hBJetPtResultNF[ieta]->Draw("ep sames");
+    // hBJetEnResultNF[ieta]->Draw("ep sames");
+    // hLJetPtResultNF[ieta]->Draw("ep sames");
+    // hLJetEnResultNF[ieta]->Draw("ep sames");
     // fnETb->Draw("same");
     // fnETl->Draw("same");
     // grBET[ieta]->Draw("C sames");
@@ -861,7 +861,9 @@ int PlotBJet(void)
     legETReso->Draw();
     hBJetETResultNF[ieta]->GetXaxis()->SetTitle("E_{T} (GeV)");
     //hBJetETResultNF[ieta]->GetYaxis()->SetTitle("Relative E_{T} resolution (%)");
-    hBJetETResultNF[ieta]->GetYaxis()->SetTitle("<#DeltaE_{T}>, <#Deltap_{T}>, <#DeltaE>");
+    //hBJetETResultNF[ieta]->GetYaxis()->SetTitle("<#DeltaE_{T}>, <#Deltap_{T}>, <#DeltaE>");
+    //hBJetETResultNF[ieta]->GetYaxis()->SetTitle("<(Rec_{E_{T}} - Gen_{E_{T}}> (GeV)");
+    hBJetETResultNF[ieta]->GetYaxis()->SetTitle("Mean of #DeltaE_{T} (GeV)");
     if(ieta==0)
       c50[ieta]->SaveAs(npdf_s);
     else

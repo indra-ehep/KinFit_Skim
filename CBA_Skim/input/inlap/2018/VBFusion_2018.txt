@@ -1,7 +1,0 @@
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2018/WW_Skim_NanoAOD_1of5.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2018/WW_Skim_NanoAOD_2of5.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2018/WW_Skim_NanoAOD_3of5.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2018/WW_Skim_NanoAOD_4of5.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2018/WW_Skim_NanoAOD_5of5.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2018/WZ_Skim_NanoAOD.root
-/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2018/ZZ_Skim_NanoAOD.root

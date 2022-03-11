@@ -1386,8 +1386,12 @@ void SkimAna::Init(TTree *tree)
   if (!isData){
 
     tree->SetBranchStatus("nLHEPart",1);
-    tree->SetBranchAddress("nLHEPart", &(event->nLHEPart_));
-
+    brAddrStatus = tree->SetBranchAddress("nLHEPart", &(event->nLHEPart_));
+    if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+      event->nLHEPart_ =  0 ;
+      Info("Init", "Setting event->nLHEPart_ =  0");
+    }
+    
     tree->SetBranchStatus("LHEPart_pdgId",1);
     tree->SetBranchAddress("LHEPart_pdgId", &(event->LHEPart_pdgId_));
 
@@ -1705,7 +1709,7 @@ void SkimAna::Init(TTree *tree)
   // tree->SetBranchStatus("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",1);
   // tree->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", &(event->HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_));
   
-  gRandom->SetSeed(1234);
+  gRandom->SetSeed(357913);
   
   event->SetTree(tree);
   fChain    = tree;

@@ -24,11 +24,11 @@
 
 using namespace std;
 
-int CutflowNanoAll()
+int CutflowNanoAll(int year = 2016, bool isMu = 1)
 {  
   
-  int year = 2016;
-  bool isMu = 0;
+  
+  ;
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   

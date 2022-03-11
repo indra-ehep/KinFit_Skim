@@ -503,7 +503,7 @@ bool KFObjectReso::CheckTrigFilterVertex()
   }
   if (fYear==2017){
     Pass_trigger_mu = HLT_IsoMu27_ ;
-	
+    
     bool allSingleEGL1or = ( L1_SingleEG24_ ||
 			    L1_SingleEG26_ ||
 			    L1_SingleEG30_ ||
@@ -533,7 +533,7 @@ bool KFObjectReso::CheckTrigFilterVertex()
 			    L1_SingleIsoEG34_ ||
 			    L1_SingleIsoEG36_ ||
 			    L1_SingleIsoEG38_ );
-
+    
     Pass_trigger_ele = ( HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or );
     
   }

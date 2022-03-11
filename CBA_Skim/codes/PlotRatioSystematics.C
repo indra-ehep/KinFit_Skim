@@ -31,19 +31,19 @@ using namespace std;
 double lumi_unc = 0.025 ;
 
 // //2016 mu
-// double qcd_frac = 0.037 ; //One needs to check the QCD contribution from systematics
+//double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from systematics
 // //2016 ele
-// double qcd_frac = 0.092 ; //One needs to check the QCD contribution from systematics
+//double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 
 //2017 mu
-double qcd_frac = 0.048 ; //One needs to check the QCD contribution from systematics
-// //2016 ele
-// double qcd_frac = 0.046 ; //One needs to check the QCD contribution from systematics
+//double qcd_frac = 0.0464 ; //One needs to check the QCD contribution from systematics
+// //2017 ele
+//double qcd_frac = 0.2576 ; //One needs to check the QCD contribution from systematics
 
 // //2018 mu
-// double qcd_frac = 0.092 ; //One needs to check the QCD contribution from systematics
+//double qcd_frac = 0.1097 ; //One needs to check the QCD contribution from systematics
 // //2018 ele
-// double qcd_frac = 0.235 ; //One needs to check the QCD contribution from systematics
+double qcd_frac = 0.2184 ; //One needs to check the QCD contribution from systematics
 
 int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
 
@@ -57,15 +57,15 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   int SetLegendStyle(TLegend *&, string histname, bool isBlinded);
   int PrintHSeparator(void);
 
-  TPad *PlotRatio(THStack *hs, TH1D *h1, TH1D *h2, TGraphAsymmErrors *syst, TGraphAsymmErrors *systRatio, const char *cname, bool isLog);
-  TPad* Plot(THStack *hs, TH1D *h1, TGraphAsymmErrors *syst, const char *cname, bool isLog);
+  TPad *PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2, TGraphAsymmErrors *syst, TGraphAsymmErrors *systRatio, const char *cname, bool isLog);
+  TPad* Plot(THStack *hs, TH1D *hsig, TH1D *h1, TGraphAsymmErrors *syst, const char *cname, bool isLog);
 
   TH1D *GetUpDownHistDD(vector<TFile *>, const char *, const char *, string);
   TH1D *GetUpDownHistMC(vector<TFile *>, const char *, const char *, string, bool);  
   TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
   
   // ///////////////////////////////////////////////////////////////////////////////////////////  
-  int year = 2017;
+  int year = 2018;
   float luminosity[3] = {35.9, 41.5, 59.7};
 
   // bool isMu = 1; // 1 muon, 0 ele
@@ -100,7 +100,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("fig/figs/Week_Work_Report/2022-02-04/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2022-03-14/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
@@ -115,8 +115,9 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy3";
   //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
   //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
-  const char* dir = "grid_v39_Syst/CBA_CTagM";
-
+  //const char* dir = "grid_v39_Syst/CBA_CTagM";
+  const char* dir = "grid_v39_Syst/CBA_CTagDD";
+  
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile_mc = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -124,7 +125,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   
   TFile *fin_nano_data	= TFile::Open(datafile);
   TFile *fin_nano_sig = 0x0 ;
-  if(year == 2016)
+  if(year == 2016 or year == 2017 or year == 2018)
     fin_nano_sig	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
   TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/all_TTbar.root",dir,year));
   TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/all_singleTop.root",dir,year));
@@ -144,7 +145,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
 
   TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname.c_str()) : Form("DataEle/base/Iso/%s",histname.c_str())));
   TH1D *hcf_nano_sig = 0x0 ;
-  if(year == 2016)
+  if(year == 2016 or year == 2017 or year == 2018)
     hcf_nano_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",histname.c_str()));
   TH1D *hcf_nano_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",histname.c_str()));
   TH1D *hcf_nano_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",histname.c_str())); 
@@ -157,7 +158,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   int rebin = 1;
   if(histname.find("_mjj_")!=string::npos){
     hcf_nano_data->Rebin(rebin);
-    if(year == 2016)
+    if(year == 2016 or year == 2017 or year == 2018)
       hcf_nano_sig->Rebin(rebin);
     hcf_nano_ttbar->Rebin(rebin);
     hcf_nano_stop->Rebin(rebin);
@@ -167,6 +168,8 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
     hcf_nano_qcd_mc->Rebin(rebin);
     hcf_nano_qcd->Rebin(rebin);
   }
+  if(year == 2016 or year == 2017 or year == 2018)
+    hcf_nano_sig->Scale(0.1211);
   
   //"mueffup", "mueffdown", "eleeffup", "eleeffdown",
   const char *syst[] = {"pu", "jec", "jer", "btagb", "btagl", "prefire", "met"};
@@ -250,7 +253,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   hcf_nano_data->SetMarkerColor(kBlack);
   hcf_nano_data->SetMarkerSize(1.2);
   
-  if(year == 2016){
+  if(year == 2016 or year == 2017 or year == 2018){
     hcf_nano_sig->SetLineStyle(kDashed);
     hcf_nano_sig->SetLineColor(kRed);
     hcf_nano_sig->SetLineWidth(2);
@@ -397,9 +400,9 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   bool isBlinded = (mass_plot) ; 
   TPad *p = 0x0;
   if(isBlinded){
-    p = Plot(hs, hMC, grSystFull, "c1", true);
+    p = Plot(hs, hcf_nano_sig, hMC, grSystFull, "c1", true);
   }else{
-    p = PlotRatio(hs, hData, hMC, grSystFull, grSystRatio, "c1", true);
+    p = PlotRatio(hs, hcf_nano_sig, hData, hMC, grSystFull, grSystRatio, "c1", true);
   }
 
   TLegend *leg1 = p->BuildLegend();
@@ -423,8 +426,8 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   leg3->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");
   leg3->AddEntry(grSystFull, Form("Unc") ,"f");
 
-  // if(year == 2016)
-  //   leg3->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
+  if(year == 2016 or year == 2017 or year == 2018)
+    leg3->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
 
   leg1->SetX1(legend_pos1[0]); leg1->SetY1(legend_pos1[1]); 
   leg1->SetX2(legend_pos1[2]); leg1->SetY2(legend_pos1[3]); 
@@ -483,7 +486,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 8){
   return true;
 }
 
-TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2,TGraphAsymmErrors *syst, TGraphAsymmErrors *systRatio, const char *cname, bool isLog)
+TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *syst, TGraphAsymmErrors *systRatio, const char *cname, bool isLog)
 {
 
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject(cname);
@@ -508,6 +511,7 @@ TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2,TGraphAsymmErrors *syst, TGraphA
     hs->Draw("same hist");
     syst->Draw("e2 sames");
     h1->Draw("e1p sames");               // Draw h1
+    hsig->Draw("hist sames");               // Draw hsig
 
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6,8,0)
     // Avoid the first label (0) to be clipped.
@@ -642,7 +646,7 @@ TPad* PlotRatio(THStack *hs, TH1D *h1, TH1D *h2,TGraphAsymmErrors *syst, TGraphA
   return pad1;
 }
 
-TPad* Plot(THStack *hs, TH1D *h1, TGraphAsymmErrors *syst, const char *cname, bool isLog)
+TPad* Plot(THStack *hs, TH1D *hsig, TH1D *h1, TGraphAsymmErrors *syst, const char *cname, bool isLog)
 {
 
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject(cname);
@@ -667,6 +671,7 @@ TPad* Plot(THStack *hs, TH1D *h1, TGraphAsymmErrors *syst, const char *cname, bo
     hs->Draw("hist same");         // Draw hs on top of h1
     syst->Draw("e2 sames");
     //h1->Draw("e1p sames");               // Draw h1
+    hsig->Draw("hist sames");               // Draw h1
 
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6,8,0)
     // Avoid the first label (0) to be clipped.

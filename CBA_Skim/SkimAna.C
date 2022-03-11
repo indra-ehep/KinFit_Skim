@@ -5201,56 +5201,56 @@ bool SkimAna::FillCTagControlHists()
   //ctagLSystType  = "central" ;
   if(!isData){    
     
-    if(count_cJetsIncL > 0){
-      GetCLtagSF_1a(); 
-      if(_cTagLWeight < 0.) return kTRUE;
-      // Info("FillCTagControlHists","_cTagLWeight_L %5.2f", _cTagLWeight);
-      if(found[0] and !found[1]){
-	((TProfile *) listL->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
-	if(match[0])
-	  ((TProfile *) listL->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
-	else
-	  ((TProfile *) listL->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
-      }
-      if(found[0] and found[1]){
-	((TProfile *) listL->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-	if(match[0] and match[1])
-	  ((TProfile *) listL->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-	if(match[0] and !match[1])
-	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
-	if(!match[0] and match[1])
-	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
-	if(!match[0] and !match[1])
-	  ((TProfile *) listL->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-      }
-    }
-    if(count_cJetsIncM > 0){
-      GetCMtagSF_1a(); 
-      if(_cTagMWeight < 0.) return kTRUE;
-      //Info("FillCTagControlHists","_cTagLWeight_M %5.2f", _cTagLWeight);
-      if(found[0] and !foundM[1]){
-	((TProfile *) listM->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
-	if(matchM[0])
-	  ((TProfile *) listM->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
-	else
-	  ((TProfile *) listM->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
-      }
-      if(foundM[0] and foundM[1]){
-	((TProfile *) listM->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-	if(matchM[0] and matchM[1])
-	  ((TProfile *) listM->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-	if(matchM[0] and !matchM[1])
-	  ((TProfile *) listM->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
-	if(!matchM[0] and matchM[1])
-	  ((TProfile *) listM->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
-	if(!matchM[0] and !matchM[1])
-	  ((TProfile *) listM->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-      }
-    }
-    if(count_cJetsIncT > 0){
-      GetCTtagSF_1a(); 
-      if(_cTagTWeight < 0.) return kTRUE;
-    }
+    // if(count_cJetsIncL > 0){
+    //   GetCLtagSF_1a(); 
+    //   if(_cTagLWeight < 0.) return kTRUE;
+    //   // Info("FillCTagControlHists","_cTagLWeight_L %5.2f", _cTagLWeight);
+    //   if(found[0] and !found[1]){
+    // 	((TProfile *) listL->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
+    // 	if(match[0])
+    // 	  ((TProfile *) listL->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
+    // 	else
+    // 	  ((TProfile *) listL->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
+    //   }
+    //   if(found[0] and found[1]){
+    // 	((TProfile *) listL->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+    // 	if(match[0] and match[1])
+    // 	  ((TProfile *) listL->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+    // 	if(match[0] and !match[1])
+    // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
+    // 	if(!match[0] and match[1])
+    // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
+    // 	if(!match[0] and !match[1])
+    // 	  ((TProfile *) listL->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+    //   }
+    // }
+    // if(count_cJetsIncM > 0){
+    //   GetCMtagSF_1a(); 
+    //   if(_cTagMWeight < 0.) return kTRUE;
+    //   //Info("FillCTagControlHists","_cTagLWeight_M %5.2f", _cTagLWeight);
+    //   if(found[0] and !foundM[1]){
+    // 	((TProfile *) listM->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
+    // 	if(matchM[0])
+    // 	  ((TProfile *) listM->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
+    // 	else
+    // 	  ((TProfile *) listM->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
+    //   }
+    //   if(foundM[0] and foundM[1]){
+    // 	((TProfile *) listM->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+    // 	if(matchM[0] and matchM[1])
+    // 	  ((TProfile *) listM->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+    // 	if(matchM[0] and !matchM[1])
+    // 	  ((TProfile *) listM->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
+    // 	if(!matchM[0] and matchM[1])
+    // 	  ((TProfile *) listM->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
+    // 	if(!matchM[0] and !matchM[1])
+    // 	  ((TProfile *) listM->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+    //   }
+    // }
+    // if(count_cJetsIncT > 0){
+    //   GetCTtagSF_1a(); 
+    //   if(_cTagTWeight < 0.) return kTRUE;
+    // }
     
   }//isMC
 

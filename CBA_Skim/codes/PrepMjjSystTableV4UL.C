@@ -25,6 +25,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -35,7 +36,8 @@ const char *sampleType[] = {"HminusM080", "HminusM090", "HminusM100", "HminusM11
 			    "HplusM120", "HplusM130", "HplusM140", "HplusM150", 
 			    "HplusM155", "HplusM160",  
 			    "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", 
-			    "QCDdd", "QCDdd", "DataMu", "DataEle"};
+			    "MCQCDMu", "MCQCDEle", "QCDdd", "QCDdd",
+			    "DataMu", "DataEle"};
 
 int PrepMjjSystTableV4UL()
 {
@@ -46,7 +48,7 @@ int PrepMjjSystTableV4UL()
   double muTot[3],eleTot[3];
 
   int year = 2018;
-
+  
   ofstream outFile;
   outFile.open(Form("syst/mjjTable_%d.tex",year));
   outFile<<"\\documentclass[]{article}"<<endl;
@@ -81,6 +83,7 @@ int PrepMjjSystTableV4UL()
   
   //CalcSystTable(1);
   int ifile = 1;
+  int ifileData = -1;
   //GetInclusive("$m_{H^-}=80$ GeV", 1);
   outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
@@ -108,11 +111,14 @@ int PrepMjjSystTableV4UL()
   outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  outFile<<GetInclusive("MC QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifileData = ifile;
   outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;  ifile++ ;
+  outFile<<"\\hline "<<endl;
+  outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
@@ -163,7 +169,7 @@ int PrepMjjSystTableV4UL()
   outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl; ifile = ifile+2;
   outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
@@ -173,362 +179,362 @@ int PrepMjjSystTableV4UL()
   outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //inclusive loose charm
-  //////////////////////////////////////////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////////////////////////////////////////
+  // //inclusive loose charm
+  // //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  isKFL = false;
-  isInc = true;
-  cType = 'L';
-  tab1_caption = "Event yield for inclusive loose charm tagging category.";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for inclusive loose charm tagging category. ";
+  // isKFL = false;
+  // isInc = true;
+  // cType = 'L';
+  // tab1_caption = "Event yield for inclusive loose charm tagging category.";
+  // tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for inclusive loose charm tagging category. ";
   
-  nEvents = "";
-  if(forPaper) nEvents = "$N_{events}  \\pm unc$";
-  else nEvents = "$N_{events} \\pm stat \\pm sys$";
-  //Inclusive Mjj
-  outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\begin{tabular}{cccc}"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\bf{Process}& "<<nEvents<<" & "<<nEvents<<"\\\\ "<<endl;
-  outFile<<" & $\\mu$ + jets &  e + jets\\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
+  // nEvents = "";
+  // if(forPaper) nEvents = "$N_{events}  \\pm unc$";
+  // else nEvents = "$N_{events} \\pm stat \\pm sys$";
+  // //Inclusive Mjj
+  // outFile<<"\\begin{table}"<<endl;
+  // outFile<<"\\begin{center}"<<endl;
+  // outFile<<"\\begin{tabular}{cccc}"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\bf{Process}& "<<nEvents<<" & "<<nEvents<<"\\\\ "<<endl;
+  // outFile<<" & $\\mu$ + jets &  e + jets\\\\"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
   
-  //CalcSystTable(1);
-  ifile = 1;
-  //GetInclusive("$m_{H^-}=80$ GeV", 1);
-  outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("Single ~t", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:eventYieldInc}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\end{table}"<<endl;
-  outFile<<"\\pagebreak"<<endl;
-  outFile<<"\\newpage"<<endl;
-  outFile<<""<<endl;
-  outFile<<""<<endl;
-  
-
-  ifile = 1;
-  outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\scriptsize{"<<endl;
-  ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
-  outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
-
-  //pu, mu, btagb, btagl, prefire, jec, jer, norm
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;  
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\end{tabular}"<<endl;
-  outFile<<"}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
-  outFile<<"\\end{table}"<<endl;
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //inclusive medium charm
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  isKFL = false;
-  isInc = true;
-  cType = 'M';
-  tab1_caption = "Event yield for inclusive medium charm tagging category.";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for inclusive medium charm tagging category. ";
-  
-  nEvents = "";
-  if(forPaper) nEvents = "$N_{events}  \\pm unc$";
-  else nEvents = "$N_{events} \\pm stat \\pm sys$";
-  //Inclusive Mjj
-  outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\begin{tabular}{cccc}"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\bf{Process}& "<<nEvents<<" & "<<nEvents<<"\\\\ "<<endl;
-  outFile<<" & $\\mu$ + jets &  e + jets\\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
-  
-  //CalcSystTable(1);
-  ifile = 1;
-  //GetInclusive("$m_{H^-}=80$ GeV", 1);
-  outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("Single ~t", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:eventYieldInc}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\end{table}"<<endl;
-  outFile<<"\\pagebreak"<<endl;
-  outFile<<"\\newpage"<<endl;
-  outFile<<""<<endl;
-  outFile<<""<<endl;
+  // //CalcSystTable(1);
+  // ifile = 1;
+  // //GetInclusive("$m_{H^-}=80$ GeV", 1);
+  // outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("Single ~t", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\end{tabular}"<<endl;
+  // outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  // outFile<<"\\label{tab:eventYieldInc}"<<endl;
+  // outFile<<"\\end{center}"<<endl;
+  // outFile<<"\\end{table}"<<endl;
+  // outFile<<"\\pagebreak"<<endl;
+  // outFile<<"\\newpage"<<endl;
+  // outFile<<""<<endl;
+  // outFile<<""<<endl;
   
 
-  ifile = 1;
-  outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\scriptsize{"<<endl;
-  ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
-  outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+  // ifile = 1;
+  // outFile<<"\\begin{table}"<<endl;
+  // outFile<<"\\begin{center}"<<endl;
+  // outFile<<"\\scriptsize{"<<endl;
+  // ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
+  // outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
+  // outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
 
-  //pu, mu, btagb, btagl, prefire, jec, jer, norm
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;  
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\end{tabular}"<<endl;
-  outFile<<"}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
-  outFile<<"\\end{table}"<<endl;
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // //pu, mu, btagb, btagl, prefire, jec, jer, norm
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;  
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\end{tabular}"<<endl;
+  // outFile<<"}"<<endl;
+  // outFile<<"\\end{center}"<<endl;
+  // outFile<<"\\caption{"+tab2_caption+"}"<<endl;
+  // outFile<<"\\end{table}"<<endl;
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //inclusive tight charm
-  //////////////////////////////////////////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////////////////////////////////////////
+  // //inclusive medium charm
+  // //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  isKFL = false;
-  isInc = true;
-  cType = 'T';
-  tab1_caption = "Event yield for inclusive tight charm tagging category.";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for inclusive tight charm tagging category. ";
+  // isKFL = false;
+  // isInc = true;
+  // cType = 'M';
+  // tab1_caption = "Event yield for inclusive medium charm tagging category.";
+  // tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for inclusive medium charm tagging category. ";
   
-  nEvents = "";
-  if(forPaper) nEvents = "$N_{events}  \\pm unc$";
-  else nEvents = "$N_{events} \\pm stat \\pm sys$";
-  //Inclusive Mjj
-  outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\begin{tabular}{cccc}"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\bf{Process}& "<<nEvents<<" & "<<nEvents<<"\\\\ "<<endl;
-  outFile<<" & $\\mu$ + jets &  e + jets\\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
+  // nEvents = "";
+  // if(forPaper) nEvents = "$N_{events}  \\pm unc$";
+  // else nEvents = "$N_{events} \\pm stat \\pm sys$";
+  // //Inclusive Mjj
+  // outFile<<"\\begin{table}"<<endl;
+  // outFile<<"\\begin{center}"<<endl;
+  // outFile<<"\\begin{tabular}{cccc}"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\bf{Process}& "<<nEvents<<" & "<<nEvents<<"\\\\ "<<endl;
+  // outFile<<" & $\\mu$ + jets &  e + jets\\\\"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
   
-  //CalcSystTable(1);
-  ifile = 1;
-  //GetInclusive("$m_{H^-}=80$ GeV", 1);
-  outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("Single ~t", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:eventYieldInc}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\end{table}"<<endl;
-  outFile<<"\\pagebreak"<<endl;
-  outFile<<"\\newpage"<<endl;
-  outFile<<""<<endl;
-  outFile<<""<<endl;
+  // //CalcSystTable(1);
+  // ifile = 1;
+  // //GetInclusive("$m_{H^-}=80$ GeV", 1);
+  // outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("Single ~t", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\end{tabular}"<<endl;
+  // outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  // outFile<<"\\label{tab:eventYieldInc}"<<endl;
+  // outFile<<"\\end{center}"<<endl;
+  // outFile<<"\\end{table}"<<endl;
+  // outFile<<"\\pagebreak"<<endl;
+  // outFile<<"\\newpage"<<endl;
+  // outFile<<""<<endl;
+  // outFile<<""<<endl;
   
 
-  ifile = 1;
-  outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\scriptsize{"<<endl;
-  ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
-  outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+  // ifile = 1;
+  // outFile<<"\\begin{table}"<<endl;
+  // outFile<<"\\begin{center}"<<endl;
+  // outFile<<"\\scriptsize{"<<endl;
+  // ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
+  // outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
+  // outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
 
-  //pu, mu, btagb, btagl, prefire, jec, jer, norm
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
-  outFile<<"\\hline "<<endl;  
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\end{tabular}"<<endl;
-  outFile<<"}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
-  outFile<<"\\end{table}"<<endl;
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // //pu, mu, btagb, btagl, prefire, jec, jer, norm
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;  
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\end{tabular}"<<endl;
+  // outFile<<"}"<<endl;
+  // outFile<<"\\end{center}"<<endl;
+  // outFile<<"\\caption{"+tab2_caption+"}"<<endl;
+  // outFile<<"\\end{table}"<<endl;
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // //////////////////////////////////////////////////////////////////////////////////////////////////
+  // //inclusive tight charm
+  // //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // isKFL = false;
+  // isInc = true;
+  // cType = 'T';
+  // tab1_caption = "Event yield for inclusive tight charm tagging category.";
+  // tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for inclusive tight charm tagging category. ";
+  
+  // nEvents = "";
+  // if(forPaper) nEvents = "$N_{events}  \\pm unc$";
+  // else nEvents = "$N_{events} \\pm stat \\pm sys$";
+  // //Inclusive Mjj
+  // outFile<<"\\begin{table}"<<endl;
+  // outFile<<"\\begin{center}"<<endl;
+  // outFile<<"\\begin{tabular}{cccc}"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\bf{Process}& "<<nEvents<<" & "<<nEvents<<"\\\\ "<<endl;
+  // outFile<<" & $\\mu$ + jets &  e + jets\\\\"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
+  
+  // //CalcSystTable(1);
+  // ifile = 1;
+  // //GetInclusive("$m_{H^-}=80$ GeV", 1);
+  // outFile<<GetInclusive("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("Single ~t", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\end{tabular}"<<endl;
+  // outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  // outFile<<"\\label{tab:eventYieldInc}"<<endl;
+  // outFile<<"\\end{center}"<<endl;
+  // outFile<<"\\end{table}"<<endl;
+  // outFile<<"\\pagebreak"<<endl;
+  // outFile<<"\\newpage"<<endl;
+  // outFile<<""<<endl;
+  // outFile<<""<<endl;
+  
+
+  // ifile = 1;
+  // outFile<<"\\begin{table}"<<endl;
+  // outFile<<"\\begin{center}"<<endl;
+  // outFile<<"\\scriptsize{"<<endl;
+  // ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
+  // outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
+  // outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+
+  // //pu, mu, btagb, btagl, prefire, jec, jer, norm
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^-}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=80$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=90$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=100$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=110$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=120$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=130$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=140$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=150$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=155$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$m_{H^+}=160$ GeV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<"\\hline "<<endl;
+  // outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  // outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
+  // outFile<<"\\hline "<<endl;  
+  // outFile<<"\\hline "<<endl;
+  // outFile<<"\\end{tabular}"<<endl;
+  // outFile<<"}"<<endl;
+  // outFile<<"\\end{center}"<<endl;
+  // outFile<<"\\caption{"+tab2_caption+"}"<<endl;
+  // outFile<<"\\end{table}"<<endl;
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //exclusive loose charm
@@ -583,11 +589,14 @@ int PrepMjjSystTableV4UL()
   outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  outFile<<GetInclusive("MC QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;
-  outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; 
   outFile<<"\\hline "<<endl;
   outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  outFile<<"\\hline "<<endl;
+  outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
@@ -638,7 +647,7 @@ int PrepMjjSystTableV4UL()
   outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;ifile = ifile+2;
   outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
@@ -702,11 +711,14 @@ int PrepMjjSystTableV4UL()
   outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  outFile<<GetInclusive("MC QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;
   outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  outFile<<"\\hline "<<endl;
+  outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
@@ -757,7 +769,7 @@ int PrepMjjSystTableV4UL()
   outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl; ifile = ifile + 2;
   outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
@@ -821,11 +833,14 @@ int PrepMjjSystTableV4UL()
   outFile<<GetInclusive("W + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
+  outFile<<GetInclusive("MC QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;
   outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<GetInclusive("Data", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; ifile++ ;
+  outFile<<"\\hline "<<endl;
+  outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
@@ -876,7 +891,7 @@ int PrepMjjSystTableV4UL()
   outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl; ifile = ifile + 2;
   outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
@@ -956,6 +971,9 @@ string GetInclusive(string rowtitle, int ifile, bool inc, int year, bool isKFL, 
   double eleOut[3];
   double error_percnt[11]; //nofSyst + stat
 
+  cout<<"Inclusive sample " << sampleType[ifile-1] <<", RowTitle : " << rowtitle << endl;
+  string sampleName = sampleType[ifile-1];
+
   for(int i=0;i<11;i++) error_percnt[i] = 0.0 ;
   for(int i=0;i<3;i++) muOut[i] = eleOut[i] = 0.0 ;
   CalcSystTable(ifile, 1, muOut, error_percnt,year, isKFL, isInc, cType);
@@ -963,14 +981,20 @@ string GetInclusive(string rowtitle, int ifile, bool inc, int year, bool isKFL, 
   for(int i=0;i<11;i++) error_percnt[i] = 0.0 ;
   CalcSystTable(ifile, 0, eleOut, error_percnt,year, isKFL, isInc, cType);
   
-  cout<<"Inclusive sample " << sampleType[ifile-1] <<", RowTitle : " << rowtitle << endl;
-  string sampleName = sampleType[ifile-1];
   
   string combined = "";
   
   if(rowtitle.find("All")==string::npos){
-    combined = rowtitle +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",muOut[0],muOut[1],100.*muOut[1]/muOut[0],muOut[2],100.*muOut[2]/muOut[0]) 
-      +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",eleOut[0],eleOut[1],100.*eleOut[1]/eleOut[0],eleOut[2],100.0*eleOut[2]/eleOut[0]) +"\\\\";
+    if(rowtitle == "Data" or rowtitle == "MC QCD"){
+      combined = rowtitle +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%)$",muOut[0],muOut[1],100.*muOut[1]/muOut[0]) 
+	+" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%)$",eleOut[0],eleOut[1],100.*eleOut[1]/eleOut[0]) +"\\\\";
+    }else if(rowtitle == "Data/Bkg"){
+      combined = rowtitle +" & "+ Form("$%5.4f$",muOut[0]/muTot[0]) 
+	+" & "+ Form("$%5.4f$",eleOut[0]/eleTot[0]) +"\\\\";      
+    }else{
+      combined = rowtitle +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",muOut[0],muOut[1],100.*muOut[1]/muOut[0],muOut[2],100.*muOut[2]/muOut[0]) 
+	+" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",eleOut[0],eleOut[1],100.*eleOut[1]/eleOut[0],eleOut[2],100.0*eleOut[2]/eleOut[0]) +"\\\\";
+    }
   }else{
     combined = rowtitle +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",muTot[0],sqrt(muTot[1]),100.*sqrt(muTot[1])/muTot[0],sqrt(muTot[2]),100.*sqrt(muTot[2])/muTot[0]) 
       +" & "+ Form("$%1.0f \\pm %1.0f(%1.1f\\%) \\pm %1.0f(%1.1f\\%)$",eleTot[0],sqrt(eleTot[1]),100.*sqrt(eleTot[1])/eleTot[0],sqrt(eleTot[2]),100.0*sqrt(eleTot[2])/eleTot[0]) +"\\\\";    
@@ -984,7 +1008,7 @@ string GetInclusive(string rowtitle, int ifile, bool inc, int year, bool isKFL, 
     eleTot[0] = eleOut[0];
     eleTot[1] = eleOut[1]*eleOut[1];
     eleTot[2] = eleOut[2]*eleOut[2];
-  }else{
+  }else if(rowtitle != "Data" and rowtitle.find("All")==string::npos and sampleName.find("MCQCD")==string::npos){
     muTot[0] += muOut[0];
     muTot[1] += muOut[1]*muOut[1];
     muTot[2] += muOut[2]*muOut[2];
@@ -1005,7 +1029,7 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   double CalcSysError(TH1D *, TH1D *, TH1D *);
   
   bool isVerbose = 1;
-
+  
   const char *sample[] = {"HminusM080", "HminusM090", "HminusM100", "HminusM110", 
 			  "HminusM120", "HminusM130", "HminusM140", "HminusM150", 
 			  "HminusM155", "HminusM160",  
@@ -1013,7 +1037,8 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 			  "HplusM120", "HplusM130", "HplusM140", "HplusM150", 
 			  "HplusM155", "HplusM160",  
 			  "TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", 
-			  "QCDdd", "QCDdd", "DataMu", "DataEle"};
+			  "MCQCDMu", "MCQCDEle","QCDdd", "QCDdd", 
+			  "DataMu", "DataEle"};
   
   const float norm_mu_syst[] = {6.1, 6.1, 6.1, 6.1,
 				6.1, 6.1, 6.1, 6.1,
@@ -1115,7 +1140,7 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
     cout<<"Openning file : "<< finBase->GetName() << endl;
   TH1D *hBase = (TH1D *)finBase->Get(histname.c_str());
   if(isVerbose)
-    cout<<"and get histo : " << hBase->GetName() << endl;
+    cout<<"and get histo : " << histname.c_str() << endl;
   string baseFileName = finBase->GetName();
   
   TH1D *hIso20 = (TH1D *)finBase->Get(histiso20.c_str());
@@ -1140,11 +1165,13 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   double stat_Error = 0.0;
   double Norm = hBase->IntegralAndError(1,hBase->GetNbinsX(),stat_Error); 
   double stat_Error_iso20 = 0.0;
-  double Norm_iso20 = hIso20->IntegralAndError(1,hIso20->GetNbinsX(),stat_Error_iso20); 
+  double Norm_iso20 = 0.0;
+  if(baseFileName.find("all_QCDdd")!=string::npos or baseFileName.find("all_Data")!=string::npos)
+    Norm_iso20 = hIso20->IntegralAndError(1,hIso20->GetNbinsX(),stat_Error_iso20); 
 
   //The following line is for DD row.
   //if(isample>=13){
-  if(baseFileName.find("all_QCDdd")!=string::npos or baseFileName.find("all_Data")!=string::npos){
+  if(baseFileName.find("all_QCDdd")!=string::npos or baseFileName.find("all_Data")!=string::npos or baseFileName.find("all_MCQCD")!=string::npos){
   //if(isample>=13){
     output[0] = Norm;
     output[1] = stat_Error ;
