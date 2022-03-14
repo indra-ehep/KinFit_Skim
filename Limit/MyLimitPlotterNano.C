@@ -42,30 +42,32 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   leg->SetTextSize(0.05);
   leg->SetFillColor(0);
 
-  float X[]        = {80, 90,100,120, 140, 150, 155, 160};
-  float obsY[]     = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expY[]     = {0., 0.,0.,0, 0, 0, 0, 0,0};
+  float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
+  float obsY[]     = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY[]     = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
 		      
-  float expX1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expX1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expY1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expY1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expY1sL_[]  = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expY1sH_[]  = {0., 0.,0.,0, 0, 0, 0, 0,0};
+  float expX1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expX1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY1sL_[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY1sH_[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
 
 		      
-  float expX2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expX2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expY2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0,0};
-  float expY2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0,0};
+  float expX2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expX2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
 
-  int nMassPoints = 8;
+  int nMassPoints = 10;
   TString ch_hist = CHANNEL+"_"+CAT;
-  TString massFiles [8] = {
+  TString massFiles [10] = {
   "Mass80/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH80.root",
   "Mass90/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH90.root",
   "Mass100/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH100.root",
+  "Mass110/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH110.root",
   "Mass120/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH120.root",
+  "Mass130/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH130.root",
   "Mass140/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH140.root",
   "Mass150/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH150.root",
   "Mass155/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH155.root",
@@ -133,7 +135,7 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   if(CHANNEL=="ele") ch_name = "e";
   if(CHANNEL=="mu_ele") ch_name = "lep";
   //mg->SetMaximum(1.02*maxY);
-  mg->SetMaximum(50.);
+  mg->SetMaximum(80.);
   mg->SetMinimum(0.05);
   
   TGraphAsymmErrors* expected = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL ,expX1sL , expX1sL, expX1sL);
@@ -261,8 +263,12 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
 
 void MyLimitPlotterNano(){
   
+  // LimitPlotter("mu", "Cat1_Inc",     false, true );
+  // LimitPlotter("ele", "Cat1_Inc",     false, true );
+
   LimitPlotter("mu", "Cat1_Inc",     true, true );
-  //LimitPlotter("ele", "Cat1_Inc",     true, true );
+  LimitPlotter("ele", "Cat1_Inc",     true, true );
+
   /*
   LimitPlotter("mu", "Cat2_cTagInc", true, true );
   LimitPlotter("mu", "Cat3_cTagEx",  true, true );
