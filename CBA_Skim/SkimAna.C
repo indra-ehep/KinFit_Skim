@@ -1071,39 +1071,74 @@ void SkimAna::LoadBTag()
       readerb.load(calibb, BTagEntry::FLAV_C, "comb"); 
       readerb.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
       
-      calibCa = BTagCalibration( "deepjetCa", Form("%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data());
-      calibCb = BTagCalibration( "deepjetCb", Form("%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data()) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data());      
+      // calibCa = BTagCalibration( "deepjetCa", Form("%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data()) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data());
+      // calibCb = BTagCalibration( "deepjetCb", Form("%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data()) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data());      
+
+      // readera_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
+      // readera_CL.load(calibCa, BTagEntry::FLAV_B,"TnP");          
+      // readera_CL.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      // readera_CL.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // readerb_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
+      // readerb_CL.load(calibCb, BTagEntry::FLAV_B,"TnP");          
+      // readerb_CL.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      // readerb_CL.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // readera_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      // readera_CM.load(calibCa, BTagEntry::FLAV_B,"TnP");          
+      // readera_CM.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      // readera_CM.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // readerb_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      // readerb_CM.load(calibCb, BTagEntry::FLAV_B,"TnP");          
+      // readerb_CM.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      // readerb_CM.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // readera_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
+      // readera_CT.load(calibCa, BTagEntry::FLAV_B,"TnP");          
+      // readera_CT.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      // readera_CT.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
+      
+      // readerb_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
+      // readerb_CT.load(calibCb, BTagEntry::FLAV_B,"TnP");          
+      // readerb_CT.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      // readerb_CT.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
+
+      calibCa = BTagCalibration( "deepjetCa", Form("%s/weightUL/BtagSF/SF/2016/ctagger_wp_deepJet_106XULpreVFP_v1_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_wp_deepJet_106XULpreVFP_v1_formatted.csv",fBasePath.Data());
+      calibCb = BTagCalibration( "deepjetCb", Form("%s/weightUL/BtagSF/SF/2016/ctagger_wp_deepJet_106XULpostVFP_v1_formatted.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/2016/ctagger_wp_deepJet_106XULpostVFP_v1_formatted.csv",fBasePath.Data());      
       
       readera_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-      readera_CL.load(calibCa, BTagEntry::FLAV_B,"TnP");          
-      readera_CL.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      readera_CL.load(calibCa, BTagEntry::FLAV_B,"wcharm");          
+      readera_CL.load(calibCa, BTagEntry::FLAV_C, "wcharm"); 
       readera_CL.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
 
       readerb_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-      readerb_CL.load(calibCb, BTagEntry::FLAV_B,"TnP");          
-      readerb_CL.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      readerb_CL.load(calibCb, BTagEntry::FLAV_B,"wcharm");          
+      readerb_CL.load(calibCb, BTagEntry::FLAV_C, "wcharm"); 
       readerb_CL.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
 
       readera_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readera_CM.load(calibCa, BTagEntry::FLAV_B,"TnP");          
-      readera_CM.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      readera_CM.load(calibCa, BTagEntry::FLAV_B,"wcharm");          
+      readera_CM.load(calibCa, BTagEntry::FLAV_C, "wcharm"); 
       readera_CM.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
 
       readerb_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      readerb_CM.load(calibCb, BTagEntry::FLAV_B,"TnP");          
-      readerb_CM.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      readerb_CM.load(calibCb, BTagEntry::FLAV_B,"wcharm");          
+      readerb_CM.load(calibCb, BTagEntry::FLAV_C, "wcharm"); 
       readerb_CM.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
 
       readera_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
-      readera_CT.load(calibCa, BTagEntry::FLAV_B,"TnP");          
-      readera_CT.load(calibCa, BTagEntry::FLAV_C, "comb"); 
+      readera_CT.load(calibCa, BTagEntry::FLAV_B,"wcharm");          
+      readera_CT.load(calibCa, BTagEntry::FLAV_C, "wcharm"); 
       readera_CT.load(calibCa, BTagEntry::FLAV_UDSG, "incl"); 
       
       readerb_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
-      readerb_CT.load(calibCb, BTagEntry::FLAV_B,"TnP");          
-      readerb_CT.load(calibCb, BTagEntry::FLAV_C, "comb"); 
+      readerb_CT.load(calibCb, BTagEntry::FLAV_B,"wcharm");          
+      readerb_CT.load(calibCb, BTagEntry::FLAV_C, "wcharm"); 
       readerb_CT.load(calibCb, BTagEntry::FLAV_UDSG, "incl"); 
       
     }
@@ -1118,22 +1153,40 @@ void SkimAna::LoadBTag()
       reader.load(calib, BTagEntry::FLAV_C, "comb"); 
       reader.load(calib, BTagEntry::FLAV_UDSG, "incl"); 
       
-      calibC = BTagCalibration( "deepjetC", Form("%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear) ) ;
-      Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear);
+      // calibC = BTagCalibration( "deepjetC", Form("%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear);
+      
+      // reader_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
+      // reader_CL.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      // reader_CL.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      // reader_CL.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // reader_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      // reader_CM.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      // reader_CM.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      // reader_CM.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // reader_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
+      // reader_CT.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      // reader_CT.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      // reader_CT.load(calibC, BTagEntry::FLAV_UDSG, "incl");       
+
+      calibC = BTagCalibration( "deepjetC", Form("%s/weightUL/BtagSF/SF/%d/ctagger_wp_deepJet_106XUL_v1_formatted.csv",fBasePath.Data(),fYear) ) ;
+      Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/ctagger_wp_deepJet_106XUL_v1_formatted.csv",fBasePath.Data(),fYear);
       
       reader_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-      reader_CL.load(calibC, BTagEntry::FLAV_B,"TnP");          
-      reader_CL.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      reader_CL.load(calibC, BTagEntry::FLAV_B,"wcharm");          
+      reader_CL.load(calibC, BTagEntry::FLAV_C, "wcharm"); 
       reader_CL.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
 
       reader_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
-      reader_CM.load(calibC, BTagEntry::FLAV_B,"TnP");          
-      reader_CM.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      reader_CM.load(calibC, BTagEntry::FLAV_B,"wcharm");          
+      reader_CM.load(calibC, BTagEntry::FLAV_C, "wcharm"); 
       reader_CM.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
 
       reader_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
-      reader_CT.load(calibC, BTagEntry::FLAV_B,"TnP");          
-      reader_CT.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      reader_CT.load(calibC, BTagEntry::FLAV_B,"wcharm");          
+      reader_CT.load(calibC, BTagEntry::FLAV_C, "wcharm"); 
       reader_CT.load(calibC, BTagEntry::FLAV_UDSG, "incl");       
       
     }
