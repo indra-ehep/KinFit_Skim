@@ -162,8 +162,6 @@ int KinTreeValidation()
     weight = sampleWeight*prefireWeight*PUWeight*muEffWeight*puJetIDWeight*bTagWeight;
     mjjKF = (chad+shad).M();
     if(singleMu and !singleEle and muonIsoCut and !isLowMET){
-    //if(singleMu and !singleEle and muonIsoCut and !isLowMET and hasKFMu and isKFValid){
-    //if(singleMu and !singleEle and muonIsoCut and met.Pt()>20.0){
       mjj->Fill(mjjKF,weight);
       if(isCTagged){
 	if(count_cJetsIncT>0)
