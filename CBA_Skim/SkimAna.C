@@ -2421,8 +2421,6 @@ Bool_t SkimAna::Process(Long64_t entry)
 	 fProcessed, entry, fChain->GetEntries(), totEventsUS[fSampleType.Data()],evtPick->year.c_str());
   }
   if(IsDebug) Info("Process","Completed process count");
-  if(fProcessed>10000)
-    return true;
 
   // Set JEC syst
   if( !isData and (systType == kJECUp or systType == kJECDown)){
