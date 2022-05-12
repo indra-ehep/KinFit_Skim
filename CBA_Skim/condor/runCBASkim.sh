@@ -12,10 +12,14 @@ if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
 else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
-    export SCRAM_ARCH=slc7_amd64_gcc700
+    # export SCRAM_ARCH=slc7_amd64_gcc700
+    # source /cvmfs/cms.cern.ch/cmsset_default.sh
+    # scramv1 project CMSSW CMSSW_10_6_29
+    # cd CMSSW_10_6_29/src
+    export SCRAM_ARCH=slc7_amd64_gcc900
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_6_29
-    cd CMSSW_10_6_29/src
+    scramv1 project CMSSW CMSSW_12_1_0
+    cd CMSSW_12_1_0/src
     eval `scramv1 runtime -sh`
     cd ../..
     
@@ -39,10 +43,10 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ProbChi2
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_ProbChi2
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ProbChi2/post
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_ProbChi2/post
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID
+# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID/post
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID/post
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
@@ -50,7 +54,7 @@ else
     xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
     echo "Cleanup"
-    rm -rf CMSSW_10_6_29
+    rm -rf CMSSW_12_1_0
     rm *.root
 fi
 printf "Done ";/bin/date

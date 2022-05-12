@@ -53,6 +53,8 @@
 #include "PhysicsTools/KinFitter/interface/TFitParticleMCMomDev.h"
 #include "PhysicsTools/KinFitter/interface/TKinFitter.h"
 
+#include "correction.h"
+
 class  TH1F;
 class  TH1D;
 class  TH2D;
@@ -728,17 +730,24 @@ class SkimAna : public TSelector {
    double _PUWeight = 1.0;
    double _PUWeight_Up = 1.0;
    double _PUWeight_Do = 1.0;
-
+   
    //The Trio
    EventTree *event = 0x0;
    Selector *selector = 0x0;
    EventPick *evtPick = 0x0;
    
-   //JECJER
+   //JECJERPUJetID
    JECvariation *jecvar = 0x0;
    JECvariation *jecvara = 0x0;
    JECvariation *jecvarb = 0x0;
-   
+   TFile *fPUJetIDa = 0x0, *fPUJetIDb = 0x0, *fPUJetID = 0x0;
+   TH2D *hPUJetIDEffa, *hPUJetIDEffb, *hPUJetIDEff;
+   std::unique_ptr<correction::CorrectionSet> cseta = 0x0, csetb = 0x0, cset = 0x0;
+   string PUJetIDSystType ;
+   double _PUJetIDWeight;
+   double _PUJetIDWeight_Up;
+   double _PUJetIDWeight_Do;
+
    //Btag
    BTagCalibration calib;
    BTagCalibration caliba;
@@ -777,6 +786,9 @@ class SkimAna : public TSelector {
    double _bTagWeight_bc3_Up = 1.0 ;
    double _bTagWeight_bc3_Do = 1.0 ;
 
+   int count_cJetsIncL   = 0;
+   int count_cJetsIncM   = 0;
+   int count_cJetsIncT   = 0;
    double _cTagLWeight = 1.0 ;
    double _cTagLWeight_bc1_Up = 1.0 ;
    double _cTagLWeight_bc1_Do = 1.0 ;
@@ -884,6 +896,7 @@ class SkimAna : public TSelector {
    double  kinFitMinChi2 ;
    bool    hasKFMu = false, hasKFEle = false;
    bool    isKFValid = false;
+   bool    isCTagged = false;
    ////////////////////////////////////////////////////////
    
    SkimAna(TTree *tree=0);
@@ -924,6 +937,7 @@ class SkimAna : public TSelector {
    double  getMuonTrackSF(TGraphAsymmErrors *tg, double eta);
    void    GetMuonEff(double iso);
    void    GetElectronEff();
+   void    GetPUJetIDSF_1a();
    void    GetBtagSF_1a();   
    void    GetCLtagSF_1a();   
    void    GetCMtagSF_1a();   
@@ -931,7 +945,7 @@ class SkimAna : public TSelector {
    float   topPtReweight();
    void    TheoWeights();
    bool    ProcessKinFit(bool, bool);
-
+   
    /// Fill CutFlow histograms, Note that the cutflow for BTag and KinFit are filled in the object histogram functiuons below
    bool    FillEventCutFlow();
    bool    FillLeptonCutFlow();
@@ -1741,6 +1755,10 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("eleEffWeight"  	, &_eleEffWeight		);
     outputTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		);
     outputTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		);
+
+    outputTree->Branch("puJetIDWeight"	, &_PUJetIDWeight		);
+    outputTree->Branch("puJetIDWeight_Up"	, &_PUJetIDWeight_Up		);
+    outputTree->Branch("puJetIDWeight_Do"	, &_PUJetIDWeight_Do		);
     
     outputTree->Branch("bTagWeight"		, &_bTagWeight			);
     outputTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
@@ -1754,6 +1772,10 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
     outputTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
 
+    outputTree->Branch("isCTagged"		, &isCTagged         		);
+    outputTree->Branch("count_cJetsIncL"	, &count_cJetsIncL      	);
+    outputTree->Branch("count_cJetsIncM"	, &count_cJetsIncM      	);
+    outputTree->Branch("count_cJetsIncT"	, &count_cJetsIncT      	);
     outputTree->Branch("cTagLWeight"		, &_cTagLWeight			);
     outputTree->Branch("cTagLWeight_bc1_Up"	, &_cTagLWeight_bc1_Up		);
     outputTree->Branch("cTagLWeight_bc1_Do"	, &_cTagLWeight_bc1_Do		);
@@ -1781,6 +1803,9 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("chi2"			, &kinFitMinChi2       		);
     outputTree->Branch("ndf"			, &_NDF         		);
     outputTree->Branch("prob"			, &_prob         		);
+    outputTree->Branch("isKFValid"		, &isKFValid         		);
+    outputTree->Branch("hasKFMu"		, &hasKFMu         		);
+    outputTree->Branch("hasKFEle"		, &hasKFEle         		);
     outputTree->Branch("Rdiffbjlep"		, &_Rdiffbjlep         		);
     outputTree->Branch("Rdiffbjhad"		, &_Rdiffbjhad         		);
     outputTree->Branch("Rdiffcjhad"		, &_Rdiffcjhad         		);

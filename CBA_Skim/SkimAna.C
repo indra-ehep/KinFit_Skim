@@ -44,7 +44,7 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////////// Observables //////////////////////////////////////
   
   ////////////////////// Weight and other histograms histograms ///////////////////////
-  fNBWtHists = 59;
+  fNBWtHists = 62;
   fNWtHists = fNDDReg*fNBWtHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNWtHists*fNSyst;
   histWt = new TH1D*[totNHists];
@@ -262,6 +262,9 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_prefireWeight","_prefireWeight",2000, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muEffWeight","_muEffWeight",2000, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_eleEffWeight","_eleEffWeight",2000, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_puJetIDWeight","_puJetIDWeight",2000, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_puJetIDWeight_Up","_puJetIDWeight_Up",2000, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_puJetIDWeight_Do","_puJetIDWeight_Do",2000, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1a","_btagWeight_1a",2000, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1a_b_Do","_btagWeight_1a_b_Do",2000, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1a_b_Up","_btagWeight_1a_b_Up",2000, -10, 10);
@@ -317,7 +320,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet1Pt_BF_ele","_bjet1Pt_BF_ele", 100, 0., 1000.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet2Pt_BF_ele","_bjet2Pt_BF_ele", 100, 0., 1000.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ljet1Pt_BF_ele","_ljet1Pt_BF_ele", 100, 0., 1000.);
-    histWt[fNWtHists*isyst + 58] = new TH1D("_ljet2Pt_BF_ele","_ljet2Pt_BF_ele", 100, 0., 1000.);
+    histWt[fNWtHists*isyst + 61] = new TH1D("_ljet2Pt_BF_ele","_ljet2Pt_BF_ele", 100, 0., 1000.);
 
     for(int icf=0;icf<fNBWtHists;icf++)
       histWt[fNWtHists*isyst + icf]->SetDirectory(fFileDir[isyst*fNDDReg + 0]);
@@ -555,8 +558,10 @@ void SkimAna::SelectSyst()
   fsrvar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   isrvar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   prefirevar012_g	= 1 ;           // 0:down, 1:norm, 2:up
+  PUJetIDSystType	= "nom";
   btagSystType		= "central" ;
   ctagSystType		= "central" ;
+
   // ctagMSystType		= "central" ;
   // ctagTSystType		= "central" ;
   
@@ -589,7 +594,7 @@ void SkimAna::SelectSyst()
 			    "pdfup", "pdfdown", "q2fup", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
                             "bctag1up", "bctag1down", "bctag2up", "bctag2down",
-                            "bctag3up", "bctag3down"};
+                            "bctag3up", "bctag3down", "pujetidup", "pujetiddown"};
   
   if (fSyst == "base"){
 
@@ -599,7 +604,7 @@ void SkimAna::SelectSyst()
       fNSyst = 1;
       fSystList.push_back(fSyst);       
     }else{
-      fNSyst = 27; 
+      fNSyst = 29; 
       for(int isyst=0;isyst<fNSyst;isyst++)
 	fSystList.push_back(systbase[isyst]);
     }
@@ -1025,6 +1030,35 @@ void SkimAna::LoadJECJER()
       if (fYear==2017) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2017/V5/Summer19UL17_V5",fBasePath.Data()), !isData, JECsystLevel);
       if (fYear==2018) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2018/V5/Summer19UL18_V5",fBasePath.Data()), !isData, JECsystLevel);
     }
+   
+    if (fYear==2016){
+      
+      fPUJetIDa = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/preVFP/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
+      hPUJetIDEffa = (TH2D *) fPUJetIDa->Get("PUJetID_L_efficiency");
+      fPUJetIDb = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/postVFP/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
+      hPUJetIDEffb = (TH2D *) fPUJetIDb->Get("PUJetID_L_efficiency");
+      cseta = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpreVFP_UL/UL%dpreVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
+      csetb = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpostVFP_UL/UL%dpostVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
+      
+      double out_nom_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
+      double out_up_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
+      double out_down_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      printf("Output_a (down, nom, up) : (%lf,%lf,%lf)\n", out_down_a, out_nom_a, out_up_a);      
+      double out_nom_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
+      double out_up_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
+      double out_down_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      printf("Output_b (down, nom, up) : (%lf,%lf,%lf)\n", out_down_b, out_nom_b, out_up_b);      
+      
+    }else{
+      fPUJetID = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
+      hPUJetIDEff = (TH2D *) fPUJetID->Get("PUJetID_L_efficiency");
+      cset = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%d_UL/UL%d_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
+      double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
+      double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
+      double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      printf("Output (down, nom, up) : (%lf,%lf,%lf)\n", out_down, out_nom, out_up);      
+    }
+    
   }//isData
 
 }
@@ -1412,6 +1446,81 @@ void SkimAna::LoadLeptonSF(){
       
     eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile.c_str()), eleRECOFile, eleTrigFile);
   }
+
+}
+//_____________________________________________________________________________
+void SkimAna::GetPUJetIDSF_1a(){
+  
+  double jetPt;
+  double jetEta;
+  int jetPUJetID;
+  TH2D *hpujetid_eff; 
+  
+  double SFb = 1.;
+  double Eff;
+
+  double pMC = 1.0;
+  double pData = 1.0;
+  
+  string sysType = "nom";
+  if (PUJetIDSystType=="up"){
+    sysType = "up";
+  } else if (PUJetIDSystType=="down"){
+    sysType = "down";
+  }
+  
+  int PUJetIDThreshold = (fYear==2016) ? 1  : 4  ;
+
+  int xbin,ybin;
+  if(fYear==2016){
+    if(isPreVFP)
+      hpujetid_eff = hPUJetIDEffa;
+    if(isPostVFP)
+      hpujetid_eff = hPUJetIDEffb;
+    
+  }else
+    hpujetid_eff = hPUJetIDEff;
+  double maxbinX = hpujetid_eff->GetXaxis()->GetBinUpEdge(hpujetid_eff->GetNbinsX());
+  double maxbinY = hpujetid_eff->GetYaxis()->GetBinUpEdge(hpujetid_eff->GetNbinsY());
+
+  for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
+    
+    jetPt = event->jetPt_[*jetInd];
+    jetEta = event->jetEta_[*jetInd];
+    jetPUJetID = event->jetPUID_[*jetInd] ;
+    
+    if(jetPt>maxbinX) continue;
+
+    if(fYear==2016){
+      if(isPreVFP)
+	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+      if(isPostVFP)
+	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+    }else
+      SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+    
+    xbin = hpujetid_eff->GetXaxis()->FindBin(min(jetPt,50.));
+    ybin = hpujetid_eff->GetYaxis()->FindBin(jetEta);
+    Eff = hpujetid_eff->GetBinContent(xbin,ybin);
+    
+    if( (xbin<1 or jetPt>maxbinX or ybin<1 or abs(jetEta)>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
+
+    if (jetPUJetID >= PUJetIDThreshold ){
+      pMC *= Eff;
+      pData *= Eff*SFb;
+      //cout << "Tagged as bjet : SFb : " << SFb << ", Eff : " <<  Eff << ", pMC :" << pMC << ", pData : " << pData << ", weight : " << pData/pMC << endl;
+    } else {
+      pMC *= 1. - Eff;
+      pData *= 1. - (Eff*SFb);
+      //cout << "Otherjet : SFb : " << SFb << ", 1 - Eff : " <<  (1. - Eff) << ", pMC :" << pMC << ", pData : " << pData << ", weight : " << pData/pMC << endl;	    
+    }
+  }//end of jet loop
+  
+  //   _PUJetIDWeight = pData/pMC;
+  if ( TMath::AreEqualAbs(pMC,0.0,1.0e-4) )
+    _PUJetIDWeight = -1.;
+  else 
+    _PUJetIDWeight = pData/pMC;
 
 }
 //_____________________________________________________________________________
@@ -2201,9 +2310,11 @@ void SkimAna::Clean(){
   ljetlist.clear();
   bjetlist.clear();
   
+  isKFValid = false;
   hasKFMu = false;
   hasKFEle = false;
-  
+  isCTagged = false;
+
   kinFitMinChi2	= -1.0;
   _NDF		= -1.0;
   _prob		= -1.0;
@@ -2232,6 +2343,9 @@ void SkimAna::Clean(){
   _eleEffWeight = 1.0;
   _eleEffWeight_Up = 1.0;
   _eleEffWeight_Do = 1.0;
+  _PUJetIDWeight = 1.0;
+  _PUJetIDWeight_Up = 1.0;
+  _PUJetIDWeight_Do = 1.0;
   _bTagWeight	 = 1.0;
   _bTagWeight_b_Up = 1.0 ;
   _bTagWeight_b_Do = 1.0 ;
@@ -2243,6 +2357,10 @@ void SkimAna::Clean(){
   _bTagWeight_bc2_Do = 1.0 ;
   _bTagWeight_bc3_Up = 1.0 ;
   _bTagWeight_bc3_Do = 1.0 ;
+
+  count_cJetsIncL   = 0;
+  count_cJetsIncM   = 0;
+  count_cJetsIncT   = 0;
 
   _cTagLWeight	 = 1.0;
   _cTagLWeight_bc1_Up = 1.0 ;
@@ -2277,7 +2395,7 @@ void SkimAna::Clean(){
   _FSRweight_Do = 1.0;
   _FSRweight_Up = 1.0;
   _FSRweight_Do = 1.0;
-
+  
 }    
 
 //_____________________________________________________________________________
@@ -2303,7 +2421,9 @@ Bool_t SkimAna::Process(Long64_t entry)
 	 fProcessed, entry, fChain->GetEntries(), totEventsUS[fSampleType.Data()],evtPick->year.c_str());
   }
   if(IsDebug) Info("Process","Completed process count");
-  
+  if(fProcessed>10000)
+    return true;
+
   // Set JEC syst
   if( !isData and (systType == kJECUp or systType == kJECDown)){
     if(fYear==2016){
@@ -2496,6 +2616,20 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   //Processes after njet >= 4 selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if(!isData){
+    if(fSyst == "base"){
+      PUJetIDSystType  = "up" ;
+      GetPUJetIDSF_1a(); if(_PUJetIDWeight < 0.) return kTRUE;
+      _PUJetIDWeight_Up = _PUJetIDWeight;
+
+      PUJetIDSystType  = "down" ;
+      GetPUJetIDSF_1a(); if(_PUJetIDWeight < 0.) return kTRUE;
+      _PUJetIDWeight_Do = _PUJetIDWeight;
+    }
+    PUJetIDSystType  = "nom" ;
+    GetPUJetIDSF_1a(); if(_PUJetIDWeight < 0.) return kTRUE;
+    //cout <<" fProcessed : " << fProcessed << " (do,nom,up) : (" << _PUJetIDWeight_Do <<", " << _PUJetIDWeight << ", " << _PUJetIDWeight_Up <<")"<<endl;
+  }
 
   FillNjetCutFlow();
   FillNjetWt();
@@ -2604,6 +2738,9 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillCTagObs();
   if(systType == kBase) FillCTagControlHists();
   if(IsDebug) Info("Process","Completed CTagging");
+  //Fill for non-negative chi2
+  if(doTreeSave)
+    outputTree->Fill();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   
@@ -3109,7 +3246,9 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
   double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
   double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+  double pujetidwt = _PUJetIDWeight ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Up ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Do ; 
   double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
+
   if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
   if(systname == "bctag1up") btagwt = _bTagWeight_bc1_Up ; if(systname == "bctag1down") btagwt = _bTagWeight_bc1_Do ; 
   if(systname == "bctag2up") btagwt = _bTagWeight_bc2_Up ; if(systname == "bctag2down") btagwt = _bTagWeight_bc2_Do ; 
@@ -3119,9 +3258,9 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-  combined_muwt1 = _sampleWeight * puwt * muwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
   
   return true;
 }
@@ -3129,9 +3268,10 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
 //_____________________________________________________________________________
 bool SkimAna::FillCTagObs(){
   
-  int count_cJetsIncL   = 0;
-  int count_cJetsIncM   = 0;
-  int count_cJetsIncT   = 0;
+  count_cJetsIncL   = 0;
+  count_cJetsIncM   = 0;
+  count_cJetsIncT   = 0;
+  isCTagged = false;
 
   bool isIncL = false;
   bool isIncM = false;
@@ -3348,7 +3488,7 @@ bool SkimAna::FillCTagObs(){
     }//syst loop
   }//muon iso
     
-
+  isCTagged = true;
   return true;
 }
 //_____________________________________________________________________________
@@ -3490,9 +3630,9 @@ bool SkimAna::FillKFCFObs(){
 
   }else if(systType == kIso20){ //if systType == kBase
 
-    combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
-    combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
-    combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
+    combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
+    combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
+    combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight;
     
     if(ProcessKinFit((singleMu and muonIsoCut), false)){
       hasKFMu = true;
@@ -3575,9 +3715,9 @@ bool SkimAna::FillKFCFObs(){
 
   }else { //if systType == kBase
 
-    combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
-    combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
-    combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
+    combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
+    combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
+    combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight;
 
 
     if(ProcessKinFit((singleMu and muonIsoCut), false)){
@@ -3770,9 +3910,9 @@ bool SkimAna::FillBTagObs(){
 
     TString systname = fSystList[isyst];
 
-    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_bTagWeight;
-    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_bTagWeight;
-    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_bTagWeight;
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight;
 
     if(systType == kBase){
 
@@ -3981,9 +4121,9 @@ bool SkimAna::FillMETCutFlow(){
 
     TString systname = fSystList[isyst];
 
-    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight;
-    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight;
-    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight;
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight;
 
     if(systType == kBase){
 
@@ -3994,10 +4134,11 @@ bool SkimAna::FillMETCutFlow(){
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
 	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
 	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+	double pujetidwt = _PUJetIDWeight ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Up ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Do ; 
 
-	combined_muwt = _sampleWeight*prefirewt*puwt*muwt;
-	combined_muwt1 = _sampleWeight*puwt*muwt;
-	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
+	combined_muwt = _sampleWeight*prefirewt*puwt*muwt*pujetidwt;
+	combined_muwt1 = _sampleWeight*puwt*muwt*pujetidwt;
+	combined_elewt = _sampleWeight*prefirewt*puwt*elewt*pujetidwt;
 
 	FillMETCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt);
 	
@@ -4073,9 +4214,9 @@ bool SkimAna::FillNjetCutFlow(){
 
     TString systname = fSystList[isyst];
 
-    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight;
-    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight;
-    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight;
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight;
     
     if(systType == kBase){
       
@@ -4086,10 +4227,11 @@ bool SkimAna::FillNjetCutFlow(){
 	double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
 	double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
 	double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
+	double pujetidwt = _PUJetIDWeight ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Up ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Do ; 
 
-	combined_muwt = _sampleWeight*prefirewt*puwt*muwt;
-	combined_muwt1 = _sampleWeight*puwt*muwt;
-	combined_elewt = _sampleWeight*prefirewt*puwt*elewt;
+	combined_muwt = _sampleWeight*prefirewt*puwt*muwt*pujetidwt;
+	combined_muwt1 = _sampleWeight*puwt*muwt*pujetidwt;
+	combined_elewt = _sampleWeight*prefirewt*puwt*elewt*pujetidwt;
 	
 	FillNjetCFHists(isyst, combined_muwt, combined_muwt1, combined_elewt);
 	
@@ -4387,10 +4529,54 @@ bool SkimAna::FillNjetWt(){
 
   for(int isyst=0;isyst<fNSyst;isyst++){
     TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+    TList *list1 = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+    TList *list2 = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+    TList *list3 = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
     if(singleMu)
       ((TH1D *) list->FindObject("_muMET"))->Fill(selector->METPt);
     if(singleEle)
       ((TH1D *) list->FindObject("_eleMET"))->Fill(selector->METPt);
+
+    if(singleMu and muonIsoCut){
+      ((TH1D *) list->FindObject("_puJetIDWeight"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list->FindObject("_puJetIDWeight_Up"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list->FindObject("_puJetIDWeight_Do"))->Fill(_PUJetIDWeight_Do);
+      
+      ((TH1D *) list1->FindObject("_puJetIDWeight_lmet"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list1->FindObject("_puJetIDWeight_Up_lmet"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list1->FindObject("_puJetIDWeight_Do_lmet"))->Fill(_PUJetIDWeight_Do);
+    }
+    if(singleMu and muonNonIsoCut){
+      ((TH1D *) list2->FindObject("_puJetIDWeight_noniso"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list2->FindObject("_puJetIDWeight_Up_noniso"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list2->FindObject("_puJetIDWeight_Do_noniso"))->Fill(_PUJetIDWeight_Do);
+
+      ((TH1D *) list3->FindObject("_puJetIDWeight_noniso_lmet"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list3->FindObject("_puJetIDWeight_Up_noniso_lmet"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list3->FindObject("_puJetIDWeight_Do_noniso_lmet"))->Fill(_PUJetIDWeight_Do);
+
+    }
+    
+    if(singleEle and eleIsoCut){
+      ((TH1D *) list->FindObject("_puJetIDWeight"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list->FindObject("_puJetIDWeight_Up"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list->FindObject("_puJetIDWeight_Do"))->Fill(_PUJetIDWeight_Do);
+
+      ((TH1D *) list1->FindObject("_puJetIDWeight_lmet"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list1->FindObject("_puJetIDWeight_Up_lmet"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list1->FindObject("_puJetIDWeight_Do_lmet"))->Fill(_PUJetIDWeight_Do);
+    }
+    if(singleEle and eleNonIsoCut){
+      ((TH1D *) list2->FindObject("_puJetIDWeight_noniso"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list2->FindObject("_puJetIDWeight_Up_noniso"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list2->FindObject("_puJetIDWeight_Do_noniso"))->Fill(_PUJetIDWeight_Do);
+
+      ((TH1D *) list3->FindObject("_puJetIDWeight_noniso_lmet"))->Fill(_PUJetIDWeight);
+      ((TH1D *) list3->FindObject("_puJetIDWeight_Up_noniso_lmet"))->Fill(_PUJetIDWeight_Up);
+      ((TH1D *) list3->FindObject("_puJetIDWeight_Do_noniso_lmet"))->Fill(_PUJetIDWeight_Do);
+
+    }
+
   }
   return true;
 }
@@ -4440,7 +4626,7 @@ bool SkimAna::FillLeptonWt(){
       ((TH1D *) list3->FindObject("_muEffWeight_Do_noniso_lmet"))->Fill(_muEffWeight_Do);
 
     }
-
+    
     if(singleEle and eleIsoCut){
       ((TH1D *) list->FindObject("_eleEffWeight"))->Fill(_eleEffWeight);
       ((TH1D *) list->FindObject("_eleEffWeight_Up"))->Fill(_eleEffWeight_Up);
@@ -5701,8 +5887,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	  _sjhadCvsBdisc	= jetCvsBtagVectors[x.sjhad_id] ;
 
 	  //Fill for non-negative chi2
-	  if(doTreeSave)
-	    outputTree->Fill();
+	  // if(doTreeSave)
+	  //   outputTree->Fill();
 	}//DeltaR and pt cuts
       }//iloop == 0 condition      
       iloop++;
@@ -5931,7 +6117,13 @@ void SkimAna::SlaveTerminate()
     delete jecvar;
   if(jecvarb)
     delete jecvar;
-  
+  if(fPUJetIDa)
+    delete fPUJetIDa;
+  if(fPUJetIDb)
+    delete fPUJetIDb;
+  if(fPUJetID)
+    delete fPUJetID;
+
   if(event)
     delete event;
   if(selector)
