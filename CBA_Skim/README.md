@@ -1,4 +1,4 @@
-# Motivation
+## Motivation
 
 In this folder, we process the Skim files and apply various corrections and scale factors. 
 The final outputs are stored as TH1 and TTree objects in separate files.
@@ -30,10 +30,9 @@ Once the repository is downloaded in a `lxplus` machine, the skim file processin
 
    <details>
          <summary markdown="span"> Click to check expected output.</summary>
-
    
    
-	 ```console	 
+	```console	 
          g++ -fPIC -g  -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/FactorizedJetCorrector.cpp -o src/FactorizedJetCorrector.o
          g++ -fPIC -g  -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/JetCorrectorParameters.cpp -o src/JetCorrectorParameters.o
          g++ -fPIC -g  -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/SimpleJetCorrector.cpp -o src/SimpleJetCorrector.o
