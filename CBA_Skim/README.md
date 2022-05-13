@@ -224,7 +224,7 @@ Three additional steps is required to submit multiple GRID jobs (~15K in present
 
 2. Go inside the `condor` directory, then execute,
    ```console
-   [idas@lxplus7113 CBA_Skim]$ python createJdlFiles_cbaskim_syst.py
+   [idas@lxplus7113 condor]$ python createJdlFiles_cbaskim_syst.py
    ```
 
    <details>
