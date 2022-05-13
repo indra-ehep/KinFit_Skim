@@ -22,5 +22,5 @@ These folders has no connection with the current analysis using UL sample.
 
 - **Legacy_ReReco_CBA** : Prior to UL, we were using the Legacy Rereco NanoAODs for analysis and this folder contains codes for that study.
 - **RecoKinTuple_Skim** : This is another historical folder to perform KinFit on skimmed data.
-- **EventCount** : This folder contains code for MC studies related to hadronic, semileptonic and dileptonic decays of ![ttbar](https://latex.codecogs.com/svg.image?t\bar{t})
+- **EventCount** : This folder contains code for MC studies of hadronic, semileptonic and dileptonic decays of ![ttbar](https://latex.codecogs.com/svg.image?t\bar{t})
 - **Standalone** : The very first implementation of standalone codes for KinFit.
