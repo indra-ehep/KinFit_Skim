@@ -185,7 +185,12 @@ Once the repository is downloaded in a `lxplus` machine, the skim file processin
 	 WtEle & 1.6343e+06 & 1.2305e+06 & 666226.7 & 608397.9 & 294183.3 & 229086.9 & 223281.4 & 152158.8 & 20004.9 \\\hline 
 	 ```
    </details>
+   
+   The arguments are,
 
+   `./SkimAna $samplename $year $skim_filelist  $skim_index $syst_type`
+
+   -  samplename : This contains the sample names such as `TTbar`,`singleTop`. Find the full list defined as sample_$year at ![link](condor/createJdlFiles_cbaskim_syst.py). 
 ### GRID job submission
 
 ---
