@@ -53,7 +53,7 @@ Once the repository is downloaded in a `lxplus` machine, the skim file processin
 
 
 
-3. Excute : Apply the following command to excute the `SkimAna` on a single Skim file mentioned in path `input/eos/2017/HplusM120_2017.txt`
+3. Excute : Apply the following command to excute the `SkimAna` on a single Skim file mentioned in `HplusM120_2017.txt`.
    ```console
    [idas@lxplus7113 CBA_Skim]$ ./SkimAna HplusM120 2017 input/eos/2017/HplusM120_2017.txt  0 base
    ```
