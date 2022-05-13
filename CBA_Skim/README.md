@@ -190,7 +190,10 @@ Once the repository is downloaded in a `lxplus` machine, the skim file processin
 
    `./SkimAna $samplename $year $skim_filelist  $skim_index $syst_type`
 
-   -  samplename : This contains the sample names such as `TTbar`,`singleTop`. Find the full list defined as sample_$year at ![link](condor/createJdlFiles_cbaskim_syst.py). 
+   -  samplename : This represents the sample names such as *TTbar*,*singleTop*. Find the full list defined as `samples_$year` at ![link](condor/createJdlFiles_cbaskim_syst.py). 
+   -  skim_filelist : This file contains the list of Skim files for a given sample type (e.g. *TTbar*). Such input files contianing the Skim filelist can be checked at `input/eos/$year/`. Note that for 2016, the preVFP and postVFP file lists are available at,  `input/eos/2016/pre` and `input/eos/2016/post`, respectively.
+   -  skim_index : This index tells that n-th file of skim file list will be processed.
+   -  syst_type : These are possible systematics type. See a longer list as `syst_long_$year` at ![link](condor/createJdlFiles_cbaskim_syst.py). Note that, to optimize the computation several other systematics are processed when executed for `base` type which are listed as ![const char *systbase[]](SkimAna.C)
 ### GRID job submission
 
 ---
