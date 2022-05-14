@@ -19,7 +19,7 @@ We first show how to quick start the analysis and then describe the list of impo
 
 ### Local processing
 
-Once the repository is downloaded in a `lxplus` machine, the skim file processing can be in three simple steps.
+Once the repository is downloaded in a `lxplus` machine, the skim file processing can be performed in three simple steps.
 
 1. CMSSW : Set the environment for CMSSW. The CMSSW_X_X_X can be created in other location irrespective of the download directory of current project. Since we are using `correctionlib` for reading the json files, we use CMSSW_12_1_X as per suggestion at ![link](https://cms-nanoaod.github.io/correctionlib/install.html#inside-cmssw). 
 
