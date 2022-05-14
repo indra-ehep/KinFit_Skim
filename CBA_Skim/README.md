@@ -2392,6 +2392,13 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
 ## Description and processing flow
 
 
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
 ---
 #### Acknowledgement
