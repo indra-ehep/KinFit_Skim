@@ -198,7 +198,7 @@ Once the repository is downloaded in a `lxplus` machine, the skim file processin
 
 ### GRID job submission
 
-Three additional steps is required to submit multiple GRID jobs (~15K in present case).
+Three additional steps are required to submit multiple GRID jobs (~15K in present case).
 
 1. Intialize the GRID user token via,
    ```console
@@ -2359,8 +2359,8 @@ Three additional steps is required to submit multiple GRID jobs (~15K in present
 	 HminusM160 1 metdown
 	 ```
    </details>
-   > [!IMPORTANT]
-   > Before running the python command, you are suggested to check and modify the relevant variables of the python and bash scripts. For details follow later.
+
+   > :warning: **Before running the python command, you are suggested to check and modify the relevant variables of the python and bash scripts. Follow the details later.**
 
 
 3. The above command will create a folder (*tmpLog* in present case) with the JDL files. You need to change to that folder and submit the jdl files.
@@ -2378,8 +2378,6 @@ Three additional steps is required to submit multiple GRID jobs (~15K in present
    Total for idas: 4481 jobs; 0 completed, 0 removed, 4336 idle, 145 running, 0 held, 0 suspended 
    Total for all users: 16600 jobs; 1590 completed, 0 removed, 11587 idle, 2109 running, 1314 held, 0 suspended
    ```
-   > [!IMPORTANT]
-   > 
 
 
 [idas@lxplus755 tmpLog]$ 
