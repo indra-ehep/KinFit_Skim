@@ -215,7 +215,7 @@ Three additional steps is required to submit multiple GRID jobs (~15K in present
 	 Remote VOMS server contacted succesfully.
 
 
-	 Created proxy in /afs/cern.ch/user/i/idas/tmp/x509up.
+	 Created proxy in /afs/cern.ch/user/i/idas/xx/yy/zz/x509up.
 
 	 Your proxy is valid until Sat May 14 08:36:10 CEST 2022
 	 ```
@@ -2359,6 +2359,30 @@ Three additional steps is required to submit multiple GRID jobs (~15K in present
 	 HminusM160 1 metdown
 	 ```
    </details>
+   > [!IMPORTANT]
+   > Before running the python command, you are suggested to check and modify the relevant variables of the python and bash scripts. For details follow later.
+
+
+3. The above command will create a folder (*tmpLog* in present case) with the JDL files. You need to change to that folder and submit the jdl files.
+   ```console
+   [idas@lxplus755 tmpLog]$ condor_submit submitJobs_2017.jdl
+   Submitting job(s).......................................................................................................................................................
+   4481 job(s) submitted to cluster 6977061.
+   [idas@lxplus755 tmpLog]$ condor_q   
+
+   -- Schedd: bigbird13.cern.ch : <137.138.156.150:9618?... @ 05/14/22 05:36:30
+   OWNER    BATCH_NAME     SUBMITTED   DONE   RUN    IDLE  TOTAL JOB_IDS
+   idas     ID: 6977061   5/14 05:31      _    145   4336   4481 6977061.0-4480
+
+   Total for query: 4481 jobs; 0 completed, 0 removed, 4336 idle, 145 running, 0 held, 0 suspended 
+   Total for idas: 4481 jobs; 0 completed, 0 removed, 4336 idle, 145 running, 0 held, 0 suspended 
+   Total for all users: 16600 jobs; 1590 completed, 0 removed, 11587 idle, 2109 running, 1314 held, 0 suspended
+   ```
+   > [!IMPORTANT]
+   > 
+
+
+[idas@lxplus755 tmpLog]$ 
 
 ---
 ## Description and processing flow

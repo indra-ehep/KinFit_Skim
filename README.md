@@ -6,7 +6,7 @@ The NanoAOD files of Ultra-Legacy (UL) campaign are used for this purpose.
 
 A brief discussion of the main folders is provided below.
 
-- **Skim_NanoAOD** : In current study we filter out a subsample of the full Run2 data and called it as Skim file. This particular folder is folder is dedicated for that task.
+- **Skim_NanoAOD** : In current study we filter out a subsample of the full Run2 data and called it as Skim file. This particular folder is dedicated for that task.
 - **CBA_Skim** : In next step we process the Skim files to apply various corrections and scale factors. We finally produce the output histograms and trees for the calculation of upper limit.
 - **Limit** : The codes for limit calculation can be found in this folder.
 
@@ -29,4 +29,4 @@ These folders has no connection with the current analysis using UL sample.
 
 #### Acknowledgement
 
-The basic format of codes and scripts were inherited from ![cms-hcs-run2](https://github.com/ravindkv/cms-hcs-run2) and then went through various validations and comparisions with previous results of ![Phys. Rev D 102, 072001 (2020)](https://doi.org/10.1103/PhysRevD.102.072001) to attain the current version.
+The basic format of codes and scripts were inherited from ![cms-hcs-run2](https://github.com/ravindkv/cms-hcs-run2). However then it went through various additions of new features, modifications, corrections, validations and finally comparisions with previous results of ![Phys. Rev D 102, 072001 (2020)](https://doi.org/10.1103/PhysRevD.102.072001) to attain the current version.
