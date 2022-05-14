@@ -6224,9 +6224,9 @@ int main(int argc, char** argv)
   cout <<" Total files "<<idx<<endl; 
   op += Form("|total=%d",idx);
   
-  SkimAna *skim = new SkimAna();
-  skim->SetOption(op.Data());
-  skim->ExecSerial(inputfile.Data());
+  SkimAna *skimana = new SkimAna();
+  skimana->SetOption(op.Data());
+  skimana->ExecSerial(inputfile.Data());
   delete skim;
   
   return 1;
