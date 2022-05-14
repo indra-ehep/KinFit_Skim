@@ -2366,7 +2366,8 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
 3. The above command will create a folder (*tmpLog* in present case) with the JDL files. You need to change to that folder and submit the jdl files.
    ```console
    [idas@lxplus755 tmpLog]$ condor_submit submitJobs_2017.jdl
-   Submitting job(s).......................................................................................................................................................
+   Submitting job(s)...........................................................................................
+   ............................................................
    4481 job(s) submitted to cluster 6977061.
    [idas@lxplus755 tmpLog]$ condor_q   
 
@@ -2378,9 +2379,6 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
    Total for idas: 4481 jobs; 0 completed, 0 removed, 4336 idle, 145 running, 0 held, 0 suspended 
    Total for all users: 16600 jobs; 1590 completed, 0 removed, 11587 idle, 2109 running, 1314 held, 0 suspended
    ```
-
-
-[idas@lxplus755 tmpLog]$ 
 
 ---
 ## Description and processing flow
