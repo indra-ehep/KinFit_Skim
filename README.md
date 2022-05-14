@@ -25,7 +25,7 @@ flowchart TB
     KinFit --> c-tagging 
     end
     subgraph Limit
-    c-tagging --> Upper Limit 
+    c-tagging --> Limit["Upper Limit"]
     end
 ```
 
