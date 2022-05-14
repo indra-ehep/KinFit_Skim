@@ -11,7 +11,7 @@ A brief discussion of the main folders is provided below.
 - **Limit** : The codes for limit calculation can be found in this folder.
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Skim_NanoAOD
     NanoAOD --> Skim["Skim files"]
     end
@@ -25,7 +25,7 @@ flowchart TB
     KinFit --> c-tagging 
     end
     subgraph Limit
-    c-tagging --> Limit["Upper Limit"]
+    c-tagging --> CL["Upper Limit"]
     end
 ```
 
