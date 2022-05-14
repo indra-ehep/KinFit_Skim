@@ -2424,6 +2424,11 @@ classDiagram
       }
 ```
 
+```mermaid
+flowchart LR
+    Skimming --> Trigger --> Lepton --> JET --> MET --> b-jet --> KinFit --> c-tagging --> Upper Limit
+```
+
 ---
 #### Acknowledgement
 
