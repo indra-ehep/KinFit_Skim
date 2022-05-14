@@ -1,3 +1,9 @@
+# Table of Contents
+1. [Motivation](#motivation)
+2. [Quick Start](#quick-start)
+3. [Description and processing flow](#description-and-processing-flow)
+4. [Acknowledgement](#acknowledgement)
+
 ## Motivation
 
 In this folder, we process the Skim files and apply various corrections and scale factors. 
