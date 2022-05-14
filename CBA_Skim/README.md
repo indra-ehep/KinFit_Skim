@@ -2391,6 +2391,18 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
 ---
 ## Description and processing flow
 
+The core method of `SkimAna` is `Process` which sequentially applies the selections cuts
+
+```mermaid
+flowchart LR
+    Trigger --> Lepton 
+    Lepton --> JET 
+    JET --> MET 
+    MET --> b-jet 
+    b-jet --> KinFit 
+    KinFit --> c-tagging 
+```
+
 
 ```mermaid
 graph TD;
@@ -2424,10 +2436,6 @@ classDiagram
       }
 ```
 
-```mermaid
-flowchart LR
-    Skimming --> Trigger --> Lepton --> JET --> MET --> b-jet --> KinFit --> c-tagging --> Upper Limit
-```
 
 ---
 #### Acknowledgement

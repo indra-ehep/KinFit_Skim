@@ -10,6 +10,30 @@ A brief discussion of the main folders is provided below.
 - **CBA_Skim** : In next step, we process the Skim files and apply various corrections and scale factors. This finally produce the output histograms and trees for the calculation of upper limit.
 - **Limit** : The codes for limit calculation can be found in this folder.
 
+```mermaid
+flowchart TB
+    subgraph **Skim_NanoAOD**
+    NanoAOD --> Skim files
+    end
+    subgraph **CBA_Skim**
+    Skim files --> Trigger 
+    Trigger --> Lepton 
+    Lepton --> JET 
+    JET --> MET 
+    MET --> b-jet 
+    b-jet --> KinFit 
+    KinFit --> c-tagging 
+    end
+    subgraph **Limit**
+    c-tagging --> Upper Limit 
+    end
+```
+
+```mermaid
+flowchart LR
+    c-tagging --> Upper Limit 
+```
+
 The analysis requires the creation of some efficiency and resolution files, which are used during the processing of Skim file in *CBA_Skim*.
 The folders which are dedicated for these pupose are described below.
 
