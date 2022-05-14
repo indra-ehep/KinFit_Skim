@@ -2391,7 +2391,21 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
 ---
 ## Description and processing flow
 
-The core method of `SkimAna` is `Process` which sequentially applies the selections cuts
+The purpose of folders inside CBA_Skim directory is described below.
+
+  - *src* : The source codes required by `SkimAna`.
+  - *interface* : The header files of source codes required by `SkimAna`.
+  - *condor* : The scripts for GRID job submission.
+  - *input* : The list of skim files with full path.
+  - *weightUL* : The scale factor (SF) and efficiency files for UL campaign. 
+  - *weight* : The scale factor (SF) and efficiency files for Legacy Rereco (OLD). 
+  - *scripts* : Some utility scripts, useful in postprocessing the output files.
+  - *codes* : C++ code snippets, mostly useful in postprocessing.
+  - *syst* : The final results with systematics is stored here in latex format.
+
+The  main() function of ![SkimAna.C](#SkimAna.C) code first sets the input arguments via `SkimAna::SetOption()` (inherited from `TSelector`) and then calls `SkimAna::ExecSerial()`.
+The `SkimAna::ExecSerial()` inturn, first loads all necessary SF and efficiency files using `SimAna::SlaveBegin()` then processes each event via `SkimAna::Process()`, finally stores the outputs in file and unloads the objects through `SkimAna::SlaveTerminate()`.
+In core part of analysis, the `SkimAna::Process()` sequentially applies the following selections cuts.
 
 ```mermaid
 flowchart LR
@@ -2404,13 +2418,6 @@ flowchart LR
 ```
 
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
 
 ```mermaid
 classDiagram
