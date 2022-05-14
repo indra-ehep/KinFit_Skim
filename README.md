@@ -12,11 +12,11 @@ A brief discussion of the main folders is provided below.
 
 ```mermaid
 flowchart TB
-    subgraph **Skim_NanoAOD**
-    NanoAOD --> Skim files
+    subgraph Skim_NanoAOD
+    NanoAOD --> Skim["Skim files"]
     end
-    subgraph **CBA_Skim**
-    Skim files --> Trigger 
+    subgraph CBA_Skim
+    Skim["Skim files"] --> Trigger 
     Trigger --> Lepton 
     Lepton --> JET 
     JET --> MET 
@@ -24,15 +24,11 @@ flowchart TB
     b-jet --> KinFit 
     KinFit --> c-tagging 
     end
-    subgraph **Limit**
+    subgraph Limit
     c-tagging --> Upper Limit 
     end
 ```
 
-```mermaid
-flowchart LR
-    c-tagging --> Upper Limit 
-```
 
 The analysis requires the creation of some efficiency and resolution files, which are used during the processing of Skim file in *CBA_Skim*.
 The folders which are dedicated for these pupose are described below.
