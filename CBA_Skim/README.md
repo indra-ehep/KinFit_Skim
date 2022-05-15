@@ -2523,7 +2523,7 @@ classDiagram
 4. **Init()** : Initialize the Tree branch addresses.
 5. **initCrossSections()** : Initialize the cross section values defined in [ScaleFactorFunction.h](interface/ScaleFactorFunction.h).
 6. **GetNumberofEvents()** : This method loops over all skim files for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
-7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step using 
+7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step. All efficiency histograms related to ID, Iso/Reco and trigger for muon/electron are provided to MuonSF and ElectronSF. 
 
 ```mermaid
 classDiagram
@@ -2539,6 +2539,35 @@ classDiagram
 ```
 
 8. **LoadJECJER()** : 
+
+```mermaid
+classDiagram
+      direction RL
+      SkimAna -- JECvariation
+      SkimAna -- Selector
+      SkimAna : +LoadLeptonSF()
+      JECvariation -- JetCorrectionUncertainty
+      JECvariation -- JetCorrectorParameters
+      JECvariation -- FactorizedJetCorrector
+      class JECvariation{
+          +applyJEC()
+          -JetCorrectionUncertainty *jecUnc;
+          -JetCorrectorParameters *ResJetPar;
+          -JetCorrectorParameters *L3JetPar;
+          -JetCorrectorParameters *L2JetPar;
+          -JetCorrectorParameters *L1JetPar;
+          -FactorizedJetCorrector *JetCorrector;
+      }
+      class JetCorrectionUncertainty{
+      }	
+      class JetCorrectorParameters{
+      }	
+      class FactorizedJetCorrector{
+      }	
+      class Selector{
+          +getEleSF();
+      }
+```
 
 #### SkimAna::Notify()
 
