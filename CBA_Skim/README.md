@@ -2523,7 +2523,7 @@ classDiagram
 4. **Init()** : Initialize the Tree branch addresses.
 5. **initCrossSections()** : Initialize the cross section values defined in ![ScaleFactorFunction.h](#interface/ScaleFactorFunction.h).
 6. **GetNumberofEvents()** : This method loops over all skim files corresponding for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
-7. **LoadLeptonSF()** : The lepton SF objects ![MuonSF](#interface/muSF_reader.h) and ![ElectronSF](#interface/eleSF_reader.h) are loaded in this step using 
+7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](#interface/muSF_reader.h) and [ElectronSF](#interface/eleSF_reader.h) are loaded in this step using 
 
 ```mermaid
 classDiagram
@@ -2563,4 +2563,4 @@ flowchart LR
 ---
 #### Acknowledgement
 
-The structure of central code `SkimAna` is inspired by ![h1Analysis](https://root.cern/doc/master/h1analysis_8C.html).
+The structure of central code `SkimAna` is inspired by [h1Analysis](https://root.cern/doc/master/h1analysis_8C.html).
