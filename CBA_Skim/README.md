@@ -2417,11 +2417,11 @@ classDiagram
       TSelector <|-- SkimAna
       TSelector : +SetOption()
       class SkimAna{
-          +ExecSerial()
-	  - ....()
-          +SlaveBegin()
-          +Process()
-	  +SlaveTerminate()
+           ExecSerial()
+	   ....()
+           SlaveBegin()
+           Process()
+	   SlaveTerminate()
       }
       click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
       click TSelector href "https://root.cern.ch/doc/master/classTSelector.html" "click to display"
@@ -2504,21 +2504,21 @@ classDiagram
       SkimAna -- KinFit
       SkimAna : +SetTrio()
       class Selector{
-          +double mu_Pt_cut
-          +double mu_Eta_cut
-          +double jet_Pt_cut
-          +double jet_Eta_cut
-	  +double btag_cut;
-          +double ....
+           double mu_Pt_cut
+           double mu_Eta_cut
+           double jet_Pt_cut
+           double jet_Eta_cut
+	   double btag_cut;
+           double ....
       }
       class KinFit{
-          +SetTopMass();
-	  +SetBtagThresh();
+           SetTopMass();
+	   SetBtagThresh();
       }
       class EventPick{
-          +double Njets_ge
-          +double NBjet_ge
-          +bool applyMetFilter
+           double Njets_ge
+           double NBjet_ge
+           bool applyMetFilter
       }
       click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
       click EventTree href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/EventTree.h" "click to display"
@@ -2538,10 +2538,10 @@ classDiagram
       SkimAna -- ElectronSF
       SkimAna : +LoadLeptonSF()
       class MuonSF{
-          +getMuSF()
+           getMuSF()
       }
       class ElectronSF{
-          +getEleSF();
+           getEleSF();
       }
       click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
       click MuonSF href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/muSF_reader.h" "click to display"
@@ -2562,17 +2562,17 @@ classDiagram
       JECvariation -- JetCorrectorParameters
       JECvariation -- FactorizedJetCorrector
       class JECvariation{
-          +applyJEC()
+           applyJEC()
       }
       correctionlib -- CorrectionSet
       class CorrectionSet{
-          +from_file()
-          +evaluate()
+           from_file()
+           evaluate()
       }
       Selector -- JetResolution
       Selector -- JetResolutionScaleFactor
       class Selector{
-          +init_JER(();
+           init_JER(();
       }
       JetResolution -- JetResolutionObject
       JetResolutionScaleFactor -- JetResolutionObject
