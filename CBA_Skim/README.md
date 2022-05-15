@@ -2423,8 +2423,8 @@ classDiagram
           +Process()
 	  +SlaveTerminate()
       }
-      click TSelector href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
-      click SkimAna href "https://root.cern.ch/doc/master/classTSelector.html" "click to display"
+      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
+      click TSelector href "https://root.cern.ch/doc/master/classTSelector.html" "click to display"
 ```
 
 The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of [SkimAna.C](SkimAna.C).
@@ -2520,6 +2520,11 @@ classDiagram
           +double NBjet_ge
           +bool applyMetFilter
       }
+      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
+      click EventTree href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/EventTree.h" "click to display"
+      click Selector href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/Selector.h" "click to display"
+      click EventPick href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/EventPick.h" "click to display"
+      click KinFit href "https://github.com/indra-ehep/KinFit_Skim/blob/2c27611a8d60b999936a565da9c642ca38917287/CBA_Skim/SkimAna.h#L135" "click to display"
 ```
 
 4. **Init()** : Initialize the Tree branch addresses.
@@ -2538,6 +2543,9 @@ classDiagram
       class ElectronSF{
           +getEleSF();
       }
+      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
+      click MuonSF href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/muSF_reader.h" "click to display"
+      click ElectronSF href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/eleSF_reader.h" "click to display"
 ```
 
 8. **LoadJECJER()** : 
