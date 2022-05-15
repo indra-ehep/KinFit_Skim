@@ -2426,13 +2426,13 @@ classDiagram
 The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of ![SkimAna.C](#SkimAna.C).
 This is followed by a call to `SkimAna::ExecSerial()` to initiate event processing.
 ```cpp
-  int main(int argc, char** argv){
-   ....
-   SkimAna *skim = new SkimAna();
-   skim->SetOption(op.Data());
-   skim->ExecSerial(inputfile.Data());
-   delete skim;
-   ....
+ int main(int argc, char** argv){
+  ....
+  SkimAna *skim = new SkimAna();
+  skim->SetOption(op.Data());
+  skim->ExecSerial(inputfile.Data());
+  delete skim;
+  ....
  }
 ```
 The `SkimAna::ExecSerial()` first loads all necessary SF and efficiency files using `SimAna::SlaveBegin()` then processes each event via `SkimAna::Process()`, finally stores the outputs in file and unloads the objects through `SkimAna::SlaveTerminate()`.
@@ -2441,6 +2441,7 @@ The `SkimAna::ExecSerial()` first loads all necessary SF and efficiency files us
   ....
   SlaveBegin(tree);
   ....
+  Notify();
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
     Process(ientry);
   }
@@ -2452,8 +2453,35 @@ Some important methods of `SkimAna` are explained below.
 
 #### SkimAna::SlaveBegin()
 
-The SimAna::SlaveBegin() sets class attributes and loads all necessary SF/efficiency files.
+The SimAna::SlaveBegin() sets class attributes and loads all necessary SF/efficiency files by calling appropriate methods.
+```cpp
+void SkimAna::SlaveBegin(TTree *tree)
+{
+  ....
+  GetArguments(); //set class attributes from input arguments
+  ....
+  SelectSyst();   // Setters for systematics types
+  SetTrio();      // SetTrio method sets the hadler values of three classe EventTree(), Selector(), EventPick() 
+  Init(tree);     //initialize the Tree branch addresses
+  ....
+  if(!isData){    //For MC events
+    ....
+    initCrossSections(); // Get the cross section values and Luminosity SFs 
+    ....
+    GetNumberofEvents(); // Evaluate the total number of events for a given production topology
+    ....
+    LoadLeptonSF();      // Load the SFs for lepton
+    ....
+    LoadJECJER();        // Load files for Jet Energy Correction, Jet Energy Resolutions and Pileup JetID SF/efficiency
+    ....
+    LoadBTag();          // Load files for B-tagging and c-tagging SF/efficiency
+  }
+  ....
+  CreateHistoArrays();   // Create output histogram arrays
+  ....
+}
 
+```
 #### SkimAna::GetArguments() 
 
 The input arguments of `SkimAna` that are passed to `SkimAna::SetOption()` are accessed here. Several class attributes are set in this method following the input arguments.

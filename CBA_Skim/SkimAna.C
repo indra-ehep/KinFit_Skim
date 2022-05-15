@@ -2117,17 +2117,17 @@ void SkimAna::SlaveBegin(TTree *tree)
   Info("SlaveBegin",
        "starting SkimAna with process option: %s (tree: %p)", option.Data(), tree);
   
-  GetArguments();  
+  GetArguments();  //set class attributes from input arguments
   Info("SlaveBegin",
        "sample : %s, year : %d, mode : %s", fSample.Data(), fYear, fMode.Data());
 
-  SelectSyst();
-  SetTrio(); // SetTrio method should be after SelectSyst
+  SelectSyst();   // Setters for systematics types
+  SetTrio();      // SetTrio method sets the hadler values of three classe EventTree(), Selector(), EventPick() 
   // Info("SlaveBegin",
   //      "Chain %p (tree: %p)", event->chain, tree);
   
   //initialize the Tree branch addresses
-  Init(tree);
+  Init(tree);     //initialize the Tree branch addresses
   
   char *filename[3];
   
@@ -2154,22 +2154,22 @@ void SkimAna::SlaveBegin(TTree *tree)
         
   }//ifile loop
 
-  if(!isData){
+  if(!isData){   //For MC events
     Info("SlaveBegin", "CS Init");
-    initCrossSections();
+    initCrossSections();  // Get the cross section values and Luminosity SFs 
     Info("SlaveBegin", "GetNumber of Events and files");
-    GetNumberofEvents();
+    GetNumberofEvents();  // Evaluate the total number of events for a given production topology
     
     //LoadPU();
     Info("SlaveBegin", "Loading Lepton SF");
-    LoadLeptonSF();
+    LoadLeptonSF();       // Load the SFs for lepton
     Info("SlaveBegin", "Loading JEC JER");
-    LoadJECJER();
+    LoadJECJER();         // Load files for Jet Energy Correction, Jet Energy Resolutions and Pileup JetID SF/efficiency
     Info("SlaveBegin", "Loading BTag");
-    LoadBTag();
+    LoadBTag();           // Load files for B-tagging and c-tagging SF/efficiency
   }
   Info("SlaveBegin", "Create Histos");
-  CreateHistoArrays();
+  CreateHistoArrays();    // Create output histogram arrays
   // IsDebug = true;
   // evtPick->IsDebug = true;
   // selector->IsDebug = true;
