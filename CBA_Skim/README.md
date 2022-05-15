@@ -2460,7 +2460,7 @@ void SkimAna::SlaveBegin(TTree *tree)
   ....
   GetArguments(); //set class attributes from input arguments
   ....
-  SelectSyst();   // Setters for systematics types
+  SelectSyst();   // Setter for systematics types
   SetTrio();      // SetTrio method sets the hadler values of three classe EventTree(), Selector(), EventPick() 
   Init(tree);     //initialize the Tree branch addresses
   ....
@@ -2482,11 +2482,42 @@ void SkimAna::SlaveBegin(TTree *tree)
 }
 
 ```
-#### SkimAna::GetArguments() 
 
-The input arguments of `SkimAna` that are passed to `SkimAna::SetOption()` are accessed here. Several class attributes are set in this method following the input arguments.
+1. **GetArguments()** : The input arguments of `SkimAna` that are passed to `SkimAna::SetOption()` are accessed here. Several class attributes are set in this method following the input arguments.
+2. **SelectSyst()** : Set the switches for systematics types. 
+3. **SetTrio()** : These method sets the attributes of multiple classes (![EventTree](#interface/EventTree.h), ![Selector](#interface/Selector.h), ![EventPick](#interface/EventPick.h), KinFit) that are associated with the event processing. The association is shown below. 
 
- 
+```mermaid
+classDiagram
+      SkimAna -- EventTree
+      SkimAna -- Selector
+      SkimAna -- EventPick
+      SkimAna -- KinFit
+      SkimAna : +SetTrio()
+      class Selector{
+          +double mu_Pt_cut
+          +double mu_Eta_cut
+          +double ....
+          +double jet_Pt_cut
+          +double jet_Eta_cut
+	  +double btag_cut;
+      }
+      class KinFit{
+          +void SetTopMass(double);
+	  +void SetBtagThresh(double);
+      }
+      class EventPick{
+          +int year
+          +double Njets_ge
+          +double NBjet_ge
+          +bool applyMetFilter
+      }
+```
+
+
+#### SkimAna::SlaveBegin()
+
+#### SkimAna::Process()
 
 In core part of analysis, the `SkimAna::Process()` sequentially applies the following selections cuts.
 
@@ -2500,31 +2531,8 @@ flowchart LR
     KinFit --> c-tagging 
 ```
 
+#### SkimAna::SlaveBegin()
 
-
-```mermaid
-classDiagram
-      Animal <|-- Duck
-      Animal <|-- Fish
-      Animal <|-- Zebra
-      Animal : +int age
-      Animal : +String gender
-      Animal: +isMammal()
-      Animal: +mate()
-      class Duck{
-          +String beakColor
-          +swim()
-          +quack()
-      }
-      class Fish{
-          -int sizeInFeet
-          -canEat()
-      }
-      class Zebra{
-          +bool is_wild
-          +run()
-      }
-```
 
 
 ---
