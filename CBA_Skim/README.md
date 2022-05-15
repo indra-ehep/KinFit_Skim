@@ -3,7 +3,7 @@
 2. [Quick Start](#quick-start)
    - [Local processing](#local-processing)
    - [GRID job submission](#grid-job-submission)
-3. [Description and processing flow](#description-and-processing-flow)
+3. [Description of processing flow](#description-of-processing-flow)
    - [Description of subfolders](#description-of-subfolders)
    - [Processing flow](#processing-flow)
    - [Job submission scripts](#job-submission-scripts)
@@ -205,7 +205,7 @@ Once the repository is downloaded in a `lxplus` machine, the final output of TH1
    -  `samplename` : This represents the sample names such as *TTbar*,*singleTop*. Find the full list defined as `samples_$year` at [link](condor/createJdlFiles_cbaskim_syst.py). 
    -  `skim_filelist` : This file contains the list of Skim files for a given sample type (e.g. *TTbar*). Such input files contianing the Skim filelist can be checked at `input/eos/$year/`. Note that for 2016, the preVFP and postVFP file lists are available at,  `input/eos/2016/pre` and `input/eos/2016/post`, respectively.
    -  `skim_index` : This index tells that n-th file of skim file list will be processed.
-   -  `syst_type` : These are possible systematics types. See a longer list defined as `syst_$year` (or `syst_long_$year`) at [link](condor/createJdlFiles_cbaskim_syst.py). Note that, to optimize the GRID computation time for KinFit few additional systematics are processed while executing for `base` type systematics. The additional types are listed as `const char *systbase[]` in [SkimAna.C](SkimAna.C). Therefore, for all MC samples the total list of systematics comprises with `syst_$year + systbase[]`, but *TTbar*, for which it is `syst_long_$year + systbase[]`. There are no systematics required for the analysis of data (e.g. *DataMu*, *DataEle* samples), however for Data Driven QCD estimations we require results with different Iso cuts. This is performed during the `iso20` type systematics processing of data samples.
+   -  `syst_type` : These are possible systematics types. See a longer list defined as `syst_$year` (or `syst_long_$year`) at [link](condor/createJdlFiles_cbaskim_syst.py). Note that, to optimize the GRID computation time for KinFit few additional systematics are processed while executing for `base` type systematics. The additional types are listed as `const char *systbase[]` in [SkimAna.C](SkimAna.C). Therefore, for all MC samples the total list of systematics comprises with `syst_$year + systbase[]`, but *TTbar*, for which it is `syst_long_$year + systbase[]`. There are no systematics required for the analysis of data (e.g. *DataMu*, *DataEle* samples), however for Data Driven QCD estimations we require results with different Isolation (Iso) cuts. This is performed during the `iso20` type systematics processing of data samples.
 
 
 ### GRID job submission
@@ -2393,7 +2393,7 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
    ```
 
 ---
-## Description and processing flow
+## Description of processing flow
 
 ### Description of subfolders
 
@@ -2642,7 +2642,52 @@ flowchart LR
     KinFit --> c-tagging 
 ```
 
+Several methods of SkimAna and associated classes are called to perform the seletion cuts.
+The functionality of some of the important methods are mentioned below that are called in order.
 
+1. **JECvariation::applyJEC()** : The up/down type JEC corrections are applied for JEC systematics.
+
+2. **Trigger cuts** : This is applied by EventPick::process_event() via,
+   - HLT trigger criteria
+   - MET filter
+   - Good vertex criteria
+
+3. **Trigger histograms** : Once the above three selection cuts are applied, the results are recorded in cutflow, weight and control histograms.
+```cpp
+  FillEventCutFlow();
+  FillEventWt();
+  if(systType == kBase) FillTriggerControlHists();
+```
+
+4. **Lepton cuts** : The lepton selection cuts are provided by [Selector::filter_muons()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L479) and [Selector::filter_electrons()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L201) 
+   The muon specific cuts and corrections includes,
+   - (pt, eta, phi) cuts
+   - muon dxy and dz cuts 
+   - number of Tracker Layers
+   - Rochester correction
+   - medium MuonID
+   - tight Isolation
+   The electron specific cuts and corrections includes,
+   - (pt, eta, phi) cuts
+   - electron D0 and Dz cuts 
+   - medium Electron ID
+   - passEtaEBEEGap
+
+5. **Lepton histograms** : The corresponding histograms after lepton cuts are filled as,
+```cpp
+  FillLeptonCutFlow();
+  FillLeptonWt();
+  if(systType == kBase) FillLeptonControlHists();
+```
+
+6. **Jet cuts** : The selection cuts for Jets are provided by [Selector::filter_jets()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L658)
+
+7. **Jet histograms** :
+```cpp
+  FillNjetCutFlow();
+  FillNjetWt();
+  if(systType == kBase) FillJetControlHists();
+```
 
 #### SkimAna::SlaveTerminate()
 
