@@ -2542,7 +2542,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-      direction RL
+      direction LR
       SkimAna -- JECvariation
       SkimAna -- Selector
       SkimAna : +LoadLeptonSF()
@@ -2551,21 +2551,11 @@ classDiagram
       JECvariation -- FactorizedJetCorrector
       class JECvariation{
           +applyJEC()
-          -JetCorrectionUncertainty *jecUnc;
-          -JetCorrectorParameters *ResJetPar;
-          -JetCorrectorParameters *L3JetPar;
-          -JetCorrectorParameters *L2JetPar;
-          -JetCorrectorParameters *L1JetPar;
-          -FactorizedJetCorrector *JetCorrector;
       }
-      class JetCorrectionUncertainty{
-      }	
-      class JetCorrectorParameters{
-      }	
-      class FactorizedJetCorrector{
-      }	
+      Selector -- JetResolution
+      Selector -- JetResolutionScaleFactor
       class Selector{
-          +getEleSF();
+          +init_JER(();
       }
 ```
 
