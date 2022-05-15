@@ -2554,8 +2554,8 @@ classDiagram
 classDiagram
       direction LR
       SkimAna -- JECvariation
-      SkimAna -- Selector
       SkimAna -- correctionlib
+      SkimAna -- Selector
       SkimAna : +LoadJECJER()
       SkimAna : +TH2D *hPUJetIDEff
       JECvariation -- JetCorrectionUncertainty
