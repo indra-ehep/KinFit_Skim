@@ -2545,7 +2545,7 @@ classDiagram
       direction LR
       SkimAna -- JECvariation
       SkimAna -- Selector
-      SkimAna -- correction::CorrectionSet
+      SkimAna -- correction
       SkimAna : +LoadJECJER()
       JECvariation -- JetCorrectionUncertainty
       JECvariation -- JetCorrectorParameters
@@ -2558,7 +2558,8 @@ classDiagram
       class Selector{
           +init_JER(();
       }
-      class correction::CorrectionSet{
+      correction -- CorrectionSet
+      class CorrectionSet{
           +evaluate()
       }
 ```
