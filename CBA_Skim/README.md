@@ -2547,6 +2547,7 @@ classDiagram
       SkimAna -- Selector
       SkimAna -- correction
       SkimAna : +LoadJECJER()
+      SkimAna : +TH2D *hPUJetIDEff
       JECvariation -- JetCorrectionUncertainty
       JECvariation -- JetCorrectorParameters
       JECvariation -- FactorizedJetCorrector
@@ -2559,7 +2560,10 @@ classDiagram
           +init_JER(();
       }
       correction -- CorrectionSet
+      class correction
+      click correction href "https://github.com/cms-nanoAOD/correctionlib/blob/master/include/correction.h" "This is a tooltip for a link"
       class CorrectionSet{
+          +from_file()
           +evaluate()
       }
 ```
