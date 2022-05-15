@@ -2426,17 +2426,28 @@ classDiagram
 The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of ![SkimAna.C](#SkimAna.C).
 This is followed by a call to `SkimAna::ExecSerial()` to initiate event processing.
 ```cpp
- main(){
-  ....
-  SkimAna *skim = new SkimAna();
-  skim->SetOption(op.Data());
-  skim->ExecSerial(inputfile.Data());
-  delete skim;
- ...
+  int main(int argc, char** argv){
+   ....
+   SkimAna *skim = new SkimAna();
+   skim->SetOption(op.Data());
+   skim->ExecSerial(inputfile.Data());
+   delete skim;
+   ....
  }
 ```
-
 The `SkimAna::ExecSerial()` first loads all necessary SF and efficiency files using `SimAna::SlaveBegin()` then processes each event via `SkimAna::Process()`, finally stores the outputs in file and unloads the objects through `SkimAna::SlaveTerminate()`.
+```cpp
+ bool SkimAna::ExecSerial(const char* infile){
+  ....
+  SlaveBegin(tree);
+  ....
+  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+    Process(ientry);
+  }
+  SlaveTerminate();
+ ....
+ }
+```
 Some important methods of `SkimAna` are explained below.
 
 #### SkimAna::SlaveBegin()
