@@ -4,6 +4,8 @@
    - [Local processing](#local-processing)
    - [GRID job submission](#grid-job-submission)
 3. [Description and processing flow](#description-and-processing-flow)
+   - [Description of subfolders](#description-of-subfolders)
+   - [Processing flow](#processing-flow)
 4. [Acknowledgement](#acknowledgement)
 
 ## Motivation
@@ -2391,6 +2393,8 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
 ---
 ## Description and processing flow
 
+### Description of subfolders
+
 The purpose of folders inside CBA_Skim directory is described below.
 
   - *src* : The source codes required by `SkimAna`.
@@ -2403,8 +2407,37 @@ The purpose of folders inside CBA_Skim directory is described below.
   - *codes* : C++ code snippets, mostly useful in postprocessing.
   - *syst* : The final results with systematics is stored here in latex format.
 
-The  main() function of ![SkimAna.C](#SkimAna.C) code first sets the input arguments via `SkimAna::SetOption()` (inherited from `TSelector`) and then calls `SkimAna::ExecSerial()`.
-The `SkimAna::ExecSerial()` inturn, first loads all necessary SF and efficiency files using `SimAna::SlaveBegin()` then processes each event via `SkimAna::Process()`, finally stores the outputs in file and unloads the objects through `SkimAna::SlaveTerminate()`.
+### Processing flow
+
+The processing of Skim files is performed by `SkimAna`, which is created by compiling ![SkimAna.C](#SkimAna.C) and ![SkimAna.h](#SkimAna.h).
+The SkimAna class is inherited from ![TSelector](https://root.cern.ch/doc/master/classTSelector.html) and inspired by ![h1Analysis](https://root.cern/doc/master/h1analysis_8C.html).
+```mermaid
+classDiagram
+      TSelector <|-- SkimAna
+      TSelector : +SetOption()
+      class SkimAna{
+          +ExecSerial()
+	  - ....()
+          +SlaveBegin()
+          +Process()
+	  +SlaveTerminate()
+      }
+```
+The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of ![SkimAna.C](#SkimAna.C).
+This is followed by a call to `SkimAna::ExecSerial()` to initiate event processing.
+The `SkimAna::ExecSerial()` first loads all necessary SF and efficiency files using `SimAna::SlaveBegin()` then processes each event via `SkimAna::Process()`, finally stores the outputs in file and unloads the objects through `SkimAna::SlaveTerminate()`.
+Some important methods of `SkimAna` are explained below.
+
+#### SkimAna::SlaveBegin()
+
+The SimAna::SlaveBegin() sets class attributes and loads all necessary SF/efficiency files.
+
+#### SkimAna::GetArguments() 
+
+The input arguments of `SkimAna` that are passed to `SkimAna::SetOption()` are accessed here. Several class attributes are set in this method following the input arguments.
+
+ 
+
 In core part of analysis, the `SkimAna::Process()` sequentially applies the following selections cuts.
 
 ```mermaid
