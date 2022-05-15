@@ -2653,11 +2653,11 @@ The functionality of some of the important methods are mentioned below that are 
    - Good vertex criteria
 
 3. **Trigger histograms** : Once the above three selection cuts are applied, the results are recorded in cutflow, weight and control histograms.
-```cpp
-  FillEventCutFlow();
-  FillEventWt();
-  if(systType == kBase) FillTriggerControlHists();
-```
+   ```cpp
+     FillEventCutFlow();
+     FillEventWt();
+     if(systType == kBase) FillTriggerControlHists();
+   ```
 
 4. **Lepton cuts** : The lepton selection cuts are provided by [Selector::filter_muons()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L479) and [Selector::filter_electrons()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L201) 
    The muon specific cuts and corrections includes,
@@ -2667,6 +2667,7 @@ The functionality of some of the important methods are mentioned below that are 
    - Rochester correction
    - medium MuonID
    - tight Isolation
+
    The electron specific cuts and corrections includes,
    - (pt, eta, phi) cuts
    - electron D0 and Dz cuts 
@@ -2674,20 +2675,20 @@ The functionality of some of the important methods are mentioned below that are 
    - passEtaEBEEGap
 
 5. **Lepton histograms** : The corresponding histograms after lepton cuts are filled as,
-```cpp
-  FillLeptonCutFlow();
-  FillLeptonWt();
-  if(systType == kBase) FillLeptonControlHists();
-```
+   ```cpp
+     FillLeptonCutFlow();
+     FillLeptonWt();
+     if(systType == kBase) FillLeptonControlHists();
+   ```
 
 6. **Jet cuts** : The selection cuts for Jets are provided by [Selector::filter_jets()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L658)
 
 7. **Jet histograms** :
-```cpp
-  FillNjetCutFlow();
-  FillNjetWt();
-  if(systType == kBase) FillJetControlHists();
-```
+   ```cpp
+     FillNjetCutFlow();
+     FillNjetWt();
+     if(systType == kBase) FillJetControlHists();
+   ```
 
 #### SkimAna::SlaveTerminate()
 
