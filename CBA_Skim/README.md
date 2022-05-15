@@ -6,6 +6,8 @@
 3. [Description and processing flow](#description-and-processing-flow)
    - [Description of subfolders](#description-of-subfolders)
    - [Processing flow](#processing-flow)
+   - [Job submission scripts](#job-submission-scripts)
+   - [Last bit of results](#last-bit-of-results)
 4. [Acknowledgement](#acknowledgement)
 
 ## Motivation
@@ -2415,7 +2417,7 @@ The SkimAna class is inherited from [TSelector](https://root.cern.ch/doc/master/
 ```mermaid
 classDiagram
       TSelector <|-- SkimAna
-      TSelector : +SetOption()
+      TSelector : SetOption()
       class SkimAna{
            ExecSerial()
 	   ....()
@@ -2462,6 +2464,7 @@ Some important methods of `SkimAna` are explained below.
 #### SkimAna::SlaveBegin()
 
 The SimAna::SlaveBegin() sets class attributes and loads all necessary SF/efficiency files by calling appropriate methods.
+The output files to store the tree and histograms objects are also created in this method. 
 
 ```cpp
 void SkimAna::SlaveBegin(TTree *tree)
@@ -2502,7 +2505,7 @@ classDiagram
       SkimAna -- Selector
       SkimAna -- EventPick
       SkimAna -- KinFit
-      SkimAna : +SetTrio()
+      SkimAna : SetTrio()
       class Selector{
            double mu_Pt_cut
            double mu_Eta_cut
@@ -2530,13 +2533,13 @@ classDiagram
 4. **Init()** : Initialize the Tree branch addresses.
 5. **initCrossSections()** : Initialize the cross section values defined in [ScaleFactorFunction.h](interface/ScaleFactorFunction.h).
 6. **GetNumberofEvents()** : This method loops over all skim files for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
-7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step. All efficiency histograms related to ID, Iso/Reco and trigger for muon/electron are provided to MuonSF and ElectronSF. 
+7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step. All efficiency histograms (TH2 format) related to ID, Iso/Reco and trigger for muon/electron are provided to MuonSF and ElectronSF. Since, the samples are splitted in two groups of preVFP and postVFP for 2016, in all cases the objects are loaded twice for the applications of SFs and efficiencies.
 
 ```mermaid
 classDiagram
       SkimAna -- MuonSF
       SkimAna -- ElectronSF
-      SkimAna : +LoadLeptonSF()
+      SkimAna : LoadLeptonSF()
       class MuonSF{
            getMuSF()
       }
@@ -2548,7 +2551,7 @@ classDiagram
       click ElectronSF href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/eleSF_reader.h" "click to display"
 ```
 
-8. **LoadJECJER()** : 
+8. **LoadJECJER()** : This method loads files for Jet Energy Correction(JEC), Jet Energy Resolutions (JER) and Pileup JetID SF/efficiency using [JECvariation](interface/JECvariation.h), [JetResolution](interface/JetResolution.h) and [correctionlib](https://github.com/cms-nanoAOD/correctionlib), respectively. Note that, we are using text files for JEC and JER and json files for PUJetID SFs. The association different classes is shown below.
 
 ```mermaid
 classDiagram
@@ -2556,8 +2559,8 @@ classDiagram
       SkimAna -- JECvariation
       SkimAna -- correctionlib
       SkimAna -- Selector
-      SkimAna : +LoadJECJER()
-      SkimAna : +TH2D *hPUJetIDEff
+      SkimAna : LoadJECJER()
+      SkimAna : TH2D *hPUJetIDEff
       JECvariation -- JetCorrectionUncertainty
       JECvariation -- JetCorrectorParameters
       JECvariation -- FactorizedJetCorrector
@@ -2589,7 +2592,41 @@ classDiagram
       click CorrectionSet href "https://github.com/cms-nanoAOD/correctionlib/blob/3be9df1ff28f577f5ab9aca82484d23346accbc0/include/correction.h#L234" "click to display"
 ```
 
+9. **LoadBTag()** : The SF and efficiency files b-tagging and c-tagging are loaded in this method. We are using fixed WP CSV for the SFs. The association different classes is shown below.
+
+```mermaid
+classDiagram
+      SkimAna -- BTagCalibration
+      SkimAna -- BTagCalibrationReader
+      SkimAna : LoadBTag()
+      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
+      click BTagCalibration href "https://github.com/indra-ehep/KinFit_Skim/blob/ec84195b2bdfb9334970542733ca6747faa32a27/CBA_Skim/interface/BTagCalibrationStandalone.h#L108" "click to display"
+      click BTagCalibrationReader href "https://github.com/indra-ehep/KinFit_Skim/blob/ec84195b2bdfb9334970542733ca6747faa32a27/CBA_Skim/interface/BTagCalibrationStandalone.h#L153" "click to display"
+```
+
+10. **CreateHistoArrays()** : The histogram and tree objects are created in this method. The result histograms are created for all systematics types separately. Then for a given systematics type four categories of histograms are stored a) IsoLowMET, b) NonIsoLowMET,  c) IsoHighMET and d) NonIsoHigMET. In addition, some control histograms, cutflow histograms and weight histograms are also stored for various checks. One can also derive the result histograms and weight histograms at KinFit and c-tagging level from the tree objects. An example [KinTreeValidation.C](codes/KinTreeValidation.C) shows how to derive the mjj results from tree objects.
+
 #### SkimAna::Notify()
+
+The Notify method is called once the input file is read by SkimAna. Various attributes and switches are also set at the time of reading the file. Most importantly for 2016 the type input file is identified at this stage for preVFP or postVFP,  thus the corresponding swtiches are set green. The association of classes is shown below. 
+
+```mermaid
+classDiagram
+      SkimAna -- Selector
+      SkimAna -- KinFit
+      SkimAna : Notify()
+      Selector : isPreVFP
+      Selector : isPostVFP
+      Selector : btag_cut
+      Selector : ctag_*
+      KinFit : SetResoInputPath()
+      KinFit : SetBtagThresh()
+      KinFit : LoadObjReso()
+      KinFit : UseExtReso()
+      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
+      click Selector href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/Selector.h" "click to display"
+      click KinFit href "https://github.com/indra-ehep/KinFit_Skim/blob/2c27611a8d60b999936a565da9c642ca38917287/CBA_Skim/SkimAna.h#L135" "click to display"
+```
 
 #### SkimAna::Process()
 
@@ -2608,6 +2645,14 @@ flowchart LR
 
 
 #### SkimAna::SlaveTerminate()
+
+The output files with tree and histograms objects are saved at this stage. The object pointers are deteted in this method.
+
+### Job submission scripts
+
+
+### Last bit of results
+
 
 ---
 #### Acknowledgement
