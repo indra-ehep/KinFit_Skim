@@ -2423,6 +2423,8 @@ classDiagram
           +Process()
 	  +SlaveTerminate()
       }
+      click TSelector href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
+      click SkimAna href "https://root.cern.ch/doc/master/classTSelector.html" "click to display"
 ```
 
 The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of [SkimAna.C](SkimAna.C).
