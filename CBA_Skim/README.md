@@ -2492,7 +2492,7 @@ void SkimAna::SlaveBegin(TTree *tree)
 
 1. **GetArguments()** : The input arguments of `SkimAna` that are passed to `SkimAna::SetOption()` are accessed here. Several class attributes are set in this method following the input arguments.
 2. **SelectSyst()** : Set the switches for systematics types. 
-3. **SetTrio()** : These method sets the attributes of multiple classes ([EventTree](#interface/EventTree.h), [Selector](#interface/Selector.h), [EventPick](#interface/EventPick.h), KinFit) that are associated with the event processing. The association is shown below. 
+3. **SetTrio()** : These method sets the attributes of multiple classes ([EventTree](interface/EventTree.h), [Selector](interface/Selector.h), [EventPick](interface/EventPick.h), KinFit) that are associated with the event processing. The association is shown below. 
 
 ```mermaid
 classDiagram
@@ -2521,9 +2521,9 @@ classDiagram
 ```
 
 4. **Init()** : Initialize the Tree branch addresses.
-5. **initCrossSections()** : Initialize the cross section values defined in [ScaleFactorFunction.h](#interface/ScaleFactorFunction.h).
+5. **initCrossSections()** : Initialize the cross section values defined in [ScaleFactorFunction.h](interface/ScaleFactorFunction.h).
 6. **GetNumberofEvents()** : This method loops over all skim files corresponding for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
-7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](#interface/muSF_reader.h) and [ElectronSF](#interface/eleSF_reader.h) are loaded in this step using 
+7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step using 
 
 ```mermaid
 classDiagram
