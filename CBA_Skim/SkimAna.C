@@ -2156,7 +2156,7 @@ void SkimAna::SlaveBegin(TTree *tree)
 
   if(!isData){   //For MC events
     Info("SlaveBegin", "CS Init");
-    initCrossSections();  // Get the cross section values and Luminosity SFs 
+    initCrossSections();  // Get the cross section values
     Info("SlaveBegin", "GetNumber of Events and files");
     GetNumberofEvents();  // Evaluate the total number of events for a given production topology
     

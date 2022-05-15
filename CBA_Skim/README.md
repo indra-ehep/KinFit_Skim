@@ -2411,6 +2411,7 @@ The purpose of folders inside CBA_Skim directory is described below.
 
 The processing of Skim files is performed by `SkimAna`, which is created by compiling ![SkimAna.C](#SkimAna.C) and ![SkimAna.h](#SkimAna.h).
 The SkimAna class is inherited from ![TSelector](https://root.cern.ch/doc/master/classTSelector.html) and the current analysis flow is inspired by ![h1Analysis](https://root.cern/doc/master/h1analysis_8C.html) of ![ROOT](https://root.cern.ch/).
+
 ```mermaid
 classDiagram
       TSelector <|-- SkimAna
@@ -2423,8 +2424,10 @@ classDiagram
 	  +SlaveTerminate()
       }
 ```
+
 The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of ![SkimAna.C](#SkimAna.C).
 This is followed by a call to `SkimAna::ExecSerial()` to initiate event processing.
+
 ```cpp
  int main(int argc, char** argv){
   ....
@@ -2435,7 +2438,9 @@ This is followed by a call to `SkimAna::ExecSerial()` to initiate event processi
   ....
  }
 ```
+
 The `SkimAna::ExecSerial()` first loads all necessary SF and efficiency files using `SimAna::SlaveBegin()` then processes each event via `SkimAna::Process()`, finally stores the outputs in file and unloads the objects through `SkimAna::SlaveTerminate()`.
+
 ```cpp
  bool SkimAna::ExecSerial(const char* infile){
   ....
@@ -2449,11 +2454,13 @@ The `SkimAna::ExecSerial()` first loads all necessary SF and efficiency files us
  ....
  }
 ```
+
 Some important methods of `SkimAna` are explained below.
 
 #### SkimAna::SlaveBegin()
 
 The SimAna::SlaveBegin() sets class attributes and loads all necessary SF/efficiency files by calling appropriate methods.
+
 ```cpp
 void SkimAna::SlaveBegin(TTree *tree)
 {
@@ -2462,11 +2469,11 @@ void SkimAna::SlaveBegin(TTree *tree)
   ....
   SelectSyst();   // Setter for systematics types
   SetTrio();      // SetTrio method sets the hadler values of three classe EventTree(), Selector(), EventPick() 
-  Init(tree);     //initialize the Tree branch addresses
+  Init(tree);     // initialize the Tree branch addresses
   ....
   if(!isData){    //For MC events
     ....
-    initCrossSections(); // Get the cross section values and Luminosity SFs 
+    initCrossSections(); // Get the cross section values
     ....
     GetNumberofEvents(); // Evaluate the total number of events for a given production topology
     ....
@@ -2497,25 +2504,43 @@ classDiagram
       class Selector{
           +double mu_Pt_cut
           +double mu_Eta_cut
-          +double ....
           +double jet_Pt_cut
           +double jet_Eta_cut
 	  +double btag_cut;
+          +double ....
       }
       class KinFit{
-          +void SetTopMass(double);
-	  +void SetBtagThresh(double);
+          +SetTopMass();
+	  +SetBtagThresh();
       }
       class EventPick{
-          +int year
           +double Njets_ge
           +double NBjet_ge
           +bool applyMetFilter
       }
 ```
 
+4. **Init()** : Initialize the Tree branch addresses.
+5. **initCrossSections()** : Initialize the cross section values defined in ![ScaleFactorFunction.h](#interface/ScaleFactorFunction.h).
+6. **GetNumberofEvents()** : This method loops over all skim files corresponding for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
+7. **LoadLeptonSF()** : The lepton SF objects ![MuonSF](#interface/muSF_reader.h) and ![ElectronSF](#interface/eleSF_reader.h) are loaded in this step using 
 
-#### SkimAna::SlaveBegin()
+```mermaid
+classDiagram
+      SkimAna -- MuonSF
+      SkimAna -- ElectronSF
+      SkimAna : +LoadLeptonSF()
+      class MuonSF{
+          +getMuSF()
+      }
+      class ElectronSF{
+          +getEleSF();
+      }
+```
+
+8. **LoadJECJER()** : 
+
+#### SkimAna::Notify()
 
 #### SkimAna::Process()
 
@@ -2531,9 +2556,9 @@ flowchart LR
     KinFit --> c-tagging 
 ```
 
-#### SkimAna::SlaveBegin()
 
 
+#### SkimAna::SlaveTerminate()
 
 ---
 #### Acknowledgement
