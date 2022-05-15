@@ -2410,7 +2410,7 @@ The purpose of folders inside CBA_Skim directory is described below.
 ### Processing flow
 
 The processing of Skim files is performed by `SkimAna`, which is created by compiling ![SkimAna.C](#SkimAna.C) and ![SkimAna.h](#SkimAna.h).
-The SkimAna class is inherited from ![TSelector](https://root.cern.ch/doc/master/classTSelector.html) and inspired by ![h1Analysis](https://root.cern/doc/master/h1analysis_8C.html).
+The SkimAna class is inherited from ![TSelector](https://root.cern.ch/doc/master/classTSelector.html) and the current analysis flow is inspired by ![h1Analysis](https://root.cern/doc/master/h1analysis_8C.html) of ![ROOT](https://root.cern.ch/).
 ```mermaid
 classDiagram
       TSelector <|-- SkimAna
