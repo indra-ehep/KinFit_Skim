@@ -2564,6 +2564,11 @@ classDiagram
       class JECvariation{
           +applyJEC()
       }
+      correctionlib -- CorrectionSet
+      class CorrectionSet{
+          +from_file()
+          +evaluate()
+      }
       Selector -- JetResolution
       Selector -- JetResolutionScaleFactor
       class Selector{
@@ -2571,11 +2576,6 @@ classDiagram
       }
       JetResolution -- JetResolutionObject
       JetResolutionScaleFactor -- JetResolutionObject
-      correctionlib -- CorrectionSet
-      class CorrectionSet{
-          +from_file()
-          +evaluate()
-      }
       click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display" 
       click JECvariation href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JECvariation.h" "click to display" 
       click JetCorrectionUncertainty href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JetCorrectionUncertainty.h" "click to display" 
