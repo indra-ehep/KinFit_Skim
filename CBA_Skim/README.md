@@ -23,7 +23,7 @@ We first show how to quick start the analysis and then describe the list of impo
 
 Once the repository is downloaded in a `lxplus` machine, the final output of TH1/TTree objects can be produced by processing a skim file in three simple steps.
 
-1. CMSSW : Set the environment for CMSSW. The CMSSW_X_X_X can be created in other location irrespective of the download directory of current project. Since we are using `correctionlib` for reading the json files, we use CMSSW_12_1_X as per suggestion at ![link](https://cms-nanoaod.github.io/correctionlib/install.html#inside-cmssw). 
+1. CMSSW : Set the environment for CMSSW. The CMSSW_X_X_X can be created in other location irrespective of the download directory of current project. Since we are using `correctionlib` for reading the json files, we use CMSSW_12_1_X as per suggestion at [link](https://cms-nanoaod.github.io/correctionlib/install.html#inside-cmssw). 
 
    ```console
    export SCRAM_ARCH=slc7_amd64_gcc900
@@ -200,10 +200,10 @@ Once the repository is downloaded in a `lxplus` machine, the final output of TH1
 
    `./SkimAna $samplename $year $skim_filelist  $skim_index $syst_type`
 
-   -  `samplename` : This represents the sample names such as *TTbar*,*singleTop*. Find the full list defined as `samples_$year` at ![link](condor/createJdlFiles_cbaskim_syst.py). 
+   -  `samplename` : This represents the sample names such as *TTbar*,*singleTop*. Find the full list defined as `samples_$year` at [link](condor/createJdlFiles_cbaskim_syst.py). 
    -  `skim_filelist` : This file contains the list of Skim files for a given sample type (e.g. *TTbar*). Such input files contianing the Skim filelist can be checked at `input/eos/$year/`. Note that for 2016, the preVFP and postVFP file lists are available at,  `input/eos/2016/pre` and `input/eos/2016/post`, respectively.
    -  `skim_index` : This index tells that n-th file of skim file list will be processed.
-   -  `syst_type` : These are possible systematics types. See a longer list defined as `syst_$year` (or `syst_long_$year`) at ![link](condor/createJdlFiles_cbaskim_syst.py). Note that, to optimize the GRID computation time for KinFit few additional systematics are processed while executing for `base` type systematics. The additional types are listed as `const char *systbase[]` in ![SkimAna.C](SkimAna.C). Therefore, for all MC samples the total list of systematics comprises with `syst_$year + systbase[]`, but *TTbar*, for which it is `syst_long_$year + systbase[]`. There are no systematics required for the analysis of data (e.g. *DataMu*, *DataEle* samples), however for Data Driven QCD estimations we require results with different Iso cuts. This is performed during the `iso20` type systematics processing of data samples.
+   -  `syst_type` : These are possible systematics types. See a longer list defined as `syst_$year` (or `syst_long_$year`) at [link](condor/createJdlFiles_cbaskim_syst.py). Note that, to optimize the GRID computation time for KinFit few additional systematics are processed while executing for `base` type systematics. The additional types are listed as `const char *systbase[]` in [SkimAna.C](SkimAna.C). Therefore, for all MC samples the total list of systematics comprises with `syst_$year + systbase[]`, but *TTbar*, for which it is `syst_long_$year + systbase[]`. There are no systematics required for the analysis of data (e.g. *DataMu*, *DataEle* samples), however for Data Driven QCD estimations we require results with different Iso cuts. This is performed during the `iso20` type systematics processing of data samples.
 
 
 ### GRID job submission
@@ -2409,8 +2409,8 @@ The purpose of folders inside CBA_Skim directory is described below.
 
 ### Processing flow
 
-The processing of Skim files is performed by `SkimAna`, which is created by compiling ![SkimAna.C](#SkimAna.C) and ![SkimAna.h](#SkimAna.h).
-The SkimAna class is inherited from ![TSelector](https://root.cern.ch/doc/master/classTSelector.html) and the current analysis flow is inspired by ![h1Analysis](https://root.cern/doc/master/h1analysis_8C.html) of ![ROOT](https://root.cern.ch/).
+The processing of Skim files is performed by `SkimAna`, which is created by compiling [SkimAna.C](#SkimAna.C) and [SkimAna.h](#SkimAna.h).
+The SkimAna class is inherited from [TSelector](https://root.cern.ch/doc/master/classTSelector.html) and the current analysis flow is inspired by [h1Analysis](https://root.cern/doc/master/h1analysis_8C.html) of [ROOT](https://root.cern.ch/).
 
 ```mermaid
 classDiagram
@@ -2425,7 +2425,7 @@ classDiagram
       }
 ```
 
-The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of ![SkimAna.C](#SkimAna.C).
+The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of [SkimAna.C](#SkimAna.C).
 This is followed by a call to `SkimAna::ExecSerial()` to initiate event processing.
 
 ```cpp
@@ -2492,7 +2492,7 @@ void SkimAna::SlaveBegin(TTree *tree)
 
 1. **GetArguments()** : The input arguments of `SkimAna` that are passed to `SkimAna::SetOption()` are accessed here. Several class attributes are set in this method following the input arguments.
 2. **SelectSyst()** : Set the switches for systematics types. 
-3. **SetTrio()** : These method sets the attributes of multiple classes (![EventTree](#interface/EventTree.h), ![Selector](#interface/Selector.h), ![EventPick](#interface/EventPick.h), KinFit) that are associated with the event processing. The association is shown below. 
+3. **SetTrio()** : These method sets the attributes of multiple classes ([EventTree](#interface/EventTree.h), [Selector](#interface/Selector.h), [EventPick](#interface/EventPick.h), KinFit) that are associated with the event processing. The association is shown below. 
 
 ```mermaid
 classDiagram
@@ -2521,7 +2521,7 @@ classDiagram
 ```
 
 4. **Init()** : Initialize the Tree branch addresses.
-5. **initCrossSections()** : Initialize the cross section values defined in ![ScaleFactorFunction.h](#interface/ScaleFactorFunction.h).
+5. **initCrossSections()** : Initialize the cross section values defined in [ScaleFactorFunction.h](#interface/ScaleFactorFunction.h).
 6. **GetNumberofEvents()** : This method loops over all skim files corresponding for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
 7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](#interface/muSF_reader.h) and [ElectronSF](#interface/eleSF_reader.h) are loaded in this step using 
 
