@@ -2545,7 +2545,8 @@ classDiagram
       direction LR
       SkimAna -- JECvariation
       SkimAna -- Selector
-      SkimAna : +LoadLeptonSF()
+      SkimAna -- correction::CorrectionSet
+      SkimAna : +LoadJECJER()
       JECvariation -- JetCorrectionUncertainty
       JECvariation -- JetCorrectorParameters
       JECvariation -- FactorizedJetCorrector
@@ -2556,6 +2557,9 @@ classDiagram
       Selector -- JetResolutionScaleFactor
       class Selector{
           +init_JER(();
+      }
+      class correction::CorrectionSet{
+          +evaluate()
       }
 ```
 
