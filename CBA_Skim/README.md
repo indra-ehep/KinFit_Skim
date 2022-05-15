@@ -2681,7 +2681,11 @@ The functionality of some of the important methods are mentioned below that are 
      if(systType == kBase) FillLeptonControlHists();
    ```
 
-6. **Jet cuts** : The selection cuts for Jets are provided by [Selector::filter_jets()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L658)
+6. **Jet cuts** : The selection cuts for Jets are provided by [Selector::filter_jets()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L658), which includes
+   - (pt, eta, phi) cuts
+   - tight JetID
+   - loose PUJetID
+   - Delta R cut
 
 7. **Jet histograms** :
    ```cpp
