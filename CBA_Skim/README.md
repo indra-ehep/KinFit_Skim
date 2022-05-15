@@ -2555,7 +2555,7 @@ classDiagram
       direction LR
       SkimAna -- JECvariation
       SkimAna -- Selector
-      SkimAna -- correction
+      SkimAna -- correctionlib
       SkimAna : +LoadJECJER()
       SkimAna : +TH2D *hPUJetIDEff
       JECvariation -- JetCorrectionUncertainty
@@ -2569,13 +2569,24 @@ classDiagram
       class Selector{
           +init_JER(();
       }
-      correction -- CorrectionSet
-      class correction
-      click correction href "https://github.com/cms-nanoAOD/correctionlib/blob/master/include/correction.h" "This is a tooltip for a link"
+      JetResolution -- JetResolutionObject
+      JetResolutionScaleFactor -- JetResolutionObject
+      correctionlib -- CorrectionSet
       class CorrectionSet{
           +from_file()
           +evaluate()
       }
+      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display" 
+      click JECvariation href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JECvariation.h" "click to display" 
+      click JetCorrectionUncertainty href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JetCorrectionUncertainty.h" "click to display" 
+      click JetCorrectorParameters href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JetCorrectorParameters.h" "click to display" 
+      click FactorizedJetCorrector href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/FactorizedJetCorrector.h" "click to display" 
+      click Selector href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/Selector.h" "click to display" 
+      click JetResolution href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JetResolution.h" "click to display" 
+      click JetResolutionScaleFactor href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JetResolution.h" "click to display" 
+      click JetResolutionObject href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/JetResolutionObject.h" "click to display" 
+      click correctionlib href "https://github.com/cms-nanoAOD/correctionlib" "click to display"
+      click CorrectionSet href "https://github.com/cms-nanoAOD/correctionlib/blob/3be9df1ff28f577f5ab9aca82484d23346accbc0/include/correction.h#L234" "click to display"
 ```
 
 #### SkimAna::Notify()
