@@ -2409,7 +2409,7 @@ The purpose of folders inside CBA_Skim directory is described below.
 
 ### Processing flow
 
-The processing of Skim files is performed by `SkimAna`, which is created by compiling [SkimAna.C](#SkimAna.C) and [SkimAna.h](#SkimAna.h).
+The processing of Skim files is performed by `SkimAna`, which is created by compiling [SkimAna.C](SkimAna.C) and [SkimAna.h](SkimAna.h).
 The SkimAna class is inherited from [TSelector](https://root.cern.ch/doc/master/classTSelector.html) and the current analysis flow is inspired by [h1Analysis](https://root.cern/doc/master/h1analysis_8C.html) of [ROOT](https://root.cern.ch/).
 
 ```mermaid
@@ -2425,7 +2425,7 @@ classDiagram
       }
 ```
 
-The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of [SkimAna.C](#SkimAna.C).
+The input arguments of `SkimAna` are passed to `SkimAna::SetOption()` of main() function of [SkimAna.C](SkimAna.C).
 This is followed by a call to `SkimAna::ExecSerial()` to initiate event processing.
 
 ```cpp
@@ -2492,7 +2492,7 @@ void SkimAna::SlaveBegin(TTree *tree)
 
 1. **GetArguments()** : The input arguments of `SkimAna` that are passed to `SkimAna::SetOption()` are accessed here. Several class attributes are set in this method following the input arguments.
 2. **SelectSyst()** : Set the switches for systematics types. 
-3. **SetTrio()** : These method sets the attributes of multiple classes ([EventTree](interface/EventTree.h), [Selector](interface/Selector.h), [EventPick](interface/EventPick.h), KinFit) that are associated with the event processing. The association is shown below. 
+3. **SetTrio()** : These method sets the attributes of multiple classes ([EventTree](interface/EventTree.h), [Selector](interface/Selector.h), [EventPick](interface/EventPick.h), [KinFit](https://github.com/indra-ehep/KinFit_Skim/blob/2c27611a8d60b999936a565da9c642ca38917287/CBA_Skim/SkimAna.h#L135)) that are associated with the event processing. The association is shown below. 
 
 ```mermaid
 classDiagram
@@ -2522,7 +2522,7 @@ classDiagram
 
 4. **Init()** : Initialize the Tree branch addresses.
 5. **initCrossSections()** : Initialize the cross section values defined in [ScaleFactorFunction.h](interface/ScaleFactorFunction.h).
-6. **GetNumberofEvents()** : This method loops over all skim files corresponding for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
+6. **GetNumberofEvents()** : This method loops over all skim files for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
 7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step using 
 
 ```mermaid
