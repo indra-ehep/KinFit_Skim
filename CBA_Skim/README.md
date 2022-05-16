@@ -7,7 +7,7 @@
    - [Description of subfolders](#description-of-subfolders)
    - [Processing flow](#processing-flow)
    - [Job submission scripts](#job-submission-scripts)
-   - [Last bit of results](#last-bit-of-results)
+   - [The last bit of result](#the-last-bit-of-result)
 4. [Acknowledgement](#acknowledgement)
 
 ## Motivation
@@ -2372,7 +2372,7 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
 	 ```
    </details>
 
-   > :warning: **Before running the python command, you are suggested to check and modify the relevant variables of the python and bash scripts. Follow the details later.**
+   > :warning: **Before running the python command, you are suggested to check and modify the relevant variables of the python and bash scripts. Follow the details later at [Job submission scripts](#job-submission-scripts) subsection.**
 
 
 3. The above command will create a folder (*tmpLog* in present case) with the JDL files. You need to change to that folder and submit the jdl files.
@@ -2608,7 +2608,7 @@ classDiagram
 
 #### SkimAna::Notify()
 
-The Notify method is called once the input file is read by SkimAna. Various attributes and switches are also set at the time of reading the file. Most importantly for 2016 the type input file is identified at this stage for preVFP or postVFP,  thus the corresponding swtiches are set green. The association of classes is shown below. 
+The Notify method is called once the input file is read by SkimAna. Various attributes and switches are also set at the time of reading the file. Most importantly for 2016 the type input file is identified at this stage for preVFP or postVFP,  thus the corresponding swtiches are set green. Another important tasks is the calculation luminosity weight which takes into account the normlization of inclusive and exclusive samples of Z/gamma + jets and W + jets. The objects to calculate the event pileup weight is loaded in this method via `LoadPU()`. The association of classes is shown below. 
 
 ```mermaid
 classDiagram
@@ -2623,14 +2623,14 @@ classDiagram
       KinFit : SetBtagThresh()
       KinFit : LoadObjReso()
       KinFit : UseExtReso()
-      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/SkimAna.C" "click to display"
+      click SkimAna href "https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.h#L2022" "click to display"
       click Selector href "https://github.com/indra-ehep/KinFit_Skim/blob/main/CBA_Skim/interface/Selector.h" "click to display"
       click KinFit href "https://github.com/indra-ehep/KinFit_Skim/blob/2c27611a8d60b999936a565da9c642ca38917287/CBA_Skim/SkimAna.h#L135" "click to display"
 ```
 
 #### SkimAna::Process()
 
-In core part of analysis, the `SkimAna::Process()` sequentially applies the following selections cuts.
+In core part of analysis, the [**`SkimAna::Process()`**](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L2402) sequentially applies the following selections.
 
 ```mermaid
 flowchart LR
@@ -2642,10 +2642,10 @@ flowchart LR
     KinFit --> c-tagging 
 ```
 
-Several methods of SkimAna and associated classes are called to perform the seletion cuts.
+Several methods of SkimAna and associated classes are called to perform the seletion cuts and application of corresponding SFs for MC sample.
 The functionality of some of the important methods are mentioned below that are called in order.
 
-1. **JECvariation::applyJEC()** : The up/down type JEC corrections are applied for JEC systematics.
+1. **JEC** : The up/down type JEC corrections are applied for JEC systematics via JECvariation::applyJEC().
 
 2. **Trigger cuts** : This is applied by EventPick::process_event() via,
    - HLT trigger criteria
@@ -2658,6 +2658,7 @@ The functionality of some of the important methods are mentioned below that are 
      FillEventWt();
      if(systType == kBase) FillTriggerControlHists();
    ```
+   Note that the event weight at this stage can checked inside [FillEventCutFlow()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L4451), which comprises with a) luminosity weight, b) pileup weight and c) prefire weight.
 
 4. **Lepton cuts** : The lepton selection cuts are provided by [Selector::filter_muons()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L479) and [Selector::filter_electrons()](https://github.com/indra-ehep/KinFit_Skim/blob/b656e44e01de75513e393487fcb9400a74bf3ef5/CBA_Skim/src/Selector.cpp#L201) 
    The muon specific cuts and corrections includes,
@@ -2673,6 +2674,8 @@ The functionality of some of the important methods are mentioned below that are 
    - electron D0 and Dz cuts 
    - medium Electron ID
    - passEtaEBEEGap
+   
+   Once the event is identified to have one and only one type of single lepton (muon/electron), the lepton SF is evaluated by calling [SkimAna::GetMuonEff()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L2021) and [SkimAna::GetElectronEff()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L2067).
 
 5. **Lepton histograms** : The corresponding histograms after lepton cuts are filled as,
    ```cpp
@@ -2687,24 +2690,80 @@ The functionality of some of the important methods are mentioned below that are 
    - loose PUJetID
    - Delta R cut
 
-7. **Jet histograms** :
+   Note that the smearing jet pt following JER is also applied in the filter_jets() method. 
+   The events with more than or equal to 4 good tracks are then considered for further processing. 
+   The SF due to pileup JetID is applied after the 4 jet selection via [SkimAna::GetPUJetIDSF_1a()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L1452).
+
+7. **Jet histograms** : The related histograms are then filled by calling the following methods.
    ```cpp
      FillNjetCutFlow();
      FillNjetWt();
      if(systType == kBase) FillJetControlHists();
    ```
+8. **MET cut** : The application MET cut and functions for filling the related histograms are called [here](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L2637-L2658) of `SkimAna::Process()`.
+
+9. **b-jet weight** : The b-jet weights are calculated using [SkimAna::GetBtagSF_1a()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L1527) after the events are selected with atleast two b-jets.
+
+10. **b-jet histogram** : The related histograms are then filled by calling the following methods. Note that the FillBTagObs() method fills the result histograms at b-jet selection level and the associated cutflow histograms, therefore there is not explicit call for filling the cutflow hitograms like the earlier cases.
+   ```cpp
+     FillBTagObs();
+     FillBTagWt();  
+     if(systType == kBase) FillBTagControlHists();
+   ```
+ 
+11. **KinFit selection** : The Kinematic Fitting is applied to improve the momentum four vectors of jets and leptons. This also allows to select the best combination of jets that satifies the minimum <img src="https://latex.codecogs.com/gif.latex?\chi^2" />. The application of Kinematic Fitting and filling the corresponding cutflow and result histograms are performed in FillKFCFObs(). The control histograms are filled in `FillKinFitControlHists()`.
+   ```cpp
+     FillKFCFObs();
+     if(systType == kBase) FillKinFitControlHists();
+   ```    
+    A standalone execution of Kinematic Fitting has been explained [here](Standalone/README.md) for testing purpose.
+
+12. **c-jet selection** : The c-jet selection and categorization of events for exclusive and inclusive tagging is carried in the following methods.
+   ```cpp
+     FillCTagObs();	    
+     if(systType == kBase) FillCTagControlHists();   
+   ```    
 
 #### SkimAna::SlaveTerminate()
 
-The output files with tree and histograms objects are saved at this stage. The object pointers are deteted in this method.
+The output files with tree and histograms objects are saved at this stage. The object pointers are deleted in this method.
 
 ### Job submission scripts
 
+There are two scripts [createJdlFiles_cbaskim_syst.py](condor/createJdlFiles_cbaskim_syst.py) and [runCBASkim.sh](condor/runCBASkim.sh) which are required to be understood before the GRID job submission.
+However, only [createJdlFiles_cbaskim_syst.py](condor/createJdlFiles_cbaskim_syst.py) script is required to be executed to create the JDL and necessary files for job submission.
+The important settings of createJdlFiles_cbaskim_syst.py are explained below.
 
-### Last bit of results
+1. Set the folder name where the JDL file will be stored. For instance, the following line,
+   ```python
+     jdlDir = 'tmpLog'
+   ```
+   will store the necessary files for job submission under "tmpLog".
+   
+2. The X509_USER_PROXY has to be defined for a directory in AFS such as,
+   ```console
+     export X509_USER_PROXY=/afs/cern.ch/user/i/idas/xx/yy/zz/x509up
+   ```
+   to proper application
+   ```python
+     x509userproxy = $ENV(X509_USER_PROXY)\n\
+     use_x509userproxy = true\n\
+   ```
+   of the script.
+
+   
+
+3. Set the `MaxRuntime` propoerly according to your need (See batch job submit documentation at [link](https://batchdocs.web.cern.ch/local/submit.html)). It has been observed that for TTbar sample the GRID job can process for ~15 hours.
+   ```python
+     +MaxRuntime = 7200\n\
+   ```
+
+4. 
+
+### The last bit of result
 
 
 ---
 #### Acknowledgement
 
-The structure of central code `SkimAna` is inspired by [h1Analysis](https://root.cern/doc/master/h1analysis_8C.html).
+The structure of central code `SkimAna` is inspired by [h1Analysis](https://root.cern/doc/master/h1analysis_8C.html), a ROOT example to demonstrate efficient analysis of data of H1 collaboration of DESY.
