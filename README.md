@@ -31,7 +31,7 @@ flowchart LR
 
 
 The analysis requires the creation of some efficiency and resolution files, which are used during the processing of Skim file in *CBA_Skim*.
-The folders which are dedicated for these pupose are described below.
+The folders which are dedicated for these purpose are described below.
 
 - **ProcessSkim** : The efficiency files required for *b*-jet and *c*-jet tagging.
 - **KFObjectReso** : The production of resolution and offset values that are used in Kinematic Fitting (KinFit).
@@ -47,6 +47,6 @@ These folders has no connection with the current analysis using UL sample.
 
 ---
 
-#### Acknowledgement
+#### Acknowledgment
 
-The basic format of codes and scripts were inherited from [cms-hcs-run2](https://github.com/ravindkv/cms-hcs-run2). However the basic format went through additions of new features, numereous modifications, various corrections, multiple validations and comparisions with previous results [Phys. Rev D 102, 072001 (2020)](https://doi.org/10.1103/PhysRevD.102.072001) to attain the current version.
+The basic format of codes and scripts were inherited from [cms-hcs-run2](https://github.com/ravindkv/cms-hcs-run2). However the basic format went through additions of new features, numerous modifications, various corrections, multiple validations and comparisons with previous results [Phys. Rev D 102, 072001 (2020)](https://doi.org/10.1103/PhysRevD.102.072001) to attain the current version.

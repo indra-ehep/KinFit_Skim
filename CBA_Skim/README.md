@@ -2864,7 +2864,7 @@ A case study is presented below about the issues that were encountered and resol
      sys     0m4.704s
    ```
 
-2. :bus: error : Once the GRID jobs are complete, we need to check the output log files containing stderr for possible crash messages.
+2. :bus:(bus) error : Once the GRID jobs are complete, we need to check the output log files containing stderr for possible crash messages.
    ```console
      [idas@lxplus7113 condor]$ alias d='ls -l | grep "^d"'
      [idas@lxplus7113 condor]$ for i in `d | awk '{print $9}'`; do echo dir : $i ; noferr=`grep -i -E 'break|crash|segmentation' $i/log/*.stderr | wc -l` ; echo errors : $noferr ; done
@@ -2886,7 +2886,7 @@ A case study is presented below about the issues that were encountered and resol
    towards the end of the log.
    Therefore, three jobs are submitted locally and found no error in second production set.
 
-3. The hidden :gem: s : Next we try to check error messages in the in the stderr files. You can notice a flood of errors, beware.
+3. The hidden :gem:(gem)s : Next we try to check error messages in the in the stderr files. You can notice a flood of errors, beware.
    ```console
      [idas@lxplus7113 condor]$ for i in `d | awk '{print $9}'`; do echo dir : $i ; noferr=`grep -i -E 'break|crash|segmentation' $i/log/*.stderr | wc -l` ; echo errors : $noferr ; done
      dir : tmplog_CTagnPUJetID_it1_2018
