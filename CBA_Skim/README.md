@@ -8,7 +8,7 @@
    - [Processing flow](#processing-flow)
    - [Job submission scripts](#job-submission-scripts)
    - [The last bit of result](#the-last-bit-of-result)
-4. [Acknowledgement](#acknowledgement)
+4. [Acknowledgment](#acknowledgment)
 
 ## Motivation
 
@@ -65,7 +65,7 @@ Once the repository is downloaded in a `lxplus` machine, the final output of TH1
 
 
 
-3. Excute : Apply the following command to excute the `SkimAna` on a single Skim file mentioned in `HplusM120_2017.txt`.
+3. Execute : Apply the following command to execute the `SkimAna` on a single Skim file mentioned in `HplusM120_2017.txt`.
    ```console
    [idas@lxplus7113 CBA_Skim]$ ./SkimAna HplusM120 2017 input/eos/2017/HplusM120_2017.txt  0 base
    ```
@@ -203,7 +203,7 @@ Once the repository is downloaded in a `lxplus` machine, the final output of TH1
    `./SkimAna $samplename $year $skim_filelist  $skim_index $syst_type`
 
    -  `samplename` : This represents the sample names such as *TTbar*,*singleTop*. Find the full list defined as `samples_$year` at [link](condor/createJdlFiles_cbaskim_syst.py). 
-   -  `skim_filelist` : This file contains the list of Skim files for a given sample type (e.g. *TTbar*). Such input files contianing the Skim filelist can be checked at `input/eos/$year/`. Note that for 2016, the preVFP and postVFP file lists are available at,  `input/eos/2016/pre` and `input/eos/2016/post`, respectively.
+   -  `skim_filelist` : This file contains the list of Skim files for a given sample type (e.g. *TTbar*). Such input files containing the Skim filelist can be checked at `input/eos/$year/`. Note that for 2016, the preVFP and postVFP file lists are available at,  `input/eos/2016/pre` and `input/eos/2016/post`, respectively.
    -  `skim_index` : This index tells that n-th file of skim file list will be processed.
    -  `syst_type` : These are possible systematics types. See a longer list defined as `syst_$year` (or `syst_long_$year`) at [link](condor/createJdlFiles_cbaskim_syst.py). Note that, to optimize the GRID computation time for KinFit few additional systematics are processed while executing for `base` type systematics. The additional types are listed as `const char *systbase[]` in [SkimAna.C](SkimAna.C). Therefore, for all MC samples the total list of systematics comprises with `syst_$year + systbase[]`, but *TTbar*, for which it is `syst_long_$year + systbase[]`. There are no systematics required for the analysis of data (e.g. *DataMu*, *DataEle* samples), however for Data Driven QCD estimations we require results with different Isolation (Iso) cuts. This is performed during the `iso20` type systematics processing of data samples.
 
@@ -212,7 +212,7 @@ Once the repository is downloaded in a `lxplus` machine, the final output of TH1
 
 Three additional steps are required to submit multiple GRID jobs (~15K in present case).
 
-1. Intialize the GRID user token via,
+1. Initialize the GRID user token via,
    ```console
    [idas@lxplus7113 CBA_Skim]$ voms-proxy-init -voms cms
    ```
@@ -2375,13 +2375,13 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
    > :warning: **Before running the python command, you are suggested to check and modify the relevant variables of the python and bash scripts. Follow the details later at [Job submission scripts](#job-submission-scripts) subsection.**
 
 
-3. The above command will create a folder (*tmpLog* in present case) with the JDL files. You need to change to that folder and submit the jdl files.
+3. The above command will create a folder (*tmpLog* in present case) with the JDL files. You need to change to that folder and submit the .jdl file(s).
    ```console
-   [idas@lxplus755 tmpLog]$ condor_submit submitJobs_2017.jdl
+   [idas@lxplus7113 tmpLog]$ condor_submit submitJobs_2017.jdl
    Submitting job(s)...........................................................................................
    ............................................................
    4481 job(s) submitted to cluster 6977061.
-   [idas@lxplus755 tmpLog]$ condor_q   
+   [idas@lxplus7113 tmpLog]$ condor_q   
 
    -- Schedd: bigbird13.cern.ch : <137.138.156.150:9618?... @ 05/14/22 05:36:30
    OWNER    BATCH_NAME     SUBMITTED   DONE   RUN    IDLE  TOTAL JOB_IDS
@@ -2405,8 +2405,8 @@ The purpose of folders inside CBA_Skim directory is described below.
   - *input* : The list of skim files with full path.
   - *weightUL* : The scale factor (SF) and efficiency files for UL campaign. 
   - *weight* : The scale factor (SF) and efficiency files for Legacy Rereco (OLD). 
-  - *scripts* : Some utility scripts, useful in postprocessing the output files.
-  - *codes* : C++ code snippets, mostly useful in postprocessing.
+  - *scripts* : Some utility scripts, useful in post-processing the output files.
+  - *codes* : C++ code snippets, mostly useful in post-processing.
   - *syst* : The final results with systematics is stored here in latex format.
 
 ### Processing flow
@@ -2473,7 +2473,7 @@ void SkimAna::SlaveBegin(TTree *tree)
   GetArguments(); //set class attributes from input arguments
   ....
   SelectSyst();   // Setter for systematics types
-  SetTrio();      // SetTrio method sets the hadler values of three classe EventTree(), Selector(), EventPick() 
+  SetTrio();      // SetTrio method sets the handler values of three classes EventTree(), Selector(), EventPick() 
   Init(tree);     // initialize the Tree branch addresses
   ....
   if(!isData){    //For MC events
@@ -2533,7 +2533,7 @@ classDiagram
 4. **Init()** : Initialize the Tree branch addresses.
 5. **initCrossSections()** : Initialize the cross section values defined in [ScaleFactorFunction.h](interface/ScaleFactorFunction.h).
 6. **GetNumberofEvents()** : This method loops over all skim files for a given physics topology (e.g. TTbar) and obtains the total number events produced in NanoAOD. 
-7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step. All efficiency histograms (TH2 format) related to ID, Iso/Reco and trigger for muon/electron are provided to MuonSF and ElectronSF. Since, the samples are splitted in two groups of preVFP and postVFP for 2016, in all cases the objects are loaded twice for the applications of SFs and efficiencies.
+7. **LoadLeptonSF()** : The lepton SF objects [MuonSF](interface/muSF_reader.h) and [ElectronSF](interface/eleSF_reader.h) are loaded in this step. All efficiency histograms (TH2 format) related to ID, Iso/Reco and trigger for muon/electron are provided to MuonSF and ElectronSF. Since, the samples are split in two groups of preVFP and postVFP for 2016, in all cases the objects are loaded twice for the applications of SFs and efficiencies.
 
 ```mermaid
 classDiagram
@@ -2608,7 +2608,7 @@ classDiagram
 
 #### SkimAna::Notify()
 
-The Notify method is called once the input file is read by SkimAna. Various attributes and switches are also set at the time of reading the file. Most importantly for 2016 the type input file is identified at this stage for preVFP or postVFP,  thus the corresponding swtiches are set green. Another important tasks is the calculation luminosity weight which takes into account the normlization of inclusive and exclusive samples of Z/gamma + jets and W + jets. The objects to calculate the event pileup weight is loaded in this method via `LoadPU()`. The association of classes is shown below. 
+The Notify method is called once the input file is read by SkimAna. Various attributes and switches are also set at the time of reading the file. Most importantly for 2016 the type input file is identified at this stage for preVFP or postVFP,  thus the corresponding switches are set green. Another important tasks is the calculation luminosity weight which takes into account the normalization of inclusive and exclusive samples of Z/gamma + jets and W + jets. The objects to calculate the event pileup weight is loaded in this method via `LoadPU()`. The association of classes is shown below. 
 
 ```mermaid
 classDiagram
@@ -2642,7 +2642,7 @@ flowchart LR
     KinFit --> c-tagging 
 ```
 
-Several methods of SkimAna and associated classes are called to perform the seletion cuts and application of corresponding SFs for MC sample.
+Several methods of SkimAna and associated classes are called to perform the selection cuts and application of corresponding SFs for MC sample.
 The functionality of some of the important methods are mentioned below that are called in order.
 
 1. **JEC** : The up/down type JEC corrections are applied for JEC systematics via JECvariation::applyJEC().
@@ -2702,16 +2702,16 @@ The functionality of some of the important methods are mentioned below that are 
    ```
 8. **MET cut** : The application MET cut and functions for filling the related histograms are called [here](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L2637-L2658) of `SkimAna::Process()`.
 
-9. **b-jet weight** : The b-jet weights are calculated using [SkimAna::GetBtagSF_1a()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L1527) after the events are selected with atleast two b-jets.
+9. **b-jet weight** : The b-jet weights are calculated using [SkimAna::GetBtagSF_1a()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L1527) after the events are selected with at-least two b-jets.
 
-10. **b-jet histogram** : The related histograms are then filled by calling the following methods. Note that the FillBTagObs() method fills the result histograms at b-jet selection level and the associated cutflow histograms, therefore there is not explicit call for filling the cutflow hitograms like the earlier cases.
+10. **b-jet histogram** : The related histograms are then filled by calling the following methods. Note that the FillBTagObs() method fills the result histograms at b-jet selection level and the associated cutflow histograms, therefore there is not explicit call for filling the cutflow histograms like the earlier cases.
     ```cpp
       FillBTagObs();
       FillBTagWt();  
       if(systType == kBase) FillBTagControlHists();
     ```
  
-11. **KinFit selection** : The Kinematic Fitting is applied to improve the momentum four vectors of jets and leptons. This also allows to select the best combination of jets that satifies the minimum <img src="https://latex.codecogs.com/gif.latex?\chi^2" />. The application of Kinematic Fitting and filling the corresponding cutflow and result histograms are performed in FillKFCFObs(). The control histograms are filled in `FillKinFitControlHists()`.
+11. **KinFit selection** : The Kinematic Fitting is applied to improve the momentum four vectors of jets and leptons. This also allows to select the best combination of jets that satisfies the minimum <img src="https://latex.codecogs.com/gif.latex?\chi^2" />. The application of Kinematic Fitting and filling the corresponding cutflow and result histograms are performed in FillKFCFObs(). The control histograms are filled in `FillKinFitControlHists()`.
     ```cpp
       FillKFCFObs();
       if(systType == kBase) FillKinFitControlHists();
@@ -2741,30 +2741,304 @@ The important settings of createJdlFiles_cbaskim_syst.py are explained below.
    ```
    will store the necessary files for job submission under "tmpLog".
    
-2. The X509_USER_PROXY has to be defined for a directory in AFS such as,
+2. The X509_USER_PROXY has to be defined (in terminal or ~/.bashrc) pointing to the filepath of x509up in AFS.
    ```console
      export X509_USER_PROXY=/afs/cern.ch/user/i/idas/xx/yy/zz/x509up
    ```
-   to proper application
+   Then will allow the correct implementation of following lines of python script.
    ```python
      x509userproxy = $ENV(X509_USER_PROXY)\n\
      use_x509userproxy = true\n\
    ```
-   of the script.
 
-   
-
-3. Set the `MaxRuntime` propoerly according to your need (See batch job submit documentation at [link](https://batchdocs.web.cern.ch/local/submit.html)). It has been observed that for TTbar sample the GRID job can process for ~15 hours.
+3. Set the `MaxRuntime` properly according to your need (See batch job submit documentation at [link](https://batchdocs.web.cern.ch/local/submit.html) for details) in the python script. It has been observed that for TTbar sample the GRID job can process for ~15 hours.
    ```python
      +MaxRuntime = 7200\n\
    ```
 
-4. 
+4. The output log files at the end of the job will be stored under the "log" folder of  `jdlDir = 'tmpLog'` as defined in
+   ```python
+     Output = %s/log_$(cluster)_$(process).stdout\n\
+     Error  = %s/log_$(cluster)_$(process).stderr\n\
+     Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
+   ```
+
+5. The output root files are saved in folder defined as condorOutDir and condorOutDir1 in the python script.
+   ```python
+     condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID"
+     condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID"
+   ```
+   > :palm: Note that the same paths are need to be defined in bash script [runCBASkim.sh](condor/runCBASkim.sh) as shown below.
+     ```console
+	condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID
+     	condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID
+     	.....
+      	xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
+      	xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
+      ```
+   Note that in current format the file containing the tree and histogram objects are stored in condorOutDir and condorOutDir1, respectively.
+   
+The above settings are sufficient to create and submit GRID jobs for 2017 and 2018 as shown above in [GRID job submission](#grid-job-submission).
+
+
+However, in case of 2016 few additional changes are to be applied in the python and bash scripts.
+
+ - Modify the output root file dir to append "pre" for preVFP as shown below in python script,  
+   ```python
+     condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID/pre"
+     condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID/pre"
+   ```
+   and bash script
+   ```console
+     condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID/pre
+     condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID/pre
+   ```
+ - Modify the default path of input filelist of skim files 
+   ```python
+     noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
+     if nJob==1:
+         run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, fnamestart, year, syst)
+     else:
+         run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, fnamestart, year, syst, nJob)
+   ```
+   to include "pre" in python script as shown below,
+   ```python
+     noflines = subprocess.Popen('wc -l ../input/eos/%i/pre/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
+     if nJob==1:
+         run_command =  'Arguments  = %s %s input/eos/%i/pre/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, fnamestart, year, syst)
+     else:
+         run_command =  'Arguments  = %s %s input/eos/%i/pre/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, fnamestart, year, syst, nJob)
+   ```
+ - Modify `jdlDir = 'tmpLog'` to `jdlDir = 'tmpLog_2016_pre'` in python script
+ - Modify `for year in [2017,2018]:` to `for year in [2016]:` in python script
+
+Now you can apply the following commands to submit the jobs for 2016 preVFP.
+```console
+  [idas@lxplus7113 condor]$ python createJdlFiles_cbaskim_syst.py
+  [idas@lxplus7113 condor]$ cd tmpLog_2016_pre
+  [idas@lxplus7113 tmpLog_2016_pre]$ condor_submit submitJobs_2016.jdl
+```
+
+Repeat the similar process for postVFP by changing "pre" to "post" in above mentioned cases.
 
 ### The last bit of result
 
+One of challenges in HEP analysis is securing the last bit of result as it might be lost and goes unnoticed in the result.
+There is no single prescriptions about how to address those issues.
+The GRID jobs can encounter various issues and a large part of them can be addressed using the troubleshooting guides of [link1](https://htcondor.readthedocs.io/en/latest/users-manual/index.html), [link2](https://batchdocs.web.cern.ch/troubleshooting/commonexceptions.html) and similar web resources.  
+
+We have to perform various checks and validations to ascertain that we have completed the analysis on full dataset and MC samples. But who knows ? :wink:
+
+A case study is presented below about the issues that were encountered and resolved during the most recent production (eve of Buddha Purnima, 2022) dataset.
+
+1. Sleeping Buddha : It is has noticed that the jobs are is RUNNING state for a very long time.
+   ```console
+     [idas@lxplus7113 condor]$ condor_q -nobatch
+
+     -- Schedd: bigbird13.cern.ch : <137.138.156.150:9618?... @ 05/14/22 03:45:26
+      ID          OWNER            SUBMITTED     RUN_TIME ST PRI SIZE  CMD
+     6964986.1607 idas            5/12 08:43   1+17:03:28 R  0   440.0 runCBASkim.sh 2018 TTbar input/eos/2018/hdampup_TTbar_2018.txt 54 hdampup
+     6966285.701  idas            5/12 10:45   1+03:46:38 R  0   733.0 runCBASkim.sh 2017 TTbar input/eos/2017/TTbar_2017.txt 106 iso20
+     6966664.606  idas            5/12 10:58   0+22:50:52 R  0   440.0 runCBASkim.sh 2016 TTbar input/eos/2016/post/hdampdown_TTbar_2016.txt 11 hdampdown
+     .....
+     .....
+   ```
+   In order to have further details, I logged in to a node using `condor_ssh_to_job 6964986.1607` and then apply `top -u idas` to know the process status. 
+   It shows that the CPU usage of corresponding executable i.e. "./SkimAna" is 0%.
+   However, on that same node other "./SkimAna" executables are running to ~100% CPU usage.
+   So that job 6964986.1607 seemed to go to sleeping mode. 
+   I wait for few more hours before terminating the job.
+   Three such cases were noticed at the end of total 14885 jobs, which are locally processed using the following command.
+   ```console
+     [idas@lxplus724 CBA_Skim]$ time ./SkimAna TTbar 2018 input/eos/2018/hdampup_TTbar_2018.txt 54 hdampup
+     .....
+     .....
+     Info in <TSelector::SlaveTerminate>: sample : TTbar, year : 2018, mode :
+     DataMu & 1.2551e+06 & 1.1027e+06 & 637446.0 & 587915.0 & 324500.0 & 261277.0 & 257389.0 & 132967.0 & 42753.0 \\\hline
+     WtMu & 137639.8 & 118109.9 & 68036.8 & 62762.6 & 32197.0 & 25840.2 & 26143.5 & 14622.0 & 4068.0 \\\hline
+     DataEle & 898084.0 & 754257.0 & 440935.0 & 404990.0 & 221967.0 & 175485.0 & 172843.0 & 89077.0 & 28834.0 \\\hline
+     WtEle & 98758.7 & 77498.9 & 45182.2 & 41505.3 & 21126.6 & 16623.4 & 16813.4 & 9382.1 & 2635.9 \\\hline
+
+     real    174m39.997s
+     user    173m42.254s
+     sys     0m4.704s
+   ```
+
+2. :bus: error : Once the GRID jobs are complete, we need to check the output log files containing stderr for possible crash messages.
+   ```console
+     [idas@lxplus7113 condor]$ alias d='ls -l | grep "^d"'
+     [idas@lxplus7113 condor]$ for i in `d | awk '{print $9}'`; do echo dir : $i ; noferr=`grep -i -E 'break|crash|segmentation' $i/log/*.stderr | wc -l` ; echo errors : $noferr ; done
+     dir : tmplog_CTagnPUJetID_it1_2018
+     errors : 0
+     dir : tmplog_CTagnPUJetID_it2_2017
+     errors : 0
+     dir : tmplog_CTagnPUJetID_it3_pre_2016
+     errors : 2
+     dir : tmplog_CTagnPUJetID_it4_post_2016
+     errors : 1
+   ```
+   A detail look into tmplog_CTagnPUJetID_it3_pre_2016 shows,
+   ```console
+   [idas@lxplus7113 log]$ grep -i -E 'break|crash|segmentation' *.stderr
+   log_6966581_178.stderr: *** Break *** bus error
+   log_6966581_350.stderr: *** Break *** bus error
+   ```
+   towards the end of the log.
+   Therefore, three jobs are submitted locally and found no error in second production set.
+
+3. The hidden :gem: s : Next we try to check error messages in the in the stderr files. You can notice a flood of errors, beware.
+   ```console
+     [idas@lxplus7113 condor]$ for i in `d | awk '{print $9}'`; do echo dir : $i ; noferr=`grep -i -E 'break|crash|segmentation' $i/log/*.stderr | wc -l` ; echo errors : $noferr ; done
+     dir : tmplog_CTagnPUJetID_it1_2018
+     errors : 33472
+     dir : tmplog_CTagnPUJetID_it2_2017
+     errors : 34628
+     dir : tmplog_CTagnPUJetID_it3_pre_2016
+     errors : 19804
+     dir : tmplog_CTagnPUJetID_it4_post_2016
+     errors : 21072
+   ```
+   Next we check for each production year and pre/post periods. We have spotted that most of them are known error messages.
+   ```console    
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr | head
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it1_2018/log
+     log_6964986_1001.stderr:208:Error in <TDecompLU::DecomposeLUCrout>: matrix is singular
+     log_6964986_1001.stderr:209:Error in <TDecompLU::InvertLU>: matrix is singular, 0 diag elements < tolerance of 2.2204e-16
+     log_6964986_1001.stderr:226:Error in <TDecompLU::DecomposeLUCrout>: matrix is singular
+     log_6964986_1001.stderr:227:Error in <TDecompLU::InvertLU>: matrix is singular, 0 diag elements < tolerance of 2.2204e-16
+     log_6964986_1001.stderr:228:Error in <TDecompLU::DecomposeLUCrout>: matrix is singular
+     log_6964986_1001.stderr:229:Error in <TDecompLU::InvertLU>: matrix is singular, 0 diag elements < tolerance of 2.2204e-16
+   ```
+   The above error messages were printed from KinFit due to the failure of matrix inversion. 
+   These errors are skipped as those fits will not converge and therefore has no effect on result. 
+   The next major problems are `unknown branch` addresses.
+   ```console    	   
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v "TDecompLU" | wc -l
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it1_2018/log
+     28464
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v "TDecompLU" | head
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it1_2018/log
+     log_6964986_3386.stderr:9:Error in <TTree::SetBranchStatus>: unknown branch -> nLHEScaleWeight
+     log_6964986_3386.stderr:10:Error in <TTree::SetBranchAddress>: unknown branch -> nLHEScaleWeight
+     log_6964986_3386.stderr:12:Error in <TTree::SetBranchStatus>: unknown branch -> LHEScaleWeight
+     log_6964986_3386.stderr:13:Error in <TTree::SetBranchAddress>: unknown branch -> LHEScaleWeight
+     log_6964986_3386.stderr:14:Error in <TTree::SetBranchStatus>: unknown branch -> nLHEPdfWeight
+     log_6964986_3386.stderr:15:Error in <TTree::SetBranchAddress>: unknown branch -> nLHEPdfWeight
+     log_6964986_3386.stderr:17:Error in <TTree::SetBranchStatus>: unknown branch -> LHEPdfWeight
+     log_6964986_3386.stderr:18:Error in <TTree::SetBranchAddress>: unknown branch -> LHEPdfWeight
+   ```
+   It has been checked earlier that the origin of the missing branches are due to NanoAOD files, therefore they are not present in Skim files.
+   We also neglect these errors as we do not use them in main analysis part of the code except for some checks in `void SkimAna::TheoWeights()`.
+   Next we also skip the second type of error and found no error for 2018. 
+   After changing to 2017 a new type of error is discovered due to file closing.
+   ```console    	   
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v -E "TDecompLU|unknown\ branch" | wc -l
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it1_2018/log
+     0
+     [idas@lxplus7113 log]$ cd ../../tmplog_CTagnPUJetID_it2_2017/log/
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v -E "TDecompLU|unknown\ branch" | wc -l
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it2_2017/log
+     2
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v -E "TDecompLU|unknown\ branch" | head
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it2_2017/log
+     log_6966285_3295.stderr:96:Error in <TNetXNGFile::Close>: [ERROR] Socket error
+     log_6966285_3719.stderr:96:Error in <TNetXNGFile::Close>: [ERROR] Socket error
+   ```
+   The files with problems are reproduced again by local processing.
+   No new errors are found for 2016 preVFP, as the error of below message had already been taken care of in :bus: error.
+   ```console    	   
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v -E "TDecompLU|unknown\ branch" | wc -l
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it3_pre_2016/log
+     4
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v -E "TDecompLU|unknown\ branch" | head
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it3_pre_2016/log
+     log_6966581_178.stderr:278: *** Break *** bus error
+     log_6966581_178.stderr:279:condor_exec.exe: line 40:   252 Bus error               ./SkimAna $sample $year $input $index $syst
+     log_6966581_350.stderr:265: *** Break *** bus error
+     log_6966581_350.stderr:266:condor_exec.exe: line 40:   252 Bus error               ./SkimAna $sample $year $input $index $syst
+   ```
+   However for 2016 postVFP some log file shows new type of errors.
+   ```console
+     [idas@lxplus7113 log]$ pwd ; grep -i -n 'error' *.stderr |  grep -v -E "TDecompLU|unknown\ branch" | head
+     /afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/condor/tmplog_CTagnPUJetID_it4_post_2016/log
+     log_6966664_1815.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_1903.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_1991.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_2079.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_2167.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_2255.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_2343.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_2431.stderr:137:Error in <TLeafB::ReadBasket>: leaf: 'GenJet_hadronFlavour' len: 12308 max: 23
+     log_6966664_58.stderr:325: *** Break *** bus error
+     log_6966664_58.stderr:326:condor_exec.exe: line 40:   252 Bus error               ./SkimAna $sample $year $input $index $syst
+   ```   
+   Still, no new production has been tried as all files (log_6966664_1815.stderr, log_6966664_1903.stderr etc.) found to be of type MCQCD and we use Data Driven QCD results in final result.
+   ```console
+     [idas@lxplus7113 log]$ grep -i -n 'error' *.stderr | grep -v -E "TDecompLU|unknown\ branch" | cut -f 1 -d '.' > /tmp/fl.txt
+     [idas@lxplus7113 log]$ while read line ; do file=$line.stdout ; echo file : $file ; grep "All\ arguements" $file ; done < /tmp/fl.txt 
+     file : log_6966664_1815.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 base
+     file : log_6966664_1903.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 jecup
+     file : log_6966664_1991.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 jecdown
+     file : log_6966664_2079.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 jerup
+     file : log_6966664_2167.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 jerdown
+     file : log_6966664_2255.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 iso20
+     file : log_6966664_2343.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 metup
+     file : log_6966664_2431.stdout
+     All arguements: 2016 MCQCDMu input/eos/2016/post/MCQCDMu_2016.txt 3 metdown
+     file : log_6966664_58.stdout
+     All arguements: 2016 TTbar input/eos/2016/post/TTbar_2016.txt 58 base
+     file : log_6966664_58.stdout
+     All arguements: 2016 TTbar input/eos/2016/post/TTbar_2016.txt 58 base
+   ```
+
+4. Hide-n-seek : We have noted down the number of jobs submitted for each production year and pre/post periods. 
+   During the merging of histograms at the final stage, it is checked whether the number of produced files matches with number of expected files or not.
+   In case of missing file, it is reported.
+   ```console
+     Sample is  TTbar
+     Adding files for sample: TTbar and syst base
+     sample : TTbar | syst : base | expected : 45 | found : 45
+     Adding files for sample: TTbar and syst jecup
+     sample : TTbar | syst : jecup | expected : 45 | found : 45
+     Adding files for sample: TTbar and syst jecdown
+     sample : TTbar | syst : jecdown | expected : 45 | found : 45
+     Adding files for sample: TTbar and syst jerup
+     sample : TTbar | syst : jerup | expected : 45 | found : 44
+     Nof missing files : 1 for syst : jerup
+     File : /eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID/pre/2016/TTbar_hist_jerup_2of45.root is missing.
+     Adding files for sample: TTbar and syst jerdown
+     sample : TTbar | syst : jerdown | expected : 45 | found : 45
+     Adding files for sample: TTbar and syst iso20
+     sample : TTbar | syst : iso20 | expected : 45 | found : 45
+     Adding files for sample: TTbar and syst metup
+     sample : TTbar | syst : metup | expected : 45 | found : 45
+     Adding files for sample: TTbar and syst metdown
+     sample : TTbar | syst : metdown | expected : 45 | found : 45
+     Adding files for sample: TTbar and syst cp5up
+     sample : TTbar | syst : cp5up | expected : 20 | found : 20
+     Adding files for sample: TTbar and syst cp5down
+     sample : TTbar | syst : cp5down | expected : 21 | found : 21
+     Adding files for sample: TTbar and syst hdampup
+     sample : TTbar | syst : hdampup | expected : 19 | found : 19
+     Adding files for sample: TTbar and syst hdampdown
+     sample : TTbar | syst : hdampdown | expected : 20 | found : 20
+     Adding files for sample: TTbar and syst mtopup
+     sample : TTbar | syst : mtopup | expected : 25 | found : 25
+     Adding files for sample: TTbar and syst mtopdown
+     sample : TTbar | syst : mtopdown | expected : 21 | found : 21
+     Adding files for sample TTbar 
+   ```
+   The missing file is produced by processing the code locally.
+
 
 ---
-#### Acknowledgement
+#### Acknowledgment
 
 The structure of central code `SkimAna` is inspired by [h1Analysis](https://root.cern/doc/master/h1analysis_8C.html), a ROOT example to demonstrate efficient analysis of data of H1 collaboration of DESY.
