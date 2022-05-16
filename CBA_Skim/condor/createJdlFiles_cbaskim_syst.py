@@ -60,14 +60,15 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-if not os.path.exists("tmplog_CTagnPUJetID_it1/log"):
-    os.makedirs("tmplog_CTagnPUJetID_it1/log")
+jdlDir = 'tmpLog'
+if not os.path.exists("%s/log"%jdlDir):
+    os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
-tarFile = "tmplog_CTagnPUJetID_it1/CBA_Skim.tar.gz"
+tarFile = "%s/CBA_Skim.tar.gz"%jdlDir
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
-os.system("cp runCBASkim.sh tmplog_CTagnPUJetID_it1/")
+os.system("cp runCBASkim.sh %s/"%jdlDir)
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -86,22 +87,18 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmplog_CTagnPUJetID_it1/condorSubmit.sh','w')
-#for year in [2017,2018]:
-#for year in [2016]:
-#for year in [2017]:
-for year in [2018]:
+subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
+for year in [2017,2018]:
+#for year in [2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmplog_CTagnPUJetID_it1/%s'%jdlName,'w')
+    jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
     condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID"
-    os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID"
+    os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
-    #condorOutDir="/cms/store/user/idas/Output/cms-hcs-run2/CBA_Skim_Syst_jet_tightID"
-    #os.system("xrdfs root://se01.indiacms.res.in/ mkdir -p %s/%s"%(condorOutDir, year))
     jdlFile.write("X=$(step)\n")
     
     for sample in sampleList:

@@ -2705,24 +2705,25 @@ The functionality of some of the important methods are mentioned below that are 
 9. **b-jet weight** : The b-jet weights are calculated using [SkimAna::GetBtagSF_1a()](https://github.com/indra-ehep/KinFit_Skim/blob/73f1ac1e1d638bddd59a5b35dcd00262d919405a/CBA_Skim/SkimAna.C#L1527) after the events are selected with atleast two b-jets.
 
 10. **b-jet histogram** : The related histograms are then filled by calling the following methods. Note that the FillBTagObs() method fills the result histograms at b-jet selection level and the associated cutflow histograms, therefore there is not explicit call for filling the cutflow hitograms like the earlier cases.
-   ```cpp
-     FillBTagObs();
-     FillBTagWt();  
-     if(systType == kBase) FillBTagControlHists();
-   ```
+    ```cpp
+      FillBTagObs();
+      FillBTagWt();  
+      if(systType == kBase) FillBTagControlHists();
+    ```
  
 11. **KinFit selection** : The Kinematic Fitting is applied to improve the momentum four vectors of jets and leptons. This also allows to select the best combination of jets that satifies the minimum <img src="https://latex.codecogs.com/gif.latex?\chi^2" />. The application of Kinematic Fitting and filling the corresponding cutflow and result histograms are performed in FillKFCFObs(). The control histograms are filled in `FillKinFitControlHists()`.
-   ```cpp
-     FillKFCFObs();
-     if(systType == kBase) FillKinFitControlHists();
-   ```    
+    ```cpp
+      FillKFCFObs();
+      if(systType == kBase) FillKinFitControlHists();
+    ```
+        
     A standalone execution of Kinematic Fitting has been explained [here](Standalone/README.md) for testing purpose.
 
 12. **c-jet selection** : The c-jet selection and categorization of events for exclusive and inclusive tagging is carried in the following methods.
-   ```cpp
-     FillCTagObs();	    
-     if(systType == kBase) FillCTagControlHists();   
-   ```    
+    ```cpp
+      FillCTagObs();	    
+      if(systType == kBase) FillCTagControlHists();   
+    ```    
 
 #### SkimAna::SlaveTerminate()
 
