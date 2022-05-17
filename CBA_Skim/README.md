@@ -2727,7 +2727,7 @@ The functionality of some of the important methods are mentioned below that are 
 
 
 
-> The list of methods that are called by `SkimAna::Process()` is shown in the picture below.
+> **The list of methods that are called by `SkimAna::Process()` is shown in the picture below.**
 
 ![SkimAna::Process()](doc/figs/class_skim_ana_a60545b7777c47a7e4de2dfa8d69e2949_cgraph.png "SkimAna::Process()")
 
@@ -2837,7 +2837,7 @@ We have to perform various checks and validations to ascertain that we have comp
 
 A case study is presented below about the issues that were encountered and resolved during the most recent production (eve of Buddha Purnima, 2022) dataset.
 
-1. Sleeping Buddha : It is has noticed that the jobs are is RUNNING state for a very long time.
+1. Sleeping Buddha : It has been noticed that some jobs are in RUNNING state for very long time.
    ```console
      [idas@lxplus7113 condor]$ condor_q -nobatch
 
@@ -2849,12 +2849,12 @@ A case study is presented below about the issues that were encountered and resol
      .....
      .....
    ```
-   In order to have further details, I logged in to a node using `condor_ssh_to_job 6964986.1607` and then apply `top -u idas` to know the process status. 
+   In order to have further details, we logged in to a node using `condor_ssh_to_job 6964986.1607` and then apply `top -u idas` to know the process status. 
    It shows that the CPU usage of corresponding executable i.e. "./SkimAna" is 0%.
-   However, on that same node other "./SkimAna" executables are running to ~100% CPU usage.
-   So that job 6964986.1607 seemed to go to sleeping mode. 
-   I wait for few more hours before terminating the job.
-   Three such cases were noticed at the end of total 14885 jobs, which are locally processed using the following command.
+   However, on that same computing node other "./SkimAna" executables corresponding to different Job IDs are running with ~100% CPU usage.
+   So the job 6964986.1607 seemed to be running in sleeping mode (may be with lower priority ?). 
+   We wait for few more hours before terminating the job.
+   Three such cases were noticed at the end of total 14885 jobs. The three jobs are locally processed using "./SkimAna".
    ```console
      [idas@lxplus724 CBA_Skim]$ time ./SkimAna TTbar 2018 input/eos/2018/hdampup_TTbar_2018.txt 54 hdampup
      .....
@@ -2870,7 +2870,7 @@ A case study is presented below about the issues that were encountered and resol
      sys     0m4.704s
    ```
 
-2. :bus:(bus) error : Once the GRID jobs are complete, we need to check the output log files containing stderr for possible crash messages.
+2. :bus:(bus) error : Once the GRID jobs are complete, we need to check the stderr log files for possible crash messages.
    ```console
      [idas@lxplus7113 condor]$ alias d='ls -l | grep "^d"'
      [idas@lxplus7113 condor]$ for i in `d | awk '{print $9}'`; do echo dir : $i ; noferr=`grep -i -E 'break|crash|segmentation' $i/log/*.stderr | wc -l` ; echo errors : $noferr ; done
