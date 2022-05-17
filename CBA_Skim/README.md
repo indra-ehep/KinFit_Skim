@@ -2725,6 +2725,10 @@ The functionality of some of the important methods are mentioned below that are 
       if(systType == kBase) FillCTagControlHists();   
     ```    
 
+The list of methods that are called by `SkimAna::Process()` is shown in the picture below (click to expand).
+
+![SkimAna::Process()](doc/figs/class_skim_ana_a60545b7777c47a7e4de2dfa8d69e2949_cgraph.png "SkimAna::Process()")
+
 #### SkimAna::SlaveTerminate()
 
 The output files with tree and histograms objects are saved at this stage. The object pointers are deleted in this method.
