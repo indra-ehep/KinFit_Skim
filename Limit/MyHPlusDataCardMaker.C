@@ -13,7 +13,9 @@
 //make data card for each mass
 //----------------------------------------//
 
-double totLumi = 35.9;
+double totLumi = 35.9; //2016
+//double totLumi = 41.5; // 2017
+//double totLumi = 59.7; //2018
 void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppComent", 
         TString histSubDir_="KinFit", 
         TString histName="mjj_kfit", 
@@ -250,14 +252,14 @@ void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   //cout<<baseDir+"/"+histSubDir+"/"+histName<<endl;
   TH1F* qcd_dd = DC.readWriteHisto(fQCD_dd, baseDir+"/"+histSubDir, histName, sf_qcd, fout, fTT, "qcd", true);
   double stat_unc_qcd = DC.getStatUnc(qcd_dd, 0);
-  cout<<"qcd stat unc: "<<stat_unc_qcd<<endl;
-  cout<<"qcd = "<<qcd_dd->Integral()<<endl;
+  // cout<<"qcd stat unc: "<<stat_unc_qcd<<endl;
+  // cout<<"qcd = "<<qcd_dd->Integral()<<endl;
   double qcd_unc = DC.getSysUncQcd(fData, fTT, fST, fWJ, fDY,  fVV, histSubDir_+"/", histName, false);
 
   //Data
   double sf_data = 1.0; //should be 1, always
   TH1F* data_obs = DC.readWriteHisto(fData, baseDir+"/"+histSubDir, histName, sf_data, fout, fTT, "data_obs", true);
-  cout<<"================: "<<data_obs->Integral()<<endl;
+  cout<<"data_obs================: "<<data_obs->Integral()<<endl;
 
   //wh
   //double sf_wh = 1.0;
@@ -769,8 +771,8 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   baseDir = "QCDdd";
   TH1F* qcd_dd = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd", true);
   double stat_unc_qcd = DC.getStatUnc(qcd_dd, 0);
-  cout<<"qcd stat unc: "<<stat_unc_qcd<<endl;
-  cout<<"qcd = "<<qcd_dd->Integral()<<endl;
+  // cout<<"qcd stat unc: "<<stat_unc_qcd<<endl;
+  // cout<<"qcd = "<<qcd_dd->Integral()<<endl;
   //double qcd_unc = DC.getSysUncQcd(fData, fTT, fST, fWJ, fDY,  fVV, histSubDir_+"/", histName, false);
   cout << "histname : "<<histName << endl;  
   double qcd_unc = DC.getSysUncQcdNano(isMuChannel, fData, fTT, fST, fWJ, fDY,  fVV, histSubDir_+"/", histName, false);
@@ -779,12 +781,13 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   double sf_data = 1.0; //should be 1, always
   baseDir = (isMuChannel) ? "DataMu" : "DataEle";
   TH1F* data_obs = DC.readWriteHisto(fData, baseDir+"/base"+histSubDir, histName, sf_data, fout, fTT, "data_obs", true);
-  cout<<"================: "<<data_obs->Integral()<<endl;
+  cout<<":data_obs ================: "<<data_obs->Integral()<<endl;
 
   //wh
   double sf_wh = 1.0;
-  //double sf_wh = 1.0/0.12155; //2*0.065*(1-0.065) 
+  //double sf_wh = 1.0/2.0;
   baseDir = Form("HplusM%03d",mass);
+  //baseDir = Form("HplmiM%03d",mass);
   TH1F* wh = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label, true);
   TH1F* wh_JESUp = DC.readWriteHisto(fWH, baseDir+"/jecup"+histSubDir, histName, sf_wh, fout, fTT, label+"_JESUp", true);
   TH1F* wh_JESDown = DC.readWriteHisto(fWH, baseDir+"/jecdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_JESDown", true);

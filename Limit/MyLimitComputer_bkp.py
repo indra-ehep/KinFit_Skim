@@ -30,26 +30,21 @@ def moveDataCards(CHANNEL_NAME, HIST_ARRAY, MASS, CAT_DIR, LIMIT_DIR):
 def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     t2wDataCardName = "t2w_"+COMB_DATACARD_NAME.replace(".txt",".root")
     print("t2wDataCardName : %s, COMB_DATACARD_NAME : %s"%(t2wDataCardName,COMB_DATACARD_NAME))
-    command1 = 'text2workspace.py '+COMB_DATACARD_NAME+' -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs -o '+t2wDataCardName
-    print("command1 : %s"%command1)
     execme('text2workspace.py '+COMB_DATACARD_NAME+' -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs -o '+t2wDataCardName )
     #Original
-    command2 = 'combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
-    print("command2 : %s"%command2)
-    execme('combine --rAbsAcc 0.000001  '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
-    #execme('combine '+t2wDataCardName+' -M HybridNew  --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    execme('combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
     #Blind
     #execme('combine --rAbsAcc 0.000001 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
     #Frequentists
-    #execme('combine --rAbsAcc 0.000001 '+t2wDataCardName+'  --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    #execme('combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M Significance --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
 
-    #FitDiagnostics
-    # execme('combine '+t2wDataCardName+' -M FitDiagnostics --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0,0.10 --plots --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --mass '+str(MASS)+' --name _hcs_13TeV_fitdiag_'+CHANNEL_NAME+'_'+CAT_DIR)
-    # execme('python /Data/CMS-Analysis/NanoAOD-Analysis/Analysis/Analysis/mlfit/diffNuisances.py -a fitDiagnostics_hcs_13TeV_fitdiag_'+CHANNEL_NAME+'_'+CAT_DIR+'.root --poi=BR -f latex -g fitDiagTest > fitdiag.tex')
-    # execme('mv *.png combine_logger.out fitdiag.tex *.pdf local/'+CHANNEL_NAME+'/'+CAT_DIR+'/Mass'+str(MASS))
+    execme('combine '+t2wDataCardName+' -M FitDiagnostics --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0,0.10 --plots --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --mass '+str(MASS)+' --name _hcs_13TeV_fitdiag_'+CHANNEL_NAME+'_'+CAT_DIR)
+    #execme('python /Data/CMS-Software/local/CMSSW_10_2_13/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py -a fitDiagnostics_hcs_13TeV_fitdiag_'+CHANNEL_NAME+'_'+CAT_DIR+'.root --poi=BR -f latex -g fitDiagTest.root > fitdiag.tex')
+    execme('python /Data/CMS-Analysis/NanoAOD-Analysis/Analysis/Analysis/mlfit/diffNuisances.py -a fitDiagnostics_hcs_13TeV_fitdiag_'+CHANNEL_NAME+'_'+CAT_DIR+'.root --poi=BR -f latex -g fitDiagTest.pdf > fitdiag.tex')
+    execme('mv *.png combine_logger.out fitdiag.tex local/'+CHANNEL_NAME+'/'+CAT_DIR+'/Mass'+str(MASS))
     if(isGOF):
-        #execme('combine '+t2wDataCardName+' -M GoodnessOfFit --algo saturated --mass '+str(MASS)+' --name _hcs_13TeV_data_'+CHANNEL_NAME+'_'+CAT_DIR)
-        ## execme('combine '+t2wDataCardName+' -M GoodnessOfFit --algo saturated -t 1000 -s -1 --mass '+str(MASS)+' --name _hcs_13TeV_toy_'+CHANNEL_NAME+'_'+CAT_DIR)
+        execme('combine '+t2wDataCardName+' -M GoodnessOfFit --algo saturated --mass '+str(MASS)+' --name _hcs_13TeV_data_'+CHANNEL_NAME+'_'+CAT_DIR)
+        execme('combine '+t2wDataCardName+' -M GoodnessOfFit --algo saturated -t 500 -s -1 --mass '+str(MASS)+' --name _hcs_13TeV_toy_'+CHANNEL_NAME+'_'+CAT_DIR)
         pass
 
 #---------------------------------------------------
@@ -99,7 +94,6 @@ def calcCombinedLimit(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, CAT_DIR, MAS
     COMB_HIST_NAME = '_'.join(HIST_ARRAY_)
     for MASS in range(len(MASS_ARRAY)):
         LIMIT_DIR = "local/"+COMB_CHANNEL_NAME+"/"+CAT_DIR+"/"+"Mass"+str(MASS_ARRAY[MASS])
-        print "Mass : %d, %s"%(MASS, LIMIT_DIR)
         if not isCondSub: execme('mkdir -p '+LIMIT_DIR)
         getCardsToBeCombined_ = getCardsToBeCombined(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, MASS_ARRAY[MASS])
         sortCardsForCombine_ = sortCardsForCombine(getCardsToBeCombined_, CHANNEL_ARRAY, HIST_ARRAY, MASS)
@@ -107,8 +101,6 @@ def calcCombinedLimit(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, CAT_DIR, MAS
         COMB_DATACARD_NAME = 'combine_datacard_hcs_13TeV_'+COMB_CHANNEL_NAME+"_"+CAT_DIR+"_WH"+str(MASS_ARRAY[MASS])+".txt"
         if len(CHANNEL_ARRAY)>1 or len(HIST_ARRAY)>1:
             execme('combineCards.py '+sortCardsForCombine_+' > '+COMB_DATACARD_NAME)
-            command0 = 'combineCards.py '+sortCardsForCombine_+' > '+COMB_DATACARD_NAME
-            print("command0 : %s"%command0)
         else: execme('cp '+sortCardsForCombine_+' '+COMB_DATACARD_NAME)
         calcLimits(COMB_CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS_ARRAY[MASS], isGOF)
         if not isCondSub: moveDataCards(COMB_CHANNEL_NAME, HIST_ARRAY, MASS_ARRAY[MASS], CAT_DIR, LIMIT_DIR)
@@ -131,8 +123,8 @@ if __name__=="__main__":
     
     hist_array_Inc = []
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
-    #hist_array_Inc.append(["", "_kb_mjj_ele"])
-    hist_array_Inc.append(["", "_kb_mjj_mu"])
+    hist_array_Inc.append(["", "_kb_mjj_ele"])
+    #hist_array_Inc.append(["", "_kb_mjj_mu"])
     
     hist_array_CTagL = []
     hist_array_CTagL.append(["KinFit", "mjj_kfit_CTagIncL"])

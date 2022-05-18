@@ -65,13 +65,13 @@ class MyHPlusDataCardMaker{
 TH1F*  MyHPlusDataCardMaker:: getHisto(TFile *inRootFile, TString histPath, TString histName, TFile *fTT, double sf=1.0){
   TH1F* hist;
   TString fullPath = histPath+histName;
-  cout<<"inRootFile : " << inRootFile->GetName() << ",histPath : " << histPath << ", histName : " << histName << endl;
+  //cout<<"\n inRootFile : " << inRootFile->GetName() << "\n histPath : " << histPath << ", histName : " << histName  <<"\n fullPath : " << fullPath << endl;
   string exception_msg (inRootFile->GetName()+TString("/")+fullPath+", does not exist");
   try{
     if(!(inRootFile->Get(fullPath)))
        throw  exception_msg.c_str();
   }catch (const char *e){
-    ///cout<<"WARNING:"<<e<<endl;
+    cout<<"WARNING:"<<e<<endl;
   }
   /* try{ */
   /*   if(!(fTT->Get(fullPath))) */
@@ -81,12 +81,22 @@ TH1F*  MyHPlusDataCardMaker:: getHisto(TFile *inRootFile, TString histPath, TStr
   /*   exit(0); */
   /* } */
   if(!(inRootFile->Get(fullPath))){
-    //hist = (TH1F*)(fTT->Get(fullPath))->Clone(histName);
+    hist = (TH1F*)(fTT->Get(fullPath))->Clone(histName);
+    hist->Reset();
+    //cout << "Reading hist from " << fTT->GetName() << endl;
+    //hist = (TH1F*)(inRootFile->Get(fullPath))->Clone(histName);
+  }else {
     hist = (TH1F*)(inRootFile->Get(fullPath))->Clone(histName);
-    //hist->Reset();
-  }else 
-    hist = (TH1F*)(inRootFile->Get(fullPath))->Clone(histName);
-
+    //cout << "Reading hist from " << inRootFile->GetName() << endl;
+  }
+  //printf("MyHPlusDataCardMaker:: getHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
+  //if(hist->GetEntries()<300){
+  /* TString filename = inRootFile->GetName(); */
+  /* if(filename.Contains("all_QCDdd.root")){ */
+  /*   cout<<"WARNING : Hist " << hist->GetName() <<" of file : " << inRootFile->GetName() << " has low statistics" << endl; */
+  /*   hist->Reset(); */
+  /* } */
+  
   hist->Scale(sf);
   return hist;
 }
@@ -94,8 +104,10 @@ TH1F*  MyHPlusDataCardMaker:: getHisto(TFile *inRootFile, TString histPath, TStr
 //Read histos from input file. Write to another file.
 TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite = false, double min_thres = 0, bool isNeffThreshold = false){
   TH1F* hist = (TH1F*) getHisto(inFile, histPath, inHistName, fTT)->Clone(outHistName);
+  //printf("MyHPlusDataCardMaker::readWriteHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
   hist->Scale(sf);
-  TH1F* trimmedHist = trimHisto(hist, outHistName, 5, 20, 170);
+  //TH1F* trimmedHist = trimHisto(hist, outHistName, 5, 20, 170);
+  TH1F* trimmedHist = hist;
   if(isWrite){
     outFile->cd();
     ///hist->Write(outHistName);
@@ -256,14 +268,14 @@ double MyHPlusDataCardMaker::getSysUncQcd(TFile* fData, TFile* fTT, TFile* fST, 
   double qcd_baseShiftedIsoDir = getQcdDD("baseIso20HighMET", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName, sf_baseShiftedIsoDir);
   double sf_unc = abs(sf_baseIsoDir - sf_baseShiftedIsoDir)/sf_baseIsoDir;
   double qcd_unc = abs(qcd_baseIsoDir - qcd_baseShiftedIsoDir)/qcd_baseIsoDir;
-  cout<<"-------------------------------------"<<endl;
-  cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl;
-  cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl;
-  cout<<"sf_unc               = "<<sf_unc<<endl;
-  cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl;
-  cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl;
-  cout<<"qcd_unc               = "<<qcd_unc<<endl;
-  cout<<"-------------------------------------"<<endl;
+  /* cout<<"-------------------------------------"<<endl; */
+  /* cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl; */
+  /* cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl; */
+  /* cout<<"sf_unc               = "<<sf_unc<<endl; */
+  /* cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl; */
+  /* cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl; */
+  /* cout<<"qcd_unc               = "<<qcd_unc<<endl; */
+  /* cout<<"-------------------------------------"<<endl; */
   double unc = 0.0;
   if(isUncSF) unc = sf_unc;
   else unc = qcd_unc;
@@ -522,15 +534,15 @@ double MyHPlusDataCardMaker::getSysUncQcdNano(bool isMu, TFile* fData, TFile* fT
 
   double sf_unc = abs(sf_baseIsoDir - sf_baseShiftedIsoDir)/sf_baseIsoDir;
   double qcd_unc = sysSF* abs(qcd_baseIsoDir - qcd_baseShiftedIsoDir)/qcd_baseIsoDir;
-  cout<<"-------------------------------------"<<endl;
-  cout<<"sysSF  	      = "<<sysSF<<endl;
-  cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl;
-  cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl;
-  cout<<"sf_unc               = "<<sf_unc<<endl;
-  cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl;
-  cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl;
-  cout<<"qcd_unc               = "<<qcd_unc<<endl;
-  cout<<"-------------------------------------"<<endl;
+  /* cout<<"-------------------------------------"<<endl; */
+  /* cout<<"sysSF  	      = "<<sysSF<<endl; */
+  /* cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl; */
+  /* cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl; */
+  /* cout<<"sf_unc               = "<<sf_unc<<endl; */
+  /* cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl; */
+  /* cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl; */
+  /* cout<<"qcd_unc               = "<<qcd_unc<<endl; */
+  /* cout<<"-------------------------------------"<<endl; */
   double unc = 0.0;
   if(isUncSF) unc = sf_unc;
   else unc = qcd_unc;
