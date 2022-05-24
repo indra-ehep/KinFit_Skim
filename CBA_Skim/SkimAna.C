@@ -37,7 +37,7 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////// Cut flow histograms //////////////////////////////////
 
   ////////////////////////////////// Observables //////////////////////////////////////
-  fNBObHists = 72;//132;
+  fNBObHists = 74;//132;
   fNObHists = fNDDReg*fNBObHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNObHists*fNSyst;
   histObs = new TH1D*[totNHists];
@@ -169,6 +169,8 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_nbjet_mu","_lb_nbjet_mu", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_njet_ele","_lb_njet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_nbjet_ele","_lb_nbjet_ele", 30, 0., 30);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_mu","_lb_mjj_mu", 100, 0., 500);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_ele","_lb_mjj_ele", 100, 0., 500);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_pt_mu","_kb_pt_mu",100, 0., 1000.);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_eta_mu","_kb_eta_mu", 30, -3., 3.);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_phi_mu","_kb_phi_mu", 35, -3.5, 3.5);
@@ -222,7 +224,7 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_ele","_ct_ExcL_mjj_ele", 50, 0., 250);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_ele","_ct_ExcM_mjj_ele", 50, 0., 250);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_ele","_ct_ExcT_mjj_ele", 50, 0., 250);
-    histObs[fNObHists*isyst + 71] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 50, 0., 250);
+    histObs[fNObHists*isyst + 73] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 50, 0., 250);
     
     for(int icf=0;icf<fNBObHists;icf++)
       histObs[fNObHists*isyst + icf]->SetDirectory(fFileDir[isyst*fNDDReg + 0]);
@@ -483,6 +485,12 @@ Int_t SkimAna::CreateHistoArrays()
   outputTree = new TTree("Kinfit_Reco","Kinfit_Reco");
   outputTree->SetAutoSave();
   InitOutBranches();
+  savedir->cd();
+
+  fFile[2]->cd();
+  outputBjetTree = new TTree("Bjet_Reco","Bjet_Reco");
+  outputBjetTree->SetAutoSave();
+  InitBjetOutBranches();
   savedir->cd();
 
   return true;
@@ -2133,8 +2141,9 @@ void SkimAna::SlaveBegin(TTree *tree)
   
   filename[0] = Form("%s_hist_%s_%dof%d.root",fSample.Data(),fSyst.Data(),fIndex,fTotal) ;
   filename[1] = Form("%s_tree_%s_%dof%d.root",fSample.Data(),fSyst.Data(),fIndex,fTotal) ;
+  filename[2] = Form("%s_bjet_%s_%dof%d.root",fSample.Data(),fSyst.Data(),fIndex,fTotal) ;
   
-  for(int ifile=0;ifile<2;ifile++){
+  for(int ifile=0;ifile<3;ifile++){
     
     if(fMode.BeginsWith("proof")){
       fProofFile[ifile] = new TProofOutputFile(filename[ifile], "M");
@@ -2406,7 +2415,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   Clean();
   // to read complete event, call fChain->GetTree()->GetEntry(entry)  
   fChain->GetTree()->GetEntry(entry);  
-
+  
   fProcessed++;
   fStatus++;
   
@@ -2605,12 +2614,17 @@ Bool_t SkimAna::Process(Long64_t entry)
   //######################################################
   selector->filter_jets();
   selector->filter_jetsNoCorr();
+  bool isLowJetPt = false;
+  bool isForwardJetEta = false;
+  for(int jetInd = 0; jetInd < int(event->nJet_) and int(event->nJet_) <= 200 ; ++jetInd){ //200 is the array size for jets as defined in EventTree 
+    if(event->jetPt_[jetInd] < 17.0) isLowJetPt = true;
+    if(abs(event->jetEta_[jetInd]) > selector->jet_Eta_cut) isForwardJetEta = true;
+  }
   //######################################################
-
-  //////=====================================================
-  if(selector->Jets.size() < 4 ) return true; //original condn
-  //////=====================================================
   
+  //////=====================================================
+  if(selector->Jets.size() < 4) return true; //original condn
+  //////=====================================================
   
   //Processes after njet >= 4 selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2716,6 +2730,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   }
   
   //FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
+  FillBJetTree();
   FillBTagObs();
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
@@ -3207,6 +3222,69 @@ bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt){
     ((TH1D *) list->FindObject(Form("_lb_njet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt);
     ((TH1D *) list->FindObject(Form("_lb_nbjet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
 
+    double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
+    vector<int> j_final_b, j_final_nob;
+    std::map<double, int> bdiscr_sorted_bjets;
+    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+      int jetInd = selector->Jets.at(ijet);
+      double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
+      bdiscr_sorted_bjets.insert(pair <double, int> (jetBtag, ijet));
+      if(jetBtag>btagThreshold)
+	j_final_b.push_back(ijet);
+      else
+	j_final_nob.push_back(ijet);
+    }
+    map <double, int> :: iterator bdiscr_itr;
+    int index_of_2nd_bjet;
+    int index_of_1st_bjet;
+    vector<int> index_of_other_bjets;
+    int total_bjets = j_final_b.size();
+    for(bdiscr_itr = bdiscr_sorted_bjets.begin(); bdiscr_itr != bdiscr_sorted_bjets.end(); ++bdiscr_itr){
+       total_bjets --;
+       if(total_bjets==1) index_of_2nd_bjet = bdiscr_itr->second;
+       else if(total_bjets==0) index_of_1st_bjet = bdiscr_itr->second;
+       else index_of_other_bjets.push_back(bdiscr_itr->second);
+    }
+    //mjj will involve 2 non-bjet, highest pt jets
+    if(j_final_b.size()==2){
+      if(j_final_nob.size() >= 2){
+        int index_of_1st_mjj = j_final_nob[0];
+        int index_of_2nd_mjj = j_final_nob[1];
+	int jetInd1 = selector->Jets.at(index_of_1st_mjj);
+	int jetInd2 = selector->Jets.at(index_of_2nd_mjj);
+	cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
+	sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
+	((TH1D *) list->FindObject(Form("_lb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
+      }
+    }
+    //Arrange other bjets and non-bjets in pt order in a list
+    //mjj will involve 2 highest pt jets in this list
+    else{
+      std::map<double, int> pt_sorted_jets;
+      for(unsigned long k=0; k<j_final_nob.size(); k++){
+        double pt_of_nobjet = selector->JetsPtSmeared.at(j_final_nob[k]);
+        pt_sorted_jets.insert(pair <double, int> (pt_of_nobjet, j_final_nob[k]));
+      }
+      for(unsigned long k=0; k<index_of_other_bjets.size(); k++){
+        double pt_of_other = selector->JetsPtSmeared.at(index_of_other_bjets[k]);
+        pt_sorted_jets.insert(pair <double, int> (pt_of_other, index_of_other_bjets[k]));
+      }
+      //select two highest pt jets
+      int index_of_1st_mjj = 0;
+      int index_of_2nd_mjj = 0;
+      int total_jets_for_mjj = pt_sorted_jets.size();
+      map <double, int> :: iterator itr_pt;
+      for(itr_pt = pt_sorted_jets.begin(); itr_pt != pt_sorted_jets.end(); ++itr_pt){
+         total_jets_for_mjj --;
+         if(total_jets_for_mjj==1) index_of_2nd_mjj = itr_pt->second;
+         if(total_jets_for_mjj==0) index_of_1st_mjj = itr_pt->second;
+      }
+      int jetInd1 = selector->Jets.at(index_of_1st_mjj);
+      int jetInd2 = selector->Jets.at(index_of_2nd_mjj);
+      cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
+      sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
+      ((TH1D *) list->FindObject(Form("_lb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
+    }
   // }
   
   return true;
@@ -5944,7 +6022,51 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 
   return isKFValid;
 }
+//_____________________________________________________________________________
 
+void SkimAna::FillBJetTree()
+{
+  if(singleMu){
+    _lepPt		= event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)];
+    _lepEta		= event->muEta_[selector->MuonsNoIso.at(0)] ;
+    _lepPhi		= event->muPhi_[selector->MuonsNoIso.at(0)];
+    _lepEnergy		=  TDatabasePDG::Instance()->GetParticle(13)->Mass();
+  }else{
+    _lepPt		= event->elePt_[selector->ElectronsNoIso.at(0)];
+    _lepEta		= event->eleEta_[selector->ElectronsNoIso.at(0)];
+    _lepPhi		= event->elePhi_[selector->ElectronsNoIso.at(0)];
+    _lepMass		=  TDatabasePDG::Instance()->GetParticle(11)->Mass();
+  }
+  
+  _nJet = selector->Jets.size();
+  _nBJet = 0 ;
+  
+  _jetPt->clear() ;
+  _jetEta->clear() ;
+  _jetPhi->clear() ;
+  _jetMass->clear() ;
+  _jetDeepB->clear() ;
+  double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
+  for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+    int jetInd = selector->Jets.at(ijet);
+    _jetPt->push_back(selector->JetsPtSmeared.at(ijet));
+    _jetEta->push_back(event->jetEta_[jetInd]);
+    _jetPhi->push_back(event->jetPhi_[jetInd]);
+    _jetMass->push_back(event->jetMass_[jetInd]);
+    
+    double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
+    
+    if(jetBtag>btagThreshold){
+      _jetDeepB->push_back(jetBtag);
+      _nBJet++;
+    }else
+      _jetDeepB->push_back(-100.0);
+  }
+
+  outputBjetTree->Fill();
+
+  return;
+}
 //_____________________________________________________________________________
 void SkimAna::SlaveTerminate()
 {
@@ -6100,7 +6222,24 @@ void SkimAna::SlaveTerminate()
       fProofFile[ifile]->Print();
       fOutput->Add(fProofFile[ifile]);    
     }
-  }  
+  }
+
+  for(int ifile=2;ifile<3;ifile++){
+    savedir->cd();
+    fFile[ifile]->cd();
+    if(doTreeSave){
+      outputBjetTree->Write();
+    }
+    fFile[ifile]->Close();
+    savedir->cd();
+
+    if (fMode.BeginsWith("proof")) {
+      Info("SlaveTerminate", "objects saved into '%s%s': sending related TProofOutputFile ...",
+	   fProofFile[ifile]->GetFileName(), fProofFile[ifile]->GetOptionsAnchor());
+      fProofFile[ifile]->Print();
+      fOutput->Add(fProofFile[ifile]);    
+    }
+  }
 
   if(PUweighter)
     delete PUweighter;

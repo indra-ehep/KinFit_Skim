@@ -397,6 +397,7 @@ class SkimAna : public TSelector {
    //Declaration of output tree
    ////////////////////////////////////////////////////////
    TTree          *outputTree;//!
+   TTree          *outputBjetTree;//!
    std::vector<bool>	 _selStep;
    ////////////////////////////////////////////////////////
    
@@ -426,23 +427,23 @@ class SkimAna : public TSelector {
    /* Int_t           jetGenJetIdx_[200]; */
    /* //////////////////////////////////////////////////////// */
 
-
+   
    //Declaration of leaves types
    ////////////////////////////////////////////////////////
   Int_t		_run = 0 ;
   Long64_t	_event = 0 ;
   Int_t		_lumis = 0 ;
   Bool_t	_isData = 0 ;
-
+  
   Float_t	_PUweight = 0 ;
   Float_t	_PUweight_Up = 0 ;
   Float_t	_PUweight_Do = 0 ;
-	
+  
   /* Float_t		 _q2weight_Up = 0 ; */
   /* Float_t		 _q2weight_Do = 0 ; */
   Float_t		 _q2weight_nominal = 0 ;
   /* std::vector<float>	*_genScaleSystWeights = 0 ; */
-
+  
   Float_t		 _pdfWeight = 0 ;
   /* Float_t		 _pdfuncer = 0 ; */
   /* Float_t		 _pdfweight_Up = 0 ; */
@@ -541,6 +542,7 @@ class SkimAna : public TSelector {
   Float_t	_lepEta = 0 ;
   Float_t	_lepPhi = 0 ;
   Float_t	_lepEnergy = 0 ;
+  Float_t	_lepMass = 0 ;
   Float_t	_metPx = 0 ;
   Float_t	_metPy = 0 ;
   Float_t	_metPz = 0 ;
@@ -911,6 +913,7 @@ class SkimAna : public TSelector {
    void    SlaveBegin(TTree *tree);
    void    Init(TTree *tree);
    void    InitOutBranches();
+   void    InitBjetOutBranches();
    Bool_t  Notify();
    Bool_t  Process(Long64_t entry);
    void    SetOption(const char *option) { fOption = option; }
@@ -938,7 +941,8 @@ class SkimAna : public TSelector {
    void    GetMuonEff(double iso);
    void    GetElectronEff();
    void    GetPUJetIDSF_1a();
-   void    GetBtagSF_1a();   
+   void    GetBtagSF_1a();
+   void    FillBJetTree();   
    void    GetCLtagSF_1a();   
    void    GetCMtagSF_1a();   
    void    GetCTtagSF_1a();   
@@ -1734,29 +1738,32 @@ void SkimAna::Init(TTree *tree)
 
 void SkimAna::InitOutBranches(){
   
+    outputTree->Branch("run"			, &(event->run_)       		); 
+    outputTree->Branch("nanoEventId"		, &(event->event_)     		); 
+    outputTree->Branch("skimEventId"    	, &fProcessed     		); 
     outputTree->Branch("sampleWeight"    	, &_sampleWeight       		); 
     outputTree->Branch("prefireWeight"		, &_prefireWeight      		);
     outputTree->Branch("prefireWeight_Up"	, &_prefireWeight_Up		);
     outputTree->Branch("prefireWeight_Do"	, &_prefireWeight_Do		);
-    outputTree->Branch("PUWeight"	, &_PUWeight			);
-    outputTree->Branch("PUWeight_Up"	, &_PUWeight_Up			);
-    outputTree->Branch("PUWeight_Do"	, &_PUWeight_Do			);
+    outputTree->Branch("PUWeight"		, &_PUWeight			);
+    outputTree->Branch("PUWeight_Up"		, &_PUWeight_Up			);
+    outputTree->Branch("PUWeight_Do"		, &_PUWeight_Do			);
 
-    outputTree->Branch("singleMu"   	, &singleMu			);
-    outputTree->Branch("singleEle"   	, &singleEle			);
-    outputTree->Branch("muonIsoCut"   	, &muonIsoCut			);
-    outputTree->Branch("muonNonIsoCut"   , &muonNonIsoCut       		);
-    outputTree->Branch("eleIsoCut"   	, &eleIsoCut			);
-    outputTree->Branch("eleNonIsoCut"    , &eleNonIsoCut       		);
-    outputTree->Branch("isLowMET"    , &isLowMET       		);
-    outputTree->Branch("muEffWeight"   	, &_muEffWeight			);
-    outputTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		);
-    outputTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		);
-    outputTree->Branch("eleEffWeight"  	, &_eleEffWeight		);
+    outputTree->Branch("singleMu"		, &singleMu			);
+    outputTree->Branch("singleEle"		, &singleEle			);
+    outputTree->Branch("muonIsoCut"		, &muonIsoCut			);
+    outputTree->Branch("muonNonIsoCut"		, &muonNonIsoCut       		);
+    outputTree->Branch("eleIsoCut"		, &eleIsoCut			);
+    outputTree->Branch("eleNonIsoCut"		, &eleNonIsoCut       		);
+    outputTree->Branch("isLowMET"		, &isLowMET       		);
+    outputTree->Branch("muEffWeight"		, &_muEffWeight			);
+    outputTree->Branch("muEffWeight_Up"		, &_muEffWeight_Up		);
+    outputTree->Branch("muEffWeight_Do"		, &_muEffWeight_Do		);
+    outputTree->Branch("eleEffWeight"		, &_eleEffWeight		);
     outputTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		);
     outputTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		);
 
-    outputTree->Branch("puJetIDWeight"	, &_PUJetIDWeight		);
+    outputTree->Branch("puJetIDWeight"		, &_PUJetIDWeight		);
     outputTree->Branch("puJetIDWeight_Up"	, &_PUJetIDWeight_Up		);
     outputTree->Branch("puJetIDWeight_Do"	, &_PUJetIDWeight_Do		);
     
@@ -1854,6 +1861,69 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("bjhadCvsBdisc"		, &_bjhadCvsBdisc      		);
     outputTree->Branch("cjhadCvsBdisc"		, &_cjhadCvsBdisc      		);
     outputTree->Branch("sjhadCvsBdisc"		, &_sjhadCvsBdisc      		);
+
+}
+
+//_____________________________________________________________________
+
+void SkimAna::InitBjetOutBranches(){
+  
+  outputBjetTree->Branch("run"          	, &(event->run_)       		); 
+  outputBjetTree->Branch("nanoEventId"    	, &(event->event_)     		); 
+  outputBjetTree->Branch("skimEventId"    	, &fProcessed     		); 
+  outputBjetTree->Branch("sampleWeight"    	, &_sampleWeight       		); 
+  outputBjetTree->Branch("prefireWeight"       	, &_prefireWeight      		);
+  outputBjetTree->Branch("prefireWeight_Up"	, &_prefireWeight_Up		);
+  outputBjetTree->Branch("prefireWeight_Do"	, &_prefireWeight_Do		);
+  outputBjetTree->Branch("PUWeight"     	, &_PUWeight			);
+  outputBjetTree->Branch("PUWeight_Up"  	, &_PUWeight_Up			);
+  outputBjetTree->Branch("PUWeight_Do"  	, &_PUWeight_Do			);
+  
+  outputBjetTree->Branch("singleMu"     	, &singleMu			);
+  outputBjetTree->Branch("singleEle"    	, &singleEle			);
+  outputBjetTree->Branch("muonIsoCut"   	, &muonIsoCut			);
+  outputBjetTree->Branch("muonNonIsoCut"        , &muonNonIsoCut       		);
+  outputBjetTree->Branch("eleIsoCut"     	, &eleIsoCut			);
+  outputBjetTree->Branch("eleNonIsoCut"         , &eleNonIsoCut       		);
+  outputBjetTree->Branch("isLowMET"             , &isLowMET       		);
+  outputBjetTree->Branch("muEffWeight"   	, &_muEffWeight			);
+  outputBjetTree->Branch("muEffWeight_Up"	, &_muEffWeight_Up		);
+  outputBjetTree->Branch("muEffWeight_Do"	, &_muEffWeight_Do		);
+  outputBjetTree->Branch("eleEffWeight"  	, &_eleEffWeight		);
+  outputBjetTree->Branch("eleEffWeight_Up"	, &_eleEffWeight_Up		);
+  outputBjetTree->Branch("eleEffWeight_Do"	, &_eleEffWeight_Do		);
+  
+  outputBjetTree->Branch("puJetIDWeight"	, &_PUJetIDWeight		);
+  outputBjetTree->Branch("puJetIDWeight_Up"	, &_PUJetIDWeight_Up		);
+  outputBjetTree->Branch("puJetIDWeight_Do"	, &_PUJetIDWeight_Do		);
+    
+  outputBjetTree->Branch("bTagWeight"		, &_bTagWeight			);
+  outputBjetTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
+  outputBjetTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
+  outputBjetTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
+  outputBjetTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
+  outputBjetTree->Branch("bTagWeight_bc1_Up"	, &_bTagWeight_bc1_Up		);
+  outputBjetTree->Branch("bTagWeight_bc1_Do"	, &_bTagWeight_bc1_Do		);
+  outputBjetTree->Branch("bTagWeight_bc2_Up"	, &_bTagWeight_bc2_Up		);
+  outputBjetTree->Branch("bTagWeight_bc2_Do"	, &_bTagWeight_bc2_Do		);
+  outputBjetTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
+  outputBjetTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
+
+  outputBjetTree->Branch("lepPt"		, &_lepPt			);
+  outputBjetTree->Branch("lepEta"		, &_lepEta			);
+  outputBjetTree->Branch("lepPhi"		, &_lepPhi			);
+  outputBjetTree->Branch("lepMass"		, &_lepMass			);
+  
+  outputBjetTree->Branch("metPt"		, &(event->MET_pt_)	       	);
+  outputBjetTree->Branch("metPhi"		, &(event->MET_phi_)   		);
+
+  outputBjetTree->Branch("nJet"			, &_nJet			);
+  outputBjetTree->Branch("nBJet"		, &_nBJet			);
+  outputBjetTree->Branch("jetPt"		, &_jetPt			);
+  outputBjetTree->Branch("jetEta"		, &_jetEta			);
+  outputBjetTree->Branch("jetPhi"		, &_jetPhi			);
+  outputBjetTree->Branch("jetMass"		, &_jetMass			);
+  outputBjetTree->Branch("jetDeepB"		, &_jetDeepB			);
 
 }
 

@@ -43,16 +43,18 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID/post
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID/post
+# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_BJetSFTests
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_BJetSFTests/post
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post
+condorOutDir2=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
     #xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
     xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
+    xrdcp -f ${sample}_bjet_*.root root://eosuser.cern.ch/${condorOutDir2}/${year}
     echo "Cleanup"
     rm -rf CMSSW_12_1_0
     rm *.root

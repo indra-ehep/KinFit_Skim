@@ -9,35 +9,7 @@ import time
 samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2017 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2018 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 
-# samples_2016 = ["TTbar"]
-# samples_2017 = ["TTbar"]
-# samples_2018 = ["TTbar"]
-
-# samples_2016 = ["DataMu", "DataEle"]
-# samples_2017 = ["DataMu", "DataEle"]
-# samples_2018 = ["DataMu", "DataEle"]
-
-# samples_2016 = ["HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2017 = ["HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2018 = ["HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-
-# syst_2016 = ["base"]
-# syst_2017 = ["base"]
-# syst_2018 = ["base"]
-
-# syst_long_2016 = ["base"]
-# syst_long_2017 = ["base"]
-# syst_long_2018 = ["base"]
 
 syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
@@ -47,9 +19,6 @@ syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
-# syst_long_2016 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2017 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2018 = ["cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
 tunedict = {
     "cp5up" : "CP5up_TTbar",
@@ -60,7 +29,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog'
+jdlDir = 'tmpLog_BJetSFTests_post'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -94,10 +63,13 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagDD/post"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagDD/post"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_BJetSFTests/post"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post"
+    condorOutDir2="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
+    os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir2, year))
+
     jdlFile.write("X=$(step)\n")
     
     for sample in sampleList:

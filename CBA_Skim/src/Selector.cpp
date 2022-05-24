@@ -662,7 +662,8 @@ void Selector::filter_jets(){
   }
   
   //TLorentzVector tJET;
-  for(int jetInd = 0; jetInd < int(tree->nJet_) and int(tree->nJet_) < 10000000 ; ++jetInd){ //less than 10 million jets since some MCQCD shows unexceptionally number of higher jets
+  //for(int jetInd = 0; jetInd < int(tree->nJet_) and int(tree->nJet_) < 10000000 ; ++jetInd){ //less than 10 million jets since some MCQCD shows unexceptionally number of higher jets
+  for(int jetInd = 0; jetInd < int(tree->nJet_) and int(tree->nJet_) <= 200 ; ++jetInd){ //200 is the array size for jets as defined in EventTree 
     
     double pt = tree->jetPt_[jetInd];
     double eta = tree->jetEta_[jetInd];

@@ -9,6 +9,7 @@ import time
 samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+
 samples_2017 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
@@ -60,7 +61,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog'
+jdlDir = 'tmpLog_BJetSFTests'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -95,10 +96,12 @@ for year in [2017,2018]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagnPUJetID"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagnPUJetID"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_BJetSFTests"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests"
+    condorOutDir2="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_BJetSFTests"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
+    os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir2, year))
     jdlFile.write("X=$(step)\n")
     
     for sample in sampleList:
