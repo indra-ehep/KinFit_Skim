@@ -43,11 +43,11 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_BJetSFTests
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_BJetSFTests/post
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post
-condorOutDir2=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post
+# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_PtJet30
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_PtJet30
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_PtJet30/post
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_PtJet30/post
+condorOutDir2=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_PtJet30/post
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
