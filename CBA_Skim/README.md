@@ -7,8 +7,8 @@
    - [Description of subfolders](#description-of-subfolders)
    - [Processing flow](#processing-flow)
    - [Job submission scripts](#job-submission-scripts)
-   - [The last bit of result](#the-last-bit-of-result)
-4. [Acknowledgment](#acknowledgment)
+4. [The last bit of result](#the-last-bit-of-result)
+5. [Acknowledgment](#acknowledgment)
 
 ## Motivation
 
@@ -2827,17 +2827,19 @@ Now you can apply the following commands to submit the jobs for 2016 preVFP.
 
 Repeat the similar process for postVFP by changing "pre" to "post" in above mentioned cases.
 
-### The last bit of result
+## The last bit of result
 
-One of challenges in HEP analysis is securing the last bit of result as it might be lost and goes unnoticed in the result.
-There is no single prescriptions about how to address those issues.
-The GRID jobs can encounter various issues and a large part of them can be addressed using the troubleshooting guides of [link1](https://htcondor.readthedocs.io/en/latest/users-manual/index.html), [link2](https://batchdocs.web.cern.ch/troubleshooting/commonexceptions.html) and similar web resources.  
+One of the challenges in HEP analysis is securing the last bit of output file of GRID jobs as some might be lost and go unnoticed.
+There is no single prescription about how to address those issues.
+The GRID jobs can encounter various issues.
+Some of them can be addressed using the troubleshooting guides of [link1](https://htcondor.readthedocs.io/en/latest/users-manual/index.html), [link2](https://batchdocs.web.cern.ch/troubleshooting/commonexceptions.html) and similar web resources.  
 
-We have to perform various checks and validations to ascertain that we have completed the analysis on full dataset and MC samples. But who knows ? :wink:
+We have to perform various checks and validations to ascertain that we have completed the analysis on full datasets and MC samples. 
+But who knows ? :wink:
 
-A case study is presented below about the issues that were encountered and resolved during the most recent production (eve of Buddha Purnima, 2022) dataset.
+A case study is presented below about the issues that were encountered and resolved during the most recent (eve of Buddha Purnima, 2022) job submission.
 
-1. Sleeping Buddha : It has been noticed that some jobs are in RUNNING state for very long time.
+1. Sleeping Buddha : It has been noticed that some jobs are in RUNNING state for very a long time.
    ```console
      [idas@lxplus7113 condor]$ condor_q -nobatch
 
