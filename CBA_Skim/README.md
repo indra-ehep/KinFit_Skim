@@ -2424,6 +2424,14 @@ One needs to define the variables `inputdir` and `skimflistdir` to the output di
       Adding files for sample: TTbar and syst jecdown
       .....
    ```
+The merged histograms are saved inside 'all' folder of `inputdir`.
+   ```console
+      [idas@lxplus737 CBA_Skim]$ ls /eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post/2016/all/
+      all_DYjets.root      all_HminusM090.root  all_HminusM130.root  all_HminusM160.root  all_HplusM110.root  all_HplusM150.root  all_MCQCDMu.root   all_singleTop.root
+      all_DataEle.root     all_HminusM100.root  all_HminusM140.root  all_HplusM080.root   all_HplusM120.root  all_HplusM155.root  all_TTbar.root
+      all_DataMu.root      all_HminusM110.root  all_HminusM150.root  all_HplusM090.root   all_HplusM130.root  all_HplusM160.root  all_VBFusion.root
+      all_HminusM080.root  all_HminusM120.root  all_HminusM155.root  all_HplusM100.root   all_HplusM140.root  all_MCQCDEle.root   all_Wjets.root
+   ```
 
 
 ---
