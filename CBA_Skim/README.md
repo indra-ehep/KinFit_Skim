@@ -2396,35 +2396,36 @@ Three additional steps are required to submit multiple GRID jobs (~15K in presen
 							    
 ### Merging output histograms
 
-There are two types of outputs of the GRID jobs, a set of histograms and a set of tree. 
+There are two types of outputs of GRID jobs, a set of files with histograms and a set of files with trees. 
 The histograms can be merged using a bash script [addsyst_all_eos.sh](scripts/addsyst_all_eos.sh).
 One needs to define the variables `inputdir` and `skimflistdir` to the output directory of GRID jobs and the flie list of skim files, respectively.
    ```console
       [idas@lxplus737 CBA_Skim]$ source scripts/addsyst_all_eos_1.sh
       total number of files 2850
-year : 2016 samples : DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160
-inputdir : /eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post
-It's there! DataMu
-Adding files for sample: DataMu and syst base
-sample : DataMu | syst : base | expected : 31 | found : 31
-Adding files for sample: DataMu and syst iso20
-sample : DataMu | syst : iso20 | expected : 31 | found : 31
-Adding files for sample DataMu
-It's there! DataEle
-Adding files for sample: DataEle and syst base
-sample : DataEle | syst : base | expected : 31 | found : 31
-Adding files for sample: DataEle and syst iso20
-sample : DataEle | syst : iso20 | expected : 31 | found : 31
-Adding files for sample DataEle
-Sample is  TTbar
-Adding files for sample: TTbar and syst base
-sample : TTbar | syst : base | expected : 66 | found : 66
-Adding files for sample: TTbar and syst jecup
-sample : TTbar | syst : jecup | expected : 66 | found : 66
-Adding files for sample: TTbar and syst jecdown
-.....
-     ```
-					
+      year : 2016 samples : DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160
+      inputdir : /eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post
+      It's there! DataMu
+      Adding files for sample: DataMu and syst base
+      sample : DataMu | syst : base | expected : 31 | found : 31
+      Adding files for sample: DataMu and syst iso20
+      sample : DataMu | syst : iso20 | expected : 31 | found : 31
+      Adding files for sample DataMu
+      It's there! DataEle
+      Adding files for sample: DataEle and syst base
+      sample : DataEle | syst : base | expected : 31 | found : 31
+      Adding files for sample: DataEle and syst iso20
+      sample : DataEle | syst : iso20 | expected : 31 | found : 31
+      Adding files for sample DataEle
+      Sample is  TTbar
+      Adding files for sample: TTbar and syst base
+      sample : TTbar | syst : base | expected : 66 | found : 66
+      Adding files for sample: TTbar and syst jecup
+      sample : TTbar | syst : jecup | expected : 66 | found : 66
+      Adding files for sample: TTbar and syst jecdown
+      .....
+   ```
+
+
 ---
 ## Description of processing flow
 
