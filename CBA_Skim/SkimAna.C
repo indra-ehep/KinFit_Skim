@@ -775,8 +775,8 @@ void SkimAna::SetTrio()
     selector->mu_Eta_tight = 2.4;
     selector->ele_Pt_cut = 30.;
     selector->ele_Eta_cut = 2.4;
-    //selector->jet_Pt_cut = 25.;
-    selector->jet_Pt_cut = 30.;
+    selector->jet_Pt_cut = 25.;
+    //selector->jet_Pt_cut = 30.;
     selector->jet_Eta_cut = 2.4;
     
   }else if(fYear==2017){
@@ -3255,8 +3255,10 @@ bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt){
         int index_of_2nd_mjj = j_final_nob[1];
 	int jetInd1 = selector->Jets.at(index_of_1st_mjj);
 	int jetInd2 = selector->Jets.at(index_of_2nd_mjj);
-	cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
-	sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
+	// cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
+	// sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
+	cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], 0.0);
+	sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], 0.0);
 	((TH1D *) list->FindObject(Form("_lb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
       }
     }
@@ -5711,7 +5713,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
-    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
+    //jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
+    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , 0.0 );
     //jetVector.SetPtEtaPhiM(event->jetPt_[jetInd], event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);
     //double jetRes = selector->jet_resolution.at(ijet);

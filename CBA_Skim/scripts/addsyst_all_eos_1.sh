@@ -64,7 +64,9 @@ syst_base="base iso20"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Deepjet_NewBin/pre"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_Deepjet_Njetgeq/pre"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_MiniAODEqV/pre"
-inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagDD/post"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagDD/post"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/pre"
+inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_PtJet25_jetMass0/pre"
 skimflistdir="/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2016"
@@ -111,7 +113,7 @@ do
 		    sh ~/scripts/addhisto_file.sh /tmp/idas/fl.txt > /tmp/idas/out.log 2>&1
 		    mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		    #expected_noffiles=`wc -l $skimflistdir/$year/${tunedict[$syst]}_${year}.txt | cut -f 1 -d " "`
-		    expected_noffiles=`wc -l $skimflistdir/$year/post/${tunedict[$syst]}_${year}.txt | cut -f 1 -d " "`
+		    expected_noffiles=`wc -l $skimflistdir/$year/pre/${tunedict[$syst]}_${year}.txt | cut -f 1 -d " "`
 		else
 		    expected_noffiles=0
 		fi
@@ -119,7 +121,7 @@ do
 		sh ~/scripts/addhisto_file.sh /tmp/idas/fl.txt > /tmp/idas/out.log 2>&1
 		mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		#expected_noffiles=`wc -l $skimflistdir/$year/${sample}_${year}.txt | cut -f 1 -d " "`
-		expected_noffiles=`wc -l $skimflistdir/$year/post/${sample}_${year}.txt | cut -f 1 -d " "`
+		expected_noffiles=`wc -l $skimflistdir/$year/pre/${sample}_${year}.txt | cut -f 1 -d " "`
 	    fi
 	    echo -e "sample : ${sample} | syst : ${syst} | expected : ${expected_noffiles} | found : $noffiles"
 
@@ -133,7 +135,7 @@ do
 			ifindex=$[$imiss-1]
 			# Arguments  = 2017 TTbar input/eos/2017/TTbar_2017.txt $INT(X) jecup 
 			#echo "Arguments  = $year ${sample} input/eos/$year/${sample}_${year}.txt $ifindex $syst" >> /tmp/idas/missing_${year}.txt
-			echo "Arguments  = $year ${sample} input/eos/$year/post/${sample}_${year}.txt $ifindex $syst" >> /tmp/idas/missing_${year}_post.txt
+			echo "Arguments  = $year ${sample} input/eos/$year/pre/${sample}_${year}.txt $ifindex $syst" >> /tmp/idas/missing_${year}_pre.txt
 			echo "" >> /tmp/idas/missing_${year}.txt
 		    fi
 		done
