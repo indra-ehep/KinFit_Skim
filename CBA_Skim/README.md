@@ -3150,15 +3150,35 @@ A case study is presented below about the issues that were encountered and resol
      tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:64:Error in <TBasket::Streamer>: The value of fNbytes is incorrect (-1368112444) ; trying to recover by setting it to zero
 
    ```
-   An important point to notice above that several errors messages are there corresponding to a given stderr log file (i.e. log_7015075_2167.stderr).
-   In the next step we list the log files with errors. Since same file is listed multiple times the number of output files is found quite large.
+   An important point to notice in the text above is that several errors messages correspond to a given stderr log file (i.e. log_7015075_2167.stderr).
+   In the next step we list the log files with errors. Since same file is listed multiple times the number of output files with errors and crashes are found to be quite large.
    ```console
-     [idas@lxplus779 condor]$ grep -i -E 'break|crash|segmentation|error' tmpLog_PtJet25_jetMass0_pre/log/*.stderr | cut -f 1 -d '.' > /tmp/fl_crash_et_error_pre.txt
+     [idas@lxplus779 condor]$ grep -i -E 'break|crash|segmentation|error' tmpLog_PtJet25_jetMass0_pre/log/*.stderr | grep -v -E "TDecompLU|unknown\ branch" | cut -f 1 -d '.' > /tmp/fl_crash_et_error_pre.txt
      [idas@lxplus779 condor]$ wc -l /tmp/fl_crash_et_error_pre.txt
-     2759908 /tmp/fl_crash_et_error_pre.txt
+     2517718 /tmp/fl_crash_et_error_pre.txt
    ```								             
    Next we filter out the duplicate files by running the code snippet below.
+   ```console
+     [idas@lxplus779 condor]$ root -l -b -q ../codes/FilterOutDuplicates.C+\(\""/tmp/fl_crash_et_error_pre.txt"\"\) | grep "tmpLog" > /tmp/idas/list_of_error_files.txt
+     [idas@lxplus779 condor]$ wc -l /tmp/idas/list_of_error_files.txt
+     91 /tmp/idas/list_of_error_files.txt
+   ```
+   The number of jobs with errors due to crash or network gliches is a significant fraction of the total jobs. So we now plan to prepare components for JDL job resubmission only for the failed 1072 jobs.
+   ```console
+     [idas@lxplus779 condor]$  while read line ; do file=$line.stdout ; arg=`grep "All\ arguements" $file | cut -f 2 -d ':'` ; echo -e "Arguments  =$arg\nQueue 1\n" >> /tmp/idas/missing_2016_pre.txt ; done < /tmp/idas/list_of_error_files.txt 
+     [idas@lxplus779 condor]$ grep -i arguments /tmp/idas/missing_2016_pre.txt | wc -l
+     91
+     [idas@lxplus779 condor]$ cd tmpLog_PtJet25_jetMass0_pre/
+     [idas@lxplus779 tmpLog_PtJet25_jetMass0_pre]$ head -n 14 submitJobs_2016.jdl > resubmitJobs_2016.jdl 
+     [idas@lxplus779 tmpLog_PtJet25_jetMass0_pre]$ cat /tmp/idas/missing_2016_pre.txt >> resubmitJobs_2016.jdl 
+     [idas@lxplus779 tmpLog_PtJet25_jetMass0_pre]$ grep -i arguments resubmitJobs_2016.jdl  | wc -l
+     91
+     [idas@lxplus779 tmpLog_PtJet25_jetMass0_pre]$ condor_submit resubmitJobs_2016.jdl
+     Submitting job(s)...........................................................................................
+     91 job(s) submitted to cluster 7015538.
+   ```
    
+
 ---
 #### Acknowledgment
 
