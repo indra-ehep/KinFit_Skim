@@ -3163,7 +3163,7 @@ A case study is presented below about the issues that were encountered and resol
      [idas@lxplus779 condor]$ wc -l /tmp/idas/list_of_error_files.txt
      91 /tmp/idas/list_of_error_files.txt
    ```
-   The number of jobs with errors due to crash or network gliches is a significant fraction of the total jobs. So we now plan to prepare components for JDL job resubmission only for the failed 1072 jobs.
+   The number of jobs with errors due to crash or network gliches is a significant fraction of the total jobs. So we now plan to prepare components for JDL job resubmission only for the failed 91 jobs.
    ```console
      [idas@lxplus779 condor]$  while read line ; do file=$line.stdout ; arg=`grep "All\ arguements" $file | cut -f 2 -d ':'` ; echo -e "Arguments  =$arg\nQueue 1\n" >> /tmp/idas/missing_2016_pre.txt ; done < /tmp/idas/list_of_error_files.txt 
      [idas@lxplus779 condor]$ grep -i arguments /tmp/idas/missing_2016_pre.txt | wc -l
