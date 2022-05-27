@@ -3120,7 +3120,7 @@ A case study is presented below about the issues that were encountered and resol
    The above output is obtained by executing [addsyst_all_eos.sh](scripts/addsyst_all_eos.sh) (as mentioned above in [Merging output histograms](#merging-output-histograms)), which also stores the list of missing files inside `/tmp/idas/missing*.txt`. 
    User can look inside the script to modify the path according to his/her preferred path.  
 
-5. :signal_strength: :collision: (Network gliches) : The network gliches can silently reduce the number of processed events. 
+5. :signal_strength: :collision: (Network gliches) : The network gliches are true silent killer :ninja: to reduce the number of processed events in final result. 
    However, it will leave some marks in the log file as shown in the messages below.
    ```console
      [idas@lxplus779 condor]$ grep  -n 'ERROR' tmpLog_PtJet25_jetMass0_pre/log/*.stderr |  grep -v -E "TDecompLU|unknown\ branch" | head
