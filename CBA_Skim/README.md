@@ -2894,9 +2894,38 @@ A case study is presented below about the issues that were encountered and resol
      .....
      .....
    ```
-   In order to have further details, we logged in to a node using `condor_ssh_to_job 6964986.1607` and then apply `top -u idas` to know the process status. 
+   In order to have further details, we logged in to a node using `condor_ssh_to_job 6964986.1607`.
+   The system shows the associated PIDs of the process 6964986.1607, during the loggin step.
+   ```console
+     [idas@lxplus7113 condor]$ condor_ssh_to_job 6964986.1607
+     Welcome to slot1_18@b7g21p7564.cern.ch!
+     Your condor job is running with pid(s) 7025.
+   ```	
+   We then check the process tree using the command below.
+   ```console
+     bash-4.2$ pstree -p 7025
+     condor_pid_ns_i(7025)---condor_exec.exe(7191)---SkimAna(7676)-+-{SkimAna}(7876)
+								   |-{SkimAna}(7877)
+                                                              	   |-{SkimAna}(7878)
+                                                              	   |-{SkimAna}(7879)
+                                                              	   `-{SkimAna}(7881)
+
+   ```	
+   Then apply `top -p $PID_of_SkimAna` to know the process status.
+   ```console
+     bash-4.2$ top -p 7676
+
+     top - 06:22:35 up 219 days, 13:22,  0 users,  load average: 40.38, 40.28, 39.40
+     Tasks:   1 total,   1 running,   0 sleeping,   0 stopped,   0 zombie
+     %Cpu(s):  1.6 us,  5.9 sy, 77.5 ni, 10.9 id,  3.8 wa,  0.0 hi,  0.3 si,  0.0 st
+     KiB Mem : 13174552+total,  8811540 free, 45098860 used, 77835120 buff/cache
+     KiB Swap: 13174272+total, 12865976+free,  3082952 used. 86008432 avail Mem
+
+     PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+     7676 idas      30  10 1643024 895292  20784 R  0.2  0.7 1+17:21:01.78 SkimAna
+   ```	
    It shows that the CPU usage of corresponding executable i.e. "./SkimAna" is 0%.
-   However, on that same computing node other "./SkimAna" executables corresponding to different Job IDs are running with ~100% CPU usage.
+   However, on that same computing node other "./SkimAna" executables corresponding to different Job IDs are running with ~100% CPU usage as found using `top -u idas`.
    So the job 6964986.1607 seemed to be running in sleeping mode (may be with lower priority ?). 
    We wait for few more hours before terminating the job.
    Three such cases were noticed at the end of total 14885 jobs. The three jobs are locally processed using "./SkimAna".
@@ -3088,7 +3117,48 @@ A case study is presented below about the issues that were encountered and resol
    ```
    The missing file is produced by processing the code locally.
 
+   The above output is obtained by executing [addsyst_all_eos.sh](scripts/addsyst_all_eos.sh) (as mentioned above in [Merging output histograms](#merging-output-histograms)), which also stores the list of missing files inside `/tmp/idas/missing*.txt`. 
+   User can look inside the script to modify the path according to his/her preferred path.  
 
+5. :signal_strength: :collision: (Network gliches) : The network gliches can silently reduce the number of processed events. 
+   However, it will leave some marks in the log file as shown in the messages below.
+   ```console
+     [idas@lxplus779 condor]$ grep  -n 'ERROR' tmpLog_PtJet25_jetMass0_pre/log/*.stderr |  grep -v -E "TDecompLU|unknown\ branch" | head
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:55:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2173.stderr:43:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2177.stderr:27:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2177.stderr:4498:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2177.stderr:4508:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2177.stderr:4518:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2177.stderr:4524:Error in <TNetXNGFile::Close>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2181.stderr:35:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2183.stderr:43:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2195.stderr:35:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+   ```
+   This sort of errors can be hidden inside broken tree messages as shown below.
+   ```console
+     [idas@lxplus779 condor]$ grep  -n -i 'ERROR' tmpLog_PtJet25_jetMass0_pre/log/*.stderr |  grep -v -E "TDecompLU|unknown\ branch" | head
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:55:Error in <TNetXNGFile::ReadBuffers>: [ERROR] Server responded with an error: [3005] 
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:56:Error in <TBranch::GetBasket>: File: root://eosuser.cern.ch//eos/cms/store/group/phys_higgs/HiggsExo/idas/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM080_preVFP_Skim_NanoAOD.root at byte:312870939, branch:Flag_goodVertices, entry:249525, badread=2, nerrors=1, basketnumber=45
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:57:Error in <TBasket::Streamer>: The value of fKeylen is incorrect (-32681) ; trying to recover by setting it to zero
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:58:Error in <TBasket::Streamer>: The value of fNbytes is incorrect (-1368112444) ; trying to recover by setting it to zero
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:59:Error in <TBranch::GetBasket>: File: root://eosuser.cern.ch//eos/cms/store/group/phys_higgs/HiggsExo/idas/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM080_preVFP_Skim_NanoAOD.root at byte:3399357662, branch:Flag_goodVertices, entry:249526, badread=5, nerrors=2, basketnumber=45
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:60:Error in <TBasket::Streamer>: The value of fKeylen is incorrect (-32681) ; trying to recover by setting it to zero
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:61:Error in <TBasket::Streamer>: The value of fNbytes is incorrect (-1368112444) ; trying to recover by setting it to zero
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:62:Error in <TBranch::GetBasket>: File: root://eosuser.cern.ch//eos/cms/store/group/phys_higgs/HiggsExo/idas/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM080_preVFP_Skim_NanoAOD.root at byte:3399357662, branch:Flag_goodVertices, entry:249527, badread=5, nerrors=3, basketnumber=45
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:63:Error in <TBasket::Streamer>: The value of fKeylen is incorrect (-32681) ; trying to recover by setting it to zero
+     tmpLog_PtJet25_jetMass0_pre/log/log_7015075_2167.stderr:64:Error in <TBasket::Streamer>: The value of fNbytes is incorrect (-1368112444) ; trying to recover by setting it to zero
+
+   ```
+   An important point to notice above that several errors messages are there corresponding to a given stderr log file (i.e. log_7015075_2167.stderr).
+   In the next step we list the log files with errors. Since same file is listed multiple times the number of output files is found quite large.
+   ```console
+     [idas@lxplus779 condor]$ grep -i -E 'break|crash|segmentation|error' tmpLog_PtJet25_jetMass0_pre/log/*.stderr | cut -f 1 -d '.' > /tmp/fl_crash_et_error_pre.txt
+     [idas@lxplus779 condor]$ wc -l /tmp/fl_crash_et_error_pre.txt
+     2759908 /tmp/fl_crash_et_error_pre.txt
+   ```								             
+   Next we filter out the duplicate files by running the code snippet below.
+   
 ---
 #### Acknowledgment
 
