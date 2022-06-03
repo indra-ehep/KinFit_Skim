@@ -483,13 +483,13 @@ Int_t SkimAna::CreateHistoArrays()
 
   fFile[1]->cd();
   outputTree = new TTree("Kinfit_Reco","Kinfit_Reco");
-  outputTree->SetAutoSave();
+  //outputTree->SetAutoSave();
   InitOutBranches();
   savedir->cd();
 
   fFile[2]->cd();
   outputBjetTree = new TTree("Bjet_Reco","Bjet_Reco");
-  outputBjetTree->SetAutoSave();
+  //outputBjetTree->SetAutoSave();
   InitBjetOutBranches();
   savedir->cd();
 
