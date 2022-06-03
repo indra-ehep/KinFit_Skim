@@ -730,7 +730,6 @@ void Selector::filter_jets(){
       }else{
       	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
       }
-      jetSmear = 1;
       
       // Info("Selector::filter_jets","jetInd : %d, (pt,eta,phi) : (%lf,%lf,%lf), resolution : %lf, jetSF : %lf, jetSmear : %lf, btag : %lf", 
       // 	   jetInd,pt,eta,phi,resolution,jetSF,jetSmear,tree->jetBtagDeepB_[jetInd]);

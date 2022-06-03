@@ -3254,10 +3254,8 @@ bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt){
         int index_of_2nd_mjj = j_final_nob[1];
 	int jetInd1 = selector->Jets.at(index_of_1st_mjj);
 	int jetInd2 = selector->Jets.at(index_of_2nd_mjj);
-	// cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
-	// sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
-	cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], 0.0);
-	sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], 0.0);
+	cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
+	sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
 	((TH1D *) list->FindObject(Form("_lb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
       }
     }
