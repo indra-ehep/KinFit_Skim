@@ -544,8 +544,10 @@ void SkimAna::GetArguments(){
       fBasePath = "/tmp/idas/CBA_Skim";
     else if(hostname.BeginsWith("ui"))
       fBasePath = "/tmp/idas/CBA_Skim";
-    else if(hostname.BeginsWith("lnx3"))
-      fBasePath = "/home/indra/CMS-Analysis/NanoAOD-Analysis/KinFit_Skim/CBA_Skim";
+    // else if(hostname.BeginsWith("lnx3"))
+    //   fBasePath = "/home/indra/CMS-Analysis/NanoAOD-Analysis/KinFit_Skim/CBA_Skim";
+    else if(hostname.BeginsWith("localhost") or hostname.BeginsWith("lnx3"))
+      fBasePath = "/home/idas/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
     //fBasePath += "/SkimAna";
   }else{
     fBasePath = gSystem->pwd();
@@ -2738,7 +2740,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  //return true;
+  return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
