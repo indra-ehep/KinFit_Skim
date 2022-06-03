@@ -542,14 +542,10 @@ void SkimAna::GetArguments(){
       fBasePath = "/Data/CMS-Analysis/NanoAOD-Analysis/Git_KinFit_Skim/KinFit_Skim/CBA_Skim";
     else if(hostname.BeginsWith("lxplus"))
       fBasePath = "/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
-    //fBasePath = "/tmp/idas/CBA_Skim";
     else if(hostname.BeginsWith("ui"))
       fBasePath = "/tmp/idas/CBA_Skim";
-    // else if(hostname.BeginsWith("lnx3"))
-    //   fBasePath = "/home/indra/CMS-Analysis/NanoAOD-Analysis/KinFit_Skim/CBA_Skim";
     else if(hostname.BeginsWith("localhost") or hostname.BeginsWith("lnx3"))
       fBasePath = "/home/idas/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
-    //fBasePath += "/SkimAna";
   }else{
     fBasePath = gSystem->pwd();
   }
@@ -1468,7 +1464,7 @@ void SkimAna::GetPUJetIDSF_1a(){
   double jetPt;
   double jetEta;
   int jetPUJetID;
-  TH2D *hpujetid_eff; 
+  TH2D *hpujetid_eff = 0x0; 
   
   double SFb = 1.;
   double Eff;
