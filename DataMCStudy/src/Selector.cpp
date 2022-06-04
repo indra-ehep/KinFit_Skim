@@ -683,7 +683,10 @@ void Selector::filter_jets(){
     //Default applied for LRR
     //bool jetID_pass = (tree->jetID_[jetInd]>=2) ;    
     //Applied for UL
-    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
+    //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
+    //Tightmost test
+    bool jetID_pass = (tree->jetID_[jetInd]>=6 and (tree->jetPUID_[jetInd]>=7 or pt>=50.0)) ; //lwp
+
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=3 or pt>=50.0)) ; //mwp
     //Suggested by RBI
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]==0 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
