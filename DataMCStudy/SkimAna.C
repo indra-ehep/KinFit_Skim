@@ -169,8 +169,8 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_nbjet_mu","_lb_nbjet_mu", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_njet_ele","_lb_njet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_nbjet_ele","_lb_nbjet_ele", 30, 0., 30);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_mu","_lb_mjj_mu", 100, 0., 500);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_ele","_lb_mjj_ele", 100, 0., 500);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_mu","_lb_mjj_mu", 250, 0., 500);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_ele","_lb_mjj_ele", 250, 0., 500);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_pt_mu","_kb_pt_mu",100, 0., 1000.);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_eta_mu","_kb_eta_mu", 30, -3., 3.);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_phi_mu","_kb_phi_mu", 35, -3.5, 3.5);
@@ -191,8 +191,8 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_nbjet_mu","_kb_nbjet_mu", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_njet_ele","_kb_njet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_nbjet_ele","_kb_nbjet_ele", 30, 0., 30);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_mu","_kb_mjj_mu", 50, 0., 250);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_ele","_kb_mjj_ele", 50, 0., 250);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_mu","_kb_mjj_mu", 125, 0., 250);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_ele","_kb_mjj_ele", 125, 0., 250);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 50, 0., 250);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_bf_ele","_kb_mjj_bf_ele", 50, 0., 250);
     
