@@ -58,7 +58,6 @@ void initCrossSections(){
   crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315};
   crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352};
   crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095};
-  crossSections["TTbarPowheg_inclusive"]     	=  {831.76, 831.76, 831.76};  //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675)
   
   crossSections["TTbarPowheg_Dilepton_CP5up"]		 =  { 87.315, 87.315, 87.315};
   crossSections["TTbarPowheg_Dilepton_CP5down"]	 =  { 87.315, 87.315, 87.315};
@@ -385,11 +384,6 @@ double getEvtWeight(string sampleType, int year, double luminosity, double nEven
 	    int index = year - 2016;
 	    evtWeight = crossSections[sampleType][index] * luminosity / nEvents_MC;
 	    xss = crossSections[sampleType][index];
-	    cout << "luminosity " << luminosity << endl;
-	    cout << "nEvents_MC " << nEvents_MC << endl;
-	    cout << "sampleType " << sampleType << endl;
-	    cout << "index " << index << endl;
-	    cout << "CrossSection : " << crossSections[sampleType][index] << endl;
 	}
 	else {
 	    cout << "-------------------------------------------------" << endl;

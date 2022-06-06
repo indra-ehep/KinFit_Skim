@@ -5,6 +5,9 @@ samples_2017="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCD
 samples_2018="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
 
 samples_2016="TTbar DataMu"
+#samples_2016="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
+#samples_2016="TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
+#samples_2016="DYjets"
 
 #years="2016 2017 2018"
 years="2016"
@@ -24,7 +27,7 @@ do
     for sample in ${!samples}
     do
 	####################### Pre #############################
-	input=input/lnx3/${year}/pre/${sample}_${year}.txt #input has to be relative to $basedir
+	input=input/ui/${year}/pre/${sample}_${year}.txt #input has to be relative to $basedir
 	nofline=`wc -l $input | awk '{print $1}'`
     	ls -la $input
         if [ "${sample}" = "MCQCDMu" ] || [ "${sample}" = "MCQCDEle" ] ; then
@@ -32,13 +35,13 @@ do
     	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=1|run=prod|index=0|trs=no"\"\)
 	else
             echo workers = 8
-    	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=8|run=prod|index=0|trs=no"\"\)
+    	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=10|run=prod|index=0|trs=no"\"\)
 	fi
 	mv ${sample}_bjet_base_1of${nofline}.root root_files/output/${sample}_pre_bjet_base_1of${nofline}.root
 	mv ${sample}_tree_base_1of${nofline}.root root_files/output/${sample}_pre_tree_base_1of${nofline}.root
 	mv ${sample}_hist_base_1of${nofline}.root root_files/output/${sample}_pre_hist_base_1of${nofline}.root 
 	####################### Post #############################
-	input=input/lnx3/${year}/post/${sample}_${year}.txt #input has to be relative to $basedir
+	input=input/ui/${year}/post/${sample}_${year}.txt #input has to be relative to $basedir
 	nofline=`wc -l $input | awk '{print $1}'`
     	ls -la $input
         if [ "${sample}" = "MCQCDMu" ] || [ "${sample}" = "MCQCDEle" ] ; then
@@ -46,7 +49,7 @@ do
     	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=1|run=prod|index=0|trs=no"\"\)
 	else
             echo workers = 8
-    	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=8|run=prod|index=0|trs=no"\"\)
+    	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=10|run=prod|index=0|trs=no"\"\)
 	fi
 	mv ${sample}_bjet_base_1of${nofline}.root root_files/output/${sample}_post_bjet_base_1of${nofline}.root
 	mv ${sample}_tree_base_1of${nofline}.root root_files/output/${sample}_post_tree_base_1of${nofline}.root

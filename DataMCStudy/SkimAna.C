@@ -384,6 +384,14 @@ Int_t SkimAna::CreateHistoArrays()
   h5MinChi2_ele = new TH1F("h5MinChi2_ele","5^{th} minimum",500,0,100.0); 
   
   savedir->cd();
+
+  nofPtBins = 10;
+  float ptBins[11] = {10., 20., 30., 40., 50., 75., 100., 150., 200., 400., 800.};
+  ptBin = new Float_t[nofPtBins+1];
+  for(int ipt=0;ipt<=nofPtBins;ipt++)
+    ptBin[ipt] = ptBins[ipt];
+
+  hptBin = new TH1F("hptBin", "ptbin finder", nofPtBins, ptBin);
   
   if(fSyst=="base"){
     fNBSelCols = 9; //Nof cutflow columns
@@ -478,6 +486,70 @@ Int_t SkimAna::CreateHistoArrays()
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probDelRRecKFUS","probDelRRecKFUS",200, -0.5, 1.5, 0., 0.6);
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMatch","probMatch",200, -0.5, 1.5, 0., 5.);
       pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMjj","probMjj",200, -0.5, 1.5, 0., 200.);
+      if(iscl==0){
+	hEventCount = new TH1D(Form("hEventCount"),Form("%s : hEventCount ",fSample.Data()), 20, 0., 20.);
+	hNGenjets = new TH1F(Form("hNGenJets"),Form("%s : NgenJets ",fSample.Data()), 20, 0., 20.);
+	hLHEMjj = new TH1F(Form("hLHEMjj"),Form("%s : hLHEMjj ",fSample.Data()), 80, 40., 120.);
+	hGJMjj = new TH1F(Form("hGJMjj"),Form("%s : hGJMjj ",fSample.Data()), 80, 40., 120.);
+	hGPMjj = new TH1F(Form("hGPMjj"),Form("%s : hGPMjj ",fSample.Data()), 80, 40., 120.);
+	hRJMjj = new TH1F(Form("hRJMjj"),Form("%s : hRJMjj ",fSample.Data()), 80, 40., 120.);
+
+	hRJNmuMjj = new TH1F(Form("hRJNmuMjj"),Form("%s : hRJNmuMjj ",fSample.Data()), 80, 40., 120.);
+	hRJNmuJCMjj = new TH1F(Form("hRJNmuJCMjj"),Form("%s : hRJNmuJCMjj ",fSample.Data()), 80, 40., 120.);
+	hRJNjetMjj = new TH1F(Form("hRJNjetMjj"),Form("%s : hRJNjetMjj ",fSample.Data()), 80, 40., 120.);
+	hRJMETMjj = new TH1F(Form("hRJMETMjj"),Form("%s : hRJMETMjj ",fSample.Data()), 80, 40., 120.);
+	hRJBjetMjj = new TH1F(Form("hRJBjetMjj"),Form("%s : hRJBjetMjj ",fSample.Data()), 80, 40., 120.);
+	hRJBjetAnaMjj = new TH1F(Form("hRJBjetAnaMjj"),Form("%s : hRJBjetAnaMjj ",fSample.Data()), 200, 0., 400.);
+
+	hRJNmuMjjUS = new TH1F(Form("hRJNmuMjjUS"),Form("%s : hRJNmuMjjUS ",fSample.Data()), 80, 40., 120.);
+	hRJNmuJCMjjUS = new TH1F(Form("hRJNmuJCMjjUS"),Form("%s : hRJNmuJCMjjUS ",fSample.Data()), 80, 40., 120.);
+	hRJNjetMjjUS = new TH1F(Form("hRJNjetMjjUS"),Form("%s : hRJNjetMjjUS ",fSample.Data()), 80, 40., 120.);
+	hRJMETMjjUS = new TH1F(Form("hRJMETMjjUS"),Form("%s : hRJMETMjjUS ",fSample.Data()), 80, 40., 120.);
+	hRJBjetMjjUS = new TH1F(Form("hRJBjetMjjUS"),Form("%s : hRJBjetMjjUS ",fSample.Data()), 80, 40., 120.);
+	    
+	hGJPt = new TH1F(Form("hGJPt"),Form("%s : hGJPt ",fSample.Data()), 160, 0., 800.);
+	hGJEta = new TH1F(Form("hGJEta"),Form("%s : hGJEta ",fSample.Data()), 200, -5., 5.);
+	hGJPhi = new TH1F(Form("hGJPhi"),Form("%s : hGJPhi ",fSample.Data()), 80, -4., 4.);
+	hGJMass = new TH1F(Form("hGJMass"),Form("%s : hGJMass ",fSample.Data()), 100, 0., 100.);
+    
+	hNDiffGenjets = new TH1F*[nofPtBins];
+	hGJDiffPt = new TH1F*[nofPtBins];
+	hGJDiffEta = new TH1F*[nofPtBins];
+	hGJDiffPhi = new TH1F*[nofPtBins];
+	hGJDiffMass = new TH1F*[nofPtBins];
+	for(int ipt = 0 ; ipt < nofPtBins ; ipt++ ){
+	  hNDiffGenjets[ipt] = new TH1F(Form("hNGenjets_%d",ipt),Form("(%02.1f-%02.1f) : NgenJets ",ptBin[ipt],ptBin[ipt+1]), 20, 0., 20.);
+	  hGJDiffPt[ipt] = new TH1F(Form("hGJPt_%d",ipt),Form("(%02.1f-%02.1f) :  hGJPt ",ptBin[ipt],ptBin[ipt+1]), 160, 0., 800.);
+	  hGJDiffEta[ipt] = new TH1F(Form("hGJEta_%d",ipt),Form("(%02.1f-%02.1f) :  hGJEta ",ptBin[ipt],ptBin[ipt+1]), 200, -5., 5.);
+	  hGJDiffPhi[ipt] = new TH1F(Form("hGJPhi_%d",ipt),Form("(%02.1f-%02.1f) :  hGJPhi ",ptBin[ipt],ptBin[ipt+1]), 80, -4., 4.);
+	  hGJDiffMass[ipt] = new TH1F(Form("hGJMass_%d",ipt),Form("(%02.1f-%02.1f) :  hGJMass ",ptBin[ipt],ptBin[ipt+1]), 100, 0., 100.);
+	}
+
+	hRJPt = new TH1F(Form("hRJPt"),Form("%s : hRJPt ",fSample.Data()), 160, 0., 800.);
+	// hRJPtHLTPF = new TH1F(Form("hRJPtHLTPF"),Form("hRJPtHLTPF "), 160, 0., 800.);
+	// hRJPtHLTCalo = new TH1F(Form("hRJPtHLTCalo"),Form("hRJPtHLTCalo "), 160, 0., 800.);
+
+	hNofMu = new TH1F("hNofMu","hNofMu",100,-5,5);
+	hNofEle = new TH1F("hNofEle","hNofEle",100,-5,5);
+	hNofBJets = new TH1F("hNofBJets","hNofBJets",55,-5,50); 
+	hNofLJets = new TH1F("hNofLJets","hNofLJets",55,-5,50);
+
+      }//For Event tree only
+      // if(iscl==2){
+      // 	hRJNmuMjj = new TH1F(Form("hRJNmuMjj"),Form("%s : hRJNmuMjj ",fSample.Data()), 40, 40., 120.);
+      // 	hRJNmuJCMjj = new TH1F(Form("hRJNmuJCMjj"),Form("%s : hRJNmuJCMjj ",fSample.Data()), 40, 40., 120.);
+      // }//For Lepton tree only
+      // if(iscl==3){
+      // 	hRJNjetMjj = new TH1F(Form("hRJNjetMjj"),Form("%s : hRJNjetMjj ",fSample.Data()), 40, 40., 120.);
+      // }//For jet branch only
+      // if(iscl==4){
+      // 	hRJMETMjj = new TH1F(Form("hRJMETMjj"),Form("%s : hRJMETMjj ",fSample.Data()), 40, 40., 120.);
+      // }//MET
+      // if(iscl==5){
+      // 	hRJBjetMjj = new TH1F(Form("hRJBjetMjj"),Form("%s : hRJBjetMjj ",fSample.Data()), 40, 40., 120.);
+      // 	hRJBjetAnaMjj = new TH1F(Form("hRJBjetAnaMjj"),Form("%s : hRJBjetAnaMjj ",fSample.Data()), 200, 0., 400.);
+      // }
+
     }
   }//fSyst==base
 
@@ -539,11 +611,12 @@ void SkimAna::GetArguments(){
   TString hostname = gSystem->HostName();
   if(fMode.Contains("proof")){
     if(hostname.BeginsWith("Indra-Rjn"))
-      fBasePath = "/Data/CMS-Analysis/NanoAOD-Analysis/Git_KinFit_Skim/KinFit_Skim/CBA_Skim";
+      fBasePath = "/Data/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
+    //fBasePath = "/Data/CMS-Analysis/NanoAOD-Analysis/Git_KinFit_Skim/KinFit_Skim/CBA_Skim";
     else if(hostname.BeginsWith("lxplus"))
       fBasePath = "/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
     else if(hostname.BeginsWith("ui"))
-      fBasePath = "/tmp/idas/CBA_Skim";
+      fBasePath = "/tmp/idas/DataMCStudy";
     else if(hostname.BeginsWith("localhost") or hostname.BeginsWith("lnx3"))
       fBasePath = "/home/idas/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
   }else{
@@ -908,9 +981,10 @@ void SkimAna::GetNumberofEvents()
     
     TFile *file = TFile::Open(s.c_str(),"read");
     TH1D *hEvents = (TH1D*) file->Get("hEvents"); 
+    Info("SkimAna::GetNumberofEvents","File : %s, histo : %p",file->GetName(),hEvents);
     double nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights Method 1 and 3
     //double nMC_thisFile = (hEvents->GetBinContent(3) - hEvents->GetBinContent(1)); //diff of gen weights Method2
-    
+
     totEvents[sample] += nMC_thisFile;
     totEventsUS[sample] += hEvents->GetEntries()/2.0;
     fnameList[sample].push_back(s);
@@ -1485,9 +1559,10 @@ void SkimAna::GetPUJetIDSF_1a(){
   if(fYear==2016){
     if(isPreVFP)
       hpujetid_eff = hPUJetIDEffa;
-    if(isPostVFP)
+    else if(isPostVFP)
       hpujetid_eff = hPUJetIDEffb;
-    
+    else
+      hpujetid_eff = hPUJetIDEffa;
   }else
     hpujetid_eff = hPUJetIDEff;
   double maxbinX = hpujetid_eff->GetXaxis()->GetBinUpEdge(hpujetid_eff->GetNbinsX());
@@ -1503,11 +1578,21 @@ void SkimAna::GetPUJetIDSF_1a(){
 
     if(fYear==2016){
       if(isPreVFP)
+    	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+      else if(isPostVFP)
+    	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+      else
 	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
-      if(isPostVFP)
-	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
     }else
       SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+
+    // if(fYear==2016){
+    //   if(isPreVFP)
+    // 	SFb = 1.0;
+    //   if(isPostVFP)
+    // 	SFb = 1.0;
+    // }else
+    //   SFb = 1.0
     
     xbin = hpujetid_eff->GetXaxis()->FindBin(min(jetPt,50.));
     ybin = hpujetid_eff->GetYaxis()->FindBin(jetEta);
@@ -1594,8 +1679,10 @@ void SkimAna::GetBtagSF_1a(){
       if(fYear==2016){
 	if(isPreVFP)
 	  SFb = readera.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
-	if(isPostVFP)
+	else if(isPostVFP)
 	  SFb = readerb.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
+	else
+	  SFb = readera.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       }else
 	SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
@@ -1610,8 +1697,10 @@ void SkimAna::GetBtagSF_1a(){
       if(fYear==2016){
 	if(isPreVFP)
 	  SFb = readera.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
-	if(isPostVFP)
+	else if(isPostVFP)
 	  SFb = readerb.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+	else
+	  SFb = readera.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
       }else
 	SFb = reader.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
@@ -1626,8 +1715,10 @@ void SkimAna::GetBtagSF_1a(){
       if(fYear==2016){
 	if(isPreVFP)
 	  SFb = readera.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
-	if(isPostVFP)
+	else if(isPostVFP)
 	  SFb = readerb.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
+	else
+	  SFb = readera.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       }else
 	SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
@@ -2044,8 +2135,10 @@ void SkimAna::GetMuonEff(double iso){
     for (int i=0; i < int(muWeights_a.size()); i++){
       if(isPreVFP)
     	muWeights.push_back( muWeights_a.at(i));
-      if(isPostVFP)
+      else if(isPostVFP)
     	muWeights.push_back( muWeights_b.at(i));
+      else
+	muWeights.push_back( muWeights_a.at(i)*lumiFracI + muWeights_b.at(i)*lumiFracII );
     }
     
     if(isNanoAOD){
@@ -2089,8 +2182,10 @@ void SkimAna::GetElectronEff(){
     for (int i=0; i < int(eleWeights_a.size()); i++){
       if(isPreVFP)
     	eleWeights.push_back( eleWeights_a.at(i));
-      if(isPostVFP)
+      else if(isPostVFP)
     	eleWeights.push_back( eleWeights_b.at(i) );
+      else
+	eleWeights.push_back( eleWeights_a.at(i)*lumiFracI + eleWeights_b.at(i)*lumiFracII);
     }
     
     _eleEffWeight    = eleWeights.at(0);
@@ -2409,6 +2504,7 @@ void SkimAna::Clean(){
   
 }    
 
+
 //_____________________________________________________________________________
 Bool_t SkimAna::Process(Long64_t entry)
 {
@@ -2421,11 +2517,19 @@ Bool_t SkimAna::Process(Long64_t entry)
   fProcessed++;
   fStatus++;
   
+  if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
+    
+    if(!SelectTTbarChannel()) return true;
+    if(_kFType!=13) return true;   //Select only the TTbar Semilep
+    if(!FillMCInfo()) return true;
+  }//isData
+
   //Collection at tree entry level before applying any weight
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if(systType == kBase) FillEventControlHists();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
+
   int mod_num = 10000;
   if(fProcessed%mod_num==0){
     Info("Process","Processing : %lld(%lld) of number of events : %lld and total number of events : %.0lf, year : %s", 
@@ -2445,6 +2549,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   }
   if(IsDebug) Info("Process","Completed JEC correction");
   
+
   // //Clear selector vectors
   selector->clear_vectors();
   if(IsDebug) Info("Process","Completed cleaning vectors");
@@ -2479,6 +2584,8 @@ Bool_t SkimAna::Process(Long64_t entry)
     if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
   }
   if(IsDebug) Info("Process","Completed event weight application");
+  
+  
 
   // Access the prefire weight
   if(!isData){
@@ -2605,7 +2712,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     }
 
   }
-  
+
   FillLeptonCutFlow();
   FillLeptonWt();
   if(systType == kBase) FillLeptonControlHists();
@@ -2627,7 +2734,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   //////=====================================================
   if(selector->Jets.size() < 4) return true; //original condn
   //////=====================================================
-  
+
   //Processes after njet >= 4 selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if(!isData){
@@ -2657,7 +2764,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   else
     selector->filter_mets();
   //######################################################
-  
+
   METThreshold = 20. ;
   //////=====================================================
   if(selector->METPt < METThreshold ) isLowMET = true;
@@ -2730,7 +2837,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     //_topPtReWeight = topPtReweight();
     
   }
-  
+
   //FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
   FillBJetTree();
   FillBTagObs();
@@ -4743,6 +4850,168 @@ bool SkimAna::FillEventWt(){
 
   return true;
 }
+//_____________________________________________________________________________
+bool SkimAna::FillMCInfo()
+{
+  int lhePDG[2];
+  int nPLHE = 0; lhePDG[0] = -1; lhePDG[1] = -1;
+  for (unsigned int imc = event->nLHEPart_-4 ; imc < event->nLHEPart_ ; imc++ ){      
+    if(abs(event->LHEPart_pdgId_[imc])>=1 and abs(event->LHEPart_pdgId_[imc])<=4){
+      pLHE[nPLHE].SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+      lhePDG[nPLHE] = event->LHEPart_pdgId_[imc];
+      nPLHE++;
+    }
+  }// mc particle loop
+
+  delRtoID0.clear();
+  delRtoID1.clear();
+  for (unsigned int imc = 0 ; imc < event->nGenPart_ ; imc++ ){      
+    pTemp.SetPtEtaPhiM(event->GenPart_pt_[imc], event->GenPart_eta_[imc] , event->GenPart_phi_[imc], event->GenPart_mass_[imc]);
+    if(abs(event->GenPart_pdgId_[imc])==abs(lhePDG[0])){
+      delRtoID0.insert( pair<double,int> (pTemp.DeltaR(pLHE[0]), imc) );
+      //cout <<"\tFound match 0 for " << imc << endl;
+    }
+    if(abs(event->GenPart_pdgId_[imc])==abs(lhePDG[1])){
+      delRtoID1.insert( pair<double,int> (pTemp.DeltaR(pLHE[1]), imc) );
+      //cout <<"\tFound match 1 for " << imc << endl;
+    }
+  }
+  
+  DeltaRCut = 0.1;
+  hasGPmatchLHE = false;
+  if(delRtoID0.size()>0 and delRtoID1.size()>0){
+    itr_ptr0 = delRtoID0.begin();
+    itr_ptr1 = delRtoID1.begin();
+    if(itr_ptr0->second != itr_ptr1->second){
+      if(itr_ptr0->first < DeltaRCut and itr_ptr1->first < DeltaRCut ){
+	int imc0 = itr_ptr0->second;
+	int imc1 = itr_ptr1->second;
+	pGP[0].SetPtEtaPhiM(event->GenPart_pt_[imc0], event->GenPart_eta_[imc0] , event->GenPart_phi_[imc0], event->GenPart_mass_[imc0]);
+	pGP[1].SetPtEtaPhiM(event->GenPart_pt_[imc1], event->GenPart_eta_[imc1] , event->GenPart_phi_[imc1], event->GenPart_mass_[imc1]);
+	hasGPmatchLHE = true;
+      }//DeltaRcut
+    }//confirm that both of the imc indices are not same
+  }
+  
+
+  delRtoID0.clear();
+  delRtoID1.clear();
+  for (unsigned int imc = 0 ; imc < event->nGenJet_ ; imc++ ){      
+      
+    //if(event->GenJet_pt_[imc]<25.0 or abs(event->GenJet_eta_[imc])<2.4) continue;
+    
+    pTemp.SetPtEtaPhiM(event->GenJet_pt_[imc], event->GenJet_eta_[imc] , event->GenJet_phi_[imc], event->GenJet_mass_[imc]);
+    if(abs(event->GenJet_partonFlavour_[imc])==abs(lhePDG[0]) or event->GenJet_partonFlavour_[imc]==0 or event->GenJet_partonFlavour_[imc]==21){
+      delRtoID0.insert( pair<double,int> (pTemp.DeltaR(pLHE[0]), imc) );
+      //cout <<"\tFound match 0 for " << imc << endl;
+    }
+    if(abs(event->GenJet_partonFlavour_[imc])==abs(lhePDG[1]) or event->GenJet_partonFlavour_[imc]==0 or event->GenJet_partonFlavour_[imc]==21){
+      delRtoID1.insert( pair<double,int> (pTemp.DeltaR(pLHE[1]), imc) );
+      //cout <<"\tFound match 1 for " << imc << endl;
+    }
+  }
+  
+  DeltaRCut = 0.1;
+  hasGJmatchLHE = false;
+  genJetMatch[0] = -100 ; genJetMatch[1] = -100 ;
+  genJetMatch[0] = -1; genJetMatch[1] = -1;
+  if(delRtoID0.size()>0 and delRtoID1.size()>0){
+    itr_ptr0 = delRtoID0.begin();
+    itr_ptr1 = delRtoID1.begin();
+    if(itr_ptr0->second != itr_ptr1->second){
+      if(itr_ptr0->first < DeltaRCut and itr_ptr1->first < DeltaRCut ){
+	int imc0 = itr_ptr0->second;
+	int imc1 = itr_ptr1->second;
+	pGJ[0].SetPtEtaPhiM(event->GenJet_pt_[imc0], event->GenJet_eta_[imc0] , event->GenJet_phi_[imc0], event->GenJet_mass_[imc0]);
+	pGJ[1].SetPtEtaPhiM(event->GenJet_pt_[imc1], event->GenJet_eta_[imc1] , event->GenJet_phi_[imc1], event->GenJet_mass_[imc1]);
+	hasGJmatchLHE = true;
+	genJetMatch[0] = imc0;
+	genJetMatch[1] = imc1;
+      }//DeltaRcut
+    }//confirm that both of the imc indices are not same
+  }
+
+  hasRJmatchGJ = false;
+  bool hasRJmatchGJ0 = false, hasRJmatchGJ1 = false;
+  recoJetMatch[0] = -100; recoJetMatch[1] = -100;
+  if(hasGJmatchLHE){
+    for (unsigned int imc = 0 ; imc < event->nJet_ ; imc++ ){      
+	
+      //if(jetPt_[imc]<25.0 or abs(jetEta_[imc])<2.4) continue;
+
+      if(genJetMatch[0]==event->jetGenJetIdx_[imc]){
+	pRJ[0].SetPtEtaPhiM(event->jetPt_[imc], event->jetEta_[imc] , event->jetPhi_[imc], event->jetMass_[imc]);
+	hasRJmatchGJ0 = true;
+	recoJetMatch[0] = imc;
+      }
+      if(genJetMatch[1]==event->jetGenJetIdx_[imc]){
+	//pRJ[1].SetPtEtaPhiM(event->jetPt_[imc]*(1-event->jetRawFactor_[imc]), event->jetEta_[imc] , event->jetPhi_[imc], event->jetMass_[imc]*(1-event->jetRawFactor_[imc]));
+	pRJ[1].SetPtEtaPhiM(event->jetPt_[imc], event->jetEta_[imc] , event->jetPhi_[imc], event->jetMass_[imc]);
+	hasRJmatchGJ1 = true;
+	recoJetMatch[1] = imc;
+      }
+    }
+    if(hasRJmatchGJ0 and hasRJmatchGJ1) hasRJmatchGJ = true;
+  }
+    
+  // for(int itype=0;itype<7;itype++)
+  //   totSlType[itype] += slType[itype];
+
+  hLHEMjj->Fill((pLHE[0]+pLHE[1]).M());
+  if(hasGPmatchLHE) hGPMjj->Fill( (pGP[0]+pGP[1]).M() );
+
+  //if(hasGJmatchLHE and pGJ[0].M()<5.0 and pGJ[1].M()<5.0){
+  if(hasGJmatchLHE){
+    hNGenjets->Fill(event->nGenJet_);
+    hGJMjj->Fill((pGJ[0]+pGJ[1]).M());
+    hGJPt->Fill(pGJ[0].Pt());
+    hGJPt->Fill(pGJ[1].Pt());
+
+    hGJEta->Fill(pGJ[0].Eta());
+    hGJEta->Fill(pGJ[1].Eta());
+
+    hGJPhi->Fill(pGJ[0].Phi());
+    hGJPhi->Fill(pGJ[1].Phi());
+
+    hGJMass->Fill(pGJ[0].M());
+    hGJMass->Fill(pGJ[1].M());
+      
+    if(pGJ[0].Pt()>=ptBin[0] and pGJ[0].Pt()<=ptBin[nofPtBins]){
+      int ptBin0 = hptBin->GetXaxis()->FindBin(pGJ[0].Pt())-1;
+
+      hNDiffGenjets[ptBin0]->Fill(event->nGenJet_);
+      hGJDiffPt[ptBin0]->Fill(pGJ[0].Pt());
+      hGJDiffEta[ptBin0]->Fill(pGJ[0].Eta());
+      hGJDiffPhi[ptBin0]->Fill(pGJ[0].Phi());
+      hGJDiffMass[ptBin0]->Fill(pGJ[0].M());
+
+    }
+    if(pGJ[1].Pt()>=ptBin[0] and pGJ[1].Pt()<=ptBin[nofPtBins]){
+      int ptBin1 = hptBin->GetXaxis()->FindBin(pGJ[1].Pt())-1;
+
+      hNDiffGenjets[ptBin1]->Fill(event->nGenJet_);
+      hGJDiffPt[ptBin1]->Fill(pGJ[1].Pt());
+      hGJDiffEta[ptBin1]->Fill(pGJ[1].Eta());
+      hGJDiffPhi[ptBin1]->Fill(pGJ[1].Phi());
+      hGJDiffMass[ptBin1]->Fill(pGJ[1].M());
+    }
+  }
+  if(hasRJmatchGJ){
+    hRJMjj->Fill((pRJ[0]+pRJ[1]).M());
+    hRJPt->Fill(pRJ[0].Pt());
+    hRJPt->Fill(pRJ[1].Pt());
+    //if(HLT_AK4CaloJet30_){
+    // hRJPtHLTCalo->Fill(pRJ[0].Pt());
+    // hRJPtHLTCalo->Fill(pRJ[1].Pt());
+    // }
+    // if(HLT_AK4PFJet30_){
+    // hRJPtHLTPF->Fill(pRJ[0].Pt());
+    // hRJPtHLTPF->Fill(pRJ[1].Pt());
+    //}
+  }
+
+  return true;
+}
 
 //_____________________________________________________________________________
 bool SkimAna::FillEventControlHists(){
@@ -4764,7 +5033,7 @@ bool SkimAna::FillEventControlHists(){
     ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[eleInd], combined_wt);
   }  
   
-  for(unsigned int jetInd = 0; jetInd < event->nJet_ and int(event->nJet_) < 10000000 ; ++jetInd){ //less than 10 million jets since some MCQCD shows unexceptionally number of higher jets
+  for(unsigned int jetInd = 0; jetInd < event->nJet_ and int(event->nJet_) < 200 ; ++jetInd){ //less than the jet array size
     double pt = event->jetPt_[jetInd];
     float pudisc = event->jetpuIdDisc_[jetInd];
     int puJetwp = event->jetPUID_[jetInd]; 
@@ -4915,7 +5184,13 @@ bool SkimAna::FillLeptonControlHists(){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(event->jetPt_[ljetlist.at(1).first], combined_muwt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
+    if(!isData and hasRJmatchGJ){
+      hRJNmuMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJNmuMjjUS->Fill((pRJ[0]+pRJ[1]).M());
+      hRJNmuJCMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+    }
   }
+
   if(singleEle){
     ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
     ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
@@ -4939,6 +5214,11 @@ bool SkimAna::FillLeptonControlHists(){
     if(ljetlist.size()>=2){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(event->jetPt_[ljetlist.at(1).first], combined_elewt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
+    }
+    if(!isData and hasRJmatchGJ){
+      hRJNmuMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJNmuMjjUS->Fill((pRJ[0]+pRJ[1]).M());
+      hRJNmuJCMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
     }
   }
 
@@ -4992,6 +5272,10 @@ bool SkimAna::FillJetControlHists(){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(ljetlist.at(1).second, combined_muwt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
+    if(!isData and hasRJmatchGJ){
+      hRJNjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJNjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
+    }
   }
   if(singleEle){
     ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
@@ -5029,6 +5313,10 @@ bool SkimAna::FillJetControlHists(){
     if(ljetlist.size()>=2){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(ljetlist.at(1).second, combined_elewt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
+    }
+    if(!isData and hasRJmatchGJ){
+      hRJNjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJNjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
   
@@ -5068,6 +5356,10 @@ bool SkimAna::FillMETControlHists(){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(ljetlist.at(1).second, combined_muwt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
+    if(!isData and hasRJmatchGJ){
+      hRJMETMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJMETMjjUS->Fill((pRJ[0]+pRJ[1]).M());
+    }
   }
   if(singleEle){
     ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
@@ -5092,6 +5384,10 @@ bool SkimAna::FillMETControlHists(){
     if(ljetlist.size()>=2){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(ljetlist.at(1).second, combined_elewt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
+    }
+    if(!isData and hasRJmatchGJ){
+      hRJMETMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJMETMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
   
@@ -5131,6 +5427,10 @@ bool SkimAna::FillBTagControlHists(){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(ljetlist.at(1).second, combined_muwt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
+    if(!isData and hasRJmatchGJ){
+      hRJBjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJBjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
+    }
   }
   if(singleEle){
     ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
@@ -5155,6 +5455,10 @@ bool SkimAna::FillBTagControlHists(){
     if(ljetlist.size()>=2){
       ((TH1D *) list->FindObject("pt_jet2_ljet"))->Fill(ljetlist.at(1).second, combined_elewt);
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
+    }
+    if(!isData and hasRJmatchGJ){
+      hRJBjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJBjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
 

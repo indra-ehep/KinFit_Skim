@@ -3,7 +3,8 @@
   
   TString path_lnx3 = "/work/CMS-Software/Source/cs8_amd64_gcc10/external/py3-correctionlib/2.1.0-bc1f1a24613552be911056d8eb959866/lib/python3.9/site-packages/correctionlib";
   TString path_ui = "/cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/py3-correctionlib/2.1.0-bc1f1a24613552be911056d8eb959866/lib/python3.9/site-packages/correctionlib";
-  
+  TString path_inlap = "/Data/CMS-Software/FWLite_Test/slc7_amd64_gcc10/external/py3-correctionlib/2.1.0-bc1f1a24613552be911056d8eb959866/lib/python3.9/site-packages/correctionlib";
+
   TString hostname = gSystem->HostName();
   
   // if(hostname.BeginsWith("Indra-Rjn"))
@@ -18,7 +19,7 @@
   
   TString corrlib_path = "";
   if(hostname.BeginsWith("Indra-Rjn"))
-    corrlib_path = "";
+    corrlib_path = path_inlap;
   else if(hostname.BeginsWith("lxplus"))
     corrlib_path = "";
   else if(hostname.BeginsWith("ui"))

@@ -427,6 +427,31 @@ class SkimAna : public TSelector {
    /* Int_t           jetGenJetIdx_[200]; */
    /* //////////////////////////////////////////////////////// */
 
+   /////////////////////// MC section //////////////////////////
+   ////Histos
+   TH1F *hNofMu, *hNofEle, *hNofBJets, *hNofLJets;
+   TH1D *hEventCount; 
+   TH1F *hNGenjets, *hLHEMjj, *hGPMjj, *hGJMjj, *hRJMjj;
+   TH1F *hGJPt, *hGJEta, *hGJPhi, *hGJMass;
+   TH1F *hptBin;
+   TH1F **hNDiffGenjets, **hGJDiffPt, **hGJDiffEta, **hGJDiffPhi, **hGJDiffMass;
+   TH1F *hRJPt;//, *hRJPtHLTPF, *hRJPtHLTCalo;
+   TH1F *hRJNmuMjj, *hRJNmuJCMjj, *hRJNjetMjj, *hRJMETMjj, *hRJBjetMjj, *hRJBjetAnaMjj;
+   TH1F *hRJNmuMjjUS, *hRJNmuJCMjjUS, *hRJNjetMjjUS, *hRJMETMjjUS, *hRJBjetMjjUS;
+
+   TLorentzVector pLHE[2], pGP[2], pGJ[2], pRJ[2], pRJAna[2], pTemp;
+   map<double,int> delRtoID0;
+   map<double,int> delRtoID1;
+   map<double, int>::iterator itr_ptr0, itr_ptr1;
+   int genJetMatch[2];
+   float DeltaRCut = 0.1;
+   bool hasGPmatchLHE = false;
+   bool hasGJmatchLHE = false;
+   bool hasRJmatchGJ = false;
+   int recoJetMatch[2];
+   Int_t		 nofPtBins    = 10;
+   float                *ptBin;
+   /////////////////////////////////////////////////////////////
    
    //Declaration of leaves types
    ////////////////////////////////////////////////////////
@@ -989,6 +1014,7 @@ class SkimAna : public TSelector {
    bool    GetCTagWt(char CType, TString systname, double& ctagwt);
    
    /// Fill the control histograms
+   bool    FillMCInfo();
    bool    FillEventControlHists();
    bool    FillTriggerControlHists();
    bool    FillLeptonControlHists();
@@ -2154,6 +2180,17 @@ Bool_t SkimAna::Notify()
       kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
     else
       kinFit.SetBtagThresh(selector->btag_cut);
+  }else{
+
+    selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
+    selector->btag_cut = selector->btag_cuta ; 
+    selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cuta ; 
+    selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cuta ; 
+    selector->ctag_CvsL_M_cut = selector->ctag_CvsL_M_cuta ; 
+    selector->ctag_CvsB_M_cut = selector->ctag_CvsB_M_cuta ; 
+    selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cuta ; 
+    selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cuta ; 
+
   }
   kinFit.SetResoInputPath(inputKFResoPath);
   kinFit.UnloadObjReso();
@@ -2170,8 +2207,8 @@ Bool_t SkimAna::Notify()
   float _xss = 0.0;
   if(!isData){
     
-    //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
-    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
+    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
+    //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
     
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){
@@ -2227,8 +2264,10 @@ Bool_t SkimAna::Notify()
       if (fYear==2016){
 	if(isPreVFP)
 	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/pre/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
-	if(isPostVFP)
-	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/post/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+	else if(isPostVFP)
+	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/post/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);   
+	else
+	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/pre/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
       }else{
 	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
       }

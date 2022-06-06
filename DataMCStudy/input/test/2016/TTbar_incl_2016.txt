@@ -1,0 +1,1 @@
+/Data/root_files/AOD_files/NanoAOD_framework/Skim/2016/TTbarPowheg_inclusive_Skim_NanoAOD_1of16.root
