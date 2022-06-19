@@ -1,4 +1,4 @@
-int run(const char* opt = "sample=TTbar|year=2016|input=input/test/2016/TTbar_incl_2016.txt|index=0|run=test|mode=proof|workers=3|syst=base|aod=nano|trs=no") // sample = data, bkg, signal
+int run(const char* opt = "sample=DataMu|year=2016|input=input/ui/2016/pre/DataMu_2016.txt|index=0|run=test|mode=proof|workers=3|syst=base|aod=nano|trs=no") // sample = data, bkg, signal
 {
   bool isproof  = false ;
   
@@ -51,7 +51,7 @@ int run(const char* opt = "sample=TTbar|year=2016|input=input/test/2016/TTbar_in
   if(run == "prod")
     chain->Process("SkimAna.C+", options.Data() );    
   else
-    chain->Process("SkimAna.C+", options.Data(), 10000 );    
+    chain->Process("SkimAna.C+", options.Data(), 100000 );    
   
   return true;
 }

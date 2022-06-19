@@ -2200,15 +2200,61 @@ Bool_t SkimAna::Notify()
   fSampleType = fname;
   
   Info("Notify","processing fSampleType %s and file: %s",fSampleType.Data(), fChain->GetCurrentFile()->GetName());  
-  
+  /* if(isData){ */
+  /*   string JECsystLevel = "Total"; */
+  /*   string era =  ""; */
+  /*   string search_str = ""; */
+  /*   string jecera =  ""; */
+  /*   if (fYear==2016){ */
+  /*     if(isPreVFP){ */
+  /* 	search_str = "SingleMu"; */
+  /* 	if(fname.find(search_str) != string::npos) */
+  /* 	  era = fname.substr(fname.find(search_str)+search_str.size(), fname.size()); */
+  /* 	search_str = "SingleEle"; */
+  /* 	if(fname.find(search_str) != string::npos) */
+  /* 	  era = fname.substr(fname.find(search_str)+search_str.size(), fname.size()); */
+  /* 	if((era.find("_b") != string::npos) or (era.find("_c") != string::npos) or (era.find("_d") != string::npos)) */
+  /* 	  jecera =  "RunBCD"; */
+  /* 	if((era.find("_e") != string::npos) or (era.find("_f") != string::npos)) */
+  /* 	  jecera =  "RunEF"; */
+	
+  /* 	if(jecvara!=0x0) delete jecvara; */
+  /* 	jecvara = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/preVFP_V7/Summer19UL16APV_%s_V7",fBasePath.Data(),jecera.c_str()), !isData, JECsystLevel); */
+
+  /*     } */
+  /*     if(isPostVFP){ */
+  /* 	search_str = "SingleMu"; */
+  /* 	if(fname.find(search_str) != string::npos) */
+  /* 	  era = fname.substr(fname.find(search_str)+search_str.size(), fname.size()); */
+  /* 	search_str = "SingleEle"; */
+  /* 	if(fname.find(search_str) != string::npos) */
+  /* 	  era = fname.substr(fname.find(search_str)+search_str.size(), fname.size()); */
+  /* 	if((era.find("_f") != string::npos) or (era.find("_g") != string::npos) or (era.find("_h") != string::npos)) */
+  /* 	  jecera =  "RunFGH"; */
+  /* 	if(jecvarb!=0x0) delete jecvarb; */
+  /* 	jecvarb = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/postVFP_V7/Summer19UL16_%s_V7",fBasePath.Data(),jecera.c_str()), !isData, JECsystLevel); */
+  /*     } */
+      
+  /*   } */
+  /*   Info("Notify","Era %s, JEC string : %s and file: %s",era.c_str(), jecera.c_str(), fChain->GetCurrentFile()->GetName());   */
+  /* }else{ */
+  /*   string JECsystLevel = "Total"; */
+  /*   if (fYear==2016){ */
+  /*     jecvara = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/preVFP_V7/Summer19UL16APV_V7",fBasePath.Data()), !isData, JECsystLevel); */
+  /*     jecvarb = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/postVFP_V7/Summer19UL16_V7",fBasePath.Data()), !isData, JECsystLevel); */
+  /*   } */
+  /*   if (fYear==2017) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2017/V5/Summer19UL17_V5",fBasePath.Data()), !isData, JECsystLevel); */
+  /*   if (fYear==2018) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2018/V5/Summer19UL18_V5",fBasePath.Data()), !isData, JECsystLevel); */
+
+  /* } */
   /* if(!isData) */
   /*   _local_evtWeight = getEvtWeight(fname, fYear, luminosity); */
   
   float _xss = 0.0;
   if(!isData){
     
-    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
-    //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
+    //_local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEventsUS[fname], _xss);
+    _local_evtWeight = getEvtWeight(fname, fYear, luminosity, totEvents[fname], _xss);
     
     double scalelumi = 1.0;
     if(fSampleType.Contains("Wjets") || fSampleType.Contains("W1jets") || fSampleType.Contains("W2jets") || fSampleType.Contains("W3jets") || fSampleType.Contains("W4jets")){

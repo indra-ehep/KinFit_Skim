@@ -684,9 +684,6 @@ void Selector::filter_jets(){
     //bool jetID_pass = (tree->jetID_[jetInd]>=2) ;    
     //Applied for UL
     bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
-    //Tightmost test
-    //bool jetID_pass = (tree->jetID_[jetInd]>=6 and (tree->jetPUID_[jetInd]>=7 or pt>=50.0)) ; //lwp
-
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=3 or pt>=50.0)) ; //mwp
     //Suggested by RBI
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]==0 or pt>=50.0)) ; //(tree->jetID_[jetInd]>=2) ;
@@ -726,7 +723,7 @@ void Selector::filter_jets(){
 	cout << "\t genID : " << tree->jetGenJetIdx_[jetInd] << ", ngenjet : " << int(tree->nGenJet_) << ", recojet : " << int(tree->nJet_) <<  endl;
       
       int genIdx = tree->jetGenJetIdx_[jetInd];
-      
+
       if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
       	double genJetPt = tree->GenJet_pt_[genIdx];
       	jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;

@@ -940,7 +940,7 @@ void SkimAna::SetTrio()
   
   float mTop = 172.76;
   kinFit.SetTopMass(mTop);
-
+  
   inputPathReso = Form("%s/weightUL/KFReso/%d",fBasePath.Data(),fYear);
   
 }
@@ -961,7 +961,7 @@ void SkimAna::GetNumberofEvents()
   
   while(getline(fin,s)){
     
-    Info("GetNumberofEvents", "filename : %s", s.c_str());
+    //Info("GetNumberofEvents", "filename : %s", s.c_str());
     
     string sample = s.substr(s.find_last_of("/")+1,s.size());    
     if(sample.find("_ext4_Skim") != string::npos)
@@ -981,10 +981,10 @@ void SkimAna::GetNumberofEvents()
     
     TFile *file = TFile::Open(s.c_str(),"read");
     TH1D *hEvents = (TH1D*) file->Get("hEvents"); 
-    Info("SkimAna::GetNumberofEvents","File : %s, histo : %p",file->GetName(),hEvents);
+    //Info("SkimAna::GetNumberofEvents","File : %s, histo : %p",file->GetName(),hEvents);
     double nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights Method 1 and 3
     //double nMC_thisFile = (hEvents->GetBinContent(3) - hEvents->GetBinContent(1)); //diff of gen weights Method2
-
+    
     totEvents[sample] += nMC_thisFile;
     totEventsUS[sample] += hEvents->GetEntries()/2.0;
     fnameList[sample].push_back(s);
@@ -1092,27 +1092,32 @@ void SkimAna::LoadPU()
 //_____________________________________________________________________________
 void SkimAna::LoadJECJER()
 {
+
+  
   if (!isData){
     if (fYear==2016) selector->init_JER( Form("%s/weightUL/JetSF/JER/2016",fBasePath.Data()) );
     if (fYear==2017) selector->init_JER( Form("%s/weightUL/JetSF/JER/2017/JRV2/Summer19UL17_JRV2",fBasePath.Data()) );
     if (fYear==2018) selector->init_JER( Form("%s/weightUL/JetSF/JER/2018/JRV2/Summer19UL18_JRV2",fBasePath.Data()) );
     
-  
+
+    string JECsystLevel = "Total";
+    if (fYear==2016){
+      jecvara = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/preVFP_V7/Summer19UL16APV_V7",fBasePath.Data()), !isData, JECsystLevel);
+      jecvarb = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/postVFP_V7/Summer19UL16_V7",fBasePath.Data()), !isData, JECsystLevel);
+    }
+    if (fYear==2017) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2017/V5/Summer19UL17_V5",fBasePath.Data()), !isData, JECsystLevel);
+    if (fYear==2018) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2018/V5/Summer19UL18_V5",fBasePath.Data()), !isData, JECsystLevel);
+    
+    //jecvara = jecvarb = jecvar = 0x0;
+
     if (systType == kJECUp or systType == kJECDown) { // if (isMC && jecvar012_g!=1) {
       //		jecvar = new JECvariation("weight/JetSF/Summer16_23Sep2016V4", isMC, "Total");//SubTotalAbsolute");
       //cout << "Applying JEC uncertainty variations : " << JECsystLevel << endl;
-      string JECsystLevel = "Total";
       if (std::end(allowedJECUncertainties) == std::find(std::begin(allowedJECUncertainties), std::end(allowedJECUncertainties), JECsystLevel)){
             cout << "The JEC systematic source, " << JECsystLevel << ", is not in the list of allowed sources (found in JEC/UncertaintySourcesList.h" << endl;
             cout << "Exiting" << endl;
             return;
       }
-      if (fYear==2016){
-	jecvara = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/preVFP_V7/Summer19UL16APV_V7",fBasePath.Data()), !isData, JECsystLevel);
-	jecvarb = new JECvariation( Form("%s/weightUL/JetSF/JEC/2016/postVFP_V7/Summer19UL16_V7",fBasePath.Data()), !isData, JECsystLevel);
-      }
-      if (fYear==2017) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2017/V5/Summer19UL17_V5",fBasePath.Data()), !isData, JECsystLevel);
-      if (fYear==2018) jecvar = new JECvariation( Form("%s/weightUL/JetSF/JEC/2018/V5/Summer19UL18_V5",fBasePath.Data()), !isData, JECsystLevel);
     }
    
     if (fYear==2016){
@@ -2269,11 +2274,14 @@ void SkimAna::SlaveBegin(TTree *tree)
     //LoadPU();
     Info("SlaveBegin", "Loading Lepton SF");
     LoadLeptonSF();       // Load the SFs for lepton
-    Info("SlaveBegin", "Loading JEC JER");
-    LoadJECJER();         // Load files for Jet Energy Correction, Jet Energy Resolutions and Pileup JetID SF/efficiency
+    // Info("SlaveBegin", "Loading JEC JER");
+    // LoadJECJER();         // Load files for Jet Energy Correction, Jet Energy Resolutions and Pileup JetID SF/efficiency
     Info("SlaveBegin", "Loading BTag");
     LoadBTag();           // Load files for B-tagging and c-tagging SF/efficiency
   }
+  Info("SlaveBegin", "Loading JEC JER");
+  LoadJECJER();         // Load files for Jet Energy Correction, Jet Energy Resolutions and Pileup JetID SF/efficiency
+
   Info("SlaveBegin", "Create Histos");
   CreateHistoArrays();    // Create output histogram arrays
   // IsDebug = true;
@@ -2393,8 +2401,8 @@ void SkimAna::TheoWeights(){
       _ISRweight_Up = event->PSWeight_[2];
       _ISRweight_Do = event->PSWeight_[0];
       
-      _FSRweight_Up = event->PSWeight_[3];
-      _FSRweight_Do = event->PSWeight_[1];
+      _FSRweight_Up = event->PSWeight_[1];
+      _FSRweight_Do = event->PSWeight_[3];
     }
   }
 
@@ -2517,12 +2525,14 @@ Bool_t SkimAna::Process(Long64_t entry)
   fProcessed++;
   fStatus++;
   
-  if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
-    
-    if(!SelectTTbarChannel()) return true;
-    if(_kFType!=13) return true;   //Select only the TTbar Semilep
-    if(!FillMCInfo()) return true;
-  }//isData
+  // if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
+  //   TheoWeights();
+  //   // if(!SelectTTbarChannel()) return true;
+  //   // if(_kFType!=13) return true;   //Select only the TTbar Semilep
+  //   // if(!FillMCInfo()) return true;
+  // }//isData
+  
+
 
   //Collection at tree entry level before applying any weight
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2536,17 +2546,30 @@ Bool_t SkimAna::Process(Long64_t entry)
 	 fProcessed, entry, fChain->GetEntries(), totEventsUS[fSampleType.Data()],evtPick->year.c_str());
   }
   if(IsDebug) Info("Process","Completed process count");
-
+  
   // Set JEC syst
   if( !isData and (systType == kJECUp or systType == kJECDown)){
     if(fYear==2016){
       if(isPreVFP)
-	jecvara->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+  	jecvara->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
       if(isPostVFP)
-	jecvarb->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+  	jecvarb->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
     }else
       jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
   }
+  
+  // if( systType == kBase or systType == kJECUp or systType == kJECDown ){
+  //   if(fYear==2016){
+  //     if(isPreVFP)
+  // 	jecvara->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+  //     else if(isPostVFP)
+  // 	jecvarb->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+  //     else
+  // 	jecvara->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+  //   }else
+  //     jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
+  // }
+
   if(IsDebug) Info("Process","Completed JEC correction");
   
 
@@ -2583,9 +2606,9 @@ Bool_t SkimAna::Process(Long64_t entry)
     if(fYear==2016 and isPreVFP) _sampleWeight *= lumiFracI;
     if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
   }
+  //Info("Process","Event : %lld, lumiFracI : %f, sampleWeight : %f, ",fProcessed, lumiFracI, _sampleWeight);
+  
   if(IsDebug) Info("Process","Completed event weight application");
-  
-  
 
   // Access the prefire weight
   if(!isData){
@@ -2844,7 +2867,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  return true;
+  //return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -3443,9 +3466,9 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-  combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do ;
+  combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do ;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do ;
   
   return true;
 }
@@ -4095,9 +4118,9 @@ bool SkimAna::FillBTagObs(){
 
     TString systname = fSystList[isyst];
 
-    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
-    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
-    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight;
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do ;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do ;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do ;
 
     if(systType == kBase){
 
@@ -4958,12 +4981,15 @@ bool SkimAna::FillMCInfo()
   //   totSlType[itype] += slType[itype];
 
   hLHEMjj->Fill((pLHE[0]+pLHE[1]).M());
-  if(hasGPmatchLHE) hGPMjj->Fill( (pGP[0]+pGP[1]).M() );
+  if(hasGPmatchLHE) {
+    hGPMjj->Fill( (pGP[0]+pGP[1]).M(), _FSRweight_Do );
+    //Info("FillMCInfo","Found GP match with _FSRweight_Do : %lf, _FSRweight_Up : %lf",_FSRweight_Do,_FSRweight_Up);
+  }
 
   //if(hasGJmatchLHE and pGJ[0].M()<5.0 and pGJ[1].M()<5.0){
   if(hasGJmatchLHE){
     hNGenjets->Fill(event->nGenJet_);
-    hGJMjj->Fill((pGJ[0]+pGJ[1]).M());
+    hGJMjj->Fill((pGJ[0]+pGJ[1]).M(), _FSRweight_Do );
     hGJPt->Fill(pGJ[0].Pt());
     hGJPt->Fill(pGJ[1].Pt());
 
@@ -4997,7 +5023,7 @@ bool SkimAna::FillMCInfo()
     }
   }
   if(hasRJmatchGJ){
-    hRJMjj->Fill((pRJ[0]+pRJ[1]).M());
+    hRJMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do );
     hRJPt->Fill(pRJ[0].Pt());
     hRJPt->Fill(pRJ[1].Pt());
     //if(HLT_AK4CaloJet30_){
@@ -5185,9 +5211,9 @@ bool SkimAna::FillLeptonControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJNmuMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJNmuMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_muwt);
       hRJNmuMjjUS->Fill((pRJ[0]+pRJ[1]).M());
-      hRJNmuJCMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJNmuJCMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_muwt);
     }
   }
 
@@ -5216,9 +5242,9 @@ bool SkimAna::FillLeptonControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJNmuMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJNmuMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_elewt);
       hRJNmuMjjUS->Fill((pRJ[0]+pRJ[1]).M());
-      hRJNmuJCMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJNmuJCMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_elewt);
     }
   }
 
@@ -5273,7 +5299,7 @@ bool SkimAna::FillJetControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJNjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJNjetMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_muwt);
       hRJNjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
@@ -5315,7 +5341,7 @@ bool SkimAna::FillJetControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJNjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJNjetMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_elewt);
       hRJNjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
@@ -5357,7 +5383,7 @@ bool SkimAna::FillMETControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJMETMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJMETMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_muwt);
       hRJMETMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
@@ -5386,7 +5412,7 @@ bool SkimAna::FillMETControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJMETMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJMETMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_elewt);
       hRJMETMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
@@ -5428,7 +5454,7 @@ bool SkimAna::FillBTagControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_muwt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJBjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_muwt);
+      hRJBjetMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_muwt);
       hRJBjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
@@ -5457,7 +5483,7 @@ bool SkimAna::FillBTagControlHists(){
       ((TH1D *) list->FindObject("eta_jet2_ljet"))->Fill(event->jetEta_[ljetlist.at(1).first], combined_elewt);
     }
     if(!isData and hasRJmatchGJ){
-      hRJBjetMjj->Fill((pRJ[0]+pRJ[1]).M(), combined_elewt);
+      hRJBjetMjj->Fill((pRJ[0]+pRJ[1]).M(), _FSRweight_Do * combined_elewt);
       hRJBjetMjjUS->Fill((pRJ[0]+pRJ[1]).M());
     }
   }
@@ -6014,8 +6040,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
-    //jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
-    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , 0.0 );
+    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
+    //jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , 0.0 );
     //jetVector.SetPtEtaPhiM(event->jetPt_[jetInd], event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);
     //double jetRes = selector->jet_resolution.at(ijet);
@@ -6628,11 +6654,11 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 50 ; ientry++){
-    //cout<<"Procesing : " << ientry << endl;
+  for(Long64_t ientry = 0 ; ientry < 5 ; ientry++){
+    cout<<"Procesing Event : " << ientry << endl;
     Process(ientry);
   }
   SlaveTerminate();
