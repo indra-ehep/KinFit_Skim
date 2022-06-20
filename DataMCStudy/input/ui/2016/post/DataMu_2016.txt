@@ -1,10 +1,10 @@
-root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_f_postVFP_Skim_NanoAOD.root
+root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL1/2016/Data_SingleMu_f_postVFP_Skim_NanoAOD.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_10of14.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_11of14.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_12of14.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_13of14.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_14of14.root
-root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_1of14.root
+root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL1/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_1of14.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_2of14.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_3of14.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/Data_SingleMu_g_postVFP_Skim_NanoAOD_4of14.root

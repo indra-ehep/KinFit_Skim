@@ -492,6 +492,8 @@ Int_t SkimAna::CreateHistoArrays()
 	hLHEMjj = new TH1F(Form("hLHEMjj"),Form("%s : hLHEMjj ",fSample.Data()), 80, 40., 120.);
 	hGJMjj = new TH1F(Form("hGJMjj"),Form("%s : hGJMjj ",fSample.Data()), 80, 40., 120.);
 	hGPMjj = new TH1F(Form("hGPMjj"),Form("%s : hGPMjj ",fSample.Data()), 80, 40., 120.);
+	hGPMjjUp = new TH1F(Form("hGPMjjUp"),Form("%s : hGPMjjUp ",fSample.Data()), 80, 40., 120.);
+	hGPMjjDo = new TH1F(Form("hGPMjjDo"),Form("%s : hGPMjjDo ",fSample.Data()), 80, 40., 120.);
 	hRJMjj = new TH1F(Form("hRJMjj"),Form("%s : hRJMjj ",fSample.Data()), 80, 40., 120.);
 
 	hRJNmuMjj = new TH1F(Form("hRJNmuMjj"),Form("%s : hRJNmuMjj ",fSample.Data()), 80, 40., 120.);
@@ -616,7 +618,7 @@ void SkimAna::GetArguments(){
     else if(hostname.BeginsWith("lxplus"))
       fBasePath = "/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
     else if(hostname.BeginsWith("ui"))
-      fBasePath = "/tmp/idas/DataMCStudy";
+      fBasePath = "/tmp/idas/DataMCStudy_1";
     else if(hostname.BeginsWith("localhost") or hostname.BeginsWith("lnx3"))
       fBasePath = "/home/idas/CMS-Analysis/NanoAOD-Analysis/DataMCStudy";
   }else{
@@ -802,8 +804,8 @@ void SkimAna::SetTrio()
   selector->looseJetID = false;
   selector->smearJetPt = true; // default setting was false for cutflow and for prining jet pt
   //selector->useDeepCSVbTag = (isNanoAOD) ? true : false ;
-  //selector->useDeepCSVbTag = true ;
-  selector->useDeepCSVbTag = false ;
+  selector->useDeepCSVbTag = true ;
+  //selector->useDeepCSVbTag = false ;
   selector->JECsystLevel = jecvar012_g;
   selector->JERsystLevel = jervar012_g;
   selector->isNanoAOD = isNanoAOD ;
@@ -877,7 +879,7 @@ void SkimAna::SetTrio()
   
   if (selector->useDeepCSVbTag){
     // While changing cut to L,M,T make sure to change the efficiency file
-
+    
     //Medium
     if (fYear==2016){
       selector->btag_cut_DeepCSVa = 0.6001; 
@@ -885,11 +887,45 @@ void SkimAna::SetTrio()
     }
     if (fYear==2017) selector->btag_cut_DeepCSV = 0.4506;
     if (fYear==2018) selector->btag_cut_DeepCSV = 0.4168;
+    
+    //Loose ctag
+    if (fYear==2016){
+      selector->ctag_CvsL_L_cuta = 0.088 ; 
+      selector->ctag_CvsB_L_cuta = 0.214 ; 
+      selector->ctag_CvsL_M_cuta = 0.181 ; 
+      selector->ctag_CvsB_M_cuta = 0.228 ; 
+      selector->ctag_CvsL_T_cuta = 0.417 ; 
+      selector->ctag_CvsB_T_cuta = 0.138 ; 
 
+      selector->ctag_CvsL_L_cutb = 0.088 ; 
+      selector->ctag_CvsB_L_cutb = 0.204 ; 
+      selector->ctag_CvsL_M_cutb = 0.180 ; 
+      selector->ctag_CvsB_M_cutb = 0.221 ; 
+      selector->ctag_CvsL_T_cutb = 0.407 ; 
+      selector->ctag_CvsB_T_cutb = 0.136 ;
+    }
+    if (fYear==2017){
+      selector->ctag_CvsL_L_cut = 0.04 ;
+      selector->ctag_CvsB_L_cut = 0.345 ;
+      selector->ctag_CvsL_M_cut = 0.144 ; 
+      selector->ctag_CvsB_M_cut = 0.29 ; 
+      selector->ctag_CvsL_T_cut = 0.73 ;
+      selector->ctag_CvsB_T_cut = 0.10 ; 
+    }
+    if (fYear==2018){
+      selector->ctag_CvsL_L_cut = 0.064 ;
+      selector->ctag_CvsB_L_cut = 0.313 ;
+      selector->ctag_CvsL_M_cut = 0.153 ; 
+      selector->ctag_CvsB_M_cut = 0.363 ; 
+      selector->ctag_CvsL_T_cut = 0.405 ;
+      selector->ctag_CvsB_T_cut = 0.288 ; 
+    }
+    
     selector->btag_cut = 1.0;
     kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
-  }else{
-    // // CSVv2M
+
+  }else{ // // CSVv2M
+    
     // if (fYear==2016) selector->btag_cut = 0.8484 ;
     // if (fYear==2017) selector->btag_cut = 0.8838 ;
     // if (fYear==2018) selector->btag_cut = 0.8838 ;
@@ -961,7 +997,7 @@ void SkimAna::GetNumberofEvents()
   
   while(getline(fin,s)){
     
-    //Info("GetNumberofEvents", "filename : %s", s.c_str());
+    Info("GetNumberofEvents", "filename : %s", s.c_str());
     
     string sample = s.substr(s.find_last_of("/")+1,s.size());    
     if(sample.find("_ext4_Skim") != string::npos)
@@ -1336,6 +1372,33 @@ void SkimAna::LoadBTag()
       readerb.load(calibb, BTagEntry::FLAV_B,"mujets");          
       readerb.load(calibb, BTagEntry::FLAV_C, "comb"); 
       readerb.load(calibb, BTagEntry::FLAV_UDSG, "incl"); 
+      
+      calib = BTagCalibration( "deepcsv", Form("%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data()) ) ;
+      Info("LoadBTag","%s/weight/BtagSF/new/DeepCSV_2016LegacySF_V1.csv",fBasePath.Data());
+      reader = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
+      reader.load(calib, BTagEntry::FLAV_B,"comb");
+      reader.load(calib, BTagEntry::FLAV_C, "comb");
+      reader.load(calib, BTagEntry::FLAV_UDSG, "incl");
+
+
+      // calibC = BTagCalibration( "deepjetC", Form("%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear) ) ;
+      // Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/ctagger_Moriond17_B_H_formatted.csv",fBasePath.Data(),fYear);
+      
+      // reader_CL = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
+      // reader_CL.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      // reader_CL.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      // reader_CL.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // reader_CM = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+      // reader_CM.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      // reader_CM.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      // reader_CM.load(calibC, BTagEntry::FLAV_UDSG, "incl"); 
+
+      // reader_CT = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
+      // reader_CT.load(calibC, BTagEntry::FLAV_B,"TnP");          
+      // reader_CT.load(calibC, BTagEntry::FLAV_C, "comb"); 
+      // reader_CT.load(calibC, BTagEntry::FLAV_UDSG, "incl");       
+
 
     }
     if (fYear==2017){ 
@@ -1687,7 +1750,7 @@ void SkimAna::GetBtagSF_1a(){
 	else if(isPostVFP)
 	  SFb = readerb.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
 	else
-	  SFb = readera.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
+	  SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       }else
 	SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
@@ -1705,7 +1768,7 @@ void SkimAna::GetBtagSF_1a(){
 	else if(isPostVFP)
 	  SFb = readerb.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
 	else
-	  SFb = readera.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
+	  SFb = reader.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
       }else
 	SFb = reader.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
@@ -1723,7 +1786,7 @@ void SkimAna::GetBtagSF_1a(){
 	else if(isPostVFP)
 	  SFb = readerb.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
 	else
-	  SFb = readera.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
+	  SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       }else
 	SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
@@ -1796,8 +1859,8 @@ void SkimAna::GetCLtagSF_1a(){
     l_sysType = "down";
   }	
   
-  double ctagThresholdCvsLL = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_L_cut  ;
-  double ctagThresholdCvsBL = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_L_cut  ;
+  double ctagThresholdCvsLL = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_L_cut  : selector->ctag_CvsL_L_cut  ;
+  double ctagThresholdCvsBL = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_L_cut  : selector->ctag_CvsB_L_cut  ;
   
   int xbin,ybin;
   int maxbinX, maxbinY;
@@ -1924,8 +1987,8 @@ void SkimAna::GetCMtagSF_1a(){
     l_sysType = "down";
   }	
   
-  double ctagThresholdCvsLM = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_M_cut  ;
-  double ctagThresholdCvsBM = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_M_cut  ;
+  double ctagThresholdCvsLM = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_M_cut  : selector->ctag_CvsL_M_cut  ;
+  double ctagThresholdCvsBM = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_M_cut  : selector->ctag_CvsB_M_cut  ;
   
   int xbin,ybin;
   int maxbinX, maxbinY;
@@ -2044,8 +2107,8 @@ void SkimAna::GetCTtagSF_1a(){
     l_sysType = "down";
   }	
   
-  double ctagThresholdCvsLT = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_T_cut  ;
-  double ctagThresholdCvsBT = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_T_cut  ;
+  double ctagThresholdCvsLT = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_T_cut  : selector->ctag_CvsL_T_cut  ;
+  double ctagThresholdCvsBT = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_T_cut  : selector->ctag_CvsB_T_cut  ;
   
   int xbin,ybin;
   int maxbinX, maxbinY;
@@ -2527,9 +2590,9 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   // if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
   //   TheoWeights();
-  //   // if(!SelectTTbarChannel()) return true;
-  //   // if(_kFType!=13) return true;   //Select only the TTbar Semilep
-  //   // if(!FillMCInfo()) return true;
+  //   if(!SelectTTbarChannel()) return true;
+  //   if(_kFType!=13) return true;   //Select only the TTbar Semilep
+  //   if(!FillMCInfo()) return true;
   // }//isData
   
 
@@ -2867,7 +2930,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();  
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  //return true;
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //Processes for KinFit selection will be placed in block below
@@ -2876,6 +2939,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(systType == kBase) FillKinFitControlHists();
   if(IsDebug) Info("Process","Completed KinFit processing");
   if(!isKFValid) return kTRUE;
+  return true;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //Processes for CTagging will be placed in block below
@@ -3485,12 +3549,12 @@ bool SkimAna::FillCTagObs(){
   bool isIncM = false;
   bool isIncT = false;
   
-  double ctagTh_CvsL_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_L_cut  ;
-  double ctagTh_CvsB_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_L_cut  ;
-  double ctagTh_CvsL_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_M_cut  ;
-  double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_M_cut  ;
-  double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_T_cut  ;
-  double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_T_cut  ;
+  double ctagTh_CvsL_L = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_L_cut  : selector->ctag_CvsL_L_cut  ;
+  double ctagTh_CvsB_L = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_L_cut  : selector->ctag_CvsB_L_cut  ;
+  double ctagTh_CvsL_M = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_M_cut  : selector->ctag_CvsL_M_cut  ;
+  double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_M_cut  : selector->ctag_CvsB_M_cut  ;
+  double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_T_cut  : selector->ctag_CvsL_T_cut  ;
+  double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_T_cut  : selector->ctag_CvsB_T_cut  ;
 
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
@@ -4982,7 +5046,9 @@ bool SkimAna::FillMCInfo()
 
   hLHEMjj->Fill((pLHE[0]+pLHE[1]).M());
   if(hasGPmatchLHE) {
-    hGPMjj->Fill( (pGP[0]+pGP[1]).M(), _FSRweight_Do );
+    hGPMjj->Fill( (pGP[0]+pGP[1]).M());
+    hGPMjjUp->Fill( (pGP[0]+pGP[1]).M(), _FSRweight_Up );
+    hGPMjjDo->Fill( (pGP[0]+pGP[1]).M(), _FSRweight_Do );
     //Info("FillMCInfo","Found GP match with _FSRweight_Do : %lf, _FSRweight_Up : %lf",_FSRweight_Do,_FSRweight_Up);
   }
 
@@ -5728,12 +5794,12 @@ bool SkimAna::FillCTagControlHists()
   iscl = 8 ; //8 for CTagM
   TList *listM = (TList *)fSelColDir[iscl]->GetList();
 
-  double ctagTh_CvsL_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_L_cut  ;
-  double ctagTh_CvsB_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_L_cut  ;
-  double ctagTh_CvsL_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_M_cut  ;
-  double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_M_cut  ;
-  double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_T_cut  ;
-  double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_T_cut  ;
+  double ctagTh_CvsL_L = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_L_cut  : selector->ctag_CvsL_L_cut  ;
+  double ctagTh_CvsB_L = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_L_cut  : selector->ctag_CvsB_L_cut  ;
+  double ctagTh_CvsL_M = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_M_cut  : selector->ctag_CvsL_M_cut  ;
+  double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_M_cut  : selector->ctag_CvsB_M_cut  ;
+  double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->ctag_CvsL_T_cut  : selector->ctag_CvsL_T_cut  ;
+  double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->ctag_CvsB_T_cut  : selector->ctag_CvsB_T_cut  ;
 
   // Info("FillCTagControlHists","");
   // Info("FillCTagControlHists","Event : %d (%d), Mu : %d, Ele : %d",fProcessed,nCTag++,hasKFMu,hasKFEle);
@@ -6040,8 +6106,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
-    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
-    //jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , 0.0 );
+    //jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
+    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , 0.0 );
     //jetVector.SetPtEtaPhiM(event->jetPt_[jetInd], event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);
     //double jetRes = selector->jet_resolution.at(ijet);
@@ -6655,9 +6721,9 @@ bool SkimAna::ExecSerial(const char* infile)
   tree->GetEntry(0);
   Notify();
   //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 2000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  for(Long64_t ientry = 0 ; ientry < 5 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 5 ; ientry++){
     cout<<"Procesing Event : " << ientry << endl;
     Process(ientry);
   }

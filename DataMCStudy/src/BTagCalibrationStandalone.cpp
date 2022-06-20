@@ -106,6 +106,7 @@ BTagEntry::BTagEntry(const std::string &csvLine)
   if (jf > 2) {
     std::cerr << "ERROR in BTagCalibration: "
 	      << "Invalid csv line; JetFlavor > 2: "
+	      <<"jtflv : " << jtflv << ", line : "
 	      << csvLine;
     throw std::exception();
   }
