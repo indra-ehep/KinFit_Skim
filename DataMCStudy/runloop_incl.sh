@@ -36,7 +36,7 @@ do
     	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=1|run=prod|index=0|trs=no"\"\)
 	else
             echo workers = 8
-    	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=15|run=prod|index=0|trs=no"\"\)
+    	    time root -l -b -q run.C\(\""sample=$sample|year=$year|input=$input|syst=base|aod=nano|mode=proof|workers=10|run=prod|index=0|trs=no"\"\)
 	fi
 	mv ${sample}_bjet_base_1of${nofline}.root root_files/output/${sample}_incl_bjet_base_1of${nofline}.root
 	mv ${sample}_tree_base_1of${nofline}.root root_files/output/${sample}_incl_tree_base_1of${nofline}.root

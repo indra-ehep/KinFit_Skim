@@ -4,18 +4,17 @@
 samples_2017="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
 samples_2018="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
 
-#samples_2016="TTbar DataMu"
-#samples_2016="TTbar"
-#samples_2016="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
+samples_2016="TTbar"
 #samples_2016="DataMu TTbar singleTop Wjets DYjets VBFusion MCQCDMu"
-samples_2016="Wjets DYjets VBFusion MCQCDMu "
+#samples_2016="TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle"
+
 
 #years="2016 2017 2018"
 years="2016"
 
 basedir=`pwd`
 
-#time root -l -b -q compile.C
+time root -l -b -q compile.C
 
 last_proc_stat=`echo $?`
 echo Status of last process ${last_proc_stat}

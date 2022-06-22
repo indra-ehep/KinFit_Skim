@@ -726,13 +726,14 @@ void Selector::filter_jets(){
 	cout << "\t genID : " << tree->jetGenJetIdx_[jetInd] << ", ngenjet : " << int(tree->nGenJet_) << ", recojet : " << int(tree->nJet_) <<  endl;
       
       int genIdx = tree->jetGenJetIdx_[jetInd];
-      
+
       if ( (genIdx>-1) && (genIdx < int(tree->nGenJet_))){
       	double genJetPt = tree->GenJet_pt_[genIdx];
       	jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
       }else{
       	jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
       }
+      jetSmear = 1;
       
       // Info("Selector::filter_jets","jetInd : %d, (pt,eta,phi) : (%lf,%lf,%lf), resolution : %lf, jetSF : %lf, jetSmear : %lf, btag : %lf", 
       // 	   jetInd,pt,eta,phi,resolution,jetSF,jetSmear,tree->jetBtagDeepB_[jetInd]);

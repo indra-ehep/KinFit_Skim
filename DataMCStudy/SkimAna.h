@@ -431,7 +431,7 @@ class SkimAna : public TSelector {
    ////Histos
    TH1F *hNofMu, *hNofEle, *hNofBJets, *hNofLJets;
    TH1D *hEventCount; 
-   TH1F *hNGenjets, *hLHEMjj, *hGPMjj, *hGJMjj, *hRJMjj;
+   TH1F *hNGenjets, *hLHEMjj, *hGPMjj, *hGPMjjUp, *hGPMjjDo, *hGJMjj, *hRJMjj;
    TH1F *hGJPt, *hGJEta, *hGJPhi, *hGJMass;
    TH1F *hptBin;
    TH1F **hNDiffGenjets, **hGJDiffPt, **hGJDiffEta, **hGJDiffPhi, **hGJDiffMass;
@@ -2147,9 +2147,15 @@ Bool_t SkimAna::Notify()
   if(isPreVFP or isPostVFP){
 
     if(isPreVFP){ 
-      if(selector->useDeepCSVbTag)
+      if(selector->useDeepCSVbTag){
 	selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
-      else{
+	selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cuta ; 
+	selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cuta ; 
+	selector->ctag_CvsL_M_cut = selector->ctag_CvsL_M_cuta ; 
+	selector->ctag_CvsB_M_cut = selector->ctag_CvsB_M_cuta ; 
+	selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cuta ; 
+	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cuta ; 
+      }else{
 	selector->btag_cut = selector->btag_cuta ; 
 	selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cuta ; 
 	selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cuta ; 
@@ -2162,9 +2168,15 @@ Bool_t SkimAna::Notify()
     }
 
     if(isPostVFP){ 
-      if(selector->useDeepCSVbTag)
+      if(selector->useDeepCSVbTag){
 	selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVb ; 
-      else{
+	selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cutb ; 
+	selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cutb ; 
+	selector->ctag_CvsL_M_cut = selector->ctag_CvsL_M_cutb ; 
+	selector->ctag_CvsB_M_cut = selector->ctag_CvsB_M_cutb ; 
+	selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cutb ; 
+	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cutb ; 
+      }else{
 	selector->btag_cut = selector->btag_cutb ; 
 	selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cutb ; 
 	selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cutb ; 
@@ -2181,21 +2193,28 @@ Bool_t SkimAna::Notify()
     else
       kinFit.SetBtagThresh(selector->btag_cut);
   }else{
-
-    selector->btag_cut_DeepCSV = selector->btag_cut_DeepCSVa ; 
-    selector->btag_cut = selector->btag_cuta ; 
-    selector->ctag_CvsL_L_cut = selector->ctag_CvsL_L_cuta ; 
-    selector->ctag_CvsB_L_cut = selector->ctag_CvsB_L_cuta ; 
-    selector->ctag_CvsL_M_cut = selector->ctag_CvsL_M_cuta ; 
-    selector->ctag_CvsB_M_cut = selector->ctag_CvsB_M_cuta ; 
-    selector->ctag_CvsL_T_cut = selector->ctag_CvsL_T_cuta ; 
-    selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cuta ; 
-
+    
+    //The tagging for inclusive is taken from Legacy Rereco
+    selector->btag_cut_DeepCSV = 0.6321 ; 
+    selector->btag_cut =  0.3093; //deepjet 
+    //ctagging is deepcsv inspired
+    selector->ctag_CvsL_L_cut = 0.05; 
+    selector->ctag_CvsB_L_cut = 0.19 ; 
+    selector->ctag_CvsL_M_cut = 0.155 ; 
+    selector->ctag_CvsB_M_cut = 0.14 ; 
+    selector->ctag_CvsL_T_cut = 0.59 ; 
+    selector->ctag_CvsB_T_cut = 0.05 ; 
+    
+    if(selector->useDeepCSVbTag) 
+      kinFit.SetBtagThresh(selector->btag_cut_DeepCSV);
+    else
+      kinFit.SetBtagThresh(selector->btag_cut);
+    
   }
   kinFit.SetResoInputPath(inputKFResoPath);
   kinFit.UnloadObjReso();
   kinFit.LoadObjReso();
-  kinFit.UseExtReso();
+  //kinFit.UseExtReso();
   
   fSampleType = fname;
   
@@ -2318,41 +2337,69 @@ Bool_t SkimAna::Notify()
 	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
       }
     }else{ //DeepCSV    
-      fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+      if (fYear==2016){
+	if(isPreVFP)
+	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/pre/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+	else if(isPostVFP)
+	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/post/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);   
+	else
+	  fBCEffFileName =  Form("%s/weight/BtagSF/Efficiency/NanoAOD/DeepCSV/%d/%s_btag_efficiency_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear); 
+      }else{
+	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);    
+      }
     }
   
-    Info("Notify","Efficientcy file : %s",fBCEffFileName.c_str());
-    Info("Notify","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
-  
-    std::string effType = "BTag";
-    std::string effCType = "CTag";
-  
-    std::string leffName = effType+"_l_M_efficiency";
-    std::string ceffName = effType+"_c_M_efficiency";
-    std::string beffName = effType+"_b_M_efficiency";
+    if(isPreVFP or isPostVFP or fYear==2017 or fYear==2018){
 
-    std::string leffCName = effCType+"_l_L_efficiency";
-    std::string ceffCName = effCType+"_c_L_efficiency";
-    std::string beffCName = effCType+"_b_L_efficiency";
-  
-    TFile* inputFile = TFile::Open(fBCEffFileName.c_str(),"read");
-    l_eff = (TH2D*) inputFile->Get(leffName.c_str());
-    c_eff = (TH2D*) inputFile->Get(ceffName.c_str());
-    b_eff = (TH2D*) inputFile->Get(beffName.c_str());
+      Info("Notify","Efficientcy file : %s",fBCEffFileName.c_str());
+      Info("Notify","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
+      
+      std::string effType = "BTag";
+      std::string effCType = "CTag";
+      
+      std::string leffName = effType+"_l_M_efficiency";
+      std::string ceffName = effType+"_c_M_efficiency";
+      std::string beffName = effType+"_b_M_efficiency";
+      
+      std::string leffCName = effCType+"_l_L_efficiency";
+      std::string ceffCName = effCType+"_c_L_efficiency";
+      std::string beffCName = effCType+"_b_L_efficiency";
+      
+      TFile* inputFile = TFile::Open(fBCEffFileName.c_str(),"read");
+      l_eff = (TH2D*) inputFile->Get(leffName.c_str());
+      c_eff = (TH2D*) inputFile->Get(ceffName.c_str());
+      b_eff = (TH2D*) inputFile->Get(beffName.c_str());
+      
+      l_CL_eff = (TH2D*) inputFile->Get(leffCName.c_str());
+      c_CL_eff = (TH2D*) inputFile->Get(ceffCName.c_str());
+      b_CL_eff = (TH2D*) inputFile->Get(beffCName.c_str());
+      
+      l_CM_eff = (TH2D*) inputFile->Get(Form("%s_l_M_efficiency",effCType.c_str()));
+      c_CM_eff = (TH2D*) inputFile->Get(Form("%s_c_M_efficiency",effCType.c_str()));
+      b_CM_eff = (TH2D*) inputFile->Get(Form("%s_b_M_efficiency",effCType.c_str()));
 
-    l_CL_eff = (TH2D*) inputFile->Get(leffCName.c_str());
-    c_CL_eff = (TH2D*) inputFile->Get(ceffCName.c_str());
-    b_CL_eff = (TH2D*) inputFile->Get(beffCName.c_str());
+      l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str()));
+      c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str()));
+      b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str()));
+    
+    }else{
+      Info("LoadBTag","Efficientcy file : %s",fBCEffFileName.c_str());
+      Info("LoadBTag","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
+    
+      std::string effType = "Other";
+    
+      std::string leffName = effType+"_l_efficiency";
+      std::string ceffName = effType+"_c_efficiency";
+      std::string beffName = effType+"_b_efficiency";
+      
+      TFile* inputFile = TFile::Open(fBCEffFileName.c_str(),"read");
+      l_eff = (TH2D*) inputFile->Get(leffName.c_str());
+      c_eff = (TH2D*) inputFile->Get(ceffName.c_str());
+      b_eff = (TH2D*) inputFile->Get(beffName.c_str());
+      
+    }
 
-    l_CM_eff = (TH2D*) inputFile->Get(Form("%s_l_M_efficiency",effCType.c_str()));
-    c_CM_eff = (TH2D*) inputFile->Get(Form("%s_c_M_efficiency",effCType.c_str()));
-    b_CM_eff = (TH2D*) inputFile->Get(Form("%s_b_M_efficiency",effCType.c_str()));
-
-    l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str()));
-    c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str()));
-    b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str()));
   }
-
   return kTRUE;
 }
 
@@ -3582,9 +3629,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      metExtResolution(neutrino.Et(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et()); 
-	      modpt = ((neutrino.Pt()-ptOffSet)>0.0) ? (neutrino.Pt()-ptOffSet) : 0.0;
-	      neutrino.SetPtEtaPhiM(modpt, 0.0, neutrino.Phi(), 0.0);
+	      /* ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et());  */
+	      /* modpt = ((neutrino.Pt()-ptOffSet)>0.0) ? (neutrino.Pt()-ptOffSet) : 0.0; */
+	      /* neutrino.SetPtEtaPhiM(modpt, 0.0, neutrino.Phi(), 0.0); */
 	    }else
 	      metResolution(neutrino.Et(), resEt, resEta, resPhi);
 
@@ -3613,9 +3660,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
-	      modpt = ((bjlep.Pt()-ptOffSet)>0.0) ? (bjlep.Pt()-ptOffSet) : 0.0;
-	      bjlep.SetPtEtaPhiM(modpt, bjlep.Eta(), bjlep.Phi(), bjlep.M());
+	      /* ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et()); */
+	      /* modpt = ((bjlep.Pt()-ptOffSet)>0.0) ? (bjlep.Pt()-ptOffSet) : 0.0; */
+	      /* bjlep.SetPtEtaPhiM(modpt, bjlep.Eta(), bjlep.Phi(), bjlep.M()); */
 	    }else
 	      bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
@@ -3632,9 +3679,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
-	      modpt = ((bjhad.Pt()-ptOffSet)>0.0) ? (bjhad.Pt()-ptOffSet) : 0.0;
-	      bjhad.SetPtEtaPhiM(modpt, bjhad.Eta(), bjhad.Phi(), bjhad.M());
+	      /* ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et()); */
+	      /* modpt = ((bjhad.Pt()-ptOffSet)>0.0) ? (bjhad.Pt()-ptOffSet) : 0.0; */
+	      /* bjhad.SetPtEtaPhiM(modpt, bjhad.Eta(), bjhad.Phi(), bjhad.M()); */
 	    }else
 	      bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
@@ -3650,9 +3697,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      udscExtResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
-	      modpt = ((cjhad.Pt()-ptOffSet)>0.0) ? (cjhad.Pt()-ptOffSet) : 0.0;
-	      cjhad.SetPtEtaPhiM(modpt, cjhad.Eta(), cjhad.Phi(), cjhad.M());
+	      /* ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et()); */
+	      /* modpt = ((cjhad.Pt()-ptOffSet)>0.0) ? (cjhad.Pt()-ptOffSet) : 0.0; */
+	      /* cjhad.SetPtEtaPhiM(modpt, cjhad.Eta(), cjhad.Phi(), cjhad.M()); */
 	    }else
 	      udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
@@ -3668,9 +3715,9 @@ bool KinFit::Fit(){
 	      
 	    if(useExtReso){
 	      udscExtResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
-	      modpt = ((sjhad.Pt()-ptOffSet)>0.0) ? (sjhad.Pt()-ptOffSet) : 0.0;
-	      sjhad.SetPtEtaPhiM(modpt, sjhad.Eta(), sjhad.Phi(), sjhad.M());
+	      /* ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et()); */
+	      /* modpt = ((sjhad.Pt()-ptOffSet)>0.0) ? (sjhad.Pt()-ptOffSet) : 0.0; */
+	      /* sjhad.SetPtEtaPhiM(modpt, sjhad.Eta(), sjhad.Phi(), sjhad.M()); */
 	    }else
 	      udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
