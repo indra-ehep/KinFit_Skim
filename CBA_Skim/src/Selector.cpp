@@ -229,10 +229,10 @@ void Selector::filter_electrons(EventTree *event){
         
 	
         // D0 and Dz cuts are different for barrel and endcap
-        bool passD0 = ((absSCEta < 1.479 && abs(tree->eleD0_[eleInd]) < 0.05) ||
-                       (absSCEta > 1.479 && abs(tree->eleD0_[eleInd]) < 0.1));
-        bool passDz = ((absSCEta < 1.479 && abs(tree->eleDz_[eleInd]) < 0.1) ||
-                       (absSCEta > 1.479 && abs(tree->eleDz_[eleInd]) < 0.2));
+        bool passD0 = ((absSCEta < 1.479 && TMath::Abs(tree->eleD0_[eleInd]) < 0.05) ||
+                       (absSCEta > 1.479 && TMath::Abs(tree->eleD0_[eleInd]) < 0.1));
+        bool passDz = ((absSCEta < 1.479 && TMath::Abs(tree->eleDz_[eleInd]) < 0.1) ||
+                       (absSCEta > 1.479 && TMath::Abs(tree->eleDz_[eleInd]) < 0.2));
         
         
 	
@@ -344,24 +344,24 @@ void Selector::filter_electrons(EventTree *event){
 	// {
 	//   bool passID = false;
 	//   //barrel
-	//   if(abs(e->eleSCEta) <= 1.479 
+	//   if(TMath::Abs(e->eleSCEta) <= 1.479 
 	//      && e->sigmaIetaIeta 	< 0.0115	 
-	//      && abs(e->dEtaInSeed) 	< 0.00749	
-	//      && abs(e->dPhiIn) 		< 0.228	
+	//      && TMath::Abs(e->dEtaInSeed) 	< 0.00749	
+	//      && TMath::Abs(e->dPhiIn) 		< 0.228	
 	//      && e->hadOverEm 		< 0.356	
 	//      && e->relCombPFIsoEA 	< 0.175	
-	//      && abs(e->iEminusiP) 	< 0.299	
+	//      && TMath::Abs(e->iEminusiP) 	< 0.299	
 	//      && e->nInnerHits       	<= 2
 	//      && e->passConversionVeto  
 	//      )passID = true;
 	//   //endcap 
-	//   if(abs(e->eleSCEta) > 1.479 
+	//   if(TMath::Abs(e->eleSCEta) > 1.479 
 	//      && e->sigmaIetaIeta 	< 0.037	
-	//      && abs(e->dEtaInSeed) 	< 0.00895	 
-	//      && abs(e->dPhiIn) 		< 0.213	
+	//      && TMath::Abs(e->dEtaInSeed) 	< 0.00895	 
+	//      && TMath::Abs(e->dPhiIn) 		< 0.213	
 	//      && e->hadOverEm 		< 0.211	
 	//      && e->relCombPFIsoEA 	< 0.159	
-	//      && abs(e->iEminusiP) 	< 0.15	
+	//      && TMath::Abs(e->iEminusiP) 	< 0.15	
 	//      && e->nInnerHits       	<= 3
 	//      && e->passConversionVeto  
 	//      )passID = true;
@@ -373,28 +373,28 @@ void Selector::filter_electrons(EventTree *event){
 	// {
 	//   bool passID = false;
 	//   //barrel
-	//   double dxy = abs(e->D0);
-	//   double dz  = abs(e->Dz);
-	//   if(abs(e->eleSCEta) <= 1.479 
+	//   double dxy = TMath::Abs(e->D0);
+	//   double dz  = TMath::Abs(e->Dz);
+	//   if(TMath::Abs(e->eleSCEta) <= 1.479 
 	//      && e->sigmaIetaIeta 	< 0.00998	 
-	//      && abs(e->dEtaInSeed) 	< 0.00311	
-	//      && abs(e->dPhiIn) 		< 0.103	
+	//      && TMath::Abs(e->dEtaInSeed) 	< 0.00311	
+	//      && TMath::Abs(e->dPhiIn) 		< 0.103	
 	//      && e->hadOverEm 		< 0.253	
 	//      ///&& e->relCombPFIsoEA 	< 0.0695	
-	//      && abs(e->iEminusiP) 	< 0.134
+	//      && TMath::Abs(e->iEminusiP) 	< 0.134
 	//      && dxy                 < 0.05
 	//      && dz                  < 0.10    
 	//      && e->nInnerHits       <= 1
 	//      && e->passConversionVeto  
 	//      )passID = true;
 	//   //endcap
-	//   if(abs(e->eleSCEta) > 1.479 
+	//   if(TMath::Abs(e->eleSCEta) > 1.479 
 	//      && e->sigmaIetaIeta 	< 0.0298	
-	//      && abs(e->dEtaInSeed) 	< 0.00609	 
-	//      && abs(e->dPhiIn) 		< 0.045	
+	//      && TMath::Abs(e->dEtaInSeed) 	< 0.00609	 
+	//      && TMath::Abs(e->dPhiIn) 		< 0.045	
 	//      && e->hadOverEm 		< 0.0878	
 	//      ///&& e->relCombPFIsoEA 	< 0.0821	
-	//      && abs(e->iEminusiP) 	< 0.13	
+	//      && TMath::Abs(e->iEminusiP) 	< 0.13	
 	//      && dxy                 < 0.10
 	//      && dz                  < 0.20    
 	//      && e->nInnerHits       <= 1
@@ -423,8 +423,8 @@ void Selector::filter_electrons(EventTree *event){
 	//     double ePt     	   = TMath::Abs(e->p4.pt());
 	//     if( i==selectedElectron) continue; 
 	//     bool passID = cutBasedElectronID_Summer16_80X_V1_veto(e);
-	//     double dxy = abs(e->D0);
-	//     double dz  = abs(e->Dz);
+	//     double dxy = TMath::Abs(e->D0);
+	//     double dz  = TMath::Abs(e->Dz);
 	//     if(passID && ePt >15.0 && dxy<0.05 && dz < 0.1){looseVeto = true;}
 	//   }
 	//   return looseVeto;
@@ -614,8 +614,8 @@ void Selector::filter_muons(EventTree *event){
     double mEta     = TMath::Abs(m->p4.eta());
     ///double mPt      = TMath::Abs(m->p4.pt());
     double mPt   = muPtWithRochCorr(m, isData, random_u1, random_u2, err_set, err_member); 
-    double dxy = abs(m->D0);
-    double dz = abs(m->Dz);
+    double dxy = TMath::Abs(m->D0);
+    double dz = TMath::Abs(m->Dz);
     bool passID = false;
     passID = isMediumMuon(m);
     if(passID && mPt > 26.0 && mEta < 2.4 && dxy < 0.05 && dz <0.2){
@@ -670,7 +670,7 @@ void Selector::filter_jets(){
     double phi = tree->jetPhi_[jetInd];
     double smearedpt = tree->jetPt_[jetInd];
     
-    //if(pt < 17.0 or abs(eta) > 4.0) continue;
+    //if(pt < 17.0 or TMath::Abs(eta) > 4.0) continue;
     
     //tJET.SetPtEtaPhiM(pt, eta, phi, tree->jetMass_[jetInd]);
     
@@ -838,7 +838,7 @@ void Selector::filter_jets(){
     //     double CEMF     = jet->chargedEmEnergyFraction;
     //     double NumConst = jet->NumConst;
     //     double CHM      = jet->chargedMultiplicity;
-    //     double looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && (abs(jetEta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99);
+    //     double looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && (TMath::Abs(jetEta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99);
     //     if(looseJetID && jetPt > 25.0) j_i->push_back(i);
     //   }
     // }
@@ -1037,7 +1037,7 @@ void Selector::filter_jetsNoCorr(){
 //       std::normal_distribution<> d(0, sigmaJER);
 //       double N0sigma = d(m_random_generator);
 //       //https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution
-//       if(delR<rCone/2 && abs(jet_pt -gen_pt)<3*sigmaJER*jet_pt ){
+//       if(delR<rCone/2 && TMath::Abs(jet_pt -gen_pt)<3*sigmaJER*jet_pt ){
 //         jerF = max(0.0, 1.0 + (SF - 1)*(jet_pt - gen_pt)/jet_pt); 
 //       }
 //       else{

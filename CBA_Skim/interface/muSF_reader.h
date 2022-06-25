@@ -329,8 +329,8 @@ std::vector<double> MuonSF::getMuSF(double pt, double eta, int systLevel, int ye
   double isoSF   = 1.0;
   double trigSF  = 1.0;
   
-  idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: 0, 2.4
-  isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);//eta: 0, 2.4
+  idSF    = getMuSF(idHist, TMath::Abs(eta), pt, systLevel);//eta: 0, 2.4
+  isoSF   = getMuSF(isoHist, TMath::Abs(eta), pt, systLevel);//eta: 0, 2.4
   trigSF  = getMuSF(trigHist, eta, pt, systLevel);//eta: -2.4, 2.4
   
   vector<double> muSF {idSF*isoSF*trigSF, idSF, isoSF, trigSF};

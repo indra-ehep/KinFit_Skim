@@ -90,7 +90,7 @@ double eleTrigSF[10][6][3]={ { {1.,1.,1.},{1.,1.,1.},{1.,1.,1.},{1.,1.,1.},{1.,1
 
 double getMuSF(double pt, double eta, int systLevel){
 
-	double abseta = abs(eta);
+	double abseta = TMath::Abs(eta);
 
 	//binned in 0.2 in absEta
 	int muTrackEtaRegion = int(abseta/0.2);

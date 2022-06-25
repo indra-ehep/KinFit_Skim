@@ -209,7 +209,7 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 
     bool isPVGood = (tree->pvNDOF_>4 &&
 		     sqrt(tree->pvX_ * tree->pvX_ + tree->pvY_ * tree->pvY_)<=2. &&
-		     abs(tree->pvZ_) <= 24.);
+		     TMath::Abs(tree->pvZ_) <= 24.);
     
     selector->isPVGood = isPVGood;
 
@@ -309,7 +309,7 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 	    cout << "-------------------"<< endl;
 	  }
  
-	  if ( abs((mu1 + mu2).M() - 91.1876) > 10 ){
+	  if ( TMath::Abs((mu1 + mu2).M() - 91.1876) > 10 ){
 	    passPresel_mu = false;
 	  }
 	}
@@ -394,7 +394,7 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 		    cout << "-------------------"<< endl;
 		}
  
-		if ( abs((ele1 + ele2).M() - 91.1876) > 10 ){
+		if ( TMath::Abs((ele1 + ele2).M() - 91.1876) > 10 ){
 		    passPresel_ele = false;
 		}
 	    }

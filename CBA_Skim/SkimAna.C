@@ -1514,7 +1514,7 @@ void SkimAna::GetPUJetIDSF_1a(){
     ybin = hpujetid_eff->GetYaxis()->FindBin(jetEta);
     Eff = hpujetid_eff->GetBinContent(xbin,ybin);
     
-    if( (xbin<1 or jetPt>maxbinX or ybin<1 or abs(jetEta)>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
+    if( (xbin<1 or jetPt>maxbinX or ybin<1 or TMath::Abs(jetEta)>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
 
     if (jetPUJetID >= PUJetIDThreshold ){
       pMC *= Eff;
@@ -1587,7 +1587,7 @@ void SkimAna::GetBtagSF_1a(){
     jetPt = event->jetPt_[*jetInd];
     jetEta = fabs(event->jetEta_[*jetInd]);
     //jetFlavor = abs(event->jetPartFlvr_[*jetInd]);
-    jetFlavor = abs(event->jetHadFlvr_[*jetInd]);
+    jetFlavor = TMath::Abs(event->jetHadFlvr_[*jetInd]);
     //jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagCSVV2_[*jetInd] ;
     jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[*jetInd] : event->jetBtagDeepFlavB_[*jetInd] ;
     
@@ -1600,7 +1600,7 @@ void SkimAna::GetBtagSF_1a(){
       }else
 	SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = b_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = b_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       // maxbinX = b_eff->GetXaxis()->GetLast();
       // maxbinY = b_eff->GetYaxis()->GetLast();
       maxbinX = b_eff->GetXaxis()->GetBinUpEdge(b_eff->GetNbinsX());
@@ -1616,7 +1616,7 @@ void SkimAna::GetBtagSF_1a(){
       }else
 	SFb = reader.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = c_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = c_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       // maxbinX = c_eff->GetXaxis()->GetLast();
       // maxbinY = c_eff->GetYaxis()->GetLast();
       maxbinX = c_eff->GetXaxis()->GetBinUpEdge(c_eff->GetNbinsX());
@@ -1632,7 +1632,7 @@ void SkimAna::GetBtagSF_1a(){
       }else
 	SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = l_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       // maxbinX = l_eff->GetXaxis()->GetLast();
       // maxbinY = l_eff->GetYaxis()->GetLast();
       maxbinX = c_eff->GetXaxis()->GetBinUpEdge(c_eff->GetNbinsX());
@@ -1640,7 +1640,7 @@ void SkimAna::GetBtagSF_1a(){
       Eff = l_eff->GetBinContent(xbin,ybin);
     }
 	
-    if( (xbin<1 or jetPt>maxbinX or ybin<1 or abs(jetEta)>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
+    if( (xbin<1 or jetPt>maxbinX or ybin<1 or TMath::Abs(jetEta)>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
 
     if (jetBtag > btagThreshold ){
       pMC *= Eff;
@@ -1714,7 +1714,7 @@ void SkimAna::GetCLtagSF_1a(){
     jetPt = event->jetPt_[jetInd];
     jetEta = fabs(event->jetEta_[jetInd]);
     //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
-    jetFlavor = abs(event->jetHadFlvr_[jetInd]);
+    jetFlavor = TMath::Abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     
@@ -1728,7 +1728,7 @@ void SkimAna::GetCLtagSF_1a(){
 	SFc = reader_CL.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       
       xbin = b_CL_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = b_CL_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = b_CL_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = b_CL_eff->GetXaxis()->GetLast();
       maxbinY = b_CL_eff->GetYaxis()->GetLast();
       Eff = b_CL_eff->GetBinContent(xbin,ybin);
@@ -1743,7 +1743,7 @@ void SkimAna::GetCLtagSF_1a(){
       }else
 	SFc = reader_CL.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_CL_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = c_CL_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = c_CL_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = c_CL_eff->GetXaxis()->GetLast();
       maxbinY = c_CL_eff->GetYaxis()->GetLast();
       Eff = c_CL_eff->GetBinContent(xbin,ybin);
@@ -1758,7 +1758,7 @@ void SkimAna::GetCLtagSF_1a(){
       }else
 	SFc = reader_CL.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_CL_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = l_CL_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = l_CL_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = l_CL_eff->GetXaxis()->GetLast();
       maxbinY = l_CL_eff->GetYaxis()->GetLast();
       Eff = l_CL_eff->GetBinContent(xbin,ybin);
@@ -1841,8 +1841,8 @@ void SkimAna::GetCMtagSF_1a(){
     int jetInd = selector->Jets.at(ijet);
     jetPt = event->jetPt_[jetInd];
     jetEta = fabs(event->jetEta_[jetInd]);
-    //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
-    jetFlavor = abs(event->jetHadFlvr_[jetInd]);
+    //jetFlavor = TMath::Abs(event->jetPartFlvr_[jetInd]);
+    jetFlavor = TMath::Abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     
@@ -1855,7 +1855,7 @@ void SkimAna::GetCMtagSF_1a(){
       }else
 	SFc = reader_CM.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       xbin = b_CM_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = b_CM_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = b_CM_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = b_CM_eff->GetXaxis()->GetLast();
       maxbinY = b_CM_eff->GetYaxis()->GetLast();
       Eff = b_CM_eff->GetBinContent(xbin,ybin);
@@ -1869,7 +1869,7 @@ void SkimAna::GetCMtagSF_1a(){
       }else
 	SFc = reader_CM.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_CM_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = c_CM_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = c_CM_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = c_CM_eff->GetXaxis()->GetLast();
       maxbinY = c_CM_eff->GetYaxis()->GetLast();
       Eff = c_CM_eff->GetBinContent(xbin,ybin);
@@ -1883,7 +1883,7 @@ void SkimAna::GetCMtagSF_1a(){
       }else
 	SFc = reader_CM.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_CM_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = l_CM_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = l_CM_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = l_CM_eff->GetXaxis()->GetLast();
       maxbinY = l_CM_eff->GetYaxis()->GetLast();
       Eff = l_CM_eff->GetBinContent(xbin,ybin);
@@ -1961,8 +1961,8 @@ void SkimAna::GetCTtagSF_1a(){
     int jetInd = selector->Jets.at(ijet);
     jetPt = event->jetPt_[jetInd];
     jetEta = fabs(event->jetEta_[jetInd]);
-    //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
-    jetFlavor = abs(event->jetHadFlvr_[jetInd]);
+    //jetFlavor = TMath::Abs(event->jetPartFlvr_[jetInd]);
+    jetFlavor = TMath::Abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     
@@ -1975,7 +1975,7 @@ void SkimAna::GetCTtagSF_1a(){
       }else
 	SFc = reader_CT.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
       xbin = b_CT_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = b_CT_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = b_CT_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = b_CT_eff->GetXaxis()->GetLast();
       maxbinY = b_CT_eff->GetYaxis()->GetLast();
       Eff = b_CT_eff->GetBinContent(xbin,ybin);
@@ -1989,7 +1989,7 @@ void SkimAna::GetCTtagSF_1a(){
       }else
 	SFc = reader_CT.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_CT_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = c_CT_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = c_CT_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = c_CT_eff->GetXaxis()->GetLast();
       maxbinY = c_CT_eff->GetYaxis()->GetLast();
       Eff = c_CT_eff->GetBinContent(xbin,ybin);
@@ -2003,7 +2003,7 @@ void SkimAna::GetCTtagSF_1a(){
       }else
 	SFc = reader_CT.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
       xbin = l_CT_eff->GetXaxis()->FindBin(min(jetPt,799.));
-      ybin = l_CT_eff->GetYaxis()->FindBin(abs(jetEta));
+      ybin = l_CT_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = l_CT_eff->GetXaxis()->GetLast();
       maxbinY = l_CT_eff->GetYaxis()->GetLast();
       Eff = l_CT_eff->GetBinContent(xbin,ybin);
@@ -2299,8 +2299,8 @@ void SkimAna::TheoWeights(){
       _ISRweight_Up = event->PSWeight_[2];
       _ISRweight_Do = event->PSWeight_[0];
       
-      _FSRweight_Up = event->PSWeight_[3];
-      _FSRweight_Do = event->PSWeight_[1];
+      _FSRweight_Up = event->PSWeight_[1];
+      _FSRweight_Do = event->PSWeight_[3];
     }
   }
 
@@ -2422,6 +2422,13 @@ Bool_t SkimAna::Process(Long64_t entry)
   fProcessed++;
   fStatus++;
   
+  if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
+    TheoWeights();
+    // if(!SelectTTbarChannel()) return true;
+    // if(_kFType!=13) return true;   //Select only the TTbar Semilep
+    // if(!FillMCInfo()) return true;
+  }//isData
+
   //Collection at tree entry level before applying any weight
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if(systType == kBase) FillEventControlHists();
@@ -2621,7 +2628,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   bool isForwardJetEta = false;
   for(int jetInd = 0; jetInd < int(event->nJet_) and int(event->nJet_) <= 200 ; ++jetInd){ //200 is the array size for jets as defined in EventTree 
     if(event->jetPt_[jetInd] < 17.0) isLowJetPt = true;
-    if(abs(event->jetEta_[jetInd]) > selector->jet_Eta_cut) isForwardJetEta = true;
+    if(TMath::Abs(event->jetEta_[jetInd]) > selector->jet_Eta_cut) isForwardJetEta = true;
   }
   //######################################################
   
@@ -2777,29 +2784,29 @@ bool SkimAna::SelectTTbarChannel(){
     for (unsigned int imc = (event->nLHEPart_-4) ; imc < event->nLHEPart_ ; imc++ ){      //Check the last four particles
 
 
-      if(abs(event->LHEPart_pdgId_[imc])==1 and isOne_d) isTwo_d = true; // Two must be above one lepton/parton condition
-      if(abs(event->LHEPart_pdgId_[imc])==1 and !isOne_d) isOne_d = true;
-      if(abs(event->LHEPart_pdgId_[imc])==2 and isOne_u) isTwo_u = true;
-      if(abs(event->LHEPart_pdgId_[imc])==2 and !isOne_u) isOne_u = true;
-      if(abs(event->LHEPart_pdgId_[imc])==3 and isOne_s) isTwo_s = true;
-      if(abs(event->LHEPart_pdgId_[imc])==3 and !isOne_s) isOne_s = true;
-      if(abs(event->LHEPart_pdgId_[imc])==4 and isOne_c) isTwo_c = true;
-      if(abs(event->LHEPart_pdgId_[imc])==4 and !isOne_c) isOne_c = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==1 and isOne_d) isTwo_d = true; // Two must be above one lepton/parton condition
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==1 and !isOne_d) isOne_d = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==2 and isOne_u) isTwo_u = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==2 and !isOne_u) isOne_u = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==3 and isOne_s) isTwo_s = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==3 and !isOne_s) isOne_s = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==4 and isOne_c) isTwo_c = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==4 and !isOne_c) isOne_c = true;
 
-      if(abs(event->LHEPart_pdgId_[imc])==11 and isOne_e) isTwo_e = true;
-      if(abs(event->LHEPart_pdgId_[imc])==11 and !isOne_e) isOne_e = true;
-      if(abs(event->LHEPart_pdgId_[imc])==13 and isOne_m) isTwo_m = true;
-      if(abs(event->LHEPart_pdgId_[imc])==13 and !isOne_m) isOne_m = true;
-      if(abs(event->LHEPart_pdgId_[imc])==15 and isOne_t) isTwo_t = true;
-      if(abs(event->LHEPart_pdgId_[imc])==15 and !isOne_t) isOne_t = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==11 and isOne_e) isTwo_e = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==11 and !isOne_e) isOne_e = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==13 and isOne_m) isTwo_m = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==13 and !isOne_m) isOne_m = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==15 and isOne_t) isTwo_t = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==15 and !isOne_t) isOne_t = true;
 
 
-      if(abs(event->LHEPart_pdgId_[imc])==12 and isOne_nu_e) isTwo_nu_e = true;
-      if(abs(event->LHEPart_pdgId_[imc])==12 and !isOne_nu_e) isOne_nu_e = true;
-      if(abs(event->LHEPart_pdgId_[imc])==14 and isOne_nu_m) isTwo_nu_m = true;
-      if(abs(event->LHEPart_pdgId_[imc])==14 and !isOne_nu_m) isOne_nu_m = true;
-      if(abs(event->LHEPart_pdgId_[imc])==16 and isOne_nu_t) isTwo_nu_t = true;
-      if(abs(event->LHEPart_pdgId_[imc])==16 and !isOne_nu_t) isOne_nu_t = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==12 and isOne_nu_e) isTwo_nu_e = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==12 and !isOne_nu_e) isOne_nu_e = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==14 and isOne_nu_m) isTwo_nu_m = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==14 and !isOne_nu_m) isOne_nu_m = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==16 and isOne_nu_t) isTwo_nu_t = true;
+      if(TMath::Abs(event->LHEPart_pdgId_[imc])==16 and !isOne_nu_t) isOne_nu_t = true;
 
       
       
@@ -3255,10 +3262,8 @@ bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt){
         int index_of_2nd_mjj = j_final_nob[1];
 	int jetInd1 = selector->Jets.at(index_of_1st_mjj);
 	int jetInd2 = selector->Jets.at(index_of_2nd_mjj);
-	// cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
-	// sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
-	cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], 0.0);
-	sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], 0.0);
+	cjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_1st_mjj), event->jetEta_[jetInd1], event->jetPhi_[jetInd1], event->jetMass_[jetInd1]);
+	sjhadBF.SetPtEtaPhiM(selector->JetsPtSmeared.at(index_of_2nd_mjj), event->jetEta_[jetInd2], event->jetPhi_[jetInd2], event->jetMass_[jetInd2]);
 	((TH1D *) list->FindObject(Form("_lb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
       }
     }
@@ -3339,9 +3344,9 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-  combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do;
+  combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do;
   
   return true;
 }
@@ -3991,9 +3996,9 @@ bool SkimAna::FillBTagObs(){
 
     TString systname = fSystList[isyst];
 
-    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
-    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight;
-    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight;
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do;
 
     if(systType == kBase){
 
@@ -5281,7 +5286,7 @@ bool SkimAna::FillKinFitControlHists(){
       // 	       imc, event->LHEPart_pdgId_[imc], partPDG->GetName(), event->LHEPart_pt_[imc],
       // 	       event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
       // }      
-      if(((abs(event->LHEPart_pdgId_[imc])>=1 and abs(event->LHEPart_pdgId_[imc])<=4) or event->LHEPart_pdgId_[imc]==21) and imc>=2) {
+      if(((TMath::Abs(event->LHEPart_pdgId_[imc])>=1 and TMath::Abs(event->LHEPart_pdgId_[imc])<=4) or event->LHEPart_pdgId_[imc]==21) and imc>=2) {
   	// printf("\t Ljet : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass, R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
   	//        imc, event->LHEPart_pdgId_[imc], partPDG->GetName(), event->LHEPart_pt_[imc],
   	//        event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc], TMath::Sqrt(event->LHEPart_eta_[imc]*event->LHEPart_eta_[imc] + event->LHEPart_phi_[imc]*event->LHEPart_phi_[imc]) );
@@ -5305,7 +5310,7 @@ bool SkimAna::FillKinFitControlHists(){
     int nofmatch = 0;
     for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
       int jetInd = selector->Jets.at(ijet);
-      if( (abs(event->jetPartFlvr_[jetInd])>=1 and abs(event->jetPartFlvr_[jetInd])<=4) or abs(event->jetPartFlvr_[jetInd])==21){
+      if( (TMath::Abs(event->jetPartFlvr_[jetInd])>=1 and TMath::Abs(event->jetPartFlvr_[jetInd])<=4) or TMath::Abs(event->jetPartFlvr_[jetInd])==21){
   	// printf("\t ljet JetArray : (flav, btag) : (%d, %3.2f), (pt,eta,phi,M,R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
   	//        event->jetPartFlvr_[jetInd], event->jetBtagDeepFlavB_[jetInd],
   	//        selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd],
@@ -5466,10 +5471,10 @@ bool SkimAna::FillCTagControlHists()
 	  //      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
 	  //      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
 	  if(count_cJetsIncL==1){
-	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[0] = true;
+	    if(TMath::Abs(event->GenJet_partonFlavour_[genIdx])==4) match[0] = true;
 	  }
 	  if(count_cJetsIncL==2){
-	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) match[1] = true;
+	    if(TMath::Abs(event->GenJet_partonFlavour_[genIdx])==4) match[1] = true;
 	  }
 	}
       }//if MC
@@ -5495,10 +5500,10 @@ bool SkimAna::FillCTagControlHists()
 	  //      //event->jetPartFlvr_[jetInd], event->jetHadFlvr_[jetInd], 
 	  //      event->GenJet_pt_[genIdx], event->GenJet_eta_[genIdx] , event->GenJet_phi_[genIdx], event->GenJet_mass_[genIdx]);
 	  if(count_cJetsIncM==1){
-	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[0] = true;
+	    if(TMath::Abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[0] = true;
 	  }
 	  if(count_cJetsIncM==2){
-	    if(abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[1] = true;
+	    if(TMath::Abs(event->GenJet_partonFlavour_[genIdx])==4) matchM[1] = true;
 	  }
 	}
       }//if MC
@@ -5594,9 +5599,9 @@ bool SkimAna::FillCTagControlHists()
   // 	bjet1.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
   //     if(event->LHEPart_pdgId_[imc]==-5 and imc>=2) 
   // 	bjet2.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
-  //     if((abs(event->LHEPart_pdgId_[imc])==11 or abs(event->LHEPart_pdgId_[imc])==12 or abs(event->LHEPart_pdgId_[imc])==15) and imc>=2) 
+  //     if((TMath::Abs(event->LHEPart_pdgId_[imc])==11 or TMath::Abs(event->LHEPart_pdgId_[imc])==12 or TMath::Abs(event->LHEPart_pdgId_[imc])==15) and imc>=2) 
   // 	lep.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
-  //     if((abs(event->LHEPart_pdgId_[imc])==12 or abs(event->LHEPart_pdgId_[imc])==12 or abs(event->LHEPart_pdgId_[imc])==12) and imc>=2) 
+  //     if((TMath::Abs(event->LHEPart_pdgId_[imc])==12 or TMath::Abs(event->LHEPart_pdgId_[imc])==12 or TMath::Abs(event->LHEPart_pdgId_[imc])==12) and imc>=2) 
   // 	neu.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
   //     if((event->LHEPart_pdgId_[imc]>=1 and event->LHEPart_pdgId_[imc]<=4) and imc>=2) 
   // 	ljet1.SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
@@ -5607,7 +5612,7 @@ bool SkimAna::FillCTagControlHists()
   //   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
   //     //if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
   //     int jetInd = selector->Jets.at(ijet);
-  //     if( (abs(event->jetPartFlvr_[jetInd])>=1 and abs(event->jetPartFlvr_[jetInd])<=4) or abs(event->jetPartFlvr_[jetInd])==21) 
+  //     if( (TMath::Abs(event->jetPartFlvr_[jetInd])>=1 and TMath::Abs(event->jetPartFlvr_[jetInd])<=4) or TMath::Abs(event->jetPartFlvr_[jetInd])==21) 
   // 	printf("\t ljet JetArray : (flav, btag) : (%d, %3.2f), (pt,eta,phi,M,R) = (%5.2f, %5.2f, %5.2f, %5.2f, %5.2f)\n", 
   // 	       event->jetPartFlvr_[jetInd], event->jetBtagDeepFlavB_[jetInd],
   // 	       selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd],
@@ -5713,8 +5718,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
-    //jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
-    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , 0.0 );
+    jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     //jetVector.SetPtEtaPhiM(event->jetPt_[jetInd], event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);
     //double jetRes = selector->jet_resolution.at(ijet);
@@ -5885,9 +5889,9 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	   and 
 	   x.bjhadAF.Pt()  > jetPtThresh and x.bjlepAF.Pt() > jetPtThresh and x.cjhadAF.Pt() > jetPtThresh and x.sjhadAF.Pt() > jetPtThresh 
 	   and
-	   abs(x.leptonAF.Eta()) < lepEtaThresh 
+	   TMath::Abs(x.leptonAF.Eta()) < lepEtaThresh 
 	   and
-	   abs(x.bjhadAF.Eta()) < jetEtaThresh and abs(x.bjlepAF.Eta()) < jetEtaThresh and abs(x.cjhadAF.Eta()) < jetEtaThresh and abs(x.sjhadAF.Eta()) < jetEtaThresh
+	   TMath::Abs(x.bjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.bjlepAF.Eta()) < jetEtaThresh and TMath::Abs(x.cjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.sjhadAF.Eta()) < jetEtaThresh
     	   and
 	   Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2
 	   ){

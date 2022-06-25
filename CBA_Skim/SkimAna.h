@@ -2042,11 +2042,11 @@ double SkimAna::getMuonTrackSF(TGraphAsymmErrors *tg, double eta)
   Double_t *sf_array = tg->GetY();
   Int_t n_points = tg->GetN();
   double SF = 1.0;
-  if(abs(eta)<eta_array[0]-0.10) SF = sf_array[0];//bin width is 0.20
+  if(TMath::Abs(eta)<eta_array[0]-0.10) SF = sf_array[0];//bin width is 0.20
   for(Int_t i = 0; i < n_points; i++){
-    if(abs(eta)>=eta_array[i]-0.10 && abs(eta)< eta_array[i]+0.10) SF = sf_array[i];
+    if(TMath::Abs(eta)>=eta_array[i]-0.10 && TMath::Abs(eta)< eta_array[i]+0.10) SF = sf_array[i];
   }
-  if(abs(eta)>=eta_array[n_points-1]+0.10) SF = sf_array[n_points -1];
+  if(TMath::Abs(eta)>=eta_array[n_points-1]+0.10) SF = sf_array[n_points -1];
   return SF;
 }
 

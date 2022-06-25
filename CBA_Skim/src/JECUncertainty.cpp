@@ -641,12 +641,12 @@ double JECUncertainty::_Rjet(double pTprime, double eta,
   jec->setJetA(ajet);
   jec->setRho(rho);
   double corr = jec->getCorrection();
-  if(std::abs((pTraw * corr - pTprime)/pTprime) > 0.001) {
+  if(TMath::Abs((pTraw * corr - pTprime)/pTprime) > 0.001) {
     std::cout << "NPV:" << npv << "   Brent: status:" << brf.Status() << " " << brf.Iterations() << '\n';
     std::cout << "R: pTprime:" << pTprime << "  eta:" << eta << " pTraw:" << pTraw << " corr:" << corr 
               << " pTcor:" << corr * pTraw << " rjet*pTprime:" << rjet * pTprime << '\n'; 
   }
-  assert(std::abs((pTraw * corr - pTprime)/pTprime) < 0.001);  
+  assert(TMath::Abs((pTraw * corr - pTprime)/pTprime) < 0.001);  
   assert(found_root);
   assert(brf.Status() == 0);
   /*

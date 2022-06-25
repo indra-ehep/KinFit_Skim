@@ -67,7 +67,7 @@ double ele2018IDSF[10][6][3]={{{1.15748,1.20359,1.24971},{1.12987,1.16262,1.1953
 {{1.22218,1.26829,1.31441},{1.10904,1.14179,1.17454},{1.06695,1.08495,1.10295},{1.01073,1.03738,1.06404},{0.977368,1.00835,1.03934},{0.97765,1.05959,1.14154},}};
 double get2018MuSF(double pt, double eta, int systLevel){
 
-	double abseta = abs(eta);
+	double abseta = TMath::Abs(eta);
 
 	//binned in 0.2 in absEta
 	//int muTrackEtaRegion = int(abseta/0.2);
