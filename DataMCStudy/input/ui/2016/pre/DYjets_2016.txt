@@ -7,7 +7,7 @@ root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAO
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/DY2jetsM50_preVFP_Skim_NanoAOD_1of4.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/DY2jetsM50_preVFP_Skim_NanoAOD_2of4.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/DY2jetsM50_preVFP_Skim_NanoAOD_3of4.root
-root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/DY2jetsM50_preVFP_Skim_NanoAOD_4of4.root
+root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL1/2016/DY2jetsM50_preVFP_Skim_NanoAOD_4of4.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/DY3jetsM50_preVFP_Skim_NanoAOD_1of3.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/DY3jetsM50_preVFP_Skim_NanoAOD_2of3.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/DY3jetsM50_preVFP_Skim_NanoAOD_3of3.root

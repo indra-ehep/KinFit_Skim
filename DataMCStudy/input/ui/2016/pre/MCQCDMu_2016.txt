@@ -1,7 +1,7 @@
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt1000toInf_Mu_preVFP_Skim_NanoAOD_1of6.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt1000toInf_Mu_preVFP_Skim_NanoAOD_2of6.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt1000toInf_Mu_preVFP_Skim_NanoAOD_3of6.root
-root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt1000toInf_Mu_preVFP_Skim_NanoAOD_4of6.root
+root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL1/2016/QCD_Pt1000toInf_Mu_preVFP_Skim_NanoAOD_4of6.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt1000toInf_Mu_preVFP_Skim_NanoAOD_5of6.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt1000toInf_Mu_preVFP_Skim_NanoAOD_6of6.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt120to170_Mu_preVFP_Skim_NanoAOD_1of4.root
@@ -37,7 +37,7 @@ root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAO
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt300to470_Mu_preVFP_Skim_NanoAOD_6of9.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt300to470_Mu_preVFP_Skim_NanoAOD_7of9.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt300to470_Mu_preVFP_Skim_NanoAOD_8of9.root
-root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt300to470_Mu_preVFP_Skim_NanoAOD_9of9.root
+root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL1/2016/QCD_Pt300to470_Mu_preVFP_Skim_NanoAOD_9of9.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt30to50_Mu_preVFP_Skim_NanoAOD_1of9.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt30to50_Mu_preVFP_Skim_NanoAOD_2of9.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt30to50_Mu_preVFP_Skim_NanoAOD_3of9.root
