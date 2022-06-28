@@ -1045,28 +1045,28 @@ void SkimAna::LoadJECJER()
     if (fYear==2016){
       
       fPUJetIDa = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/preVFP/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
-      hPUJetIDEffa = (TH2D *) fPUJetIDa->Get("PUJetID_L_efficiency");
+      hPUJetIDEffa = (TH2D *) fPUJetIDa->Get("PUJetID_T_efficiency");
       fPUJetIDb = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/postVFP/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
-      hPUJetIDEffb = (TH2D *) fPUJetIDb->Get("PUJetID_L_efficiency");
+      hPUJetIDEffb = (TH2D *) fPUJetIDb->Get("PUJetID_T_efficiency");
       cseta = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpreVFP_UL/UL%dpreVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
       csetb = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpostVFP_UL/UL%dpostVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
       
-      double out_nom_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
-      double out_up_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
-      double out_down_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      double out_nom_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
+      double out_up_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
+      double out_down_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
       printf("Output_a (down, nom, up) : (%lf,%lf,%lf)\n", out_down_a, out_nom_a, out_up_a);      
-      double out_nom_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
-      double out_up_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
-      double out_down_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      double out_nom_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
+      double out_up_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
+      double out_down_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
       printf("Output_b (down, nom, up) : (%lf,%lf,%lf)\n", out_down_b, out_nom_b, out_up_b);      
       
     }else{
       fPUJetID = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
-      hPUJetIDEff = (TH2D *) fPUJetID->Get("PUJetID_L_efficiency");
+      hPUJetIDEff = (TH2D *) fPUJetID->Get("PUJetID_T_efficiency");
       cset = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%d_UL/UL%d_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
-      double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
-      double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
-      double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
+      double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
+      double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
       printf("Output (down, nom, up) : (%lf,%lf,%lf)\n", out_down, out_nom, out_up);      
     }
     
@@ -1501,14 +1501,14 @@ void SkimAna::GetPUJetIDSF_1a(){
     jetPUJetID = event->jetPUID_[*jetInd] ;
     
     if(jetPt>maxbinX) continue;
-
+    
     if(fYear==2016){
       if(isPreVFP)
-	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
       if(isPostVFP)
-	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
     }else
-      SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+      SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
     
     xbin = hpujetid_eff->GetXaxis()->FindBin(min(jetPt,50.));
     ybin = hpujetid_eff->GetYaxis()->FindBin(jetEta);
