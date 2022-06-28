@@ -3307,62 +3307,40 @@ bool KinFit::Fit(){
   TMatrixD			ml(3,3), mn(3,3), mbl(3,3), mbh(3,3), mc(3,3), ms(3,3);
   double			resEt, resEta, resPhi;
   double			JERbase, JERdown, JERup;
-  /* std::vector<TLorentzVector>	ljetlist; */
-  /* std::vector<TLorentzVector>	bjetlist; */
+
   vector<pair<unsigned int, TLorentzVector>>	ljetlist;
   vector<pair<unsigned int, TLorentzVector>>	bjetlist;
-  //std::map<unsigned int, unsigned int> list2jet;
-  //METzCalculator		metZ;
+
   TLorentzVector		METVector;
   double			reslepEta, reslepPhi, resneuEta, resneuPhi, resbjlepEta, resbjlepPhi, resbjhadEta, resbjhadPhi, rescjhadEta, rescjhadPhi, ressjhadEta, ressjhadPhi ; 
   unsigned int			max_nu	  = 2;
-  //double ptOffSet, etaOffSet, phiOffSet, enOffSet;
+
   double ptOffSet, enOffSet;
   double modpt ;
-  /* metZ.SetLepton(lepton); */
-  
-  /* if(leptonType == kElectron) */
-  /*   metZ.SetLeptonType("electron"); */
-  /* if(leptonType == kMuon) */
-  /*   metZ.SetLeptonType("muon"); */
   
   METVector.SetPtEtaPhiM(_nu_pt, 0., _nu_phi, 0.);
-  //metZ.SetMET(METVector);
-  
   _nu_px = METVector.Px();
   _nu_py = METVector.Py();
-  /* _nu_pz = metZ.Calculate(); */
-  /* _nu_pz_other = metZ.getOther(); */
-  /* isComplex = metZ.IsComplex(); */
-
-  //bool PtDescending (unsigned int i, unsigned int j) { 
-  //  return ( jets.at(i).Pt() > jets.at(j).Pt() ); 
-  //}
   
   bjetlist.clear();
   ljetlist.clear();
-  //list2jet.clear();
+
   int ib = 0, il = 0;
   for (unsigned int i = 0 ; i < jets.size() ; i++){
     if (btag[i] > btagThresh){ 
       bjetlist.push_back(make_pair(i,jets.at(i)));
-      /* bjetlist.push_back(jets.at(i)); */
-      /* list2jet[ib] = i; */
       ib++;
-    }else{
-      ljetlist.push_back(make_pair(i,jets.at(i)));
-      //ljetlist[i] = jets.at(i);
-      /* ljetlist.push_back(jets.at(i)); */
-      /* list2jet[il] = i; */
-      il++;
     }
+    //else{
+    ljetlist.push_back(make_pair(i,jets.at(i)));
+    il++;
+      //}
   }
   
-  if(bjetlist.size() < 2 or ljetlist.size() < 2){
+  if(bjetlist.size() < 2 or ljetlist.size() < 4){
     
     bjetlist.clear();
     ljetlist.clear();
-    //list2jet.clear();
     
     return goodCombo;
   }
@@ -3370,31 +3348,18 @@ bool KinFit::Fit(){
   std::sort ( ljetlist.begin(), ljetlist.end() , PtDescending() ) ;
   std::sort ( bjetlist.begin(), bjetlist.end() , PtDescending() ) ;
   
-  /* for (auto x : bjetlist) */
-  /*   cout<<"bjet : "<<x.first<<", Pt : "<<x.second.Pt()<<endl; */
-  
-  /* for (auto x : ljetlist) */
-  /*   cout<<"ljet : "<<x.first<<", Pt : "<<x.second.Pt()<<endl; */
-  
-
-
-  //return goodCombo;
   
   int loop = 0;
-  /* for(unsigned int ib1 = 0 ; ib1 < bjetlist.size() ; ib1++){ */
-  /*   for(unsigned int ib2 = 0 ; ib2 < bjetlist.size() ; ib2++){ */
+
   for (auto bj1 : bjetlist){
     for (auto bj2 : bjetlist){
       if(bj1.first == bj2.first) continue;
-      for (auto lj1 : ljetlist){
+      for (auto lj1 : ljetlist){	
+	if(lj1.first == bj1.first || lj1.first == bj2.first) continue;
 	for (auto lj2 : ljetlist){
-	  if(lj1.first == lj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
-	  /* for(unsigned int ij1 = 0 ; ij1 < ljetlist.size()-1 ; ij1++){ */
-	  /* 	for (unsigned int ij2 = ij1+1 ; ij2 < ljetlist.size() ; ij2++){ */
-  	  /* if(TMath::AreEqualAbs(_nu_pz,_nu_pz_other,1.e-7)) */
-  	  /*   max_nu = 1; */
-  	  /* else */
-  	  /*   max_nu = 2; */
+	  //if(lj1.first == lj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
+	  if(lj1.first == lj2.first || lj2.first == bj1.first || lj2.first == bj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
+	  
   	  max_nu = 1;
   	  for(unsigned int inu_root = 0 ; inu_root < max_nu ; inu_root++){
   	    //float nuz = (inu_root==0) ? _nu_pz : _nu_pz_other ;
