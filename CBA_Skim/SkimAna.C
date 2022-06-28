@@ -6362,7 +6362,7 @@ int main(int argc, char** argv)
 
   string s;
   int idx = 0;
-  TString inputfile = ""; 
+  string inputfile = ""; 
   while(getline(fin,s)){
     //cout << s << endl;
     if(idx==index){
@@ -6371,11 +6371,21 @@ int main(int argc, char** argv)
     idx++;
   }
   cout <<" Total files "<<idx<<endl; 
-  op += Form("|total=%d",idx);
-  
+  op += Form("|total=%d",idx); 
+ 
+  TString hostname = gSystem->HostName();
+  string singleFile = inputfile.substr(inputfile.find_last_of("/")+1,inputfile.size());
+  string xrdcp_command = "";
+  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") )
+    xrdcp_command = "cp " + inputfile + " " + singleFile ;
+  else
+    xrdcp_command = "xrdcp " + inputfile + " " + singleFile ;
+  cout << xrdcp_command.c_str() << endl;
+  system(xrdcp_command.c_str());
+ 
   SkimAna *skim = new SkimAna();
   skim->SetOption(op.Data());
-  skim->ExecSerial(inputfile.Data());
+  skim->ExecSerial(singleFile.c_str());
   delete skim;
   
   return 1;
