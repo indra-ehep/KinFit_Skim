@@ -29,7 +29,7 @@ root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAO
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/ST_tbarW_channel_postVFP_Skim_NanoAOD_2of4.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/ST_tbarW_channel_postVFP_Skim_NanoAOD_3of4.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/ST_tbarW_channel_postVFP_Skim_NanoAOD_4of4.root
-root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/ST_tbar_channel_postVFP_Skim_NanoAOD_1of7.root
+root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL1/2016/ST_tbar_channel_postVFP_Skim_NanoAOD_1of7.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/ST_tbar_channel_postVFP_Skim_NanoAOD_2of7.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/ST_tbar_channel_postVFP_Skim_NanoAOD_3of7.root
 root://se01.indiacms.res.in//cms/store/user/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/ST_tbar_channel_postVFP_Skim_NanoAOD_4of7.root
