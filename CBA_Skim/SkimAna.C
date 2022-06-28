@@ -2422,13 +2422,13 @@ Bool_t SkimAna::Process(Long64_t entry)
   fProcessed++;
   fStatus++;
   
-  if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
-    TheoWeights();
-    // if(!SelectTTbarChannel()) return true;
-    // if(_kFType!=13) return true;   //Select only the TTbar Semilep
-    // if(!FillMCInfo()) return true;
-  }//isData
-
+  // if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
+  //   TheoWeights();
+  //   // if(!SelectTTbarChannel()) return true;
+  //   // if(_kFType!=13) return true;   //Select only the TTbar Semilep
+  //   // if(!FillMCInfo()) return true;
+  // }//isData
+  
   //Collection at tree entry level before applying any weight
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if(systType == kBase) FillEventControlHists();
@@ -3344,9 +3344,9 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do;
-  combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt * _FSRweight_Do;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
   
   return true;
 }
@@ -3996,9 +3996,9 @@ bool SkimAna::FillBTagObs(){
 
     TString systname = fSystList[isyst];
 
-    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do;
-    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do;
-    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight * _FSRweight_Do;
+    double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight ;
+    double combined_muwt1 = _sampleWeight*_PUWeight*_muEffWeight*_PUJetIDWeight*_bTagWeight ;
+    double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bTagWeight ;
 
     if(systType == kBase){
 
