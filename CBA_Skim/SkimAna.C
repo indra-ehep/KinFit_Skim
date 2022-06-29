@@ -2296,8 +2296,8 @@ void SkimAna::TheoWeights(){
   
   if (event->nPSWeight_==4){
     if (event->genWeight_ != 0){
-      _ISRweight_Up = event->PSWeight_[2];
-      _ISRweight_Do = event->PSWeight_[0];
+      _ISRweight_Up = event->PSWeight_[0];
+      _ISRweight_Do = event->PSWeight_[2];
       
       _FSRweight_Up = event->PSWeight_[1];
       _FSRweight_Do = event->PSWeight_[3];
@@ -2422,12 +2422,13 @@ Bool_t SkimAna::Process(Long64_t entry)
   fProcessed++;
   fStatus++;
   
-  // if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
-  //   TheoWeights();
-  //   // if(!SelectTTbarChannel()) return true;
-  //   // if(_kFType!=13) return true;   //Select only the TTbar Semilep
-  //   // if(!FillMCInfo()) return true;
-  // }//isData
+  //if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
+  if(!isData){ //To process for LHE, PYTHIA and GenJets
+    TheoWeights();
+    //   // if(!SelectTTbarChannel()) return true;
+    //   // if(_kFType!=13) return true;   //Select only the TTbar Semilep
+    //   // if(!FillMCInfo()) return true;
+  }//isData
   
   //Collection at tree entry level before applying any weight
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2485,6 +2486,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     _sampleWeight = _local_evtWeight * event->genWeight_; //Method 3
     if(fYear==2016 and isPreVFP) _sampleWeight *= lumiFracI;
     if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
+    _sampleWeight = _sampleWeight*_FSRweight_Do ; //The FSRdown is multiplied
   }
   if(IsDebug) Info("Process","Completed event weight application");
 
