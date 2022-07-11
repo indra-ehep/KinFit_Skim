@@ -43,11 +43,12 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_Nom1FSRDo_smallbin
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_Nom1FSRDo_smallbin
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_Nom1FSRDo_smallbin/pre
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_Nom1FSRDo_smallbin/pre
-condorOutDir2=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_Nom1FSRDo_smallbin/pre
+# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagShapeCalib
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagShapeCalib
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagShapeCalib/pre
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagShapeCalib/pre
+condorOutDir2=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_CTagShapeCalib/pre
+condorOutDir3=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_CTagShapeCalib/pre
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
@@ -55,6 +56,7 @@ else
     xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
     xrdcp -f ${sample}_bjet_*.root root://eosuser.cern.ch/${condorOutDir2}/${year}
+    xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir3}/${year}
     echo "Cleanup"
     rm -rf CMSSW_12_1_0
     rm *.root
