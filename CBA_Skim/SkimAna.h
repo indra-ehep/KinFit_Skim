@@ -877,62 +877,28 @@ class SkimAna : public TSelector {
   // TH2F *SFb_hist_jerDown = 0x0, *SFc_hist_jerDown = 0x0, *SFl_hist_jerDown = 0x0;
 
    string bctagSystType ;
-   double _bcTagLWeight = 1.0 ;
-   double _bcTagMWeight = 1.0 ;
-   double _bcTagTWeight = 1.0 ;
+   double _bcTagWeight = 1.0 ;
    
    // CShapeCalib EOY
-   double _bcTagLWeight_stat_Up = 1.0, _bcTagLWeight_stat_Do = 1.0, _bcTagLWeight_pu_Up = 1.0, _bcTagLWeight_pu_Do = 1.0; 
-   double _bcTagLWeight_eleid_Up = 1.0, _bcTagLWeight_eleid_Do = 1.0, _bcTagLWeight_muid_Up = 1.0, _bcTagLWeight_muid_Do = 1.0; 
-   double _bcTagLWeight_lhemuf_Up = 1.0, _bcTagLWeight_lhemuf_Do = 1.0, _bcTagLWeight_lhemur_Up = 1.0, _bcTagLWeight_lhemur_Do = 1.0; 
-   double _bcTagLWeight_isr_Up = 1.0, _bcTagLWeight_isr_Do = 1.0, _bcTagLWeight_fsr_Up = 1.0, _bcTagLWeight_fsr_Do = 1.0; 
-   double _bcTagLWeight_xdy_Up = 1.0, _bcTagLWeight_xdy_Do = 1.0, _bcTagLWeight_xst_Up = 1.0, _bcTagLWeight_xst_Do = 1.0; 
-   double _bcTagLWeight_xwj_Up = 1.0, _bcTagLWeight_xwj_Do = 1.0, _bcTagLWeight_xtt_Up = 1.0,  _bcTagLWeight_xtt_Do = 1.0; 
-   double _bcTagLWeight_jes_Up = 1.0, _bcTagLWeight_jes_Do = 1.0, _bcTagLWeight_jer_Up = 1.0, _bcTagLWeight_jer_Do = 1.0; 
-   double _bcTagLWeight_bfrag_Up = 1.0, _bcTagLWeight_bfrag_Do = 1.0; 
+   double _bcTagWeight_stat_Up = 1.0, _bcTagWeight_stat_Do = 1.0, _bcTagWeight_pu_Up = 1.0, _bcTagWeight_pu_Do = 1.0; 
+   double _bcTagWeight_eleid_Up = 1.0, _bcTagWeight_eleid_Do = 1.0, _bcTagWeight_muid_Up = 1.0, _bcTagWeight_muid_Do = 1.0; 
+   double _bcTagWeight_lhemuf_Up = 1.0, _bcTagWeight_lhemuf_Do = 1.0, _bcTagWeight_lhemur_Up = 1.0, _bcTagWeight_lhemur_Do = 1.0; 
+   double _bcTagWeight_isr_Up = 1.0, _bcTagWeight_isr_Do = 1.0, _bcTagWeight_fsr_Up = 1.0, _bcTagWeight_fsr_Do = 1.0; 
+   double _bcTagWeight_xdy_Up = 1.0, _bcTagWeight_xdy_Do = 1.0, _bcTagWeight_xst_Up = 1.0, _bcTagWeight_xst_Do = 1.0; 
+   double _bcTagWeight_xwj_Up = 1.0, _bcTagWeight_xwj_Do = 1.0, _bcTagWeight_xtt_Up = 1.0,  _bcTagWeight_xtt_Do = 1.0; 
+   double _bcTagWeight_jes_Up = 1.0, _bcTagWeight_jes_Do = 1.0, _bcTagWeight_jer_Up = 1.0, _bcTagWeight_jer_Do = 1.0; 
+   double _bcTagWeight_bfrag_Up = 1.0, _bcTagWeight_bfrag_Do = 1.0; 
 
-   double _bcTagMWeight_stat_Up = 1.0, _bcTagMWeight_stat_Do = 1.0, _bcTagMWeight_pu_Up = 1.0, _bcTagMWeight_pu_Do = 1.0; 
-   double _bcTagMWeight_eleid_Up = 1.0, _bcTagMWeight_eleid_Do = 1.0, _bcTagMWeight_muid_Up = 1.0, _bcTagMWeight_muid_Do = 1.0; 
-   double _bcTagMWeight_lhemuf_Up = 1.0, _bcTagMWeight_lhemuf_Do = 1.0, _bcTagMWeight_lhemur_Up = 1.0, _bcTagMWeight_lhemur_Do = 1.0; 
-   double _bcTagMWeight_isr_Up = 1.0, _bcTagMWeight_isr_Do = 1.0, _bcTagMWeight_fsr_Up = 1.0, _bcTagMWeight_fsr_Do = 1.0; 
-   double _bcTagMWeight_xdy_Up = 1.0, _bcTagMWeight_xdy_Do = 1.0, _bcTagMWeight_xst_Up = 1.0, _bcTagMWeight_xst_Do = 1.0; 
-   double _bcTagMWeight_xwj_Up = 1.0, _bcTagMWeight_xwj_Do = 1.0, _bcTagMWeight_xtt_Up = 1.0,  _bcTagMWeight_xtt_Do = 1.0; 
-   double _bcTagMWeight_jes_Up = 1.0, _bcTagMWeight_jes_Do = 1.0, _bcTagMWeight_jer_Up = 1.0, _bcTagMWeight_jer_Do = 1.0; 
-   double _bcTagMWeight_bfrag_Up = 1.0, _bcTagMWeight_bfrag_Do = 1.0; 
-
-   double _bcTagTWeight_stat_Up = 1.0, _bcTagTWeight_stat_Do = 1.0, _bcTagTWeight_pu_Up = 1.0, _bcTagTWeight_pu_Do = 1.0; 
-   double _bcTagTWeight_eleid_Up = 1.0, _bcTagTWeight_eleid_Do = 1.0, _bcTagTWeight_muid_Up = 1.0, _bcTagTWeight_muid_Do = 1.0; 
-   double _bcTagTWeight_lhemuf_Up = 1.0, _bcTagTWeight_lhemuf_Do = 1.0, _bcTagTWeight_lhemur_Up = 1.0, _bcTagTWeight_lhemur_Do = 1.0; 
-   double _bcTagTWeight_isr_Up = 1.0, _bcTagTWeight_isr_Do = 1.0, _bcTagTWeight_fsr_Up = 1.0, _bcTagTWeight_fsr_Do = 1.0; 
-   double _bcTagTWeight_xdy_Up = 1.0, _bcTagTWeight_xdy_Do = 1.0, _bcTagTWeight_xst_Up = 1.0, _bcTagTWeight_xst_Do = 1.0; 
-   double _bcTagTWeight_xwj_Up = 1.0, _bcTagTWeight_xwj_Do = 1.0, _bcTagTWeight_xtt_Up = 1.0,  _bcTagTWeight_xtt_Do = 1.0; 
-   double _bcTagTWeight_jes_Up = 1.0, _bcTagTWeight_jes_Do = 1.0, _bcTagTWeight_jer_Up = 1.0, _bcTagTWeight_jer_Do = 1.0; 
-   double _bcTagTWeight_bfrag_Up = 1.0, _bcTagTWeight_bfrag_Do = 1.0; 
   
    /* // CShapeCalib UL */
-   /* double _bcTagLWeight_stat_Up = 1.0, _bcTagLWeight_stat_Do = 1.0, _bcTagLWeight_pu_Up = 1.0, _bcTagLWeight_pu_Do = 1.0;  */
-   /* double _bcTagLWeight_intp_Up = 1.0, _bcTagLWeight_intp_Do = 1.0, _bcTagLWeight_extp_Up = 1.0, _bcTagLWeight_extp_Do = 1.0;     */
-   /* double _bcTagLWeight_lhemuf_Up = 1.0, _bcTagLWeight_lhemuf_Do = 1.0, _bcTagLWeight_lhemur_Up = 1.0, _bcTagLWeight_lhemur_Do = 1.0;  */
-   /* double _bcTagLWeight_isr_Up = 1.0, _bcTagLWeight_isr_Do = 1.0, _bcTagLWeight_fsr_Up = 1.0, _bcTagLWeight_fsr_Do = 1.0;  */
-   /* double _bcTagLWeight_xdyb_Up = 1.0, _bcTagLWeight_xdyb_Do = 1.0, _bcTagLWeight_xdyc_Up = 1.0, _bcTagLWeight_xdyc_Do = 1.0;  */
-   /* double _bcTagLWeight_xwjc_Up = 1.0, _bcTagLWeight_xwjc_Do = 1.0;  */
-   /* double _bcTagLWeight_jes_Up = 1.0, _bcTagLWeight_jes_Do = 1.0, _bcTagLWeight_jer_Up = 1.0, _bcTagLWeight_jer_Do = 1.0;  */
+   /* double _bcTagWeight_stat_Up = 1.0, _bcTagWeight_stat_Do = 1.0, _bcTagWeight_pu_Up = 1.0, _bcTagWeight_pu_Do = 1.0;  */
+   /* double _bcTagWeight_intp_Up = 1.0, _bcTagWeight_intp_Do = 1.0, _bcTagWeight_extp_Up = 1.0, _bcTagWeight_extp_Do = 1.0;     */
+   /* double _bcTagWeight_lhemuf_Up = 1.0, _bcTagWeight_lhemuf_Do = 1.0, _bcTagWeight_lhemur_Up = 1.0, _bcTagWeight_lhemur_Do = 1.0;  */
+   /* double _bcTagWeight_isr_Up = 1.0, _bcTagWeight_isr_Do = 1.0, _bcTagWeight_fsr_Up = 1.0, _bcTagWeight_fsr_Do = 1.0;  */
+   /* double _bcTagWeight_xdyb_Up = 1.0, _bcTagWeight_xdyb_Do = 1.0, _bcTagWeight_xdyc_Up = 1.0, _bcTagWeight_xdyc_Do = 1.0;  */
+   /* double _bcTagWeight_xwjc_Up = 1.0, _bcTagWeight_xwjc_Do = 1.0;  */
+   /* double _bcTagWeight_jes_Up = 1.0, _bcTagWeight_jes_Do = 1.0, _bcTagWeight_jer_Up = 1.0, _bcTagWeight_jer_Do = 1.0;  */
 
-   /* double _bcTagMWeight_stat_Up = 1.0, _bcTagMWeight_stat_Do = 1.0, _bcTagMWeight_pu_Up = 1.0, _bcTagMWeight_pu_Do = 1.0;  */
-   /* double _bcTagMWeight_intp_Up = 1.0, _bcTagMWeight_intp_Do = 1.0, _bcTagMWeight_extp_Up = 1.0, _bcTagMWeight_extp_Do = 1.0;     */
-   /* double _bcTagMWeight_lhemuf_Up = 1.0, _bcTagMWeight_lhemuf_Do = 1.0, _bcTagMWeight_lhemur_Up = 1.0, _bcTagMWeight_lhemur_Do = 1.0;  */
-   /* double _bcTagMWeight_isr_Up = 1.0, _bcTagMWeight_isr_Do = 1.0, _bcTagMWeight_fsr_Up = 1.0, _bcTagMWeight_fsr_Do = 1.0;  */
-   /* double _bcTagMWeight_xdyb_Up = 1.0, _bcTagMWeight_xdyb_Do = 1.0, _bcTagMWeight_xdyc_Up = 1.0, _bcTagMWeight_xdyc_Do = 1.0;  */
-   /* double _bcTagMWeight_xwjc_Up = 1.0, _bcTagMWeight_xwjc_Do = 1.0;  */
-   /* double _bcTagMWeight_jes_Up = 1.0, _bcTagMWeight_jes_Do = 1.0, _bcTagMWeight_jer_Up = 1.0, _bcTagMWeight_jer_Do = 1.0;  */
-
-   /* double _bcTagTWeight_stat_Up = 1.0, _bcTagTWeight_stat_Do = 1.0, _bcTagTWeight_pu_Up = 1.0, _bcTagTWeight_pu_Do = 1.0;  */
-   /* double _bcTagTWeight_intp_Up = 1.0, _bcTagTWeight_intp_Do = 1.0, _bcTagTWeight_extp_Up = 1.0, _bcTagTWeight_extp_Do = 1.0;     */
-   /* double _bcTagTWeight_lhemuf_Up = 1.0, _bcTagTWeight_lhemuf_Do = 1.0, _bcTagTWeight_lhemur_Up = 1.0, _bcTagTWeight_lhemur_Do = 1.0;  */
-   /* double _bcTagTWeight_isr_Up = 1.0, _bcTagTWeight_isr_Do = 1.0, _bcTagTWeight_fsr_Up = 1.0, _bcTagTWeight_fsr_Do = 1.0;  */
-   /* double _bcTagTWeight_xdyb_Up = 1.0, _bcTagTWeight_xdyb_Do = 1.0, _bcTagTWeight_xdyc_Up = 1.0, _bcTagTWeight_xdyc_Do = 1.0;  */
-   /* double _bcTagTWeight_xwjc_Up = 1.0, _bcTagTWeight_xwjc_Do = 1.0;  */
-   /* double _bcTagTWeight_jes_Up = 1.0, _bcTagTWeight_jes_Do = 1.0, _bcTagTWeight_jer_Up = 1.0, _bcTagTWeight_jer_Do = 1.0;  */
 
    
    //Lepton SF
@@ -1873,7 +1839,7 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("PUWeight"		, &_PUWeight			);
     outputTree->Branch("PUWeight_Up"		, &_PUWeight_Up			);
     outputTree->Branch("PUWeight_Do"		, &_PUWeight_Do			);
-
+    
     outputTree->Branch("singleMu"		, &singleMu			);
     outputTree->Branch("singleEle"		, &singleEle			);
     outputTree->Branch("muonIsoCut"		, &muonIsoCut			);
@@ -1891,7 +1857,16 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("puJetIDWeight"		, &_PUJetIDWeight		);
     outputTree->Branch("puJetIDWeight_Up"	, &_PUJetIDWeight_Up		);
     outputTree->Branch("puJetIDWeight_Do"	, &_PUJetIDWeight_Do		);
-    
+
+    outputTree->Branch("q2weight_Up"		, &_q2weight_Up		        );
+    outputTree->Branch("q2weight_Do"		, &_q2weight_Do		        );
+    outputTree->Branch("pdfweight_Up"		, &_pdfweight_Up		);
+    outputTree->Branch("pdfweight_Do"		, &_pdfweight_Do		);
+    outputTree->Branch("ISRweight_Up"		, &_ISRweight_Up		);
+    outputTree->Branch("ISRweight_Do"		, &_ISRweight_Do		);
+    outputTree->Branch("FSRweight_Up"		, &_FSRweight_Up		);
+    outputTree->Branch("FSRweight_Do"		, &_FSRweight_Do		);
+
     // outputTree->Branch("bTagWeight"		, &_bTagWeight			);
     // outputTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
     // outputTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
@@ -1933,102 +1908,38 @@ void SkimAna::InitOutBranches(){
     // outputTree->Branch("cTagTWeight_bc3_Do"	, &_cTagTWeight_bc3_Do		);
     
     outputTree->Branch("nJet"			, &_nJet			);
-    outputTree->Branch("bcTagLWeight"		, &_bcTagLWeight       		);
-    outputTree->Branch("bcTagMWeight"		, &_bcTagMWeight       		);
-    outputTree->Branch("bcTagTWeight"		, &_bcTagTWeight       		);    
+    outputTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
     //CTagShape EOY
-    outputTree->Branch("bcTagLWeight_stat_Up"	, &_bcTagLWeight_stat_Up       	);    
-    outputTree->Branch("bcTagLWeight_stat_Do"	, &_bcTagLWeight_stat_Do       	);    
-    outputTree->Branch("bcTagLWeight_pu_Up"	, &_bcTagLWeight_pu_Up       	);    
-    outputTree->Branch("bcTagLWeight_pu_Do"	, &_bcTagLWeight_pu_Do       	);    
-    outputTree->Branch("bcTagLWeight_eleid_Up"	, &_bcTagLWeight_eleid_Up      	);    
-    outputTree->Branch("bcTagLWeight_eleid_Do"	, &_bcTagLWeight_eleid_Do      	);    
-    outputTree->Branch("bcTagLWeight_muid_Up"	, &_bcTagLWeight_muid_Up       	);    
-    outputTree->Branch("bcTagLWeight_muid_Do"	, &_bcTagLWeight_muid_Do       	);    
-    outputTree->Branch("bcTagLWeight_lhemuf_Up"	, &_bcTagLWeight_lhemuf_Up     	);    
-    outputTree->Branch("bcTagLWeight_lhemuf_Do"	, &_bcTagLWeight_lhemuf_Do     	);    
-    outputTree->Branch("bcTagLWeight_lhemur_Up"	, &_bcTagLWeight_lhemur_Up    	);    
-    outputTree->Branch("bcTagLWeight_lhemur_Do"	, &_bcTagLWeight_lhemur_Do     	);    
-    outputTree->Branch("bcTagLWeight_isr_Up"	, &_bcTagLWeight_isr_Up       	);    
-    outputTree->Branch("bcTagLWeight_isr_Do"	, &_bcTagLWeight_isr_Do       	);    
-    outputTree->Branch("bcTagLWeight_fsr_Up"	, &_bcTagLWeight_fsr_Up       	);    
-    outputTree->Branch("bcTagLWeight_fsr_Do"	, &_bcTagLWeight_fsr_Do       	);    
-    outputTree->Branch("bcTagLWeight_xdy_Up"	, &_bcTagLWeight_xdy_Up       	);    
-    outputTree->Branch("bcTagLWeight_xdy_Do"	, &_bcTagLWeight_xdy_Do       	);    
-    outputTree->Branch("bcTagLWeight_xst_Up"	, &_bcTagLWeight_xst_Up       	);    
-    outputTree->Branch("bcTagLWeight_xst_Do"	, &_bcTagLWeight_xst_Do       	);     
-    outputTree->Branch("bcTagLWeight_xwj_Up"	, &_bcTagLWeight_xwj_Up       	);    
-    outputTree->Branch("bcTagLWeight_xwj_Do"	, &_bcTagLWeight_xwj_Do       	);    
-    outputTree->Branch("bcTagLWeight_xtt_Up"	, &_bcTagLWeight_xtt_Up       	);    
-    outputTree->Branch("bcTagLWeight_xtt_Do"	, &_bcTagLWeight_xtt_Do       	);    
-    outputTree->Branch("bcTagLWeight_jes_Up"	, &_bcTagLWeight_jes_Up       	);    
-    outputTree->Branch("bcTagLWeight_jes_Do"	, &_bcTagLWeight_jes_Do       	);    
-    outputTree->Branch("bcTagLWeight_jer_Up"	, &_bcTagLWeight_jer_Up       	);    
-    outputTree->Branch("bcTagLWeight_jer_Do"	, &_bcTagLWeight_jer_Do       	);    
-    outputTree->Branch("bcTagLWeight_bfrag_Up"	, &_bcTagLWeight_bfrag_Up      	);    
-    outputTree->Branch("bcTagLWeight_bfrag_Do"	, &_bcTagLWeight_bfrag_Do      	);    
-     
-    outputTree->Branch("bcTagMWeight_stat_Up"	, &_bcTagMWeight_stat_Up       	);    
-    outputTree->Branch("bcTagMWeight_stat_Do"	, &_bcTagMWeight_stat_Do       	);    
-    outputTree->Branch("bcTagMWeight_pu_Up"	, &_bcTagMWeight_pu_Up       	);    
-    outputTree->Branch("bcTagMWeight_pu_Do"	, &_bcTagMWeight_pu_Do       	);    
-    outputTree->Branch("bcTagMWeight_eleid_Up"	, &_bcTagMWeight_eleid_Up     	);    
-    outputTree->Branch("bcTagMWeight_eleid_Do"	, &_bcTagMWeight_eleid_Do     	);    
-    outputTree->Branch("bcTagMWeight_muid_Up"	, &_bcTagMWeight_muid_Up       	);    
-    outputTree->Branch("bcTagMWeight_muid_Do"	, &_bcTagMWeight_muid_Do       	);    
-    outputTree->Branch("bcTagMWeight_lhemuf_Up"	, &_bcTagMWeight_lhemuf_Up     	);    
-    outputTree->Branch("bcTagMWeight_lhemuf_Do"	, &_bcTagMWeight_lhemuf_Do     	);    
-    outputTree->Branch("bcTagMWeight_lhemur_Up"	, &_bcTagMWeight_lhemur_Up     	);    
-    outputTree->Branch("bcTagMWeight_lhemur_Do"	, &_bcTagMWeight_lhemur_Do     	);    
-    outputTree->Branch("bcTagMWeight_isr_Up"	, &_bcTagMWeight_isr_Up       	);    
-    outputTree->Branch("bcTagMWeight_isr_Do"	, &_bcTagMWeight_isr_Do       	);    
-    outputTree->Branch("bcTagMWeight_fsr_Up"	, &_bcTagMWeight_fsr_Up       	);    
-    outputTree->Branch("bcTagMWeight_fsr_Do"	, &_bcTagMWeight_fsr_Do       	);    
-    outputTree->Branch("bcTagMWeight_xdy_Up"	, &_bcTagMWeight_xdy_Up       	);    
-    outputTree->Branch("bcTagMWeight_xdy_Do"	, &_bcTagMWeight_xdy_Do       	);    
-    outputTree->Branch("bcTagMWeight_xst_Up"	, &_bcTagMWeight_xst_Up       	);    
-    outputTree->Branch("bcTagMWeight_xst_Do"	, &_bcTagMWeight_xst_Do       	);    
-    outputTree->Branch("bcTagMWeight_xwj_Up"	, &_bcTagMWeight_xwj_Up       	);    
-    outputTree->Branch("bcTagMWeight_xwj_Do"	, &_bcTagMWeight_xwj_Do       	);    
-    outputTree->Branch("bcTagMWeight_xtt_Up"	, &_bcTagMWeight_xtt_Up       	);    
-    outputTree->Branch("bcTagMWeight_xtt_Do"	, &_bcTagMWeight_xtt_Do       	);    
-    outputTree->Branch("bcTagMWeight_jes_Up"	, &_bcTagMWeight_jes_Up       	);    
-    outputTree->Branch("bcTagMWeight_jes_Do"	, &_bcTagMWeight_jes_Do       	);    
-    outputTree->Branch("bcTagMWeight_jer_Up"	, &_bcTagMWeight_jer_Up       	);    
-    outputTree->Branch("bcTagMWeight_jer_Do"	, &_bcTagMWeight_jer_Do       	);    
-     
-    outputTree->Branch("bcTagMWeight_bfrag_Up"	, &_bcTagMWeight_bfrag_Up      	);    
-    outputTree->Branch("bcTagMWeight_bfrag_Do"	, &_bcTagMWeight_bfrag_Do      	);    
-    outputTree->Branch("bcTagTWeight_stat_Up"	, &_bcTagTWeight_stat_Up       	);    
-    outputTree->Branch("bcTagTWeight_stat_Do"	, &_bcTagTWeight_stat_Do       	);    
-    outputTree->Branch("bcTagTWeight_pu_Up"	, &_bcTagTWeight_pu_Up       	);    
-    outputTree->Branch("bcTagTWeight_pu_Do"	, &_bcTagTWeight_pu_Do       	);    
-    outputTree->Branch("bcTagTWeight_eleid_Up"	, &_bcTagTWeight_eleid_Up      	);    
-    outputTree->Branch("bcTagTWeight_eleid_Do"	, &_bcTagTWeight_eleid_Do      	);    
-    outputTree->Branch("bcTagTWeight_muid_Up"	, &_bcTagTWeight_muid_Up       	);    
-    outputTree->Branch("bcTagTWeight_muid_Do"	, &_bcTagTWeight_muid_Do       	);    
-    outputTree->Branch("bcTagTWeight_lhemuf_Up"	, &_bcTagTWeight_lhemuf_Up     	);    
-    outputTree->Branch("bcTagTWeight_lhemuf_Do"	, &_bcTagTWeight_lhemuf_Do     	);    
-    outputTree->Branch("bcTagTWeight_lhemur_Up"	, &_bcTagTWeight_lhemur_Up     	);    
-    outputTree->Branch("bcTagTWeight_lhemur_Do"	, &_bcTagTWeight_lhemur_Do     	);    
-    outputTree->Branch("bcTagTWeight_isr_Up"	, &_bcTagTWeight_isr_Up       	);    
-    outputTree->Branch("bcTagTWeight_isr_Do"	, &_bcTagTWeight_isr_Do       	);    
-    outputTree->Branch("bcTagTWeight_fsr_Up"	, &_bcTagTWeight_fsr_Up       	);    
-    outputTree->Branch("bcTagTWeight_fsr_Do"	, &_bcTagTWeight_fsr_Do       	);    
-    outputTree->Branch("bcTagTWeight_xdy_Up"	, &_bcTagTWeight_xdy_Up       	);    
-    outputTree->Branch("bcTagTWeight_xdy_Do"	, &_bcTagTWeight_xdy_Do       	);    
-    outputTree->Branch("bcTagTWeight_xst_Up"	, &_bcTagTWeight_xst_Up       	);    
-    outputTree->Branch("bcTagTWeight_xst_Do"	, &_bcTagTWeight_xst_Do       	);    
-    outputTree->Branch("bcTagTWeight_xwj_Up"	, &_bcTagTWeight_xwj_Up       	);    
-    outputTree->Branch("bcTagTWeight_xwj_Do"	, &_bcTagTWeight_xwj_Do       	);    
-    outputTree->Branch("bcTagTWeight_xtt_Up"	, &_bcTagTWeight_xtt_Up       	);    
-    outputTree->Branch("bcTagTWeight_xtt_Do"	, &_bcTagTWeight_xtt_Do       	);    
-    outputTree->Branch("bcTagTWeight_jes_Up"	, &_bcTagTWeight_jes_Up       	);    
-    outputTree->Branch("bcTagTWeight_jes_Do"	, &_bcTagTWeight_jes_Do       	);    
-    outputTree->Branch("bcTagTWeight_jer_Up"	, &_bcTagTWeight_jer_Up       	);    
-    outputTree->Branch("bcTagTWeight_jer_Do"	, &_bcTagTWeight_jer_Do       	);    
-    outputTree->Branch("bcTagTWeight_bfrag_Up"	, &_bcTagTWeight_bfrag_Up      	);    
-    outputTree->Branch("bcTagTWeight_bfrag_Do"	, &_bcTagTWeight_bfrag_Do      	);         
+    outputTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
+    outputTree->Branch("bcTagWeight_stat_Do"	, &_bcTagWeight_stat_Do       	);    
+    outputTree->Branch("bcTagWeight_pu_Up"	, &_bcTagWeight_pu_Up       	);    
+    outputTree->Branch("bcTagWeight_pu_Do"	, &_bcTagWeight_pu_Do       	);    
+    outputTree->Branch("bcTagWeight_eleid_Up"	, &_bcTagWeight_eleid_Up      	);    
+    outputTree->Branch("bcTagWeight_eleid_Do"	, &_bcTagWeight_eleid_Do      	);    
+    outputTree->Branch("bcTagWeight_muid_Up"	, &_bcTagWeight_muid_Up       	);    
+    outputTree->Branch("bcTagWeight_muid_Do"	, &_bcTagWeight_muid_Do       	);    
+    outputTree->Branch("bcTagWeight_lhemuf_Up"	, &_bcTagWeight_lhemuf_Up     	);    
+    outputTree->Branch("bcTagWeight_lhemuf_Do"	, &_bcTagWeight_lhemuf_Do     	);    
+    outputTree->Branch("bcTagWeight_lhemur_Up"	, &_bcTagWeight_lhemur_Up    	);    
+    outputTree->Branch("bcTagWeight_lhemur_Do"	, &_bcTagWeight_lhemur_Do     	);    
+    outputTree->Branch("bcTagWeight_isr_Up"	, &_bcTagWeight_isr_Up       	);    
+    outputTree->Branch("bcTagWeight_isr_Do"	, &_bcTagWeight_isr_Do       	);    
+    outputTree->Branch("bcTagWeight_fsr_Up"	, &_bcTagWeight_fsr_Up       	);    
+    outputTree->Branch("bcTagWeight_fsr_Do"	, &_bcTagWeight_fsr_Do       	);    
+    outputTree->Branch("bcTagWeight_xdy_Up"	, &_bcTagWeight_xdy_Up       	);    
+    outputTree->Branch("bcTagWeight_xdy_Do"	, &_bcTagWeight_xdy_Do       	);    
+    outputTree->Branch("bcTagWeight_xst_Up"	, &_bcTagWeight_xst_Up       	);    
+    outputTree->Branch("bcTagWeight_xst_Do"	, &_bcTagWeight_xst_Do       	);     
+    outputTree->Branch("bcTagWeight_xwj_Up"	, &_bcTagWeight_xwj_Up       	);    
+    outputTree->Branch("bcTagWeight_xwj_Do"	, &_bcTagWeight_xwj_Do       	);    
+    outputTree->Branch("bcTagWeight_xtt_Up"	, &_bcTagWeight_xtt_Up       	);    
+    outputTree->Branch("bcTagWeight_xtt_Do"	, &_bcTagWeight_xtt_Do       	);    
+    outputTree->Branch("bcTagWeight_jes_Up"	, &_bcTagWeight_jes_Up       	);    
+    outputTree->Branch("bcTagWeight_jes_Do"	, &_bcTagWeight_jes_Do       	);    
+    outputTree->Branch("bcTagWeight_jer_Up"	, &_bcTagWeight_jer_Up       	);    
+    outputTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
+    outputTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
+    outputTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);        
     
     outputTree->Branch("chi2"			, &kinFitMinChi2       		);
     outputTree->Branch("ndf"			, &_NDF         		);
@@ -2119,7 +2030,16 @@ void SkimAna::InitBjetOutBranches(){
   outputBjetTree->Branch("puJetIDWeight"	, &_PUJetIDWeight		);
   outputBjetTree->Branch("puJetIDWeight_Up"	, &_PUJetIDWeight_Up		);
   outputBjetTree->Branch("puJetIDWeight_Do"	, &_PUJetIDWeight_Do		);
-    
+
+  outputBjetTree->Branch("q2weight_Up"		, &_q2weight_Up		        );
+  outputBjetTree->Branch("q2weight_Do"		, &_q2weight_Do		        );
+  outputBjetTree->Branch("pdfweight_Up"		, &_pdfweight_Up		);
+  outputBjetTree->Branch("pdfweight_Do"		, &_pdfweight_Do		);
+  outputBjetTree->Branch("ISRweight_Up"		, &_ISRweight_Up		);
+  outputBjetTree->Branch("ISRweight_Do"		, &_ISRweight_Do		);
+  outputBjetTree->Branch("FSRweight_Up"		, &_FSRweight_Up		);
+  outputBjetTree->Branch("FSRweight_Do"		, &_FSRweight_Do		);
+
   // outputBjetTree->Branch("bTagWeight"		, &_bTagWeight			);
   // outputBjetTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
   // outputBjetTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
@@ -2132,102 +2052,39 @@ void SkimAna::InitBjetOutBranches(){
   // outputBjetTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
   // outputBjetTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
 
-  outputBjetTree->Branch("bcTagLWeight"		, &_bcTagLWeight       		);
-  outputBjetTree->Branch("bcTagMWeight"		, &_bcTagMWeight       		);
-  outputBjetTree->Branch("bcTagTWeight"		, &_bcTagTWeight       		);
+  outputBjetTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
   //CTagShape EOY
-  outputBjetTree->Branch("bcTagLWeight_stat_Up"	, &_bcTagLWeight_stat_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_stat_Do"	, &_bcTagLWeight_stat_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_pu_Up"	, &_bcTagLWeight_pu_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_pu_Do"	, &_bcTagLWeight_pu_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_eleid_Up"	, &_bcTagLWeight_eleid_Up      	);    
-  outputBjetTree->Branch("bcTagLWeight_eleid_Do"	, &_bcTagLWeight_eleid_Do      	);    
-  outputBjetTree->Branch("bcTagLWeight_muid_Up"	, &_bcTagLWeight_muid_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_muid_Do"	, &_bcTagLWeight_muid_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_lhemuf_Up"	, &_bcTagLWeight_lhemuf_Up     	);    
-  outputBjetTree->Branch("bcTagLWeight_lhemuf_Do"	, &_bcTagLWeight_lhemuf_Do     	);    
-  outputBjetTree->Branch("bcTagLWeight_lhemur_Up"	, &_bcTagLWeight_lhemur_Up    	);    
-  outputBjetTree->Branch("bcTagLWeight_lhemur_Do"	, &_bcTagLWeight_lhemur_Do     	);    
-  outputBjetTree->Branch("bcTagLWeight_isr_Up"	, &_bcTagLWeight_isr_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_isr_Do"	, &_bcTagLWeight_isr_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_fsr_Up"	, &_bcTagLWeight_fsr_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_fsr_Do"	, &_bcTagLWeight_fsr_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_xdy_Up"	, &_bcTagLWeight_xdy_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_xdy_Do"	, &_bcTagLWeight_xdy_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_xst_Up"	, &_bcTagLWeight_xst_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_xst_Do"	, &_bcTagLWeight_xst_Do       	);     
-  outputBjetTree->Branch("bcTagLWeight_xwj_Up"	, &_bcTagLWeight_xwj_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_xwj_Do"	, &_bcTagLWeight_xwj_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_xtt_Up"	, &_bcTagLWeight_xtt_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_xtt_Do"	, &_bcTagLWeight_xtt_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_jes_Up"	, &_bcTagLWeight_jes_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_jes_Do"	, &_bcTagLWeight_jes_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_jer_Up"	, &_bcTagLWeight_jer_Up       	);    
-  outputBjetTree->Branch("bcTagLWeight_jer_Do"	, &_bcTagLWeight_jer_Do       	);    
-  outputBjetTree->Branch("bcTagLWeight_bfrag_Up"	, &_bcTagLWeight_bfrag_Up      	);    
-  outputBjetTree->Branch("bcTagLWeight_bfrag_Do"	, &_bcTagLWeight_bfrag_Do      	);    
+  outputBjetTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_stat_Do"	, &_bcTagWeight_stat_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_pu_Up"	, &_bcTagWeight_pu_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_pu_Do"	, &_bcTagWeight_pu_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_eleid_Up"	, &_bcTagWeight_eleid_Up      	);    
+  outputBjetTree->Branch("bcTagWeight_eleid_Do"	, &_bcTagWeight_eleid_Do      	);    
+  outputBjetTree->Branch("bcTagWeight_muid_Up"	, &_bcTagWeight_muid_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_muid_Do"	, &_bcTagWeight_muid_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_lhemuf_Up"	, &_bcTagWeight_lhemuf_Up     	);    
+  outputBjetTree->Branch("bcTagWeight_lhemuf_Do"	, &_bcTagWeight_lhemuf_Do     	);    
+  outputBjetTree->Branch("bcTagWeight_lhemur_Up"	, &_bcTagWeight_lhemur_Up    	);    
+  outputBjetTree->Branch("bcTagWeight_lhemur_Do"	, &_bcTagWeight_lhemur_Do     	);    
+  outputBjetTree->Branch("bcTagWeight_isr_Up"	, &_bcTagWeight_isr_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_isr_Do"	, &_bcTagWeight_isr_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_fsr_Up"	, &_bcTagWeight_fsr_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_fsr_Do"	, &_bcTagWeight_fsr_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_xdy_Up"	, &_bcTagWeight_xdy_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_xdy_Do"	, &_bcTagWeight_xdy_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_xst_Up"	, &_bcTagWeight_xst_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_xst_Do"	, &_bcTagWeight_xst_Do       	);     
+  outputBjetTree->Branch("bcTagWeight_xwj_Up"	, &_bcTagWeight_xwj_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_xwj_Do"	, &_bcTagWeight_xwj_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_xtt_Up"	, &_bcTagWeight_xtt_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_xtt_Do"	, &_bcTagWeight_xtt_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_jes_Up"	, &_bcTagWeight_jes_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_jes_Do"	, &_bcTagWeight_jes_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_jer_Up"	, &_bcTagWeight_jer_Up       	);    
+  outputBjetTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
+  outputBjetTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
+  outputBjetTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);    
      
-  outputBjetTree->Branch("bcTagMWeight_stat_Up"	, &_bcTagMWeight_stat_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_stat_Do"	, &_bcTagMWeight_stat_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_pu_Up"	, &_bcTagMWeight_pu_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_pu_Do"	, &_bcTagMWeight_pu_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_eleid_Up"	, &_bcTagMWeight_eleid_Up     	);    
-  outputBjetTree->Branch("bcTagMWeight_eleid_Do"	, &_bcTagMWeight_eleid_Do     	);    
-  outputBjetTree->Branch("bcTagMWeight_muid_Up"	, &_bcTagMWeight_muid_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_muid_Do"	, &_bcTagMWeight_muid_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_lhemuf_Up"	, &_bcTagMWeight_lhemuf_Up     	);    
-  outputBjetTree->Branch("bcTagMWeight_lhemuf_Do"	, &_bcTagMWeight_lhemuf_Do     	);    
-  outputBjetTree->Branch("bcTagMWeight_lhemur_Up"	, &_bcTagMWeight_lhemur_Up     	);    
-  outputBjetTree->Branch("bcTagMWeight_lhemur_Do"	, &_bcTagMWeight_lhemur_Do     	);    
-  outputBjetTree->Branch("bcTagMWeight_isr_Up"	, &_bcTagMWeight_isr_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_isr_Do"	, &_bcTagMWeight_isr_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_fsr_Up"	, &_bcTagMWeight_fsr_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_fsr_Do"	, &_bcTagMWeight_fsr_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_xdy_Up"	, &_bcTagMWeight_xdy_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_xdy_Do"	, &_bcTagMWeight_xdy_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_xst_Up"	, &_bcTagMWeight_xst_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_xst_Do"	, &_bcTagMWeight_xst_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_xwj_Up"	, &_bcTagMWeight_xwj_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_xwj_Do"	, &_bcTagMWeight_xwj_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_xtt_Up"	, &_bcTagMWeight_xtt_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_xtt_Do"	, &_bcTagMWeight_xtt_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_jes_Up"	, &_bcTagMWeight_jes_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_jes_Do"	, &_bcTagMWeight_jes_Do       	);    
-  outputBjetTree->Branch("bcTagMWeight_jer_Up"	, &_bcTagMWeight_jer_Up       	);    
-  outputBjetTree->Branch("bcTagMWeight_jer_Do"	, &_bcTagMWeight_jer_Do       	);    
-     
-  outputBjetTree->Branch("bcTagMWeight_bfrag_Up"	, &_bcTagMWeight_bfrag_Up      	);    
-  outputBjetTree->Branch("bcTagMWeight_bfrag_Do"	, &_bcTagMWeight_bfrag_Do      	);    
-  outputBjetTree->Branch("bcTagTWeight_stat_Up"	, &_bcTagTWeight_stat_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_stat_Do"	, &_bcTagTWeight_stat_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_pu_Up"	, &_bcTagTWeight_pu_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_pu_Do"	, &_bcTagTWeight_pu_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_eleid_Up"	, &_bcTagTWeight_eleid_Up      	);    
-  outputBjetTree->Branch("bcTagTWeight_eleid_Do"	, &_bcTagTWeight_eleid_Do      	);    
-  outputBjetTree->Branch("bcTagTWeight_muid_Up"	, &_bcTagTWeight_muid_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_muid_Do"	, &_bcTagTWeight_muid_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_lhemuf_Up"	, &_bcTagTWeight_lhemuf_Up     	);    
-  outputBjetTree->Branch("bcTagTWeight_lhemuf_Do"	, &_bcTagTWeight_lhemuf_Do     	);    
-  outputBjetTree->Branch("bcTagTWeight_lhemur_Up"	, &_bcTagTWeight_lhemur_Up     	);    
-  outputBjetTree->Branch("bcTagTWeight_lhemur_Do"	, &_bcTagTWeight_lhemur_Do     	);    
-  outputBjetTree->Branch("bcTagTWeight_isr_Up"	, &_bcTagTWeight_isr_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_isr_Do"	, &_bcTagTWeight_isr_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_fsr_Up"	, &_bcTagTWeight_fsr_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_fsr_Do"	, &_bcTagTWeight_fsr_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_xdy_Up"	, &_bcTagTWeight_xdy_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_xdy_Do"	, &_bcTagTWeight_xdy_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_xst_Up"	, &_bcTagTWeight_xst_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_xst_Do"	, &_bcTagTWeight_xst_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_xwj_Up"	, &_bcTagTWeight_xwj_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_xwj_Do"	, &_bcTagTWeight_xwj_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_xtt_Up"	, &_bcTagTWeight_xtt_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_xtt_Do"	, &_bcTagTWeight_xtt_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_jes_Up"	, &_bcTagTWeight_jes_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_jes_Do"	, &_bcTagTWeight_jes_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_jer_Up"	, &_bcTagTWeight_jer_Up       	);    
-  outputBjetTree->Branch("bcTagTWeight_jer_Do"	, &_bcTagTWeight_jer_Do       	);    
-  outputBjetTree->Branch("bcTagTWeight_bfrag_Up"	, &_bcTagTWeight_bfrag_Up      	);    
-  outputBjetTree->Branch("bcTagTWeight_bfrag_Do"	, &_bcTagTWeight_bfrag_Do      	);         
 
   outputBjetTree->Branch("lepPt"		, &_lepPt			);
   outputBjetTree->Branch("lepEta"		, &_lepEta			);
