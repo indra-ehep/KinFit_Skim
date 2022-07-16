@@ -3393,7 +3393,7 @@ Bool_t SkimAna::GetBCTagWt(void)
     wt_after =  wt_before * _bcTagWeight;
     
     TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList(); //Iso dir 
-    ((TH1D *) list->FindObject(Form("_bctagLWeight_2b")))->Fill(_bcTagWeight);
+    ((TH1D *) list->FindObject(Form("_bctagWeight_2b")))->Fill(_bcTagWeight);
     ((TH1D *) list->FindObject(Form("_wt_before")))->Fill(selector->Jets.size(), wt_before);
     ((TH1D *) list->FindObject(Form("_wt_after")))->Fill(selector->Jets.size(), wt_after);
     
@@ -4803,9 +4803,9 @@ bool SkimAna::FillBTagObs(){
     
     TString systname = fSystList[isyst];
     
-    // double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight *_bcTagMWeight ;
+    // double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight *_bcTagWeight ;
     // double combined_muwt_nobtagwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight*_PUJetIDWeight ;
-    // double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bcTagMWeight ;
+    // double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight*_bcTagWeight ;
     // double combined_elewt_nobtagwt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight*_PUJetIDWeight;
     
     if(systType == kBase){

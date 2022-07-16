@@ -3639,9 +3639,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      metExtResolution(neutrino.Et(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et());
-	      modpt = ((neutrino.Pt()-ptOffSet)>0.0) ? (neutrino.Pt()-ptOffSet) : 0.0;
-	      neutrino.SetPtEtaPhiM(modpt, 0.0, neutrino.Phi(), 0.0);
+	      // ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et());
+	      // modpt = ((neutrino.Pt()-ptOffSet)>0.0) ? (neutrino.Pt()-ptOffSet) : 0.0;
+	      // neutrino.SetPtEtaPhiM(modpt, 0.0, neutrino.Phi(), 0.0);
 	    }else
 	      metResolution(neutrino.Et(), resEt, resEta, resPhi);
 
@@ -3670,10 +3670,10 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
-	      modpt = ((bjlep.Pt()-ptOffSet)>0.0) ? (bjlep.Pt()-ptOffSet) : 0.0;
-	      //Info("KinFit::Fit", "Before TFinFitter::Fit Bjlep Pt %lf, offset : %lf, modpt : %lf",bjlep.Pt(),ptOffSet,modpt);
-	      bjlep.SetPtEtaPhiM(modpt, bjlep.Eta(), bjlep.Phi(), bjlep.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
+	      // modpt = ((bjlep.Pt()-ptOffSet)>0.0) ? (bjlep.Pt()-ptOffSet) : 0.0;
+	      // //Info("KinFit::Fit", "Before TFinFitter::Fit Bjlep Pt %lf, offset : %lf, modpt : %lf",bjlep.Pt(),ptOffSet,modpt);
+	      // bjlep.SetPtEtaPhiM(modpt, bjlep.Eta(), bjlep.Phi(), bjlep.M());
 	    }else
 	      bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
@@ -3690,9 +3690,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
-	      modpt = ((bjhad.Pt()-ptOffSet)>0.0) ? (bjhad.Pt()-ptOffSet) : 0.0;
-	      bjhad.SetPtEtaPhiM(modpt, bjhad.Eta(), bjhad.Phi(), bjhad.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
+	      // modpt = ((bjhad.Pt()-ptOffSet)>0.0) ? (bjhad.Pt()-ptOffSet) : 0.0;
+	      // bjhad.SetPtEtaPhiM(modpt, bjhad.Eta(), bjhad.Phi(), bjhad.M());
 	    }else
 	      bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
@@ -3708,9 +3708,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      udscExtResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
-	      modpt = ((cjhad.Pt()-ptOffSet)>0.0) ? (cjhad.Pt()-ptOffSet) : 0.0;
-	      cjhad.SetPtEtaPhiM(modpt, cjhad.Eta(), cjhad.Phi(), cjhad.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
+	      // modpt = ((cjhad.Pt()-ptOffSet)>0.0) ? (cjhad.Pt()-ptOffSet) : 0.0;
+	      // cjhad.SetPtEtaPhiM(modpt, cjhad.Eta(), cjhad.Phi(), cjhad.M());
 	    }else
 	      udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
@@ -3726,9 +3726,9 @@ bool KinFit::Fit(){
 	      
 	    if(useExtReso){
 	      udscExtResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
-	      modpt = ((sjhad.Pt()-ptOffSet)>0.0) ? (sjhad.Pt()-ptOffSet) : 0.0;
-	      sjhad.SetPtEtaPhiM(modpt, sjhad.Eta(), sjhad.Phi(), sjhad.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
+	      // modpt = ((sjhad.Pt()-ptOffSet)>0.0) ? (sjhad.Pt()-ptOffSet) : 0.0;
+	      // sjhad.SetPtEtaPhiM(modpt, sjhad.Eta(), sjhad.Phi(), sjhad.M());
 	    }else
 	      udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);
