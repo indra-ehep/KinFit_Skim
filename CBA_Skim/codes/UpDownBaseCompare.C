@@ -27,7 +27,7 @@
 
 using namespace std;
 
-int UpDownBaseCompare(int isysup = 2){
+int UpDownBaseCompare(int isysup = 28){
 
   int PlotRatio(TH1D *h1, TH1D *h2, const char *cname);
 
@@ -45,7 +45,8 @@ int UpDownBaseCompare(int isysup = 2){
                              "pdfup", "pdfdown", "q2fup", "q2down",
 			     "isrup", "isrdown", "fsrup", "fsrdown",
 			     "cp5up", "cp5down", "hdampup", "hdampdown",
-                             "mtopup", "mtopdown"};
+                             "mtopup", "mtopdown", "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+			     "bctag3up", "bctag3down", "pujetidup", "pujetiddown"};
   
   const char *systname_2016[] = {"nominal", 
 				 "pileup up", "pileup down", "muon efficiency up", "muon efficiency down", 
@@ -55,24 +56,31 @@ int UpDownBaseCompare(int isysup = 2){
 				 "PDF up", "PDF down", "renormalization up", "renormalization down",
 				 "ISR up", "ISR down", "FSR up", "FSR down",
 				 "CP5tune up", "CP5tune down", "hdamp up", "hdamp down",
-				 "mtop1695 up", "mtop1755 down"};
+				 "mtop1695 up", "mtop1755 down", "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+				 "bctag3up", "bctag3down", "pujetidup", "pujetiddown"};
 
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v28_Syst/CBA_Skim_Syst" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagM" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagM" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagDD" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagnPUJetID" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_BJetSFTests" ;
   
-  int isample = 11; isample--;
+  //int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
+  int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
   int ibase = 1; ibase--;
   int isysdown = isysup ;
   //int isysup = 2; 
   isysup--;
-
   
-  const char *histname = "_kb_mjj_ele";
+  //const char *histname = "_kb_mjj_ele";
+  const char *histname = "_ct_ExcM_mjj_mu";
+  //const char *histname = "_ct_IncT_mjj_mu";
+  //const char *histname = "_ct_ExcL_mjj_ele";
   const char *histnameup = (isysup<=16) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysup]) ;
   const char *histnamedown = (isysdown<=17) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysdown]) ;
 
-  cout << "isample : "<<isample << ", ibase : "<<ibase << ", isysup : "<< isysup << ", isysdown : " << isysdown << endl;
+  cout << "sample : "<<samples_2016[isample] << ", hisname : " << histname << ", ibase : "<<ibase << ", sysup : "<< syst_2016[isysup] << ", sysdown : " << syst_2016[isysdown] << endl;
   
   TFile *finBase = TFile::Open(Form("%s/2016/all_%s.root",inputdir,samples_2016[isample])); 
   TFile *finSysUp = finBase; 
@@ -104,13 +112,14 @@ int UpDownBaseCompare(int isysup = 2){
   TLegend *leg = new TLegend(0.6729323,0.803838,0.9974937,0.9957356);
   leg->SetFillColor(10);
   //leg->SetHeader("m_{H^{+}} = 120 GeV, #mu + jets (2016)");
-  leg->SetHeader("m_{H^{+}} = 120 GeV, #it{e} + jets (2016)");
+  //leg->SetHeader("m_{H^{+}} = 120 GeV, #it{e} + jets (2016)");
+  leg->SetHeader(Form("%s : %s (2016)",samples_2016[isample],histname));
   leg->AddEntry(hSysUp, Form("%s",systname_2016[isysup]) ,"lfp");
   leg->AddEntry(hBase, Form("%s",systname_2016[ibase]) ,"lfp");
   leg->AddEntry(hSysDown, Form("%s",systname_2016[isysdown]) ,"lfp");
 
   
-  hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(80.0)));
+  hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(120.0)));
   hSysUp->SetTitle("");
   hSysUp->GetXaxis()->SetRangeUser(0.,170.);
   PlotRatio(hSysUp, hBase, "c1");
@@ -118,7 +127,7 @@ int UpDownBaseCompare(int isysup = 2){
   leg->Draw();
   
   TCanvas *c1 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
-  c1->SaveAs(Form("ele_%s_sys.pdf",syst_2016[isysup]));
+  c1->SaveAs(Form("mu_%s_sys.pdf",syst_2016[isysup]));
   c1->SaveAs("output.pdf");
   
   return true;

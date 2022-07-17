@@ -54,29 +54,29 @@ int Chi2Tests()
   Double_t  chi2;
   Int_t  ndf;
   
-  TFile *fin	= TFile::Open("/home/indra/temp/HminusM120_tree_base_1of1.root");
+  // TFile *fin	= TFile::Open("/home/indra/temp/HminusM120_tree_base_1of1.root");
   
-  cout<<"filename : " << fin->GetName() << endl;
-  TTree *tr	= (TTree*)fin->Get("Kinfit_Reco");
+  // cout<<"filename : " << fin->GetName() << endl;
+  // TTree *tr	= (TTree*)fin->Get("Kinfit_Reco");
   
-  tr->SetBranchAddress("chi2"		, &chi2);
-  tr->SetBranchAddress("ndf"		, &ndf);
+  // tr->SetBranchAddress("chi2"		, &chi2);
+  // tr->SetBranchAddress("ndf"		, &ndf);
 
-  cout << "Total Entries : " << tr->GetEntries() << endl;
-  for (Long64_t ievent = 0 ; ievent < tr->GetEntries() ; ievent++ ) {    
-  //for (Long64_t ievent = 0 ; ievent < 10 ; ievent++ ) {    
+  // cout << "Total Entries : " << tr->GetEntries() << endl;
+  // for (Long64_t ievent = 0 ; ievent < tr->GetEntries() ; ievent++ ) {    
+  // //for (Long64_t ievent = 0 ; ievent < 10 ; ievent++ ) {    
     
-    tr->GetEntry(ievent) ;
-    if(ievent%1000000==0)
-      cout<<"iEvent : " << ievent << ", chi2 : "<<chi2<<endl;
+  //   tr->GetEntry(ievent) ;
+  //   if(ievent%1000000==0)
+  //     cout<<"iEvent : " << ievent << ", chi2 : "<<chi2<<endl;
     
-    hchi2->Fill(chi2);
-    hchi2ndf->Fill(chi2*double(ndf));
-    //cout <<"chi2 : " << chi2 << ", chi2/ndf : " << chi2/double(ndf) << endl;
+  //   hchi2->Fill(chi2);
+  //   hchi2ndf->Fill(chi2*double(ndf));
+  //   //cout <<"chi2 : " << chi2 << ", chi2/ndf : " << chi2/double(ndf) << endl;
     
-  }//event loop
-  fin->Close();
-  delete fin;
+  // }//event loop
+  // fin->Close();
+  // delete fin;
   
   for (Long64_t ievent = 0 ; ievent < 10000000 ; ievent++ ) {    
     
@@ -101,7 +101,7 @@ int Chi2Tests()
   //TF1 *fn = new TF1("fn","gaus",60.,100.);
   TCanvas *c1 = new TCanvas("c1","c1");
   hchi2->Draw("hist");
-  hchi2ndf->Draw("hist sames");
+  //hchi2ndf->Draw("hist sames");
   
   hchi1df->SetLineColor(kRed);
   hchi2df->SetLineColor(kBlue);

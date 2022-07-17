@@ -940,12 +940,13 @@ int BTagSF()
 {
   std::cout << "Hello there " << std::endl;
   BTagCalibration caliba;
-  caliba = BTagCalibration( "deepjeta", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv") ) ;
+  //caliba = BTagCalibration( "deepjeta", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/SF/2016/DeepJet_preVFP_formatted.csv") ) ;
+  caliba = BTagCalibration( "deepjeta", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/SF/2016/DeepJet_postVFP_formatted.csv") ) ;
 
   BTagCalibration calibb;
-  //calibb = BTagCalibration( "deepcsvb", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2016/DeepCSV_preVFP_formatted.csv") ) ;
-  //calibb = BTagCalibration( "deepjet", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2017/DeepJet_formatted.csv") ) ;
-  calibb = BTagCalibration( "deepjetb", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/2016/DeepJet_preVFP_formatted.csv") ) ;
+  //calibb = BTagCalibration( "deepcsvb", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/SF/2016/DeepCSV_preVFP_formatted.csv") ) ;
+  //calibb = BTagCalibration( "deepjet", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/SF/2017/DeepJet_formatted.csv") ) ;
+  calibb = BTagCalibration( "deepjetb", Form("../Git_KinFit_Skim/KinFit_Skim/CBA_Skim/weightUL/BtagSF/SF/2016/ctagger_wp_deepJet_106XULpostVFP_v1_formatted.csv") ) ;
 
   BTagCalibrationReader readera ;
   readera = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
@@ -954,9 +955,13 @@ int BTagSF()
   readera.load(caliba, BTagEntry::FLAV_UDSG,"incl");          
 
   BTagCalibrationReader readerb ;
-  readerb = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
-  readerb.load(calibb, BTagEntry::FLAV_B,"comb");          
-  readerb.load(calibb, BTagEntry::FLAV_C,"comb");          
+  //readerb = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up", "down"});      
+  //readerb = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});      
+  readerb = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up", "down"});      
+  // readerb.load(calibb, BTagEntry::FLAV_B,"comb");          
+  // readerb.load(calibb, BTagEntry::FLAV_C,"comb");          
+  readerb.load(calibb, BTagEntry::FLAV_B,"wcharm");          
+  readerb.load(calibb, BTagEntry::FLAV_C,"wcharm");          
   readerb.load(calibb, BTagEntry::FLAV_UDSG,"incl");          
   
   //std::cout << "Formula : " << readera.formula("up", BTagEntry::FLAV_B) << endl ;  
@@ -974,7 +979,7 @@ int BTagSF()
   TGraph *gr11 = new TGraph(npoints);
   TGraph *gr12 = new TGraph(npoints);
   TGraph *gr13 = new TGraph(npoints);
-  double eta = 2.0;
+  double eta = 1.5;
 
   for(int ip=0;ip<npoints;ip++){
     pt = ptMin + ip*step;
@@ -987,12 +992,20 @@ int BTagSF()
     gr2->SetPoint(ip+1, pt , SF_up);
     gr3->SetPoint(ip+1, pt , SF_down);
 
-    SF = readerb.eval_auto_bounds("central", BTagEntry::FLAV_B, eta, pt);
-    SF_up = readerb.eval_auto_bounds("central", BTagEntry::FLAV_C, eta, pt);
-    SF_down = readerb.eval_auto_bounds("central", BTagEntry::FLAV_UDSG, eta, pt);
+    // SF = readerb.eval_auto_bounds("central", BTagEntry::FLAV_B, eta, pt);
+    // SF_up = readerb.eval_auto_bounds("central", BTagEntry::FLAV_C, eta, pt);
+    // SF_down = readerb.eval_auto_bounds("central", BTagEntry::FLAV_UDSG, eta, pt);
+    // gr11->SetPoint(ip+1, pt , SF);
+    // gr12->SetPoint(ip+1, pt , SF_up);
+    // gr13->SetPoint(ip+1, pt , SF_down);
+    
+    SF = readerb.eval_auto_bounds("central", BTagEntry::FLAV_C, eta, pt);
+    SF_up = readerb.eval_auto_bounds("up", BTagEntry::FLAV_C, eta, pt);
+    SF_down = readerb.eval_auto_bounds("down", BTagEntry::FLAV_C, eta, pt);
     gr11->SetPoint(ip+1, pt , SF);
     gr12->SetPoint(ip+1, pt , SF_up);
     gr13->SetPoint(ip+1, pt , SF_down);
+
     //cout << "pt " << pt << ", SF : " << SF << endl;
   }
   
@@ -1085,12 +1098,16 @@ int BTagSF()
   // leg->AddEntry(gr12, "deepjet 2017 : SF cjet eval_auto_bounds(central)" ,"lfp");
   // leg->AddEntry(gr13, "deepjet 2017 : SF udsg eval_auto_bounds(central)" ,"lfp");
 
-  leg->AddEntry(gr1, Form("UL Deepjet btag (mujets for comb,M) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta) ,"lfp");
-  leg->AddEntry(gr2, Form("UL Deepjet btag (comb,M) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr3, Form("UL Deepjet btag (incl,M) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr11, Form("UL Deepjet cTag (comb instead of TnP,L) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr12, Form("UL Deepjet cTag (comp,L) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
-  leg->AddEntry(gr13, Form("UL Deepjet cTag (incl,L) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  // leg->AddEntry(gr1, Form("UL Deepjet btag (mujets for comb,M) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta) ,"lfp");
+  // leg->AddEntry(gr2, Form("UL Deepjet btag (comb,M) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  // leg->AddEntry(gr3, Form("UL Deepjet btag (incl,M) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  // leg->AddEntry(gr11, Form("UL Deepjet cTag (wcharm instead of TnP,L) : SF bjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  // leg->AddEntry(gr12, Form("UL Deepjet cTag (wcharm instead of comb,L) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  // leg->AddEntry(gr13, Form("UL Deepjet cTag (incl,L) : SF udsg eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+
+  leg->AddEntry(gr11, Form("UL Deepjet cTag (nom,T) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  leg->AddEntry(gr12, Form("UL Deepjet cTag (up,T) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
+  leg->AddEntry(gr13, Form("UL Deepjet cTag (down,T) : SF cjet eval_auto_bounds(central,#eta=%3.2f)",eta),"lfp");
 
   fn1->SetMinimum(0.);
   fn1->SetMaximum(2.);
@@ -1104,10 +1121,12 @@ int BTagSF()
   // fn12->Draw("sames");
   // fn13->Draw("sames");
 
-  gr1->Draw("ALP ");
-  gr2->Draw("LP sames");
-  gr3->Draw("LP sames");
-  gr11->Draw("LP sames");
+  // gr1->Draw("ALP ");
+  // gr2->Draw("LP sames");
+  // gr3->Draw("LP sames");
+
+  gr11->Draw("ALP");
+  //gr11->Draw("LP sames");
   gr12->Draw("LP sames");
   gr13->Draw("LP sames");
 

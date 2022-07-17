@@ -2912,6 +2912,15 @@ void SkimAna::Clean(){
   _FSRweight_Up = 1.0;
   _FSRweight_Do = 1.0;
   
+  _found_GJ1_lhe = false;
+  _found_GJ2_lhe = false;
+  _found_cjhad_lhe = false;
+  _found_sjhad_lhe = false;
+  
+  _lhe1Pt = 0.0;_lhe1Eta = 0.0;_lhe1Phi = 0.0;_lhe1Energy = 0.0;
+  _lhe2Pt = 0.0;_lhe2Eta = 0.0;_lhe2Phi = 0.0;_lhe2Energy = 0.0;
+  _lhe1PDG = -4000; _lhe2PDG = -4000;
+  _chadPDG = -4000; _shadPDG = -4000;
 }    
 
 // //_____________________________________________________________________________
@@ -3706,6 +3715,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(systType == kBase) FillKinFitControlHists();
   if(IsDebug) Info("Process","Completed KinFit processing");
   if(!isKFValid) return kTRUE;
+  if(_kFType == 13) FillMCInfo();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -3818,6 +3828,166 @@ bool SkimAna::SelectTTbarChannel(){
     }
     
     return true;
+}
+//_____________________________________________________________________________
+bool SkimAna::FillMCInfo()
+{
+  int lhePDG[2];
+  int nPLHE = 0; lhePDG[0] = -1; lhePDG[1] = -1;
+  for (unsigned int imc = event->nLHEPart_-4 ; imc < event->nLHEPart_ ; imc++ ){      
+    if(abs(event->LHEPart_pdgId_[imc])>=1 and abs(event->LHEPart_pdgId_[imc])<=4){
+      pLHE[nPLHE].SetPtEtaPhiM(event->LHEPart_pt_[imc], event->LHEPart_eta_[imc] , event->LHEPart_phi_[imc], event->LHEPart_mass_[imc]);
+      lhePDG[nPLHE] = event->LHEPart_pdgId_[imc];
+      nPLHE++;
+    }
+  }// mc particle loop
+
+  // delRtoID0.clear();
+  // delRtoID1.clear();
+  // for (unsigned int imc = 0 ; imc < event->nGenPart_ ; imc++ ){      
+  //   pTemp.SetPtEtaPhiM(event->GenPart_pt_[imc], event->GenPart_eta_[imc] , event->GenPart_phi_[imc], event->GenPart_mass_[imc]);
+  //   if(abs(event->GenPart_pdgId_[imc])==abs(lhePDG[0])){
+  //     delRtoID0.insert( pair<double,int> (pTemp.DeltaR(pLHE[0]), imc) );
+  //     //cout <<"\tFound match 0 for " << imc << endl;
+  //   }
+  //   if(abs(event->GenPart_pdgId_[imc])==abs(lhePDG[1])){
+  //     delRtoID1.insert( pair<double,int> (pTemp.DeltaR(pLHE[1]), imc) );
+  //     //cout <<"\tFound match 1 for " << imc << endl;
+  //   }
+  // }
+  
+  // DeltaRCut = 0.1;
+  // hasGPmatchLHE = false;
+  // if(delRtoID0.size()>0 and delRtoID1.size()>0){
+  //   itr_ptr0 = delRtoID0.begin();
+  //   itr_ptr1 = delRtoID1.begin();
+  //   if(itr_ptr0->second != itr_ptr1->second){
+  //     if(itr_ptr0->first < DeltaRCut and itr_ptr1->first < DeltaRCut ){
+  // 	int imc0 = itr_ptr0->second;
+  // 	int imc1 = itr_ptr1->second;
+  // 	pGP[0].SetPtEtaPhiM(event->GenPart_pt_[imc0], event->GenPart_eta_[imc0] , event->GenPart_phi_[imc0], event->GenPart_mass_[imc0]);
+  // 	pGP[1].SetPtEtaPhiM(event->GenPart_pt_[imc1], event->GenPart_eta_[imc1] , event->GenPart_phi_[imc1], event->GenPart_mass_[imc1]);
+  // 	hasGPmatchLHE = true;
+  //     }//DeltaRcut
+  //   }//confirm that both of the imc indices are not same
+  // }
+  
+
+  delRtoID0.clear();
+  delRtoID1.clear();
+  for (unsigned int imc = 0 ; imc < event->nGenJet_ ; imc++ ){      
+      
+    //if(event->GenJet_pt_[imc]<25.0 or abs(event->GenJet_eta_[imc])<2.4) continue;
+    
+    pTemp.SetPtEtaPhiM(event->GenJet_pt_[imc], event->GenJet_eta_[imc] , event->GenJet_phi_[imc], event->GenJet_mass_[imc]);
+    if(abs(event->GenJet_partonFlavour_[imc])==abs(lhePDG[0]) or event->GenJet_partonFlavour_[imc]==0 or event->GenJet_partonFlavour_[imc]==21){
+      delRtoID0.insert( pair<double,int> (pTemp.DeltaR(pLHE[0]), imc) );
+      //cout <<"\tFound match 0 for " << imc << endl;
+    }
+    if(abs(event->GenJet_partonFlavour_[imc])==abs(lhePDG[1]) or event->GenJet_partonFlavour_[imc]==0 or event->GenJet_partonFlavour_[imc]==21){
+      delRtoID1.insert( pair<double,int> (pTemp.DeltaR(pLHE[1]), imc) );
+      //cout <<"\tFound match 1 for " << imc << endl;
+    }
+  }
+  
+  DeltaRCut = 0.4;
+  hasGJmatchLHE = false;
+  genJetMatch[0] = -100; 
+  if(delRtoID0.size()>0){
+    itr_ptr0 = delRtoID0.begin();
+    if(itr_ptr0->first < DeltaRCut){
+      int imc0 = itr_ptr0->second;
+      pGJ[0].SetPtEtaPhiM(event->GenJet_pt_[imc0], event->GenJet_eta_[imc0] , event->GenJet_phi_[imc0], event->GenJet_mass_[imc0]);
+      genJetMatch[0] = imc0;
+      _found_GJ1_lhe = true;
+    }//DeltaRcut
+  }
+  genJetMatch[1] = -100;
+  if(delRtoID1.size()>0){
+    itr_ptr1 = delRtoID1.begin();
+    if(itr_ptr1->first < DeltaRCut ){
+      int imc1 = itr_ptr1->second;
+      pGJ[1].SetPtEtaPhiM(event->GenJet_pt_[imc1], event->GenJet_eta_[imc1] , event->GenJet_phi_[imc1], event->GenJet_mass_[imc1]);
+      genJetMatch[1] = imc1;
+      _found_GJ2_lhe = true;
+    }//DeltaRcut
+  }
+  
+  if(genJetMatch[0]!=-100 and genJetMatch[1]!=-100) hasGJmatchLHE = true;
+  
+  // hasRJmatchGJ = false;
+  // bool hasRJmatchGJ0 = false, hasRJmatchGJ1 = false;
+  // recoJetMatch[0] = -100; recoJetMatch[1] = -100;
+  // if(hasGJmatchLHE){
+  //   for (unsigned int imc = 0 ; imc < event->nJet_ ; imc++ ){      
+	
+  //     //if(jetPt_[imc]<25.0 or abs(jetEta_[imc])<2.4) continue;
+
+  //     if(genJetMatch[0]==event->jetGenJetIdx_[imc]){
+  // 	pRJ[0].SetPtEtaPhiM(event->jetPt_[imc], event->jetEta_[imc] , event->jetPhi_[imc], event->jetMass_[imc]);
+  // 	hasRJmatchGJ0 = true;
+  // 	recoJetMatch[0] = imc;
+  //     }
+  //     if(genJetMatch[1]==event->jetGenJetIdx_[imc]){
+  // 	//pRJ[1].SetPtEtaPhiM(event->jetPt_[imc]*(1-event->jetRawFactor_[imc]), event->jetEta_[imc] , event->jetPhi_[imc], event->jetMass_[imc]*(1-event->jetRawFactor_[imc]));
+  // 	pRJ[1].SetPtEtaPhiM(event->jetPt_[imc], event->jetEta_[imc] , event->jetPhi_[imc], event->jetMass_[imc]);
+  // 	hasRJmatchGJ1 = true;
+  // 	recoJetMatch[1] = imc;
+  //     }
+  //   }
+  //   if(hasRJmatchGJ0 and hasRJmatchGJ1) hasRJmatchGJ = true;
+  // }
+
+  for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+    if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
+    int jetInd = selector->Jets.at(ijet);
+    // jetPt = event->jetPt_[jetInd];
+    // jetEta = fabs(event->jetEta_[jetInd]);
+
+    if(genJetMatch[0]==event->jetGenJetIdx_[jetInd]){
+      if(ijet == _cjhad_id) _found_cjhad_lhe = true;
+      if(ijet == _sjhad_id) _found_sjhad_lhe = true;
+      _lhe1Pt = pLHE[0].Pt();
+      _lhe1Eta = pLHE[0].Eta();
+      _lhe1Phi = pLHE[0].Phi();
+      _lhe1Energy = pLHE[0].E();
+      _lhe1PDG = lhePDG[0];
+      if(ijet == _cjhad_id) _chadPDG = _lhe1PDG;
+      if(ijet == _sjhad_id) _shadPDG = _lhe1PDG;
+      
+      // if(ijet == _cjhad_id){
+      // 	printf("cjhad : %5.2f, %5.2f, %5.2f, %5.2f\n",_jetChadPt,_jetChadEta,_jetChadPhi,_jetChadEnergy);
+      // 	printf("lhejet1 : %5.2f, %5.2f, %5.2f, %5.2f\n",_lhe1Pt,_lhe1Eta,_lhe1Phi,_lhe1Energy);
+      // }
+      // if(ijet == _sjhad_id){
+      // 	printf("sjhad : %5.2f, %5.2f, %5.2f, %5.2f\n",_jetShadPt,_jetShadEta,_jetShadPhi,_jetShadEnergy);
+      // 	printf("lhejet1 : %5.2f, %5.2f, %5.2f, %5.2f\n",_lhe1Pt,_lhe1Eta,_lhe1Phi,_lhe1Energy);
+      // }
+    }
+    
+    if(genJetMatch[1]==event->jetGenJetIdx_[jetInd]){
+      if(ijet == _cjhad_id) _found_cjhad_lhe = true;
+      if(ijet == _sjhad_id) _found_sjhad_lhe = true;
+      _lhe2Pt = pLHE[1].Pt();
+      _lhe2Eta = pLHE[1].Eta();
+      _lhe2Phi = pLHE[1].Phi();
+      _lhe2Energy = pLHE[1].E();
+      _lhe2PDG = lhePDG[1];
+      if(ijet == _cjhad_id) _chadPDG = _lhe2PDG;
+      if(ijet == _sjhad_id) _shadPDG = _lhe2PDG;
+      // if(ijet == _cjhad_id){
+      // 	printf("cjhad : %5.2f, %5.2f, %5.2f, %5.2f\n",_jetChadPt,_jetChadEta,_jetChadPhi,_jetChadEnergy);
+      // 	printf("lhejet2 : %5.2f, %5.2f, %5.2f, %5.2f\n",_lhe2Pt,_lhe2Eta,_lhe2Phi,_lhe2Energy);
+      // }
+      // if(ijet == _sjhad_id){
+      // 	printf("sjhad : %5.2f, %5.2f, %5.2f, %5.2f\n",_jetShadPt,_jetShadEta,_jetShadPhi,_jetShadEnergy);
+      // 	printf("lhejet2 : %5.2f, %5.2f, %5.2f, %5.2f\n",_lhe2Pt,_lhe2Eta,_lhe2Phi,_lhe2Energy);
+      // }
+    }
+    
+  }//jet loop
+  
+  return true;
 }
 
 //_____________________________________________________________________________
@@ -7149,7 +7319,7 @@ bool SkimAna::ExecSerial(const char* infile)
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 50 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }

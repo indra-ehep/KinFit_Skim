@@ -42,7 +42,7 @@ int KinTreeMjj()
   TH1F *mjj_cut1 = new TH1F("mjj_cut1","mjj (#chi^2 < 50.)", 250, 0., 250.);
   TH1F *mjj_cut2 = new TH1F("mjj_cut2","mjj (#chi^2 < 20.)", 250, 0., 250.);
   TH1F *mjj_cut3 = new TH1F("mjj_cut3","mjj (#chi^2 < 8.)", 250, 0., 250.);
-
+  
   Double_t  chi2;
   Float_t   jetChadPt;
   Float_t   jetChadEta;

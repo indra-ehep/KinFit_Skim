@@ -899,6 +899,27 @@ class SkimAna : public TSelector {
    /* double _bcTagWeight_xwjc_Up = 1.0, _bcTagWeight_xwjc_Do = 1.0;  */
    /* double _bcTagWeight_jes_Up = 1.0, _bcTagWeight_jes_Do = 1.0, _bcTagWeight_jer_Up = 1.0, _bcTagWeight_jer_Do = 1.0;  */
 
+   /////////////////////// MC section //////////////////////////
+   ////Histos
+   TLorentzVector pLHE[2], pGP[2], pGJ[2], pRJ[2], pRJAna[2], pTemp;
+   map<double,int> delRtoID0;
+   map<double,int> delRtoID1;
+   map<double, int>::iterator itr_ptr0, itr_ptr1;
+   int genJetMatch[2];
+   float DeltaRCut = 0.1;
+   bool hasGPmatchLHE = false;
+   bool hasGJmatchLHE = false;
+   bool hasRJmatchGJ = false;
+   int recoJetMatch[2];
+   bool _found_GJ1_lhe = false;
+   bool _found_GJ2_lhe = false;
+   bool _found_cjhad_lhe = false;
+   bool _found_sjhad_lhe = false;
+   float _lhe1Pt,_lhe1Eta,_lhe1Phi,_lhe1Energy;
+   float _lhe2Pt,_lhe2Eta,_lhe2Phi,_lhe2Energy;
+   int  _lhe1PDG, _lhe2PDG;
+   int  _chadPDG, _shadPDG;
+   /////////////////////////////////////////////////////////////
 
    
    //Lepton SF
@@ -1090,7 +1111,8 @@ class SkimAna : public TSelector {
    bool    FillCTagControlHists();
 
    bool    SelectTTbarChannel();
-
+   bool    FillMCInfo();
+  
    bool    ExecSerial(const char* infile);
    
    
@@ -1991,10 +2013,31 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("cjhadCvsLdisc"		, &_cjhadCvsLdisc      		);
     outputTree->Branch("sjhadCvsLdisc"		, &_sjhadCvsLdisc      		);
     
-    outputTree->Branch("bjlepCvsBdisc"		, &_bjlepCvsBdisc              	);
-    outputTree->Branch("bjhadCvsBdisc"		, &_bjhadCvsBdisc      		);
-    outputTree->Branch("cjhadCvsBdisc"		, &_cjhadCvsBdisc      		);
-    outputTree->Branch("sjhadCvsBdisc"		, &_sjhadCvsBdisc      		);
+    outputTree->Branch("bjlepCvsBdisc"		, &_bjlepCvsBdisc		);
+    outputTree->Branch("bjhadCvsBdisc"		, &_bjhadCvsBdisc		);
+    outputTree->Branch("cjhadCvsBdisc"		, &_cjhadCvsBdisc		);
+    outputTree->Branch("sjhadCvsBdisc"		, &_sjhadCvsBdisc		);
+
+    outputTree->Branch("kFType"	        	, &_kFType      		);
+    outputTree->Branch("found_GJ1_lhe"		, &_found_GJ1_lhe		);
+    outputTree->Branch("found_GJ2_lhe"		, &_found_GJ2_lhe		);
+    outputTree->Branch("found_cjhad_lhe"	, &_found_cjhad_lhe		);
+    outputTree->Branch("found_sjhad_lhe"	, &_found_sjhad_lhe		);
+
+    outputTree->Branch("lhe1Pt"			, &_lhe1Pt			);
+    outputTree->Branch("lhe1Eta"		, &_lhe1Eta			);
+    outputTree->Branch("lhe1Phi"		, &_lhe1Phi			);
+    outputTree->Branch("lhe1Energy"		, &_lhe1Energy			);
+
+    outputTree->Branch("lhe2Pt"			, &_lhe2Pt			);
+    outputTree->Branch("lhe2Eta"		, &_lhe2Eta			);
+    outputTree->Branch("lhe2Phi"		, &_lhe2Phi			);
+    outputTree->Branch("lhe2Energy"		, &_lhe2Energy			);
+    
+    outputTree->Branch("lhe1PDG"		, &_lhe1PDG			);
+    outputTree->Branch("lhe2PDG"		, &_lhe2PDG			);
+    outputTree->Branch("chadPDG"		, &_chadPDG			);
+    outputTree->Branch("shadPDG"		, &_shadPDG			);
 
 }
 

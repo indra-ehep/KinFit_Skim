@@ -6,7 +6,7 @@
 
 // First create the input file as
 // for i in `dasgoclient --query='file dataset=/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16NanoAODv6-PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v2/NANOAODSIM status=*'` ; do echo root://cms-xrd-global.cern.ch/$i >> input/files.txt ; done
-// Then run on the input/files.txt
+// Then run on the input/files.txt to get the CS as used in MC
 
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
@@ -42,7 +42,7 @@ using namespace std;
 #endif
 
 
-int MCChannelStudy(int index = 1, string inputfile = "input/files_ttbar_dilep.txt")
+int MCChannelStudy(int index = 1, string inputfile = "input/files_ttbar_inclusive.txt")
 {
   TChain *chain = new TChain("Events");
 

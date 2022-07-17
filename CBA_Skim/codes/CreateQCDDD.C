@@ -30,7 +30,7 @@ int CreateQCDDD()
   
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
   
-  int year = 2017;
+  int year = 2016;
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
@@ -51,32 +51,80 @@ int CreateQCDDD()
   //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
   //const char* dir = "grid_v39_Syst/CBA_CTagM";
   //const char* dir = "grid_v39_Syst/CBA_GeneratorWt";
-  const char* dir = "grid_v39_Syst/CBA_CTagDD";
+  //const char* dir = "grid_v39_Syst/CBA_CTagDD";
+  //const char* dir = "grid_v40_Syst/CBA_CTagnPUJetID";
+  //const char* dir = "grid_v40_Syst/CBA_BJetSFTests";
+  //const char* dir = "grid_v40_Syst/CBA_PtJet50";
+  //const char* dir = "grid_v40_Syst/CBA_PtJet45";
+  //const char* dir = "grid_v40_Syst/CBA_PtJet25_jetMass0";
+  //const char* dir = "grid_v40_Syst/CBA_FSRdown";
+  //const char* dir = "grid_v40_Syst/CBA_FSRup";
+  //const char* dir = "grid_v40_Syst/CBA_TLV_TPUJetID_KFAllJets";
+  //const char* dir = "grid_v40_Syst/CBA_TLVTPUKFAFSRDo_NanoReso";
+  //const char* dir = "grid_v40_Syst/CBA_TLVTPUKFAFSRDo_NR-GausM";
+  //const char* dir = "grid_v40_Syst/CBA_TLVTPUKFAFSRDo_NROGM";
+  //const char* dir = "grid_v40_Syst/CBA_Nom1_100MeVBin";
+  //const char* dir = "grid_v40_Syst/CBA_Nom1FSRDo_100MeVBin";
+  const char* dir = "grid_v40_Syst/CBA_CTagShapeCalib";
   
+  // const char *syst[] = {"base", 
+  // 			"puup", "pudown", "mueffup", "mueffdown", 
+  // 			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
+  // 			"jerup", "jerdown", "btagbup", "btagbdown", 
+  // 			"btaglup", "btagldown", "prefireup", "prefiredown",
+  // 			"pdfup", "pdfdown", "q2fup", "q2down",
+  // 			"isrup", "isrdown", "fsrup", "fsrdown", 
+  // 			"iso20", "metup", "metdown",
+  // 			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
+  // 			"bctag3up", "bctag3down", "pujetidup", "pujetiddown"};
+
   const char *syst[] = {"base", 
-			"puup", "pudown", "mueffup", "mueffdown", 
-			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
-			"jerup", "jerdown", "btagbup", "btagbdown", 
-			"btaglup", "btagldown", "prefireup", "prefiredown",
-			"pdfup", "pdfdown", "q2fup", "q2down",
+			"pdfup", "pdfdown", "q2up", "q2down",
 			"isrup", "isrdown", "fsrup", "fsrdown", 
-			"iso20", "metup", "metdown",
-			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
-			"bctag3up", "bctag3down"};
+			"puup", "pudown","prefireup", "prefiredown",
+			"mueffup", "mueffdown", "eleeffup", "eleeffdown",
+			"pujetidup", "pujetiddown", "metup", "metdown",
+			"jecup", "jecdown", "jerup", "jerdown",
+			"iso20", //26
+			//Followings are only for TTbar not for QCD DDD
+			//"cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown",
+			//The followings are used in earlier versions of BTV applications 
+			// "btagbup", "btagbdown", 
+			// "btaglup", "btagldown"
+			// "bctag1up", "bctag1down",
+			// "bctag2up", "bctag2down",
+			// "bctag3up", "bctag3down", //10
+			//CShapeCalib EOY
+			"bcstatup", "bcstatdown",
+			"bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			"bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
+			"bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
+			"bcbfragup", "bcbfragdown" //16
+			// CShapeCalib UL
+			// "bcstatup", "bcstatdown",
+			// "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+			// "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			// "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+			// "bcxwjcup", "bcxwjcdown"//16
+  };
+  
+			
+			 
+			
 
   
   TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
   
-  for(int isys = 0 ; isys < 34 ; isys++) {
+  for(int isys = 0 ; isys < 42 ; isys++) {
 
     TDirectory *d2 = d1->mkdir(Form("%s",syst[isys]));
     d2->cd();
     TDirectory *d3 = d2->mkdir("Iso");
     d3->cd();
     TH1D *hDD;
-    int htype_max[2] = {16, 9};
+    int htype_max[2] = {17, 10};
     for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
       for(int ismu = 0 ; ismu < 2 ; ismu++)
 	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++)
@@ -91,6 +139,7 @@ int CreateQCDDD()
 
 string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
 {
+  //cout <<"isBtag : " << isBtag <<", isMu : " << isMu << ", htype : " << htype << endl;
   string histname;
   histname += (isBtag) ? "_lb" : "_kb" ; 
   
@@ -128,6 +177,8 @@ string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
     histname = (isMu) ? "_ct_ExcM_mjj_mu" : "_ct_ExcM_mjj_ele" ;  
   else if (htype==16)
     histname = (isMu) ? "_ct_ExcT_mjj_mu" : "_ct_ExcT_mjj_ele" ;  
+  else if (htype==17)
+    histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_ExcL_mjj_ele" ;  
 
   return histname;
 }

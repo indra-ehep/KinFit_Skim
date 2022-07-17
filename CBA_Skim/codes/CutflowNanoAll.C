@@ -81,7 +81,8 @@ int CutflowNanoAll(int year = 2016, bool isMu = 1)
   //const char* dir = "grid_v39_Syst/CBA_CFGenWt_Method3";
   //const char* dir = "grid_v39_Syst/CBA_ULXS";
   //const char* dir = "grid_v39_Syst/CBA_GeneratorWt";
-  const char* dir = "grid_v39_Syst/CBA_CTagDD";
+  //const char* dir = "grid_v39_Syst/CBA_CTagDD";
+  const char* dir = "grid_v40_Syst/CBA_CTagnPUJetID";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;

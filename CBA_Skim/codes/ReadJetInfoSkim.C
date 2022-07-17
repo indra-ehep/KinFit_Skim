@@ -34,13 +34,13 @@ using namespace std;
 
 #endif
 
-//int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/HminusM120_Skim_NanoAOD.root")
-int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/TTbarPowheg_Semilept_Skim_NanoAOD_1of59.root")
+int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/HminusM120_Skim_NanoAOD.root")
+//int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/TTbarPowheg_Semilept_Skim_NanoAOD_1of59.root")
 //int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/Data_SingleMu_c_Skim_NanoAOD_2of23.root")
 //int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/Data_SingleEle_c_Skim_NanoAOD_1of12.root")
 {
   //25 for muon, 34 for electron
-  TH1F *hJetPt = new TH1F("hJetPt","hJetPt : TTbar (2017) Eta+JetID+PUJetID+njetGT4",100,0,100);
+  TH1F *hJetPt = new TH1F("hJetPt","hJetPt : HminusM120 (2017) Eta+JetID+PUJetID+njetGT4+ptcutGT25+eventVeto25",100,0,100);
   
   TFile *fin = TFile::Open(infile.c_str());
   cout<<"Reading from file : "<< fin->GetName() << endl;
@@ -84,14 +84,14 @@ int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/T
       // 			passDR_lep_jet
       // 			);
       bool jetPresel = (pt >= 25.0 && TMath::Abs(eta) <= 2.4 && jetID_pass);
-
+      
       if(jetPresel) nJetGT4++ ;
 
-      // if(pt < 25.)
-      // 	isLowJetPt = true;
+      if(pt < 25.)
+      	isLowJetPt = true;
     }
     
-    //if(isLowJetPt) continue;
+    if(isLowJetPt) continue;
     if(nJetGT4 < 4) continue;
       
     for(int jetInd = 0; jetInd < int(nJet_) and int(nJet_) <= 200 ; ++jetInd){ //200 is the array size for jets as defined in EventTree 
@@ -100,12 +100,11 @@ int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/T
       bool jetID_pass = (jetID_[jetInd]>=2 and (jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
       // if(TMath::Abs(eta) <= 2.4)
       // 	hJetPt->Fill(pt);
-      if(jetID_pass && TMath::Abs(eta) <= 2.4)
+      if(jetID_pass && TMath::Abs(eta) <= 2.4 && pt>25.0)
 	hJetPt->Fill(pt);
     }
-
+    
   }//event loop
-
  
   fin->Close();
   delete fin;
@@ -114,7 +113,7 @@ int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/T
   hJetPt->GetYaxis()->SetTitle("Entries");
   hJetPt->Scale(1./hJetPt->Integral());
   
-  TFile *fout = new TFile("Pt_uncut_3_TTbar_nJetCut.root","recreate");
+  TFile *fout = new TFile("Pt_uncut_8_HminusM120_evtVeto.root","recreate");
   hJetPt->Write();
   fout->Close();
   delete fout;
