@@ -39,7 +39,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_TTbarSLKFEff_pre'
+jdlDir = 'tmpLog_TTbarSLKFEffDR4_pre'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -73,10 +73,10 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEff/pre"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEff/pre"
-    condorOutDir2="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEff/pre"
-    condorOutDir3="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_TTbarSLKFEff/pre"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDR4/pre"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDR4/pre"
+    condorOutDir2="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDR4/pre"
+    condorOutDir3="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_TTbarSLKFEffDR4/pre"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir2, year))

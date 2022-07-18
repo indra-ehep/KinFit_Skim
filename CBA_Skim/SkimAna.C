@@ -3944,7 +3944,7 @@ bool SkimAna::FillMCInfo()
     // jetPt = event->jetPt_[jetInd];
     // jetEta = fabs(event->jetEta_[jetInd]);
 
-    if(genJetMatch[0]==event->jetGenJetIdx_[jetInd]){
+    if(genJetMatch[0]==event->jetGenJetIdx_[jetInd] and ((event->jetGenJetIdx_[jetInd]>-1) && (event->jetGenJetIdx_[jetInd] < int(tree->nGenJet_))) and genJetMatch[0]!=-100){
       if(ijet == _cjhad_id) _found_cjhad_lhe = true;
       if(ijet == _sjhad_id) _found_sjhad_lhe = true;
       _lhe1Pt = pLHE[0].Pt();
@@ -3965,7 +3965,7 @@ bool SkimAna::FillMCInfo()
       // }
     }
     
-    if(genJetMatch[1]==event->jetGenJetIdx_[jetInd]){
+    if(genJetMatch[1]==event->jetGenJetIdx_[jetInd] and ((event->jetGenJetIdx_[jetInd]>-1) && (event->jetGenJetIdx_[jetInd] < int(tree->nGenJet_))) and genJetMatch[1]!=-100){
       if(ijet == _cjhad_id) _found_cjhad_lhe = true;
       if(ijet == _sjhad_id) _found_sjhad_lhe = true;
       _lhe2Pt = pLHE[1].Pt();
