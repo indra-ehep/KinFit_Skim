@@ -89,5 +89,5 @@ src/RoccoR.o: src/RoccoR.cc interface/RoccoR.h
 ######################## Old tests ##################################################
 
 clean:
-	rm src/*.o *.so SkimAna
+	rm src/*.o *.so *.root SkimAna
 

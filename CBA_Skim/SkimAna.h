@@ -919,6 +919,7 @@ class SkimAna : public TSelector {
    float _lhe2Pt,_lhe2Eta,_lhe2Phi,_lhe2Energy;
    int  _lhe1PDG, _lhe2PDG;
    int  _chadPDG, _shadPDG;
+   float _lhe1dR,_lhe2dR;
    /////////////////////////////////////////////////////////////
 
    
@@ -2038,6 +2039,8 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("lhe2PDG"		, &_lhe2PDG			);
     outputTree->Branch("chadPDG"		, &_chadPDG			);
     outputTree->Branch("shadPDG"		, &_shadPDG			);
+    outputTree->Branch("lhe1dR"			, &_lhe1dR			);
+    outputTree->Branch("lhe2dR"			, &_lhe2dR			);
 
 }
 
@@ -3809,20 +3812,20 @@ bool KinFit::Fit(){
   	    TFitConstraintMGaus *lW = new TFitConstraintMGaus( "lW", "W mass", 0, 0 , 80.379, 6.4); // Values set from PDG 2021 mW = 80.379
   	    lW->addParticles1( lep, neu);
 	    
-  	    TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.);
-  	    TFitConstraintEp *sumPyConstr_  = new TFitConstraintEp("SumPy",        "SumPy", nullptr, TFitConstraintEp::pY, 0.);
-  	    TFitConstraintEp *sumPzConstr_  = new TFitConstraintEp("SumPz",        "SumPz", nullptr, TFitConstraintEp::pZ, 0.);
-  	    TFitConstraintEp *sumEConstr_   = new TFitConstraintEp("SumE",        "SumE", nullptr, TFitConstraintEp::E, mTop+mTop);
+  	    // TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.);
+  	    // TFitConstraintEp *sumPyConstr_  = new TFitConstraintEp("SumPy",        "SumPy", nullptr, TFitConstraintEp::pY, 0.);
+  	    // TFitConstraintEp *sumPzConstr_  = new TFitConstraintEp("SumPz",        "SumPz", nullptr, TFitConstraintEp::pZ, 0.);
+  	    // TFitConstraintEp *sumEConstr_   = new TFitConstraintEp("SumE",        "SumE", nullptr, TFitConstraintEp::E, mTop+mTop);
 
-  	    sumPxConstr_->addParticles(lep, neu, bl, bh, cj, sj);
-  	    sumPyConstr_->addParticles(lep, neu, bl, bh, cj, sj);
-  	    sumPzConstr_->addParticles(lep, neu, bl, bh, cj, sj);
-  	    sumEConstr_->addParticles(lep, neu, bl, bh, cj, sj);
+  	    // sumPxConstr_->addParticles(lep, neu, bl, bh, cj, sj);
+  	    // sumPyConstr_->addParticles(lep, neu, bl, bh, cj, sj);
+  	    // sumPzConstr_->addParticles(lep, neu, bl, bh, cj, sj);
+  	    // sumEConstr_->addParticles(lep, neu, bl, bh, cj, sj);
 
-  	    sumPxConstr_->setConstraint( lepton.Px() + neutrino.Px() + bjlep.Px() + bjhad.Px() + cjhad.Px() + sjhad.Px() );
-  	    sumPyConstr_->setConstraint( lepton.Py() + neutrino.Py() + bjlep.Py() + bjhad.Py() + cjhad.Py() + sjhad.Py() );
-  	    sumPzConstr_->setConstraint( lepton.Pz() + neutrino.Pz() + bjlep.Pz() + bjhad.Pz() + cjhad.Pz() + sjhad.Pz() );
-  	    sumEConstr_->setConstraint( lepton.E() + neutrino.E() + bjlep.E() + bjhad.E() + cjhad.E() + sjhad.E() );
+  	    // sumPxConstr_->setConstraint( lepton.Px() + neutrino.Px() + bjlep.Px() + bjhad.Px() + cjhad.Px() + sjhad.Px() );
+  	    // sumPyConstr_->setConstraint( lepton.Py() + neutrino.Py() + bjlep.Py() + bjhad.Py() + cjhad.Py() + sjhad.Py() );
+  	    // sumPzConstr_->setConstraint( lepton.Pz() + neutrino.Pz() + bjlep.Pz() + bjhad.Pz() + cjhad.Pz() + sjhad.Pz() );
+  	    // sumEConstr_->setConstraint( lepton.E() + neutrino.E() + bjlep.E() + bjhad.E() + cjhad.E() + sjhad.E() );
 	    
   	    TKinFitter* fitter = new TKinFitter("fitter", "fitter");
   	    fitter->addMeasParticle( lep );
@@ -3834,10 +3837,10 @@ bool KinFit::Fit(){
   	    fitter->addConstraint( ltop );
   	    fitter->addConstraint( htop );
   	    fitter->addConstraint( lW );
-  	    fitter->addConstraint(sumPxConstr_);
-  	    fitter->addConstraint(sumPyConstr_);
-  	    fitter->addConstraint(sumPzConstr_);
-  	    fitter->addConstraint(sumEConstr_);
+  	    // fitter->addConstraint(sumPxConstr_);
+  	    // fitter->addConstraint(sumPyConstr_);
+  	    // fitter->addConstraint(sumPzConstr_);
+  	    // fitter->addConstraint(sumEConstr_);
 	    
   	    TKinFitter* fitter_tlep = new TKinFitter("fitter_tlep", "fitter_tlep");
   	    fitter_tlep->addMeasParticle( lep );   fitter_tlep->addMeasParticle( neu );

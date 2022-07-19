@@ -2921,6 +2921,7 @@ void SkimAna::Clean(){
   _lhe2Pt = 0.0;_lhe2Eta = 0.0;_lhe2Phi = 0.0;_lhe2Energy = 0.0;
   _lhe1PDG = -4000; _lhe2PDG = -4000;
   _chadPDG = -4000; _shadPDG = -4000;
+  _lhe1dR = -10.0; _lhe2dR = -10.0;
 }    
 
 // //_____________________________________________________________________________
@@ -3890,7 +3891,7 @@ bool SkimAna::FillMCInfo()
     }
   }
   
-  DeltaRCut = 0.4;
+  DeltaRCut = 100.;
   hasGJmatchLHE = false;
   genJetMatch[0] = -100; 
   if(delRtoID0.size()>0){
@@ -3952,6 +3953,7 @@ bool SkimAna::FillMCInfo()
       _lhe1Phi = pLHE[0].Phi();
       _lhe1Energy = pLHE[0].E();
       _lhe1PDG = lhePDG[0];
+      _lhe1dR = pGJ[0].DeltaR(pLHE[0]);
       if(ijet == _cjhad_id) _chadPDG = _lhe1PDG;
       if(ijet == _sjhad_id) _shadPDG = _lhe1PDG;
       
@@ -3973,6 +3975,7 @@ bool SkimAna::FillMCInfo()
       _lhe2Phi = pLHE[1].Phi();
       _lhe2Energy = pLHE[1].E();
       _lhe2PDG = lhePDG[1];
+      _lhe2dR = pGJ[1].DeltaR(pLHE[1]);
       if(ijet == _cjhad_id) _chadPDG = _lhe2PDG;
       if(ijet == _sjhad_id) _shadPDG = _lhe2PDG;
       // if(ijet == _cjhad_id){
@@ -7315,8 +7318,8 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
