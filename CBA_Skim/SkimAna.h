@@ -1931,6 +1931,7 @@ void SkimAna::InitOutBranches(){
     // outputTree->Branch("cTagTWeight_bc3_Do"	, &_cTagTWeight_bc3_Do		);
     
     outputTree->Branch("nJet"			, &_nJet			);
+    outputTree->Branch("nBJet"		, &_nBJet			);
     outputTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
     //CTagShape EOY
     outputTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
