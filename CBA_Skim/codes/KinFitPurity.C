@@ -45,6 +45,7 @@ int KinFitPurity()
   TH1F *hDelPhi = new TH1F("hDelPhi","hDelPhi",100,-5.0,5.0);
   
   Double_t  chi2;
+  Double_t  prob;
   Float_t   jetChadPt;
   Float_t   jetChadEta;
   Float_t   jetChadPhi;
@@ -107,9 +108,9 @@ int KinFitPurity()
   //string sample_extn = "CBA_TTbarSLKFEffDR1MR";
   //string sample_extn = "CBA_TTbarSLKFEffDRVar";
   //string sample_extn = "CBA_TTbarSLKFEffDR4PECons";
-  string input_path = "/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/"+sample_extn+"/pre/2016/";
+  string input_path = "/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/"+sample_extn+"/post/2016/";
   string input_file_list = "/tmp/histbuild_fl.txt";
-  string input_hist_file = "root_files/grid_v40_Syst/"+sample_extn+"/pre/all_TTbar.root";
+  string input_hist_file = "root_files/grid_v40_Syst/"+sample_extn+"/post/all_TTbar.root";
   string command  = Form("find %s -name \"%s_tree_%s\*.root\" > %s",input_path.c_str(), sig.c_str(), syst.c_str(), input_file_list.c_str());
   cout << command << endl;
   system(command.c_str());
@@ -150,6 +151,7 @@ int KinFitPurity()
   // TH1F *hChi2Min5 = (TH1F *)finhist->Get("HplusM160/base/Iso/h5MinChi2_mu");
   
   tr->SetBranchAddress("chi2"		, &chi2);
+  tr->SetBranchAddress("prob"		, &prob);
   tr->SetBranchAddress("jetChadPt"	, &jetChadPt);
   tr->SetBranchAddress("jetChadEta"	, &jetChadEta);
   tr->SetBranchAddress("jetChadPhi"	, &jetChadPhi);
@@ -248,7 +250,7 @@ int KinFitPurity()
        if(kFType==13){
 	 mjj->Fill(mjjKF,weight);
        }
-       if(kFType==13 and nJet==4 and chi2<2.0){
+       if(kFType==13 and nJet==4){
 	
 	mjj_cut1->Fill(mjjKF,weight*wt_ratio);
 	

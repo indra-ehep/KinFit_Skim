@@ -44,7 +44,7 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////////// Observables //////////////////////////////////////
   
   ////////////////////// Weight and other histograms histograms ///////////////////////
-  fNBWtHists = 65;
+  fNBWtHists = 96;
   fNWtHists = fNDDReg*fNBWtHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNWtHists*fNSyst;
   histWt = new TH1D*[totNHists];
@@ -290,6 +290,70 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_PUWeight_Do","_PUWeight_Do",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_topPtReweight","_topPtReweight",200, -10, 10);
 
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight","_bcTagWeight",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_stat_Up","_bcTagWeight_stat_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_stat_Do","_bcTagWeight_stat_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_pu_Up","_bcTagWeight_pu_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_pu_Do","_bcTagWeight_pu_Do",300, -10, 50);    
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_eleid_Up","_bcTagWeight_eleid_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_eleid_Do","_bcTagWeight_eleid_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_muid_Up","_bcTagWeight_muid_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_muid_Do","_bcTagWeight_muid_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemuf_Up","_bcTagWeight_lhemuf_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemuf_Do","_bcTagWeight_lhemuf_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemur_Up","_bcTagWeight_lhemur_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemur_Do","_bcTagWeight_lhemur_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_isr_Up","_bcTagWeight_isr_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_isr_Do","_bcTagWeight_isr_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_fsr_Up","_bcTagWeight_fsr_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_fsr_Do","_bcTagWeight_fsr_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xdy_Up","_bcTagWeight_xdy_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xdy_Do","_bcTagWeight_xdy_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xst_Up","_bcTagWeight_xst_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xst_Do","_bcTagWeight_xst_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xwj_Up","_bcTagWeight_xwj_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xwj_Do","_bcTagWeight_xwj_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xtt_Up","_bcTagWeight_xtt_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xtt_Do","_bcTagWeight_xtt_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jes_Up","_bcTagWeight_jes_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jes_Do","_bcTagWeight_jes_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jer_Up","_bcTagWeight_jer_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jer_Do","_bcTagWeight_jer_Do",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_bfrag_Up","_bcTagWeight_bfrag_Up",300, -10, 50);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_bfrag_Do","_bcTagWeight_bfrag_Do",300, -10, 50);  
+    /* // CShapeCalib UL */
+    /* histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_stat_Up","_bcTagWeight_stat_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_stat_Do","_bcTagWeight_stat_Do",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_pu_Up","_bcTagWeight_pu_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_pu_Do","_bcTagWeight_pu_Do",300, -10, 50);
+    */
+    /* histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_intp_Up","_bcTagWeight_intp_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_intp_Do","_bcTagWeight_intp_Do",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_extp_Up","_bcTagWeight_extp_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_extp_Do","_bcTagWeight_extp_Do",300, -10, 50);
+    */
+    /* histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemuf_Up","_bcTagWeight_lhemuf_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemuf_Do","_bcTagWeight_lhemuf_Do",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemur_Up","_bcTagWeight_lhemur_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_lhemur_Do","_bcTagWeight_lhemur_Do",300, -10, 50);
+    */
+    /* histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_isr_Up","_bcTagWeight_isr_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_isr_Do","_bcTagWeight_isr_Do",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_fsr_Up","_bcTagWeight_fsr_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_fsr_Do","_bcTagWeight_fsr_Do",300, -10, 50);
+    */
+    /* histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xdyb_Up","_bcTagWeight_xdyb_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xdyb_Do","_bcTagWeight_xdyb_Do",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xdyc_Up","_bcTagWeight_xdyc_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xdyc_Do","_bcTagWeight_xdyc_Do",300, -10, 50);
+    */
+    /* Double_t _bcTagWeight_xwjc_Up, _bcTagWeight_xwjc_Do;  */
+    /* histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jes_Up","_bcTagWeight_jes_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jes_Do","_bcTagWeight_jes_Do",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jer_Up","_bcTagWeight_jer_Up",300, -10, 50);
+       histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_jer_Do","_bcTagWeight_jer_Do",300, -10, 50);
+    */
+    
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_yLyMyT","_ctagWeight_yLyMyT",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_yLyMnT","_ctagWeight_yLyMnT",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_yLnMyT","_ctagWeight_yLnMyT",200, -10, 10);
@@ -328,7 +392,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet1Pt_BF_ele","_bjet1Pt_BF_ele", 100, 0., 1000.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet2Pt_BF_ele","_bjet2Pt_BF_ele", 100, 0., 1000.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ljet1Pt_BF_ele","_ljet1Pt_BF_ele", 100, 0., 1000.);
-    histWt[fNWtHists*isyst + 64] = new TH1D("_ljet2Pt_BF_ele","_ljet2Pt_BF_ele", 100, 0., 1000.);
+    histWt[fNWtHists*isyst + 95] = new TH1D("_ljet2Pt_BF_ele","_ljet2Pt_BF_ele", 100, 0., 1000.);
 
     for(int icf=0;icf<fNBWtHists;icf++)
       histWt[fNWtHists*isyst + icf]->SetDirectory(fFileDir[isyst*fNDDReg + 0]);
@@ -3402,10 +3466,64 @@ Bool_t SkimAna::GetBCTagWt(void)
 
     wt_after =  wt_before * _bcTagWeight;
     
-    TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList(); //Iso dir 
-    ((TH1D *) list->FindObject(Form("_bctagWeight_2b")))->Fill(_bcTagWeight);
-    ((TH1D *) list->FindObject(Form("_wt_before")))->Fill(selector->Jets.size(), wt_before);
-    ((TH1D *) list->FindObject(Form("_wt_after")))->Fill(selector->Jets.size(), wt_after);
+    if(muonIsoCut or eleIsoCut){
+      if(!isLowMET){
+	TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList(); 
+	((TH1D *) list->FindObject(Form("_bctagWeight_2b")))->Fill(_bcTagWeight);
+	((TH1D *) list->FindObject(Form("_wt_before")))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after")))->Fill(selector->Jets.size(), wt_after);
+	((TH1D *) list->FindObject("_bcTagWeight"))->Fill(_bcTagWeight); 
+	((TH1D *) list->FindObject("_bcTagWeight_stat_Up"))->Fill(_bcTagWeight_stat_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_stat_Do"))->Fill(_bcTagWeight_stat_Do);
+	((TH1D *) list->FindObject("_bcTagWeight_pu_Up"))->Fill(_bcTagWeight_pu_Up);
+	((TH1D *) list->FindObject("_bcTagWeight_pu_Do"))->Fill(_bcTagWeight_pu_Do); 
+	((TH1D *) list->FindObject("_bcTagWeight_eleid_Up"))->Fill(_bcTagWeight_eleid_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_eleid_Do"))->Fill(_bcTagWeight_eleid_Do);
+	((TH1D *) list->FindObject("_bcTagWeight_muid_Up"))->Fill(_bcTagWeight_muid_Up);
+	((TH1D *) list->FindObject("_bcTagWeight_muid_Do"))->Fill(_bcTagWeight_muid_Do); 
+	((TH1D *) list->FindObject("_bcTagWeight_lhemuf_Up"))->Fill(_bcTagWeight_lhemuf_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_lhemuf_Do"))->Fill(_bcTagWeight_lhemuf_Do);
+	((TH1D *) list->FindObject("_bcTagWeight_lhemur_Up"))->Fill(_bcTagWeight_lhemur_Up);
+	((TH1D *) list->FindObject("_bcTagWeight_lhemur_Do"))->Fill(_bcTagWeight_lhemur_Do); 
+	((TH1D *) list->FindObject("_bcTagWeight_isr_Up"))->Fill(_bcTagWeight_isr_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_isr_Do"))->Fill(_bcTagWeight_isr_Do);
+	((TH1D *) list->FindObject("_bcTagWeight_fsr_Up"))->Fill(_bcTagWeight_fsr_Up);
+	((TH1D *) list->FindObject("_bcTagWeight_fsr_Do"))->Fill(_bcTagWeight_fsr_Do); 
+	((TH1D *) list->FindObject("_bcTagWeight_xdy_Up"))->Fill(_bcTagWeight_xdy_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_xdy_Do"))->Fill(_bcTagWeight_xdy_Do);
+	((TH1D *) list->FindObject("_bcTagWeight_xst_Up"))->Fill(_bcTagWeight_xst_Up);
+	((TH1D *) list->FindObject("_bcTagWeight_xst_Do"))->Fill(_bcTagWeight_xst_Do); 
+	((TH1D *) list->FindObject("_bcTagWeight_xwj_Up"))->Fill(_bcTagWeight_xwj_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_xwj_Do"))->Fill(_bcTagWeight_xwj_Do);
+	((TH1D *) list->FindObject("_bcTagWeight_xtt_Up"))->Fill(_bcTagWeight_xtt_Up);
+	((TH1D *) list->FindObject("_bcTagWeight_xtt_Do"))->Fill(_bcTagWeight_xtt_Do); 
+	((TH1D *) list->FindObject("_bcTagWeight_jes_Up"))->Fill(_bcTagWeight_jes_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_jes_Do"))->Fill(_bcTagWeight_jes_Do);
+	((TH1D *) list->FindObject("_bcTagWeight_jer_Up"))->Fill(_bcTagWeight_jer_Up);
+	((TH1D *) list->FindObject("_bcTagWeight_jer_Do"))->Fill(_bcTagWeight_jer_Do); 
+	((TH1D *) list->FindObject("_bcTagWeight_bfrag_Up"))->Fill(_bcTagWeight_bfrag_Up); 
+	((TH1D *) list->FindObject("_bcTagWeight_bfrag_Do"))->Fill(_bcTagWeight_bfrag_Do); 
+
+      }else{
+	TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList(); 
+	((TH1D *) list->FindObject(Form("_bctagWeight_2b_lmet")))->Fill(_bcTagWeight);
+	((TH1D *) list->FindObject(Form("_wt_before_lmet")))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after_lmet")))->Fill(selector->Jets.size(), wt_after);
+      }
+    }
+    if (muonNonIsoCut or eleNonIsoCut){
+      if(!isLowMET){
+	TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList(); 
+	((TH1D *) list->FindObject(Form("_bctagWeight_2b_noniso")))->Fill(_bcTagWeight);
+	((TH1D *) list->FindObject(Form("_wt_before_noniso")))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after_noniso")))->Fill(selector->Jets.size(), wt_after);
+      }else{
+	TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList(); 
+	((TH1D *) list->FindObject(Form("_bctagWeight_2b_noniso_lmet")))->Fill(_bcTagWeight);
+	((TH1D *) list->FindObject(Form("_wt_before_noniso_lmet")))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after_noniso_lmet")))->Fill(selector->Jets.size(), wt_after);
+      }
+    }
     
   }//syst loop
   
