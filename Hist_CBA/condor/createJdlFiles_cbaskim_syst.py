@@ -65,16 +65,16 @@ jdlDir = 'tmpLog_PtJet30'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
-tarFile = "%s/CBA_Skim.tar.gz"%jdlDir
+tarFile = "%s/Hist_CBA.tar.gz"%jdlDir
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
-os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
+os.system("tar -zcvf %s ../../Hist_CBA --exclude condor"%tarFile)
 os.system("cp runCBASkim.sh %s/"%jdlDir)
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
-Transfer_Input_Files = CBA_Skim.tar.gz, runCBASkim.sh\n\
+Transfer_Input_Files = Hist_CBA.tar.gz, runCBASkim.sh\n\
 x509userproxy = $ENV(X509_USER_PROXY)\n\
 use_x509userproxy = true\n\
 +BenchmarkJob = True\n\

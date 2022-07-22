@@ -17,5 +17,5 @@ libweight.so: KinAna.C KinAna.h
 ######################## Main library ###############################################
 
 clean:
-	rm src/*.o *.so *.root KinAna
+	rm -f src/*.o *.so *.root KinAna
 

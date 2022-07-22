@@ -24,7 +24,7 @@ else
     cd ../..
     
 fi
-tar --strip-components=1 -zxvf CBA_Skim.tar.gz
+tar --strip-components=1 -zxvf Hist_CBA.tar.gz
 #Run for Base, Signal region
 #./complib.sh
 echo "All arguements: "$@
@@ -34,10 +34,11 @@ sample=$2
 input=$3
 index=$4
 syst=$5
+reffile=$6
 
 #time root -l -b -q run.C\(\""sample=${sample}|year=${year}|input=${input}|index=${index}|syst=${syst}|aod=nano|run=prod"\"\)
 
-time ./SkimAna $sample $year $input $index $syst
+time ./KinAna $sample $year $input $index $syst $reffile
 
 printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
@@ -45,18 +46,16 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 # condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 # condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar/pre
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar/pre
-condorOutDir2=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar/pre
-condorOutDir3=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_TTbarSLKFEffDRVar/pre
+
+outputdir=CBA_CTagValidated-Hist
+iosubdir=pre
+condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/$iosubdir
+
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
     #xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
-    xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
-    xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
-    xrdcp -f ${sample}_bjet_*.root root://eosuser.cern.ch/${condorOutDir2}/${year}
-    xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir3}/${year}
+    xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     echo "Cleanup"
     rm -rf CMSSW_12_1_0
     rm *.root
