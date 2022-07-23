@@ -370,8 +370,10 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_Exc0","_ctagWeight_ExcT",200, -10, 10);
     
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bctagWeight_2b","_bctagWeight_2b",200, -10, 10);
-    histWt[fNWtHists*isyst + hidx++] = new TH1D("_wt_before","_wt_before",20, 0, 20);
-    histWt[fNWtHists*isyst + hidx++] = new TH1D("_wt_after","_wt_after",20, 0, 20);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_wt_before_mu","_wt_before_mu",20, 0, 20);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_wt_after_mu","_wt_after_mu",20, 0, 20);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_wt_before_ele","_wt_before_ele",20, 0, 20);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_wt_after_ele","_wt_after_ele",20, 0, 20);
     
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muIso","_muIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_eleIso","_eleIso", 100, 0., 1.);
@@ -682,8 +684,8 @@ void SkimAna::SelectSyst()
 			    "bcstatup", "bcstatdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-			    "bcbfragup", "bcbfragdown" //16
+			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown" //14
+			    //"bcbfragup", "bcbfragdown" //16
 			    // CShapeCalib UL
 			    // "bcstatup", "bcstatdown",
 			    // "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
@@ -701,7 +703,7 @@ void SkimAna::SelectSyst()
       fNSyst = 1;
       fSystList.push_back(fSyst);       
     }else{
-      fNSyst = 35; 
+      fNSyst = 33; //2016 == 35, 2018 == 33 
       for(int isyst=0;isyst<fNSyst;isyst++)
 	fSystList.push_back(systbase[isyst]);
     }
@@ -1390,12 +1392,15 @@ void SkimAna::LoadBCTag()
       Info("LoadBCTag","DeepJet calibration has been selected : 2016");      
 
       fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD94X_2016_pTincl_01Nov20.root",fBasePath.Data(),fYear));
-      Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD94X_2016_pTincl_01Nov20.root",fBasePath.Data(),fYear);
+      //Info("LoadBTag","%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD94X_2016_pTincl_01Nov20.root",fBasePath.Data(),fYear);
+      Info("LoadBTag","%s",fBCSFFile->GetName());
 
     }else if (fYear==2017){ 
       Info("LoadBCTag","DeepJet calibration has been selected : 2017 %s",fBasePath.Data());
     } else if (fYear==2018){ 
       Info("LoadBCTag","DeepJet calibration has been selected : 2018");
+      fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD102X_2018_pTincl.root",fBasePath.Data(),fYear));
+      Info("LoadBTag","%s",fBCSFFile->GetName());
     } 
 
   } else {
@@ -2538,32 +2543,39 @@ void SkimAna::GetLMTBCtagSF_2b(){
   //for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
-    //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
-    jetFlavor = TMath::Abs(event->jetHadFlvr_[jetInd]);
+    jetFlavor = abs(event->jetPartFlvr_[jetInd]);
+    //jetFlavor = TMath::Abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
     
     if (jetFlavor == 5){
+      // TAxis  *axisX =  SFbhist->GetXaxis();
+      // cout<<"ijet : "<<ijet <<", jetCvsLtag : " << jetCvsLtag << ", axis : " << axisX << ", sys : " << bctagSystType << ", Name : " << SFbhist->GetName() << endl;
       xbin = SFbhist->GetXaxis()->FindBin(jetCvsLtag);
+      //cout<<"xbin : " << xbin << endl;
       ybin = SFbhist->GetYaxis()->FindBin(jetCvsBtag);
       maxbinX = SFbhist->GetNbinsX();
       maxbinY = SFbhist->GetNbinsY();
+      if(xbin>=maxbinX or ybin>=maxbinY) continue;
+      //cout<<"xmax,ymax : " << maxbinX <<", "<< maxbinY << endl;
       SF = SFbhist->GetBinContent(xbin, ybin);
     }else if(jetFlavor == 4){
       xbin = SFchist->GetXaxis()->FindBin(jetCvsLtag);
       ybin = SFchist->GetYaxis()->FindBin(jetCvsBtag);
       maxbinX = SFchist->GetNbinsX();
       maxbinY = SFchist->GetNbinsY();
+      if(xbin>=maxbinX or ybin>=maxbinY) continue;
       SF = SFchist->GetBinContent(xbin, ybin);
     }else{
       xbin = SFlhist->GetXaxis()->FindBin(jetCvsLtag);
       ybin = SFlhist->GetYaxis()->FindBin(jetCvsBtag);
       maxbinX = SFlhist->GetNbinsX();
       maxbinY = SFlhist->GetNbinsY();
+      if(xbin>=maxbinX or ybin>=maxbinY) continue;
       SF = SFlhist->GetBinContent(xbin, ybin);
     }
     
-    if(xbin>maxbinX or ybin>maxbinY) continue;
+    
     if(SF>0.) Eff *= SF;
   }//end of jet loop
   
@@ -3461,7 +3473,7 @@ Bool_t SkimAna::GetBCTagWt(void)
 
     if(singleMu)
       wt_before = combined_muwt1;
-    else if(singleEle)
+    if(singleEle)
       wt_before = combined_elewt1;
 
     wt_after =  wt_before * _bcTagWeight;
@@ -3470,8 +3482,14 @@ Bool_t SkimAna::GetBCTagWt(void)
       if(!isLowMET){
 	TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList(); 
 	((TH1D *) list->FindObject(Form("_bctagWeight_2b")))->Fill(_bcTagWeight);
-	((TH1D *) list->FindObject(Form("_wt_before")))->Fill(selector->Jets.size(), wt_before);
-	((TH1D *) list->FindObject(Form("_wt_after")))->Fill(selector->Jets.size(), wt_after);
+	if(singleMu){
+	  ((TH1D *) list->FindObject(Form("_wt_before_mu")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_mu")))->Fill(selector->Jets.size(), wt_after);
+	}
+	if(singleEle){
+	  ((TH1D *) list->FindObject(Form("_wt_before_ele")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_ele")))->Fill(selector->Jets.size(), wt_after);
+	}
 	((TH1D *) list->FindObject("_bcTagWeight"))->Fill(_bcTagWeight); 
 	((TH1D *) list->FindObject("_bcTagWeight_stat_Up"))->Fill(_bcTagWeight_stat_Up); 
 	((TH1D *) list->FindObject("_bcTagWeight_stat_Do"))->Fill(_bcTagWeight_stat_Do);
@@ -3504,24 +3522,42 @@ Bool_t SkimAna::GetBCTagWt(void)
 	((TH1D *) list->FindObject("_bcTagWeight_bfrag_Up"))->Fill(_bcTagWeight_bfrag_Up); 
 	((TH1D *) list->FindObject("_bcTagWeight_bfrag_Do"))->Fill(_bcTagWeight_bfrag_Do); 
 
-      }else{
+      }else{//isLowMET
 	TList *list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList(); 
 	((TH1D *) list->FindObject(Form("_bctagWeight_2b_lmet")))->Fill(_bcTagWeight);
-	((TH1D *) list->FindObject(Form("_wt_before_lmet")))->Fill(selector->Jets.size(), wt_before);
-	((TH1D *) list->FindObject(Form("_wt_after_lmet")))->Fill(selector->Jets.size(), wt_after);
+	if(singleMu){
+	  ((TH1D *) list->FindObject(Form("_wt_before_mu_lmet")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_mu_lmet")))->Fill(selector->Jets.size(), wt_after);
+	}
+	if(singleEle){
+	  ((TH1D *) list->FindObject(Form("_wt_before_ele_lmet")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_ele_lmet")))->Fill(selector->Jets.size(), wt_after);
+	}
       }
     }
     if (muonNonIsoCut or eleNonIsoCut){
       if(!isLowMET){
 	TList *list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList(); 
 	((TH1D *) list->FindObject(Form("_bctagWeight_2b_noniso")))->Fill(_bcTagWeight);
-	((TH1D *) list->FindObject(Form("_wt_before_noniso")))->Fill(selector->Jets.size(), wt_before);
-	((TH1D *) list->FindObject(Form("_wt_after_noniso")))->Fill(selector->Jets.size(), wt_after);
+	if(singleMu){
+	  ((TH1D *) list->FindObject(Form("_wt_before_mu_noniso")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_mu_noniso")))->Fill(selector->Jets.size(), wt_after);
+	}
+	if(singleEle){
+	  ((TH1D *) list->FindObject(Form("_wt_before_ele_noniso")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_ele_noniso")))->Fill(selector->Jets.size(), wt_after);
+	}
       }else{
 	TList *list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList(); 
 	((TH1D *) list->FindObject(Form("_bctagWeight_2b_noniso_lmet")))->Fill(_bcTagWeight);
-	((TH1D *) list->FindObject(Form("_wt_before_noniso_lmet")))->Fill(selector->Jets.size(), wt_before);
-	((TH1D *) list->FindObject(Form("_wt_after_noniso_lmet")))->Fill(selector->Jets.size(), wt_after);
+	if(singleMu){
+	  ((TH1D *) list->FindObject(Form("_wt_before_mu_noniso_lmet")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_mu_noniso_lmet")))->Fill(selector->Jets.size(), wt_after);
+	}
+	if(singleEle){
+	  ((TH1D *) list->FindObject(Form("_wt_before_ele_noniso_lmet")))->Fill(selector->Jets.size(), wt_before);
+	  ((TH1D *) list->FindObject(Form("_wt_after_ele_noniso_lmet")))->Fill(selector->Jets.size(), wt_after);
+	}
       }
     }
     
@@ -4327,19 +4363,19 @@ bool SkimAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt, d
     ((TH1D *) list->FindObject(Form("_kb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
     ((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
 
-    if(_kFType == 13 and hist_extn == ""){
+    // if(_kFType == 13 and hist_extn == ""){
       
-      ((TH1D *) list->FindObject(Form("_bjet1Pt_AF_%s",lep.c_str())))->Fill(bjhadAF.Pt(), wt);
-      ((TH1D *) list->FindObject(Form("_bjet1Pt_BF_%s",lep.c_str())))->Fill(bjhadBF.Pt(), wt);
-      ((TH1D *) list->FindObject(Form("_bjet2Pt_AF_%s",lep.c_str())))->Fill(bjlepAF.Pt(), wt);
-      ((TH1D *) list->FindObject(Form("_bjet2Pt_BF_%s",lep.c_str())))->Fill(bjlepBF.Pt(), wt);
+    //   ((TH1D *) list->FindObject(Form("_bjet1Pt_AF_%s",lep.c_str())))->Fill(bjhadAF.Pt(), wt);
+    //   ((TH1D *) list->FindObject(Form("_bjet1Pt_BF_%s",lep.c_str())))->Fill(bjhadBF.Pt(), wt);
+    //   ((TH1D *) list->FindObject(Form("_bjet2Pt_AF_%s",lep.c_str())))->Fill(bjlepAF.Pt(), wt);
+    //   ((TH1D *) list->FindObject(Form("_bjet2Pt_BF_%s",lep.c_str())))->Fill(bjlepBF.Pt(), wt);
       
-      ((TH1D *) list->FindObject(Form("_ljet1Pt_AF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? cjhadAF.Pt() : sjhadAF.Pt()), wt);
-      ((TH1D *) list->FindObject(Form("_ljet1Pt_BF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? cjhadBF.Pt() : sjhadBF.Pt()), wt);
-      ((TH1D *) list->FindObject(Form("_ljet2Pt_AF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? sjhadAF.Pt() : cjhadAF.Pt()), wt);
-      ((TH1D *) list->FindObject(Form("_ljet2Pt_BF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? sjhadBF.Pt() : cjhadBF.Pt()), wt);
+    //   ((TH1D *) list->FindObject(Form("_ljet1Pt_AF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? cjhadAF.Pt() : sjhadAF.Pt()), wt);
+    //   ((TH1D *) list->FindObject(Form("_ljet1Pt_BF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? cjhadBF.Pt() : sjhadBF.Pt()), wt);
+    //   ((TH1D *) list->FindObject(Form("_ljet2Pt_AF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? sjhadAF.Pt() : cjhadAF.Pt()), wt);
+    //   ((TH1D *) list->FindObject(Form("_ljet2Pt_BF_%s",lep.c_str())))->Fill( ((cjhadAF.Pt()>sjhadAF.Pt()) ? sjhadBF.Pt() : cjhadBF.Pt()), wt);
       
-    }
+    // }
 
   // }
   
@@ -7440,7 +7476,7 @@ bool SkimAna::ExecSerial(const char* infile)
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }
