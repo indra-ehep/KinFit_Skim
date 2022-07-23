@@ -43,20 +43,19 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar/pre
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar/pre
-condorOutDir2=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar/pre
-condorOutDir3=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_TTbarSLKFEffDRVar/pre
+# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagReWt
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagReWt
+# condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_CTagReWt
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_CTagReWt/pre
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_CTagReWt/pre
+condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_CTagReWt/pre
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
     #xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
     xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
-    xrdcp -f ${sample}_bjet_*.root root://eosuser.cern.ch/${condorOutDir2}/${year}
-    xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir3}/${year}
+    xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir2}/${year}
     echo "Cleanup"
     rm -rf CMSSW_12_1_0
     rm *.root
