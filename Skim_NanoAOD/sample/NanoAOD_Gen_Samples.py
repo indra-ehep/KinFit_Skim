@@ -558,7 +558,7 @@ sampleList_2018 = {
 # 'QCD_Pt120to170_Ele'      : '/QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8/'+old_MCType18_ele+'/NANOAODSIM',
 # 'QCD_Pt170to300_Ele'      : '/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8/'+old_MCType18_ele+'/NANOAODSIM',
 # 'QCD_Pt300toInf_Ele'      : '/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8/'+old_MCType18_ele+'/NANOAODSIM',
-'QCD_Pt20to30_Ele'        : '/QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
+# No present still old 'QCD_Pt20to30_Ele'        : '/QCD_Pt-20to30_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
 'QCD_Pt30to50_Ele'        : '/QCD_Pt-30to50_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
 'QCD_Pt50to80_Ele'        : '/QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
 'QCD_Pt80to120_Ele'       : '/QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
