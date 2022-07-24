@@ -429,7 +429,7 @@ void KinAna::Init(TTree *tree)
   tree->SetBranchStatus("jetBlepEnergy",1);	   tree->SetBranchAddress("jetBlepEnergy", &jetBlepEn);
 
   tree->SetBranchStatus("nJet",1);		   tree->SetBranchAddress("nJet", &nJet);
-  tree->SetBranchStatus("nBJet",1);		   tree->SetBranchAddress("nBJet", &nJet);
+  tree->SetBranchStatus("nBJet",1);		   tree->SetBranchAddress("nBJet", &nBJet);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   tree->SetBranchStatus("singleMu",1);		   tree->SetBranchAddress("singleMu", &singleMu);
