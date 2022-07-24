@@ -47,7 +47,7 @@ printf "Done Histogramming at ";/bin/date
 # condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 # condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 
-outputdir=CBA_CTagReWt-Hist
+outputdir=CBA_CTagReWt-Hist1
 iosubdir=pre
 #condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/$iosubdir
 condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir

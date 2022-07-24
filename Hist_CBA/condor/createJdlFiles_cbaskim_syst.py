@@ -27,7 +27,7 @@ syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 
 
 inputdir="CBA_CTagReWt"
-outputdir="CBA_CTagReWt-Hist"
+outputdir="CBA_CTagReWt-Hist1"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s'%(inputdir)
 kinpath='/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/%s'%(inputdir)

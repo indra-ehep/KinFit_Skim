@@ -19,7 +19,7 @@ syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
 inputdir="CBA_CTagReWt"
-outputdir="CBA_CTagReWt-Hist"
+outputdir="CBA_CTagReWt-Hist1"
 iosubdir="pre"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
