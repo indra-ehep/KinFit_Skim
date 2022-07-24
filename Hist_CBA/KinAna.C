@@ -542,7 +542,7 @@ void KinAna::SelectSyst()
       fNSyst = 1;
       fSystList.push_back(fSyst);       
     }else{
-      fNSyst = 35; 
+      fNSyst = 33; //2016 : 35, 2018 : 33
       for(int isyst=0;isyst<fNSyst;isyst++)
 	fSystList.push_back(systbase[isyst]);
     }
@@ -1128,7 +1128,7 @@ bool KinAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt, do
   ((TH1D *) list->FindObject(Form("_kb_pt_%s_met%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Pt(), wt);
   ((TH1D *) list->FindObject(Form("_kb_phi_%s_met%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Phi(), wt);
   ((TH1D *) list->FindObject(Form("_kb_njet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(nJet, wt);
-  //((TH1D *) list->FindObject(Form("_kb_nbjet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->bJets.size(), wt);
+  ((TH1D *) list->FindObject(Form("_kb_nbjet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(nBJet, wt);
   
   ((TH1D *) list->FindObject(Form("_kb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
   //((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
@@ -1153,15 +1153,17 @@ bool KinAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt, do
 }
 
 bool KinAna::GetWtRatio(TString systname, TString DDzone, string hist_extn){
+
+  string lep = (singleMu) ? "mu" : "ele";
   
-  // TH1D *hWtBefore = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_before%s",fSample.Data(),systname.Data(), DDzone.Data(), hist_extn.c_str()));
-  // TH1D *hWtAfter = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_after%s",fSample.Data(),systname.Data(), DDzone.Data(), hist_extn.c_str()));
-  TH1D *hWtBefore = (TH1D *)fRefF->Get(Form("%s/%s/Iso/_wt_before",fSample.Data(),systname.Data()));
-  TH1D *hWtAfter = (TH1D *)fRefF->Get(Form("%s/%s/Iso/_wt_after",fSample.Data(),systname.Data()));
+  TH1D *hWtBefore = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_before_%s%s",fSample.Data(), systname.Data(), DDzone.Data(), lep.c_str(), hist_extn.c_str()));
+  TH1D *hWtAfter = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_after_%s%s",fSample.Data(), systname.Data(), DDzone.Data(), lep.c_str(), hist_extn.c_str()));
+  // TH1D *hWtBefore = (TH1D *)fRefF->Get(Form("%s/%s/Iso/_wt_before",fSample.Data(),systname.Data()));
+  // TH1D *hWtAfter = (TH1D *)fRefF->Get(Form("%s/%s/Iso/_wt_after",fSample.Data(),systname.Data()));
   
   wt_before = hWtBefore->GetBinContent(nJet+1);
   wt_after = hWtAfter->GetBinContent(nJet+1);
-  if(!TMath::AreEqualAbs(wt_after,0.0,1.0e-4))
+  if(!TMath::AreEqualAbs(wt_after,0.0,1.0e-5))
     wt_ratio = wt_before/wt_after;
   else
     wt_ratio = 1.0;

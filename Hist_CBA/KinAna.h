@@ -89,6 +89,7 @@ public :
   Float_t   jetBlepPhi;
   Float_t   jetBlepEn;
   Int_t     nJet;
+  Int_t     nBJet;
   
   TLorentzVector leptonAF, neutrinoAF, bjlepAF, bjhadAF, cjhadAF, sjhadAF;
   ///////////////////////////////////////////////////////
@@ -428,6 +429,7 @@ void KinAna::Init(TTree *tree)
   tree->SetBranchStatus("jetBlepEnergy",1);	   tree->SetBranchAddress("jetBlepEnergy", &jetBlepEn);
 
   tree->SetBranchStatus("nJet",1);		   tree->SetBranchAddress("nJet", &nJet);
+  tree->SetBranchStatus("nBJet",1);		   tree->SetBranchAddress("nBJet", &nJet);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   tree->SetBranchStatus("singleMu",1);		   tree->SetBranchAddress("singleMu", &singleMu);

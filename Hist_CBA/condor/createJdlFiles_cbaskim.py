@@ -10,7 +10,6 @@ samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "
                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 
-
 syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
@@ -19,28 +18,8 @@ syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
-# samples_2016 = ["TTbar"]
-
-# syst_2016 = ["base"]
-# syst_2017 = ["base"]
-# syst_2018 = ["base"]
-
-# syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2017 = ["base"]
-# syst_long_2018 = ["base"]
-
-
-# tunedict = {
-#     "cp5up" : "CP5up_TTbar",
-#     "cp5down" : "CP5down_TTbar",
-#     "hdampup" : "hdampup_TTbar",
-#     "hdampdown" : "hdampdown_TTbar",
-#     "mtopup" : "mtopup_TTbar",
-#     "mtopdown" : "mtopdown_TTbar"
-# }
-
-inputdir="CBA_CTagValidated"
-outputdir="CBA_CTagValidated-Hist"
+inputdir="CBA_CTagReWt"
+outputdir="CBA_CTagReWt-Hist"
 iosubdir="pre"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
@@ -112,18 +91,12 @@ for year in [2016]:
         
         if sample.find('Data') >=0:
             systList = ["base", "iso20"]
-            #systList = ["base"]
         elif sample.find('TTbar') >=0:
             systList = eval("syst_long_%i"%year)
         else:    
             systList = eval("syst_%i"%year)
 
         for syst in systList:
-
-            # if (syst.find('cp5')>=0 or syst.find('hdamp')>=0 or syst.find('mtop')>=0):
-            #     fnamestart = tunedict[syst]
-            # else:
-            #     fnamestart = sample
             
             inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
             noflines = subprocess.Popen('wc -l %s | awk \'{print $1}\''%(inputfile),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
