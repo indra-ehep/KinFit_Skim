@@ -814,6 +814,7 @@ class SkimAna : public TSelector {
    double _cTagTWeight_bc3_Up = 1.0 ;
    double _cTagTWeight_bc3_Do = 1.0 ;
 
+   double wt_before = 1.0 ; double  wt_after = 1.0;
    TFile *fBCSFFile = 0x0;
    TH2F *SFb_hist=0x0, *SFc_hist=0x0, *SFl_hist=0x0;
    // CShapeCalib EOY
@@ -851,10 +852,10 @@ class SkimAna : public TSelector {
    // CShapeCalib UL
   // TH2F *SFb_hist_StatUp = 0x0, *SFc_hist_StatUp = 0x0, *SFl_hist_StatUp = 0x0;
   // TH2F *SFb_hist_StatDown = 0x0, *SFc_hist_StatDown = 0x0, *SFl_hist_StatDown = 0x0;
-  // TH2F *SFb_hist_InterpUp = 0x0, *SFc_hist_InterpUp = 0x0, *SFl_hist_InterpUp = 0x0;
-  // TH2F *SFb_hist_InterpDown = 0x0, *SFc_hist_InterpDown = 0x0, *SFl_hist_InterpDown = 0x0;
-  // TH2F *SFb_hist_ExtrapUp = 0x0, *SFc_hist_ExtrapUp = 0x0, *SFl_hist_ExtrapUp = 0x0;
-  // TH2F *SFb_hist_ExtrapDown = 0x0, *SFc_hist_ExtrapDown = 0x0, *SFl_hist_ExtrapDown = 0x0;
+  TH2F *SFb_hist_InterpUp = 0x0, *SFc_hist_InterpUp = 0x0, *SFl_hist_InterpUp = 0x0;
+  TH2F *SFb_hist_InterpDown = 0x0, *SFc_hist_InterpDown = 0x0, *SFl_hist_InterpDown = 0x0;
+  TH2F *SFb_hist_ExtrapUp = 0x0, *SFc_hist_ExtrapUp = 0x0, *SFl_hist_ExtrapUp = 0x0;
+  TH2F *SFb_hist_ExtrapDown = 0x0, *SFc_hist_ExtrapDown = 0x0, *SFl_hist_ExtrapDown = 0x0;
   // TH2F *SFb_hist_LHEScaleWeight_muFUp = 0x0, *SFc_hist_LHEScaleWeight_muFUp = 0x0, *SFl_hist_LHEScaleWeight_muFUp = 0x0;
   // TH2F *SFb_hist_LHEScaleWeight_muFDown = 0x0, *SFc_hist_LHEScaleWeight_muFDown = 0x0, *SFl_hist_LHEScaleWeight_muFDown = 0x0;
   // TH2F *SFb_hist_LHEScaleWeight_muRUp = 0x0, *SFc_hist_LHEScaleWeight_muRUp = 0x0, *SFl_hist_LHEScaleWeight_muRUp = 0x0;
@@ -865,12 +866,12 @@ class SkimAna : public TSelector {
   // TH2F *SFb_hist_PSWeightFSRDown = 0x0, *SFc_hist_PSWeightFSRDown = 0x0, *SFl_hist_PSWeightFSRDown = 0x0;
   // TH2F *SFb_hist_PUWeightUp = 0x0, *SFc_hist_PUWeightUp = 0x0, *SFl_hist_PUWeightUp = 0x0;
   // TH2F *SFb_hist_PUWeightDown = 0x0, *SFc_hist_PUWeightDown = 0x0, *SFl_hist_PUWeightDown = 0x0;
-  // TH2F *SFb_hist_XSec_BRUnc_DYJets_bUp = 0x0, *SFc_hist_XSec_BRUnc_DYJets_bUp = 0x0, *SFl_hist_XSec_BRUnc_DYJets_bUp = 0x0;
-  // TH2F *SFb_hist_XSec_BRUnc_DYJets_bDown = 0x0, *SFc_hist_XSec_BRUnc_DYJets_bDown = 0x0, *SFl_hist_XSec_BRUnc_DYJets_bDown = 0x0;
-  // TH2F *SFb_hist_XSec_BRUnc_DYJets_cUp = 0x0, *SFc_hist_XSec_BRUnc_DYJets_cUp = 0x0, *SFl_hist_XSec_BRUnc_DYJets_cUp = 0x0;
-  // TH2F *SFb_hist_XSec_BRUnc_DYJets_cDown = 0x0, *SFc_hist_XSec_BRUnc_DYJets_cDown = 0x0, *SFl_hist_XSec_BRUnc_DYJets_cDown = 0x0;
-  // TH2F *SFb_hist_XSec_BRUnc_WJets_cUp = 0x0, *SFc_hist_XSec_BRUnc_WJets_cUp = 0x0, *SFl_hist_XSec_BRUnc_WJets_cUp = 0x0;
-  // TH2F *SFb_hist_XSec_BRUnc_WJets_cDown = 0x0, *SFc_hist_XSec_BRUnc_WJets_cDown = 0x0, *SFl_hist_XSec_BRUnc_WJets_cDown = 0x0;
+  TH2F *SFb_hist_XSec_BRUnc_DYJets_bUp = 0x0, *SFc_hist_XSec_BRUnc_DYJets_bUp = 0x0, *SFl_hist_XSec_BRUnc_DYJets_bUp = 0x0;
+  TH2F *SFb_hist_XSec_BRUnc_DYJets_bDown = 0x0, *SFc_hist_XSec_BRUnc_DYJets_bDown = 0x0, *SFl_hist_XSec_BRUnc_DYJets_bDown = 0x0;
+  TH2F *SFb_hist_XSec_BRUnc_DYJets_cUp = 0x0, *SFc_hist_XSec_BRUnc_DYJets_cUp = 0x0, *SFl_hist_XSec_BRUnc_DYJets_cUp = 0x0;
+  TH2F *SFb_hist_XSec_BRUnc_DYJets_cDown = 0x0, *SFc_hist_XSec_BRUnc_DYJets_cDown = 0x0, *SFl_hist_XSec_BRUnc_DYJets_cDown = 0x0;
+  TH2F *SFb_hist_XSec_BRUnc_WJets_cUp = 0x0, *SFc_hist_XSec_BRUnc_WJets_cUp = 0x0, *SFl_hist_XSec_BRUnc_WJets_cUp = 0x0;
+  TH2F *SFb_hist_XSec_BRUnc_WJets_cDown = 0x0, *SFc_hist_XSec_BRUnc_WJets_cDown = 0x0, *SFl_hist_XSec_BRUnc_WJets_cDown = 0x0;
   // TH2F *SFb_hist_jesTotalUp = 0x0, *SFc_hist_jesTotalUp = 0x0, *SFl_hist_jesTotalUp = 0x0;
   // TH2F *SFb_hist_jesTotalDown = 0x0, *SFc_hist_jesTotalDown = 0x0, *SFl_hist_jesTotalDown = 0x0;
   // TH2F *SFb_hist_jerUp = 0x0, *SFc_hist_jerUp = 0x0, *SFl_hist_jerUp = 0x0;
@@ -892,11 +893,11 @@ class SkimAna : public TSelector {
   
    /* // CShapeCalib UL */
    /* double _bcTagWeight_stat_Up = 1.0, _bcTagWeight_stat_Do = 1.0, _bcTagWeight_pu_Up = 1.0, _bcTagWeight_pu_Do = 1.0;  */
-   /* double _bcTagWeight_intp_Up = 1.0, _bcTagWeight_intp_Do = 1.0, _bcTagWeight_extp_Up = 1.0, _bcTagWeight_extp_Do = 1.0;     */
+   double _bcTagWeight_intp_Up = 1.0, _bcTagWeight_intp_Do = 1.0, _bcTagWeight_extp_Up = 1.0, _bcTagWeight_extp_Do = 1.0;
    /* double _bcTagWeight_lhemuf_Up = 1.0, _bcTagWeight_lhemuf_Do = 1.0, _bcTagWeight_lhemur_Up = 1.0, _bcTagWeight_lhemur_Do = 1.0;  */
    /* double _bcTagWeight_isr_Up = 1.0, _bcTagWeight_isr_Do = 1.0, _bcTagWeight_fsr_Up = 1.0, _bcTagWeight_fsr_Do = 1.0;  */
-   /* double _bcTagWeight_xdyb_Up = 1.0, _bcTagWeight_xdyb_Do = 1.0, _bcTagWeight_xdyc_Up = 1.0, _bcTagWeight_xdyc_Do = 1.0;  */
-   /* double _bcTagWeight_xwjc_Up = 1.0, _bcTagWeight_xwjc_Do = 1.0;  */
+   double _bcTagWeight_xdyb_Up = 1.0, _bcTagWeight_xdyb_Do = 1.0, _bcTagWeight_xdyc_Up = 1.0, _bcTagWeight_xdyc_Do = 1.0;
+   double _bcTagWeight_xwjc_Up = 1.0, _bcTagWeight_xwjc_Do = 1.0;
    /* double _bcTagWeight_jes_Up = 1.0, _bcTagWeight_jes_Do = 1.0, _bcTagWeight_jer_Up = 1.0, _bcTagWeight_jer_Do = 1.0;  */
 
    /////////////////////// MC section //////////////////////////
@@ -1932,6 +1933,8 @@ void SkimAna::InitOutBranches(){
     
     outputTree->Branch("nJet"			, &_nJet			);
     outputTree->Branch("nBJet"		, &_nBJet			);
+    outputTree->Branch("wt_before"		, &wt_before			);
+    outputTree->Branch("wt_after"		, &wt_after			);
     outputTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
     //CTagShape EOY
     outputTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
