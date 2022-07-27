@@ -11,4 +11,3 @@ root://eosuser.cern.ch//eos/user/i/imirza/idas/Output/cms-hcs-run2/Skim_NanoAODU
 root://eosuser.cern.ch//eos/user/i/imirza/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt50to80_Ele_preVFP_Skim_NanoAOD.root
 root://eosuser.cern.ch//eos/user/i/imirza/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt80to120_Ele_preVFP_Skim_NanoAOD_1of2.root
 root://eosuser.cern.ch//eos/user/i/imirza/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/QCD_Pt80to120_Ele_preVFP_Skim_NanoAOD_2of2.root
-

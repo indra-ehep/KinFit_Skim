@@ -958,6 +958,8 @@ class SkimAna : public TSelector {
 
    //Theory weights
    float _q2weight_Up = 1.0, _q2weight_Do = 1.0 ;
+   float _muRweight_Up = 1.0, _muRweight_Do = 1.0 ;
+   float _muFweight_Up = 1.0, _muFweight_Do = 1.0 ;
    float _pdfweight_Up = 1.0, _pdfweight_Do = 1.0 , _pdfuncer = 0.0;
    float _ISRweight_Up = 1.0, _ISRweight_Do = 1.0;
    float _FSRweight_Up = 1.0, _FSRweight_Do = 1.0;
@@ -1882,6 +1884,10 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("puJetIDWeight_Up"	, &_PUJetIDWeight_Up		);
     outputTree->Branch("puJetIDWeight_Do"	, &_PUJetIDWeight_Do		);
 
+    outputTree->Branch("muRweight_Up"		, &_muRweight_Up       	        );
+    outputTree->Branch("muRweight_Do"		, &_muRweight_Do       	        );
+    outputTree->Branch("muFweight_Up"		, &_muFweight_Up       	        );
+    outputTree->Branch("muFweight_Do"		, &_muFweight_Do       	        );
     outputTree->Branch("q2weight_Up"		, &_q2weight_Up		        );
     outputTree->Branch("q2weight_Do"		, &_q2weight_Do		        );
     outputTree->Branch("pdfweight_Up"		, &_pdfweight_Up		);

@@ -2882,6 +2882,10 @@ void SkimAna::TheoWeights(){
 
   _q2weight_Up = 1.;
   _q2weight_Do = 1.;
+  _muRweight_Up = 1.0;
+  _muRweight_Do = 1.0 ;
+  _muFweight_Up = 1.0;
+  _muFweight_Do = 1.0 ;
 
   if(event->nLHEScaleWeight_ >=9 ){
 
@@ -2945,6 +2949,12 @@ void SkimAna::TheoWeights(){
     }
     genScaleSystWeights.clear();
     q2ScaleSystWeights.clear();
+        
+    _muRweight_Up = event->LHEScaleWeight_[7];
+    _muRweight_Do = event->LHEScaleWeight_[1];
+    _muFweight_Up = event->LHEScaleWeight_[5];
+    _muFweight_Do = event->LHEScaleWeight_[3];
+
   }
   
   _pdfweight_Up = 1. ;
@@ -3120,6 +3130,10 @@ void SkimAna::Clean(){
   _pdfweight_Do = 1.0;
   _q2weight_Up = 1.0;
   _q2weight_Do = 1.0;
+  _muRweight_Up = 1.0;
+  _muRweight_Do = 1.0 ;
+  _muFweight_Up = 1.0;
+  _muFweight_Do = 1.0 ;
   _FSRweight_Up = 1.0;
   _FSRweight_Do = 1.0;
   _FSRweight_Up = 1.0;
@@ -4731,13 +4745,15 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   
   double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
   double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
+  double mufwt = 1.0 ; if(systname == "bclhemufup") mufwt = _muFweight_Up ; if(systname == "bclhemufdown") mufwt = _muFweight_Do ;
+  double murwt = 1.0 ; if(systname == "bclhemurup") murwt = _muRweight_Up ; if(systname == "bclhemurdown") murwt = _muRweight_Do ; 
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt * btagwt;
-  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt ;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt * btagwt;
-  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt ;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
+  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
+  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
   
   return true;
 }
