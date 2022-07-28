@@ -44,7 +44,7 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////////// Observables //////////////////////////////////////
   
   ////////////////////// Weight and other histograms histograms ///////////////////////
-  fNBWtHists = 85;
+  fNBWtHists = 89;
   fNWtHists = fNDDReg*fNBWtHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNWtHists*fNSyst;
   histWt = new TH1D*[totNHists];
@@ -282,6 +282,10 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_eleEffWeight_Do","_eleEffWeight_Do",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_pdfweight_Up","_pdfweight_Up",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_pdfweight_Do","_pdfweight_Do",200, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_muRweight_Up","_muRweight_Up",200, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_muRweight_Do","_muRweight_Do",200, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_muFweight_Up","_muFweight_Up",200, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_muFweight_Do","_muFweight_Do",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_q2weight_Up","_q2weight_Up",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_q2weight_Do","_q2weight_Do",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_FSRweight_Up","_FSRweight_Up",200, -10, 10);
@@ -334,7 +338,6 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xdyc_Do","_bcTagWeight_xdyc_Do",300, -10, 50);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xwjc_Up","_bcTagWeight_xwjc_Up",300, -10, 50);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_xwjc_Do","_bcTagWeight_xwjc_Do",300, -10, 50);
-
     
     /* // CShapeCalib UL */
     /* histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_stat_Up","_bcTagWeight_stat_Up",300, -10, 50);
@@ -393,8 +396,8 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muIso","_muIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_eleIso","_eleIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muMET","_muMET", 100, 0., 500.);
-    histWt[fNWtHists*isyst + hidx++] = new TH1D("_eleMET","_eleMET", 100, 0., 500.);
-
+    histWt[fNWtHists*isyst + 88] = new TH1D("_eleMET","_eleMET", 100, 0., 500.);
+    
     // histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet1Pt_AF_mu","_bjet1Pt_AF_mu", 100, 0., 1000.);
     // histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet2Pt_AF_mu","_bjet2Pt_AF_mu", 100, 0., 1000.);
     // histWt[fNWtHists*isyst + hidx++] = new TH1D("_ljet1Pt_AF_mu","_ljet1Pt_AF_mu", 100, 0., 1000.);
@@ -737,7 +740,7 @@ void SkimAna::SelectSyst()
 			    "bcstatup", "bcstatdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			    "bcxdybupo", "bcxdybdown", "bcxdycup", "bcxdycdown",
+			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
 			    "bcxwjcup", "bcxwjcdown"//16
 
                             };

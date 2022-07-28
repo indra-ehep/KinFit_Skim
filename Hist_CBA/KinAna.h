@@ -152,15 +152,17 @@ public :
   
    /* // CShapeCalib UL */
    /* Double_t _bcTagWeight_stat_Up, _bcTagWeight_stat_Do, _bcTagWeight_pu_Up, _bcTagWeight_pu_Do;  */
-   /* Double_t _bcTagWeight_intp_Up, _bcTagWeight_intp_Do, _bcTagWeight_extp_Up, _bcTagWeight_extp_Do;     */
+   Double_t _bcTagWeight_intp_Up, _bcTagWeight_intp_Do, _bcTagWeight_extp_Up, _bcTagWeight_extp_Do;
    /* Double_t _bcTagWeight_lhemuf_Up, _bcTagWeight_lhemuf_Do, _bcTagWeight_lhemur_Up, _bcTagWeight_lhemur_Do;  */
    /* Double_t _bcTagWeight_isr_Up, _bcTagWeight_isr_Do, _bcTagWeight_fsr_Up, _bcTagWeight_fsr_Do;  */
-   /* Double_t _bcTagWeight_xdyb_Up, _bcTagWeight_xdyb_Do, _bcTagWeight_xdyc_Up, _bcTagWeight_xdyc_Do;  */
-   /* Double_t _bcTagWeight_xwjc_Up, _bcTagWeight_xwjc_Do;  */
+   Double_t _bcTagWeight_xdyb_Up, _bcTagWeight_xdyb_Do, _bcTagWeight_xdyc_Up, _bcTagWeight_xdyc_Do;
+   Double_t _bcTagWeight_xwjc_Up, _bcTagWeight_xwjc_Do;
    /* Double_t _bcTagWeight_jes_Up, _bcTagWeight_jes_Do, _bcTagWeight_jer_Up, _bcTagWeight_jer_Do;  */
 
    //Theory weights
   Float_t _q2weight_Up, _q2weight_Do;
+  Float_t _muRweight_Up, _muRweight_Do ;
+  Float_t _muFweight_Up, _muFweight_Do ;
   Float_t _pdfweight_Up, _pdfweight_Do, _pdfuncer;
   Float_t _ISRweight_Up, _ISRweight_Do;
   Float_t _FSRweight_Up, _FSRweight_Do;
@@ -507,10 +509,10 @@ void KinAna::Init(TTree *tree)
    tree->SetBranchStatus("bcTagWeight_stat_Do",1);   tree->SetBranchAddress("bcTagWeight_stat_Do", &_bcTagWeight_stat_Do);
    tree->SetBranchStatus("bcTagWeight_pu_Up",1);   tree->SetBranchAddress("bcTagWeight_pu_Up", &_bcTagWeight_pu_Up);
     tree->SetBranchStatus("bcTagWeight_pu_Do",1);   tree->SetBranchAddress("bcTagWeight_pu_Do", &_bcTagWeight_pu_Do);  */
-   /* tree->SetBranchStatus("bcTagWeight_intp_Up",1);   tree->SetBranchAddress("bcTagWeight_intp_Up", &_bcTagWeight_intp_Up); 
+   tree->SetBranchStatus("bcTagWeight_intp_Up",1);   tree->SetBranchAddress("bcTagWeight_intp_Up", &_bcTagWeight_intp_Up); 
    tree->SetBranchStatus("bcTagWeight_intp_Do",1);   tree->SetBranchAddress("bcTagWeight_intp_Do", &_bcTagWeight_intp_Do);
    tree->SetBranchStatus("bcTagWeight_extp_Up",1);   tree->SetBranchAddress("bcTagWeight_extp_Up", &_bcTagWeight_extp_Up);
-    tree->SetBranchStatus("bcTagWeight_extp_Do",1);   tree->SetBranchAddress("bcTagWeight_extp_Do", &_bcTagWeight_extp_Do);     */
+   tree->SetBranchStatus("bcTagWeight_extp_Do",1);   tree->SetBranchAddress("bcTagWeight_extp_Do", &_bcTagWeight_extp_Do);
    /* tree->SetBranchStatus("bcTagWeight_lhemuf_Up",1);   tree->SetBranchAddress("bcTagWeight_lhemuf_Up", &_bcTagWeight_lhemuf_Up); 
    tree->SetBranchStatus("bcTagWeight_lhemuf_Do",1);   tree->SetBranchAddress("bcTagWeight_lhemuf_Do", &_bcTagWeight_lhemuf_Do);
    tree->SetBranchStatus("bcTagWeight_lhemur_Up",1);   tree->SetBranchAddress("bcTagWeight_lhemur_Up", &_bcTagWeight_lhemur_Up);
@@ -519,18 +521,27 @@ void KinAna::Init(TTree *tree)
    tree->SetBranchStatus("bcTagWeight_isr_Do",1);   tree->SetBranchAddress("bcTagWeight_isr_Do", &_bcTagWeight_isr_Do);
    tree->SetBranchStatus("bcTagWeight_fsr_Up",1);   tree->SetBranchAddress("bcTagWeight_fsr_Up", &_bcTagWeight_fsr_Up);
     tree->SetBranchStatus("bcTagWeight_fsr_Do",1);   tree->SetBranchAddress("bcTagWeight_fsr_Do", &_bcTagWeight_fsr_Do);  */
-   /* tree->SetBranchStatus("bcTagWeight_xdyb_Up",1);   tree->SetBranchAddress("bcTagWeight_xdyb_Up", &_bcTagWeight_xdyb_Up); 
+   tree->SetBranchStatus("bcTagWeight_xdyb_Up",1);   tree->SetBranchAddress("bcTagWeight_xdyb_Up", &_bcTagWeight_xdyb_Up); 
    tree->SetBranchStatus("bcTagWeight_xdyb_Do",1);   tree->SetBranchAddress("bcTagWeight_xdyb_Do", &_bcTagWeight_xdyb_Do);
    tree->SetBranchStatus("bcTagWeight_xdyc_Up",1);   tree->SetBranchAddress("bcTagWeight_xdyc_Up", &_bcTagWeight_xdyc_Up);
-    tree->SetBranchStatus("bcTagWeight_xdyc_Do",1);   tree->SetBranchAddress("bcTagWeight_xdyc_Do", &_bcTagWeight_xdyc_Do);  */
-   /* tree->SetBranchStatus("bcTagWeight_xwjc_Up",1);   tree->SetBranchAddress("bcTagWeight_xwjc_Up", &_bcTagWeight_xwjc_Up); 
-   tree->SetBranchStatus("bcTagWeight_xwjc_Do",1);   tree->SetBranchAddress("bcTagWeight_xwjc_Do", &_bcTagWeight_xwjc_Do);  */
+   tree->SetBranchStatus("bcTagWeight_xdyc_Do",1);   tree->SetBranchAddress("bcTagWeight_xdyc_Do", &_bcTagWeight_xdyc_Do);
+   tree->SetBranchStatus("bcTagWeight_xwjc_Up",1);   tree->SetBranchAddress("bcTagWeight_xwjc_Up", &_bcTagWeight_xwjc_Up); 
+   tree->SetBranchStatus("bcTagWeight_xwjc_Do",1);   tree->SetBranchAddress("bcTagWeight_xwjc_Do", &_bcTagWeight_xwjc_Do);
    /* tree->SetBranchStatus("bcTagWeight_jes_Up",1);   tree->SetBranchAddress("bcTagWeight_jes_Up", &_bcTagWeight_jes_Up); 
    tree->SetBranchStatus("bcTagWeight_jes_Do",1);   tree->SetBranchAddress("bcTagWeight_jes_Do", &_bcTagWeight_jes_Do);
    tree->SetBranchStatus("bcTagWeight_jer_Up",1);   tree->SetBranchAddress("bcTagWeight_jer_Up", &_bcTagWeight_jer_Up);
     tree->SetBranchStatus("bcTagWeight_jer_Do",1);   tree->SetBranchAddress("bcTagWeight_jer_Do", &_bcTagWeight_jer_Do);  */
+    outputTree->Branch("muRweight_Up"		, &_muRweight_Up       	        );
+    outputTree->Branch("muRweight_Do"		, &_muRweight_Do       	        );
+    outputTree->Branch("muFweight_Up"		, &_muFweight_Up       	        );
+    outputTree->Branch("muFweight_Do"		, &_muFweight_Do       	        );
 
+  
    //Theory weights
+  // tree->SetBranchStatus("muRweight_Up",1);	   tree->SetBranchAddress("muRweight_Up", &_muRweight_Up);
+  // tree->SetBranchStatus("muRweight_Do",1);	   tree->SetBranchAddress("muRweight_Do", &_muRweight_Do);
+  // tree->SetBranchStatus("muFweight_Up",1);	   tree->SetBranchAddress("muFweight_Up", &_muFweight_Up);
+  // tree->SetBranchStatus("muFweight_Do",1);	   tree->SetBranchAddress("muFweight_Do", &_muFweight_Do);
   tree->SetBranchStatus("q2weight_Up",1);	   tree->SetBranchAddress("q2weight_Up", &_q2weight_Up);
   tree->SetBranchStatus("q2weight_Do",1);	   tree->SetBranchAddress("q2weight_Do", &_q2weight_Do);
   tree->SetBranchStatus("pdfweight_Up",1);	   tree->SetBranchAddress("pdfweight_Up", &_pdfweight_Up);

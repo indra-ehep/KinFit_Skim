@@ -1973,7 +1973,17 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
     outputTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
     outputTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);        
-    
+    outputTree->Branch("bcTagWeight_intp_Up"	, &_bcTagWeight_intp_Up	 ); 
+    outputTree->Branch("bcTagWeight_intp_Do"	, &_bcTagWeight_intp_Do	 );
+    outputTree->Branch("bcTagWeight_extp_Up"	, &_bcTagWeight_extp_Up	 );
+    outputTree->Branch("bcTagWeight_extp_Do"	, &_bcTagWeight_extp_Do	 );
+    outputTree->Branch("bcTagWeight_xdyb_Up"	, &_bcTagWeight_xdyb_Up	 ); 
+    outputTree->Branch("bcTagWeight_xdyb_Do"	, &_bcTagWeight_xdyb_Do	 );
+    outputTree->Branch("bcTagWeight_xdyc_Up"	, &_bcTagWeight_xdyc_Up	 );
+    outputTree->Branch("bcTagWeight_xdyc_Do"	, &_bcTagWeight_xdyc_Do	 );
+    outputTree->Branch("bcTagWeight_xwjc_Up"	, &_bcTagWeight_xwjc_Up	 ); 
+    outputTree->Branch("bcTagWeight_xwjc_Do"	, &_bcTagWeight_xwjc_Do	 );
+
     outputTree->Branch("chi2"			, &kinFitMinChi2       		);
     outputTree->Branch("ndf"			, &_NDF         		);
     outputTree->Branch("prob"			, &_prob         		);
