@@ -1495,7 +1495,6 @@ void SkimAna::LoadBCTag()
 
   //CTagShapeCalibration EOY
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  if(fYear==2016 or fYear==2016 or fYear==2016);
   
   SFb_hist_StatUp = (TH2F *)fBCSFFile->Get("SFb_hist_StatUp");
   SFc_hist_StatUp = (TH2F *)fBCSFFile->Get("SFc_hist_StatUp");
@@ -1503,7 +1502,7 @@ void SkimAna::LoadBCTag()
   SFb_hist_StatDown = (TH2F *)fBCSFFile->Get("SFb_hist_StatDown");
   SFc_hist_StatDown = (TH2F *)fBCSFFile->Get("SFc_hist_StatDown");
   SFl_hist_StatDown = (TH2F *)fBCSFFile->Get("SFl_hist_StatDown");
-
+  
   if(fYear==2016 or fYear==2018){
     SFb_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFb_hist_EleIDSFUp");
     SFc_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFc_hist_EleIDSFUp");
@@ -1511,7 +1510,7 @@ void SkimAna::LoadBCTag()
     SFb_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFb_hist_EleIDSFDown");
     SFc_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFc_hist_EleIDSFDown");
     SFl_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFl_hist_EleIDSFDown");
-
+    
     SFb_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFb_hist_MuIDSFUp");
     SFc_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFc_hist_MuIDSFUp");
     SFl_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFl_hist_MuIDSFUp");
@@ -2946,7 +2945,7 @@ void SkimAna::TheoWeights(){
       genScaleSystWeights.push_back(event->LHEScaleWeight_[24]);
       genScaleSystWeights.push_back(event->LHEScaleWeight_[34]);
       genScaleSystWeights.push_back(event->LHEScaleWeight_[39]);
-
+      
       _q2weight_Up = *max_element(genScaleSystWeights.begin(), genScaleSystWeights.end());
       _q2weight_Do = *min_element(genScaleSystWeights.begin(), genScaleSystWeights.end());
     }
@@ -2957,7 +2956,7 @@ void SkimAna::TheoWeights(){
     _muRweight_Do = event->LHEScaleWeight_[1];
     _muFweight_Up = event->LHEScaleWeight_[5];
     _muFweight_Do = event->LHEScaleWeight_[3];
-
+    
   }
   
   _pdfweight_Up = 1. ;
@@ -3137,8 +3136,8 @@ void SkimAna::Clean(){
   _muRweight_Do = 1.0 ;
   _muFweight_Up = 1.0;
   _muFweight_Do = 1.0 ;
-  _FSRweight_Up = 1.0;
-  _FSRweight_Do = 1.0;
+  _ISRweight_Up = 1.0;
+  _ISRweight_Do = 1.0;
   _FSRweight_Up = 1.0;
   _FSRweight_Do = 1.0;
   
@@ -5910,6 +5909,10 @@ bool SkimAna::FillBTagWt(){
     
     ((TH1D *) list->FindObject("_pdfweight_Up"))->Fill(_pdfweight_Up);
     ((TH1D *) list->FindObject("_pdfweight_Do"))->Fill(_pdfweight_Do);
+    ((TH1D *) list->FindObject("_muFweight_Up"))->Fill(_muFweight_Up);
+    ((TH1D *) list->FindObject("_muFweight_Do"))->Fill(_muFweight_Do);
+    ((TH1D *) list->FindObject("_muRweight_Up"))->Fill(_muRweight_Up);
+    ((TH1D *) list->FindObject("_muRweight_Do"))->Fill(_muRweight_Do);
     ((TH1D *) list->FindObject("_q2weight_Up"))->Fill(_q2weight_Up);
     ((TH1D *) list->FindObject("_q2weight_Do"))->Fill(_q2weight_Do);
     ((TH1D *) list->FindObject("_FSRweight_Up"))->Fill(_FSRweight_Up);

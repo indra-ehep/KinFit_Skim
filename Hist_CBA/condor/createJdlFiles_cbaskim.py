@@ -18,8 +18,8 @@ syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
-inputdir="CBA_CTagReWt"
-outputdir="CBA_CTagReWt-Hist1"
+inputdir="CBA_muFmuR"
+outputdir="CBA_muFmuR-Hist1"
 iosubdir="pre"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
@@ -72,7 +72,6 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #Create jdl files
 #----------------------------------------
 subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
-#for year in [2017,2018]:
 for year in [2016]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
