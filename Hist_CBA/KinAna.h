@@ -548,12 +548,12 @@ void KinAna::Init(TTree *tree)
   
   
   //Theory weights
-  if(fYear==2017){
-    tree->SetBranchStatus("muRweight_Up",1);	   tree->SetBranchAddress("muRweight_Up", &_muRweight_Up);
-    tree->SetBranchStatus("muRweight_Do",1);	   tree->SetBranchAddress("muRweight_Do", &_muRweight_Do);
-    tree->SetBranchStatus("muFweight_Up",1);	   tree->SetBranchAddress("muFweight_Up", &_muFweight_Up);
-    tree->SetBranchStatus("muFweight_Do",1);	   tree->SetBranchAddress("muFweight_Do", &_muFweight_Do);
-  }
+  //if(fYear==2017){
+  tree->SetBranchStatus("muRweight_Up",1);	   tree->SetBranchAddress("muRweight_Up", &_muRweight_Up);
+  tree->SetBranchStatus("muRweight_Do",1);	   tree->SetBranchAddress("muRweight_Do", &_muRweight_Do);
+  tree->SetBranchStatus("muFweight_Up",1);	   tree->SetBranchAddress("muFweight_Up", &_muFweight_Up);
+  tree->SetBranchStatus("muFweight_Do",1);	   tree->SetBranchAddress("muFweight_Do", &_muFweight_Do);
+  //}
   tree->SetBranchStatus("q2weight_Up",1);	   tree->SetBranchAddress("q2weight_Up", &_q2weight_Up);
   tree->SetBranchStatus("q2weight_Do",1);	   tree->SetBranchAddress("q2weight_Do", &_q2weight_Do);
   tree->SetBranchStatus("pdfweight_Up",1);	   tree->SetBranchAddress("pdfweight_Up", &_pdfweight_Up);
