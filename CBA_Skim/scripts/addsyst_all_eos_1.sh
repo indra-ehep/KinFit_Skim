@@ -23,8 +23,8 @@ syst_base="base iso20"
 #syst_base="base"
 
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_BJetSFTests/post"
-#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_muFmuR-Hist/post"
-inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_muFmuR-Hist1/post"
+inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_muFmuRFSRDo/post"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_muFmuRFSRDo-Hist1/post"
 skimflistdir="/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2016"

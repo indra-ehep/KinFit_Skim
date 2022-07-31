@@ -32,7 +32,8 @@ outputdir="CBA_muFmuR-Hist1"
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s'%(inputdir)
 kinpath='/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/%s'%(inputdir)
 
-for year in [2018]:
+#for year in [2018]:
+for year in [2017,2018]:
     os.system("if [ ! -d ../input/%s ] ; then mkdir -p ../input/%s ; fi"%(year,year))
     os.system("rm -f ../input/%s/*"%year)
     sampleList = eval("samples_%i"%year)
@@ -79,8 +80,8 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #Create jdl files
 #----------------------------------------
 subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
-#for year in [2017,2018]:
-for year in [2018]:
+for year in [2017,2018]:
+#for year in [2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
