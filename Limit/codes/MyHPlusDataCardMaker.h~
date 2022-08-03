@@ -106,15 +106,52 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
   TH1F* hist = (TH1F*) getHisto(inFile, histPath, inHistName, fTT)->Clone(outHistName);
   //printf("MyHPlusDataCardMaker::readWriteHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
   hist->Scale(sf);
-  hist->Rebin(5);
+  hist->Rebin(50);
   TH1F* trimmedHist = trimHisto(hist, outHistName, 5, 20, 170);
   //hist->SetAxisRange(20.,170.,"X");
   //TH1F* trimmedHist = hist;
+
+  if(outHistName.Contains("CMS_stat_")){
+    string hname = outHistName.Data();
+    string binnum  = "";
+    if(hname.find("Up")!=string::npos){
+      binnum = hname.substr( hname.find_last_of("_")+1, hname.find_last_of("Up") - hname.find_last_of("_") - 1 - 1);
+      //cout << "BIN NUMBER : " << binnum << endl;
+    }
+    if(hname.find("Down")!=string::npos){
+      binnum = hname.substr( hname.find_last_of("_")+1, hname.find_last_of("Do") - hname.find_last_of("_") - 1 - 1);
+      //cout << "BIN NUMBER : " << binnum << endl;
+    }
+    int ibin = atoi(binnum.c_str());
+    TH1F* trimmedHist_Temp = (TH1F *)trimmedHist->Clone("temp");
+    if(hname.find("Up")!=string::npos and trimmedHist->GetBinContent(ibin) > 0.0){
+      float error = trimmedHist->GetBinError(ibin);
+      float up_val = trimmedHist->GetBinContent(ibin) + error;
+      trimmedHist_Temp->SetBinContent(ibin, up_val);
+      trimmedHist_Temp->SetBinError(ibin, error);
+      //cout <<"binContent1 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin)  << ", error " << trimmedHist->GetBinError(ibin) << endl;
+    }
+    if(hname.find("Down")!=string::npos and trimmedHist->GetBinContent(ibin) > 0.0){
+      float error = trimmedHist->GetBinError(ibin);
+      float down_val = trimmedHist->GetBinContent(ibin) - error;
+      down_val = (down_val>0.0) ? down_val : 0.0 ;
+      error = (down_val>0.0) ? error : 0.0;
+      trimmedHist_Temp->SetBinContent(ibin, down_val);
+      trimmedHist_Temp->SetBinError(ibin, error);
+      //cout <<"binContent1 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin) << ", error " << trimmedHist->GetBinError(ibin)<< endl;
+    }
+    //trimmedHist->Delete();
+    trimmedHist = (TH1F *)trimmedHist_Temp->Clone(outHistName);
+    //cout <<"binContent2 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin) << endl;
+    delete trimmedHist_Temp ; 
+  }
+
   if(isWrite){
     outFile->cd();
     ///hist->Write(outHistName);
     trimmedHist->Write(outHistName);
   }
+  
   ///return hist;
   return trimmedHist;
 }

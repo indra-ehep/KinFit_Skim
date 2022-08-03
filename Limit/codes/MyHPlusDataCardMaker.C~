@@ -13,17 +13,16 @@
 //make data card for each mass
 //----------------------------------------//
 
-double totLumi = 35.9; //2016
-//double totLumi = 41.5; // 2017
-//double totLumi = 59.7; //2018
-void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppComent", 
-        TString histSubDir_="KinFit", 
-        TString histName="mjj_kfit", 
-        TString channelName="mu", 
-        int mass=80, 
-        TString label="WH80", 
-        TString hPlusFileName="all_Hplus80.root")
-  {
+void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppComent",
+			      TString syear="2016", 
+			      TString histSubDir_="KinFit",
+			      TString histName="mjj_kfit", 
+			      TString channelName="mu", 
+			      int mass=80, 
+			      TString label="WH80", 
+			      TString hPlusFileName="all_Hplus80.root")
+{
+
 
   MyHPlusDataCardMaker DC;
   //TString baseDir = "topPtWeight";
@@ -31,6 +30,15 @@ void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TString histSubDir = "Iso/"+histSubDir_+"/";
   bool isMuChannel = false; 
   if(channelName=="mu") isMuChannel = true;
+  inFileDir = inFileDir + "/" + syear;
+
+  int year = syear.Atoi();
+  double totLumi = 35.9; //2016
+  if(year==2017)
+    totLumi = 41.5; // 2017
+  if(year==2018)
+    totLumi = 59.7; //2018
+
   ///INPUT FILES
   TFile* fData    = TFile::Open(inFileDir+"/all_Data.root");
   //bkg
@@ -542,21 +550,34 @@ void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   fout->Close();
 }
 
-void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppComent", 
+void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppComent",
+			      TString syear="", 
 			      TString histSubDir_="", 
-			      TString histName="_kb_mjj_mu", 
+			      TString histName="_kb_mjj_", 
 			      TString channelName="mu", 
 			      int mass=80, 
 			      TString label="WH80", 
 			      TString hPlusFileName="all_HplusM80.root")
   {
 
+  bool isBinStat = false;  int nonStatBins = 30;
   MyHPlusDataCardMaker DC;
   //TString baseDir = "topPtWeight";
   TString baseDir = "base";
   TString histSubDir = "/Iso/";
   bool isMuChannel = false; 
   if(channelName=="mu") isMuChannel = true;
+  inFileDir = inFileDir + "/" + syear;
+  int year = syear.Atoi();
+  double totLumi = 35.9; //2016
+  if(year==2017)
+    totLumi = 41.5; // 2017
+  if(year==2018)
+    totLumi = 59.7; //2018
+
+  histName += channelName;
+  
+  printf("==== Year : %d ======\n",year);
   ///INPUT FILES
   TFile* fData    = (isMuChannel) ? TFile::Open(inFileDir+"/all_DataMu.root") : TFile::Open(inFileDir+"/all_DataEle.root");
   //bkg
@@ -595,15 +616,56 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* ttbar_PileupDown = DC.readWriteHisto(fTT, baseDir+"/pudown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_PileupDown", true);
   TH1F* ttbar_JERUp = DC.readWriteHisto(fTT, baseDir+"/jerup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_JERUp", true);
   TH1F* ttbar_JERDown = DC.readWriteHisto(fTT, baseDir+"/jerdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_JERDown", true);
-  TH1F* ttbar_bcTag1Up = DC.readWriteHisto(fTT, baseDir+"/bctag1up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Up", true);
-  TH1F* ttbar_bcTag1Down = DC.readWriteHisto(fTT, baseDir+"/bctag1down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Down", true);
-  TH1F* ttbar_bcTag2Up = DC.readWriteHisto(fTT, baseDir+"/bctag2up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag2Up", true);
-  TH1F* ttbar_bcTag2Down = DC.readWriteHisto(fTT, baseDir+"/bctag2down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag2Down", true);
-  TH1F* ttbar_bcTag3Up = DC.readWriteHisto(fTT, baseDir+"/bctag3up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag3Up", true);
-  TH1F* ttbar_bcTag3Down = DC.readWriteHisto(fTT, baseDir+"/bctag3down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag3Down", true);
-  for(int ibin = 1; ibin <=50 ; ibin++){
-    TH1F *ttbar_bin_stat_Up = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT, Form("ttbar_CMS_stat_cat1_ttbar_bin_%dUp",ibin), true);
-    TH1F *ttbar_bin_stat_Down = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT, Form("ttbar_CMS_stat_cat1_ttbar_bin_%dDown",ibin), true);
+  TH1F* ttbar_bcstatUp = DC.readWriteHisto(fTT, baseDir+"/bcstatup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatUp", true);
+  TH1F* ttbar_bcstatDown = DC.readWriteHisto(fTT, baseDir+"/bcstatdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatDown", true);
+  TH1F* ttbar_bclhemufUp = DC.readWriteHisto(fTT, baseDir+"/bclhemufup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemufUp", true);
+  TH1F* ttbar_bclhemufDown = DC.readWriteHisto(fTT, baseDir+"/bclhemufdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemufDown", true);
+  TH1F* ttbar_bclhemurUp = DC.readWriteHisto(fTT, baseDir+"/bclhemurup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemurUp", true);
+  TH1F* ttbar_bclhemurDown = DC.readWriteHisto(fTT, baseDir+"/bclhemurdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemurDown", true);
+  TH1F *ttbar_bcxdyUp, *ttbar_bcxdyDown, *ttbar_bcxstUp, *ttbar_bcxstDown, *ttbar_bcxwjUp, *ttbar_bcxwjDown, *ttbar_bcxttUp, *ttbar_bcxttDown;
+  if(year==2016 or year==2018){
+    ttbar_bcxdyUp = DC.readWriteHisto(fTT, baseDir+"/bcxdyup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyUp", true);
+    ttbar_bcxdyDown = DC.readWriteHisto(fTT, baseDir+"/bcxdydown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyDown", true);
+    ttbar_bcxstUp = DC.readWriteHisto(fTT, baseDir+"/bcxstup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxstUp", true);
+    ttbar_bcxstDown = DC.readWriteHisto(fTT, baseDir+"/bcxstdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxstDown", true);
+    ttbar_bcxwjUp = DC.readWriteHisto(fTT, baseDir+"/bcxwjup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjUp", true);
+    ttbar_bcxwjDown = DC.readWriteHisto(fTT, baseDir+"/bcxwjdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjDown", true);
+    ttbar_bcxttUp = DC.readWriteHisto(fTT, baseDir+"/bcxttup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxttUp", true);
+    ttbar_bcxttDown = DC.readWriteHisto(fTT, baseDir+"/bcxttdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxttDown", true);
+  }
+  TH1F *ttbar_bcintpUp, *ttbar_bcintpDown, *ttbar_bcextpUp, *ttbar_bcextpDown, *ttbar_bcxdybUp, *ttbar_bcxdybDown, *ttbar_bcxdycUp, *ttbar_bcxdycDown, *ttbar_bcxwjcUp, *ttbar_bcxwjcDown;
+  if(year==2017){
+    
+    ttbar_bcintpUp = DC.readWriteHisto(fTT, baseDir+"/bcintpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpUp", true);
+    ttbar_bcintpDown = DC.readWriteHisto(fTT, baseDir+"/bcintpdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpDown", true);
+    ttbar_bcextpUp = DC.readWriteHisto(fTT, baseDir+"/bcextpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcextpUp", true);
+    ttbar_bcextpDown = DC.readWriteHisto(fTT, baseDir+"/bcextpdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcextpDown", true);
+    ttbar_bcxdybUp = DC.readWriteHisto(fTT, baseDir+"/bcxdybup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdybUp", true);
+    ttbar_bcxdybDown = DC.readWriteHisto(fTT, baseDir+"/bcxdybdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdybDown", true);
+    ttbar_bcxdycUp = DC.readWriteHisto(fTT, baseDir+"/bcxdycup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdycUp", true);
+    ttbar_bcxdycDown = DC.readWriteHisto(fTT, baseDir+"/bcxdycdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdycDown", true);
+    ttbar_bcxwjcUp = DC.readWriteHisto(fTT, baseDir+"/bcxwjcup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcUp", true);
+    ttbar_bcxwjcDown = DC.readWriteHisto(fTT, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcDown", true);
+  }
+  //TH1F* ttbar_bcTag1Up = DC.readWriteHisto(fTT, baseDir+"/bctag1up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Up", true);
+  //TH1F* ttbar_bcTag1Down = DC.readWriteHisto(fTT, baseDir+"/bctag1down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Down", true);
+  //TH1F* ttbar_bcTag2Up = DC.readWriteHisto(fTT, baseDir+"/bctag2up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag2Up", true);
+  //TH1F* ttbar_bcTag2Down = DC.readWriteHisto(fTT, baseDir+"/bctag2down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag2Down", true);
+  //TH1F* ttbar_bcTag3Up = DC.readWriteHisto(fTT, baseDir+"/bctag3up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag3Up", true);
+  //TH1F* ttbar_bcTag3Down = DC.readWriteHisto(fTT, baseDir+"/bctag3down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag3Down", true);
+  TH1F* ttbar_pdfUp = DC.readWriteHisto(fTT, baseDir+"/pdfup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfUp", true);
+  TH1F* ttbar_pdfDown = DC.readWriteHisto(fTT, baseDir+"/pdfdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfDown", true);
+  TH1F* ttbar_q2Up = DC.readWriteHisto(fTT, baseDir+"/q2up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_q2Up", true);
+  TH1F* ttbar_q2Down = DC.readWriteHisto(fTT, baseDir+"/q2down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_q2Down", true);
+  TH1F* ttbar_isrUp = DC.readWriteHisto(fTT, baseDir+"/isrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrUp", true);
+  TH1F* ttbar_isrDown = DC.readWriteHisto(fTT, baseDir+"/isrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrDown", true);
+  TH1F* ttbar_fsrUp = DC.readWriteHisto(fTT, baseDir+"/fsrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrUp", true);
+  TH1F* ttbar_fsrDown = DC.readWriteHisto(fTT, baseDir+"/fsrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrDown", true);
+  if(isBinStat){
+    for(int ibin = 1; ibin <= nonStatBins ; ibin++){
+      TH1F *ttbar_bin_stat_Up = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT, Form("ttbar_CMS_stat_cat1_ttbar_bin_%dUp",ibin), true);
+      TH1F *ttbar_bin_stat_Down = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT, Form("ttbar_CMS_stat_cat1_ttbar_bin_%dDown",ibin), true);
+    }
   }
   
   double unc_ttbar_ExL = 1.0;
@@ -644,15 +706,55 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wjet_PileupDown = DC.readWriteHisto(fWJ, baseDir+"/pudown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_PileupDown", true);
   TH1F* wjet_JERUp = DC.readWriteHisto(fWJ, baseDir+"/jerup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_JERUp", true);
   TH1F* wjet_JERDown = DC.readWriteHisto(fWJ, baseDir+"/jerdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_JERDown", true);
-  TH1F* wjet_bcTag1Up = DC.readWriteHisto(fWJ, baseDir+"/bctag1up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag1Up", true);
-  TH1F* wjet_bcTag1Down = DC.readWriteHisto(fWJ, baseDir+"/bctag1down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag1Down", true); 
-  TH1F* wjet_bcTag2Up = DC.readWriteHisto(fWJ, baseDir+"/bctag2up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag2Up", true);
-  TH1F* wjet_bcTag2Down = DC.readWriteHisto(fWJ, baseDir+"/bctag2down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag2Down", true); 
-  TH1F* wjet_bcTag3Up = DC.readWriteHisto(fWJ, baseDir+"/bctag3up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag3Up", true);
-  TH1F* wjet_bcTag3Down = DC.readWriteHisto(fWJ, baseDir+"/bctag3down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag3Down", true); 
-  for(int ibin = 1; ibin <=50 ; ibin++){
-    TH1F *wjet_bin_stat_Up = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT, Form("wjet_CMS_stat_cat1_wjet_bin_%dUp",ibin), true);
-    TH1F *wjet_bin_stat_Do = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT, Form("wjet_CMS_stat_cat1_wjet_bin_%dDown",ibin), true);
+  TH1F* wjet_bcstatUp = DC.readWriteHisto(fWJ, baseDir+"/bcstatup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatUp", true);
+  TH1F* wjet_bcstatDown = DC.readWriteHisto(fWJ, baseDir+"/bcstatdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatDown", true);
+  TH1F* wjet_bclhemufUp = DC.readWriteHisto(fWJ, baseDir+"/bclhemufup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemufUp", true);
+  TH1F* wjet_bclhemufDown = DC.readWriteHisto(fWJ, baseDir+"/bclhemufdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemufDown", true);
+  TH1F* wjet_bclhemurUp = DC.readWriteHisto(fWJ, baseDir+"/bclhemurup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemurUp", true);
+  TH1F* wjet_bclhemurDown = DC.readWriteHisto(fWJ, baseDir+"/bclhemurdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemurDown", true);
+  TH1F *wjet_bcxdyUp, *wjet_bcxdyDown, *wjet_bcxstUp, *wjet_bcxstDown, *wjet_bcxwjUp, *wjet_bcxwjDown, *wjet_bcxttUp, *wjet_bcxttDown;
+  if(year==2016 or year==2018){
+    wjet_bcxdyUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdyup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyUp", true);
+    wjet_bcxdyDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdydown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyDown", true);
+    wjet_bcxstUp = DC.readWriteHisto(fWJ, baseDir+"/bcxstup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxstUp", true);
+    wjet_bcxstDown = DC.readWriteHisto(fWJ, baseDir+"/bcxstdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxstDown", true);
+    wjet_bcxwjUp = DC.readWriteHisto(fWJ, baseDir+"/bcxwjup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjUp", true);
+    wjet_bcxwjDown = DC.readWriteHisto(fWJ, baseDir+"/bcxwjdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjDown", true);
+    wjet_bcxttUp = DC.readWriteHisto(fWJ, baseDir+"/bcxttup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxttUp", true);
+    wjet_bcxttDown = DC.readWriteHisto(fWJ, baseDir+"/bcxttdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxttDown", true);
+  }
+  TH1F *wjet_bcintpUp, *wjet_bcintpDown, *wjet_bcextpUp, *wjet_bcextpDown, *wjet_bcxdybUp, *wjet_bcxdybDown, *wjet_bcxdycUp, *wjet_bcxdycDown, *wjet_bcxwjcUp, *wjet_bcxwjcDown;
+  if(year==2017){
+    wjet_bcintpUp = DC.readWriteHisto(fWJ, baseDir+"/bcintpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpUp", true);
+    wjet_bcintpDown = DC.readWriteHisto(fWJ, baseDir+"/bcintpdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpDown", true);
+    wjet_bcextpUp = DC.readWriteHisto(fWJ, baseDir+"/bcextpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcextpUp", true);
+    wjet_bcextpDown = DC.readWriteHisto(fWJ, baseDir+"/bcextpdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcextpDown", true);
+    wjet_bcxdybUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdybup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdybUp", true);
+    wjet_bcxdybDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdybdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdybDown", true);
+    wjet_bcxdycUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdycup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdycUp", true);
+    wjet_bcxdycDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdycdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdycDown", true);
+    wjet_bcxwjcUp = DC.readWriteHisto(fWJ, baseDir+"/bcxwjcup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjcUp", true);
+    wjet_bcxwjcDown = DC.readWriteHisto(fWJ, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjcDown", true);
+  }
+  //TH1F* wjet_bcTag1Up = DC.readWriteHisto(fWJ, baseDir+"/bctag1up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag1Up", true);
+  //TH1F* wjet_bcTag1Down = DC.readWriteHisto(fWJ, baseDir+"/bctag1down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag1Down", true); 
+  //TH1F* wjet_bcTag2Up = DC.readWriteHisto(fWJ, baseDir+"/bctag2up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag2Up", true);
+  //TH1F* wjet_bcTag2Down = DC.readWriteHisto(fWJ, baseDir+"/bctag2down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag2Down", true); 
+  //TH1F* wjet_bcTag3Up = DC.readWriteHisto(fWJ, baseDir+"/bctag3up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag3Up", true);
+  //TH1F* wjet_bcTag3Down = DC.readWriteHisto(fWJ, baseDir+"/bctag3down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag3Down", true); 
+  TH1F* wjet_pdfUp = DC.readWriteHisto(fWJ, baseDir+"/pdfup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_pdfUp", true);
+  TH1F* wjet_pdfDown = DC.readWriteHisto(fWJ, baseDir+"/pdfdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_pdfDown", true);
+  TH1F* wjet_q2Up = DC.readWriteHisto(fWJ, baseDir+"/q2up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_q2Up", true);
+  TH1F* wjet_q2Down = DC.readWriteHisto(fWJ, baseDir+"/q2down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_q2Down", true);
+  TH1F* wjet_isrUp = DC.readWriteHisto(fWJ, baseDir+"/isrup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_isrUp", true);
+  TH1F* wjet_isrDown = DC.readWriteHisto(fWJ, baseDir+"/isrdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_isrDown", true);
+  TH1F* wjet_fsrUp = DC.readWriteHisto(fWJ, baseDir+"/fsrup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrUp", true);
+  TH1F* wjet_fsrDown = DC.readWriteHisto(fWJ, baseDir+"/fsrdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrDown", true);
+  if(isBinStat){
+    for(int ibin = 1; ibin <= nonStatBins ; ibin++){
+      TH1F *wjet_bin_stat_Up = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT, Form("wjet_CMS_stat_cat1_wjet_bin_%dUp",ibin), true);
+      TH1F *wjet_bin_stat_Do = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT, Form("wjet_CMS_stat_cat1_wjet_bin_%dDown",ibin), true);
+    }
   }
 
   double unc_wjet_ExL = 1.0;
@@ -680,15 +782,55 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* zjet_PileupDown = DC.readWriteHisto(fDY, baseDir+"/pudown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_PileupDown", true);
   TH1F* zjet_JERUp = DC.readWriteHisto(fDY, baseDir+"/jerup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_JERUp", true);
   TH1F* zjet_JERDown = DC.readWriteHisto(fDY, baseDir+"/jerdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_JERDown", true);
-  TH1F* zjet_bcTag1Up = DC.readWriteHisto(fDY, baseDir+"/bctag1up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag1Up", true);
-  TH1F* zjet_bcTag1Down = DC.readWriteHisto(fDY, baseDir+"/bctag1down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag1Down", true);
-  TH1F* zjet_bcTag2Up = DC.readWriteHisto(fDY, baseDir+"/bctag2up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag2Up", true);
-  TH1F* zjet_bcTag2Down = DC.readWriteHisto(fDY, baseDir+"/bctag2down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag2Down", true);
-  TH1F* zjet_bcTag3Up = DC.readWriteHisto(fDY, baseDir+"/bctag3up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag3Up", true);
-  TH1F* zjet_bcTag3Down = DC.readWriteHisto(fDY, baseDir+"/bctag3down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag3Down", true);
-  for(int ibin = 1; ibin <=50 ; ibin++){
-    TH1F *zjet_bin_stat_Up = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT, Form("zjet_CMS_stat_cat1_zjet_bin_%dUp",ibin), true);
-    TH1F *zjet_bin_stat_Do = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT, Form("zjet_CMS_stat_cat1_zjet_bin_%dDown",ibin), true);
+  TH1F* zjet_bcstatUp = DC.readWriteHisto(fDY, baseDir+"/bcstatup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatUp", true);
+  TH1F* zjet_bcstatDown = DC.readWriteHisto(fDY, baseDir+"/bcstatdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatDown", true);
+  TH1F* zjet_bclhemufUp = DC.readWriteHisto(fDY, baseDir+"/bclhemufup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemufUp", true);
+  TH1F* zjet_bclhemufDown = DC.readWriteHisto(fDY, baseDir+"/bclhemufdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemufDown", true);
+  TH1F* zjet_bclhemurUp = DC.readWriteHisto(fDY, baseDir+"/bclhemurup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemurUp", true);
+  TH1F* zjet_bclhemurDown = DC.readWriteHisto(fDY, baseDir+"/bclhemurdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemurDown", true);
+  TH1F *zjet_bcxdyUp, *zjet_bcxdyDown, *zjet_bcxstUp, *zjet_bcxstDown, *zjet_bcxwjUp, *zjet_bcxwjDown, *zjet_bcxttUp, *zjet_bcxttDown;
+  if(year==2016 or year==2018){
+    zjet_bcxdyUp = DC.readWriteHisto(fDY, baseDir+"/bcxdyup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyUp", true);
+    zjet_bcxdyDown = DC.readWriteHisto(fDY, baseDir+"/bcxdydown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyDown", true);
+    zjet_bcxstUp = DC.readWriteHisto(fDY, baseDir+"/bcxstup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxstUp", true);
+    zjet_bcxstDown = DC.readWriteHisto(fDY, baseDir+"/bcxstdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxstDown", true);
+    zjet_bcxwjUp = DC.readWriteHisto(fDY, baseDir+"/bcxwjup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjUp", true);
+    zjet_bcxwjDown = DC.readWriteHisto(fDY, baseDir+"/bcxwjdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjDown", true);
+    zjet_bcxttUp = DC.readWriteHisto(fDY, baseDir+"/bcxttup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxttUp", true);
+    zjet_bcxttDown = DC.readWriteHisto(fDY, baseDir+"/bcxttdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxttDown", true);
+  }
+  TH1F *zjet_bcintpUp, *zjet_bcintpDown, *zjet_bcextpUp, *zjet_bcextpDown, *zjet_bcxdybUp, *zjet_bcxdybDown, *zjet_bcxdycUp, *zjet_bcxdycDown, *zjet_bcxwjcUp, *zjet_bcxwjcDown;
+  if(year==2017){
+    zjet_bcintpUp = DC.readWriteHisto(fDY, baseDir+"/bcintpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpUp", true);
+    zjet_bcintpDown = DC.readWriteHisto(fDY, baseDir+"/bcintpdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpDown", true);
+    zjet_bcextpUp = DC.readWriteHisto(fDY, baseDir+"/bcextpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcextpUp", true);
+    zjet_bcextpDown = DC.readWriteHisto(fDY, baseDir+"/bcextpdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcextpDown", true);
+    zjet_bcxdybUp = DC.readWriteHisto(fDY, baseDir+"/bcxdybup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdybUp", true);
+    zjet_bcxdybDown = DC.readWriteHisto(fDY, baseDir+"/bcxdybdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdybDown", true);
+    zjet_bcxdycUp = DC.readWriteHisto(fDY, baseDir+"/bcxdycup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdycUp", true);
+    zjet_bcxdycDown = DC.readWriteHisto(fDY, baseDir+"/bcxdycdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdycDown", true);
+    zjet_bcxwjcUp = DC.readWriteHisto(fDY, baseDir+"/bcxwjcup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjcUp", true);
+    zjet_bcxwjcDown = DC.readWriteHisto(fDY, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjcDown", true);
+  }
+  //TH1F* zjet_bcTag1Up = DC.readWriteHisto(fDY, baseDir+"/bctag1up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag1Up", true);
+  //TH1F* zjet_bcTag1Down = DC.readWriteHisto(fDY, baseDir+"/bctag1down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag1Down", true);
+  //TH1F* zjet_bcTag2Up = DC.readWriteHisto(fDY, baseDir+"/bctag2up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag2Up", true);
+  //TH1F* zjet_bcTag2Down = DC.readWriteHisto(fDY, baseDir+"/bctag2down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag2Down", true);
+  //TH1F* zjet_bcTag3Up = DC.readWriteHisto(fDY, baseDir+"/bctag3up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag3Up", true);
+  //TH1F* zjet_bcTag3Down = DC.readWriteHisto(fDY, baseDir+"/bctag3down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag3Down", true);
+  TH1F* zjet_pdfUp = DC.readWriteHisto(fDY, baseDir+"/pdfup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_pdfUp", true);
+  TH1F* zjet_pdfDown = DC.readWriteHisto(fDY, baseDir+"/pdfdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_pdfDown", true);
+  TH1F* zjet_q2Up = DC.readWriteHisto(fDY, baseDir+"/q2up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_q2Up", true);
+  TH1F* zjet_q2Down = DC.readWriteHisto(fDY, baseDir+"/q2down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_q2Down", true);
+  TH1F* zjet_isrUp = DC.readWriteHisto(fDY, baseDir+"/isrup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_isrUp", true);
+  TH1F* zjet_isrDown = DC.readWriteHisto(fDY, baseDir+"/isrdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_isrDown", true);
+  TH1F* zjet_fsrUp = DC.readWriteHisto(fDY, baseDir+"/fsrup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrUp", true);
+  TH1F* zjet_fsrDown = DC.readWriteHisto(fDY, baseDir+"/fsrdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrDown", true);
+  if(isBinStat){
+    for(int ibin = 1; ibin <= nonStatBins ; ibin++){
+      TH1F *zjet_bin_stat_Up = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT, Form("zjet_CMS_stat_cat1_zjet_bin_%dUp",ibin), true);
+      TH1F *zjet_bin_stat_Do = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT, Form("zjet_CMS_stat_cat1_zjet_bin_%dDown",ibin), true);
+    }
   }
 
   double unc_zjet_ExL = 1.0;
@@ -716,15 +858,55 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* stop_PileupDown = DC.readWriteHisto(fST, baseDir+"/pudown"+histSubDir, histName, sf_stop, fout, fTT, "stop_PileupDown", true);
   TH1F* stop_JERUp = DC.readWriteHisto(fST, baseDir+"/jerup"+histSubDir, histName, sf_stop, fout, fTT, "stop_JERUp", true);
   TH1F* stop_JERDown = DC.readWriteHisto(fST, baseDir+"/jerdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_JERDown", true);
-  TH1F* stop_bcTag1Up = DC.readWriteHisto(fST, baseDir+"/bctag1up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag1Up", true);
-  TH1F* stop_bcTag1Down = DC.readWriteHisto(fST, baseDir+"/bctag1down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag1Down", true);
-  TH1F* stop_bcTag2Up = DC.readWriteHisto(fST, baseDir+"/bctag2up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag2Up", true);
-  TH1F* stop_bcTag2Down = DC.readWriteHisto(fST, baseDir+"/bctag2down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag2Down", true);
-  TH1F* stop_bcTag3Up = DC.readWriteHisto(fST, baseDir+"/bctag3up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag3Up", true);
-  TH1F* stop_bcTag3Down = DC.readWriteHisto(fST, baseDir+"/bctag3down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag3Down", true);
-  for(int ibin = 1; ibin <=50 ; ibin++){
-    TH1F *stop_bin_stat_Up = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT, Form("stop_CMS_stat_cat1_stop_bin_%dUp",ibin), true);
-    TH1F *stop_bin_stat_Do = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT, Form("stop_CMS_stat_cat1_stop_bin_%dDown",ibin), true);
+  TH1F* stop_bcstatUp = DC.readWriteHisto(fST, baseDir+"/bcstatup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatUp", true);
+  TH1F* stop_bcstatDown = DC.readWriteHisto(fST, baseDir+"/bcstatdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatDown", true);
+  TH1F* stop_bclhemufUp = DC.readWriteHisto(fST, baseDir+"/bclhemufup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemufUp", true);
+  TH1F* stop_bclhemufDown = DC.readWriteHisto(fST, baseDir+"/bclhemufdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemufDown", true);
+  TH1F* stop_bclhemurUp = DC.readWriteHisto(fST, baseDir+"/bclhemurup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemurUp", true);
+  TH1F* stop_bclhemurDown = DC.readWriteHisto(fST, baseDir+"/bclhemurdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemurDown", true);
+  TH1F *stop_bcxdyUp, *stop_bcxdyDown, *stop_bcxstUp, *stop_bcxstDown, *stop_bcxwjUp, *stop_bcxwjDown, *stop_bcxttUp, *stop_bcxttDown;
+  if(year==2016 or year==2018){
+    stop_bcxdyUp = DC.readWriteHisto(fST, baseDir+"/bcxdyup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyUp", true);
+    stop_bcxdyDown = DC.readWriteHisto(fST, baseDir+"/bcxdydown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyDown", true);
+    stop_bcxstUp = DC.readWriteHisto(fST, baseDir+"/bcxstup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxstUp", true);
+    stop_bcxstDown = DC.readWriteHisto(fST, baseDir+"/bcxstdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxstDown", true);
+    stop_bcxwjUp = DC.readWriteHisto(fST, baseDir+"/bcxwjup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjUp", true);
+    stop_bcxwjDown = DC.readWriteHisto(fST, baseDir+"/bcxwjdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjDown", true);
+    stop_bcxttUp = DC.readWriteHisto(fST, baseDir+"/bcxttup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxttUp", true);
+    stop_bcxttDown = DC.readWriteHisto(fST, baseDir+"/bcxttdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxttDown", true);
+  }
+  TH1F *stop_bcintpUp, *stop_bcintpDown, *stop_bcextpUp, *stop_bcextpDown, *stop_bcxdybUp, *stop_bcxdybDown, *stop_bcxdycUp, *stop_bcxdycDown, *stop_bcxwjcUp, *stop_bcxwjcDown;
+  if(year==2017){    
+    stop_bcintpUp = DC.readWriteHisto(fST, baseDir+"/bcintpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpUp", true);
+    stop_bcintpDown = DC.readWriteHisto(fST, baseDir+"/bcintpdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpDown", true);
+    stop_bcextpUp = DC.readWriteHisto(fST, baseDir+"/bcextpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcextpUp", true);
+    stop_bcextpDown = DC.readWriteHisto(fST, baseDir+"/bcextpdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcextpDown", true);
+    stop_bcxdybUp = DC.readWriteHisto(fST, baseDir+"/bcxdybup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdybUp", true);
+    stop_bcxdybDown = DC.readWriteHisto(fST, baseDir+"/bcxdybdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdybDown", true);
+    stop_bcxdycUp = DC.readWriteHisto(fST, baseDir+"/bcxdycup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdycUp", true);
+    stop_bcxdycDown = DC.readWriteHisto(fST, baseDir+"/bcxdycdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdycDown", true);
+    stop_bcxwjcUp = DC.readWriteHisto(fST, baseDir+"/bcxwjcup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjcUp", true);
+    stop_bcxwjcDown = DC.readWriteHisto(fST, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjcDown", true);
+  }
+  //TH1F* stop_bcTag1Up = DC.readWriteHisto(fST, baseDir+"/bctag1up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag1Up", true);
+  //TH1F* stop_bcTag1Down = DC.readWriteHisto(fST, baseDir+"/bctag1down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag1Down", true);
+  //TH1F* stop_bcTag2Up = DC.readWriteHisto(fST, baseDir+"/bctag2up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag2Up", true);
+  //TH1F* stop_bcTag2Down = DC.readWriteHisto(fST, baseDir+"/bctag2down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag2Down", true);
+  //TH1F* stop_bcTag3Up = DC.readWriteHisto(fST, baseDir+"/bctag3up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag3Up", true);
+  //TH1F* stop_bcTag3Down = DC.readWriteHisto(fST, baseDir+"/bctag3down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag3Down", true);
+  TH1F* stop_pdfUp = DC.readWriteHisto(fST, baseDir+"/pdfup"+histSubDir, histName, sf_stop, fout, fTT, "stop_pdfUp", true);
+  TH1F* stop_pdfDown = DC.readWriteHisto(fST, baseDir+"/pdfdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_pdfDown", true);
+  TH1F* stop_q2Up = DC.readWriteHisto(fST, baseDir+"/q2up"+histSubDir, histName, sf_stop, fout, fTT, "stop_q2Up", true);
+  TH1F* stop_q2Down = DC.readWriteHisto(fST, baseDir+"/q2down"+histSubDir, histName, sf_stop, fout, fTT, "stop_q2Down", true);
+  TH1F* stop_isrUp = DC.readWriteHisto(fST, baseDir+"/isrup"+histSubDir, histName, sf_stop, fout, fTT, "stop_isrUp", true);
+  TH1F* stop_isrDown = DC.readWriteHisto(fST, baseDir+"/isrdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_isrDown", true);
+  TH1F* stop_fsrUp = DC.readWriteHisto(fST, baseDir+"/fsrup"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrUp", true);
+  TH1F* stop_fsrDown = DC.readWriteHisto(fST, baseDir+"/fsrdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrDown", true);
+  if(isBinStat){
+    for(int ibin = 1; ibin <= nonStatBins ; ibin++){
+      TH1F *stop_bin_stat_Up = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT, Form("stop_CMS_stat_cat1_stop_bin_%dUp",ibin), true);
+      TH1F *stop_bin_stat_Do = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT, Form("stop_CMS_stat_cat1_stop_bin_%dDown",ibin), true);
+    }
   }
 
   double unc_stop_ExL = 1.0;
@@ -752,15 +934,55 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* vv_PileupDown = DC.readWriteHisto(fVV, baseDir+"/pudown"+histSubDir, histName, sf_vv, fout, fTT, "vv_PileupDown", true);
   TH1F* vv_JERUp = DC.readWriteHisto(fVV, baseDir+"/jerup"+histSubDir, histName, sf_vv, fout, fTT, "vv_JERUp", true);
   TH1F* vv_JERDown = DC.readWriteHisto(fVV, baseDir+"/jerdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_JERDown", true);
-  TH1F* vv_bcTag1Up = DC.readWriteHisto(fVV, baseDir+"/bctag1up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag1Up", true);
-  TH1F* vv_bcTag1Down = DC.readWriteHisto(fVV, baseDir+"/bctag1down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag1Down", true);
-  TH1F* vv_bcTag2Up = DC.readWriteHisto(fVV, baseDir+"/bctag2up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag2Up", true);
-  TH1F* vv_bcTag2Down = DC.readWriteHisto(fVV, baseDir+"/bctag2down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag2Down", true);
-  TH1F* vv_bcTag3Up = DC.readWriteHisto(fVV, baseDir+"/bctag3up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag3Up", true);
-  TH1F* vv_bcTag3Down = DC.readWriteHisto(fVV, baseDir+"/bctag3down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag3Down", true);
-  for(int ibin = 1; ibin <=50 ; ibin++){
-    TH1F *vv_bin_stat_Up = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT, Form("vv_CMS_stat_cat1_vv_bin_%dUp",ibin), true);
-    TH1F *vv_bin_stat_Do = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT, Form("vv_CMS_stat_cat1_vv_bin_%dDown",ibin), true);
+  TH1F* vv_bcstatUp = DC.readWriteHisto(fVV, baseDir+"/bcstatup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatUp", true);
+  TH1F* vv_bcstatDown = DC.readWriteHisto(fVV, baseDir+"/bcstatdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatDown", true);
+  TH1F* vv_bclhemufUp = DC.readWriteHisto(fVV, baseDir+"/bclhemufup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemufUp", true);
+  TH1F* vv_bclhemufDown = DC.readWriteHisto(fVV, baseDir+"/bclhemufdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemufDown", true);
+  TH1F* vv_bclhemurUp = DC.readWriteHisto(fVV, baseDir+"/bclhemurup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemurUp", true);
+  TH1F* vv_bclhemurDown = DC.readWriteHisto(fVV, baseDir+"/bclhemurdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemurDown", true);
+  TH1F *vv_bcxdyUp, *vv_bcxdyDown, *vv_bcxstUp, *vv_bcxstDown, *vv_bcxwjUp, *vv_bcxwjDown, *vv_bcxttUp, *vv_bcxttDown;
+  if(year==2016 or year==2018){
+    vv_bcxdyUp = DC.readWriteHisto(fVV, baseDir+"/bcxdyup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyUp", true);
+    vv_bcxdyDown = DC.readWriteHisto(fVV, baseDir+"/bcxdydown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyDown", true);
+    vv_bcxstUp = DC.readWriteHisto(fVV, baseDir+"/bcxstup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxstUp", true);
+    vv_bcxstDown = DC.readWriteHisto(fVV, baseDir+"/bcxstdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxstDown", true);
+    vv_bcxwjUp = DC.readWriteHisto(fVV, baseDir+"/bcxwjup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjUp", true);
+    vv_bcxwjDown = DC.readWriteHisto(fVV, baseDir+"/bcxwjdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjDown", true);
+    vv_bcxttUp = DC.readWriteHisto(fVV, baseDir+"/bcxttup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxttUp", true);
+    vv_bcxttDown = DC.readWriteHisto(fVV, baseDir+"/bcxttdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxttDown", true);
+  }  
+  TH1F *vv_bcintpUp, *vv_bcintpDown, *vv_bcextpUp, *vv_bcextpDown, *vv_bcxdybUp, *vv_bcxdybDown, *vv_bcxdycUp, *vv_bcxdycDown, *vv_bcxwjcUp, *vv_bcxwjcDown;
+  if(year==2017){
+    vv_bcintpUp = DC.readWriteHisto(fVV, baseDir+"/bcintpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpUp", true);
+    vv_bcintpDown = DC.readWriteHisto(fVV, baseDir+"/bcintpdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpDown", true);
+    vv_bcextpUp = DC.readWriteHisto(fVV, baseDir+"/bcextpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcextpUp", true);
+    vv_bcextpDown = DC.readWriteHisto(fVV, baseDir+"/bcextpdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcextpDown", true);
+    vv_bcxdybUp = DC.readWriteHisto(fVV, baseDir+"/bcxdybup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdybUp", true);
+    vv_bcxdybDown = DC.readWriteHisto(fVV, baseDir+"/bcxdybdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdybDown", true);
+    vv_bcxdycUp = DC.readWriteHisto(fVV, baseDir+"/bcxdycup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdycUp", true);
+    vv_bcxdycDown = DC.readWriteHisto(fVV, baseDir+"/bcxdycdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdycDown", true);
+    vv_bcxwjcUp = DC.readWriteHisto(fVV, baseDir+"/bcxwjcup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjcUp", true);
+    vv_bcxwjcDown = DC.readWriteHisto(fVV, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjcDown", true);
+  }
+  //TH1F* vv_bcTag1Up = DC.readWriteHisto(fVV, baseDir+"/bctag1up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag1Up", true);
+  //TH1F* vv_bcTag1Down = DC.readWriteHisto(fVV, baseDir+"/bctag1down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag1Down", true);
+  //TH1F* vv_bcTag2Up = DC.readWriteHisto(fVV, baseDir+"/bctag2up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag2Up", true);
+  //TH1F* vv_bcTag2Down = DC.readWriteHisto(fVV, baseDir+"/bctag2down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag2Down", true);
+  //TH1F* vv_bcTag3Up = DC.readWriteHisto(fVV, baseDir+"/bctag3up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag3Up", true);
+  //TH1F* vv_bcTag3Down = DC.readWriteHisto(fVV, baseDir+"/bctag3down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag3Down", true);
+  TH1F* vv_pdfUp = DC.readWriteHisto(fVV, baseDir+"/pdfup"+histSubDir, histName, sf_vv, fout, fTT, "vv_pdfUp", true);
+  TH1F* vv_pdfDown = DC.readWriteHisto(fVV, baseDir+"/pdfdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_pdfDown", true);
+  TH1F* vv_q2Up = DC.readWriteHisto(fVV, baseDir+"/q2up"+histSubDir, histName, sf_vv, fout, fTT, "vv_q2Up", true);
+  TH1F* vv_q2Down = DC.readWriteHisto(fVV, baseDir+"/q2down"+histSubDir, histName, sf_vv, fout, fTT, "vv_q2Down", true);
+  TH1F* vv_isrUp = DC.readWriteHisto(fVV, baseDir+"/isrup"+histSubDir, histName, sf_vv, fout, fTT, "vv_isrUp", true);
+  TH1F* vv_isrDown = DC.readWriteHisto(fVV, baseDir+"/isrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_isrDown", true);
+  TH1F* vv_fsrUp = DC.readWriteHisto(fVV, baseDir+"/fsrup"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrUp", true);
+  TH1F* vv_fsrDown = DC.readWriteHisto(fVV, baseDir+"/fsrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrDown", true);
+  if(isBinStat){
+    for(int ibin = 1; ibin <= nonStatBins ; ibin++){
+      TH1F *vv_bin_stat_Up = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT, Form("vv_CMS_stat_cat1_vv_bin_%dUp",ibin), true);
+      TH1F *vv_bin_stat_Do = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT, Form("vv_CMS_stat_cat1_vv_bin_%dDown",ibin), true);
+    }
   }
   double unc_vv_ExL = 1.0;
   double unc_vv_ExM = 1.0;
@@ -787,12 +1009,12 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* qcd_PileupDown = DC.readWriteHisto(fQCD, baseDir+"/pudown"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_PileupDown", true);
   TH1F* qcd_JERUp = DC.readWriteHisto(fQCD, baseDir+"/jerup"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_JERUp", true);
   TH1F* qcd_JERDown = DC.readWriteHisto(fQCD, baseDir+"/jerdown"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_JERDown", true);
-  TH1F* qcd_bcTag1Up = DC.readWriteHisto(fQCD, baseDir+"/bctag1up"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag1Up", true);
-  TH1F* qcd_bcTag1Down = DC.readWriteHisto(fQCD, baseDir+"/bctag1down"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag1Down", true);
-  TH1F* qcd_bcTag2Up = DC.readWriteHisto(fQCD, baseDir+"/bctag2up"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag2Up", true);
-  TH1F* qcd_bcTag2Down = DC.readWriteHisto(fQCD, baseDir+"/bctag2down"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag2Down", true);
-  TH1F* qcd_bcTag3Up = DC.readWriteHisto(fQCD, baseDir+"/bctag3up"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag3Up", true);
-  TH1F* qcd_bcTag3Down = DC.readWriteHisto(fQCD, baseDir+"/bctag3down"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag3Down", true);
+  //TH1F* qcd_bcTag1Up = DC.readWriteHisto(fQCD, baseDir+"/bctag1up"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag1Up", true);
+  //TH1F* qcd_bcTag1Down = DC.readWriteHisto(fQCD, baseDir+"/bctag1down"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag1Down", true);
+  //TH1F* qcd_bcTag2Up = DC.readWriteHisto(fQCD, baseDir+"/bctag2up"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag2Up", true);
+  //TH1F* qcd_bcTag2Down = DC.readWriteHisto(fQCD, baseDir+"/bctag2down"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag2Down", true);
+  //TH1F* qcd_bcTag3Up = DC.readWriteHisto(fQCD, baseDir+"/bctag3up"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag3Up", true);
+  //TH1F* qcd_bcTag3Down = DC.readWriteHisto(fQCD, baseDir+"/bctag3down"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_bcTag3Down", true);
   */
   //QCD data driven
   //cout<<baseDir+"/base"+histSubDir+"/"+histName<<endl;
@@ -804,9 +1026,11 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   //double qcd_unc = DC.getSysUncQcd(fData, fTT, fST, fWJ, fDY,  fVV, histSubDir_+"/", histName, false);
   cout << "histname : "<<histName << endl;  
   double qcd_unc = DC.getSysUncQcdNano(isMuChannel, fData, fTT, fST, fWJ, fDY,  fVV, histSubDir_+"/", histName, false);
-  for(int ibin = 1; ibin <=50 ; ibin++){
-    TH1F *qcd_bin_stat_Up = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, Form("qcd_CMS_stat_cat1_qcd_bin_%dUp",ibin), true);
-    TH1F *qcd_bin_stat_Do = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, Form("qcd_CMS_stat_cat1_qcd_bin_%dDown",ibin), true);
+  if(isBinStat){
+    for(int ibin = 1; ibin <= nonStatBins ; ibin++){
+      TH1F *qcd_bin_stat_Up = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, Form("qcd_CMS_stat_cat1_qcd_bin_%dUp",ibin), true);
+      TH1F *qcd_bin_stat_Do = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, Form("qcd_CMS_stat_cat1_qcd_bin_%dDown",ibin), true);
+    }
   }
 
 
@@ -818,10 +1042,10 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   cout<<":data_obs ================: "<<data_obs->Integral()<<endl;
 
   //wh
-  //double sf_wh = 1.0;
-  double sf_wh = 1.0/2.0;
-  //baseDir = Form("HplusM%03d",mass);
-  baseDir = Form("HplmiM%03d",mass);
+  double sf_wh = 1.0;
+  baseDir = Form("HplusM%03d",mass);
+  // double sf_wh = 1.0/2.0;
+  // baseDir = Form("HplmiM%03d",mass);
   TH1F* wh = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label, true);
   TH1F* wh_JESUp = DC.readWriteHisto(fWH, baseDir+"/jecup"+histSubDir, histName, sf_wh, fout, fTT, label+"_JESUp", true);
   TH1F* wh_JESDown = DC.readWriteHisto(fWH, baseDir+"/jecdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_JESDown", true);
@@ -829,22 +1053,59 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wh_PileupDown = DC.readWriteHisto(fWH, baseDir+"/pudown"+histSubDir, histName, sf_wh, fout, fTT, label+"_PileupDown", true);
   TH1F* wh_JERUp = DC.readWriteHisto(fWH, baseDir+"/jerup"+histSubDir, histName, sf_wh, fout, fTT, label+"_JERUp", true);
   TH1F* wh_JERDown = DC.readWriteHisto(fWH, baseDir+"/jerdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_JERDown", true);
+  TH1F* wh_bcstatUp = DC.readWriteHisto(fWH, baseDir+"/bcstatup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatUp", true);
+  TH1F* wh_bcstatDown = DC.readWriteHisto(fWH, baseDir+"/bcstatdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatDown", true);
+  TH1F* wh_bclhemufUp = DC.readWriteHisto(fWH, baseDir+"/bclhemufup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemufUp", true);
+  TH1F* wh_bclhemufDown = DC.readWriteHisto(fWH, baseDir+"/bclhemufdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemufDown", true);
+  TH1F* wh_bclhemurUp = DC.readWriteHisto(fWH, baseDir+"/bclhemurup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemurUp", true);
+  TH1F* wh_bclhemurDown = DC.readWriteHisto(fWH, baseDir+"/bclhemurdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemurDown", true);
+  TH1F *wh_bcxdyUp, *wh_bcxdyDown, *wh_bcxstUp, *wh_bcxstDown, *wh_bcxwjUp, *wh_bcxwjDown, *wh_bcxttUp, *wh_bcxttDown;
+  if(year==2016 or year==2018){
+    wh_bcxdyUp = DC.readWriteHisto(fWH, baseDir+"/bcxdyup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyUp", true);
+    wh_bcxdyDown = DC.readWriteHisto(fWH, baseDir+"/bcxdydown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyDown", true);
+    wh_bcxstUp = DC.readWriteHisto(fWH, baseDir+"/bcxstup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxstUp", true);
+    wh_bcxstDown = DC.readWriteHisto(fWH, baseDir+"/bcxstdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxstDown", true);
+    wh_bcxwjUp = DC.readWriteHisto(fWH, baseDir+"/bcxwjup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjUp", true);
+    wh_bcxwjDown = DC.readWriteHisto(fWH, baseDir+"/bcxwjdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjDown", true);
+    wh_bcxttUp = DC.readWriteHisto(fWH, baseDir+"/bcxttup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxttUp", true);
+    wh_bcxttDown = DC.readWriteHisto(fWH, baseDir+"/bcxttdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxttDown", true);
+  }
+  TH1F *wh_bcintpUp, *wh_bcintpDown, *wh_bcextpUp, *wh_bcextpDown, *wh_bcxdybUp, *wh_bcxdybDown, *wh_bcxdycUp, *wh_bcxdycDown, *wh_bcxwjcUp, *wh_bcxwjcDown;
+  if(year==2017){
+    wh_bcintpUp = DC.readWriteHisto(fWH, baseDir+"/bcintpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpUp", true);
+    wh_bcintpDown = DC.readWriteHisto(fWH, baseDir+"/bcintpdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpDown", true);
+    wh_bcextpUp = DC.readWriteHisto(fWH, baseDir+"/bcextpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcextpUp", true);
+    wh_bcextpDown = DC.readWriteHisto(fWH, baseDir+"/bcextpdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcextpDown", true);
+    wh_bcxdybUp = DC.readWriteHisto(fWH, baseDir+"/bcxdybup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdybUp", true);
+    wh_bcxdybDown = DC.readWriteHisto(fWH, baseDir+"/bcxdybdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdybDown", true);
+    wh_bcxdycUp = DC.readWriteHisto(fWH, baseDir+"/bcxdycup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdycUp", true);
+    wh_bcxdycDown = DC.readWriteHisto(fWH, baseDir+"/bcxdycdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdycDown", true);
+    wh_bcxwjcUp = DC.readWriteHisto(fWH, baseDir+"/bcxwjcup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjcUp", true);
+    wh_bcxwjcDown = DC.readWriteHisto(fWH, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjcDown", true);
+  }
+  
   // TH1F* wh_topPtUp = DC.readWriteHisto(fWH,  "TopPtPlus/"+histSubDir, histName, sf_wh, fout, fTT, label+"_topPtUp", true);
   // TH1F* wh_topPtDown = DC.readWriteHisto(fWH, "TopPtMinus/"+histSubDir, histName, sf_wh, fout, fTT, label+"_topPtDown", true);
-  TH1F* wh_bcTag1Up = DC.readWriteHisto(fWH, baseDir+"/bctag1up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Up", true);
-  TH1F* wh_bcTag1Down = DC.readWriteHisto(fWH, baseDir+"/bctag1down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Down", true);
-  TH1F* wh_bcTag2Up = DC.readWriteHisto(fWH, baseDir+"/bctag2up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag2Up", true);
-  TH1F* wh_bcTag2Down = DC.readWriteHisto(fWH, baseDir+"/bctag2down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag2Down", true);
-  TH1F* wh_bcTag3Up = DC.readWriteHisto(fWH, baseDir+"/bctag3up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag3Up", true);
-  TH1F* wh_bcTag3Down = DC.readWriteHisto(fWH, baseDir+"/bctag3down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag3Down", true);
-  TH1F* wh_bin_stat_Up = 0x0;
-  TH1F* wh_bin_stat_Down = 0x0;
-  // for(int ibin = 1; ibin <=50 ; ibin++){
-  //   // if(ibin == 9 and ibin <=14) continue;
-  //   // if(ibin == 27 and ibin <=34) continue;
-  //   wh_bin_stat_Up = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label+Form("_CMS_stat_cat1_WH_bin_%dUp",ibin), true);
-  //   wh_bin_stat_Down = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label+Form("_CMS_stat_cat1_WH_bin_%dDown",ibin), true);
-  // }
+  //TH1F* wh_bcTag1Up = DC.readWriteHisto(fWH, baseDir+"/bctag1up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Up", true);
+  //TH1F* wh_bcTag1Down = DC.readWriteHisto(fWH, baseDir+"/bctag1down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Down", true);
+  //TH1F* wh_bcTag2Up = DC.readWriteHisto(fWH, baseDir+"/bctag2up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag2Up", true);
+  //TH1F* wh_bcTag2Down = DC.readWriteHisto(fWH, baseDir+"/bctag2down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag2Down", true);
+  //TH1F* wh_bcTag3Up = DC.readWriteHisto(fWH, baseDir+"/bctag3up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag3Up", true);
+  //TH1F* wh_bcTag3Down = DC.readWriteHisto(fWH, baseDir+"/bctag3down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag3Down", true);
+  TH1F* wh_pdfUp = DC.readWriteHisto(fWH, baseDir+"/pdfup"+histSubDir, histName, sf_wh, fout, fTT, label+"_pdfUp", true);
+  TH1F* wh_pdfDown = DC.readWriteHisto(fWH, baseDir+"/pdfdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_pdfDown", true);
+  TH1F* wh_q2Up = DC.readWriteHisto(fWH, baseDir+"/q2up"+histSubDir, histName, sf_wh, fout, fTT, label+"_q2Up", true);
+  TH1F* wh_q2Down = DC.readWriteHisto(fWH, baseDir+"/q2down"+histSubDir, histName, sf_wh, fout, fTT, label+"_q2Down", true);
+  TH1F* wh_isrUp = DC.readWriteHisto(fWH, baseDir+"/isrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrUp", true);
+  TH1F* wh_isrDown = DC.readWriteHisto(fWH, baseDir+"/isrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrDown", true);
+  TH1F* wh_fsrUp = DC.readWriteHisto(fWH, baseDir+"/fsrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrUp", true);
+  TH1F* wh_fsrDown = DC.readWriteHisto(fWH, baseDir+"/fsrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrDown", true);
+  if(isBinStat){
+    for(int ibin = 1; ibin <= nonStatBins ; ibin++){
+      TH1F* wh_bin_stat_Up = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label+Form("_CMS_stat_cat1_WH_bin_%dUp",ibin), true);
+      TH1F* wh_bin_stat_Down = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label+Form("_CMS_stat_cat1_WH_bin_%dDown",ibin), true);
+    }
+  }
 
   double unc_wh_ExL = 1.0;
   double unc_wh_ExM = 1.0;
@@ -860,6 +1121,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     TH1F* wh_yMnT = DC.getHisto(fWH, baseDir+"/Iso/ExCTag/", "sf_CTag_yMnT_wt", fTT, sf_wh);
     unc_wh_ExM = DC.getUncExM(wh_yMyT, wh_yMnT);
   }
+  // cout <<  "===== Hello There ===== " << endl;
   //open input template data card
   ifstream in;
   char* c = new char[1000];
@@ -872,6 +1134,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   ofstream out(Form(outDataCard.c_str(), mass));
   out.precision(8);
 
+  // cout <<  "===== Hello There 1 ===== " << endl;
   time_t secs=time(0);
   tm *t=localtime(&secs);
   while (in.good()){
@@ -884,24 +1147,29 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
         string year = string(Form("%d",t->tm_year+1900));
         line.replace( line.find("XXX") , 3 , day+"/"+month+"/"+year);
         out << line << endl;
+	// cout <<  "===== Hello There 2 ===== " << endl;
       }
       else if(line.find("Description")!=string::npos){
         line.replace( line.find("YYY") , 3 , string(Form("%d", mass)) );
         line.replace( line.find("ZZZ") , 3 , string(Form("%f", totLumi)) ); 
         line.replace( line.find("CCC") , 3 , string(Form("%s", string(channelName).c_str())) ); 
         out << line << endl;
+	// cout <<  "===== Hello There 3 ===== " << endl;
       }
       else if(line.find("shapes")!=string::npos){
         line.replace( line.find("XXX") , 3 , string(TString("Shapes_hcs_13TeV_")+channelName+TString("_")+histSubDir_+TString("_")+histName+TString("_")+label));
         out << line << endl;
+	// cout <<  "===== Hello There 4 ===== " << endl;
       }
       else if(line.find("Observation")!=string::npos){
         line.replace( line.find("XXX") , 3 , string(Form("%.0f", data_obs->Integral())));
         out << line << endl;
+	// cout <<  "===== Hello There 5 ===== " << endl;
       }
       else if(line.find("process")!=string::npos && line.find("WH")!=string::npos){
         line.replace( line.find("YYY") , 3 , string(Form("%d", mass)) );
         out << line << endl;
+	// cout <<  "===== Hello There 6 ===== " << endl;
       }
       else if(line.find("rate")!=string::npos){
         string rate = "rate               ";  
@@ -915,31 +1183,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	   << space << vv->Integral()
             << space << qcd_dd->Integral()
             << endl;
+	// cout <<  "===== Hello There 7 ===== " << endl;
       }
       else if(line.find("CMS_eff_lep")!=string::npos){  
         if(isMuChannel) line.replace( line.find("lep") , 4 , string(Form("%s", "m")));   
         else line.replace( line.find("lep") , 4 , string(Form("%s", "e")));
         out << line << endl;
+	// cout <<  "===== Hello There 8 ===== " << endl;
       }  
       else if(line.find("CMS_eff_bcInc1")!=string::npos){
-        float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag1Up, wh_bcTag1Down) : 1.00;
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
+        // float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag1Up, wh_bcTag1Down) : 1.00;
+        // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
         
-        float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag1Up, ttbar_bcTag1Down) : 1.00; 
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
+        // float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag1Up, ttbar_bcTag1Down) : 1.00; 
+        // line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
         
-        float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag1Up, wjet_bcTag1Down) : 1.00;
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
+        // float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag1Up, wjet_bcTag1Down) : 1.00;
+        // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
        
-        float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag1Up, zjet_bcTag1Down) : 1.00;
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
+        // float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag1Up, zjet_bcTag1Down) : 1.00;
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
 
-        float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag1Up, stop_bcTag1Down) : 1.00; 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
+        // float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag1Up, stop_bcTag1Down) : 1.00; 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
 
-        float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag1Up, vv_bcTag1Down) : 1.00;
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
-        out << line << endl;
+        // float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag1Up, vv_bcTag1Down) : 1.00;
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
+        // out << line << endl;
+	// cout <<  "===== Hello There 9 ===== " << endl;
       }
       // else if(line.find("CMS_eff_bcInc2")!=string::npos){
       //   // float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag2Up, wh_bcTag2Down) : 1.00;
@@ -962,90 +1233,95 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       //   // out << line << endl;
       // }
       else if(line.find("CMS_eff_bcInc3")!=string::npos){
-        float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag3Up, wh_bcTag3Down) : 1.00;
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
+        // float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag3Up, wh_bcTag3Down) : 1.00;
+        // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
         
-        float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag3Up, ttbar_bcTag3Down) : 1.00; 
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
+        // float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag3Up, ttbar_bcTag3Down) : 1.00; 
+        // line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
         
-        float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag3Up, wjet_bcTag3Down) : 1.00;
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
+        // float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag3Up, wjet_bcTag3Down) : 1.00;
+        // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
        
-        float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag3Up, zjet_bcTag3Down) : 1.00;
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
+        // float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag3Up, zjet_bcTag3Down) : 1.00;
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
         
-        float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag3Up, stop_bcTag3Down) : 1.00; 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
+        // float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag3Up, stop_bcTag3Down) : 1.00; 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
 
-        float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag3Up, vv_bcTag3Down) : 1.00;
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
-        out << line << endl;
+        // float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag3Up, vv_bcTag3Down) : 1.00;
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
+        // out << line << endl;
+	// cout <<  "===== Hello There 10 ===== " << endl;
       }
-      // else if(line.find("CMS_pileup")!=string::npos){
-      //   // float PileupUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_PileupUp, wh_PileupDown) : 1.00;
-      //   // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", PileupUnc_wh)) );
+      else if(line.find("CMS_pileup")!=string::npos){
+        float PileupUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_PileupUp, wh_PileupDown) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", PileupUnc_wh)) );
         
-      //   // float PileupUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_PileupUp, ttbar_PileupDown) : 1.00; 
-      //   // line.replace( line.find("TTTT") , 4 , string(Form("%.3f", PileupUnc_ttbar)) ); 
+        float PileupUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_PileupUp, ttbar_PileupDown) : 1.00; 
+        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", PileupUnc_ttbar)) ); 
         
-      //   // float PileupUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_PileupUp, wjet_PileupDown) : 1.00;
-      //   // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", PileupUnc_wjet)) ); 
+        float PileupUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_PileupUp, wjet_PileupDown) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", PileupUnc_wjet)) ); 
        
-      //   // float PileupUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_PileupUp, zjet_PileupDown) : 1.00;
-      //   // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", PileupUnc_zjet)) ); 
+        float PileupUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_PileupUp, zjet_PileupDown) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", PileupUnc_zjet)) ); 
         
-      //   // float PileupUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_PileupUp, stop_PileupDown) : 1.00; 
-      //   // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", PileupUnc_stop)) ); 
+        float PileupUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_PileupUp, stop_PileupDown) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", PileupUnc_stop)) ); 
 
-      //   // float PileupUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_PileupUp, vv_PileupDown) : 1.00;
-      //   // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", PileupUnc_vv)) ); 
-      //   // out << line << endl;
-      // }
-      // else if(line.find("CMS_scale_j")!=string::npos){
-      //   // float JESUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JESUp, wh_JESDown) : 1.00;
-      //   // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JESUnc_wh)) );
+        float PileupUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_PileupUp, vv_PileupDown) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", PileupUnc_vv)) ); 
+        out << line << endl;
+	// cout <<  "===== Hello There 11 ===== " << endl;
+      }
+      else if(line.find("CMS_scale_j")!=string::npos){
+        float JESUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JESUp, wh_JESDown) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JESUnc_wh)) );
         
-      //   // float JESUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JESUp, ttbar_JESDown) : 1.00; 
-      //   // line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JESUnc_ttbar)) ); 
+        float JESUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JESUp, ttbar_JESDown) : 1.00; 
+        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JESUnc_ttbar)) ); 
         
-      //   // float JESUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JESUp, wjet_JESDown) : 1.00;
-      //   // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JESUnc_wjet)) ); 
+        float JESUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JESUp, wjet_JESDown) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JESUnc_wjet)) ); 
        
-      //   // float JESUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JESUp, zjet_JESDown) : 1.00;
-      //   // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JESUnc_zjet)) ); 
+        float JESUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JESUp, zjet_JESDown) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JESUnc_zjet)) ); 
         
-      //   // float JESUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JESUp, stop_JESDown) : 1.00; 
-      //   // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JESUnc_stop)) ); 
+        float JESUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JESUp, stop_JESDown) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JESUnc_stop)) ); 
 
-      //   // float JESUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JESUp, vv_JESDown) : 1.00;
-      //   // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JESUnc_vv)) ); 
-      //   out << line << endl;
-      // }
-      // else if(line.find("CMS_res_j")!=string::npos){
-      //   // float JERUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JERUp, wh_JERDown) : 1.00;
-      //   // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JERUnc_wh)) );
+        float JESUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JESUp, vv_JESDown) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JESUnc_vv)) ); 
+        out << line << endl;
+	// cout <<  "===== Hello There 12 ===== " << endl;
+      }
+      else if(line.find("CMS_res_j")!=string::npos){
+        float JERUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JERUp, wh_JERDown) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JERUnc_wh)) );
         
-      //   // float JERUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JERUp, ttbar_JERDown) : 1.00; 
-      //   // line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JERUnc_ttbar)) ); 
+        float JERUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JERUp, ttbar_JERDown) : 1.00; 
+        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JERUnc_ttbar)) ); 
         
-      //   // float JERUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JERUp, wjet_JERDown) : 1.00;
-      //   // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
+        float JERUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JERUp, wjet_JERDown) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
        
-      //   // float JERUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JERUp, zjet_JERDown) : 1.00;
-      //   // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
+        float JERUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JERUp, zjet_JERDown) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
         
-      //   // float JERUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JERUp, stop_JERDown) : 1.00; 
-      //   // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
+        float JERUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JERUp, stop_JERDown) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
 
-      //   // float JERUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JERUp, vv_JERDown) : 1.00;
-      //   // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
-      //   // out << line << endl;
-      // }
+        float JERUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JERUp, vv_JERDown) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
+        out << line << endl;
+	// cout <<  "===== Hello There 13 ===== " << endl;
+      }
       else if(line.find("CMS_norm_qcd")!=string::npos){  
         line.replace( line.find("QQQQ") , 4 , string(Form("%.3f", qcd_unc)));   
         //if(isMuChannel) line.replace( line.find("QQQQ") , 4 , string(Form("%.4f", 1.10)));   
         //else line.replace(line.find("QQQQ") , 4 , string(Form("%.4f", 1.10)));   
-        out << line << endl;  
+        out << line << endl;
+	// cout <<  "===== Hello There 14 ===== " << endl;
       }
       // else if(line.find("CMS_topPtReweight")!=string::npos){
       //   float topPtUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_topPtUp, wh_topPtDown) : 1.00;
@@ -1059,22 +1335,328 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       // 	float scaleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_scaleUp, ttbar_scaleDown) : 1.00; 
       // 	line.replace( line.find("TTTT") , 4 , string(Form("%.3f", scaleUnc_ttbar)) ); 
       // 	out << line << endl;
+      // 	// cout <<  "===== Hello There 15 ===== " << endl;
       // }
       // else if(line.find("hDamp_tt")!=string::npos){
       //   float matchUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_matchingUp, ttbar_matchingDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", matchUnc_ttbar)) ); 
       //   out << line << endl;
+      // 	// cout <<  "===== Hello There 16 ===== " << endl;
       // }
       // else if(line.find("topMass_tt")!=string::npos){
       // 	float mtopUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_mtop1735, ttbar_mtop1715) : 1.00; 
       // 	line.replace( line.find("TTTT") , 4 , string(Form("%.3f", mtopUnc_ttbar)) ); 
       // 	out << line << endl;
+      // 	// cout <<  "===== Hello There 17 ===== " << endl;
+      // }
+      // else if(line.find("CMS_bcxtt")!=string::npos and (year==2016 or year==2018)){
+      //   float bcxttUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxttUp, wh_bcxttDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxttUnc_wh)) );
+        
+      //   float bcxttUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxttUp, ttbar_bcxttDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxttUnc_ttbar)) ); 
+        
+      //   float bcxttUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxttUp, wjet_bcxttDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxttUnc_wjet)) ); 
+       
+      //   float bcxttUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxttUp, zjet_bcxttDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxttUnc_zjet)) ); 
+        
+      //   float bcxttUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxttUp, stop_bcxttDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxttUnc_stop)) ); 
+
+      //   float bcxttUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxttUp, vv_bcxttDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxttUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcxwj")!=string::npos and (year==2016 or year==2018)){
+      //   float bcxwjUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxwjUp, wh_bcxwjDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxwjUnc_wh)) );
+        
+      //   float bcxwjUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxwjUp, ttbar_bcxwjDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxwjUnc_ttbar)) ); 
+        
+      //   float bcxwjUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxwjUp, wjet_bcxwjDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxwjUnc_wjet)) ); 
+       
+      //   float bcxwjUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxwjUp, zjet_bcxwjDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxwjUnc_zjet)) ); 
+        
+      //   float bcxwjUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxwjUp, stop_bcxwjDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxwjUnc_stop)) ); 
+
+      //   float bcxwjUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxwjUp, vv_bcxwjDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxwjUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcxst")!=string::npos and (year==2016 or year==2018)){
+      //   float bcxstUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxstUp, wh_bcxstDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxstUnc_wh)) );
+        
+      //   float bcxstUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxstUp, ttbar_bcxstDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxstUnc_ttbar)) ); 
+        
+      //   float bcxstUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxstUp, wjet_bcxstDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxstUnc_wjet)) ); 
+       
+      //   float bcxstUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxstUp, zjet_bcxstDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxstUnc_zjet)) ); 
+        
+      //   float bcxstUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxstUp, stop_bcxstDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxstUnc_stop)) ); 
+
+      //   float bcxstUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxstUp, vv_bcxstDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxstUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcxdy")!=string::npos and (year==2016 or year==2018)){
+      //   float bcxdyUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxdyUp, wh_bcxdyDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxdyUnc_wh)) );
+        
+      //   float bcxdyUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxdyUp, ttbar_bcxdyDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxdyUnc_ttbar)) ); 
+        
+      //   float bcxdyUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxdyUp, wjet_bcxdyDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxdyUnc_wjet)) ); 
+       
+      //   float bcxdyUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxdyUp, zjet_bcxdyDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxdyUnc_zjet)) ); 
+        
+      //   float bcxdyUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxdyUp, stop_bcxdyDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxdyUnc_stop)) ); 
+
+      //   float bcxdyUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxdyUp, vv_bcxdyDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxdyUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcxdyb")!=string::npos and year==2017){
+      //   float bcxdybUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxdybUp, wh_bcxdybDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxdybUnc_wh)) );
+        
+      //   float bcxdybUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxdybUp, ttbar_bcxdybDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxdybUnc_ttbar)) ); 
+        
+      //   float bcxdybUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxdybUp, wjet_bcxdybDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxdybUnc_wjet)) ); 
+       
+      //   float bcxdybUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxdybUp, zjet_bcxdybDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxdybUnc_zjet)) ); 
+        
+      //   float bcxdybUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxdybUp, stop_bcxdybDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxdybUnc_stop)) ); 
+
+      //   float bcxdybUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxdybUp, vv_bcxdybDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxdybUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcxdyc")!=string::npos and year==2017){
+      //   float bcxdycUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxdycUp, wh_bcxdycDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxdycUnc_wh)) );
+        
+      //   float bcxdycUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxdycUp, ttbar_bcxdycDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxdycUnc_ttbar)) ); 
+        
+      //   float bcxdycUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxdycUp, wjet_bcxdycDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxdycUnc_wjet)) ); 
+       
+      //   float bcxdycUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxdycUp, zjet_bcxdycDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxdycUnc_zjet)) ); 
+        
+      //   float bcxdycUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxdycUp, stop_bcxdycDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxdycUnc_stop)) ); 
+
+      //   float bcxdycUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxdycUp, vv_bcxdycDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxdycUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcxwjc")!=string::npos and year==2017){
+      //   float bcxwjcUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxwjcUp, wh_bcxwjcDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxwjcUnc_wh)) );
+        
+      //   float bcxwjcUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxwjcUp, ttbar_bcxwjcDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxwjcUnc_ttbar)) ); 
+        
+      //   float bcxwjcUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxwjcUp, wjet_bcxwjcDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxwjcUnc_wjet)) ); 
+       
+      //   float bcxwjcUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxwjcUp, zjet_bcxwjcDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxwjcUnc_zjet)) ); 
+        
+      //   float bcxwjcUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxwjcUp, stop_bcxwjcDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxwjcUnc_stop)) ); 
+
+      //   float bcxwjcUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxwjcUp, vv_bcxwjcDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxwjcUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcintp")!=string::npos and year==2017){
+      //   float bcintpUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcintpUp, wh_bcintpDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcintpUnc_wh)) );
+        
+      //   float bcintpUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcintpUp, ttbar_bcintpDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcintpUnc_ttbar)) ); 
+        
+      //   float bcintpUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcintpUp, wjet_bcintpDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcintpUnc_wjet)) ); 
+       
+      //   float bcintpUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcintpUp, zjet_bcintpDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcintpUnc_zjet)) ); 
+        
+      //   float bcintpUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcintpUp, stop_bcintpDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcintpUnc_stop)) ); 
+
+      //   float bcintpUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcintpUp, vv_bcintpDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcintpUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcextp")!=string::npos and year==2017){
+      //   float bcextpUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcextpUp, wh_bcextpDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcextpUnc_wh)) );
+        
+      //   float bcextpUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcextpUp, ttbar_bcextpDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcextpUnc_ttbar)) ); 
+        
+      //   float bcextpUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcextpUp, wjet_bcextpDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcextpUnc_wjet)) ); 
+       
+      //   float bcextpUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcextpUp, zjet_bcextpDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcextpUnc_zjet)) ); 
+        
+      //   float bcextpUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcextpUp, stop_bcextpDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcextpUnc_stop)) ); 
+
+      //   float bcextpUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcextpUp, vv_bcextpDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcextpUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bclhemur")!=string::npos){
+      //   float bclhemurUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemurUp, wh_bclhemurDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemurUnc_wh)) );
+        
+      //   float bclhemurUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemurUp, ttbar_bclhemurDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bclhemurUnc_ttbar)) ); 
+        
+      //   float bclhemurUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemurUp, wjet_bclhemurDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemurUnc_wjet)) ); 
+       
+      //   float bclhemurUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemurUp, zjet_bclhemurDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemurUnc_zjet)) ); 
+        
+      //   float bclhemurUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemurUp, stop_bclhemurDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemurUnc_stop)) ); 
+
+      //   float bclhemurUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemurUp, vv_bclhemurDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemurUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bclhemuf")!=string::npos){
+      //   float bclhemufUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemufUp, wh_bclhemufDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemufUnc_wh)) );
+        
+      //   float bclhemufUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemufUp, ttbar_bclhemufDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bclhemufUnc_ttbar)) ); 
+        
+      //   float bclhemufUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemufUp, wjet_bclhemufDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemufUnc_wjet)) ); 
+       
+      //   float bclhemufUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemufUp, zjet_bclhemufDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemufUnc_zjet)) ); 
+        
+      //   float bclhemufUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemufUp, stop_bclhemufDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemufUnc_stop)) ); 
+
+      //   float bclhemufUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemufUp, vv_bclhemufDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemufUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_bcstat")!=string::npos){
+      //   float bcstatUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcstatUp, wh_bcstatDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcstatUnc_wh)) );
+        
+      //   float bcstatUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcstatUp, ttbar_bcstatDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcstatUnc_ttbar)) ); 
+        
+      //   float bcstatUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcstatUp, wjet_bcstatDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcstatUnc_wjet)) ); 
+       
+      //   float bcstatUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcstatUp, zjet_bcstatDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcstatUnc_zjet)) ); 
+        
+      //   float bcstatUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcstatUp, stop_bcstatDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcstatUnc_stop)) ); 
+
+      //   float bcstatUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcstatUp, vv_bcstatDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcstatUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_fsr")!=string::npos){
+      //   float fsrUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_fsrUp, wh_fsrDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", fsrUnc_wh)) );
+        
+      //   float fsrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_fsrUp, ttbar_fsrDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", fsrUnc_ttbar)) ); 
+        
+      //   float fsrUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_fsrUp, wjet_fsrDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", fsrUnc_wjet)) ); 
+       
+      //   float fsrUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_fsrUp, zjet_fsrDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", fsrUnc_zjet)) ); 
+        
+      //   float fsrUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_fsrUp, stop_fsrDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", fsrUnc_stop)) ); 
+
+      //   float fsrUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_fsrUp, vv_fsrDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", fsrUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_isr")!=string::npos){
+      //   float isrUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_isrUp, wh_isrDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", isrUnc_wh)) );
+        
+      //   float isrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_isrUp, ttbar_isrDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", isrUnc_ttbar)) ); 
+        
+      //   float isrUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_isrUp, wjet_isrDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", isrUnc_wjet)) ); 
+       
+      //   float isrUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_isrUp, zjet_isrDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", isrUnc_zjet)) ); 
+        
+      //   float isrUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_isrUp, stop_isrDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", isrUnc_stop)) ); 
+
+      //   float isrUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_isrUp, vv_isrDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", isrUnc_vv)) ); 
+      //   out << line << endl;
+      // }
+      // else if(line.find("CMS_pdf")!=string::npos){
+      //   float pdfUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_pdfUp, wh_pdfDown) : 1.00;
+      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", pdfUnc_wh)) );
+        
+      //   float pdfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_pdfUp, ttbar_pdfDown) : 1.00; 
+      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", pdfUnc_ttbar)) ); 
+        
+      //   float pdfUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_pdfUp, wjet_pdfDown) : 1.00;
+      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", pdfUnc_wjet)) ); 
+       
+      //   float pdfUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_pdfUp, zjet_pdfDown) : 1.00;
+      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", pdfUnc_zjet)) ); 
+        
+      //   float pdfUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_pdfUp, stop_pdfDown) : 1.00; 
+      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", pdfUnc_stop)) ); 
+
+      //   float pdfUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_pdfUp, vv_pdfDown) : 1.00;
+      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", pdfUnc_vv)) ); 
+      //   out << line << endl;
       // }
       else{ //default without changes
         out << line << endl;
+	//// cout <<  "===== Hello There 15 ===== " << endl;
       }
     }
-  } 
+    // cout <<  "===== Hello There 16 ===== " << endl;
+  }
+  
   if(isExL){
     string rate = "CMS_eff_cExL       lnN";  
     string space = "     ";
@@ -1101,24 +1683,27 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
         << space <<string(Form("%.3f", 1.0))
         << endl;
   }
-  //out<<"* autoMCStats 0 1"<<endl;
+  if(!isBinStat)
+    out<<"* autoMCStats 0 1"<<endl;
   out.close();
   in.close();
   fout->Close();
+  delete fout;
 }
 
 
-void MyHPlusDataCardMaker(TString inFileDir="stack_20180418_Mu_Sys_PreAppComent", 
-        TString histSubDir_="KinFit", 
-        TString histName="mjj_kfit", 
-        TString channelName="mu", 
-        int mass=80, 
-        TString label="WH80", 
-        TString hPlusFileName="all_Hplus80.root")
+void MyHPlusDataCardMaker(TString inFileDir="stack_20180418_Mu_Sys_PreAppComent",
+			  TString year="2016", 
+			  TString histSubDir_="KinFit",
+			  TString histName="mjj_kfit", 
+			  TString channelName="mu", 
+			  int mass=80, 
+			  TString label="WH80", 
+			  TString hPlusFileName="all_Hplus80.root")
   {
 
-    //MyHPlusDataCardMakerMini(inFileDir, histSubDir_, histName, channelName, mass, label, hPlusFileName);
-    MyHPlusDataCardMakerNano(inFileDir, histSubDir_, histName, channelName, mass, label, hPlusFileName);
+    //MyHPlusDataCardMakerMini(inFileDir, year, histSubDir_, histName, channelName, mass, label, hPlusFileName);
+    MyHPlusDataCardMakerNano(inFileDir, year, histSubDir_, histName, channelName, mass, label, hPlusFileName);
 
 
   }

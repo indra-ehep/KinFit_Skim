@@ -71,7 +71,9 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   "Mass155/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH155.root",
   "Mass160/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH160.root"};
 
-  TString year_dir = "MiniAOD_2016/";
+  //TString year_dir = "MiniAODTemplate/MiniAOD_Default/";
+  //TString year_dir = "MiniAODTemplate/MiniAOD_NoTopPtReweight/";
+  TString year_dir = "";
   for(unsigned int i = 0 ; i < UInt_t(nMassPoints); i++){
     ///cout<<"limit/"+CHANNEL+"/"+CAT+"/"<<massFiles[i]<<endl;
     //TFile f("local/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); // higgsCombine_hcs_13TeV_mu.AsymptoticLimits.mH140.root
@@ -96,6 +98,9 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
       if(k==5) obsY[i]    = r;
     }
   }
+  for(int i = 0 ; i < nMassPoints; i++){
+    cout << "obsY[i] " << obsY[i] << endl;
+  }
   cout<<std::setprecision(4)<<endl;
   cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
@@ -110,7 +115,8 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
     expY1sH_[i1] = TMath::Abs(expY1sH_[i1]-expY[i1]);
     expY1sL_[i1] = TMath::Abs(expY1sL_[i1]-expY[i1]);
     //cout<<"$"<<std::setprecision(3)<<expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
-    printf("$%3.2f^{+%3.2f}_{-%3.2f}$",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+    //printf("$%3.2f^{+%3.2f}_{-%3.2f}$",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+    printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$ ",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
     //cout<<"$"<<std::setprecision(3)<<expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
     cout<<endl;
   }
@@ -234,7 +240,7 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   //line->Draw("SAME");
   gPad->RedrawAxis();
   TString outFile = "limit_"+CHANNEL+"_"+CAT;
-  TString outDir = "limit/"+CHANNEL+"/"+CAT;
+  TString outDir = "local/"+CHANNEL+"/"+CAT;
   gPad->SaveAs(outDir+"/"+outFile+".png");
   if(isOut){
     TFile *fout = new TFile(outDir+"/"+outFile+".root", "RECREATE");

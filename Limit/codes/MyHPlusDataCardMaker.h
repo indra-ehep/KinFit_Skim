@@ -106,8 +106,8 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
   TH1F* hist = (TH1F*) getHisto(inFile, histPath, inHistName, fTT)->Clone(outHistName);
   //printf("MyHPlusDataCardMaker::readWriteHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
   hist->Scale(sf);
-  hist->Rebin(5);
-  TH1F* trimmedHist = trimHisto(hist, outHistName, 5, 0, 200);
+  hist->Rebin(50);
+  TH1F* trimmedHist = trimHisto(hist, outHistName, 5, 20, 170);
   //hist->SetAxisRange(20.,170.,"X");
   //TH1F* trimmedHist = hist;
 
@@ -125,14 +125,17 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
     int ibin = atoi(binnum.c_str());
     TH1F* trimmedHist_Temp = (TH1F *)trimmedHist->Clone("temp");
     if(hname.find("Up")!=string::npos and trimmedHist->GetBinContent(ibin) > 0.0){
-      trimmedHist_Temp->SetBinContent(ibin, trimmedHist->GetBinContent(ibin) + trimmedHist->GetBinError(ibin));
-      trimmedHist_Temp->SetBinError(ibin, trimmedHist->GetBinError(ibin));
+      float error = trimmedHist->GetBinError(ibin);
+      float up_val = trimmedHist->GetBinContent(ibin) + error;
+      trimmedHist_Temp->SetBinContent(ibin, up_val);
+      trimmedHist_Temp->SetBinError(ibin, error);
       //cout <<"binContent1 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin)  << ", error " << trimmedHist->GetBinError(ibin) << endl;
     }
     if(hname.find("Down")!=string::npos and trimmedHist->GetBinContent(ibin) > 0.0){
-      float down_val = trimmedHist->GetBinContent(ibin) - trimmedHist->GetBinError(ibin);
+      float error = trimmedHist->GetBinError(ibin);
+      float down_val = trimmedHist->GetBinContent(ibin) - error;
       down_val = (down_val>0.0) ? down_val : 0.0 ;
-      float error = (down_val>0.0) ? trimmedHist->GetBinError(ibin) : 0.0;
+      error = (down_val>0.0) ? error : 0.0;
       trimmedHist_Temp->SetBinContent(ibin, down_val);
       trimmedHist_Temp->SetBinError(ibin, error);
       //cout <<"binContent1 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin) << ", error " << trimmedHist->GetBinError(ibin)<< endl;
