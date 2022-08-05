@@ -6,14 +6,14 @@ import sys
 sys.path.insert(0, os.getcwd().replace("condor","sample"))
 from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018 
 
-if not os.path.exists("tmpSub_2016-8_recover/log"):
-    os.makedirs("tmpSub_2016-8_recover/log")
+if not os.path.exists("tmpSub_2016-missing_mtop/log"):
+    os.makedirs("tmpSub_2016-missing_mtop/log")
 condorLogDir = "log"
-tarFile = "tmpSub_2016-8_recover/Skim_NanoAOD.tar.gz"
+tarFile = "tmpSub_2016-missing_mtop/Skim_NanoAOD.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../Skim_NanoAOD --exclude condor"%tarFile)
-os.system("cp runMakeSkims.sh tmpSub_2016-8_recover/")
+os.system("cp runMakeSkims.sh tmpSub_2016-missing_mtop/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -32,12 +32,12 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-subFile = open('tmpSub_2016-8_recover/condorSubmit.sh','w')
+subFile = open('tmpSub_2016-missing_mtop/condorSubmit.sh','w')
 for year in [2016,2017,2018]:
 #for year in [2018]:
     sampleList = eval("Samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
-    jdlFile = open('tmpSub_2016-8_recover/%s'%jdlName,'w')
+    jdlFile = open('tmpSub_2016-missing_mtop/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeSkims.sh \n')
     jdlFile.write(common_command)
     #condorOutDir="/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL"
