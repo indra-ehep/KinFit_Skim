@@ -3799,7 +3799,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     if(fYear==2016 and isPreVFP) _sampleWeight *= lumiFracI;
     if(fYear==2016 and isPostVFP) _sampleWeight *= lumiFracII;     
     //_sampleWeight = _sampleWeight*_FSRweight_Do ; //The FSRdown is multiplied
-    _sampleWeight = _sampleWeight*_FSRweight_Up ; //The FSRup is actually FSRdown 
+    //_sampleWeight = _sampleWeight*_FSRweight_Up ; //The FSRup is actually FSRdown 
   }
   if(IsDebug) Info("Process","Completed event weight application");
   

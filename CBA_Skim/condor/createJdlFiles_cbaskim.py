@@ -6,18 +6,19 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-                "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-                "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+# samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
+#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 
 
-syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
-syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
-syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
+# syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
+# syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
+# syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 
-syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+# syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+# syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+# syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+
 
 # samples_2016 = ["TTbar"]
 
@@ -29,6 +30,14 @@ syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 # syst_long_2017 = ["base"]
 # syst_long_2018 = ["base"]
 
+samples_2016 = ["TTbar"]
+samples_2017 = ["TTbar"]
+samples_2018 = ["TTbar"]
+
+syst_long_2016 = ["mtopup", "mtopdown"]
+syst_long_2017 = ["mtopup", "mtopdown"]
+syst_long_2018 = ["mtopup", "mtopdown"]
+
 
 tunedict = {
     "cp5up" : "CP5up_TTbar",
@@ -39,7 +48,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_muFmuRFSRDo_pre'
+jdlDir = 'tmpLog_muFmuR_pre'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -73,9 +82,9 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_muFmuRFSRDo/pre"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_muFmuRFSRDo/pre"
-    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_muFmuRFSRDo/pre"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_muFmuR/pre"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_muFmuR/pre"
+    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_muFmuR/pre"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))
