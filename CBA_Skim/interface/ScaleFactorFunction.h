@@ -63,22 +63,28 @@ void initCrossSections(){
   crossSections["TTbarPowheg_Dilepton_CP5down"]	 =  { 87.315, 87.315, 87.315};
   crossSections["TTbarPowheg_Dilepton_hdampup"]	 =  { 87.315, 87.315, 87.315};
   crossSections["TTbarPowheg_Dilepton_hdampdown"]      =  { 87.315, 87.315, 87.315};
-  crossSections["TTbarPowheg_Dilepton_mtop1695"]       =  { 87.315, 87.315, 87.315};
-  crossSections["TTbarPowheg_Dilepton_mtop1755"]       =  { 87.315, 87.315, 87.315};
+  /* crossSections["TTbarPowheg_Dilepton_mtop1695"]       =  { 87.315, 87.315, 87.315}; */
+  /* crossSections["TTbarPowheg_Dilepton_mtop1755"]       =  { 87.315, 87.315, 87.315}; */
+  crossSections["TTbarPowheg_Dilepton_mtop1715"]       =  { 87.315, 87.315, 87.315};
+  crossSections["TTbarPowheg_Dilepton_mtop1735"]       =  { 87.315, 87.315, 87.315};
 
   crossSections["TTbarPowheg_Semilept_CP5up"]		 =  {364.352,364.352,364.352};
   crossSections["TTbarPowheg_Semilept_CP5down"]	 =  {364.352,364.352,364.352};
   crossSections["TTbarPowheg_Semilept_hdampup"]	 =  {364.352,364.352,364.352};
   crossSections["TTbarPowheg_Semilept_hdampdown"]      =  {364.352,364.352,364.352};
-  crossSections["TTbarPowheg_Semilept_mtop1695"]       =  {364.352,364.352,364.352};
-  crossSections["TTbarPowheg_Semilept_mtop1755"]       =  {364.352,364.352,364.352};
+  /* crossSections["TTbarPowheg_Semilept_mtop1695"]       =  {364.352,364.352,364.352}; */
+  /* crossSections["TTbarPowheg_Semilept_mtop1755"]       =  {364.352,364.352,364.352}; */
+  crossSections["TTbarPowheg_Semilept_mtop1715"]       =  {364.352,364.352,364.352};
+  crossSections["TTbarPowheg_Semilept_mtop1735"]       =  {364.352,364.352,364.352};
     
   crossSections["TTbarPowheg_Hadronic_CP5up"]		 =  {380.095,380.095,380.095};
   crossSections["TTbarPowheg_Hadronic_CP5down"]	 =  {380.095,380.095,380.095};
   crossSections["TTbarPowheg_Hadronic_hdampup"]	 =  {380.095,380.095,380.095};
   crossSections["TTbarPowheg_Hadronic_hdampdown"]      =  {380.095,380.095,380.095};
-  crossSections["TTbarPowheg_Hadronic_mtop1695"]       =  {380.095,380.095,380.095};
-  crossSections["TTbarPowheg_Hadronic_mtop1755"]       =  {380.095,380.095,380.095};
+  /* crossSections["TTbarPowheg_Hadronic_mtop1695"]       =  {380.095,380.095,380.095}; */
+  /* crossSections["TTbarPowheg_Hadronic_mtop1755"]       =  {380.095,380.095,380.095}; */
+  crossSections["TTbarPowheg_Hadronic_mtop1715"]       =  {380.095,380.095,380.095};
+  crossSections["TTbarPowheg_Hadronic_mtop1735"]       =  {380.095,380.095,380.095};
   
   /* //UL */
   /* crossSections["ST_s_channel"] = {3.55, 3.55, 3.55}; */

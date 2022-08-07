@@ -1,1 +1,1 @@
-DataCard_Templates/MyTemplateDataCard.txt
+DataCard_Templates/MyTemplateDataCard_NanoAOD_11_LnS.txt

@@ -76,13 +76,15 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   //higgsCombine_hcs_13TeV_mu_Cat1_Inc.AsymptoticLimits.mH80.root
   
   double maxY = 1.0;
-  //TString year_dir = "";
+  TString year_dir = "";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allexceptFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1FSRDo_5GeV_allexceptFSRsyst_trimhisto/";
   //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR_logN/2016/";
   //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/2018/";
-  TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2/";
+  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2/";
+  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_logNShapeMixed/";
+  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_pujetidprefireLogN/";
   
   for(int i = 0 ; i < nMassPoints; i++){
     //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
@@ -231,7 +233,9 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   pl2->AddText("H^{+} #rightarrow c#bar{s}");
   pl2->AddText("BR(H^{+} #rightarrow c#bar{s}) = 1");
   
-  double totLumi = 35.9; //2016
+  double totLumi = 137.1; //2016
+  if(year_dir.Contains("2016"))
+    totLumi = 35.9; // 2016
   if(year_dir.Contains("2017"))
     totLumi = 41.5; // 2017
   if(year_dir.Contains("2018"))
@@ -297,17 +301,17 @@ void MyLimitPlotterNano(){
   // LimitPlotter("ele", "Cat1_Inc",     false, true );
   // LimitPlotter("mu_ele", "Cat1_Inc",     false, true );
 
-  // LimitPlotter("mu", "Cat1_Inc",     true, true );
-  // LimitPlotter("ele", "Cat1_Inc",     true, true );
-  // LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
+  LimitPlotter("mu", "Cat1_Inc",     true, true );
+  LimitPlotter("ele", "Cat1_Inc",     true, true );
+  LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
 
-  LimitPlotter("mu", "Cat3_cTagEx",     false, true );
-  LimitPlotter("ele", "Cat3_cTagEx",     false, true );
-  LimitPlotter("mu_ele", "Cat3_cTagEx",  false, true );
+  // LimitPlotter("mu", "Cat3_cTagEx",     false, true );
+  // LimitPlotter("ele", "Cat3_cTagEx",     false, true );
+  // LimitPlotter("mu_ele", "Cat3_cTagEx",  false, true );
 
-  //LimitPlotter("mu", "Cat3_cTagEx",     true, true );
-  //LimitPlotter("ele", "Cat3_cTagEx",     true, true );
-  //LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
+  // LimitPlotter("mu", "Cat3_cTagEx",     true, true );
+  // LimitPlotter("ele", "Cat3_cTagEx",     true, true );
+  // LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
 
   /*
   LimitPlotter("mu", "Cat2_cTagInc", true, true );

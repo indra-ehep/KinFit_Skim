@@ -1,0 +1,40 @@
+Date: XXX
+Description: H+, CCC +jets, mass YYY GeV, lumi=ZZZ fb-1
+---------------------------------------------------------------------------------------------------------
+imax   1  number of channels
+jmax   *  number of backgrounds
+kmax   *  number of nuisance parameters
+---------------------------------------------------------------------------------------------------------
+shapes * * XXX.root $PROCESS $PROCESS_$SYSTEMATIC
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+Observation    XXX
+---------------------------------------------------------------------------------------------------------
+bin                            hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV  hcs_13TeV hcs_13TeV
+process                        WHYYY       ttbar       wjet        zjet        stop        vv       qcd
+process                          0          1           2           3           4           5        6
+---------------------------------------------------------------------------------------------------------
+rate                    
+---------------------------------------------------------------------------------------------------------
+lumi_13TeV      lnN      1.025      1.025      1.025        1.025      1.025     1.025   1.00      Luminosity unc.
+CMS_eff_lep     lnN      1.01       1.01       1.01         1.01       1.01      1.01    1.00      Lepton selection unc.
+Pileup          shape     1.0        1.0        1.0          1.0        1.0       1.0     -            Pileup unc.
+JES             shape     1.0        1.0        1.0          1.0        1.0       1.0     -      JES unc.
+JER             shape     1.0        1.0        1.0          1.0        1.0       1.0     -      JER unc.
+CMS_norm_sig    lnN      1.061      1.00      1.00         1.00       1.00      1.00    1.00      TTbar xss unc.
+CMS_norm_tt     lnN      1.00      1.061      1.00         1.00       1.00      1.00    1.00      TTbar xss unc.
+CMS_norm_stop   lnN      1.00       1.00       1.00         1.00       1.07      1.00    1.00      Single top xss unc.
+CMS_norm_wjet   lnN      1.00       1.00       1.045        1.00       1.00      1.00    1.00      W+jets xss unc.
+CMS_norm_zjet   lnN      1.00       1.00       1.00         1.05       1.00      1.00    1.00      Z+jets xss unc.
+CMS_norm_qcd    lnN      1.00       1.00       1.00         1.00       1.00      1.00    QQQQ      QCD data-driven unc.
+CMS_norm_vv     lnN      1.00       1.00       1.00         1.00       1.00      1.04    1.00      Diboson xss unc.
+scaleRF_tt      shape      -          1.0         -           -          -         -       -        Renorm, factor scale Up/Down
+hDamp_tt        shape      -          1.0         -           -          -         -       -        Parton shower matching Up/Down 
+topMass_tt      lnN       -          1.0         -           -          -         -       -        Top mass Up/Down 
+pdf             shape     1.0        1.0        1.0          1.0        1.0       1.0     -      pdf unc.
+isr             shape     1.0        1.0        1.0          1.0        1.0       1.0     -      isr unc.
+fsr             shape     1.0        1.0        1.0          1.0        1.0       1.0     -      fsr unc.
+CMS_bcstat      lnN	  HHHH	     TTTT	WWWW	     DDDD	SSSS	  VVVV	1.00      bcstat
+bclhemuf        shape     1.0        1.0        1.0          1.0        1.0       1.0     -      bclhemuf
+CMS_bclhemur    lnN	  HHHH	     TTTT	WWWW	     DDDD	SSSS	  VVVV	1.00      bclhemuf
+
