@@ -76,7 +76,7 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   //higgsCombine_hcs_13TeV_mu_Cat1_Inc.AsymptoticLimits.mH80.root
   
   double maxY = 1.0;
-  TString year_dir = "";
+  //TString year_dir = "";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allexceptFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1FSRDo_5GeV_allexceptFSRsyst_trimhisto/";
@@ -90,7 +90,7 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FBLn-noBCStat/";
   //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FB-Ln/";
   //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_singles_nobcstat/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_bcshapes16only-Ln/2016/";
+  TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_conservative/2016/";
   
   for(int i = 0 ; i < nMassPoints; i++){
     //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
@@ -311,13 +311,13 @@ void MyLimitPlotterNano(){
   // LimitPlotter("ele", "Cat1_Inc",     true, true );
   // LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
 
-  LimitPlotter("mu", "Cat3_cTagEx",     false, true );
-  LimitPlotter("ele", "Cat3_cTagEx",     false, true );
-  LimitPlotter("mu_ele", "Cat3_cTagEx",  false, true );
+  // LimitPlotter("mu", "Cat3_cTagEx",     false, true );
+  // LimitPlotter("ele", "Cat3_cTagEx",     false, true );
+  // LimitPlotter("mu_ele", "Cat3_cTagEx",  false, true );
 
-  // LimitPlotter("mu", "Cat3_cTagEx",     true, true );
-  // LimitPlotter("ele", "Cat3_cTagEx",     true, true );
-  // LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
+  LimitPlotter("mu", "Cat3_cTagEx",     true, true );
+  LimitPlotter("ele", "Cat3_cTagEx",     true, true );
+  LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
 
   /*
   LimitPlotter("mu", "Cat2_cTagInc", true, true );
