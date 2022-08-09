@@ -16,7 +16,7 @@ process                          0          1           2           3           
 ---------------------------------------------------------------------------------------------------------
 rate                    
 ---------------------------------------------------------------------------------------------------------
-lumi_13TeV      lnN     1.025   1.025   1.025   1.025   1.025   1.025   1.00      Luminosity unc.
+CMS_lumi_13TeV  lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Luminosity unc.
 CMS_eff_lep     lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Lepton selection unc.
 CMS_prefire     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Prefire unc.
 CMS_pujetid     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      PUJetID unc.
@@ -36,7 +36,7 @@ topMass_tt      shape   -       1.0     -       -       -       -       -       
 CMS_pdf         lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      pdf unc.
 isr             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         isr unc.
 fsr             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         fsr unc.
-#CMS_bcstat      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcstat
+CMS_bcstat      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcstat
 bclhemuf	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemuf
 bclhemur	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemur
 # the line below is applicable for 2016
@@ -46,9 +46,9 @@ CMS_bcxdy       lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxdy (2016,2018)
 CMS_bcxst       lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxst (2016,2018)
 CMS_bcxwj       lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxwj (2016,2018)
 CMS_bcxtt       lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxtt (2016,2018)
-# the lines below are applicable for 2017
-CMS_bcxdyb      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxdyb (2017)
-CMS_bcxdyc      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxdyc (2017)
-CMS_bcxwjc      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxwjc (2017)
-CMS_bcintp      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcintp (2017)
-CMS_bcextp      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcextp (2017)
+# # the lines below are applicable for 2017
+CMS_bcxdyb    lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxdyb (2017)
+CMS_bcxdyc    lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxdyc (2017)
+CMS_bcxwjc    lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcxwjc (2017)
+CMS_bcintp    lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcintp (2017)
+CMS_bcextp    lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcextp (2017)

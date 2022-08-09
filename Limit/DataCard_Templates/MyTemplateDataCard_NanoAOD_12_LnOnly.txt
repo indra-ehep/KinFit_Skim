@@ -21,8 +21,8 @@ CMS_eff_lep     lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Lepton select
 CMS_prefire     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Prefire unc.
 CMS_pujetid     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      PUJetID unc.
 CMS_pileup      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Pileup unc.
-JES             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         JES unc.
-JER             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         JER unc.
+CMS_scale_j     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      JES unc.
+CMS_res_j       lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      JER unc.
 CMS_norm_sig    lnN     1.061   1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
 CMS_norm_tt     lnN     1.00    1.061   1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
 CMS_norm_stop   lnN     1.00    1.00    1.00    1.00    1.07    1.00    1.00      Single top xss unc.
@@ -30,15 +30,15 @@ CMS_norm_wjet   lnN     1.00    1.00    1.045   1.00    1.00    1.00    1.00    
 CMS_norm_zjet   lnN     1.00    1.00    1.00    1.05    1.00    1.00    1.00      Z+jets xss unc.
 CMS_norm_qcd    lnN     1.00    1.00    1.00    1.00    1.00    1.00    QQQQ      QCD data-driven unc.
 CMS_norm_vv     lnN     1.00    1.00    1.00    1.00    1.00    1.04    1.00      Diboson xss unc.
-CP5_tt          shape   -       1.0     -       -       -       -       -         CP5
-hDamp_tt        shape   -       1.0     -       -       -       -       -         Parton shower matching Up/Down 
-topMass_tt      shape   -       1.0     -       -       -       -       -         Top mass Up/Down 
+CP5_tt          lnN     -       TTTT    -       -       -       -       -         CP5
+hDamp_tt        lnN     -       TTTT    -       -       -       -       -         Parton shower matching Up/Down 
+topMass_tt      lnN     -       TTTT    -       -       -       -       -         Top mass Up/Down 
 CMS_pdf         lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      pdf unc.
-isr             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         isr unc.
-fsr             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         fsr unc.
-#CMS_bcstat      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcstat
-bclhemuf	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemuf
-bclhemur	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemur
+CMS_isr         lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      isr unc.
+CMS_fsr         lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      fsr unc.
+CMS_bcstat      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcstat
+CMS_bclhemuf    lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bclhemuf
+CMS_bclhemur    lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bclhemur
 # the line below is applicable for 2016
 CMS_bcbfrag     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      bcbfrag (2016)
 # the lines below are applicable for 2016 & 2018 

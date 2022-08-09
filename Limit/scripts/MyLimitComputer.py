@@ -36,7 +36,7 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     #execme('text2workspace.py '+COMB_DATACARD_NAME+'  -o '+t2wDataCardName )
     #Original
     #execme('combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
-    command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --setParameterRanges BR=0,1 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0,1 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     print("command2 : %s"%command2)
     execme(command2)
 
@@ -197,8 +197,8 @@ if __name__=="__main__":
     mass_array = [80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
     
     year_array = ["2016"]
-    year_array.append("2017")
-    year_array.append("2018")
+    # year_array.append("2017")
+    # year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")

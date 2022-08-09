@@ -16,7 +16,8 @@ class MyHPlusDataCardMaker{
   public:
 
   TH1F* getHisto(TFile *inRootFile, TString histPath, TString histName, TFile* fTT, double sf);
-  TH1F* readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite, double min_thres, bool isNeffThreshold);
+  //TH1F* readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite, double min_thres, bool isNeffThreshold);
+  TH1F* readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite, bool isNorm, TH1F *hBase);
   double getBTagUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown);
   double getStatUnc(TH1F* hCentral, double sError);
   double getUncExL(TH1F* yLyMyT, TH1F* yLyMnT, TH1F* yLnMyT, TH1F* yLnMnT);
@@ -26,6 +27,7 @@ class MyHPlusDataCardMaker{
   double getQcdDD(TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf);
   double getSysUncQcd(TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF);
   TH1F* trimHisto(TH1F* hist, TString histName, int binWidth, int xMin, int xMax);
+  TH1F* trimHistoNano(TH1F* hist, TString histName, float binWidth, float xMin, float xMax);
   
   double getQcdSFNano(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName);
   double getQcdDDNano(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf);
@@ -102,12 +104,14 @@ TH1F*  MyHPlusDataCardMaker:: getHisto(TFile *inRootFile, TString histPath, TStr
 }
 
 //Read histos from input file. Write to another file.
-TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite = false, double min_thres = 0, bool isNeffThreshold = false){
+//TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite = false, double min_thres = 0, bool isNeffThreshold = false){
+TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite = false, bool isNorm = false, TH1F *hBase = 0x0){
   TH1F* hist = (TH1F*) getHisto(inFile, histPath, inHistName, fTT)->Clone(outHistName);
   //printf("MyHPlusDataCardMaker::readWriteHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
   hist->Scale(sf);
-  hist->Rebin(20);
-  TH1F* trimmedHist = trimHisto(hist, outHistName, 2, 20, 170);
+  hist->Rebin(50);
+  TH1F* trimmedHist = trimHisto(hist, outHistName+"_1", 5, 20, 170);
+  //TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
   //hist->SetAxisRange(20.,170.,"X");
   //TH1F* trimmedHist = hist;
 
@@ -145,7 +149,9 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
     //cout <<"binContent2 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin) << endl;
     delete trimmedHist_Temp ; 
   }
-
+  if(isNorm){
+    if(trimmedHist->Integral() > 0.) trimmedHist->Scale(hBase->Integral()/trimmedHist->Integral());
+  }
   if(isWrite){
     outFile->cd();
     ///hist->Write(outHistName);
@@ -177,6 +183,21 @@ TH1F* MyHPlusDataCardMaker::trimHisto(TH1F* hist, TString histName, int binWidth
       double binVal = hist->GetBinContent(i);
       double binErr = hist->GetBinError(i);
       int i_new = i- initX+1;
+      newHisto->SetBinContent(i_new, binVal);
+      newHisto->SetBinError(i_new, binErr);
+    }
+    return newHisto;
+}
+
+TH1F* MyHPlusDataCardMaker::trimHistoNano(TH1F* hist, TString histName, float binWidth, float xMin, float xMax){
+  int nBin = TMath::Nint((xMax-xMin)/binWidth);
+    TH1F* newHisto = new TH1F(histName, histName, nBin, xMin, xMax);
+    int initX = TMath::Nint(xMin/binWidth);
+    int lastX = TMath::Nint(xMax/binWidth);
+    for(int i = initX; i<lastX; i++){
+      double binVal = hist->GetBinContent(i);
+      double binErr = hist->GetBinError(i);
+      int i_new = i - initX;
       newHisto->SetBinContent(i_new, binVal);
       newHisto->SetBinError(i_new, binErr);
     }
