@@ -1,1 +1,1 @@
-DataCard_Templates/MyTemplateDataCard_NanoAOD_15_Optimum.txt
+DataCard_Templates/MyTemplateDataCard_NanoAOD_16_MiniAODEqv.txt

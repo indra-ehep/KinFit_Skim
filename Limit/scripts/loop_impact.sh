@@ -1,4 +1,4 @@
-category=1
+category=3
 
 if [ $category -eq 1 ] ; then
     cat_dir="Cat1_Inc"
