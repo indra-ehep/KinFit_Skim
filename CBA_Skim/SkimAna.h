@@ -816,6 +816,8 @@ class SkimAna : public TSelector {
 
    double wt_before = 1.0 ; double  wt_after = 1.0;
    TFile *fBCSFFile = 0x0;
+   TFile *fBCSFFile_a = 0x0;
+   TFile *fBCSFFile_b = 0x0;
    TH2F *SFb_hist=0x0, *SFc_hist=0x0, *SFl_hist=0x0;
    // CShapeCalib EOY
    TH2F *SFb_hist_StatUp = 0x0, *SFc_hist_StatUp = 0x0, *SFl_hist_StatUp = 0x0;
@@ -2376,6 +2378,7 @@ Bool_t SkimAna::Notify()
 	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cuta ; 
       }
       inputKFResoPath += "/preVFP" ;
+      fBCSFFile = fBCSFFile_a ;
     }
 
     if(isPostVFP){ 
@@ -2391,6 +2394,7 @@ Bool_t SkimAna::Notify()
 	selector->ctag_CvsB_T_cut = selector->ctag_CvsB_T_cutb ; 
       }
       inputKFResoPath += "/postVFP" ;
+      fBCSFFile = fBCSFFile_b ;
     }
     
     if(selector->useDeepCSVbTag) 
@@ -2509,6 +2513,105 @@ Bool_t SkimAna::Notify()
     /* l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str())); */
     /* c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str())); */
     /* b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str())); */
+
+    //CTagShapeCalibration EOY
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    SFb_hist = (TH2F *)fBCSFFile->Get("SFb_hist");
+    SFc_hist = (TH2F *)fBCSFFile->Get("SFc_hist");
+    SFl_hist = (TH2F *)fBCSFFile->Get("SFl_hist");
+  
+    SFb_hist_StatUp = (TH2F *)fBCSFFile->Get("SFb_hist_StatUp");
+    SFc_hist_StatUp = (TH2F *)fBCSFFile->Get("SFc_hist_StatUp");
+    SFl_hist_StatUp = (TH2F *)fBCSFFile->Get("SFl_hist_StatUp");
+    SFb_hist_StatDown = (TH2F *)fBCSFFile->Get("SFb_hist_StatDown");
+    SFc_hist_StatDown = (TH2F *)fBCSFFile->Get("SFc_hist_StatDown");
+    SFl_hist_StatDown = (TH2F *)fBCSFFile->Get("SFl_hist_StatDown");
+    
+    SFb_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFUp");
+    SFc_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFUp");
+    SFl_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFUp");
+    SFb_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFDown");
+    SFc_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFDown");
+    SFl_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFDown");
+
+    SFb_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRUp");
+    SFc_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRUp");
+    SFl_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRUp");
+    SFb_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRDown");
+    SFc_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRDown");
+    SFl_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRDown");
+
+    SFb_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRUp");
+    SFc_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRUp");
+    SFl_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRUp");
+    SFb_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRDown");
+    SFc_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRDown");
+    SFl_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRDown");
+
+    SFb_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRUp");
+    SFc_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRUp");
+    SFl_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRUp");
+    SFb_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRDown");
+    SFc_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRDown");
+    SFl_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRDown");
+
+    SFb_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightUp");
+    SFc_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightUp");
+    SFl_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightUp");
+    SFb_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightDown");
+    SFc_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightDown");
+    SFl_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightDown");
+    
+    SFb_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalUp");
+    SFc_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalUp");
+    SFl_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalUp");
+    SFb_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalDown");
+    SFc_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalDown");
+    SFl_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalDown");
+  
+    SFb_hist_jerUp = (TH2F *)fBCSFFile->Get("SFb_hist_jerUp");
+    SFc_hist_jerUp = (TH2F *)fBCSFFile->Get("SFc_hist_jerUp");
+    SFl_hist_jerUp = (TH2F *)fBCSFFile->Get("SFl_hist_jerUp");
+    SFb_hist_jerDown = (TH2F *)fBCSFFile->Get("SFb_hist_jerDown");
+    SFc_hist_jerDown = (TH2F *)fBCSFFile->Get("SFc_hist_jerDown");
+    SFl_hist_jerDown = (TH2F *)fBCSFFile->Get("SFl_hist_jerDown");
+
+    SFb_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFb_hist_InterpUp");
+    SFc_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFc_hist_InterpUp");
+    SFl_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFl_hist_InterpUp");
+    SFb_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFb_hist_InterpDown");
+    SFc_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFc_hist_InterpDown");
+    SFl_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFl_hist_InterpDown");
+  
+    SFb_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapUp");
+    SFc_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapUp");
+    SFl_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapUp");
+    SFb_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapDown");
+    SFc_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapDown");
+    SFl_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapDown");
+
+    SFb_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bUp");
+    SFc_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bUp");
+    SFl_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bUp");
+    SFb_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bDown");
+    SFc_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bDown");
+    SFl_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bDown");
+
+    SFb_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cUp");
+    SFc_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cUp");
+    SFl_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cUp");
+    SFb_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cDown");
+    SFc_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cDown");
+    SFl_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cDown");
+  
+    SFb_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cUp");
+    SFc_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cUp");
+    SFl_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cUp");
+    SFb_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cDown");
+    SFc_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cDown");
+    SFl_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cDown");  
+
   }
 
   return kTRUE;

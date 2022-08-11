@@ -716,18 +716,32 @@ void SkimAna::SelectSyst()
 
   //                           };
 
-   const char *systbase_2016[] = {"base", 
+   // const char *systbase_2016[] = {"base", 
+   // 			    "pdfup", "pdfdown", "q2up", "q2down",
+   // 			    "isrup", "isrdown", "fsrup", "fsrdown",
+   // 			    "puup", "pudown", "prefireup", "prefiredown",
+   // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+   // 			    "pujetidup", "pujetiddown",  //19
+   // 			    // CShapeCalib EOY
+   // 			    "bcstatup", "bcstatdown",
+   // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+   // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
+   // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
+   // 			    "bcbfragup", "bcbfragdown" //16
+   //                          };
+
+    const char *systbase_2016[] = {"base", 
 			    "pdfup", "pdfdown", "q2up", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
 			    "puup", "pudown", "prefireup", "prefiredown",
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
-			    // CShapeCalib EOY
+			    // CShapeCalib UL
 			    "bcstatup", "bcstatdown",
+			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
-			    "bcbfragup", "bcbfragdown" //16
+			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+			    "bcxwjcup", "bcxwjcdown"//16
                             };
 
     const char *systbase_2017[] = {"base", 
@@ -742,7 +756,6 @@ void SkimAna::SelectSyst()
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
 			    "bcxwjcup", "bcxwjcdown"//16
-
                             };
 
     const char *systbase_2018[] = {"base", 
@@ -751,11 +764,12 @@ void SkimAna::SelectSyst()
 			    "puup", "pudown", "prefireup", "prefiredown",
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
-			    //CShapeCalib EOY
+			    // CShapeCalib UL
 			    "bcstatup", "bcstatdown",
+			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown" //14
+			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+			    "bcxwjcup", "bcxwjcdown"//16
                             };
 
   if (fSyst == "base"){
@@ -1464,16 +1478,22 @@ void SkimAna::LoadBCTag()
     if (fYear==2016){ 
       Info("LoadBCTag","DeepJet calibration has been selected : 2016");      
 
-      fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD94X_2016_pTincl_01Nov20.root",fBasePath.Data(),fYear));
-      Info("LoadBTag","%s",fBCSFFile->GetName());
+      //fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD94X_2016_pTincl_01Nov20.root",fBasePath.Data(),fYear));
+      fBCSFFile_a = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_Summer20UL16PreVFP_interp_withJEC.root",fBasePath.Data(),fYear));
+      Info("LoadBTag_a","%s",fBCSFFile_a->GetName());
+
+      fBCSFFile_b = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_Summer20UL16PostVFP_interp_withJEC.root",fBasePath.Data(),fYear));
+      Info("LoadBTag_b","%s",fBCSFFile_b->GetName());
 
     }else if (fYear==2017){ 
       Info("LoadBCTag","DeepJet calibration has been selected : 2017 %s",fBasePath.Data());
-      fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_Summer20UL17_interp.root",fBasePath.Data(),fYear));
+      //fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_Summer20UL17_interp.root",fBasePath.Data(),fYear));
+      fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_Summer20UL17_interp_withJEC.root",fBasePath.Data(),fYear));
       Info("LoadBTag","%s",fBCSFFile->GetName());
     } else if (fYear==2018){ 
       Info("LoadBCTag","DeepJet calibration has been selected : 2018");
-      fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD102X_2018_pTincl.root",fBasePath.Data(),fYear));
+      //fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_MiniAOD102X_2018_pTincl.root",fBasePath.Data(),fYear));
+      fBCSFFile = TFile::Open(Form("%s/weightUL/BtagSF/SF/%d/DeepJet_ctagSF_Summer20UL18_interp_withJEC.root",fBasePath.Data(),fYear));
       Info("LoadBTag","%s",fBCSFFile->GetName());
     } 
 
@@ -1489,150 +1509,35 @@ void SkimAna::LoadBCTag()
     } 
   }
   
-  SFb_hist = (TH2F *)fBCSFFile->Get("SFb_hist");
-  SFc_hist = (TH2F *)fBCSFFile->Get("SFc_hist");
-  SFl_hist = (TH2F *)fBCSFFile->Get("SFl_hist");
+  // SFb_hist = (TH2F *)fBCSFFile->Get("SFb_hist");
+  // SFc_hist = (TH2F *)fBCSFFile->Get("SFc_hist");
+  // SFl_hist = (TH2F *)fBCSFFile->Get("SFl_hist");
 
-  //CTagShapeCalibration EOY
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  SFb_hist_StatUp = (TH2F *)fBCSFFile->Get("SFb_hist_StatUp");
-  SFc_hist_StatUp = (TH2F *)fBCSFFile->Get("SFc_hist_StatUp");
-  SFl_hist_StatUp = (TH2F *)fBCSFFile->Get("SFl_hist_StatUp");
-  SFb_hist_StatDown = (TH2F *)fBCSFFile->Get("SFb_hist_StatDown");
-  SFc_hist_StatDown = (TH2F *)fBCSFFile->Get("SFc_hist_StatDown");
-  SFl_hist_StatDown = (TH2F *)fBCSFFile->Get("SFl_hist_StatDown");
-  
-  if(fYear==2016 or fYear==2018){
-    SFb_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFb_hist_EleIDSFUp");
-    SFc_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFc_hist_EleIDSFUp");
-    SFl_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFl_hist_EleIDSFUp");
-    SFb_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFb_hist_EleIDSFDown");
-    SFc_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFc_hist_EleIDSFDown");
-    SFl_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFl_hist_EleIDSFDown");
-    
-    SFb_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFb_hist_MuIDSFUp");
-    SFc_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFc_hist_MuIDSFUp");
-    SFl_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFl_hist_MuIDSFUp");
-    SFb_hist_MuIDSFDown = (TH2F *)fBCSFFile->Get("SFb_hist_MuIDSFDown");
-    SFc_hist_MuIDSFDown = (TH2F *)fBCSFFile->Get("SFc_hist_MuIDSFDown");
-    SFl_hist_MuIDSFDown = (TH2F *)fBCSFFile->Get("SFl_hist_MuIDSFDown");
-  }
-  
-  SFb_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFUp");
-  SFc_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFUp");
-  SFl_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFUp");
-  SFb_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFDown");
-  SFc_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFDown");
-  SFl_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFDown");
-
-  SFb_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRUp");
-  SFc_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRUp");
-  SFl_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRUp");
-  SFb_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRDown");
-  SFc_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRDown");
-  SFl_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRDown");
-
-  SFb_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRUp");
-  SFc_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRUp");
-  SFl_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRUp");
-  SFb_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRDown");
-  SFc_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRDown");
-  SFl_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRDown");
-
-  SFb_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRUp");
-  SFc_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRUp");
-  SFl_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRUp");
-  SFb_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRDown");
-  SFc_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRDown");
-  SFl_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRDown");
-
-  SFb_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightUp");
-  SFc_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightUp");
-  SFl_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightUp");
-  SFb_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightDown");
-  SFc_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightDown");
-  SFl_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightDown");
-
-  if(fYear==2016 or fYear==2018){    
-    SFb_hist_XSec_DYJetsUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_DYJetsUp");
-    SFc_hist_XSec_DYJetsUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_DYJetsUp");
-    SFl_hist_XSec_DYJetsUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_DYJetsUp");
-    SFb_hist_XSec_DYJetsDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_DYJetsDown");
-    SFc_hist_XSec_DYJetsDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_DYJetsDown");
-    SFl_hist_XSec_DYJetsDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_DYJetsDown");
-
-    SFb_hist_XSec_STUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_STUp");
-    SFc_hist_XSec_STUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_STUp");
-    SFl_hist_XSec_STUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_STUp");
-    SFb_hist_XSec_STDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_STDown");
-    SFc_hist_XSec_STDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_STDown");
-    SFl_hist_XSec_STDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_STDown");
-
-    SFb_hist_XSec_WJetsUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_WJetsUp");
-    SFc_hist_XSec_WJetsUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_WJetsUp");
-    SFl_hist_XSec_WJetsUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_WJetsUp");
-    SFb_hist_XSec_WJetsDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_WJetsDown");
-    SFc_hist_XSec_WJetsDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_WJetsDown");
-    SFl_hist_XSec_WJetsDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_WJetsDown");
-
-    SFb_hist_XSec_ttbarUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_ttbarUp");
-    SFc_hist_XSec_ttbarUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_ttbarUp");
-    SFl_hist_XSec_ttbarUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_ttbarUp");
-    SFb_hist_XSec_ttbarDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_ttbarDown");
-    SFc_hist_XSec_ttbarDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_ttbarDown");
-    SFl_hist_XSec_ttbarDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_ttbarDown");
-  }
-
-  if(fYear==2016){
-    SFb_hist_bFragUp = (TH2F *)fBCSFFile->Get("SFb_hist_bFragUp");
-    SFc_hist_bFragUp = (TH2F *)fBCSFFile->Get("SFc_hist_bFragUp");
-    SFl_hist_bFragUp = (TH2F *)fBCSFFile->Get("SFl_hist_bFragUp");
-    SFb_hist_bFragDown = (TH2F *)fBCSFFile->Get("SFb_hist_bFragDown");
-    SFc_hist_bFragDown = (TH2F *)fBCSFFile->Get("SFc_hist_bFragDown");
-    SFl_hist_bFragDown = (TH2F *)fBCSFFile->Get("SFl_hist_bFragDown");
-  }
-  
-  SFb_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalUp");
-  SFc_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalUp");
-  SFl_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalUp");
-  SFb_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalDown");
-  SFc_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalDown");
-  SFl_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalDown");
-  
-  SFb_hist_jerUp = (TH2F *)fBCSFFile->Get("SFb_hist_jerUp");
-  SFc_hist_jerUp = (TH2F *)fBCSFFile->Get("SFc_hist_jerUp");
-  SFl_hist_jerUp = (TH2F *)fBCSFFile->Get("SFl_hist_jerUp");
-  SFb_hist_jerDown = (TH2F *)fBCSFFile->Get("SFb_hist_jerDown");
-  SFc_hist_jerDown = (TH2F *)fBCSFFile->Get("SFc_hist_jerDown");
-  SFl_hist_jerDown = (TH2F *)fBCSFFile->Get("SFl_hist_jerDown");
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  
-  // //CTagShapeCalibration UL
+  // //CTagShapeCalibration EOY
   // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   // SFb_hist_StatUp = (TH2F *)fBCSFFile->Get("SFb_hist_StatUp");
   // SFc_hist_StatUp = (TH2F *)fBCSFFile->Get("SFc_hist_StatUp");
   // SFl_hist_StatUp = (TH2F *)fBCSFFile->Get("SFl_hist_StatUp");
   // SFb_hist_StatDown = (TH2F *)fBCSFFile->Get("SFb_hist_StatDown");
   // SFc_hist_StatDown = (TH2F *)fBCSFFile->Get("SFc_hist_StatDown");
   // SFl_hist_StatDown = (TH2F *)fBCSFFile->Get("SFl_hist_StatDown");
-
-  if(fYear==2017){
-    SFb_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFb_hist_InterpUp");
-    SFc_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFc_hist_InterpUp");
-    SFl_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFl_hist_InterpUp");
-    SFb_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFb_hist_InterpDown");
-    SFc_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFc_hist_InterpDown");
-    SFl_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFl_hist_InterpDown");
   
-    SFb_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapUp");
-    SFc_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapUp");
-    SFl_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapUp");
-    SFb_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapDown");
-    SFc_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapDown");
-    SFl_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapDown");
-  }
+  // if(fYear==2016 or fYear==2018){
+  //   SFb_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFb_hist_EleIDSFUp");
+  //   SFc_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFc_hist_EleIDSFUp");
+  //   SFl_hist_EleIDSFUp = (TH2F *)fBCSFFile->Get("SFl_hist_EleIDSFUp");
+  //   SFb_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFb_hist_EleIDSFDown");
+  //   SFc_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFc_hist_EleIDSFDown");
+  //   SFl_hist_EleIDSFDown = (TH2F *)fBCSFFile->Get("SFl_hist_EleIDSFDown");
+    
+  //   SFb_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFb_hist_MuIDSFUp");
+  //   SFc_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFc_hist_MuIDSFUp");
+  //   SFl_hist_MuIDSFUp = (TH2F *)fBCSFFile->Get("SFl_hist_MuIDSFUp");
+  //   SFb_hist_MuIDSFDown = (TH2F *)fBCSFFile->Get("SFb_hist_MuIDSFDown");
+  //   SFc_hist_MuIDSFDown = (TH2F *)fBCSFFile->Get("SFc_hist_MuIDSFDown");
+  //   SFl_hist_MuIDSFDown = (TH2F *)fBCSFFile->Get("SFl_hist_MuIDSFDown");
+  // }
   
   // SFb_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFUp");
   // SFc_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFUp");
@@ -1669,28 +1574,44 @@ void SkimAna::LoadBCTag()
   // SFc_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightDown");
   // SFl_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightDown");
 
-  if(fYear==2017){
-    SFb_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bUp");
-    SFc_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bUp");
-    SFl_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bUp");
-    SFb_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bDown");
-    SFc_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bDown");
-    SFl_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bDown");
+  // if(fYear==2016 or fYear==2018){    
+  //   SFb_hist_XSec_DYJetsUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_DYJetsUp");
+  //   SFc_hist_XSec_DYJetsUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_DYJetsUp");
+  //   SFl_hist_XSec_DYJetsUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_DYJetsUp");
+  //   SFb_hist_XSec_DYJetsDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_DYJetsDown");
+  //   SFc_hist_XSec_DYJetsDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_DYJetsDown");
+  //   SFl_hist_XSec_DYJetsDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_DYJetsDown");
 
-    SFb_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cUp");
-    SFc_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cUp");
-    SFl_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cUp");
-    SFb_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cDown");
-    SFc_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cDown");
-    SFl_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cDown");
-  
-    SFb_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cUp");
-    SFc_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cUp");
-    SFl_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cUp");
-    SFb_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cDown");
-    SFc_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cDown");
-    SFl_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cDown");
-  }
+  //   SFb_hist_XSec_STUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_STUp");
+  //   SFc_hist_XSec_STUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_STUp");
+  //   SFl_hist_XSec_STUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_STUp");
+  //   SFb_hist_XSec_STDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_STDown");
+  //   SFc_hist_XSec_STDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_STDown");
+  //   SFl_hist_XSec_STDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_STDown");
+
+  //   SFb_hist_XSec_WJetsUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_WJetsUp");
+  //   SFc_hist_XSec_WJetsUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_WJetsUp");
+  //   SFl_hist_XSec_WJetsUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_WJetsUp");
+  //   SFb_hist_XSec_WJetsDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_WJetsDown");
+  //   SFc_hist_XSec_WJetsDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_WJetsDown");
+  //   SFl_hist_XSec_WJetsDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_WJetsDown");
+
+  //   SFb_hist_XSec_ttbarUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_ttbarUp");
+  //   SFc_hist_XSec_ttbarUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_ttbarUp");
+  //   SFl_hist_XSec_ttbarUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_ttbarUp");
+  //   SFb_hist_XSec_ttbarDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_ttbarDown");
+  //   SFc_hist_XSec_ttbarDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_ttbarDown");
+  //   SFl_hist_XSec_ttbarDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_ttbarDown");
+  // }
+
+  // if(fYear==2016){
+  //   SFb_hist_bFragUp = (TH2F *)fBCSFFile->Get("SFb_hist_bFragUp");
+  //   SFc_hist_bFragUp = (TH2F *)fBCSFFile->Get("SFc_hist_bFragUp");
+  //   SFl_hist_bFragUp = (TH2F *)fBCSFFile->Get("SFl_hist_bFragUp");
+  //   SFb_hist_bFragDown = (TH2F *)fBCSFFile->Get("SFb_hist_bFragDown");
+  //   SFc_hist_bFragDown = (TH2F *)fBCSFFile->Get("SFc_hist_bFragDown");
+  //   SFl_hist_bFragDown = (TH2F *)fBCSFFile->Get("SFl_hist_bFragDown");
+  // }
   
   // SFb_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalUp");
   // SFc_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalUp");
@@ -1707,7 +1628,106 @@ void SkimAna::LoadBCTag()
   // SFl_hist_jerDown = (TH2F *)fBCSFFile->Get("SFl_hist_jerDown");
   // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  //string year = "2016";
+  
+  // // //CTagShapeCalibration UL
+  // // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // // SFb_hist_StatUp = (TH2F *)fBCSFFile->Get("SFb_hist_StatUp");
+  // // SFc_hist_StatUp = (TH2F *)fBCSFFile->Get("SFc_hist_StatUp");
+  // // SFl_hist_StatUp = (TH2F *)fBCSFFile->Get("SFl_hist_StatUp");
+  // // SFb_hist_StatDown = (TH2F *)fBCSFFile->Get("SFb_hist_StatDown");
+  // // SFc_hist_StatDown = (TH2F *)fBCSFFile->Get("SFc_hist_StatDown");
+  // // SFl_hist_StatDown = (TH2F *)fBCSFFile->Get("SFl_hist_StatDown");
+
+  // if(fYear==2017){
+  //   SFb_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFb_hist_InterpUp");
+  //   SFc_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFc_hist_InterpUp");
+  //   SFl_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFl_hist_InterpUp");
+  //   SFb_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFb_hist_InterpDown");
+  //   SFc_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFc_hist_InterpDown");
+  //   SFl_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFl_hist_InterpDown");
+  
+  //   SFb_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapUp");
+  //   SFc_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapUp");
+  //   SFl_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapUp");
+  //   SFb_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapDown");
+  //   SFc_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapDown");
+  //   SFl_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapDown");
+  // }
+  
+  // // SFb_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFUp");
+  // // SFc_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFUp");
+  // // SFl_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFUp");
+  // // SFb_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFDown");
+  // // SFc_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFDown");
+  // // SFl_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFDown");
+
+  // // SFb_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRUp");
+  // // SFc_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRUp");
+  // // SFl_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRUp");
+  // // SFb_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRDown");
+  // // SFc_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRDown");
+  // // SFl_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRDown");
+
+  // // SFb_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRUp");
+  // // SFc_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRUp");
+  // // SFl_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRUp");
+  // // SFb_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRDown");
+  // // SFc_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRDown");
+  // // SFl_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRDown");
+
+  // // SFb_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRUp");
+  // // SFc_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRUp");
+  // // SFl_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRUp");
+  // // SFb_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRDown");
+  // // SFc_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRDown");
+  // // SFl_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRDown");
+
+  // // SFb_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightUp");
+  // // SFc_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightUp");
+  // // SFl_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightUp");
+  // // SFb_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightDown");
+  // // SFc_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightDown");
+  // // SFl_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightDown");
+
+  // if(fYear==2017){
+  //   SFb_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bUp");
+  //   SFc_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bUp");
+  //   SFl_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bUp");
+  //   SFb_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bDown");
+  //   SFc_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bDown");
+  //   SFl_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bDown");
+
+  //   SFb_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cUp");
+  //   SFc_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cUp");
+  //   SFl_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cUp");
+  //   SFb_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cDown");
+  //   SFc_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cDown");
+  //   SFl_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cDown");
+  
+  //   SFb_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cUp");
+  //   SFc_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cUp");
+  //   SFl_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cUp");
+  //   SFb_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cDown");
+  //   SFc_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cDown");
+  //   SFl_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cDown");
+  // }
+  
+  // // SFb_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalUp");
+  // // SFc_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalUp");
+  // // SFl_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalUp");
+  // // SFb_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalDown");
+  // // SFc_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalDown");
+  // // SFl_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalDown");
+  
+  // // SFb_hist_jerUp = (TH2F *)fBCSFFile->Get("SFb_hist_jerUp");
+  // // SFc_hist_jerUp = (TH2F *)fBCSFFile->Get("SFc_hist_jerUp");
+  // // SFl_hist_jerUp = (TH2F *)fBCSFFile->Get("SFl_hist_jerUp");
+  // // SFb_hist_jerDown = (TH2F *)fBCSFFile->Get("SFb_hist_jerDown");
+  // // SFc_hist_jerDown = (TH2F *)fBCSFFile->Get("SFc_hist_jerDown");
+  // // SFl_hist_jerDown = (TH2F *)fBCSFFile->Get("SFl_hist_jerDown");
+  // // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  // //string year = "2016";
   
 }
 
@@ -2507,22 +2527,22 @@ void SkimAna::GetLMTBCtagSF_2b(){
     SFbhist = SFb_hist_StatDown ;
     SFchist = SFc_hist_StatDown ;
     SFlhist = SFl_hist_StatDown ;
-  } else if (bctagSystType=="eleeffup" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_EleIDSFUp ;
-    SFchist = SFc_hist_EleIDSFUp ;
-    SFlhist = SFl_hist_EleIDSFUp ;
-  } else if (bctagSystType=="eleeffdown" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_EleIDSFDown ;
-    SFchist = SFc_hist_EleIDSFDown ;
-    SFlhist = SFl_hist_EleIDSFDown ;
-  } else if (bctagSystType=="mueffup" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_MuIDSFUp ;
-    SFchist = SFc_hist_MuIDSFUp ;
-    SFlhist = SFl_hist_MuIDSFUp ;
-  } else if (bctagSystType=="mueffdown" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_MuIDSFDown ;
-    SFchist = SFc_hist_MuIDSFDown ;
-    SFlhist = SFl_hist_MuIDSFDown ;
+  // } else if (bctagSystType=="eleeffup" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_EleIDSFUp ;
+  //   SFchist = SFc_hist_EleIDSFUp ;
+  //   SFlhist = SFl_hist_EleIDSFUp ;
+  // } else if (bctagSystType=="eleeffdown" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_EleIDSFDown ;
+  //   SFchist = SFc_hist_EleIDSFDown ;
+  //   SFlhist = SFl_hist_EleIDSFDown ;
+  // } else if (bctagSystType=="mueffup" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_MuIDSFUp ;
+  //   SFchist = SFc_hist_MuIDSFUp ;
+  //   SFlhist = SFl_hist_MuIDSFUp ;
+  // } else if (bctagSystType=="mueffdown" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_MuIDSFDown ;
+  //   SFchist = SFc_hist_MuIDSFDown ;
+  //   SFlhist = SFl_hist_MuIDSFDown ;
   } else if (bctagSystType=="bclhemufup"){
     SFbhist = SFb_hist_LHEScaleWeight_muFUp ;
     SFchist = SFc_hist_LHEScaleWeight_muFUp ;
@@ -2563,46 +2583,46 @@ void SkimAna::GetLMTBCtagSF_2b(){
     SFbhist = SFb_hist_PUWeightDown ;
     SFchist = SFc_hist_PUWeightDown ;
     SFlhist = SFl_hist_PUWeightDown ;
-  } else if (bctagSystType=="bcxdyup" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_DYJetsUp ;
-    SFchist = SFc_hist_XSec_DYJetsUp ;
-    SFlhist = SFl_hist_XSec_DYJetsUp ;
-  } else if (bctagSystType=="bcxdydown" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_DYJetsDown ;
-    SFchist = SFc_hist_XSec_DYJetsDown ;
-    SFlhist = SFl_hist_XSec_DYJetsDown ;
-  } else if (bctagSystType=="bcxstup" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_STUp ;
-    SFchist = SFc_hist_XSec_STUp ;
-    SFlhist = SFl_hist_XSec_STUp ;
-  } else if (bctagSystType=="bcxstdown" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_STDown ;
-    SFchist = SFc_hist_XSec_STDown ;
-    SFlhist = SFl_hist_XSec_STDown ;
-  } else if (bctagSystType=="bcxwjup" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_WJetsUp ;
-    SFchist = SFc_hist_XSec_WJetsUp ;
-    SFlhist = SFl_hist_XSec_WJetsUp ;
-  } else if (bctagSystType=="bcxwjdown" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_WJetsDown ;
-    SFchist = SFc_hist_XSec_WJetsDown ;
-    SFlhist = SFl_hist_XSec_WJetsDown ;
-  } else if (bctagSystType=="bcxttup" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_ttbarUp ;
-    SFchist = SFc_hist_XSec_ttbarUp ;
-    SFlhist = SFl_hist_XSec_ttbarUp ;
-  } else if (bctagSystType=="bcxttdown" and (fYear==2016 or fYear==2018)){
-    SFbhist = SFb_hist_XSec_ttbarDown ;
-    SFchist = SFc_hist_XSec_ttbarDown ;
-    SFlhist = SFl_hist_XSec_ttbarDown ;
-  } else if (bctagSystType=="bcbfragup" and fYear==2016){
-    SFbhist = SFb_hist_bFragUp ;
-    SFchist = SFc_hist_bFragUp ;
-    SFlhist = SFl_hist_bFragUp ;
-  } else if (bctagSystType=="bcbfragdown" and fYear==2016){
-    SFbhist = SFb_hist_bFragDown ;
-    SFchist = SFc_hist_bFragDown ;
-    SFlhist = SFl_hist_bFragDown ;
+  // } else if (bctagSystType=="bcxdyup" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_DYJetsUp ;
+  //   SFchist = SFc_hist_XSec_DYJetsUp ;
+  //   SFlhist = SFl_hist_XSec_DYJetsUp ;
+  // } else if (bctagSystType=="bcxdydown" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_DYJetsDown ;
+  //   SFchist = SFc_hist_XSec_DYJetsDown ;
+  //   SFlhist = SFl_hist_XSec_DYJetsDown ;
+  // } else if (bctagSystType=="bcxstup" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_STUp ;
+  //   SFchist = SFc_hist_XSec_STUp ;
+  //   SFlhist = SFl_hist_XSec_STUp ;
+  // } else if (bctagSystType=="bcxstdown" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_STDown ;
+  //   SFchist = SFc_hist_XSec_STDown ;
+  //   SFlhist = SFl_hist_XSec_STDown ;
+  // } else if (bctagSystType=="bcxwjup" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_WJetsUp ;
+  //   SFchist = SFc_hist_XSec_WJetsUp ;
+  //   SFlhist = SFl_hist_XSec_WJetsUp ;
+  // } else if (bctagSystType=="bcxwjdown" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_WJetsDown ;
+  //   SFchist = SFc_hist_XSec_WJetsDown ;
+  //   SFlhist = SFl_hist_XSec_WJetsDown ;
+  // } else if (bctagSystType=="bcxttup" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_ttbarUp ;
+  //   SFchist = SFc_hist_XSec_ttbarUp ;
+  //   SFlhist = SFl_hist_XSec_ttbarUp ;
+  // } else if (bctagSystType=="bcxttdown" and (fYear==2016 or fYear==2018)){
+  //   SFbhist = SFb_hist_XSec_ttbarDown ;
+  //   SFchist = SFc_hist_XSec_ttbarDown ;
+  //   SFlhist = SFl_hist_XSec_ttbarDown ;
+  // } else if (bctagSystType=="bcbfragup" and fYear==2016){
+  //   SFbhist = SFb_hist_bFragUp ;
+  //   SFchist = SFc_hist_bFragUp ;
+  //   SFlhist = SFl_hist_bFragUp ;
+  // } else if (bctagSystType=="bcbfragdown" and fYear==2016){
+    // SFbhist = SFb_hist_bFragDown ;
+    // SFchist = SFc_hist_bFragDown ;
+    // SFlhist = SFl_hist_bFragDown ;
   } else if (bctagSystType=="jecup"){
     SFbhist = SFb_hist_jesTotalUp ;
     SFchist = SFc_hist_jesTotalUp ;
@@ -2619,43 +2639,43 @@ void SkimAna::GetLMTBCtagSF_2b(){
     SFbhist = SFb_hist_jerDown ;
     SFchist = SFc_hist_jerDown ;
     SFlhist = SFl_hist_jerDown ;
-  } else if (bctagSystType=="bcintpup" and fYear==2017){
+  } else if (bctagSystType=="bcintpup"){
     SFbhist = SFb_hist_InterpUp ;
     SFchist = SFc_hist_InterpUp ;
     SFlhist = SFl_hist_InterpUp ;
-  } else if (bctagSystType=="bcintpdown" and fYear==2017){
+  } else if (bctagSystType=="bcintpdown"){
     SFbhist = SFb_hist_InterpDown ;
     SFchist = SFc_hist_InterpDown ;
     SFlhist = SFl_hist_InterpDown ;
-  } else if (bctagSystType=="bcextpup" and fYear==2017){
+  } else if (bctagSystType=="bcextpup"){
     SFbhist = SFb_hist_ExtrapUp ;
     SFchist = SFc_hist_ExtrapUp ;
     SFlhist = SFl_hist_ExtrapUp ;
-  } else if (bctagSystType=="bcextpdown" and fYear==2017){
+  } else if (bctagSystType=="bcextpdown"){
     SFbhist = SFb_hist_ExtrapDown ;
     SFchist = SFc_hist_ExtrapDown ;
     SFlhist = SFl_hist_ExtrapDown ;
-  } else if (bctagSystType=="bcxdybup" and fYear==2017){
+  } else if (bctagSystType=="bcxdybup"){
     SFbhist = SFb_hist_XSec_BRUnc_DYJets_bUp ;
     SFchist = SFc_hist_XSec_BRUnc_DYJets_bUp ;
     SFlhist = SFl_hist_XSec_BRUnc_DYJets_bUp ;
-  } else if (bctagSystType=="bcxdybdown" and fYear==2017){
+  } else if (bctagSystType=="bcxdybdown"){
     SFbhist = SFb_hist_XSec_BRUnc_DYJets_bDown ;
     SFchist = SFc_hist_XSec_BRUnc_DYJets_bDown ;
     SFlhist = SFl_hist_XSec_BRUnc_DYJets_bDown ;
-  } else if (bctagSystType=="bcxdycup" and fYear==2017){
+  } else if (bctagSystType=="bcxdycup"){
     SFbhist = SFb_hist_XSec_BRUnc_DYJets_cUp ;
     SFchist = SFc_hist_XSec_BRUnc_DYJets_cUp ;
     SFlhist = SFl_hist_XSec_BRUnc_DYJets_cUp ;
-  } else if (bctagSystType=="bcxdycdown" and fYear==2017){
+  } else if (bctagSystType=="bcxdycdown"){
     SFbhist = SFb_hist_XSec_BRUnc_DYJets_cDown ;
     SFchist = SFc_hist_XSec_BRUnc_DYJets_cDown ;
     SFlhist = SFl_hist_XSec_BRUnc_DYJets_cDown ;
-  } else if (bctagSystType=="bcxwjcup" and fYear==2017){
+  } else if (bctagSystType=="bcxwjcup"){
     SFbhist = SFb_hist_XSec_BRUnc_WJets_cUp ;
     SFchist = SFc_hist_XSec_BRUnc_WJets_cUp ;
     SFlhist = SFl_hist_XSec_BRUnc_WJets_cUp ;
-  } else if (bctagSystType=="bcxwjcdown" and fYear==2017){
+  } else if (bctagSystType=="bcxwjcdown"){
     SFbhist = SFb_hist_XSec_BRUnc_WJets_cDown ;
     SFchist = SFc_hist_XSec_BRUnc_WJets_cDown ;
     SFlhist = SFl_hist_XSec_BRUnc_WJets_cDown ;
@@ -2996,18 +3016,18 @@ void SkimAna::TheoWeights(){
   if (event->nPSWeight_==4){
     if (event->genWeight_ != 0){
       
-      // //Actual up/down
-      // _ISRweight_Up = event->PSWeight_[0];
-      // _ISRweight_Do = event->PSWeight_[2];
-      // _FSRweight_Up = event->PSWeight_[1];
-      // _FSRweight_Do = event->PSWeight_[3];
-
-      // However to sync with bctagging, the following setting has been applied   
-      _ISRweight_Up = event->PSWeight_[2];
-      _ISRweight_Do = event->PSWeight_[0];
+      //Actual up/down
+      _ISRweight_Up = event->PSWeight_[0];
+      _ISRweight_Do = event->PSWeight_[2];
+      _FSRweight_Up = event->PSWeight_[1];
+      _FSRweight_Do = event->PSWeight_[3];
       
-      _FSRweight_Up = event->PSWeight_[3];
-      _FSRweight_Do = event->PSWeight_[1];
+      // // However to sync with bctagging, the following setting has been applied   
+      // _ISRweight_Up = event->PSWeight_[2];
+      // _ISRweight_Do = event->PSWeight_[0];
+      
+      // _FSRweight_Up = event->PSWeight_[3];
+      // _FSRweight_Do = event->PSWeight_[1];
 
     }
   }
@@ -3540,17 +3560,17 @@ Bool_t SkimAna::GetBCTagWt(void)
     } else if (bctagSystType=="bcstatdown"){
       _bcTagWeight_stat_Do = _bcTagWeight;      
             
-    } else if (bctagSystType=="eleeffup" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_eleid_Up = _bcTagWeight;      
+    // } else if (bctagSystType=="eleeffup" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_eleid_Up = _bcTagWeight;      
             
-    } else if (bctagSystType=="eleeffdown" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_eleid_Do = _bcTagWeight;      
+    // } else if (bctagSystType=="eleeffdown" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_eleid_Do = _bcTagWeight;      
             
-    } else if (bctagSystType=="mueffup" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_muid_Up = _bcTagWeight;      
+    // } else if (bctagSystType=="mueffup" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_muid_Up = _bcTagWeight;      
       
-    } else if (bctagSystType=="mueffdown" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_muid_Do = _bcTagWeight;      
+    // } else if (bctagSystType=="mueffdown" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_muid_Do = _bcTagWeight;      
             
     } else if (bctagSystType=="bclhemufup"){
       _bcTagWeight_lhemuf_Up = _bcTagWeight;      
@@ -3582,35 +3602,35 @@ Bool_t SkimAna::GetBCTagWt(void)
     } else if (bctagSystType=="pudown"){
       _bcTagWeight_pu_Do = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxdyup" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xdy_Up = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxdyup" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xdy_Up = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxdydown" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xdy_Do = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxdydown" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xdy_Do = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxstup" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xst_Up = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxstup" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xst_Up = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxstdown" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xst_Do = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxstdown" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xst_Do = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxwjup" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xwj_Up = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxwjup" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xwj_Up = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxwjdown" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xwj_Do = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxwjdown" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xwj_Do = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxttup" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xtt_Up = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxttup" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xtt_Up = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcxttdown" and (fYear==2016 or fYear==2018)){
-      _bcTagWeight_xtt_Do = _bcTagWeight;      
+    // } else if (bctagSystType=="bcxttdown" and (fYear==2016 or fYear==2018)){
+    //   _bcTagWeight_xtt_Do = _bcTagWeight;      
             
-    } else if (bctagSystType=="bcbfragup" and fYear==2016){
-      _bcTagWeight_bfrag_Up = _bcTagWeight;      
+    // } else if (bctagSystType=="bcbfragup" and fYear==2016){
+    //   _bcTagWeight_bfrag_Up = _bcTagWeight;      
       
-    } else if (bctagSystType=="bcbfragdown" and fYear==2016){
-      _bcTagWeight_bfrag_Do = _bcTagWeight;      
+    // } else if (bctagSystType=="bcbfragdown" and fYear==2016){
+    //   _bcTagWeight_bfrag_Do = _bcTagWeight;      
                   
     } else if (bctagSystType=="jecup"){
       _bcTagWeight_jes_Up = _bcTagWeight;      
@@ -3624,34 +3644,34 @@ Bool_t SkimAna::GetBCTagWt(void)
     } else if (bctagSystType=="jerdown"){
       _bcTagWeight_jer_Do = _bcTagWeight;
       
-    }else if (bctagSystType=="bcintpup" and fYear==2017){
+    }else if (bctagSystType=="bcintpup"){
       _bcTagWeight_intp_Up = _bcTagWeight;
       
-    } else if (bctagSystType=="bcintpdown" and fYear==2017){
+    } else if (bctagSystType=="bcintpdown"){
       _bcTagWeight_intp_Do = _bcTagWeight;
       
-    } else if (bctagSystType=="bcextpup" and fYear==2017){
+    } else if (bctagSystType=="bcextpup"){
       _bcTagWeight_extp_Up = _bcTagWeight;
       
-    } else if (bctagSystType=="bcextpdown" and fYear==2017){
+    } else if (bctagSystType=="bcextpdown"){
       _bcTagWeight_extp_Do = _bcTagWeight;
       
-    } else if (bctagSystType=="bcxdybup" and fYear==2017){
+    } else if (bctagSystType=="bcxdybup"){
       _bcTagWeight_xdyb_Up = _bcTagWeight;
       
-    } else if (bctagSystType=="bcxdybdown" and fYear==2017){
+    } else if (bctagSystType=="bcxdybdown"){
       _bcTagWeight_xdyb_Do = _bcTagWeight;
       
-    } else if (bctagSystType=="bcxdycup" and fYear==2017){
+    } else if (bctagSystType=="bcxdycup"){
       _bcTagWeight_xdyc_Up = _bcTagWeight;
       
-    } else if (bctagSystType=="bcxdycdown" and fYear==2017){
+    } else if (bctagSystType=="bcxdycdown"){
       _bcTagWeight_xdyc_Do = _bcTagWeight;
       
-    } else if (bctagSystType=="bcxwjcup" and fYear==2017){
+    } else if (bctagSystType=="bcxwjcup"){
       _bcTagWeight_xwjc_Up = _bcTagWeight;
       
-    } else if (bctagSystType=="bcxwjcdown" and fYear==2017){
+    } else if (bctagSystType=="bcxwjcdown"){
       _bcTagWeight_xwjc_Do = _bcTagWeight;
       
     }
@@ -4645,33 +4665,33 @@ bool SkimAna::GetCTagWt(char CType, TString systname, double& ctagwt){
     ctagwt = _bcTagWeight ;
     if(systname == "bcstatup") ctagwt = _bcTagWeight_stat_Up ;		if(systname == "bcstatdown") ctagwt = _bcTagWeight_stat_Do ;
     if(systname == "puup") ctagwt = _bcTagWeight_pu_Up ;		if(systname == "pudown") ctagwt = _bcTagWeight_pu_Do ; 
-    if(systname == "eleeffup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_eleid_Up ;
-    if(systname == "eleeffdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_eleid_Do ; 
-    if(systname == "mueffup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_muid_Up ;
-    if(systname == "mueffdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_muid_Do ; 
+    // if(systname == "eleeffup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_eleid_Up ;
+    // if(systname == "eleeffdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_eleid_Do ; 
+    // if(systname == "mueffup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_muid_Up ;
+    // if(systname == "mueffdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_muid_Do ; 
     if(systname == "bclhemufup") ctagwt = _bcTagWeight_lhemuf_Up ;	if(systname == "bclhemufdown") ctagwt = _bcTagWeight_lhemuf_Do ; 
     if(systname == "bclhemurup") ctagwt = _bcTagWeight_lhemur_Up ;	if(systname == "bclhemurdown") ctagwt = _bcTagWeight_lhemur_Do ; 
     if(systname == "isrup") ctagwt = _bcTagWeight_isr_Up ;		if(systname == "isrdown") ctagwt = _bcTagWeight_isr_Do ; 
     if(systname == "fsrup") ctagwt = _bcTagWeight_fsr_Up ;		if(systname == "fsrdown") ctagwt = _bcTagWeight_fsr_Do ; 
-    if(systname == "bcxdyup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xdy_Up ;
-    if(systname == "bcxdydown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xdy_Do ; 
-    if(systname == "bcxstup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xst_Up ;
-    if(systname == "bcxstdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xst_Do ; 
-    if(systname == "bcxwjup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Up ;
-    if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Do ; 
-    if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Up ;
-    if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Do ; 
+    // if(systname == "bcxdyup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xdy_Up ;
+    // if(systname == "bcxdydown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xdy_Do ; 
+    // if(systname == "bcxstup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xst_Up ;
+    // if(systname == "bcxstdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xst_Do ; 
+    // if(systname == "bcxwjup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Up ;
+    // if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Do ; 
+    // if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Up ;
+    // if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Do ; 
     if(systname == "jecup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "jecdown") ctagwt = _bcTagWeight_jes_Do ; 
     if(systname == "jerup") ctagwt = _bcTagWeight_jer_Up ;		if(systname == "jerdown") ctagwt = _bcTagWeight_jer_Do ; 
-    if(systname == "bcbfragup" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Up ;
-    if(systname == "bcbfragdown" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Do ; 
+    // if(systname == "bcbfragup" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Up ;
+    // if(systname == "bcbfragdown" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Do ; 
 
-    if(systname == "bcintpup" and fYear==2017) ctagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown" and fYear==2017) ctagwt = _bcTagWeight_intp_Do ; 
-    if(systname == "bcextpup" and fYear==2017) ctagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown" and fYear==2017) ctagwt = _bcTagWeight_extp_Do ; 
+    if(systname == "bcintpup") ctagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown") ctagwt = _bcTagWeight_intp_Do ; 
+    if(systname == "bcextpup") ctagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown") ctagwt = _bcTagWeight_extp_Do ; 
     
-    if(systname == "bcxdybup" and fYear==2017) ctagwt = _bcTagWeight_xdyb_Up ; if(systname == "bcxdybdown" and fYear==2017) ctagwt = _bcTagWeight_xdyb_Do ; 
-    if(systname == "bcxdycup" and fYear==2017) ctagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown" and fYear==2017) ctagwt = _bcTagWeight_xdyc_Do ; 
-    if(systname == "bcxwjcup" and fYear==2017) ctagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown" and fYear==2017) ctagwt = _bcTagWeight_xwjc_Do ; 
+    if(systname == "bcxdybup") ctagwt = _bcTagWeight_xdyb_Up ; if(systname == "bcxdybdown") ctagwt = _bcTagWeight_xdyb_Do ; 
+    if(systname == "bcxdycup") ctagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown") ctagwt = _bcTagWeight_xdyc_Do ; 
+    if(systname == "bcxwjcup") ctagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown") ctagwt = _bcTagWeight_xwjc_Do ; 
 
   }
   
@@ -4704,25 +4724,25 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   //CShapeCalib EOY
   double btagwt = _bcTagWeight ; if(systname == "bcstatup") btagwt = _bcTagWeight_stat_Up ; if(systname == "bcstatdown") btagwt = _bcTagWeight_stat_Do ;
   if(systname == "puup") btagwt = _bcTagWeight_pu_Up ; if(systname == "pudown") btagwt = _bcTagWeight_pu_Do ; 
-  if(systname == "eleeffup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_eleid_Up ;
-  if(systname == "eleeffdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_eleid_Do ; 
-  if(systname == "mueffup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_muid_Up ;
-  if(systname == "mueffdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_muid_Do ; 
+  // if(systname == "eleeffup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_eleid_Up ;
+  // if(systname == "eleeffdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_eleid_Do ; 
+  // if(systname == "mueffup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_muid_Up ;
+  // if(systname == "mueffdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_muid_Do ; 
   if(systname == "bclhemufup") btagwt = _bcTagWeight_lhemuf_Up ; if(systname == "bclhemufdown") btagwt = _bcTagWeight_lhemuf_Do ; 
   if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
   if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
   if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
-  if(systname == "bcxdyup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xdy_Up ;
-  if(systname == "bcxdydown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xdy_Do ; 
-  if(systname == "bcxstup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xst_Up ;
-  if(systname == "bcxstdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xst_Do ; 
-  if(systname == "bcxwjup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xwj_Up ;
-  if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xwj_Do ; 
-  if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Up ;
-  if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Do ; 
+  // if(systname == "bcxdyup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xdy_Up ;
+  // if(systname == "bcxdydown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xdy_Do ; 
+  // if(systname == "bcxstup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xst_Up ;
+  // if(systname == "bcxstdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xst_Do ; 
+  // if(systname == "bcxwjup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xwj_Up ;
+  // if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xwj_Do ; 
+  // if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Up ;
+  // if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Do ; 
   if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
   if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
-  if(systname == "bcbfragup" and fYear==2016) btagwt = _bcTagWeight_bfrag_Up ; if(systname == "bcbfragdown" and fYear==2016) btagwt = _bcTagWeight_bfrag_Do ; 
+  // if(systname == "bcbfragup" and fYear==2016) btagwt = _bcTagWeight_bfrag_Up ; if(systname == "bcbfragdown" and fYear==2016) btagwt = _bcTagWeight_bfrag_Do ; 
   
   // CShapeCalib UL
   // "bcstatup", "bcstatdown",
@@ -4734,15 +4754,15 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   // CShapeCalib UL
   // double btagwt = _bcTagWeight ; if(systname == "bcstatup") btagwt = _bcTagWeight_stat_Up ; if(systname == "bcstatdown") btagwt = _bcTagWeight_stat_Do ;
   // if(systname == "puup") btagwt = _bcTagWeight_pu_Up ; if(systname == "pudown") btagwt = _bcTagWeight_pu_Do ; 
-  if(systname == "bcintpup" and fYear==2017) btagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown" and fYear==2017) btagwt = _bcTagWeight_intp_Do ; 
-  if(systname == "bcextpup" and fYear==2017) btagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown" and fYear==2017) btagwt = _bcTagWeight_extp_Do ; 
+  if(systname == "bcintpup") btagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown") btagwt = _bcTagWeight_intp_Do ; 
+  if(systname == "bcextpup") btagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown") btagwt = _bcTagWeight_extp_Do ; 
   // if(systname == "bclhemufup") btagwt = _bcTagWeight_lhemuf_Up ; if(systname == "bclhemufdown") btagwt = _bcTagWeight_lhemuf_Do ; 
   // if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
   // if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
   // if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
-  if(systname == "bcxdybup" and fYear==2017) btagwt = _bcTagWeight_xdyb_Up ; if(systname == "bcxdybdown" and fYear==2017) btagwt = _bcTagWeight_xdyb_Do ; 
-  if(systname == "bcxdycup" and fYear==2017) btagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown" and fYear==2017) btagwt = _bcTagWeight_xdyc_Do ; 
-  if(systname == "bcxwjcup" and fYear==2017) btagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown" and fYear==2017) btagwt = _bcTagWeight_xwjc_Do ; 
+  if(systname == "bcxdybup") btagwt = _bcTagWeight_xdyb_Up ; if(systname == "bcxdybdown") btagwt = _bcTagWeight_xdyb_Do ; 
+  if(systname == "bcxdycup") btagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown") btagwt = _bcTagWeight_xdyc_Do ; 
+  if(systname == "bcxwjcup") btagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown") btagwt = _bcTagWeight_xwjc_Do ; 
   // if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
   // if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
   
