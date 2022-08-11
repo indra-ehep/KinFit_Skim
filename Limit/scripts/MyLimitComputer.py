@@ -36,7 +36,7 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     #execme('text2workspace.py '+COMB_DATACARD_NAME+'  -o '+t2wDataCardName )
     #Original
     #execme('combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
-    command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0,1 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0.0002,1.0 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     print("command2 : %s"%command2)
     execme(command2)
 
@@ -156,6 +156,7 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_PtJet25_jetMass0/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_FSRdown/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_FSRup/2016"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuRFSRDo"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_TLV_TPUJetID/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_TLV_TPUJetID_KFAllJets/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_TLVTPUKFAFSRDo_MiniReso/2016"
@@ -169,7 +170,7 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt-Hist/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR"
     path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist"
-    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuRFSRDo"
+
     
     
     muon_file_dir=path_file_dir+""
@@ -177,8 +178,10 @@ if __name__=="__main__":
     
     hist_array_Inc = []
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
-    hist_array_Inc.append(["", "_kb_mjj_"])
-    #hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
+    #hist_array_Inc.append(["", "_kb_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
+    # hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
+    # hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagL = []
     hist_array_CTagL.append(["KinFit", "mjj_kfit_CTagIncL"])
@@ -197,8 +200,8 @@ if __name__=="__main__":
     mass_array = [80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
     
     year_array = ["2016"]
-    # year_array.append("2017")
-    # year_array.append("2018")
+    #year_array.append("2017")
+    #year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")

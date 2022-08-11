@@ -110,8 +110,8 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
   //printf("MyHPlusDataCardMaker::readWriteHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
   hist->Scale(sf);
   hist->Rebin(50);
-  TH1F* trimmedHist = trimHisto(hist, outHistName+"_1", 5, 20, 170);
-  //TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
+  //TH1F* trimmedHist = trimHisto(hist, outHistName+"_1", 5, 20, 170);
+  TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
   //hist->SetAxisRange(20.,170.,"X");
   //TH1F* trimmedHist = hist;
 

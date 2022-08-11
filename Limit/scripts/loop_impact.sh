@@ -1,4 +1,4 @@
-category=3
+category=1
 
 if [ $category -eq 1 ] ; then
     cat_dir="Cat1_Inc"
@@ -11,12 +11,12 @@ fi
 echo cat_dir : $cat_dir
 currdir=$PWD
 
-for i in 80 90 100 110 120 130 140 150 155 160 #nanoAOD
+#for i in 80 90 100 110 120 130 140 150 155 160 #nanoAOD
 #for i in 80 90 100 120 140 150 155 160  #miniAOD
-#for i in 160
+for i in 90
 #for i in 110 120 130 140 150 155 160
 do
-    python MyLimitComputer.py --ch ele --cat $category --mass $i  --year "run2" --isGOF 0
+    #python MyLimitComputer.py --ch ele --cat $category --mass $i  --year "run2" --isGOF 0
     #python MyLimitComputer.py --ch mu --cat $category --mass $i  --year "2016" --isGOF 0
     #python MyLimitComputer_peryear.py --ch ele --cat $category --mass $i  --year "2016" --isGOF 0
     # cd local/ele/${cat_dir}/Mass$i 
@@ -24,7 +24,7 @@ do
     # pdfseparate -f 1 -l 1 nuisImpactPDF.pdf nuisImpactPDF%d.pdf 
     # cd -  
     
-    python MyLimitComputer.py --ch mu --cat $category --mass $i  --year "run2" --isGOF 0
+    #python MyLimitComputer.py --ch mu --cat $category --mass $i  --year "run2" --isGOF 0
     #python MyLimitComputer.py --ch mu --cat $category --mass $i  --year "2016" --isGOF 0
     #python MyLimitComputer.py --ch mu --cat $category --mass $i --hist "_kb_mjj_mu" --year "2016" --isGOF 0
     #python MyLimitComputer.py --ch mu --cat $category --mass $i --hist "_ct_ExcT_mjj_mu" --year "2016" --isGOF 0
@@ -43,8 +43,8 @@ do
     #source ../../../../impact_plot.sh t2w_combine_datacard_hcs_13TeV_mu_ele_${cat_dir}_WH$i.root $i 
     #pdfseparate -f 1 -l 1 nuisImpactPDF.pdf nuisImpactPDF%d.pdf 
     #cd -  
-
     #ls
+    
 done 
 #root -l MyLimitPlotterNano.C+ 
 #root -l MyLimitPlotter.C+ 

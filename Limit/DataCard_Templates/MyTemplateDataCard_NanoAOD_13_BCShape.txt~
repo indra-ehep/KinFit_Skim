@@ -20,7 +20,7 @@ CMS_lumi_13TeV  lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Luminosity un
 CMS_eff_lep     lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Lepton selection unc.
 CMS_prefire     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Prefire unc.
 CMS_pujetid     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      PUJetID unc.
-CMS_pileup      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Pileup unc.
+CMS_Pileup      lnN	1.01	1.01	1.01	1.01	1.01	1.01	-         Pileup unc.
 JES             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         JES unc.
 JER             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         JER unc.
 CMS_norm_sig    lnN     1.061   1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.

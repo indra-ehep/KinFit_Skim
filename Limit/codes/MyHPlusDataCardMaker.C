@@ -267,7 +267,7 @@ void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   //Data
   double sf_data = 1.0; //should be 1, always
   TH1F* data_obs = DC.readWriteHisto(fData, baseDir+"/"+histSubDir, histName, sf_data, fout, fTT, "data_obs", true);
-  cout<<"data_obs================: "<<data_obs->Integral()<<endl;
+  //cout<<"data_obs================: "<<data_obs->Integral()<<endl;
 
   //wh
   //double sf_wh = 1.0;
@@ -576,7 +576,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     lumiUnc = 1.023; //
   }
   if(year==2018){
-    totLumi = 59.7; //2018
+    totLumi = 59.8; //2018
     lumiUnc = 1.025; //
   }
   histName += channelName;
@@ -606,7 +606,8 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   bool isExM = false;
   if(histName.Contains("ExL")) isExL = true;
   if(histName.Contains("ExM")) isExM = true;
-
+  
+  bool isNormalized = true;
   //ttbar
   double sf_ttbar = 1.0; 
   baseDir = "TTbar";
@@ -639,18 +640,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* ttbar_JERUp = DC.readWriteHisto(fTT, baseDir+"/jerup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_JERUp", true);
   TH1F* ttbar_JERDown = DC.readWriteHisto(fTT, baseDir+"/jerdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_JERDown", true);
   //\([a-z]+\)_\([a-zA-Z]+\) = DC.readWriteHisto(\([a-zA-Z]+\), baseDir\+"/\([a-z]+\)"\+histSubDir, histName, sf_\([a-z]+\), fout, \([a-zA-Z]+\), \(label\+\)?"\([a-zA-Z_]+\)", true, true, \([a-z]+\)); \1_\2 = DC.readWriteHisto(\3, baseDir+"/\4"+histSubDir, histName, sf_\5, fout, \6, \7"\8", true);
-  TH1F* ttbar_bcstatUp = DC.readWriteHisto(fTT, baseDir+"/bcstatup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatUp", true);
-  TH1F* ttbar_bcstatDown = DC.readWriteHisto(fTT, baseDir+"/bcstatdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatDown", true);
+  TH1F* ttbar_bcstatUp = DC.readWriteHisto(fTT, baseDir+"/bcstatup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatUp", true, isNormalized, ttbar);
+  TH1F* ttbar_bcstatDown = DC.readWriteHisto(fTT, baseDir+"/bcstatdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatDown", true, isNormalized, ttbar);
   TH1F *ttbar_bcxdyUp, *ttbar_bcxdyDown, *ttbar_bcxstUp, *ttbar_bcxstDown, *ttbar_bcxwjUp, *ttbar_bcxwjDown, *ttbar_bcxttUp, *ttbar_bcxttDown;
   if(year==2016 or year==2018){
-    ttbar_bcxdyUp = DC.readWriteHisto(fTT, baseDir+"/bcxdyup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyUp", true);
-    ttbar_bcxdyDown = DC.readWriteHisto(fTT, baseDir+"/bcxdydown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyDown", true);
-    ttbar_bcxstUp = DC.readWriteHisto(fTT, baseDir+"/bcxstup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxstUp", true);
-    ttbar_bcxstDown = DC.readWriteHisto(fTT, baseDir+"/bcxstdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxstDown", true);
-    ttbar_bcxwjUp = DC.readWriteHisto(fTT, baseDir+"/bcxwjup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjUp", true);
-    ttbar_bcxwjDown = DC.readWriteHisto(fTT, baseDir+"/bcxwjdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjDown", true);
-    ttbar_bcxttUp = DC.readWriteHisto(fTT, baseDir+"/bcxttup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxttUp", true);
-    ttbar_bcxttDown = DC.readWriteHisto(fTT, baseDir+"/bcxttdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxttDown", true);
+    ttbar_bcxdyUp = DC.readWriteHisto(fTT, baseDir+"/bcxdyup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyUp", true, isNormalized, ttbar);
+    ttbar_bcxdyDown = DC.readWriteHisto(fTT, baseDir+"/bcxdydown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyDown", true, isNormalized, ttbar);
+    ttbar_bcxstUp = DC.readWriteHisto(fTT, baseDir+"/bcxstup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxstUp", true, isNormalized, ttbar);
+    ttbar_bcxstDown = DC.readWriteHisto(fTT, baseDir+"/bcxstdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxstDown", true, isNormalized, ttbar);
+    ttbar_bcxwjUp = DC.readWriteHisto(fTT, baseDir+"/bcxwjup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjUp", true, isNormalized, ttbar);
+    ttbar_bcxwjDown = DC.readWriteHisto(fTT, baseDir+"/bcxwjdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjDown", true, isNormalized, ttbar);
+    ttbar_bcxttUp = DC.readWriteHisto(fTT, baseDir+"/bcxttup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxttUp", true, isNormalized, ttbar);
+    ttbar_bcxttDown = DC.readWriteHisto(fTT, baseDir+"/bcxttdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxttDown", true, isNormalized, ttbar);
   }else{
     ttbar_bcxdyUp = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcxdyUp", true);
     ttbar_bcxdyDown = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcxdyDown", true);
@@ -663,24 +664,24 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   }
   TH1F *ttbar_bcbfragUp, *ttbar_bcbfragDown;
   if(year==2016){
-    ttbar_bcbfragUp = DC.readWriteHisto(fTT, baseDir+"/bcbfragup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcbfragUp", true);
-    ttbar_bcbfragDown = DC.readWriteHisto(fTT, baseDir+"/bcbfragdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcbfragDown", true);
+    ttbar_bcbfragUp = DC.readWriteHisto(fTT, baseDir+"/bcbfragup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcbfragUp", true, isNormalized, ttbar);
+    ttbar_bcbfragDown = DC.readWriteHisto(fTT, baseDir+"/bcbfragdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcbfragDown", true, isNormalized, ttbar);
   }else{
     ttbar_bcbfragUp = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcbfragUp", true);
     ttbar_bcbfragDown = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcbfragDown", true);
   }
   TH1F *ttbar_bcintpUp, *ttbar_bcintpDown, *ttbar_bcextpUp, *ttbar_bcextpDown, *ttbar_bcxdybUp, *ttbar_bcxdybDown, *ttbar_bcxdycUp, *ttbar_bcxdycDown, *ttbar_bcxwjcUp, *ttbar_bcxwjcDown;
   if(year==2017){ 
-    ttbar_bcintpUp = DC.readWriteHisto(fTT, baseDir+"/bcintpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpUp", true);
-    ttbar_bcintpDown = DC.readWriteHisto(fTT, baseDir+"/bcintpdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpDown", true);
-    ttbar_bcextpUp = DC.readWriteHisto(fTT, baseDir+"/bcextpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcextpUp", true);
-    ttbar_bcextpDown = DC.readWriteHisto(fTT, baseDir+"/bcextpdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcextpDown", true);
-    ttbar_bcxdybUp = DC.readWriteHisto(fTT, baseDir+"/bcxdybup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdybUp", true);
-    ttbar_bcxdybDown = DC.readWriteHisto(fTT, baseDir+"/bcxdybdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdybDown", true);
-    ttbar_bcxdycUp = DC.readWriteHisto(fTT, baseDir+"/bcxdycup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdycUp", true);
-    ttbar_bcxdycDown = DC.readWriteHisto(fTT, baseDir+"/bcxdycdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdycDown", true);
-    ttbar_bcxwjcUp = DC.readWriteHisto(fTT, baseDir+"/bcxwjcup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcUp", true);
-    ttbar_bcxwjcDown = DC.readWriteHisto(fTT, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcDown", true);
+    ttbar_bcintpUp = DC.readWriteHisto(fTT, baseDir+"/bcintpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpUp", true, isNormalized, ttbar);
+    ttbar_bcintpDown = DC.readWriteHisto(fTT, baseDir+"/bcintpdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpDown", true, isNormalized, ttbar);
+    ttbar_bcextpUp = DC.readWriteHisto(fTT, baseDir+"/bcextpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcextpUp", true, isNormalized, ttbar);
+    ttbar_bcextpDown = DC.readWriteHisto(fTT, baseDir+"/bcextpdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcextpDown", true, isNormalized, ttbar);
+    ttbar_bcxdybUp = DC.readWriteHisto(fTT, baseDir+"/bcxdybup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdybUp", true, isNormalized, ttbar);
+    ttbar_bcxdybDown = DC.readWriteHisto(fTT, baseDir+"/bcxdybdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdybDown", true, isNormalized, ttbar);
+    ttbar_bcxdycUp = DC.readWriteHisto(fTT, baseDir+"/bcxdycup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdycUp", true, isNormalized, ttbar);
+    ttbar_bcxdycDown = DC.readWriteHisto(fTT, baseDir+"/bcxdycdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdycDown", true, isNormalized, ttbar);
+    ttbar_bcxwjcUp = DC.readWriteHisto(fTT, baseDir+"/bcxwjcup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcUp", true, isNormalized, ttbar);
+    ttbar_bcxwjcDown = DC.readWriteHisto(fTT, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcDown", true, isNormalized, ttbar);
   }else{
     ttbar_bcintpUp = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcintpUp", true);
     ttbar_bcintpDown = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcintpDown", true);
@@ -693,16 +694,16 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     ttbar_bcxwjcUp = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcxwjcUp", true);
     ttbar_bcxwjcDown = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcxwjcDown", true);
   }
-  TH1F* ttbar_pdfUp = DC.readWriteHisto(fTT, baseDir+"/pdfup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfUp", true);
-  TH1F* ttbar_pdfDown = DC.readWriteHisto(fTT, baseDir+"/pdfdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfDown", true);
-  TH1F* ttbar_bclhemufUp = DC.readWriteHisto(fTT, baseDir+"/bclhemufup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemufUp", true);
-  TH1F* ttbar_bclhemufDown = DC.readWriteHisto(fTT, baseDir+"/bclhemufdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemufDown", true);
-  TH1F* ttbar_bclhemurUp = DC.readWriteHisto(fTT, baseDir+"/bclhemurup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemurUp", true);
-  TH1F* ttbar_bclhemurDown = DC.readWriteHisto(fTT, baseDir+"/bclhemurdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemurDown", true);
-  TH1F* ttbar_isrUp = DC.readWriteHisto(fTT, baseDir+"/isrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrUp", true);
-  TH1F* ttbar_isrDown = DC.readWriteHisto(fTT, baseDir+"/isrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrDown", true);
-  TH1F* ttbar_fsrUp = DC.readWriteHisto(fTT, baseDir+"/fsrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrUp", true);
-  TH1F* ttbar_fsrDown = DC.readWriteHisto(fTT, baseDir+"/fsrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrDown", true);
+  TH1F* ttbar_pdfUp = DC.readWriteHisto(fTT, baseDir+"/pdfup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfUp", true, isNormalized, ttbar);
+  TH1F* ttbar_pdfDown = DC.readWriteHisto(fTT, baseDir+"/pdfdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfDown", true, isNormalized, ttbar);
+  TH1F* ttbar_bclhemufUp = DC.readWriteHisto(fTT, baseDir+"/bclhemufup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemufUp", true, isNormalized, ttbar);
+  TH1F* ttbar_bclhemufDown = DC.readWriteHisto(fTT, baseDir+"/bclhemufdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemufDown", true, isNormalized, ttbar);
+  TH1F* ttbar_bclhemurUp = DC.readWriteHisto(fTT, baseDir+"/bclhemurup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemurUp", true, isNormalized, ttbar);
+  TH1F* ttbar_bclhemurDown = DC.readWriteHisto(fTT, baseDir+"/bclhemurdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemurDown", true, isNormalized, ttbar);
+  TH1F* ttbar_isrUp = DC.readWriteHisto(fTT, baseDir+"/isrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrUp", true, isNormalized, ttbar);
+  TH1F* ttbar_isrDown = DC.readWriteHisto(fTT, baseDir+"/isrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrDown", true, isNormalized, ttbar);
+  TH1F* ttbar_fsrUp = DC.readWriteHisto(fTT, baseDir+"/fsrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrUp", true, isNormalized, ttbar);
+  TH1F* ttbar_fsrDown = DC.readWriteHisto(fTT, baseDir+"/fsrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrDown", true, isNormalized, ttbar);
   
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -725,19 +726,19 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     TH1F* ttbar_yMnT = DC.getHisto(fTT, baseDir+"/Iso/ExCTag/", "sf_CTag_yMnT_wt", fTT);
     unc_ttbar_ExM = DC.getUncExM(ttbar_yMyT, ttbar_yMnT);
   }
-
+  
   double sf_ttbar_cp5Up = 1; 
-  TH1F* ttbar_cp5Up = DC.readWriteHisto(fTT, baseDir+"/cp5up"+histSubDir, histName, sf_ttbar_cp5Up, fout, fTT, "ttbar_CP5_ttUp", true, true, ttbar);
+  TH1F* ttbar_cp5Up = DC.readWriteHisto(fTT, baseDir+"/cp5up"+histSubDir, histName, sf_ttbar_cp5Up, fout, fTT, "ttbar_CP5_ttUp", true, isNormalized, ttbar);
   double sf_ttbar_cp5Down = 1; 
-  TH1F* ttbar_cp5Down = DC.readWriteHisto(fTT, baseDir+"/cp5down"+histSubDir, histName, sf_ttbar_cp5Down, fout, fTT, "ttbar_CP5_ttDown", true, true, ttbar);
+  TH1F* ttbar_cp5Down = DC.readWriteHisto(fTT, baseDir+"/cp5down"+histSubDir, histName, sf_ttbar_cp5Down, fout, fTT, "ttbar_CP5_ttDown", true, isNormalized, ttbar);
   double sf_ttbar_mtop1715 = 1; 
-  TH1F* ttbar_mtop1715 = DC.readWriteHisto(fTT, baseDir+"/mtopup"+histSubDir, histName, sf_ttbar_mtop1715, fout, fTT, "ttbar_topMass_ttUp", true, true, ttbar);
+  TH1F* ttbar_mtop1715 = DC.readWriteHisto(fTT, baseDir+"/mtopup"+histSubDir, histName, sf_ttbar_mtop1715, fout, fTT, "ttbar_topMass_ttUp", true, isNormalized, ttbar);
   double sf_ttbar_mtop1735 = 1; 
-  TH1F* ttbar_mtop1735 = DC.readWriteHisto(fTT, baseDir+"/mtopdown"+histSubDir, histName, sf_ttbar_mtop1735, fout, fTT, "ttbar_topMass_ttDown", true, true, ttbar);
+  TH1F* ttbar_mtop1735 = DC.readWriteHisto(fTT, baseDir+"/mtopdown"+histSubDir, histName, sf_ttbar_mtop1735, fout, fTT, "ttbar_topMass_ttDown", true, isNormalized, ttbar);
   double sf_ttbar_matchingUp = 1; 
-  TH1F* ttbar_matchingUp = DC.readWriteHisto(fTT, baseDir+"/hdampup"+histSubDir, histName, sf_ttbar_matchingUp, fout, fTT, "ttbar_hDamp_ttUp", true, true, ttbar);
+  TH1F* ttbar_matchingUp = DC.readWriteHisto(fTT, baseDir+"/hdampup"+histSubDir, histName, sf_ttbar_matchingUp, fout, fTT, "ttbar_hDamp_ttUp", true, isNormalized, ttbar);
   double sf_ttbar_matchingDown = 1; 
-  TH1F* ttbar_matchingDown = DC.readWriteHisto(fTT, baseDir+"/hdampdown"+histSubDir, histName, sf_ttbar_matchingDown, fout, fTT, "ttbar_hDamp_ttDown", true, true, ttbar);
+  TH1F* ttbar_matchingDown = DC.readWriteHisto(fTT, baseDir+"/hdampdown"+histSubDir, histName, sf_ttbar_matchingDown, fout, fTT, "ttbar_hDamp_ttDown", true, isNormalized, ttbar);
 
   //w+jets
   double sf_wjet = 1;
@@ -767,18 +768,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wjet_PUJetIDDown = DC.readWriteHisto(fWJ, baseDir+"/pujetiddown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_PUJetIDDown", true);
   TH1F* wjet_JERUp = DC.readWriteHisto(fWJ, baseDir+"/jerup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_JERUp", true);
   TH1F* wjet_JERDown = DC.readWriteHisto(fWJ, baseDir+"/jerdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_JERDown", true);
-  TH1F* wjet_bcstatUp = DC.readWriteHisto(fWJ, baseDir+"/bcstatup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatUp", true);
-  TH1F* wjet_bcstatDown = DC.readWriteHisto(fWJ, baseDir+"/bcstatdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatDown", true);
+  TH1F* wjet_bcstatUp = DC.readWriteHisto(fWJ, baseDir+"/bcstatup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatUp", true, isNormalized, wjet);
+  TH1F* wjet_bcstatDown = DC.readWriteHisto(fWJ, baseDir+"/bcstatdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatDown", true, isNormalized, wjet);
   TH1F *wjet_bcxdyUp, *wjet_bcxdyDown, *wjet_bcxstUp, *wjet_bcxstDown, *wjet_bcxwjUp, *wjet_bcxwjDown, *wjet_bcxttUp, *wjet_bcxttDown;
   if(year==2016 or year==2018){
-    wjet_bcxdyUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdyup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyUp", true);
-    wjet_bcxdyDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdydown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyDown", true);
-    wjet_bcxstUp = DC.readWriteHisto(fWJ, baseDir+"/bcxstup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxstUp", true);
-    wjet_bcxstDown = DC.readWriteHisto(fWJ, baseDir+"/bcxstdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxstDown", true);
-    wjet_bcxwjUp = DC.readWriteHisto(fWJ, baseDir+"/bcxwjup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjUp", true);
-    wjet_bcxwjDown = DC.readWriteHisto(fWJ, baseDir+"/bcxwjdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjDown", true);
-    wjet_bcxttUp = DC.readWriteHisto(fWJ, baseDir+"/bcxttup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxttUp", true);
-    wjet_bcxttDown = DC.readWriteHisto(fWJ, baseDir+"/bcxttdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxttDown", true);
+    wjet_bcxdyUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdyup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyUp", true, isNormalized, wjet);
+    wjet_bcxdyDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdydown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyDown", true, isNormalized, wjet);
+    wjet_bcxstUp = DC.readWriteHisto(fWJ, baseDir+"/bcxstup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxstUp", true, isNormalized, wjet);
+    wjet_bcxstDown = DC.readWriteHisto(fWJ, baseDir+"/bcxstdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxstDown", true, isNormalized, wjet);
+    wjet_bcxwjUp = DC.readWriteHisto(fWJ, baseDir+"/bcxwjup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjUp", true, isNormalized, wjet);
+    wjet_bcxwjDown = DC.readWriteHisto(fWJ, baseDir+"/bcxwjdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjDown", true, isNormalized, wjet);
+    wjet_bcxttUp = DC.readWriteHisto(fWJ, baseDir+"/bcxttup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxttUp", true, isNormalized, wjet);
+    wjet_bcxttDown = DC.readWriteHisto(fWJ, baseDir+"/bcxttdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxttDown", true, isNormalized, wjet);
   }else{
     wjet_bcxdyUp = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcxdyUp", true);
     wjet_bcxdyDown = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcxdyDown", true);
@@ -791,24 +792,24 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   }
   TH1F *wjet_bcbfragUp, *wjet_bcbfragDown;
   if(year==2016){
-    wjet_bcbfragUp = DC.readWriteHisto(fWJ, baseDir+"/bcbfragup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcbfragUp", true);
-    wjet_bcbfragDown = DC.readWriteHisto(fWJ, baseDir+"/bcbfragdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcbfragDown", true);
+    wjet_bcbfragUp = DC.readWriteHisto(fWJ, baseDir+"/bcbfragup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcbfragUp", true, isNormalized, wjet);
+    wjet_bcbfragDown = DC.readWriteHisto(fWJ, baseDir+"/bcbfragdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcbfragDown", true, isNormalized, wjet);
   }else{
     wjet_bcbfragUp = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcbfragUp", true);
     wjet_bcbfragDown = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcbfragDown", true);
   }
   TH1F *wjet_bcintpUp, *wjet_bcintpDown, *wjet_bcextpUp, *wjet_bcextpDown, *wjet_bcxdybUp, *wjet_bcxdybDown, *wjet_bcxdycUp, *wjet_bcxdycDown, *wjet_bcxwjcUp, *wjet_bcxwjcDown;
   if(year==2017){
-    wjet_bcintpUp = DC.readWriteHisto(fWJ, baseDir+"/bcintpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpUp", true);
-    wjet_bcintpDown = DC.readWriteHisto(fWJ, baseDir+"/bcintpdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpDown", true);
-    wjet_bcextpUp = DC.readWriteHisto(fWJ, baseDir+"/bcextpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcextpUp", true);
-    wjet_bcextpDown = DC.readWriteHisto(fWJ, baseDir+"/bcextpdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcextpDown", true);
-    wjet_bcxdybUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdybup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdybUp", true);
-    wjet_bcxdybDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdybdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdybDown", true);
-    wjet_bcxdycUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdycup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdycUp", true);
-    wjet_bcxdycDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdycdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdycDown", true);
-    wjet_bcxwjcUp = DC.readWriteHisto(fWJ, baseDir+"/bcxwjcup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjcUp", true);
-    wjet_bcxwjcDown = DC.readWriteHisto(fWJ, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjcDown", true);
+    wjet_bcintpUp = DC.readWriteHisto(fWJ, baseDir+"/bcintpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpUp", true, isNormalized, wjet);
+    wjet_bcintpDown = DC.readWriteHisto(fWJ, baseDir+"/bcintpdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpDown", true, isNormalized, wjet);
+    wjet_bcextpUp = DC.readWriteHisto(fWJ, baseDir+"/bcextpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcextpUp", true, isNormalized, wjet);
+    wjet_bcextpDown = DC.readWriteHisto(fWJ, baseDir+"/bcextpdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcextpDown", true, isNormalized, wjet);
+    wjet_bcxdybUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdybup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdybUp", true, isNormalized, wjet);
+    wjet_bcxdybDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdybdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdybDown", true, isNormalized, wjet);
+    wjet_bcxdycUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdycup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdycUp", true, isNormalized, wjet);
+    wjet_bcxdycDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdycdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdycDown", true, isNormalized, wjet);
+    wjet_bcxwjcUp = DC.readWriteHisto(fWJ, baseDir+"/bcxwjcup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjcUp", true, isNormalized, wjet);
+    wjet_bcxwjcDown = DC.readWriteHisto(fWJ, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxwjcDown", true, isNormalized, wjet);
   }else{
     wjet_bcintpUp = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcintpUp", true);
     wjet_bcintpDown = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcintpDown", true);
@@ -821,18 +822,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     wjet_bcxwjcUp = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcxwjcUp", true);
     wjet_bcxwjcDown = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcxwjcDown", true);
   }
-  TH1F* wjet_pdfUp = DC.readWriteHisto(fWJ, baseDir+"/pdfup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_pdfUp", true);
-  TH1F* wjet_pdfDown = DC.readWriteHisto(fWJ, baseDir+"/pdfdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_pdfDown", true);
+  TH1F* wjet_pdfUp = DC.readWriteHisto(fWJ, baseDir+"/pdfup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_pdfUp", true, isNormalized, wjet);
+  TH1F* wjet_pdfDown = DC.readWriteHisto(fWJ, baseDir+"/pdfdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_pdfDown", true, isNormalized, wjet);
   // TH1F* wjet_q2Up = DC.readWriteHisto(fWJ, baseDir+"/q2up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_q2Up", true);
   // TH1F* wjet_q2Down = DC.readWriteHisto(fWJ, baseDir+"/q2down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_q2Down", true);
-  TH1F* wjet_bclhemufUp = DC.readWriteHisto(fWJ, baseDir+"/bclhemufup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemufUp", true);
-  TH1F* wjet_bclhemufDown = DC.readWriteHisto(fWJ, baseDir+"/bclhemufdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemufDown", true);
-  TH1F* wjet_bclhemurUp = DC.readWriteHisto(fWJ, baseDir+"/bclhemurup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemurUp", true);
-  TH1F* wjet_bclhemurDown = DC.readWriteHisto(fWJ, baseDir+"/bclhemurdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemurDown", true);
-  TH1F* wjet_isrUp = DC.readWriteHisto(fWJ, baseDir+"/isrup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_isrUp", true);
-  TH1F* wjet_isrDown = DC.readWriteHisto(fWJ, baseDir+"/isrdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_isrDown", true);
-  TH1F* wjet_fsrUp = DC.readWriteHisto(fWJ, baseDir+"/fsrup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrUp", true);
-  TH1F* wjet_fsrDown = DC.readWriteHisto(fWJ, baseDir+"/fsrdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrDown", true);
+  TH1F* wjet_bclhemufUp = DC.readWriteHisto(fWJ, baseDir+"/bclhemufup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemufUp", true, isNormalized, wjet);
+  TH1F* wjet_bclhemufDown = DC.readWriteHisto(fWJ, baseDir+"/bclhemufdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemufDown", true, isNormalized, wjet);
+  TH1F* wjet_bclhemurUp = DC.readWriteHisto(fWJ, baseDir+"/bclhemurup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemurUp", true, isNormalized, wjet);
+  TH1F* wjet_bclhemurDown = DC.readWriteHisto(fWJ, baseDir+"/bclhemurdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bclhemurDown", true, isNormalized, wjet);
+  TH1F* wjet_isrUp = DC.readWriteHisto(fWJ, baseDir+"/isrup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_isrUp", true, isNormalized, wjet);
+  TH1F* wjet_isrDown = DC.readWriteHisto(fWJ, baseDir+"/isrdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_isrDown", true, isNormalized, wjet);
+  TH1F* wjet_fsrUp = DC.readWriteHisto(fWJ, baseDir+"/fsrup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrUp", true, isNormalized, wjet);
+  TH1F* wjet_fsrDown = DC.readWriteHisto(fWJ, baseDir+"/fsrdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrDown", true, isNormalized, wjet);
 
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -884,18 +885,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* zjet_PUJetIDDown = DC.readWriteHisto(fDY, baseDir+"/pujetiddown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_PUJetIDDown", true);
   TH1F* zjet_JERUp = DC.readWriteHisto(fDY, baseDir+"/jerup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_JERUp", true);
   TH1F* zjet_JERDown = DC.readWriteHisto(fDY, baseDir+"/jerdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_JERDown", true);
-  TH1F* zjet_bcstatUp = DC.readWriteHisto(fDY, baseDir+"/bcstatup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatUp", true);
-  TH1F* zjet_bcstatDown = DC.readWriteHisto(fDY, baseDir+"/bcstatdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatDown", true);
+  TH1F* zjet_bcstatUp = DC.readWriteHisto(fDY, baseDir+"/bcstatup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatUp", true, isNormalized, zjet);
+  TH1F* zjet_bcstatDown = DC.readWriteHisto(fDY, baseDir+"/bcstatdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatDown", true, isNormalized, zjet);
   TH1F *zjet_bcxdyUp, *zjet_bcxdyDown, *zjet_bcxstUp, *zjet_bcxstDown, *zjet_bcxwjUp, *zjet_bcxwjDown, *zjet_bcxttUp, *zjet_bcxttDown;
   if(year==2016 or year==2018){
-    zjet_bcxdyUp = DC.readWriteHisto(fDY, baseDir+"/bcxdyup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyUp", true);
-    zjet_bcxdyDown = DC.readWriteHisto(fDY, baseDir+"/bcxdydown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyDown", true);
-    zjet_bcxstUp = DC.readWriteHisto(fDY, baseDir+"/bcxstup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxstUp", true);
-    zjet_bcxstDown = DC.readWriteHisto(fDY, baseDir+"/bcxstdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxstDown", true);
-    zjet_bcxwjUp = DC.readWriteHisto(fDY, baseDir+"/bcxwjup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjUp", true);
-    zjet_bcxwjDown = DC.readWriteHisto(fDY, baseDir+"/bcxwjdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjDown", true);
-    zjet_bcxttUp = DC.readWriteHisto(fDY, baseDir+"/bcxttup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxttUp", true);
-    zjet_bcxttDown = DC.readWriteHisto(fDY, baseDir+"/bcxttdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxttDown", true);
+    zjet_bcxdyUp = DC.readWriteHisto(fDY, baseDir+"/bcxdyup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyUp", true, isNormalized, zjet);
+    zjet_bcxdyDown = DC.readWriteHisto(fDY, baseDir+"/bcxdydown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyDown", true, isNormalized, zjet);
+    zjet_bcxstUp = DC.readWriteHisto(fDY, baseDir+"/bcxstup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxstUp", true, isNormalized, zjet);
+    zjet_bcxstDown = DC.readWriteHisto(fDY, baseDir+"/bcxstdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxstDown", true, isNormalized, zjet);
+    zjet_bcxwjUp = DC.readWriteHisto(fDY, baseDir+"/bcxwjup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjUp", true, isNormalized, zjet);
+    zjet_bcxwjDown = DC.readWriteHisto(fDY, baseDir+"/bcxwjdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjDown", true, isNormalized, zjet);
+    zjet_bcxttUp = DC.readWriteHisto(fDY, baseDir+"/bcxttup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxttUp", true, isNormalized, zjet);
+    zjet_bcxttDown = DC.readWriteHisto(fDY, baseDir+"/bcxttdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxttDown", true, isNormalized, zjet);
   }else{
     zjet_bcxdyUp = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcxdyUp", true);
     zjet_bcxdyDown = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcxdyDown", true);
@@ -908,24 +909,24 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   }
   TH1F *zjet_bcbfragUp, *zjet_bcbfragDown;
   if(year==2016){
-    zjet_bcbfragUp = DC.readWriteHisto(fDY, baseDir+"/bcbfragup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcbfragUp", true);
-    zjet_bcbfragDown = DC.readWriteHisto(fDY, baseDir+"/bcbfragdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcbfragDown", true);
+    zjet_bcbfragUp = DC.readWriteHisto(fDY, baseDir+"/bcbfragup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcbfragUp", true, isNormalized, zjet);
+    zjet_bcbfragDown = DC.readWriteHisto(fDY, baseDir+"/bcbfragdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcbfragDown", true, isNormalized, zjet);
   }else{
     zjet_bcbfragUp = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcbfragUp", true);
     zjet_bcbfragDown = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcbfragDown", true);
   }
   TH1F *zjet_bcintpUp, *zjet_bcintpDown, *zjet_bcextpUp, *zjet_bcextpDown, *zjet_bcxdybUp, *zjet_bcxdybDown, *zjet_bcxdycUp, *zjet_bcxdycDown, *zjet_bcxwjcUp, *zjet_bcxwjcDown;
   if(year==2017){
-    zjet_bcintpUp = DC.readWriteHisto(fDY, baseDir+"/bcintpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpUp", true);
-    zjet_bcintpDown = DC.readWriteHisto(fDY, baseDir+"/bcintpdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpDown", true);
-    zjet_bcextpUp = DC.readWriteHisto(fDY, baseDir+"/bcextpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcextpUp", true);
-    zjet_bcextpDown = DC.readWriteHisto(fDY, baseDir+"/bcextpdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcextpDown", true);
-    zjet_bcxdybUp = DC.readWriteHisto(fDY, baseDir+"/bcxdybup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdybUp", true);
-    zjet_bcxdybDown = DC.readWriteHisto(fDY, baseDir+"/bcxdybdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdybDown", true);
-    zjet_bcxdycUp = DC.readWriteHisto(fDY, baseDir+"/bcxdycup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdycUp", true);
-    zjet_bcxdycDown = DC.readWriteHisto(fDY, baseDir+"/bcxdycdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdycDown", true);
-    zjet_bcxwjcUp = DC.readWriteHisto(fDY, baseDir+"/bcxwjcup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjcUp", true);
-    zjet_bcxwjcDown = DC.readWriteHisto(fDY, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjcDown", true);
+    zjet_bcintpUp = DC.readWriteHisto(fDY, baseDir+"/bcintpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpUp", true, isNormalized, zjet);
+    zjet_bcintpDown = DC.readWriteHisto(fDY, baseDir+"/bcintpdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpDown", true, isNormalized, zjet);
+    zjet_bcextpUp = DC.readWriteHisto(fDY, baseDir+"/bcextpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcextpUp", true, isNormalized, zjet);
+    zjet_bcextpDown = DC.readWriteHisto(fDY, baseDir+"/bcextpdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcextpDown", true, isNormalized, zjet);
+    zjet_bcxdybUp = DC.readWriteHisto(fDY, baseDir+"/bcxdybup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdybUp", true, isNormalized, zjet);
+    zjet_bcxdybDown = DC.readWriteHisto(fDY, baseDir+"/bcxdybdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdybDown", true, isNormalized, zjet);
+    zjet_bcxdycUp = DC.readWriteHisto(fDY, baseDir+"/bcxdycup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdycUp", true, isNormalized, zjet);
+    zjet_bcxdycDown = DC.readWriteHisto(fDY, baseDir+"/bcxdycdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdycDown", true, isNormalized, zjet);
+    zjet_bcxwjcUp = DC.readWriteHisto(fDY, baseDir+"/bcxwjcup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjcUp", true, isNormalized, zjet);
+    zjet_bcxwjcDown = DC.readWriteHisto(fDY, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxwjcDown", true, isNormalized, zjet);
   }else{
     zjet_bcintpUp = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcintpUp", true);
     zjet_bcintpDown = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcintpDown", true);
@@ -938,18 +939,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     zjet_bcxwjcUp = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcxwjcUp", true);
     zjet_bcxwjcDown = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcxwjcDown", true);
   }
-  TH1F* zjet_pdfUp = DC.readWriteHisto(fDY, baseDir+"/pdfup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_pdfUp", true);
-  TH1F* zjet_pdfDown = DC.readWriteHisto(fDY, baseDir+"/pdfdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_pdfDown", true);
+  TH1F* zjet_pdfUp = DC.readWriteHisto(fDY, baseDir+"/pdfup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_pdfUp", true, isNormalized, zjet);
+  TH1F* zjet_pdfDown = DC.readWriteHisto(fDY, baseDir+"/pdfdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_pdfDown", true, isNormalized, zjet);
   // TH1F* zjet_q2Up = DC.readWriteHisto(fDY, baseDir+"/q2up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_q2Up", true);
   // TH1F* zjet_q2Down = DC.readWriteHisto(fDY, baseDir+"/q2down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_q2Down", true);
-  TH1F* zjet_bclhemufUp = DC.readWriteHisto(fDY, baseDir+"/bclhemufup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemufUp", true);
-  TH1F* zjet_bclhemufDown = DC.readWriteHisto(fDY, baseDir+"/bclhemufdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemufDown", true);
-  TH1F* zjet_bclhemurUp = DC.readWriteHisto(fDY, baseDir+"/bclhemurup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemurUp", true);
-  TH1F* zjet_bclhemurDown = DC.readWriteHisto(fDY, baseDir+"/bclhemurdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemurDown", true);
-  TH1F* zjet_isrUp = DC.readWriteHisto(fDY, baseDir+"/isrup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_isrUp", true);
-  TH1F* zjet_isrDown = DC.readWriteHisto(fDY, baseDir+"/isrdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_isrDown", true);
-  TH1F* zjet_fsrUp = DC.readWriteHisto(fDY, baseDir+"/fsrup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrUp", true);
-  TH1F* zjet_fsrDown = DC.readWriteHisto(fDY, baseDir+"/fsrdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrDown", true);
+  TH1F* zjet_bclhemufUp = DC.readWriteHisto(fDY, baseDir+"/bclhemufup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemufUp", true, isNormalized, zjet);
+  TH1F* zjet_bclhemufDown = DC.readWriteHisto(fDY, baseDir+"/bclhemufdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemufDown", true, isNormalized, zjet);
+  TH1F* zjet_bclhemurUp = DC.readWriteHisto(fDY, baseDir+"/bclhemurup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemurUp", true, isNormalized, zjet);
+  TH1F* zjet_bclhemurDown = DC.readWriteHisto(fDY, baseDir+"/bclhemurdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bclhemurDown", true, isNormalized, zjet);
+  TH1F* zjet_isrUp = DC.readWriteHisto(fDY, baseDir+"/isrup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_isrUp", true, isNormalized, zjet);
+  TH1F* zjet_isrDown = DC.readWriteHisto(fDY, baseDir+"/isrdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_isrDown", true, isNormalized, zjet);
+  TH1F* zjet_fsrUp = DC.readWriteHisto(fDY, baseDir+"/fsrup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrUp", true, isNormalized, zjet);
+  TH1F* zjet_fsrDown = DC.readWriteHisto(fDY, baseDir+"/fsrdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrDown", true, isNormalized, zjet);
 
   
   if(isBinStat){
@@ -1002,18 +1003,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* stop_PUJetIDDown = DC.readWriteHisto(fST, baseDir+"/pujetiddown"+histSubDir, histName, sf_stop, fout, fTT, "stop_PUJetIDDown", true);
   TH1F* stop_JERUp = DC.readWriteHisto(fST, baseDir+"/jerup"+histSubDir, histName, sf_stop, fout, fTT, "stop_JERUp", true);
   TH1F* stop_JERDown = DC.readWriteHisto(fST, baseDir+"/jerdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_JERDown", true);
-  TH1F* stop_bcstatUp = DC.readWriteHisto(fST, baseDir+"/bcstatup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatUp", true);
-  TH1F* stop_bcstatDown = DC.readWriteHisto(fST, baseDir+"/bcstatdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatDown", true);
+  TH1F* stop_bcstatUp = DC.readWriteHisto(fST, baseDir+"/bcstatup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatUp", true, isNormalized, stop);
+  TH1F* stop_bcstatDown = DC.readWriteHisto(fST, baseDir+"/bcstatdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatDown", true, isNormalized, stop);
   TH1F *stop_bcxdyUp, *stop_bcxdyDown, *stop_bcxstUp, *stop_bcxstDown, *stop_bcxwjUp, *stop_bcxwjDown, *stop_bcxttUp, *stop_bcxttDown;
   if(year==2016 or year==2018){
-    stop_bcxdyUp = DC.readWriteHisto(fST, baseDir+"/bcxdyup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyUp", true);
-    stop_bcxdyDown = DC.readWriteHisto(fST, baseDir+"/bcxdydown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyDown", true);
-    stop_bcxstUp = DC.readWriteHisto(fST, baseDir+"/bcxstup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxstUp", true);
-    stop_bcxstDown = DC.readWriteHisto(fST, baseDir+"/bcxstdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxstDown", true);
-    stop_bcxwjUp = DC.readWriteHisto(fST, baseDir+"/bcxwjup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjUp", true);
-    stop_bcxwjDown = DC.readWriteHisto(fST, baseDir+"/bcxwjdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjDown", true);
-    stop_bcxttUp = DC.readWriteHisto(fST, baseDir+"/bcxttup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxttUp", true);
-    stop_bcxttDown = DC.readWriteHisto(fST, baseDir+"/bcxttdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxttDown", true);
+    stop_bcxdyUp = DC.readWriteHisto(fST, baseDir+"/bcxdyup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyUp", true, isNormalized, stop);
+    stop_bcxdyDown = DC.readWriteHisto(fST, baseDir+"/bcxdydown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyDown", true, isNormalized, stop);
+    stop_bcxstUp = DC.readWriteHisto(fST, baseDir+"/bcxstup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxstUp", true, isNormalized, stop);
+    stop_bcxstDown = DC.readWriteHisto(fST, baseDir+"/bcxstdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxstDown", true, isNormalized, stop);
+    stop_bcxwjUp = DC.readWriteHisto(fST, baseDir+"/bcxwjup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjUp", true, isNormalized, stop);
+    stop_bcxwjDown = DC.readWriteHisto(fST, baseDir+"/bcxwjdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjDown", true, isNormalized, stop);
+    stop_bcxttUp = DC.readWriteHisto(fST, baseDir+"/bcxttup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxttUp", true, isNormalized, stop);
+    stop_bcxttDown = DC.readWriteHisto(fST, baseDir+"/bcxttdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxttDown", true, isNormalized, stop);
   }else{
     stop_bcxdyUp = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcxdyUp", true);
     stop_bcxdyDown = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcxdyDown", true);
@@ -1026,24 +1027,24 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   }
   TH1F *stop_bcbfragUp, *stop_bcbfragDown;
   if(year==2016){
-    stop_bcbfragUp = DC.readWriteHisto(fST, baseDir+"/bcbfragup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcbfragUp", true);
-    stop_bcbfragDown = DC.readWriteHisto(fST, baseDir+"/bcbfragdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcbfragDown", true);
+    stop_bcbfragUp = DC.readWriteHisto(fST, baseDir+"/bcbfragup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcbfragUp", true, isNormalized, stop);
+    stop_bcbfragDown = DC.readWriteHisto(fST, baseDir+"/bcbfragdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcbfragDown", true, isNormalized, stop);
   }else{
     stop_bcbfragUp = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcbfragUp", true);
     stop_bcbfragDown = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcbfragDown", true);
   }
   TH1F *stop_bcintpUp, *stop_bcintpDown, *stop_bcextpUp, *stop_bcextpDown, *stop_bcxdybUp, *stop_bcxdybDown, *stop_bcxdycUp, *stop_bcxdycDown, *stop_bcxwjcUp, *stop_bcxwjcDown;
   if(year==2017){    
-    stop_bcintpUp = DC.readWriteHisto(fST, baseDir+"/bcintpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpUp", true);
-    stop_bcintpDown = DC.readWriteHisto(fST, baseDir+"/bcintpdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpDown", true);
-    stop_bcextpUp = DC.readWriteHisto(fST, baseDir+"/bcextpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcextpUp", true);
-    stop_bcextpDown = DC.readWriteHisto(fST, baseDir+"/bcextpdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcextpDown", true);
-    stop_bcxdybUp = DC.readWriteHisto(fST, baseDir+"/bcxdybup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdybUp", true);
-    stop_bcxdybDown = DC.readWriteHisto(fST, baseDir+"/bcxdybdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdybDown", true);
-    stop_bcxdycUp = DC.readWriteHisto(fST, baseDir+"/bcxdycup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdycUp", true);
-    stop_bcxdycDown = DC.readWriteHisto(fST, baseDir+"/bcxdycdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdycDown", true);
-    stop_bcxwjcUp = DC.readWriteHisto(fST, baseDir+"/bcxwjcup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjcUp", true);
-    stop_bcxwjcDown = DC.readWriteHisto(fST, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjcDown", true);
+    stop_bcintpUp = DC.readWriteHisto(fST, baseDir+"/bcintpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpUp", true, isNormalized, stop);
+    stop_bcintpDown = DC.readWriteHisto(fST, baseDir+"/bcintpdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpDown", true, isNormalized, stop);
+    stop_bcextpUp = DC.readWriteHisto(fST, baseDir+"/bcextpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcextpUp", true, isNormalized, stop);
+    stop_bcextpDown = DC.readWriteHisto(fST, baseDir+"/bcextpdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcextpDown", true, isNormalized, stop);
+    stop_bcxdybUp = DC.readWriteHisto(fST, baseDir+"/bcxdybup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdybUp", true, isNormalized, stop);
+    stop_bcxdybDown = DC.readWriteHisto(fST, baseDir+"/bcxdybdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdybDown", true, isNormalized, stop);
+    stop_bcxdycUp = DC.readWriteHisto(fST, baseDir+"/bcxdycup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdycUp", true, isNormalized, stop);
+    stop_bcxdycDown = DC.readWriteHisto(fST, baseDir+"/bcxdycdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdycDown", true, isNormalized, stop);
+    stop_bcxwjcUp = DC.readWriteHisto(fST, baseDir+"/bcxwjcup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjcUp", true, isNormalized, stop);
+    stop_bcxwjcDown = DC.readWriteHisto(fST, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxwjcDown", true, isNormalized, stop);
   }else{
     stop_bcintpUp = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcintpUp", true);
     stop_bcintpDown = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcintpDown", true);
@@ -1056,18 +1057,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     stop_bcxwjcUp = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcxwjcUp", true);
     stop_bcxwjcDown = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcxwjcDown", true);
   }
-  TH1F* stop_pdfUp = DC.readWriteHisto(fST, baseDir+"/pdfup"+histSubDir, histName, sf_stop, fout, fTT, "stop_pdfUp", true);
-  TH1F* stop_pdfDown = DC.readWriteHisto(fST, baseDir+"/pdfdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_pdfDown", true);
+  TH1F* stop_pdfUp = DC.readWriteHisto(fST, baseDir+"/pdfup"+histSubDir, histName, sf_stop, fout, fTT, "stop_pdfUp", true, isNormalized, stop);
+  TH1F* stop_pdfDown = DC.readWriteHisto(fST, baseDir+"/pdfdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_pdfDown", true, isNormalized, stop);
   // TH1F* stop_q2Up = DC.readWriteHisto(fST, baseDir+"/q2up"+histSubDir, histName, sf_stop, fout, fTT, "stop_q2Up", true);
   // TH1F* stop_q2Down = DC.readWriteHisto(fST, baseDir+"/q2down"+histSubDir, histName, sf_stop, fout, fTT, "stop_q2Down", true);
-  TH1F* stop_bclhemufUp = DC.readWriteHisto(fST, baseDir+"/bclhemufup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemufUp", true);
-  TH1F* stop_bclhemufDown = DC.readWriteHisto(fST, baseDir+"/bclhemufdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemufDown", true);
-  TH1F* stop_bclhemurUp = DC.readWriteHisto(fST, baseDir+"/bclhemurup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemurUp", true);
-  TH1F* stop_bclhemurDown = DC.readWriteHisto(fST, baseDir+"/bclhemurdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemurDown", true);
-  TH1F* stop_isrUp = DC.readWriteHisto(fST, baseDir+"/isrup"+histSubDir, histName, sf_stop, fout, fTT, "stop_isrUp", true);
-  TH1F* stop_isrDown = DC.readWriteHisto(fST, baseDir+"/isrdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_isrDown", true);
-  TH1F* stop_fsrUp = DC.readWriteHisto(fST, baseDir+"/fsrup"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrUp", true);
-  TH1F* stop_fsrDown = DC.readWriteHisto(fST, baseDir+"/fsrdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrDown", true);
+  TH1F* stop_bclhemufUp = DC.readWriteHisto(fST, baseDir+"/bclhemufup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemufUp", true, isNormalized, stop);
+  TH1F* stop_bclhemufDown = DC.readWriteHisto(fST, baseDir+"/bclhemufdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemufDown", true, isNormalized, stop);
+  TH1F* stop_bclhemurUp = DC.readWriteHisto(fST, baseDir+"/bclhemurup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemurUp", true, isNormalized, stop);
+  TH1F* stop_bclhemurDown = DC.readWriteHisto(fST, baseDir+"/bclhemurdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bclhemurDown", true, isNormalized, stop);
+  TH1F* stop_isrUp = DC.readWriteHisto(fST, baseDir+"/isrup"+histSubDir, histName, sf_stop, fout, fTT, "stop_isrUp", true, isNormalized, stop);
+  TH1F* stop_isrDown = DC.readWriteHisto(fST, baseDir+"/isrdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_isrDown", true, isNormalized, stop);
+  TH1F* stop_fsrUp = DC.readWriteHisto(fST, baseDir+"/fsrup"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrUp", true, isNormalized, stop);
+  TH1F* stop_fsrDown = DC.readWriteHisto(fST, baseDir+"/fsrdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrDown", true, isNormalized, stop);
 
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -1119,18 +1120,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* vv_PUJetIDDown = DC.readWriteHisto(fVV, baseDir+"/pujetiddown"+histSubDir, histName, sf_vv, fout, fTT, "vv_PUJetIDDown", true);
   TH1F* vv_JERUp = DC.readWriteHisto(fVV, baseDir+"/jerup"+histSubDir, histName, sf_vv, fout, fTT, "vv_JERUp", true);
   TH1F* vv_JERDown = DC.readWriteHisto(fVV, baseDir+"/jerdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_JERDown", true);
-  TH1F* vv_bcstatUp = DC.readWriteHisto(fVV, baseDir+"/bcstatup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatUp", true);
-  TH1F* vv_bcstatDown = DC.readWriteHisto(fVV, baseDir+"/bcstatdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatDown", true);
+  TH1F* vv_bcstatUp = DC.readWriteHisto(fVV, baseDir+"/bcstatup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatUp", true, isNormalized, vv);
+  TH1F* vv_bcstatDown = DC.readWriteHisto(fVV, baseDir+"/bcstatdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatDown", true, isNormalized, vv);
   TH1F *vv_bcxdyUp, *vv_bcxdyDown, *vv_bcxstUp, *vv_bcxstDown, *vv_bcxwjUp, *vv_bcxwjDown, *vv_bcxttUp, *vv_bcxttDown;
   if(year==2016 or year==2018){
-    vv_bcxdyUp = DC.readWriteHisto(fVV, baseDir+"/bcxdyup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyUp", true);
-    vv_bcxdyDown = DC.readWriteHisto(fVV, baseDir+"/bcxdydown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyDown", true);
-    vv_bcxstUp = DC.readWriteHisto(fVV, baseDir+"/bcxstup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxstUp", true);
-    vv_bcxstDown = DC.readWriteHisto(fVV, baseDir+"/bcxstdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxstDown", true);
-    vv_bcxwjUp = DC.readWriteHisto(fVV, baseDir+"/bcxwjup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjUp", true);
-    vv_bcxwjDown = DC.readWriteHisto(fVV, baseDir+"/bcxwjdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjDown", true);
-    vv_bcxttUp = DC.readWriteHisto(fVV, baseDir+"/bcxttup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxttUp", true);
-    vv_bcxttDown = DC.readWriteHisto(fVV, baseDir+"/bcxttdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxttDown", true);
+    vv_bcxdyUp = DC.readWriteHisto(fVV, baseDir+"/bcxdyup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyUp", true, isNormalized, vv);
+    vv_bcxdyDown = DC.readWriteHisto(fVV, baseDir+"/bcxdydown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyDown", true, isNormalized, vv);
+    vv_bcxstUp = DC.readWriteHisto(fVV, baseDir+"/bcxstup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxstUp", true, isNormalized, vv);
+    vv_bcxstDown = DC.readWriteHisto(fVV, baseDir+"/bcxstdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxstDown", true, isNormalized, vv);
+    vv_bcxwjUp = DC.readWriteHisto(fVV, baseDir+"/bcxwjup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjUp", true, isNormalized, vv);
+    vv_bcxwjDown = DC.readWriteHisto(fVV, baseDir+"/bcxwjdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjDown", true, isNormalized, vv);
+    vv_bcxttUp = DC.readWriteHisto(fVV, baseDir+"/bcxttup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxttUp", true, isNormalized, vv);
+    vv_bcxttDown = DC.readWriteHisto(fVV, baseDir+"/bcxttdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxttDown", true, isNormalized, vv);
   }else{
     vv_bcxdyUp = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcxdyUp", true);
     vv_bcxdyDown = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcxdyDown", true);
@@ -1143,24 +1144,24 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   }  
   TH1F *vv_bcbfragUp, *vv_bcbfragDown;
   if(year==2016){
-    vv_bcbfragUp = DC.readWriteHisto(fVV, baseDir+"/bcbfragup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcbfragUp", true);
-    vv_bcbfragDown = DC.readWriteHisto(fVV, baseDir+"/bcbfragdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcbfragDown", true);
+    vv_bcbfragUp = DC.readWriteHisto(fVV, baseDir+"/bcbfragup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcbfragUp", true, isNormalized, vv);
+    vv_bcbfragDown = DC.readWriteHisto(fVV, baseDir+"/bcbfragdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcbfragDown", true, isNormalized, vv);
   }else{
     vv_bcbfragUp = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcbfragUp", true);
     vv_bcbfragDown = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcbfragDown", true);
   }
   TH1F *vv_bcintpUp, *vv_bcintpDown, *vv_bcextpUp, *vv_bcextpDown, *vv_bcxdybUp, *vv_bcxdybDown, *vv_bcxdycUp, *vv_bcxdycDown, *vv_bcxwjcUp, *vv_bcxwjcDown;
   if(year==2017){
-    vv_bcintpUp = DC.readWriteHisto(fVV, baseDir+"/bcintpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpUp", true);
-    vv_bcintpDown = DC.readWriteHisto(fVV, baseDir+"/bcintpdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpDown", true);
-    vv_bcextpUp = DC.readWriteHisto(fVV, baseDir+"/bcextpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcextpUp", true);
-    vv_bcextpDown = DC.readWriteHisto(fVV, baseDir+"/bcextpdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcextpDown", true);
-    vv_bcxdybUp = DC.readWriteHisto(fVV, baseDir+"/bcxdybup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdybUp", true);
-    vv_bcxdybDown = DC.readWriteHisto(fVV, baseDir+"/bcxdybdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdybDown", true);
-    vv_bcxdycUp = DC.readWriteHisto(fVV, baseDir+"/bcxdycup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdycUp", true);
-    vv_bcxdycDown = DC.readWriteHisto(fVV, baseDir+"/bcxdycdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdycDown", true);
-    vv_bcxwjcUp = DC.readWriteHisto(fVV, baseDir+"/bcxwjcup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjcUp", true);
-    vv_bcxwjcDown = DC.readWriteHisto(fVV, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjcDown", true);
+    vv_bcintpUp = DC.readWriteHisto(fVV, baseDir+"/bcintpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpUp", true, isNormalized, vv);
+    vv_bcintpDown = DC.readWriteHisto(fVV, baseDir+"/bcintpdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpDown", true, isNormalized, vv);
+    vv_bcextpUp = DC.readWriteHisto(fVV, baseDir+"/bcextpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcextpUp", true, isNormalized, vv);
+    vv_bcextpDown = DC.readWriteHisto(fVV, baseDir+"/bcextpdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcextpDown", true, isNormalized, vv);
+    vv_bcxdybUp = DC.readWriteHisto(fVV, baseDir+"/bcxdybup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdybUp", true, isNormalized, vv);
+    vv_bcxdybDown = DC.readWriteHisto(fVV, baseDir+"/bcxdybdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdybDown", true, isNormalized, vv);
+    vv_bcxdycUp = DC.readWriteHisto(fVV, baseDir+"/bcxdycup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdycUp", true, isNormalized, vv);
+    vv_bcxdycDown = DC.readWriteHisto(fVV, baseDir+"/bcxdycdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdycDown", true, isNormalized, vv);
+    vv_bcxwjcUp = DC.readWriteHisto(fVV, baseDir+"/bcxwjcup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjcUp", true, isNormalized, vv);
+    vv_bcxwjcDown = DC.readWriteHisto(fVV, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxwjcDown", true, isNormalized, vv);
   }else{
     vv_bcintpUp = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcintpUp", true);
     vv_bcintpDown = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcintpDown", true);
@@ -1173,18 +1174,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     vv_bcxwjcUp = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcxwjcUp", true);
     vv_bcxwjcDown = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcxwjcDown", true);
   }
-  TH1F* vv_pdfUp = DC.readWriteHisto(fVV, baseDir+"/pdfup"+histSubDir, histName, sf_vv, fout, fTT, "vv_pdfUp", true);
-  TH1F* vv_pdfDown = DC.readWriteHisto(fVV, baseDir+"/pdfdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_pdfDown", true);
+  TH1F* vv_pdfUp = DC.readWriteHisto(fVV, baseDir+"/pdfup"+histSubDir, histName, sf_vv, fout, fTT, "vv_pdfUp", true, isNormalized, vv);
+  TH1F* vv_pdfDown = DC.readWriteHisto(fVV, baseDir+"/pdfdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_pdfDown", true, isNormalized, vv);
   // TH1F* vv_q2Up = DC.readWriteHisto(fVV, baseDir+"/q2up"+histSubDir, histName, sf_vv, fout, fTT, "vv_q2Up", true);
   // TH1F* vv_q2Down = DC.readWriteHisto(fVV, baseDir+"/q2down"+histSubDir, histName, sf_vv, fout, fTT, "vv_q2Down", true);
-  TH1F* vv_bclhemufUp = DC.readWriteHisto(fVV, baseDir+"/bclhemufup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemufUp", true);
-  TH1F* vv_bclhemufDown = DC.readWriteHisto(fVV, baseDir+"/bclhemufdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemufDown", true);
-  TH1F* vv_bclhemurUp = DC.readWriteHisto(fVV, baseDir+"/bclhemurup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemurUp", true);
-  TH1F* vv_bclhemurDown = DC.readWriteHisto(fVV, baseDir+"/bclhemurdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemurDown", true);
-  TH1F* vv_isrUp = DC.readWriteHisto(fVV, baseDir+"/isrup"+histSubDir, histName, sf_vv, fout, fTT, "vv_isrUp", true);
-  TH1F* vv_isrDown = DC.readWriteHisto(fVV, baseDir+"/isrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_isrDown", true);
-  TH1F* vv_fsrUp = DC.readWriteHisto(fVV, baseDir+"/fsrup"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrUp", true);
-  TH1F* vv_fsrDown = DC.readWriteHisto(fVV, baseDir+"/fsrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrDown", true);
+  TH1F* vv_bclhemufUp = DC.readWriteHisto(fVV, baseDir+"/bclhemufup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemufUp", true, isNormalized, vv);
+  TH1F* vv_bclhemufDown = DC.readWriteHisto(fVV, baseDir+"/bclhemufdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemufDown", true, isNormalized, vv);
+  TH1F* vv_bclhemurUp = DC.readWriteHisto(fVV, baseDir+"/bclhemurup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemurUp", true, isNormalized, vv);
+  TH1F* vv_bclhemurDown = DC.readWriteHisto(fVV, baseDir+"/bclhemurdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bclhemurDown", true, isNormalized, vv);
+  TH1F* vv_isrUp = DC.readWriteHisto(fVV, baseDir+"/isrup"+histSubDir, histName, sf_vv, fout, fTT, "vv_isrUp", true, isNormalized, vv);
+  TH1F* vv_isrDown = DC.readWriteHisto(fVV, baseDir+"/isrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_isrDown", true, isNormalized, vv);
+  TH1F* vv_fsrUp = DC.readWriteHisto(fVV, baseDir+"/fsrup"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrUp", true, isNormalized, vv);
+  TH1F* vv_fsrDown = DC.readWriteHisto(fVV, baseDir+"/fsrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrDown", true, isNormalized, vv);
 
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -1247,7 +1248,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   baseDir = (isMuChannel) ? "DataMu" : "DataEle";
   TH1F* data_obs = DC.readWriteHisto(fData, baseDir+"/base"+histSubDir, histName, sf_data, fout, fTT, "data_obs", true);
   //TH1F* data_obs = DC.readWriteHisto(fTT, "TTbar/base"+histSubDir, histName, sf_data, fout, fTT, "data_obs", true);
-  cout<<":data_obs ================: "<<data_obs->Integral()<<endl;
+  //cout<<":data_obs ================: "<<data_obs->Integral()<<endl;
 
   //wh
   double sf_wh = 1.0;
@@ -1279,18 +1280,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wh_PUJetIDDown = DC.readWriteHisto(fWH, baseDir+"/pujetiddown"+histSubDir, histName, sf_wh, fout, fTT, label+"_PUJetIDDown", true);
   TH1F* wh_JERUp = DC.readWriteHisto(fWH, baseDir+"/jerup"+histSubDir, histName, sf_wh, fout, fTT, label+"_JERUp", true);
   TH1F* wh_JERDown = DC.readWriteHisto(fWH, baseDir+"/jerdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_JERDown", true);
-  TH1F* wh_bcstatUp = DC.readWriteHisto(fWH, baseDir+"/bcstatup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatUp", true);
-  TH1F* wh_bcstatDown = DC.readWriteHisto(fWH, baseDir+"/bcstatdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatDown", true);
+  TH1F* wh_bcstatUp = DC.readWriteHisto(fWH, baseDir+"/bcstatup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatUp", true, isNormalized, wh);
+  TH1F* wh_bcstatDown = DC.readWriteHisto(fWH, baseDir+"/bcstatdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatDown", true, isNormalized, wh);
   TH1F *wh_bcxdyUp, *wh_bcxdyDown, *wh_bcxstUp, *wh_bcxstDown, *wh_bcxwjUp, *wh_bcxwjDown, *wh_bcxttUp, *wh_bcxttDown;
   if(year==2016 or year==2018){
-     wh_bcxdyUp = DC.readWriteHisto(fWH, baseDir+"/bcxdyup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyUp", true);
-     wh_bcxdyDown = DC.readWriteHisto(fWH, baseDir+"/bcxdydown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyDown", true);
-     wh_bcxstUp = DC.readWriteHisto(fWH, baseDir+"/bcxstup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxstUp", true);
-     wh_bcxstDown = DC.readWriteHisto(fWH, baseDir+"/bcxstdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxstDown", true);
-     wh_bcxwjUp = DC.readWriteHisto(fWH, baseDir+"/bcxwjup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjUp", true);
-     wh_bcxwjDown = DC.readWriteHisto(fWH, baseDir+"/bcxwjdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjDown", true);
-     wh_bcxttUp = DC.readWriteHisto(fWH, baseDir+"/bcxttup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxttUp", true);
-     wh_bcxttDown = DC.readWriteHisto(fWH, baseDir+"/bcxttdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxttDown", true);
+     wh_bcxdyUp = DC.readWriteHisto(fWH, baseDir+"/bcxdyup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyUp", true, isNormalized, wh);
+     wh_bcxdyDown = DC.readWriteHisto(fWH, baseDir+"/bcxdydown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyDown", true, isNormalized, wh);
+     wh_bcxstUp = DC.readWriteHisto(fWH, baseDir+"/bcxstup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxstUp", true, isNormalized, wh);
+     wh_bcxstDown = DC.readWriteHisto(fWH, baseDir+"/bcxstdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxstDown", true, isNormalized, wh);
+     wh_bcxwjUp = DC.readWriteHisto(fWH, baseDir+"/bcxwjup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjUp", true, isNormalized, wh);
+     wh_bcxwjDown = DC.readWriteHisto(fWH, baseDir+"/bcxwjdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjDown", true, isNormalized, wh);
+     wh_bcxttUp = DC.readWriteHisto(fWH, baseDir+"/bcxttup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxttUp", true, isNormalized, wh);
+     wh_bcxttDown = DC.readWriteHisto(fWH, baseDir+"/bcxttdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxttDown", true, isNormalized, wh);
   }else{
     wh_bcxdyUp = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcxdyUp", true);
     wh_bcxdyDown = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcxdyDown", true);
@@ -1303,24 +1304,24 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   }
   TH1F *wh_bcbfragUp, *wh_bcbfragDown;
   if(year==2016){
-     wh_bcbfragUp = DC.readWriteHisto(fWH, baseDir+"/bcbfragup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcbfragUp", true);
-     wh_bcbfragDown = DC.readWriteHisto(fWH, baseDir+"/bcbfragdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcbfragDown", true);
+     wh_bcbfragUp = DC.readWriteHisto(fWH, baseDir+"/bcbfragup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcbfragUp", true, isNormalized, wh);
+     wh_bcbfragDown = DC.readWriteHisto(fWH, baseDir+"/bcbfragdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcbfragDown", true, isNormalized, wh);
   }else{
     wh_bcbfragUp = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcbfragUp", true);
     wh_bcbfragDown = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcbfragDown", true);
   }
   TH1F *wh_bcintpUp, *wh_bcintpDown, *wh_bcextpUp, *wh_bcextpDown, *wh_bcxdybUp, *wh_bcxdybDown, *wh_bcxdycUp, *wh_bcxdycDown, *wh_bcxwjcUp, *wh_bcxwjcDown;
   if(year==2017){
-     wh_bcintpUp = DC.readWriteHisto(fWH, baseDir+"/bcintpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpUp", true);
-     wh_bcintpDown = DC.readWriteHisto(fWH, baseDir+"/bcintpdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpDown", true);
-     wh_bcextpUp = DC.readWriteHisto(fWH, baseDir+"/bcextpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcextpUp", true);
-     wh_bcextpDown = DC.readWriteHisto(fWH, baseDir+"/bcextpdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcextpDown", true);
-     wh_bcxdybUp = DC.readWriteHisto(fWH, baseDir+"/bcxdybup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdybUp", true);
-     wh_bcxdybDown = DC.readWriteHisto(fWH, baseDir+"/bcxdybdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdybDown", true);
-     wh_bcxdycUp = DC.readWriteHisto(fWH, baseDir+"/bcxdycup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdycUp", true);
-     wh_bcxdycDown = DC.readWriteHisto(fWH, baseDir+"/bcxdycdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdycDown", true);
-     wh_bcxwjcUp = DC.readWriteHisto(fWH, baseDir+"/bcxwjcup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjcUp", true);
-     wh_bcxwjcDown = DC.readWriteHisto(fWH, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjcDown", true);
+     wh_bcintpUp = DC.readWriteHisto(fWH, baseDir+"/bcintpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpUp", true, isNormalized, wh);
+     wh_bcintpDown = DC.readWriteHisto(fWH, baseDir+"/bcintpdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpDown", true, isNormalized, wh);
+     wh_bcextpUp = DC.readWriteHisto(fWH, baseDir+"/bcextpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcextpUp", true, isNormalized, wh);
+     wh_bcextpDown = DC.readWriteHisto(fWH, baseDir+"/bcextpdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcextpDown", true, isNormalized, wh);
+     wh_bcxdybUp = DC.readWriteHisto(fWH, baseDir+"/bcxdybup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdybUp", true, isNormalized, wh);
+     wh_bcxdybDown = DC.readWriteHisto(fWH, baseDir+"/bcxdybdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdybDown", true, isNormalized, wh);
+     wh_bcxdycUp = DC.readWriteHisto(fWH, baseDir+"/bcxdycup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdycUp", true, isNormalized, wh);
+     wh_bcxdycDown = DC.readWriteHisto(fWH, baseDir+"/bcxdycdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdycDown", true, isNormalized, wh);
+     wh_bcxwjcUp = DC.readWriteHisto(fWH, baseDir+"/bcxwjcup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjcUp", true, isNormalized, wh);
+     wh_bcxwjcDown = DC.readWriteHisto(fWH, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxwjcDown", true, isNormalized, wh);
   }else{
     wh_bcintpUp = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcintpUp", true);
     wh_bcintpDown = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcintpDown", true);
@@ -1334,18 +1335,18 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     wh_bcxwjcDown = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcxwjcDown", true);
   }
   
-  TH1F* wh_pdfUp = DC.readWriteHisto(fWH, baseDir+"/pdfup"+histSubDir, histName, sf_wh, fout, fTT, label+"_pdfUp", true);
-  TH1F* wh_pdfDown = DC.readWriteHisto(fWH, baseDir+"/pdfdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_pdfDown", true);
+  TH1F* wh_pdfUp = DC.readWriteHisto(fWH, baseDir+"/pdfup"+histSubDir, histName, sf_wh, fout, fTT, label+"_pdfUp", true, isNormalized, wh);
+  TH1F* wh_pdfDown = DC.readWriteHisto(fWH, baseDir+"/pdfdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_pdfDown", true, isNormalized, wh);
   // TH1F* wh_q2Up = DC.readWriteHisto(fWH, baseDir+"/q2up"+histSubDir, histName, sf_wh, fout, fTT, label+"_q2Up", true);
   // TH1F* wh_q2Down = DC.readWriteHisto(fWH, baseDir+"/q2down"+histSubDir, histName, sf_wh, fout, fTT, label+"_q2Down", true);
-  TH1F* wh_bclhemufUp = DC.readWriteHisto(fWH, baseDir+"/bclhemufup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemufUp", true);
-  TH1F* wh_bclhemufDown = DC.readWriteHisto(fWH, baseDir+"/bclhemufdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemufDown", true);
-  TH1F* wh_bclhemurUp = DC.readWriteHisto(fWH, baseDir+"/bclhemurup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemurUp", true);
-  TH1F* wh_bclhemurDown = DC.readWriteHisto(fWH, baseDir+"/bclhemurdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemurDown", true);
-  TH1F* wh_isrUp = DC.readWriteHisto(fWH, baseDir+"/isrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrUp", true);
-  TH1F* wh_isrDown = DC.readWriteHisto(fWH, baseDir+"/isrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrDown", true);
-  TH1F* wh_fsrUp = DC.readWriteHisto(fWH, baseDir+"/fsrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrUp", true);
-  TH1F* wh_fsrDown = DC.readWriteHisto(fWH, baseDir+"/fsrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrDown", true);
+  TH1F* wh_bclhemufUp = DC.readWriteHisto(fWH, baseDir+"/bclhemufup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemufUp", true, isNormalized, wh);
+  TH1F* wh_bclhemufDown = DC.readWriteHisto(fWH, baseDir+"/bclhemufdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemufDown", true, isNormalized, wh);
+  TH1F* wh_bclhemurUp = DC.readWriteHisto(fWH, baseDir+"/bclhemurup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemurUp", true, isNormalized, wh);
+  TH1F* wh_bclhemurDown = DC.readWriteHisto(fWH, baseDir+"/bclhemurdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bclhemurDown", true, isNormalized, wh);
+  TH1F* wh_isrUp = DC.readWriteHisto(fWH, baseDir+"/isrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrUp", true, isNormalized, wh);
+  TH1F* wh_isrDown = DC.readWriteHisto(fWH, baseDir+"/isrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrDown", true, isNormalized, wh);
+  TH1F* wh_fsrUp = DC.readWriteHisto(fWH, baseDir+"/fsrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrUp", true, isNormalized, wh);
+  TH1F* wh_fsrDown = DC.readWriteHisto(fWH, baseDir+"/fsrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrDown", true, isNormalized, wh);
 
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -1685,43 +1686,43 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
         out << line << endl;
       }
       else if(line.find("CMS_bclhemuf ")!=string::npos){
-        // float bclhemufUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemufUp, wh_bclhemufDown) : 1.00;
-        // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemufUnc_wh)) );
+        float bclhemufUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemufUp, wh_bclhemufDown) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemufUnc_wh)) );
         
         float bclhemufUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemufUp, ttbar_bclhemufDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bclhemufUnc_ttbar)) ); 
         
-        // float bclhemufUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemufUp, wjet_bclhemufDown) : 1.00;
-        // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemufUnc_wjet)) ); 
+        float bclhemufUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemufUp, wjet_bclhemufDown) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemufUnc_wjet)) ); 
        
-        // float bclhemufUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemufUp, zjet_bclhemufDown) : 1.00;
-        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemufUnc_zjet)) ); 
+        float bclhemufUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemufUp, zjet_bclhemufDown) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemufUnc_zjet)) ); 
         
-        // float bclhemufUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemufUp, stop_bclhemufDown) : 1.00; 
-        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemufUnc_stop)) ); 
+        float bclhemufUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemufUp, stop_bclhemufDown) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemufUnc_stop)) ); 
 
-        // float bclhemufUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemufUp, vv_bclhemufDown) : 1.00;
-        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemufUnc_vv)) ); 
+        float bclhemufUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemufUp, vv_bclhemufDown) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemufUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_bclhemur ")!=string::npos){
-        // float bclhemurUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemurUp, wh_bclhemurDown) : 1.00;
-        // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemurUnc_wh)) );
+        float bclhemurUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemurUp, wh_bclhemurDown) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemurUnc_wh)) );
         
         float bclhemurUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemurUp, ttbar_bclhemurDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bclhemurUnc_ttbar)) ); 
         
-        // float bclhemurUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemurUp, wjet_bclhemurDown) : 1.00;
-        // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemurUnc_wjet)) ); 
+        float bclhemurUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemurUp, wjet_bclhemurDown) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemurUnc_wjet)) ); 
        
-        // float bclhemurUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemurUp, zjet_bclhemurDown) : 1.00;
-        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemurUnc_zjet)) ); 
+        float bclhemurUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemurUp, zjet_bclhemurDown) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemurUnc_zjet)) ); 
         
-        // float bclhemurUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemurUp, stop_bclhemurDown) : 1.00; 
-        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemurUnc_stop)) ); 
+        float bclhemurUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemurUp, stop_bclhemurDown) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemurUnc_stop)) ); 
 
-        // float bclhemurUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemurUp, vv_bclhemurDown) : 1.00;
-        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemurUnc_vv)) ); 
+        float bclhemurUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemurUp, vv_bclhemurDown) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemurUnc_vv)) ); 
         out << line << endl;
       }
       else if(line.find("CMS_bcbfrag ")!=string::npos){
