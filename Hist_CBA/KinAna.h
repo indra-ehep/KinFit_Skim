@@ -292,7 +292,8 @@ public :
    void    SelectSyst();
    void    SetTrio();
    void    Clean(void); //clear vector and arrays while read each event
-
+   void    SetBCWeightToOne(void);
+  
    Int_t   CreateHistoArrays();
    
    
@@ -477,12 +478,12 @@ void KinAna::Init(TTree *tree)
   tree->SetBranchStatus("bcTagWeight_stat_Do",1);	   tree->SetBranchAddress("bcTagWeight_stat_Do", &_bcTagWeight_stat_Do);
   tree->SetBranchStatus("bcTagWeight_pu_Up",1);		   tree->SetBranchAddress("bcTagWeight_pu_Up", &_bcTagWeight_pu_Up);
   tree->SetBranchStatus("bcTagWeight_pu_Do",1);		   tree->SetBranchAddress("bcTagWeight_pu_Do", &_bcTagWeight_pu_Do);
-  if(fYear==2016 or fYear==2018){
-    tree->SetBranchStatus("bcTagWeight_eleid_Up",1);	   tree->SetBranchAddress("bcTagWeight_eleid_Up", &_bcTagWeight_eleid_Up); 
-    tree->SetBranchStatus("bcTagWeight_eleid_Do",1);	   tree->SetBranchAddress("bcTagWeight_eleid_Do", &_bcTagWeight_eleid_Do);
-    tree->SetBranchStatus("bcTagWeight_muid_Up",1);	   tree->SetBranchAddress("bcTagWeight_muid_Up", &_bcTagWeight_muid_Up);
-    tree->SetBranchStatus("bcTagWeight_muid_Do",1);	   tree->SetBranchAddress("bcTagWeight_muid_Do", &_bcTagWeight_muid_Do);
-  }
+  // if(fYear==2016 or fYear==2018){
+  //   tree->SetBranchStatus("bcTagWeight_eleid_Up",1);	   tree->SetBranchAddress("bcTagWeight_eleid_Up", &_bcTagWeight_eleid_Up); 
+  //   tree->SetBranchStatus("bcTagWeight_eleid_Do",1);	   tree->SetBranchAddress("bcTagWeight_eleid_Do", &_bcTagWeight_eleid_Do);
+  //   tree->SetBranchStatus("bcTagWeight_muid_Up",1);	   tree->SetBranchAddress("bcTagWeight_muid_Up", &_bcTagWeight_muid_Up);
+  //   tree->SetBranchStatus("bcTagWeight_muid_Do",1);	   tree->SetBranchAddress("bcTagWeight_muid_Do", &_bcTagWeight_muid_Do);
+  // }
   tree->SetBranchStatus("bcTagWeight_lhemuf_Up",1);	   tree->SetBranchAddress("bcTagWeight_lhemuf_Up", &_bcTagWeight_lhemuf_Up); 
   tree->SetBranchStatus("bcTagWeight_lhemuf_Do",1);	   tree->SetBranchAddress("bcTagWeight_lhemuf_Do", &_bcTagWeight_lhemuf_Do);
   tree->SetBranchStatus("bcTagWeight_lhemur_Up",1);	   tree->SetBranchAddress("bcTagWeight_lhemur_Up", &_bcTagWeight_lhemur_Up);
@@ -491,36 +492,36 @@ void KinAna::Init(TTree *tree)
   tree->SetBranchStatus("bcTagWeight_isr_Do",1);	   tree->SetBranchAddress("bcTagWeight_isr_Do", &_bcTagWeight_isr_Do);
   tree->SetBranchStatus("bcTagWeight_fsr_Up",1);	   tree->SetBranchAddress("bcTagWeight_fsr_Up", &_bcTagWeight_fsr_Up);
   tree->SetBranchStatus("bcTagWeight_fsr_Do",1);	   tree->SetBranchAddress("bcTagWeight_fsr_Do", &_bcTagWeight_fsr_Do);
-  if(fYear==2016 or fYear==2018) {
-    tree->SetBranchStatus("bcTagWeight_xdy_Up",1);	   tree->SetBranchAddress("bcTagWeight_xdy_Up", &_bcTagWeight_xdy_Up); 
-    tree->SetBranchStatus("bcTagWeight_xdy_Do",1);	   tree->SetBranchAddress("bcTagWeight_xdy_Do", &_bcTagWeight_xdy_Do);
-    tree->SetBranchStatus("bcTagWeight_xst_Up",1);	   tree->SetBranchAddress("bcTagWeight_xst_Up", &_bcTagWeight_xst_Up);
-    tree->SetBranchStatus("bcTagWeight_xst_Do",1);	   tree->SetBranchAddress("bcTagWeight_xst_Do", &_bcTagWeight_xst_Do); 
-    tree->SetBranchStatus("bcTagWeight_xwj_Up",1);	   tree->SetBranchAddress("bcTagWeight_xwj_Up", &_bcTagWeight_xwj_Up); 
-    tree->SetBranchStatus("bcTagWeight_xwj_Do",1);	   tree->SetBranchAddress("bcTagWeight_xwj_Do", &_bcTagWeight_xwj_Do);
-    tree->SetBranchStatus("bcTagWeight_xtt_Up",1);	   tree->SetBranchAddress("bcTagWeight_xtt_Up", &_bcTagWeight_xtt_Up);
-    tree->SetBranchStatus("bcTagWeight_xtt_Do",1);	   tree->SetBranchAddress("bcTagWeight_xtt_Do", &_bcTagWeight_xtt_Do);
-  }
+  // if(fYear==2016 or fYear==2018) {
+  //   tree->SetBranchStatus("bcTagWeight_xdy_Up",1);	   tree->SetBranchAddress("bcTagWeight_xdy_Up", &_bcTagWeight_xdy_Up); 
+  //   tree->SetBranchStatus("bcTagWeight_xdy_Do",1);	   tree->SetBranchAddress("bcTagWeight_xdy_Do", &_bcTagWeight_xdy_Do);
+  //   tree->SetBranchStatus("bcTagWeight_xst_Up",1);	   tree->SetBranchAddress("bcTagWeight_xst_Up", &_bcTagWeight_xst_Up);
+  //   tree->SetBranchStatus("bcTagWeight_xst_Do",1);	   tree->SetBranchAddress("bcTagWeight_xst_Do", &_bcTagWeight_xst_Do); 
+  //   tree->SetBranchStatus("bcTagWeight_xwj_Up",1);	   tree->SetBranchAddress("bcTagWeight_xwj_Up", &_bcTagWeight_xwj_Up); 
+  //   tree->SetBranchStatus("bcTagWeight_xwj_Do",1);	   tree->SetBranchAddress("bcTagWeight_xwj_Do", &_bcTagWeight_xwj_Do);
+  //   tree->SetBranchStatus("bcTagWeight_xtt_Up",1);	   tree->SetBranchAddress("bcTagWeight_xtt_Up", &_bcTagWeight_xtt_Up);
+  //   tree->SetBranchStatus("bcTagWeight_xtt_Do",1);	   tree->SetBranchAddress("bcTagWeight_xtt_Do", &_bcTagWeight_xtt_Do);
+  // }
   tree->SetBranchStatus("bcTagWeight_jes_Up",1);	   tree->SetBranchAddress("bcTagWeight_jes_Up", &_bcTagWeight_jes_Up); 
   tree->SetBranchStatus("bcTagWeight_jes_Do",1);	   tree->SetBranchAddress("bcTagWeight_jes_Do", &_bcTagWeight_jes_Do);
   tree->SetBranchStatus("bcTagWeight_jer_Up",1);	   tree->SetBranchAddress("bcTagWeight_jer_Up", &_bcTagWeight_jer_Up);
   tree->SetBranchStatus("bcTagWeight_jer_Do",1);	   tree->SetBranchAddress("bcTagWeight_jer_Do", &_bcTagWeight_jer_Do);
-  if(fYear==2016) {
-    tree->SetBranchStatus("bcTagWeight_bfrag_Up",1);	   tree->SetBranchAddress("bcTagWeight_bfrag_Up", &_bcTagWeight_bfrag_Up); 
-    tree->SetBranchStatus("bcTagWeight_bfrag_Do",1);	   tree->SetBranchAddress("bcTagWeight_bfrag_Do", &_bcTagWeight_bfrag_Do); 
-  }
+  // if(fYear==2016) {
+  //   tree->SetBranchStatus("bcTagWeight_bfrag_Up",1);	   tree->SetBranchAddress("bcTagWeight_bfrag_Up", &_bcTagWeight_bfrag_Up); 
+  //   tree->SetBranchStatus("bcTagWeight_bfrag_Do",1);	   tree->SetBranchAddress("bcTagWeight_bfrag_Do", &_bcTagWeight_bfrag_Do); 
+  // }
   
    /* // CShapeCalib UL */
    /* tree->SetBranchStatus("bcTagWeight_stat_Up",1);   tree->SetBranchAddress("bcTagWeight_stat_Up", &_bcTagWeight_stat_Up); 
    tree->SetBranchStatus("bcTagWeight_stat_Do",1);   tree->SetBranchAddress("bcTagWeight_stat_Do", &_bcTagWeight_stat_Do);
    tree->SetBranchStatus("bcTagWeight_pu_Up",1);   tree->SetBranchAddress("bcTagWeight_pu_Up", &_bcTagWeight_pu_Up);
     tree->SetBranchStatus("bcTagWeight_pu_Do",1);   tree->SetBranchAddress("bcTagWeight_pu_Do", &_bcTagWeight_pu_Do);  */
-  if(fYear==2017){
+  //if(fYear==2017){
     tree->SetBranchStatus("bcTagWeight_intp_Up",1);   tree->SetBranchAddress("bcTagWeight_intp_Up", &_bcTagWeight_intp_Up); 
     tree->SetBranchStatus("bcTagWeight_intp_Do",1);   tree->SetBranchAddress("bcTagWeight_intp_Do", &_bcTagWeight_intp_Do);
     tree->SetBranchStatus("bcTagWeight_extp_Up",1);   tree->SetBranchAddress("bcTagWeight_extp_Up", &_bcTagWeight_extp_Up);
     tree->SetBranchStatus("bcTagWeight_extp_Do",1);   tree->SetBranchAddress("bcTagWeight_extp_Do", &_bcTagWeight_extp_Do);
-  }
+    //}
    /* tree->SetBranchStatus("bcTagWeight_lhemuf_Up",1);   tree->SetBranchAddress("bcTagWeight_lhemuf_Up", &_bcTagWeight_lhemuf_Up); 
    tree->SetBranchStatus("bcTagWeight_lhemuf_Do",1);   tree->SetBranchAddress("bcTagWeight_lhemuf_Do", &_bcTagWeight_lhemuf_Do);
    tree->SetBranchStatus("bcTagWeight_lhemur_Up",1);   tree->SetBranchAddress("bcTagWeight_lhemur_Up", &_bcTagWeight_lhemur_Up);
@@ -529,14 +530,14 @@ void KinAna::Init(TTree *tree)
    tree->SetBranchStatus("bcTagWeight_isr_Do",1);   tree->SetBranchAddress("bcTagWeight_isr_Do", &_bcTagWeight_isr_Do);
    tree->SetBranchStatus("bcTagWeight_fsr_Up",1);   tree->SetBranchAddress("bcTagWeight_fsr_Up", &_bcTagWeight_fsr_Up);
     tree->SetBranchStatus("bcTagWeight_fsr_Do",1);   tree->SetBranchAddress("bcTagWeight_fsr_Do", &_bcTagWeight_fsr_Do);  */
-  if(fYear==2017){
+    //if(fYear==2017){
     tree->SetBranchStatus("bcTagWeight_xdyb_Up",1);   tree->SetBranchAddress("bcTagWeight_xdyb_Up", &_bcTagWeight_xdyb_Up); 
     tree->SetBranchStatus("bcTagWeight_xdyb_Do",1);   tree->SetBranchAddress("bcTagWeight_xdyb_Do", &_bcTagWeight_xdyb_Do);
     tree->SetBranchStatus("bcTagWeight_xdyc_Up",1);   tree->SetBranchAddress("bcTagWeight_xdyc_Up", &_bcTagWeight_xdyc_Up);
     tree->SetBranchStatus("bcTagWeight_xdyc_Do",1);   tree->SetBranchAddress("bcTagWeight_xdyc_Do", &_bcTagWeight_xdyc_Do);
     tree->SetBranchStatus("bcTagWeight_xwjc_Up",1);   tree->SetBranchAddress("bcTagWeight_xwjc_Up", &_bcTagWeight_xwjc_Up); 
     tree->SetBranchStatus("bcTagWeight_xwjc_Do",1);   tree->SetBranchAddress("bcTagWeight_xwjc_Do", &_bcTagWeight_xwjc_Do);
-  }
+    //}
    /* tree->SetBranchStatus("bcTagWeight_jes_Up",1);   tree->SetBranchAddress("bcTagWeight_jes_Up", &_bcTagWeight_jes_Up); 
    tree->SetBranchStatus("bcTagWeight_jes_Do",1);   tree->SetBranchAddress("bcTagWeight_jes_Do", &_bcTagWeight_jes_Do);
    tree->SetBranchStatus("bcTagWeight_jer_Up",1);   tree->SetBranchAddress("bcTagWeight_jer_Up", &_bcTagWeight_jer_Up);

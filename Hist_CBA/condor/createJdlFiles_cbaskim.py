@@ -18,8 +18,8 @@ syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
-inputdir="CBA_muFmuR"
-outputdir="CBA_muFmuR-Hist1"
+inputdir="CBA_ctagv2"
+outputdir="CBA_ctagv2-BCWt1"
 iosubdir="pre"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)

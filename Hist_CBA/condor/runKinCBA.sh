@@ -47,7 +47,8 @@ printf "Done Histogramming at ";/bin/date
 # condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 # condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 
-outputdir=CBA_muFmuR-Hist1
+#outputdir=CBA_ctagv2-Hist1
+outputdir=CBA_ctagv2--BCWt1
 #condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir
 condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/pre
 
