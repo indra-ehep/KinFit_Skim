@@ -174,6 +174,7 @@ public :
   Int_t count_cJetsIncL, count_cJetsIncM, count_cJetsIncT;
   Double_t cjhadCvsBdisc, sjhadCvsBdisc ;
   Double_t cjhadCvsLdisc, sjhadCvsLdisc ;
+  Double_t bjhadBdisc, bjlepBdisc ;
 
   Bool_t useDeepCSVbTag;
   Float_t btag_cut_DeepCSVa, btag_cut_DeepCSVb, btag_cut_DeepCSV; //DeepCSV
@@ -573,6 +574,9 @@ void KinAna::Init(TTree *tree)
   tree->SetBranchStatus("cjhadCvsLdisc",1);	   tree->SetBranchAddress("cjhadCvsLdisc", &cjhadCvsLdisc);
   tree->SetBranchStatus("sjhadCvsBdisc",1);	   tree->SetBranchAddress("sjhadCvsBdisc", &sjhadCvsBdisc);
   tree->SetBranchStatus("sjhadCvsLdisc",1);	   tree->SetBranchAddress("sjhadCvsLdisc", &sjhadCvsLdisc);
+
+  tree->SetBranchStatus("bjhadBdisc",1);	   tree->SetBranchAddress("bjhadBdisc", &bjhadBdisc);
+  tree->SetBranchStatus("bjlepBdisc",1);	   tree->SetBranchAddress("bjlepBdisc", &bjlepBdisc);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   fChain    = tree;

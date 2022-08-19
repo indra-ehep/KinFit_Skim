@@ -35,7 +35,7 @@ Int_t KinAna::CreateHistoArrays()
   ////////////////////////////// Cut flow histograms //////////////////////////////////
   
   ////////////////////////////////// Observables //////////////////////////////////////
-  fNBObHists = 52;//132;
+  fNBObHists = 56;//132;
   fNObHists = fNDDReg*fNBObHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNObHists*fNSyst;
   histObs = new TH1D*[totNHists];
@@ -161,6 +161,11 @@ Int_t KinAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_bf_ele","_kb_mjj_bf_ele", 2400, 0., 240);
     
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_bjhadBdisc_mu","bjhadBdisc mu", 300, -1.5, 1.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_bjhadBdisc_ele","bjhadBdisc ele", 300, -1.5, 1.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_bjlepBdisc_mu","bjlepBdisc mu", 300, -1.5, 1.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_bjlepBdisc_ele","bjlepBdisc ele", 300, -1.5, 1.5);
+
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_mu","_ct_yLyMyT_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_mu","_ct_yLyMnT_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMyT_mjj_mu","_ct_yLnMyT_mjj_mu", 2400, 0., 240);
@@ -189,7 +194,7 @@ Int_t KinAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_ele","_ct_ExcL_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_ele","_ct_ExcM_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_ele","_ct_ExcT_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + 51] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + 55] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
     
     for(int icf=0;icf<fNBObHists;icf++)
       histObs[fNObHists*isyst + icf]->SetDirectory(fFileDir[isyst*fNDDReg + 0]);
@@ -1012,7 +1017,8 @@ void KinAna::Clean(){
 
 void KinAna::SetBCWeightToOne()
 {
-     // CShapeCalib EOY
+   //CShapeCalib EOY
+   _bcTagWeight = 1.0;
    _bcTagWeight_stat_Up = 1.0; _bcTagWeight_stat_Do = 1.0; _bcTagWeight_pu_Up = 1.0; _bcTagWeight_pu_Do = 1.0; 
    _bcTagWeight_eleid_Up = 1.0; _bcTagWeight_eleid_Do = 1.0; _bcTagWeight_muid_Up = 1.0; _bcTagWeight_muid_Do = 1.0; 
    _bcTagWeight_lhemuf_Up = 1.0; _bcTagWeight_lhemuf_Do = 1.0; _bcTagWeight_lhemur_Up = 1.0; _bcTagWeight_lhemur_Do = 1.0; 
@@ -1025,6 +1031,7 @@ void KinAna::SetBCWeightToOne()
    // CShapeCalib UL
    // _bcTagWeight_stat_Up = 1.0; _bcTagWeight_stat_Do = 1.0; _bcTagWeight_pu_Up = 1.0; _bcTagWeight_pu_Do = 1.0;
    _bcTagWeight_intp_Up = 1.0; _bcTagWeight_intp_Do = 1.0; _bcTagWeight_extp_Up = 1.0; _bcTagWeight_extp_Do = 1.0;
+   _bcTagWeight_extp_Do = 1.0;
    // _bcTagWeight_lhemuf_Up = 1.0; _bcTagWeight_lhemuf_Do = 1.0; _bcTagWeight_lhemur_Up = 1.0; _bcTagWeight_lhemur_Do = 1.0;
    // _bcTagWeight_isr_Up = 1.0; _bcTagWeight_isr_Do = 1.0; _bcTagWeight_fsr_Up = 1.0; _bcTagWeight_fsr_Do = 1.0;
    _bcTagWeight_xdyb_Up = 1.0; _bcTagWeight_xdyb_Do = 1.0; _bcTagWeight_xdyc_Up = 1.0; _bcTagWeight_xdyc_Do = 1.0;
@@ -1359,6 +1366,8 @@ bool KinAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt, do
   ((TH1D *) list->FindObject(Form("_kb_phi_%s_met%s",lep.c_str(),hist_extn.c_str())))->Fill(neutrinoAF.Phi(), wt);
   ((TH1D *) list->FindObject(Form("_kb_njet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(nJet, wt);
   ((TH1D *) list->FindObject(Form("_kb_nbjet_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(nBJet, wt);
+  ((TH1D *) list->FindObject(Form("_kb_bjhadBdisc_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(bjhadBdisc, wt);
+  ((TH1D *) list->FindObject(Form("_kb_bjlepBdisc_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(bjlepBdisc, wt);
   
   ((TH1D *) list->FindObject(Form("_kb_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
   //((TH1D *) list->FindObject(Form("_kb_mjj_bf_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadBF+sjhadBF).M(), wt);
@@ -1397,6 +1406,9 @@ bool KinAna::GetWtRatio(TString systname, TString DDzone, string hist_extn){
     wt_ratio = wt_before/wt_after;
   else
     wt_ratio = 1.0;
+  
+  // if(DDzone=="Iso" and singleMu)
+  //   Info("GetWtRatio","nJet : %d, wt_before : %lf, wt_after : %lf, wt_ratio : %lf", nJet+1, wt_before, wt_after, wt_ratio);
 
   return true;
 }
@@ -1463,6 +1475,7 @@ bool KinAna::GetCTagWt(char CType, TString systname, double& ctagwt){
     if(systname == "bcxdycup") ctagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown") ctagwt = _bcTagWeight_xdyc_Do ; 
     if(systname == "bcxwjcup") ctagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown") ctagwt = _bcTagWeight_xwjc_Do ; 
 
+  
   }
 
   return true;
@@ -1612,9 +1625,15 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
+
+  // combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio ;
+  // combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio ;
+  // combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio ;
+  // combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio ;
+
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt ;
   combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt ;
   combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
 
   return true;

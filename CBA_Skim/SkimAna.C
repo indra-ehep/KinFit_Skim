@@ -37,7 +37,7 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////// Cut flow histograms //////////////////////////////////
 
   ////////////////////////////////// Observables //////////////////////////////////////
-  fNBObHists = 62;//132;
+  fNBObHists = 60;//132;
   fNObHists = fNDDReg*fNBObHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNObHists*fNSyst;
   histObs = new TH1D*[totNHists];
@@ -198,6 +198,11 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_bf_mu","_kb_mjj_bf_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_mjj_bf_ele","_kb_mjj_bf_ele", 2400, 0., 240);
     
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetBdisc_mu","bjjetBdisc mu", 300, -1.5, 1.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetBdisc_ele","bjetBdisc ele", 300, -1.5, 1.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetNoBCBdisc_mu","bjjetBdisc mu wo bjetwt", 300, -1.5, 1.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetNoBCBdisc_ele","bjetBdisc ele wo bjetwt", 300, -1.5, 1.5);
+    
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_mu","_ct_yLyMyT_mjj_mu", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_mu","_ct_yLyMnT_mjj_mu", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMyT_mjj_mu","_ct_yLnMyT_mjj_mu", 2400, 0., 240);
@@ -205,9 +210,9 @@ Int_t SkimAna::CreateHistoArrays()
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMyT_mjj_mu","_ct_yMyT_mjj_mu", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMnT_mjj_mu","_ct_yMnT_mjj_mu", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yT_mjj_mu","_ct_yT_mjj_mu", 2400, 0., 240);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_mu","_ct_IncL_mjj_mu", 2400, 0., 240);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_mu","_ct_IncM_mjj_mu", 2400, 0., 240);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_mu","_ct_IncT_mjj_mu", 2400, 0., 240);
+    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_mu","_ct_IncL_mjj_mu", 2400, 0., 240);
+    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_mu","_ct_IncM_mjj_mu", 2400, 0., 240);
+    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_mu","_ct_IncT_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_mu","_ct_ExcL_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_mu","_ct_ExcM_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_mu","_ct_ExcT_mjj_mu", 2400, 0., 240);
@@ -220,13 +225,13 @@ Int_t SkimAna::CreateHistoArrays()
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMyT_mjj_ele","_ct_yMyT_mjj_ele", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMnT_mjj_ele","_ct_yMnT_mjj_ele", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yT_mjj_ele","_ct_yT_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_ele","_ct_IncL_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_ele","_ct_IncM_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_ele","_ct_IncT_mjj_ele", 2400, 0., 240);
+    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_ele","_ct_IncL_mjj_ele", 2400, 0., 240);
+    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_ele","_ct_IncM_mjj_ele", 2400, 0., 240);
+    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_ele","_ct_IncT_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_ele","_ct_ExcL_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_ele","_ct_ExcM_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_ele","_ct_ExcT_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + 61] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + 59] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
 
     
     for(int icf=0;icf<fNBObHists;icf++)
@@ -1229,22 +1234,22 @@ void SkimAna::LoadJECJER()
       cseta = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpreVFP_UL/UL%dpreVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
       csetb = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpostVFP_UL/UL%dpostVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
       
-      double out_nom_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
-      double out_up_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
-      double out_down_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
+      double out_nom_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
+      double out_up_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
+      double out_down_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
       printf("Output_a (down, nom, up) : (%lf,%lf,%lf)\n", out_down_a, out_nom_a, out_up_a);      
-      double out_nom_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
-      double out_up_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
-      double out_down_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
+      double out_nom_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
+      double out_up_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
+      double out_down_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
       printf("Output_b (down, nom, up) : (%lf,%lf,%lf)\n", out_down_b, out_nom_b, out_up_b);      
       
     }else{
       fPUJetID = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
       hPUJetIDEff = (TH2D *) fPUJetID->Get("PUJetID_T_efficiency");
       cset = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%d_UL/UL%d_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
-      double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
-      double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
-      double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
+      double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
+      double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
+      double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
       printf("Output (down, nom, up) : (%lf,%lf,%lf)\n", out_down, out_nom, out_up);      
     }
     
@@ -1955,18 +1960,18 @@ void SkimAna::GetPUJetIDSF_1a(){
     
     if(fYear==2016){
       if(isPreVFP)
-	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
+	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
       if(isPostVFP)
-	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
+	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
     }else
-      SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
+      SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
     
     xbin = hpujetid_eff->GetXaxis()->FindBin(min(jetPt,50.));
     ybin = hpujetid_eff->GetYaxis()->FindBin(jetEta);
     Eff = hpujetid_eff->GetBinContent(xbin,ybin);
     
     if( (xbin<1 or jetPt>maxbinX or ybin<1 or TMath::Abs(jetEta)>maxbinY) and TMath::AreEqualAbs(Eff,0.0,1.0e-4) ) continue;
-
+    
     if (jetPUJetID >= PUJetIDThreshold ){
       pMC *= Eff;
       pData *= Eff*SFb;
@@ -4025,6 +4030,25 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(!isData){
     if(!GetBCTagWt()) return kTRUE;
   }
+  
+  if(muonIsoCut or eleIsoCut){
+    if(!isLowMET){
+      TList *list = (TList *)fFileDir[0*fNDDReg + 0]->GetList();
+      double combined_muwt = 1.0,  combined_muwt1 = 1.0, combined_elewt = 1.0, combined_elewt1 = 1.0;
+      GetCombinedWt("base", combined_muwt, combined_muwt1, combined_elewt, combined_elewt1);
+      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+	int jetInd = selector->Jets.at(ijet);
+	double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
+	if(muonIsoCut){
+	  ((TH1D *) list->FindObject("_bjetBdisc_mu"))->Fill(jetBtag, combined_muwt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_mu"))->Fill(jetBtag, combined_muwt1);
+	}else{
+	  ((TH1D *) list->FindObject("_bjetBdisc_ele"))->Fill(jetBtag, combined_elewt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_ele"))->Fill(jetBtag, combined_elewt1);
+	}
+      }
+    }
+  }
 
   //////=====================================================
   if(selector->bJets.size() < 2) return true;
@@ -4470,15 +4494,15 @@ bool SkimAna::FillCTHists(TList *list, string hist_extn, bool isMu, double wt,
   
   //Inclusive categorization
   if(count_cJetsIncL > 0){
-    ((TH1D *) list->FindObject(Form("_ct_IncL_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagLwt*wt);
+    //((TH1D *) list->FindObject(Form("_ct_IncL_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagLwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_IncL%s",hist_extn.c_str())))->Fill(ctagLwt);	
   }
   if(count_cJetsIncM > 0){
-    ((TH1D *) list->FindObject(Form("_ct_IncM_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagMwt*wt);
+    //((TH1D *) list->FindObject(Form("_ct_IncM_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagMwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_IncM%s",hist_extn.c_str())))->Fill(ctagMwt);  
   }
   if(count_cJetsIncT > 0){
-    ((TH1D *) list->FindObject(Form("_ct_IncT_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagTwt*wt);
+    //((TH1D *) list->FindObject(Form("_ct_IncT_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagTwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_IncT%s",hist_extn.c_str())))->Fill(ctagTwt);  
   }
   

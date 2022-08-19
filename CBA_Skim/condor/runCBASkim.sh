@@ -43,12 +43,12 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ctagv2
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_ctagv2
-condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_ctagv2
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ctagv2/pre
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_ctagv2/pre
-# condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_ctagv2/pre
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ctagv2pujetidtest
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_ctagv2pujetidtest
+condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_ctagv2pujetidtest
+# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ctagv2pujetidtest/pre
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_ctagv2pujetidtest/pre
+# condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_ctagv2pujetidtest/pre
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
