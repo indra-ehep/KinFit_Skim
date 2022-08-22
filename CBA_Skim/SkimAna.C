@@ -1234,22 +1234,22 @@ void SkimAna::LoadJECJER()
       cseta = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpreVFP_UL/UL%dpreVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
       csetb = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%dpostVFP_UL/UL%dpostVFP_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
       
-      double out_nom_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
-      double out_up_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
-      double out_down_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      double out_nom_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
+      double out_up_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
+      double out_down_a = cseta->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
       printf("Output_a (down, nom, up) : (%lf,%lf,%lf)\n", out_down_a, out_nom_a, out_up_a);      
-      double out_nom_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
-      double out_up_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
-      double out_down_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      double out_nom_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
+      double out_up_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
+      double out_down_b = csetb->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
       printf("Output_b (down, nom, up) : (%lf,%lf,%lf)\n", out_down_b, out_nom_b, out_up_b);      
       
     }else{
       fPUJetID = TFile::Open( Form("%s/weightUL/JetSF/PUJetID/Eff/%d/v1/%s_pujetid_eff_%d.root",fBasePath.Data(), fYear, fSample.Data(), fYear) );
       hPUJetIDEff = (TH2D *) fPUJetID->Get("PUJetID_T_efficiency");
       cset = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%d_UL/UL%d_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
-      double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
-      double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
-      double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+      double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","T"});
+      double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","T"});
+      double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","T"});
       printf("Output (down, nom, up) : (%lf,%lf,%lf)\n", out_down, out_nom, out_up);      
     }
     
@@ -1936,7 +1936,8 @@ void SkimAna::GetPUJetIDSF_1a(){
     sysType = "down";
   }
   
-  int PUJetIDThreshold = (fYear==2016) ? 1  : 4  ;
+  //int PUJetIDThreshold = (fYear==2016) ? 1  : 4  ;
+  int PUJetIDThreshold = 7;
 
   int xbin,ybin;
   if(fYear==2016){
@@ -1960,11 +1961,11 @@ void SkimAna::GetPUJetIDSF_1a(){
     
     if(fYear==2016){
       if(isPreVFP)
-	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+	SFb = cseta->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
       if(isPostVFP)
-	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+	SFb = csetb->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
     }else
-      SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"L"});
+      SFb = cset->at("PUJetID_eff")->evaluate({jetEta, jetPt, sysType.c_str() ,"T"});
     
     xbin = hpujetid_eff->GetXaxis()->FindBin(min(jetPt,50.));
     ybin = hpujetid_eff->GetYaxis()->FindBin(jetEta);
@@ -4031,32 +4032,93 @@ Bool_t SkimAna::Process(Long64_t entry)
     if(!GetBCTagWt()) return kTRUE;
   }
   
-  if(muonIsoCut or eleIsoCut){
-    if(!isLowMET){
-      TList *list = (TList *)fFileDir[0*fNDDReg + 0]->GetList();
-      double combined_muwt = 1.0,  combined_muwt1 = 1.0, combined_elewt = 1.0, combined_elewt1 = 1.0;
-      GetCombinedWt("base", combined_muwt, combined_muwt1, combined_elewt, combined_elewt1);
-      for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
-	int jetInd = selector->Jets.at(ijet);
-	double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
-	if(muonIsoCut){
+  for(int isyst=0;isyst<fNSyst;isyst++){
+    
+    TString systname = fSystList[isyst];
+
+    double combined_muwt = 1.0,  combined_muwt1 = 1.0, combined_elewt = 1.0, combined_elewt1 = 1.0;
+    GetCombinedWt(systname, combined_muwt, combined_muwt1, combined_elewt, combined_elewt1);
+    string lep = (singleMu) ? "mu" : "ele";
+    
+    TList *list = 0x0;
+    if((singleMu and muonIsoCut) or (singleEle and eleIsoCut) ){
+      if(!isLowMET){
+	list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
+	((TH1D *) list->FindObject(Form("_wt_before_%s",lep.c_str())))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after_%s",lep.c_str())))->Fill(selector->Jets.size(), wt_after);
+      }else{
+	list = (TList *)fFileDir[isyst*fNDDReg + 1]->GetList();
+	((TH1D *) list->FindObject(Form("_wt_before_%s_lmet",lep.c_str())))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after_%s_lmet",lep.c_str())))->Fill(selector->Jets.size(), wt_after);
+      }//lowmet
+    }
+	
+    if((singleMu and muonNonIsoCut) or (singleEle and eleNonIsoCut)){
+      if(!isLowMET){
+	list = (TList *)fFileDir[isyst*fNDDReg + 2]->GetList();
+	((TH1D *) list->FindObject(Form("_wt_before_%s_noniso",lep.c_str())))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after_%s_noniso",lep.c_str())))->Fill(selector->Jets.size(), wt_after);
+      }else{
+	list = (TList *)fFileDir[isyst*fNDDReg + 3]->GetList();
+	((TH1D *) list->FindObject(Form("_wt_before_%s_noniso_lmet",lep.c_str())))->Fill(selector->Jets.size(), wt_before);
+	((TH1D *) list->FindObject(Form("_wt_after_%s_noniso_lmet",lep.c_str())))->Fill(selector->Jets.size(), wt_after);
+      }//lowmet
+    }
+
+    //cout << "list1 " << list << ", singleMu : " << singleMu << ", singleEle : " << singleEle << endl;
+
+
+    for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+      int jetInd = selector->Jets.at(ijet);
+      double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
+
+      if(singleMu){
+	if(muonIsoCut and !isLowMET){
 	  ((TH1D *) list->FindObject("_bjetBdisc_mu"))->Fill(jetBtag, combined_muwt);
 	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_mu"))->Fill(jetBtag, combined_muwt1);
-	}else{
-	  ((TH1D *) list->FindObject("_bjetBdisc_ele"))->Fill(jetBtag, combined_elewt);
-	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_ele"))->Fill(jetBtag, combined_elewt1);
+	}else if(muonIsoCut and isLowMET){
+	  ((TH1D *) list->FindObject("_bjetBdisc_mu_lmet"))->Fill(jetBtag, combined_muwt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_mu_lmet"))->Fill(jetBtag, combined_muwt1);
+	}else if(muonNonIsoCut and !isLowMET){
+	  ((TH1D *) list->FindObject("_bjetBdisc_mu_noniso"))->Fill(jetBtag, combined_muwt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_mu_noniso"))->Fill(jetBtag, combined_muwt1);
+	}else if(muonNonIsoCut and isLowMET){
+	  ((TH1D *) list->FindObject("_bjetBdisc_mu_noniso_lmet"))->Fill(jetBtag, combined_muwt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_mu_noniso_lmet"))->Fill(jetBtag, combined_muwt1);
 	}
       }
+      if(singleEle){
+	if(eleIsoCut and !isLowMET){
+	  ((TH1D *) list->FindObject("_bjetBdisc_ele"))->Fill(jetBtag, combined_elewt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_ele"))->Fill(jetBtag, combined_elewt1);
+	}else if(eleIsoCut and isLowMET){
+	  ((TH1D *) list->FindObject("_bjetBdisc_ele_lmet"))->Fill(jetBtag, combined_elewt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_ele_lmet"))->Fill(jetBtag, combined_elewt1);
+	}else if(eleNonIsoCut and !isLowMET){
+	  ((TH1D *) list->FindObject("_bjetBdisc_ele_noniso"))->Fill(jetBtag, combined_elewt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_ele_noniso"))->Fill(jetBtag, combined_elewt1);
+	}else if(eleNonIsoCut and isLowMET){
+	  ((TH1D *) list->FindObject("_bjetBdisc_ele_noniso_lmet"))->Fill(jetBtag, combined_elewt);
+	  ((TH1D *) list->FindObject("_bjetNoBCBdisc_ele_noniso_lmet"))->Fill(jetBtag, combined_elewt1);
+	}
+      }
+
+      // }else if(singleEle and !isLowMET){
+      // 	((TH1D *) list->FindObject("_bjetBdisc_ele"))->Fill(jetBtag, combined_elewt);
+      // 	((TH1D *) list->FindObject("_bjetNoBCBdisc_ele"))->Fill(jetBtag, combined_elewt1);
+      // }
     }
+
   }
 
+  
   //////=====================================================
   if(selector->bJets.size() < 2) return true;
   //////=====================================================
   
-  FillBJetTree();
   FillBTagObs();
-  FillBTagWt();  
+  FillBTagWt();
+  FillBJetTree();
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
   //return true;
@@ -4534,8 +4596,6 @@ bool SkimAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt, d
   
   string lep = (isMu) ? "mu" : "ele";
   
-  ((TH1D *) list->FindObject(Form("_wt_before_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt_before);
-  ((TH1D *) list->FindObject(Form("_wt_after_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt_after);
 
     ((TH1D *) list->FindObject(Form("_kb_pt_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Pt(), wt);
     ((TH1D *) list->FindObject(Form("_kb_eta_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(leptonAF.Eta(), wt);
@@ -4587,7 +4647,7 @@ bool SkimAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt, d
 bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt, double wt_nobtagwt){
   
   string lep = (isMu) ? "mu" : "ele";  
-
+  
   if(isMu){
     ((TH1D *) list->FindObject(Form("_lb_pt_mu%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
     ((TH1D *) list->FindObject(Form("_lb_eta_mu%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
@@ -7431,11 +7491,10 @@ void SkimAna::FillBJetTree()
     
     double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
     
-    if(jetBtag>btagThreshold){
-      _jetDeepB->push_back(jetBtag);
+    if(jetBtag>btagThreshold)
       _nBJet++;
-    }else
-      _jetDeepB->push_back(-100.0);
+    
+    _jetDeepB->push_back(jetBtag);
   }
   
   outputBjetTree->Fill();
@@ -7701,10 +7760,10 @@ bool SkimAna::ExecSerial(const char* infile)
   tree->GetEntry(0);
   Notify();
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){
+    //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+    //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
+    //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
+    //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
     Process(ientry);
   }

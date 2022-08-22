@@ -2152,6 +2152,16 @@ void SkimAna::InitBjetOutBranches(){
   outputBjetTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
   outputBjetTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
   outputBjetTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);    
+  outputBjetTree->Branch("bcTagWeight_intp_Up"	, &_bcTagWeight_intp_Up	 ); 
+  outputBjetTree->Branch("bcTagWeight_intp_Do"	, &_bcTagWeight_intp_Do	 );
+  outputBjetTree->Branch("bcTagWeight_extp_Up"	, &_bcTagWeight_extp_Up	 );
+  outputBjetTree->Branch("bcTagWeight_extp_Do"	, &_bcTagWeight_extp_Do	 );
+  outputBjetTree->Branch("bcTagWeight_xdyb_Up"	, &_bcTagWeight_xdyb_Up	 ); 
+  outputBjetTree->Branch("bcTagWeight_xdyb_Do"	, &_bcTagWeight_xdyb_Do	 );
+  outputBjetTree->Branch("bcTagWeight_xdyc_Up"	, &_bcTagWeight_xdyc_Up	 );
+  outputBjetTree->Branch("bcTagWeight_xdyc_Do"	, &_bcTagWeight_xdyc_Do	 );
+  outputBjetTree->Branch("bcTagWeight_xwjc_Up"	, &_bcTagWeight_xwjc_Up	 ); 
+  outputBjetTree->Branch("bcTagWeight_xwjc_Do"	, &_bcTagWeight_xwjc_Do	 );
      
 
   outputBjetTree->Branch("lepPt"		, &_lepPt			);

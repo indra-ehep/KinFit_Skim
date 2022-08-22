@@ -69,10 +69,12 @@ for year in [2016]:
     condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_ctagv2/pre"
     condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_ctagv2/pre"
     condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_ctagv2/pre"
+    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_ctagv2/pre"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))
-
+    os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir3, year))
+    
     jdlFile.write("X=$(step)\n")
     
     for sample in sampleList:
