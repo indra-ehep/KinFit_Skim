@@ -1065,7 +1065,7 @@ Bool_t KinAna::Process(Long64_t entry)
   }
   if(IsDebug) Info("Process","Completed process count");
 
-  SetBCWeightToOne();
+  //SetBCWeightToOne();
   FillWtHists();
   cjhadAF.SetPtEtaPhiE(jetChadPt, jetChadEta, jetChadPhi, jetChadEn);
   sjhadAF.SetPtEtaPhiE(jetShadPt, jetShadEta, jetShadPhi, jetShadEn);
@@ -1073,7 +1073,7 @@ Bool_t KinAna::Process(Long64_t entry)
   bjhadAF.SetPtEtaPhiE(jetBhadPt, jetBhadEta, jetBhadPhi, jetBhadEn);
   bjlepAF.SetPtEtaPhiE(jetBlepPt, jetBlepEta, jetBlepPhi, jetBlepEn);
   leptonAF.SetPtEtaPhiE(lepPt, lepEta, lepPhi, lepEn);
-
+  
   
   wt_ratio = 1.0;
   
@@ -1626,14 +1626,9 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
 
-  // combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio ;
-  // combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio ;
-  // combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio ;
-  // combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio ;
-
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt ;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
   combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt ;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
   combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
 
   return true;
