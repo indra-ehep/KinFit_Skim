@@ -1624,12 +1624,11 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   double murwt = 1.0 ; if(systname == "bclhemurup") murwt = _muRweight_Up ; if(systname == "bclhemurdown") murwt = _muRweight_Do ; 
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
-  
 
   combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
-  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
+  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
   combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
-  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
+  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
 
   return true;
 }
