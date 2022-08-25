@@ -156,10 +156,10 @@ Int_t BJetAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_nbjet_mu","_lb_nbjet_mu", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_njet_ele","_lb_njet_ele", 30, 0., 30);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_nbjet_ele","_lb_nbjet_ele", 30, 0., 30);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_mu","_lb_mjj_mu", 5000, 0., 500);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_ele","_lb_mjj_ele", 5000, 0., 500);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_wt1_mu","_lb_mjj_mu", 5000, 0., 500);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_wt1_ele","_lb_mjj_ele", 5000, 0., 500);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_mu","_lb_mjj_mu", 4800, 0., 480);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_ele","_lb_mjj_ele", 4800, 0., 480);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_wt1_mu","_lb_mjj_mu", 4800, 0., 480);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_lb_mjj_wt1_ele","_lb_mjj_ele", 4800, 0., 480);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetBdisc_mu","bjetBdisc mu", 300, -1.5, 1.5);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetBdisc_ele","bjetBdisc ele", 300, -1.5, 1.5);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetNoBCBdisc_mu","bjetBdisc mu wo bjetwt", 300, -1.5, 1.5);
