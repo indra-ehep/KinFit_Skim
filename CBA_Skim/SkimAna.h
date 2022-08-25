@@ -2099,6 +2099,10 @@ void SkimAna::InitBjetOutBranches(){
   outputBjetTree->Branch("puJetIDWeight_Up"	, &_PUJetIDWeight_Up		);
   outputBjetTree->Branch("puJetIDWeight_Do"	, &_PUJetIDWeight_Do		);
 
+  outputBjetTree->Branch("muRweight_Up"		, &_muRweight_Up       	        );
+  outputBjetTree->Branch("muRweight_Do"		, &_muRweight_Do       	        );
+  outputBjetTree->Branch("muFweight_Up"		, &_muFweight_Up       	        );
+  outputBjetTree->Branch("muFweight_Do"		, &_muFweight_Do       	        );
   outputBjetTree->Branch("q2weight_Up"		, &_q2weight_Up		        );
   outputBjetTree->Branch("q2weight_Do"		, &_q2weight_Do		        );
   outputBjetTree->Branch("pdfweight_Up"		, &_pdfweight_Up		);
