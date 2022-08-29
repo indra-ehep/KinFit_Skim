@@ -25,110 +25,135 @@
 #include <iostream>
 
 using namespace std;
-int CreateQCDDD()
+int CreateQCDDD(int year = 2018)
 {
   
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
+   
+  //int year = 2018;
+  //const char* dir = "grid_v40_Syst/CBA_CTagValidated";
+  //const char* dir = "grid_v40_Syst/CBA_CTagValidated-Hist";
+  //const char* dir = "grid_v40_Syst/CBA_CTagReWt";
+  //const char* dir = "grid_v40_Syst/CBA_CTagReWt-Hist";
+  //const char* dir = "grid_v40_Syst/CBA_muFmuR";
+  //const char* dir = "grid_v40_Syst/CBA_muFmuR-Hist";
+  //const char* dir = "grid_v40_Syst/CBA_muFmuRFSRDo";
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2-wtratio_evtwt";
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1";
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest";
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
   
-  int year = 2016;
-  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
-  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared_metcorr";
-  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_allDD";
-  //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_highreso";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_btagCSV";
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy2";
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy3";
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy4";
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy5";
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy6";
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy7";
-  //const char* dir = "grid_v38_Syst/CBA_Skim_Syst_TuneTest1";
-  //const char* dir = "grid_v39_Syst/ULv9_long";
-  //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
-  //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
-  //const char* dir = "grid_v39_Syst/CBA_CTagM";
-  //const char* dir = "grid_v39_Syst/CBA_GeneratorWt";
-  //const char* dir = "grid_v39_Syst/CBA_CTagDD";
-  //const char* dir = "grid_v40_Syst/CBA_CTagnPUJetID";
-  //const char* dir = "grid_v40_Syst/CBA_BJetSFTests";
-  //const char* dir = "grid_v40_Syst/CBA_PtJet50";
-  //const char* dir = "grid_v40_Syst/CBA_PtJet45";
-  //const char* dir = "grid_v40_Syst/CBA_PtJet25_jetMass0";
-  //const char* dir = "grid_v40_Syst/CBA_FSRdown";
-  //const char* dir = "grid_v40_Syst/CBA_FSRup";
-  //const char* dir = "grid_v40_Syst/CBA_TLV_TPUJetID_KFAllJets";
-  //const char* dir = "grid_v40_Syst/CBA_TLVTPUKFAFSRDo_NanoReso";
-  //const char* dir = "grid_v40_Syst/CBA_TLVTPUKFAFSRDo_NR-GausM";
-  //const char* dir = "grid_v40_Syst/CBA_TLVTPUKFAFSRDo_NROGM";
-  //const char* dir = "grid_v40_Syst/CBA_Nom1_100MeVBin";
-  //const char* dir = "grid_v40_Syst/CBA_Nom1FSRDo_100MeVBin";
-  const char* dir = "grid_v40_Syst/CBA_CTagShapeCalib";
   
   // const char *syst[] = {"base", 
-  // 			"puup", "pudown", "mueffup", "mueffdown", 
-  // 			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
-  // 			"jerup", "jerdown", "btagbup", "btagbdown", 
-  // 			"btaglup", "btagldown", "prefireup", "prefiredown",
-  // 			"pdfup", "pdfdown", "q2fup", "q2down",
+  // 			"pdfup", "pdfdown", "q2up", "q2down",
   // 			"isrup", "isrdown", "fsrup", "fsrdown", 
-  // 			"iso20", "metup", "metdown",
-  // 			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
-  // 			"bctag3up", "bctag3down", "pujetidup", "pujetiddown"};
+  // 			"puup", "pudown","prefireup", "prefiredown",
+  // 			"mueffup", "mueffdown", "eleeffup", "eleeffdown",
+  // 			"pujetidup", "pujetiddown", "metup", "metdown",
+  // 			"jecup", "jecdown", "jerup", "jerdown",
+  // 			"iso20", //26
+  // 			//Followings are only for TTbar not for QCD DDD
+  // 			//"cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown",
+  // 			//The followings are used in earlier versions of BTV applications 
+  // 			// "btagbup", "btagbdown", 
+  // 			// "btaglup", "btagldown"
+  // 			// "bctag1up", "bctag1down",
+  // 			// "bctag2up", "bctag2down",
+  // 			// "bctag3up", "bctag3down", //10
+  // 			//CShapeCalib EOY
+  // 			"bcstatup", "bcstatdown",
+  // 			"bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+  // 			"bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
+  // 			"bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
+  // 			"bcbfragup", "bcbfragdown" //16
+  // 			// CShapeCalib UL
+  // 			// "bcstatup", "bcstatdown",
+  // 			// "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+  // 			// "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+  // 			// "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+  // 			// "bcxwjcup", "bcxwjcdown"//16
+  // };
+   const char *systbase_2016[] = {"base", 
+			    "pdfup", "pdfdown", "q2up", "q2down",
+			    "isrup", "isrdown", "fsrup", "fsrdown",
+			    "puup", "pudown", "prefireup", "prefiredown",
+			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+			    "pujetidup", "pujetiddown", "metup", "metdown",
+			    "jecup", "jecdown", "jerup", "jerdown",
+			    "iso20",  //26
+			    // CShapeCalib EOY
+			    "bcstatup", "bcstatdown",
+			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
+			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
+			    "bcbfragup", "bcbfragdown" //16
+                            };
 
-  const char *syst[] = {"base", 
-			"pdfup", "pdfdown", "q2up", "q2down",
-			"isrup", "isrdown", "fsrup", "fsrdown", 
-			"puup", "pudown","prefireup", "prefiredown",
-			"mueffup", "mueffdown", "eleeffup", "eleeffdown",
-			"pujetidup", "pujetiddown", "metup", "metdown",
-			"jecup", "jecdown", "jerup", "jerdown",
-			"iso20", //26
-			//Followings are only for TTbar not for QCD DDD
-			//"cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown",
-			//The followings are used in earlier versions of BTV applications 
-			// "btagbup", "btagbdown", 
-			// "btaglup", "btagldown"
-			// "bctag1up", "bctag1down",
-			// "bctag2up", "bctag2down",
-			// "bctag3up", "bctag3down", //10
-			//CShapeCalib EOY
-			"bcstatup", "bcstatdown",
-			"bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			"bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-			"bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-			"bcbfragup", "bcbfragdown" //16
-			// CShapeCalib UL
-			// "bcstatup", "bcstatdown",
-			// "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-			// "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			// "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			// "bcxwjcup", "bcxwjcdown"//16
-  };
+    const char *systbase_2017[] = {"base", 
+			    "pdfup", "pdfdown", "q2up", "q2down",
+			    "isrup", "isrdown", "fsrup", "fsrdown",
+			    "puup", "pudown", "prefireup", "prefiredown",
+			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+			    "pujetidup", "pujetiddown", "metup", "metdown",
+			    "jecup", "jecdown", "jerup", "jerdown",
+			    "iso20",  //26
+			    // CShapeCalib UL
+			    "bcstatup", "bcstatdown",
+			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+			    "bcxwjcup", "bcxwjcdown"//16
+
+                            };
+
+    const char *systbase_2018[] = {"base", 
+			    "pdfup", "pdfdown", "q2up", "q2down",
+			    "isrup", "isrdown", "fsrup", "fsrdown",
+			    "puup", "pudown", "prefireup", "prefiredown",
+			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+			    "pujetidup", "pujetiddown", "metup", "metdown",
+			    "jecup", "jecdown", "jerup", "jerdown",
+			    "iso20",  //26
+			    //CShapeCalib EOY
+			    "bcstatup", "bcstatdown",
+			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
+			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown" //14
+                            };
   
-			
-			 
-			
-
   
   TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
-  
-  for(int isys = 0 ; isys < 42 ; isys++) {
 
-    TDirectory *d2 = d1->mkdir(Form("%s",syst[isys]));
+  //int maxsyst = (year==2018) ? 40 : 42 ;
+  int maxsyst = 42 ;
+  
+  for(int isys = 0 ; isys < maxsyst ; isys++) {
+    TDirectory *d2 = 0x0;
+    if(year==2016)
+      d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
+    else if(year==2017)
+      d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
+    else if(year==2018)
+      d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
     d2->cd();
     TDirectory *d3 = d2->mkdir("Iso");
     d3->cd();
     TH1D *hDD;
-    int htype_max[2] = {17, 10};
+    int htype_max[2] = {21, 10};
     for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
       for(int ismu = 0 ; ismu < 2 ; ismu++)
-	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++)
-	  QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, syst[isys], hDD);
+	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
+	  if((htype>=11 and htype<=13) or (htype>=17 and htype<=19) ) continue;
+	  if(year==2016)
+	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
+	  else if(year==2017)
+	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
+	  else if(year==2018)
+	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
+	}
     d3->Write();
   }
   fout->Close();
@@ -179,6 +204,14 @@ string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
     histname = (isMu) ? "_ct_ExcT_mjj_mu" : "_ct_ExcT_mjj_ele" ;  
   else if (htype==17)
     histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_ExcL_mjj_ele" ;  
+  else if (htype==18)
+    histname += (isMu) ? "_bjhadBdisc_mu" : "_bjhadBdisc_ele" ;  
+  else if (htype==19)
+    histname += (isMu) ? "_bjlepBdisc_mu" : "_bjlepBdisc_ele" ;  
+  else if (htype==20)
+    histname = (isMu) ? "_bjetBdisc_mu" : "_bjetBdisc_ele" ;  
+  else if (htype==21)
+    histname = (isMu) ? "_bjetNoBCBdisc_mu" : "_bjetNoBCBdisc_ele" ;  
 
   return histname;
 }
@@ -319,6 +352,18 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   // 	 hcf_RegA_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegD_bkg->Integral());
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  if(htype>=10 and htype<=17){
+    int rebin = 50;
+    hcf_RegA_bkg->Rebin(rebin);
+    hcf_RegA_data->Rebin(rebin);
+    hcf_RegB_bkg->Rebin(rebin);
+    hcf_RegB_data->Rebin(rebin);
+    hcf_RegC_bkg->Rebin(rebin);
+    hcf_RegC_data->Rebin(rebin);
+    hcf_RegD_bkg->Rebin(rebin);
+    hcf_RegD_data->Rebin(rebin);
+  }
+
   //////////////////////////////// Get the QCD for regions ////////////////////////////////////////////////
   TH1D *hcf_RegD_QCD = (TH1D *)hcf_RegD_data->Clone("RegD_QCD");
   hcf_RegD_QCD->Add(hcf_RegD_bkg, -1);
@@ -337,6 +382,7 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   makeHistoPositive(hcf_RegA_QCD, false) ;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  
   //////////////////////////////// Calculate the QCD SF ///////////////////////////////////////////////////
   double intDiffC   = hcf_RegC_QCD->Integral();
   double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);

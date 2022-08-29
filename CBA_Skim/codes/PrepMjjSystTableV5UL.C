@@ -43,7 +43,7 @@ const char *sampleType[] = {
 			    "MCQCDMu", "MCQCDEle", "QCDdd", "QCDdd",
 			    "DataMu", "DataEle"};
 
-int PrepMjjSystTableV5UL()
+int PrepMjjSystTableV5UL(int year = 2018)
 {
   string GetInclusive(string, int, bool, int, bool, bool, char, double *, double *);
   string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType);
@@ -51,7 +51,7 @@ int PrepMjjSystTableV5UL()
   bool forPaper = false;
   double muTot[3],eleTot[3];
 
-  int year = 2018;
+  //int year = 2018;
   
   ofstream outFile;
   outFile.open(Form("syst/mjjTable_%d.tex",year));
@@ -630,15 +630,24 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 				 6.1, 5.0, 5.0, 4.5, 4.0,
 				 10.};
   
+  // const char *systDir[] = {"base", 
+  // 			     "puup", "pudown", "mueffup", "mueffdown", 
+  // 			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
+  // 			     "jerup", "jerdown", "btagbup", "btagbdown", 
+  // 			     "btaglup", "btagldown", "prefireup", "prefiredown",
+  //                            "pdfup", "pdfdown", "q2fup", "q2down",
+  // 			     "isrup", "isrdown", "fsrup", "fsrdown",
+  //                            "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+  // 			     "bctag3up", "bctag3down"};
   const char *systDir[] = {"base", 
 			     "puup", "pudown", "mueffup", "mueffdown", 
 			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
-			     "jerup", "jerdown", "btagbup", "btagbdown", 
-			     "btaglup", "btagldown", "prefireup", "prefiredown",
+			     "jerup", "jerdown", "bcintpup", "bcintpdown", 
+			     "bcextpup", "bcextpdown", "prefireup", "prefiredown",
                              "pdfup", "pdfdown", "q2fup", "q2down",
 			     "isrup", "isrdown", "fsrup", "fsrdown",
-                             "bctag1up", "bctag1down", "bctag2up", "bctag2down",
-			     "bctag3up", "bctag3down"};
+                             "bcstatup", "bcstatdown", "bclhemufup", "bclhemufdown",
+			     "bclhemurup", "bclhemurdown"};
 
 
   const char *systname[] = {"nominal", 
@@ -656,7 +665,8 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_1718_Resubmit" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagM" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_GeneratorWt" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagDD" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagDD" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagv2-CombHist" ;
 
   //int isample = 17; 
   isample--;
