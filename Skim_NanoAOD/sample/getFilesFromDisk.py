@@ -1,6 +1,17 @@
 import sys
 import subprocess
 
+def getRunList_DAS(sample):
+    std_output, std_error = subprocess.Popen("dasgoclient --query='run dataset=%s'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
+
+    names = std_output.decode("ascii").replace('\n',' ')
+
+    if names=='':
+        print ("PROBLEM")
+        print (sample)
+        print ()
+    return names
+
 def getFileList_DAS(sample):
     std_output, std_error = subprocess.Popen("dasgoclient --query='file dataset=%s status=*'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
 
