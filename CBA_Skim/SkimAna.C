@@ -1159,19 +1159,24 @@ void SkimAna::GetNumberofEvents()
   }
 
   if (fYear==2016) {
-    luminosity = 35921.875595;
-    lumiFracI  = 19.695422959/35.921875595 ;
-    lumiFracII = 16.226452636/35.921875595 ;
+    // luminosity = 35921.875595;
+    // lumiFracI  = 19.695422959/35.921875595 ;
+    // lumiFracII = 16.226452636/35.921875595 ;
+    luminosity = 36313.753344;
+    lumiFracI  = 19.501601620/36.313753344 ;
+    lumiFracII = 16.812151721/36.313753344 ;
   }
   if (fYear==2017) {
-    luminosity = 41529.548819;
+    //luminosity = 41529.548819;
+    luminosity = 41479.680529;
     lumiFracI  = 1.;
     lumiFracII = 1.;
   }
   if (fYear==2018) {
-    luminosity = 59740.565202;
-    lumiFracI  = 8.950818835/59.740565202;
-    lumiFracII = 50.789746366/59.740565202;
+    //luminosity = 59740.565202;
+    luminosity = 59832.475339;
+    lumiFracI  = 1.;//8.950818835/59.740565202;
+    lumiFracII = 1.;//50.789746366/59.740565202;
   }
   
 }
