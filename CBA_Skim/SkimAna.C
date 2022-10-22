@@ -9,6 +9,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <sstream>
 
 #include "SkimAna.h"
 #include "TH2.h"
@@ -1066,6 +1067,31 @@ void SkimAna::SetTrio()
   
 }
 
+//_____________________________________________________________________________
+void SkimAna::LoadGoldenJSON()
+{
+  
+  std::string filePath ;
+  if(fYear==2016){
+    filePath  = Form("%s/weightUL/LumiGoldenJson/%d/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt", fBasePath.Data(),fYear) ;
+  }else if(fYear==2017){
+    filePath  = Form("%s/weightUL/LumiGoldenJson/%d/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt", fBasePath.Data(),fYear) ;
+  }else if(fYear==2018){
+    filePath  = Form("%s/weightUL/LumiGoldenJson/%d/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt", fBasePath.Data(),fYear) ;
+  }
+  std::string inputLine;
+  std::ifstream inputFile( filePath );
+  std::stringstream jsonGoldenBuffer;
+  while ( std::getline( inputFile, inputLine ) ){
+    jsonGoldenBuffer << inputLine << "\n";
+  }
+  
+#ifndef MCONLY
+  fGoldenJsonRunLumi.Parse( jsonGoldenBuffer.str( ).c_str( ) );
+  assert(fGoldenJsonRunLumi.IsObject());
+#endif
+  
+}
 
 //_____________________________________________________________________________
 void SkimAna::GetNumberofEvents()
@@ -2889,6 +2915,9 @@ void SkimAna::SlaveBegin(TTree *tree)
         
   }//ifile loop
 
+  if(isData){   //For Data{
+    LoadGoldenJSON();
+  }
   if(!isData){   //For MC events
     Info("SlaveBegin", "CS Init");
     initCrossSections();  // Get the cross section values
@@ -3770,6 +3799,38 @@ Bool_t SkimAna::Process(Long64_t entry)
   fProcessed++;
   fStatus++;
   
+  if(isData and (_prevrun != event->run_ or _prevlumis != event->lumis_)){
+
+#ifndef MCONLY    
+    std::string run_no = std::to_string(event->run_);
+    if( fGoldenJsonRunLumi.HasMember(run_no.data()) ){
+
+      bool isValidLumis = false;
+      ////// Lumi block check //////////////////////////
+      const rapidjson::Value& lumiGroup = fGoldenJsonRunLumi[run_no.data()];
+      assert(lumiGroup.IsArray());
+      for (rapidjson::SizeType i = 0; i < lumiGroup.Size(); i++){ 
+	//printf("lumiGroup[%d] :\n", i);
+	if(lumiGroup[i].IsArray() and lumiGroup[i].Size()==2){
+	  const rapidjson::Value& lumiRange = lumiGroup[i];
+	  if(lumiRange[0].GetInt() <= int(event->lumis_) and int(event->lumis_) <= lumiRange[1].GetInt())
+	    isValidLumis = true;
+	  }
+      }
+      ////// Lumi block check //////////////////////////
+      if(!isValidLumis){
+	if(fProcessed%1000==0)
+	  std::cerr << "Lumi " << event->lumis_ << " of Run : " << run_no << " failed in Golden JSON" << std::endl;
+	return true;
+      }
+
+    }else{
+      if(fProcessed%10000==0)
+	std::cerr << "Run " << run_no << " failed in Golden JSON" << std::endl;
+      return true;
+    }
+#endif
+  }
   //if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
   if(!isData){ //To process for LHE, PYTHIA and GenJets
     TheoWeights();
@@ -4153,6 +4214,10 @@ Bool_t SkimAna::Process(Long64_t entry)
     outputTree->Fill();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  _prevrun = event->run_ ;
+  _prevlumis = event->lumis_ ;  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   return kTRUE;
 
@@ -7774,8 +7839,8 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-    //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){

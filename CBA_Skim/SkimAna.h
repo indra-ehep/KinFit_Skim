@@ -55,6 +55,10 @@
 
 #include "correction.h"
 
+#ifndef MCONLY
+#include "rapidjson/document.h"
+#endif
+
 class  TH1F;
 class  TH1D;
 class  TH2D;
@@ -430,10 +434,17 @@ class SkimAna : public TSelector {
    
    //Declaration of leaves types
    ////////////////////////////////////////////////////////
-  Int_t		_run = 0 ;
+  UInt_t       	_run = 0 ;
   Long64_t	_event = 0 ;
-  Int_t		_lumis = 0 ;
+  UInt_t       	_lumis = 0 ;
   Bool_t	_isData = 0 ;
+
+  UInt_t       	_prevrun = 0 ;
+  UInt_t       	_prevlumis = 0 ;
+  
+#ifndef MCONLY
+  rapidjson::Document fGoldenJsonRunLumi;
+#endif
   
   Float_t	_PUweight = 0 ;
   Float_t	_PUweight_Up = 0 ;
@@ -1041,6 +1052,7 @@ class SkimAna : public TSelector {
    void    GetArguments();
    void    SelectSyst();
    void    SetTrio();
+   void    LoadGoldenJSON();
    void    GetNumberofEvents();
    void    LoadPU();
    void    LoadJECJER();
