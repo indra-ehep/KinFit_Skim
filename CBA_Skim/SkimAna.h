@@ -1338,7 +1338,6 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("nElectron",1);
   tree->SetBranchAddress("nElectron", &(event->nEle_));
 
-
   tree->SetBranchStatus("Electron_charge",1);
   tree->SetBranchAddress("Electron_charge", &(event->eleCharge_));	
 

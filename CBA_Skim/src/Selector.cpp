@@ -314,13 +314,23 @@ void Selector::filter_electrons(EventTree *event){
 			     passD0 &&
 			     passDz);
 
-	bool eleSel_Medium_noIso = (passEtaEBEEGap && 
-				    absSCEta <= ele_Eta_cut &&
-				    pt >= ele_Pt_cut &&
-				    passMediumID_noIso &&
+	// bool eleSel_Medium_noIso = (passEtaEBEEGap && 
+	// 			    absSCEta <= ele_Eta_cut &&
+	// 			    pt >= ele_Pt_cut &&
+	// 			    passMediumID_noIso &&
+	// 			    passD0 &&
+	// 			    passDz);
+	bool eleSel_Medium_noIso = (
+				    passEtaEBEEGap && 
+				    //absEta <= ele_Eta_cut &&
+				    //pt >= ele_Pt_cut &&
+				    //passMediumID &&
+				    //passMediumID_noIso &&
+				    PFrelIso_corr > 0.3 &&
+				    eleID < 3 &&
 				    passD0 &&
-				    passDz);
-
+				    passDz
+				    );
 	bool eleSel_noIso_loose = (passEtaEBEEGap && 
 				   absSCEta <= ele_EtaLoose_cut &&
 				   pt >= ele_PtLoose_cut &&

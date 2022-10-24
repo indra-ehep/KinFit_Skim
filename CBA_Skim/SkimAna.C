@@ -3942,7 +3942,8 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   //The following setup is able to produce results presented in August-02 PAG
   singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
-  singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
+  //singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
+  singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
   
   //////=====================================================
   if(!singleMu and !singleEle) return true;
@@ -3954,6 +3955,8 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   FillLeptonIso();
 
+  //return true;
+  
   if(!isData){
     if(singleMu){
       if(fSyst == "base"){
@@ -7845,8 +7848,8 @@ bool SkimAna::ExecSerial(const char* infile)
   tree->GetEntry(0);
   Notify();
   //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
-  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
-    //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
