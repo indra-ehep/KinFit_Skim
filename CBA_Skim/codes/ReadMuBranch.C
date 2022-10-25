@@ -4,6 +4,38 @@
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
 **********************************************************************/
+#if !defined(__CINT__) || defined(__MAKECINT__)
+
+#include <TROOT.h>
+#include <TChain.h>
+#include <TEntryList.h>
+#include <TFile.h>
+#include <TProofOutputFile.h>
+#include <TSelector.h>
+#include <vector>
+
+#include "TH2.h"
+#include "TF1.h"
+#include "TStyle.h"
+#include "TCanvas.h"
+#include "TPaveStats.h"
+#include "TMath.h"
+#include "TProof.h"
+
+#include "TParticlePDG.h"
+#include "TDatabasePDG.h"
+
+#include "TLorentzVector.h"
+#include "TVector3.h"
+
+#include <fstream>
+#include <TEfficiency.h>
+
+using namespace std;
+
+#endif
+
+
 int ReadMuBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_1of10.root")
 {
   
@@ -84,13 +116,17 @@ int ReadMuBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_1
   cout << "Total Entries : " << tr->GetEntries() << endl;
   for(Long64_t ievent=0;ievent<tr->GetEntries();ievent++){
   //for(Long64_t ievent=0;ievent<100000;ievent++){
+
+    for(int ib = 0 ; ib < 20 ; ib++)
+      muPFRelIso_[ib] = -0.1;
+    
     tr->GetEntry(ievent);
-    for(int imu = 0 ; imu < nMuon_ ; imu++){
+    for(unsigned int imu = 0 ; imu < nMuon_ ; imu++){
       if(ievent%100000==0)
-	printf("event : %lld, imu : %d, isGlobal : %d, relIso_all : %f\n", ievent, imu, muisGlobal_[imu], muPFRelIso_[imu]);
+	printf("event : %lld, imu : %u, isGlobal : %d, relIso_all : %f\n", ievent, imu, muisGlobal_[imu], muPFRelIso_[imu]);
 
       //approx-ana-cut
-      //if(muPt_[imu] < 26. or TMath::Abs(muEta_[imu]) >= 2.4 or muDxy_[imu] > 0.2 or muDz_[imu] > 0.5 or nMuon_ > 1) continue ;
+      if(muPt_[imu] < 26. or TMath::Abs(muEta_[imu]) >= 2.4 or muDxy_[imu] > 0.2 or muDz_[imu] > 0.5 or nMuon_ > 1) continue ;
 	
       hRelIso_Incl->Fill(muPFRelIso_[imu]);
       
