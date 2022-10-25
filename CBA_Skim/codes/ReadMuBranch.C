@@ -14,10 +14,10 @@ int ReadMuBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_1
   TH1F *hRelIso_iso_medium = new TH1F("hRelIso_iso_medium","hRelIso_iso_medium", 10000, -1., 49.);
   TH1F *hRelIso_noniso_medium = new TH1F("hRelIso_noniso_medium","hRelIso_noniso_medium", 10000, -1., 49.);
   TH1F *hRelIso_medium_lmet = new TH1F("hRelIso_medium_lmet","hRelIso_medium_lmet", 10000, -1., 49.);
-  TH1F *hRelIso_iso_medium_lmet = new TH1F("hRelIso_iso_medium_lmet","hRelIso_iso_medium_lmet", 10000, -1., 49.);
+  TH1F *hRelIso_iso_medium_lmet = new TH1F("hRelIso_iso_medium_lmet","hRelIso_iso_medium_lmet", 100000, -0.2, 0.2 );
   TH1F *hRelIso_noniso_medium_lmet = new TH1F("hRelIso_noniso_medium_lmet","hRelIso_noniso_medium_lmet", 10000, -1., 49.);
   TH1F *hRelIso_medium_hmet = new TH1F("hRelIso_medium_hmet","hRelIso_medium_hmet", 10000, -1., 49.);
-  TH1F *hRelIso_iso_medium_hmet = new TH1F("hRelIso_iso_medium_hmet","hRelIso_iso_medium_hmet", 10000, -1., 49.);
+  TH1F *hRelIso_iso_medium_hmet = new TH1F("hRelIso_iso_medium_hmet","hRelIso_iso_medium_hmet", 100000, -0.2, 0.2 );
   TH1F *hRelIso_noniso_medium_hmet = new TH1F("hRelIso_noniso_medium_hmet","hRelIso_noniso_medium_hmet", 10000, -1., 49.);
   TH1F *hRelIso_tight = new TH1F("hRelIso_tight","hRelIso_tight", 10000, -1., 49.);
   TEfficiency *hEffPt = new TEfficiency("hEffPt","Efficiency;#it{p}_{T} GeV/#it{c};#epsilon", 100, 0., 100.);
@@ -61,6 +61,18 @@ int ReadMuBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_1
   tr->SetBranchStatus("Muon_pt",1); 
   tr->SetBranchAddress("Muon_pt", &(muPt_));
 
+  Float_t muEta_[20];
+  tr->SetBranchStatus("Muon_eta",1); 
+  tr->SetBranchAddress("Muon_eta", &(muEta_));
+
+  Float_t muDxy_[20];
+  tr->SetBranchStatus("Muon_dxy",1); 
+  tr->SetBranchAddress("Muon_dxy", &(muDxy_));
+
+  Float_t muDz_[20];
+  tr->SetBranchStatus("Muon_dz",1); 
+  tr->SetBranchAddress("Muon_dz", &(muDz_));
+
   Float_t MET_pt;
   tr->SetBranchStatus("MET_pt",1); 
   tr->SetBranchAddress("MET_pt", &(MET_pt));
@@ -76,6 +88,10 @@ int ReadMuBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_1
     for(int imu = 0 ; imu < nMuon_ ; imu++){
       if(ievent%100000==0)
 	printf("event : %lld, imu : %d, isGlobal : %d, relIso_all : %f\n", ievent, imu, muisGlobal_[imu], muPFRelIso_[imu]);
+
+      //approx-ana-cut
+      //if(muPt_[imu] < 26. or TMath::Abs(muEta_[imu]) >= 2.4 or muDxy_[imu] > 0.2 or muDz_[imu] > 0.5 or nMuon_ > 1) continue ;
+	
       hRelIso_Incl->Fill(muPFRelIso_[imu]);
       
       if(muisGlobal_[imu]) //veto

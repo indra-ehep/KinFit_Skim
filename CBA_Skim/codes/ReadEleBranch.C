@@ -13,10 +13,10 @@ int ReadEleBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_
   TH1F *hRelIso_iso_medium = new TH1F("hRelIso_iso_medium","hRelIso_iso_medium", 10000, -1., 49.);
   TH1F *hRelIso_noniso_medium = new TH1F("hRelIso_noniso_medium","hRelIso_noniso_medium", 10000, -1., 49.);
   TH1F *hRelIso_medium_lmet = new TH1F("hRelIso_medium_lmet","hRelIso_medium_lmet", 10000, -1., 49.);
-  TH1F *hRelIso_iso_medium_lmet = new TH1F("hRelIso_iso_medium_lmet","hRelIso_iso_medium_lmet", 10000, -1., 49.);
+  TH1F *hRelIso_iso_medium_lmet = new TH1F("hRelIso_iso_medium_lmet","hRelIso_iso_medium_lmet", 100000, -0.2, 0.2 );
   TH1F *hRelIso_noniso_medium_lmet = new TH1F("hRelIso_noniso_medium_lmet","hRelIso_noniso_medium_lmet", 10000, -1., 49.);
   TH1F *hRelIso_medium_hmet = new TH1F("hRelIso_medium_hmet","hRelIso_medium_hmet", 10000, -1., 49.);
-  TH1F *hRelIso_iso_medium_hmet = new TH1F("hRelIso_iso_medium_hmet","hRelIso_iso_medium_hmet", 10000, -1., 49.);
+  TH1F *hRelIso_iso_medium_hmet = new TH1F("hRelIso_iso_medium_hmet","hRelIso_iso_medium_hmet", 100000, -0.2, 0.2 );
   TH1F *hRelIso_noniso_medium_hmet = new TH1F("hRelIso_noniso_medium_hmet","hRelIso_noniso_medium_hmet", 10000, -1., 49.);
   TH1F *hRelIso_tight = new TH1F("hRelIso_tight","hRelIso_tight", 10000, -1., 49.);
   
@@ -129,12 +129,11 @@ int ReadEleBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_
 	  else 
 	    hRelIso_noniso_medium_hmet->Fill(elePFRelIso_[iele]);
 	}
-      }
-      
-      // if(eleIDcutbased_[iele]>=4)
-      // 	hRelIso_tight->Fill(elePFRelIso_[iele]);
+      }      
+      if(eleIDcutbased_[iele]>=4)
+	hRelIso_tight->Fill(elePFRelIso_[iele]);
 
-      // ////////////////// MVA //////////////////////////////////////////
+      ////////////////// MVA //////////////////////////////////////////
       // if(Electron_mvaFall17V2noIso_[iele]) //vetoid ?
       // 	hRelIso_veto->Fill(elePFRelIso_[iele]);
       // if(Electron_mvaFall17V2noIso_WPL_[iele]) //looseid ?
