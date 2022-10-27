@@ -1421,8 +1421,12 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("Muon_mass",1);
   tree->SetBranchAddress("Muon_mass", &(event->muMass_));
 
-  tree->SetBranchStatus("Muon_pfRelIso04_all",1);
-  tree->SetBranchAddress("Muon_pfRelIso04_all", &(event->muPFRelIso_));
+  // tree->SetBranchStatus("Muon_pfRelIso04_all",1);
+  // tree->SetBranchAddress("Muon_pfRelIso04_all", &(event->muPFRelIso_));
+
+  //To have same deltaR = 0.3 as case of electron
+  tree->SetBranchStatus("Muon_pfRelIso03_all",1);
+  tree->SetBranchAddress("Muon_pfRelIso03_all", &(event->muPFRelIso_));
 
   tree->SetBranchStatus("Muon_tightId",1);
   tree->SetBranchAddress("Muon_tightId", &(event->muTightId_));

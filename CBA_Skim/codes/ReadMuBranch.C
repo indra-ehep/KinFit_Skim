@@ -39,7 +39,7 @@ using namespace std;
 int ReadMuBranch(const char *infile="TTbarPowheg_Dilepton_postVFP_Skim_NanoAOD_1of10.root")
 {
   
-  TH1F *hRelIso_Incl = new TH1F("hRelIso_Incl","hRelIso_Incl", 10000, -1., 49.);
+  TH1F *hRelIso_Incl = new TH1F("hRelIso_Incl","hRelIso_Incl", 100000, -0.1, 3.9);
   TH1F *hRelIso_veto = new TH1F("hRelIso_veto","hRelIso_veto", 10000, -1., 49.);
   TH1F *hRelIso_loose = new TH1F("hRelIso_loose","hRelIso_loose", 10000, -1., 49.);
   TH1F *hRelIso_medium = new TH1F("hRelIso_medium","hRelIso_medium", 10000, -1., 49.);

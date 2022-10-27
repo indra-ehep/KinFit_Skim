@@ -191,8 +191,12 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
   tree->SetBranchStatus("Muon_mass",1);
   tree->SetBranchAddress("Muon_mass", &muMass_);
 
-  tree->SetBranchStatus("Muon_pfRelIso04_all",1);
-  tree->SetBranchAddress("Muon_pfRelIso04_all", &muPFRelIso_);
+  // tree->SetBranchStatus("Muon_pfRelIso04_all",1);
+  // tree->SetBranchAddress("Muon_pfRelIso04_all", &muPFRelIso_);
+
+  //To have same deltaR = 0.3 as case of electron
+  tree->SetBranchStatus("Muon_pfRelIso03_all",1);
+  tree->SetBranchAddress("Muon_pfRelIso03_all", &muPFRelIso_);
 
   tree->SetBranchStatus("Muon_tightId",1);
   tree->SetBranchAddress("Muon_tightId", &muTightId_);
@@ -754,9 +758,13 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
   chain->SetBranchStatus("Muon_mass",1);
   chain->SetBranchAddress("Muon_mass", &muMass_);
 
-  chain->SetBranchStatus("Muon_pfRelIso04_all",1);
-  chain->SetBranchAddress("Muon_pfRelIso04_all", &muPFRelIso_);
+  // chain->SetBranchStatus("Muon_pfRelIso04_all",1);
+  // chain->SetBranchAddress("Muon_pfRelIso04_all", &muPFRelIso_);
 
+  //To have same deltaR = 0.3 as case of electron
+  chain->SetBranchStatus("Muon_pfRelIso03_all",1);
+  chain->SetBranchAddress("Muon_pfRelIso03_all", &muPFRelIso_);
+  
   chain->SetBranchStatus("Muon_tightId",1);
   chain->SetBranchAddress("Muon_tightId", &muTightId_);
 

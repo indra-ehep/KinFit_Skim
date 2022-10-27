@@ -322,12 +322,10 @@ void Selector::filter_electrons(EventTree *event){
 	// 			    passDz);
 	bool eleSel_Medium_noIso = (
 				    passEtaEBEEGap && 
-				    //absEta <= ele_Eta_cut &&
-				    //pt >= ele_Pt_cut &&
-				    //passMediumID &&
+				    absEta <= ele_Eta_cut &&
+				    pt >= ele_Pt_cut &&
+				    passMediumID &&
 				    //passMediumID_noIso &&
-				    PFrelIso_corr > 0.3 &&
-				    eleID < 3 &&
 				    passD0 &&
 				    passDz
 				    );
