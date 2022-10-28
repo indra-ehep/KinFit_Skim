@@ -932,7 +932,6 @@ void SkimAna::SetTrio()
   
   //selector->QCDselect = true ;
   selector->DDselect = true ;
-  selector->mu_RelIso_loose = 2000.0;
   isMuTightID = false; //false for mediumID in efficiency
   isEleTightID = false; //false for mediumID in efficiency
   
@@ -2785,7 +2784,7 @@ void SkimAna::GetLMTBCtagSF_2b(){
 //_____________________________________________________________________________
 void SkimAna::GetMuonEff(double iso){
 
-  int muInd_ = selector->MuonsNoIso.at(0);
+  int muInd_ = selector->Muons.at(0);
   
   if (fYear==2016){
     vector<double> muWeights_a    = muSFa->getMuSF(event->muPt_[muInd_],event->muEta_[muInd_], mueffvar012_g, 2016);
@@ -2831,7 +2830,7 @@ void SkimAna::GetMuonEff(double iso){
 //_____________________________________________________________________________
 void SkimAna::GetElectronEff(){
   
-  int eleInd_ = selector->ElectronsNoIso.at(0);
+  int eleInd_ = selector->Electrons.at(0);
   if (fYear==2016){
     vector<double> eleWeights_a    = eleSFa->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
     vector<double> eleWeights_b    = eleSFb->getEleSF(event->elePt_[eleInd_],event->eleEta_[eleInd_] + event->eleDeltaEtaSC_[eleInd_],eleeffvar012_g);
@@ -3094,7 +3093,10 @@ void SkimAna::Clean(){
   muonNonIsoCut = false;
   eleIsoCut = false;
   eleNonIsoCut = false;
-
+  
+  muonpfRelIso = -1.0;
+  elepfRelIso = -1.0;
+  
   isLowMET = false;
   
   ljetlist.clear();
@@ -3805,7 +3807,6 @@ Bool_t SkimAna::Process(Long64_t entry)
   fStatus++;
   
   if(isData and (_prevrun != event->run_ or _prevlumis != event->lumis_)){
-
 #ifndef MCONLY    
     std::string run_no = std::to_string(event->run_);
     if( fGoldenJsonRunLumi.HasMember(run_no.data()) ){
@@ -3836,6 +3837,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     }
 #endif
   }
+  
   //if(!isData and systType == kBase){ //To process for LHE, PYTHIA and GenJets
   if(!isData){ //To process for LHE, PYTHIA and GenJets
     TheoWeights();
@@ -3939,11 +3941,11 @@ Bool_t SkimAna::Process(Long64_t entry)
   selector->filter_muons(event);
   selector->filter_electrons(event);
   //######################################################
-
+  
   //The following setup is able to produce results presented in August-02 PAG
-  singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->ElectronsNoIso.size() == 0 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 1 and selector->MuonsNoIsoLoose.size() == 0);
-  //singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->ElectronsNoIsoLoose.size() == 0 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
-  singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->ElectronsNoIso.size() == 1 and selector->MuonsNoIso.size() == 0 and selector->MuonsNoIsoLoose.size() == 0);
+  singleMu = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_mu and selector->Electrons.size() == 0 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 1 and selector->MuonsLoose.size() == 0);
+  singleEle = (evtPick->passFilter and selector->isPVGood and evtPick->passTrigger_ele and selector->Electrons.size() == 1 and selector->ElectronsLoose.size() == 0 and selector->Muons.size() == 0 and selector->MuonsLoose.size() == 0);
+
   
   //////=====================================================
   if(!singleMu and !singleEle) return true;
@@ -3952,7 +3954,10 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   //Processes after single muon/electron selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
+  if(singleMu) muonpfRelIso = event->muPFRelIso_[selector->Muons.at(0)];
+  if(singleEle) elepfRelIso = event->elePFRelIso_[selector->Electrons.at(0)];
+
   FillLeptonIso();
 
   //return true;
@@ -3961,15 +3966,15 @@ Bool_t SkimAna::Process(Long64_t entry)
     if(singleMu){
       if(fSyst == "base"){
 	mueffvar012_g = 2;		// 0:down, 1:norm, 2:up
-	GetMuonEff(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+	GetMuonEff(event->muPFRelIso_[selector->Muons.at(0)]);
 	_muEffWeight_Up = _muEffWeight;
 	
 	mueffvar012_g = 0;		// 0:down, 1:norm, 2:up
-	GetMuonEff(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+	GetMuonEff(event->muPFRelIso_[selector->Muons.at(0)]);
 	_muEffWeight_Do = _muEffWeight;
       }
       mueffvar012_g = 1;		// 0:down, 1:norm, 2:up
-      GetMuonEff(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+      GetMuonEff(event->muPFRelIso_[selector->Muons.at(0)]);
     }
     
     //if(singleMu) GetMuonEff(event->muPFRelIso_[selector->Muons.at(0)]);
@@ -3992,69 +3997,31 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   if(singleMu){
     if(systType == kIso20){
-      muonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.17) ? true : false; 
-      muonNonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] > 0.17 and event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.4) ? true : false; 
+      muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.17) ? true : false; 
+      muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.17) ? true : false; 
     }else{
-      muonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= 0.01) ? true : false; 
-      muonNonIsoCut = (event->muPFRelIso_[selector->MuonsNoIso.at(0)] > 0.01 and event->muPFRelIso_[selector->MuonsNoIso.at(0)] <= selector->mu_RelIso_loose) ? true : false; 
+      muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.15) ? true : false; 
+      muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.15) ? true : false; 
     }
   }
   
   if(singleEle){
-    double SCeta = event->eleEta_[selector->ElectronsNoIso.at(0)] + event->eleDeltaEtaSC_[selector->ElectronsNoIso.at(0)];
+    double SCeta = event->eleEta_[selector->Electrons.at(0)] + event->eleDeltaEtaSC_[selector->Electrons.at(0)];
     double absSCEta = TMath::Abs(SCeta);
     if(systType == kIso20){
-      eleIsoCut =  (event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.11) ? true : false;
-      eleNonIsoCut = (event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.11 and event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < 0.3 ) ? true : false;
+      eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.11) ? true : false;
+      eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.11 ) ? true : false;
     }else{
-      // eleIsoCut =  (
-      // 		    (absSCEta <= 1.479 and event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0695) 
-      // 		    or 
-      // 		    (absSCEta > 1.479 and  event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.0821)
-      // 		    ) ? true : false;
-
-      // eleNonIsoCut =  (
-      // 		       (
-      // 			absSCEta <= 1.479 
-      // 			and 
-      // 			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.0695 
-      // 			and 
-      // 			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
-      // 			) 
-      // 		       or 
-      // 		       (
-      // 			absSCEta > 1.479 
-      // 			and  
-      // 			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.0821
-      // 			and
-      // 			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.3
-      // 			)
-      // 		       ) ? true : false;
-      eleIsoCut =  (
-		    (absSCEta <= 1.479 and event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.008) 
-		    or 
-		    (absSCEta > 1.479 and  event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 0.008)
-		    ) ? true : false;
-
-      eleNonIsoCut =  (
-		       (
-			absSCEta <= 1.479 
-			and 
-			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.008
-			and 
-			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 2000.0
-			) 
-		       or 
-		       (
-			absSCEta > 1.479 
-			and  
-			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] > 0.008
-			and
-			event->elePFRelIso_[selector->ElectronsNoIso.at(0)] <= 2000.0
-			)
-		       ) ? true : false;
+      eleIsoCut =  ((absSCEta <= 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] <= 0.0695) 
+      		    or 
+      		    (absSCEta > 1.479 and  event->elePFRelIso_[selector->Electrons.at(0)] <= 0.0821)
+      		    ) ? true : false;
+      
+      eleNonIsoCut =  ((absSCEta <= 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] > 0.0695 ) 
+      		       or 
+      		       (absSCEta > 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] > 0.0821 )
+      		       ) ? true : false;
     }
-
   }
   
   FillLeptonCutFlow();
@@ -4760,13 +4727,13 @@ bool SkimAna::FillBTHists(TList *list, string hist_extn, bool isMu, double wt, d
   ((TH1D *) list->FindObject(Form("_wt_bjet_after_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(selector->Jets.size(), wt_after);
   
   if(isMu){
-    ((TH1D *) list->FindObject(Form("_lb_pt_mu%s",hist_extn.c_str())))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], wt);
-    ((TH1D *) list->FindObject(Form("_lb_eta_mu%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
-    ((TH1D *) list->FindObject(Form("_lb_phi_mu%s",hist_extn.c_str())))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_pt_mu%s",hist_extn.c_str())))->Fill(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_eta_mu%s",hist_extn.c_str())))->Fill(event->muEta_[selector->Muons.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_phi_mu%s",hist_extn.c_str())))->Fill(event->muEta_[selector->Muons.at(0)], wt);
   }else{
-    ((TH1D *) list->FindObject(Form("_lb_pt_ele%s",hist_extn.c_str())))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], wt);
-    ((TH1D *) list->FindObject(Form("_lb_eta_ele%s",hist_extn.c_str())))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], wt);
-    ((TH1D *) list->FindObject(Form("_lb_phi_ele%s",hist_extn.c_str())))->Fill(event->elePhi_[selector->ElectronsNoIso.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_pt_ele%s",hist_extn.c_str())))->Fill(event->elePt_[selector->Electrons.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_eta_ele%s",hist_extn.c_str())))->Fill(event->eleEta_[selector->Electrons.at(0)], wt);
+    ((TH1D *) list->FindObject(Form("_lb_phi_ele%s",hist_extn.c_str())))->Fill(event->elePhi_[selector->Electrons.at(0)], wt);
   }
   for(unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
@@ -6208,8 +6175,8 @@ bool SkimAna::FillNjetWt(){
 bool SkimAna::FillLeptonIso(){
   
   float metCut = 20.;
-  float muIsoCut = 0.01;
-  float eleIsoCut = 0.008;
+  float muIsoCut = 0.15;
+  float eleIsoCut = 0.082;
   
   for(int isyst=0;isyst<fNSyst;isyst++){
     TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
@@ -6219,31 +6186,31 @@ bool SkimAna::FillLeptonIso(){
     
     if(singleMu){
       if(selector->METPt > metCut){
-	if(event->muPFRelIso_[selector->MuonsNoIso.at(0)] < muIsoCut )
-	  ((TH1D *) list->FindObject("_muIso"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+	if(event->muPFRelIso_[selector->Muons.at(0)] <= muIsoCut )
+	  ((TH1D *) list->FindObject("_muIso"))->Fill(event->muPFRelIso_[selector->Muons.at(0)]);
 	else
-	  ((TH1D *) list2->FindObject("_muIso_noniso"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+	  ((TH1D *) list2->FindObject("_muIso_noniso"))->Fill(event->muPFRelIso_[selector->Muons.at(0)]);
       }else{
-	if(event->muPFRelIso_[selector->MuonsNoIso.at(0)] < muIsoCut )
-	  ((TH1D *) list1->FindObject("_muIso_lmet"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+	if(event->muPFRelIso_[selector->Muons.at(0)] <= muIsoCut )
+	  ((TH1D *) list1->FindObject("_muIso_lmet"))->Fill(event->muPFRelIso_[selector->Muons.at(0)]);
 	else
-	  ((TH1D *) list3->FindObject("_muIso_noniso_lmet"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+	  ((TH1D *) list3->FindObject("_muIso_noniso_lmet"))->Fill(event->muPFRelIso_[selector->Muons.at(0)]);
       }
     }//isSingle Ele
     if(singleEle){
       if(selector->METPt > metCut){
-	if(event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < eleIsoCut )
-	  ((TH1D *) list->FindObject("_eleIso"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+	if(event->elePFRelIso_[selector->Electrons.at(0)] <= eleIsoCut )
+	  ((TH1D *) list->FindObject("_eleIso"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)]);
 	else
-	  ((TH1D *) list2->FindObject("_eleIso_noniso"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+	  ((TH1D *) list2->FindObject("_eleIso_noniso"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)]);
       }else{
-	if(event->elePFRelIso_[selector->ElectronsNoIso.at(0)] < eleIsoCut )
-	  ((TH1D *) list1->FindObject("_eleIso_lmet"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+	if(event->elePFRelIso_[selector->Electrons.at(0)] <= eleIsoCut )
+	  ((TH1D *) list1->FindObject("_eleIso_lmet"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)]);
 	else
-	  ((TH1D *) list3->FindObject("_eleIso_noniso_lmet"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+	  ((TH1D *) list3->FindObject("_eleIso_noniso_lmet"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)]);
       }
     }
-    //((TH1D *) list->FindObject("_eleIso"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+    //((TH1D *) list->FindObject("_eleIso"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)]);
   }
 
   return true;
@@ -6468,9 +6435,9 @@ bool SkimAna::FillLeptonControlHists(){
   // if(singleMu){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->Muons.at(0)], combined_muwt);
     
   //   if(bjetlist.size()>=1){
   //     ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(event->jetPt_[bjetlist.at(0).first], combined_muwt);
@@ -6493,9 +6460,9 @@ bool SkimAna::FillLeptonControlHists(){
   // if(singleEle){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)], combined_elewt);
     
   //   if(bjetlist.size()>=1){
   //     ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(event->jetPt_[bjetlist.at(0).first], combined_elewt);
@@ -6531,9 +6498,9 @@ bool SkimAna::FillJetControlHists(){
   // if(singleMu){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->Muons.at(0)], combined_muwt);
 
   //   ljetlist.clear();
   //   bjetlist.clear();
@@ -6570,9 +6537,9 @@ bool SkimAna::FillJetControlHists(){
   // if(singleEle){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)], combined_elewt);
     
   //   ljetlist.clear();
   //   bjetlist.clear();    
@@ -6621,9 +6588,9 @@ bool SkimAna::FillMETControlHists(){
   // if(singleMu){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->Muons.at(0)], combined_muwt);
 
   //   if(bjetlist.size()>=1){
   //     ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(bjetlist.at(0).second, combined_muwt);
@@ -6646,9 +6613,9 @@ bool SkimAna::FillMETControlHists(){
   // if(singleEle){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)], combined_elewt);
     
   //   if(bjetlist.size()>=1){
   //     ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(bjetlist.at(0).second, combined_elewt);
@@ -6684,9 +6651,9 @@ bool SkimAna::FillBTagControlHists(){
   // if(singleMu){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->MuonsNoIso.at(0)], combined_muwt);
-  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("pt_mu"))->Fill(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("eta_mu"))->Fill(event->muEta_[selector->Muons.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->Muons.at(0)], combined_muwt);
 
   //   if(bjetlist.size()>=1){
   //     ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(bjetlist.at(0).second, combined_muwt);
@@ -6709,9 +6676,9 @@ bool SkimAna::FillBTagControlHists(){
   // if(singleEle){
   //   ((TH1D *) list->FindObject("pv_npvs"))->Fill(event->nVtx_, combined_muwt);
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
-  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->ElectronsNoIso.at(0)], combined_elewt);
-  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("pt_ele"))->Fill(event->elePt_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("eta_ele"))->Fill(event->eleEta_[selector->Electrons.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)], combined_elewt);
     
   //   if(bjetlist.size()>=1){
   //     ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(bjetlist.at(0).second, combined_elewt);
@@ -6766,7 +6733,7 @@ bool SkimAna::FillKinFitControlHists(){
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
   //   ((TH1D *) list->FindObject("pt_mu"))->Fill(leptonAF.Pt(), combined_muwt);
   //   ((TH1D *) list->FindObject("eta_mu"))->Fill(leptonAF.Eta(), combined_muwt);
-  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->MuonsNoIso.at(0)], combined_muwt);
+  //   ((TH1D *) list->FindObject("iso_mu"))->Fill(event->muPFRelIso_[selector->Muons.at(0)], combined_muwt);
     
   //   ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(bjlepAF.Pt(), combined_muwt);
   //   ((TH1D *) list->FindObject("eta_jet1_bjet"))->Fill(bjlepAF.Eta(), combined_muwt);
@@ -6804,7 +6771,7 @@ bool SkimAna::FillKinFitControlHists(){
   //   ((TH1D *) list->FindObject("pv_z"))->Fill(event->pvZ_, combined_muwt);
   //   ((TH1D *) list->FindObject("pt_ele"))->Fill(leptonAF.Pt(), combined_elewt);
   //   ((TH1D *) list->FindObject("eta_ele"))->Fill(leptonAF.Eta(), combined_elewt);
-  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->ElectronsNoIso.at(0)], combined_elewt);
+  //   ((TH1D *) list->FindObject("iso_ele"))->Fill(event->elePFRelIso_[selector->Electrons.at(0)], combined_elewt);
     
   //   ((TH1D *) list->FindObject("pt_jet1_bjet"))->Fill(bjlepAF.Pt(), combined_elewt);
   //   ((TH1D *) list->FindObject("eta_jet1_bjet"))->Fill(bjlepAF.Eta(), combined_elewt);
@@ -7305,38 +7272,38 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
       _nBJet++;
   }
   
-  _nMu = selector->MuonsNoIso.size();
+  _nMu = selector->Muons.size();
   // _muPt->clear();
   // _muEta->clear();
   // _muPhi->clear();
   // _muCharge->clear();
   // _muPFRelIso->clear();
   if(isMuon){
-    lepVector.SetPtEtaPhiM( event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)], 
-			    event->muEta_[selector->MuonsNoIso.at(0)] , event->muPhi_[selector->MuonsNoIso.at(0)], 
+    lepVector.SetPtEtaPhiM( event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)], 
+			    event->muEta_[selector->Muons.at(0)] , event->muPhi_[selector->Muons.at(0)], 
 			    TDatabasePDG::Instance()->GetParticle(13)->Mass());
     
-    // _muPt->push_back(event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)]);
-    // _muEta->push_back(event->muEta_[selector->MuonsNoIso.at(0)]);
-    // _muPhi->push_back(event->muPhi_[selector->MuonsNoIso.at(0)]);
-    // _muCharge->push_back(event->muCharge_[selector->MuonsNoIso.at(0)]);
-    // _muPFRelIso->push_back(event->muPFRelIso_[selector->MuonsNoIso.at(0)]);
+    // _muPt->push_back(event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)]);
+    // _muEta->push_back(event->muEta_[selector->Muons.at(0)]);
+    // _muPhi->push_back(event->muPhi_[selector->Muons.at(0)]);
+    // _muCharge->push_back(event->muCharge_[selector->Muons.at(0)]);
+    // _muPFRelIso->push_back(event->muPFRelIso_[selector->Muons.at(0)]);
   }
-
-  _nEle = selector->ElectronsNoIso.size();
+  
+  _nEle = selector->Electrons.size();
   // _elePt->clear();
   // _eleEta->clear();
   // _elePhi->clear();
   // _eleCharge->clear();
   // _elePFRelIso->clear();
   if(isEle){
-    lepVector.SetPtEtaPhiM( event->elePt_[selector->ElectronsNoIso.at(0)], event->eleEta_[selector->ElectronsNoIso.at(0)], 
-			    event->elePhi_[selector->ElectronsNoIso.at(0)], TDatabasePDG::Instance()->GetParticle(11)->Mass());
-    // _elePt->push_back(event->elePt_[selector->ElectronsNoIso.at(0)]);
-    // _eleEta->push_back(event->eleEta_[selector->ElectronsNoIso.at(0)]);
-    // _elePhi->push_back(event->elePhi_[selector->ElectronsNoIso.at(0)]);
-    // _eleCharge->push_back(event->eleCharge_[selector->ElectronsNoIso.at(0)]);
-    // _elePFRelIso->push_back(event->elePFRelIso_[selector->ElectronsNoIso.at(0)]);
+    lepVector.SetPtEtaPhiM( event->elePt_[selector->Electrons.at(0)], event->eleEta_[selector->Electrons.at(0)], 
+			    event->elePhi_[selector->Electrons.at(0)], TDatabasePDG::Instance()->GetParticle(11)->Mass());
+    // _elePt->push_back(event->elePt_[selector->Electrons.at(0)]);
+    // _eleEta->push_back(event->eleEta_[selector->Electrons.at(0)]);
+    // _elePhi->push_back(event->elePhi_[selector->Electrons.at(0)]);
+    // _eleCharge->push_back(event->eleCharge_[selector->Electrons.at(0)]);
+    // _elePFRelIso->push_back(event->elePFRelIso_[selector->Electrons.at(0)]);
   }		      
   
   kinFit.SetJetVector(jetVectors);
@@ -7603,14 +7570,14 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 void SkimAna::FillBJetTree()
 {
   if(singleMu){
-    _lepPt		= event->muPt_[selector->MuonsNoIso.at(0)] * event->muRoccoR_[selector->MuonsNoIso.at(0)];
-    _lepEta		= event->muEta_[selector->MuonsNoIso.at(0)] ;
-    _lepPhi		= event->muPhi_[selector->MuonsNoIso.at(0)];
+    _lepPt		= event->muPt_[selector->Muons.at(0)] * event->muRoccoR_[selector->Muons.at(0)];
+    _lepEta		= event->muEta_[selector->Muons.at(0)] ;
+    _lepPhi		= event->muPhi_[selector->Muons.at(0)];
     _lepEnergy		=  TDatabasePDG::Instance()->GetParticle(13)->Mass();
   }else{
-    _lepPt		= event->elePt_[selector->ElectronsNoIso.at(0)];
-    _lepEta		= event->eleEta_[selector->ElectronsNoIso.at(0)];
-    _lepPhi		= event->elePhi_[selector->ElectronsNoIso.at(0)];
+    _lepPt		= event->elePt_[selector->Electrons.at(0)];
+    _lepEta		= event->eleEta_[selector->Electrons.at(0)];
+    _lepPhi		= event->elePhi_[selector->Electrons.at(0)];
     _lepMass		=  TDatabasePDG::Instance()->GetParticle(11)->Mass();
   }
   
@@ -7946,7 +7913,7 @@ int main(int argc, char** argv)
   TString hostname = gSystem->HostName();
   string singleFile = inputfile.substr(inputfile.find_last_of("/")+1,inputfile.size());
   string xrdcp_command = "";
-  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") )
+  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") or hostname.BeginsWith("dhep-inlap") )
     //xrdcp_command = "cp " + inputfile + " " + singleFile ;
     xrdcp_command = "ln -s " + inputfile + " " + singleFile ;
   else

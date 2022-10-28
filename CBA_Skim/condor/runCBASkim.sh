@@ -37,7 +37,12 @@ syst=$5
 
 #time root -l -b -q run.C\(\""sample=${sample}|year=${year}|input=${input}|index=${index}|syst=${syst}|aod=nano|run=prod"\"\)
 
-time ./SkimAna $sample $year $input $index $syst
+if [ "$sample" = "DataMu" -o "$sample" = "DataEle" ]; then
+    time ./SkimAnaData $sample $year $input $index $syst
+else
+    time ./SkimAna $sample $year $input $index $syst
+fi
+
 
 printf "Done Histogramming at ";/bin/date
 #---------------------------------------------

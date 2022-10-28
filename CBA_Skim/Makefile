@@ -1,5 +1,7 @@
 #CPPFLAGS=  -Wall -g -O -fPIC
 CPPFLAGS= -fPIC -g 
+EXTRA_INCLUDE := $(shell echo $(ROOT_INCLUDE_PATH) | cut -d ':' -f 79)
+UNAME := $(shell uname -m)
 
 all: bin
 #all: lib
@@ -9,10 +11,18 @@ lib: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorr
 
 ######################## Main library ###############################################
 SkimAna: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
+ifeq ($(HOSTNAME), dhep-inlap)
+	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -I$(EXTRA_INCLUDE) -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE -D MCONLY src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
+else
 	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE -D MCONLY src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
+endif
 
 SkimAnaData: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
+ifeq ($(HOSTNAME), dhep-inlap)
+	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -I$(EXTRA_INCLUDE) -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE  src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
+else
 	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE  src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
+endif
 
 libweight.so: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
 	g++ $(CPPFLAGS) -shared -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.o
@@ -60,10 +70,18 @@ src/BTagCalibrationStandalone.o: src/BTagCalibrationStandalone.cpp interface/BTa
 
 ######################## Event Tree, Pick and Selector ##############################
 src/EventPick.o: src/Selector.o src/EventPick.cpp interface/EventPick.h
+ifeq ($(HOSTNAME), dhep-inlap)
+	g++ $(CPPFLAGS) -c -I`root-config --incdir` -I$(EXTRA_INCLUDE) -std=c++17 -D STANDALONE src/EventPick.cpp -o src/EventPick.o
+else
 	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventPick.cpp -o src/EventPick.o
+endif
 
 src/Selector.o: src/EventTree.o src/Selector.cpp interface/Selector.h
+ifeq ($(HOSTNAME), dhep-inlap)
+	g++ $(CPPFLAGS) -c -I`root-config --incdir` -I$(EXTRA_INCLUDE) -std=c++17 -D STANDALONE src/Selector.cpp -o src/Selector.o
+else
 	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/Selector.cpp -o src/Selector.o
+endif
 #	g++ $(CPPFLAGS) -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/Utils.cc src/JetResolution.cc src/JetResolutionObject.cc  src/Selector.cpp
 
 src/EventTree.o: src/EventTree.cpp interface/EventTree.h
@@ -73,14 +91,18 @@ src/Selector_gen.o: src/EventTree.o src/Selector_gen.cpp interface/Selector.h
 	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/Selector_gen.cpp -o src/Selector_gen.o
 
 src/EventPick_gen.o: src/Selector_gen.o src/EventPick_gen.cpp interface/EventPick.h
-	g++ $(CPPFLAGS) -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/EventPick_gen.cpp -o src/EventPick_gen.o
+	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventPick_gen.cpp -o src/EventPick_gen.o
 
 ######################## Event Tree, Pick and Selector ##############################
 
 
 ######################## RCorr library ###############################################
 src/RoccoR.o: src/RoccoR.cc interface/RoccoR.h
+ifeq ($(HOSTNAME), dhep-inlap)
+	g++ $(CPPFLAGS) -c `root-config --libs` -I`root-config --incdir` -I$(EXTRA_INCLUDE) -std=c++17 -D STANDALONE src/RoccoR.cc -o src/RoccoR.o
+else
 	g++ $(CPPFLAGS) -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/RoccoR.cc -o src/RoccoR.o
+endif
 ######################## RCorr library ###############################################
 
 

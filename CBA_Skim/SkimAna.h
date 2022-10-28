@@ -959,9 +959,11 @@ class SkimAna : public TSelector {
    bool singleEle = false;
    bool muonIsoCut = false;
    bool muonNonIsoCut = false;
+   double muonpfRelIso = -1.0;
    bool eleIsoCut = false;
    bool eleNonIsoCut = false;
-
+   double elepfRelIso = -1.0;
+  
    // MET
    float METThreshold = 20. ;
    bool isLowMET = false;
@@ -1890,6 +1892,11 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("eleIsoCut"		, &eleIsoCut			);
     outputTree->Branch("eleNonIsoCut"		, &eleNonIsoCut       		);
     outputTree->Branch("isLowMET"		, &isLowMET       		);
+
+    outputTree->Branch("muonpfRelIso"		, &muonpfRelIso			);
+    outputTree->Branch("elepfRelIso"		, &elepfRelIso			);
+    outputTree->Branch("METPt"  		, &(selector->METPt)	       	);
+    
     outputTree->Branch("muEffWeight"		, &_muEffWeight			);
     outputTree->Branch("muEffWeight_Up"		, &_muEffWeight_Up		);
     outputTree->Branch("muEffWeight_Do"		, &_muEffWeight_Do		);
@@ -1955,7 +1962,7 @@ void SkimAna::InitOutBranches(){
     // outputTree->Branch("cTagTWeight_bc3_Do"	, &_cTagTWeight_bc3_Do		);
     
     outputTree->Branch("nJet"			, &_nJet			);
-    outputTree->Branch("nBJet"		, &_nBJet			);
+    outputTree->Branch("nBJet"  		, &_nBJet			);
     outputTree->Branch("wt_before"		, &wt_before			);
     outputTree->Branch("wt_after"		, &wt_after			);
     outputTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
@@ -2074,6 +2081,7 @@ void SkimAna::InitOutBranches(){
     
     outputTree->Branch("lhe1PDG"		, &_lhe1PDG			);
     outputTree->Branch("lhe2PDG"		, &_lhe2PDG			);
+    
     outputTree->Branch("chadPDG"		, &_chadPDG			);
     outputTree->Branch("shadPDG"		, &_shadPDG			);
     outputTree->Branch("lhe1dR"			, &_lhe1dR			);
