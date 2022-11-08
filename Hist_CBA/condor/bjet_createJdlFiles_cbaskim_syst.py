@@ -26,8 +26,8 @@ syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
 
-inputdir="CBA_ctagv2"
-outputdir="CBA_ctagv2-BJetHist1"
+inputdir="CBA_gdjsoncorr"
+outputdir="CBA_gdjsoncorr-BJetHist1"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s'%(inputdir)
 bjetpath='/eos/user/d/dugad/idas/Output/cms-hcs-run2/%s'%(inputdir)
@@ -52,7 +52,7 @@ for year in [2017,2018]:
             print "Creating input file %s"%inputfile
 
 
-jdlDir = 'bjet_tmpLog_%s'%(outputdir)
+jdlDir = 'btag1_tmpLog_%s'%(outputdir)
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -72,6 +72,7 @@ use_x509userproxy = true\n\
 +BenchmarkJob = True\n\
 #+MaxRuntime = 41220\n\
 +MaxRuntime = 7200\n\
++notification = Never\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
@@ -89,6 +90,8 @@ for year in [2017,2018]:
     jdlFile.write(common_command)
     condorOutDir='/eos/user/d/dugad/idas/Output/cms-hcs-run2/%s'%(outputdir)
     os.system("xrdfs root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
+    condorOutDir1='/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/%s'%(outputdir)
+    os.system("xrdfs root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
 
     jdlFile.write("X=$(step)\n")
     

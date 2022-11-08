@@ -48,22 +48,26 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_gdjsoncorr
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_gdjsoncorr
-# condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_gdjsoncorr
-# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_gdjsoncorr
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_gdjsoncorr/pre
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_gdjsoncorr/pre
-condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_gdjsoncorr/pre
-condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_gdjsoncorr/pre
+# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_elemva80
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_elemva80
+# condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_elemva80
+# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva80
+# condorOutDir4=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/CBA_elemva80
+condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_elemva80/pre
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_elemva80/pre
+condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_elemva80/pre
+condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva80/pre
+condorOutDir4=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/CBA_elemva80/pre
+
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
     #xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
     xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
-    xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir2}/${year}
     xrdcp -f ${sample}_bjet_*.root root://eosuser.cern.ch/${condorOutDir3}/${year}
+    xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir4}/${year}
+    xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir2}/${year}
     echo "Cleanup"
     rm -rf CMSSW_12_1_0
     rm *.root

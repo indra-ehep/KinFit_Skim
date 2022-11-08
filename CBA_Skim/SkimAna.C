@@ -495,7 +495,7 @@ Int_t SkimAna::CreateHistoArrays()
   if(fSyst=="base"){
     fNBSelCols = 9; //Nof cutflow columns
     //fNBSelColHists = 62; //nof histograms
-    fNBSelColHists = 1; //nof histograms 
+    fNBSelColHists = 3; //nof histograms 
     fNSelColHists = fNBSelCols*fNBSelColHists;
     hControl = new TH1D*[fNSelColHists];
     //fNBSelColProfiles = 11; //nof TProfiles
@@ -518,6 +518,8 @@ Int_t SkimAna::CreateHistoArrays()
       // hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pv_z_jetpupass","pv_z_jetpupass",100, -20., 20.);
       // hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pv_npvs_jetpufail","pv_npvs_jetpufail",100, 0., 100.);
       // hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pv_z_jetpufail","pv_z_jetpufail",100, -20., 20.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("dxy","dxy", 1000, -1., 1.);
+      hControl[iscl*fNBSelColHists + hidx++] = new TH1D("dz","iso_mu", 1000, -1., 1.);
       // hControl[iscl*fNBSelColHists + hidx++] = new TH1D("pt_mu","pt_mu",100, 0., 1000.);
       // hControl[iscl*fNBSelColHists + hidx++] = new TH1D("eta_mu","eta_mu", 30, -3., 3.);
       // hControl[iscl*fNBSelColHists + hidx++] = new TH1D("iso_mu","iso_mu", 100, .0, 1.);
@@ -1826,8 +1828,11 @@ void SkimAna::LoadLeptonSF(){
       string elePath_UL = Form("%s/weightUL/MuEleSF/ele2016",fBasePath.Data());
       string elePath_LRR = Form("%s/weight/MuEleSF/ele2016",fBasePath.Data());
       
-      string eleIDFile_preVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_preVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_preVFP_EGM2D.root";
-      string eleIDFile_postVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_postVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_postVFP_EGM2D.root";
+      // string eleIDFile_preVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_preVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_preVFP_EGM2D.root";
+      // string eleIDFile_postVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_postVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_postVFP_EGM2D.root";
+      string eleIDFile_preVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_preVFP_EGM2D.root" : "egammaEffiptxt_Ele_wp80noiso_preVFP_EGM2D.root";
+      string eleIDFile_postVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_postVFP_EGM2D.root" : "egammaEffiptxt_Ele_wp80noiso_postVFP_EGM2D.root";
+      
       string eleRECOFile_preVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016preVFP.root",elePath_UL.c_str());
       string eleRECOFile_postVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016postVFP.root",elePath_UL.c_str());
       //string eleTrigFile = Form("%s/sf_ele_2016_trig_v5.root",elePath_LRR.c_str()) ;
@@ -1896,7 +1901,9 @@ void SkimAna::LoadLeptonSF(){
     string elePath_UL = Form("%s/weightUL/MuEleSF/ele2017",fBasePath.Data());
     string elePath_LRR = Form("%s/weight/MuEleSF/ele2017",fBasePath.Data());
     
-    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_EGM2D_Tight_UL17.root" : "egammaEffiptxt_EGM2D_Medium_UL17.root";
+    //string eleIDFile = (isEleTightID) ? "egammaEffiptxt_EGM2D_Tight_UL17.root" : "egammaEffiptxt_EGM2D_Medium_UL17.root";
+    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_EGM2D_Tight_UL17.root" : "egammaEffiptxt_EGM2D_MVA80noIso_UL17.root";
+    
     string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2017.root",elePath_UL.c_str());
 
     //string eleTrigFile = Form("%s/sf_ele_2017_trig_v5.root",elePath_LRR.c_str()) ;
@@ -1925,7 +1932,7 @@ void SkimAna::LoadLeptonSF(){
     // eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2018/2018_ElectronTight.root",fBasePath.Data()),
     // 			   Form("%s/weight/MuEleSF/ele2018/egammaEffi.txt_EGM2D_updatedAll.root",fBasePath.Data()),
     // 			   Form("%s/weight/MuEleSF/ele2018/sf_ele_2018_trig_v5.root",fBasePath.Data()));
-
+    
     string muPath = Form("%s/weightUL/MuEleSF/mu2018/2018_Z",fBasePath.Data());
     string muTrigPath = Form("%s/weightUL/MuEleSF/mu2018/2018_trigger",fBasePath.Data());
     // //MediumID
@@ -1936,18 +1943,20 @@ void SkimAna::LoadLeptonSF(){
     string muISOhist = (isMuTightID) ? "NUM_TightRelIso_DEN_TightIDandIPCut_abseta_pt" : "NUM_TightRelIso_DEN_MediumPromptID_abseta_pt"; //check option of looseISO to use for DD QCD
     
     string muTrighist = "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight_eta_pt"; //check option of looseISO to use for DD QCD
-      
+    
     muSFa = new MuonSF(Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root",muPath.c_str()), muIDhist,
 		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_ISO.root",muPath.c_str()), muISOhist, 
 		       Form("%s/Efficiencies_muon_generalTracks_Z_Run2018_UL_SingleMuonTriggers.root",muTrigPath.c_str()), muTrighist); 
       
-      
+    
     string elePath_UL = Form("%s/weightUL/MuEleSF/ele2018",fBasePath.Data());
     string elePath_LRR = Form("%s/weight/MuEleSF/ele2018",fBasePath.Data());
     
-    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_EGM2D.root" : "egammaEffiptxt_Ele_Medium_EGM2D.root";
+    //string eleIDFile = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_EGM2D.root" : "egammaEffiptxt_Ele_Medium_EGM2D.root";
+    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_EGM2D.root" : "egammaEffiptxt_Ele_wp80noiso_EGM2D.root";
+    
     string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2018.root",elePath_UL.c_str());
-
+    
     //string eleTrigFile = Form("%s/sf_ele_2018_trig_v5.root",elePath_LRR.c_str()) ;
     string eleTrigFile = Form("%s/trig_2018.root",elePath_UL.c_str()) ;
       
@@ -6426,10 +6435,20 @@ bool SkimAna::FillTriggerControlHists(){
 //_____________________________________________________________________________
 
 bool SkimAna::FillLeptonControlHists(){
+
+  double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight;
+  double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight;
+  
+  int iscl = 2 ; //2 Lepton
+  TList *list = (TList *)fSelColDir[iscl]->GetList();
+  if(singleMu){
+    ((TH1D *) list->FindObject("dxy"))->Fill(event->mudxy_[selector->Muons.at(0)], combined_muwt);
+    ((TH1D *) list->FindObject("dz"))->Fill(event->mudz_[selector->Muons.at(0)], combined_muwt);
+  }
   
   // double combined_muwt = _sampleWeight*_prefireWeight*_PUWeight*_muEffWeight;
   // double combined_elewt = _sampleWeight*_prefireWeight*_PUWeight*_eleEffWeight;
-  
+
   // int iscl = 2 ; //2 Lepton
   // TList *list = (TList *)fSelColDir[iscl]->GetList();
   // if(singleMu){

@@ -115,7 +115,10 @@ class EventTree{
     Float_t         eleD0_[20];
     Float_t         eleDz_[20];
     Float_t         eleSIEIE_[20];
-
+    Bool_t          eleIDmvaLoose_[20];
+    Bool_t          eleIDmvaWP80_[20];
+    Bool_t          eleIDmvaWP90_[20];
+  
     Int_t           eleVidWPBitmap_[20];
     Float_t         eleEcalSumEtDr03_[20];
     Float_t         eleHcalSumEtDr03_[20];
@@ -137,6 +140,8 @@ class EventTree{
     Float_t         muPFRelIso_[15];
     Bool_t          muMediumId_[15];
     Bool_t          muTightId_[15];
+    Bool_t          muLooseId_[15];
+    Bool_t          muMediumPromptId_[15];
     Bool_t          muIsPFMuon_[15];
     Bool_t          muIsGlobal_[15];
     Bool_t          muIsTracker_[15];

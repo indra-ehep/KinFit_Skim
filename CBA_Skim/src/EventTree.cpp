@@ -139,20 +139,20 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
   tree->SetBranchStatus("Electron_sieie",1);
   tree->SetBranchAddress("Electron_sieie", &eleSIEIE_);
 	
-  if (year=="2016"){
-    tree->SetBranchStatus("Electron_cutBased",1); 
-    tree->SetBranchAddress("Electron_cutBased", &eleIDcutbased_);
+  tree->SetBranchStatus("Electron_cutBased",1); 
+  tree->SetBranchAddress("Electron_cutBased", &eleIDcutbased_);
+  
+  tree->SetBranchStatus("Electron_vidNestedWPBitmap",1);
+  tree->SetBranchAddress("Electron_vidNestedWPBitmap", &eleVidWPBitmap_);
 
-    tree->SetBranchStatus("Electron_vidNestedWPBitmap",1);
-    tree->SetBranchAddress("Electron_vidNestedWPBitmap", &eleVidWPBitmap_);
-  }
-  if (year=="2017" || year=="2018"){
-    tree->SetBranchStatus("Electron_cutBased",1);
-    tree->SetBranchAddress("Electron_cutBased", &eleIDcutbased_);
+  tree->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1); 
+  tree->SetBranchAddress("Electron_mvaFall17V2noIso_WPL", &eleIDmvaLoose_);
 
-    tree->SetBranchStatus("Electron_vidNestedWPBitmap",1);
-    tree->SetBranchAddress("Electron_vidNestedWPBitmap", &eleVidWPBitmap_);
-  }
+  tree->SetBranchStatus("Electron_mvaFall17V2noIso_WP80",1); 
+  tree->SetBranchAddress("Electron_mvaFall17V2noIso_WP80", &eleIDmvaWP80_);
+
+  tree->SetBranchStatus("Electron_mvaFall17V2noIso_WP90",1); 
+  tree->SetBranchAddress("Electron_mvaFall17V2noIso_WP90", &eleIDmvaWP90_);
 
   tree->SetBranchStatus("Electron_dxy",1);
   tree->SetBranchAddress("Electron_dxy", &eleD0_);
@@ -190,11 +190,10 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
 
   tree->SetBranchStatus("Muon_mass",1);
   tree->SetBranchAddress("Muon_mass", &muMass_);
-
+  
   // tree->SetBranchStatus("Muon_pfRelIso04_all",1);
   // tree->SetBranchAddress("Muon_pfRelIso04_all", &muPFRelIso_);
-
-  //To have same deltaR = 0.3 as case of electron
+  
   tree->SetBranchStatus("Muon_pfRelIso03_all",1);
   tree->SetBranchAddress("Muon_pfRelIso03_all", &muPFRelIso_);
 
@@ -203,6 +202,12 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
 
   tree->SetBranchStatus("Muon_mediumId",1);
   tree->SetBranchAddress("Muon_mediumId", &muMediumId_);
+
+  tree->SetBranchStatus("Muon_looseId",1);
+  tree->SetBranchAddress("Muon_looseId", &muLooseId_);
+
+  tree->SetBranchStatus("Muon_mediumPromptId",1);
+  tree->SetBranchAddress("Muon_mediumPromptId", &muMediumPromptId_);
 
   tree->SetBranchStatus("Muon_isPFcand",1);
   tree->SetBranchAddress("Muon_isPFcand", &muIsPFMuon_);
@@ -706,20 +711,20 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
   chain->SetBranchStatus("Electron_sieie",1);
   chain->SetBranchAddress("Electron_sieie", &eleSIEIE_);
 	
-  if (year=="2016"){
-    chain->SetBranchStatus("Electron_cutBased",1); 
-    chain->SetBranchAddress("Electron_cutBased", &eleIDcutbased_);
+  chain->SetBranchStatus("Electron_cutBased",1);
+  chain->SetBranchAddress("Electron_cutBased", &eleIDcutbased_);
 
-    chain->SetBranchStatus("Electron_vidNestedWPBitmap",1);
-    chain->SetBranchAddress("Electron_vidNestedWPBitmap", &eleVidWPBitmap_);
-  }
-  if (year=="2017" || year=="2018"){
-    chain->SetBranchStatus("Electron_cutBased",1);
-    chain->SetBranchAddress("Electron_cutBased", &eleIDcutbased_);
+  chain->SetBranchStatus("Electron_vidNestedWPBitmap",1);
+  chain->SetBranchAddress("Electron_vidNestedWPBitmap", &eleVidWPBitmap_);
+  
+  chain->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1); 
+  chain->SetBranchAddress("Electron_mvaFall17V2noIso_WPL", &eleIDmvaLoose_);
 
-    chain->SetBranchStatus("Electron_vidNestedWPBitmap",1);
-    chain->SetBranchAddress("Electron_vidNestedWPBitmap", &eleVidWPBitmap_);
-  }
+  chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP80",1); 
+  chain->SetBranchAddress("Electron_mvaFall17V2noIso_WP80", &eleIDmvaWP80_);
+
+  chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP90",1); 
+  chain->SetBranchAddress("Electron_mvaFall17V2noIso_WP90", &eleIDmvaWP90_);
 
   chain->SetBranchStatus("Electron_dxy",1);
   chain->SetBranchAddress("Electron_dxy", &eleD0_);
@@ -761,7 +766,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
   // chain->SetBranchStatus("Muon_pfRelIso04_all",1);
   // chain->SetBranchAddress("Muon_pfRelIso04_all", &muPFRelIso_);
 
-  //To have same deltaR = 0.3 as case of electron
   chain->SetBranchStatus("Muon_pfRelIso03_all",1);
   chain->SetBranchAddress("Muon_pfRelIso03_all", &muPFRelIso_);
   
@@ -770,6 +774,12 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
   chain->SetBranchStatus("Muon_mediumId",1);
   chain->SetBranchAddress("Muon_mediumId", &muMediumId_);
+
+  chain->SetBranchStatus("Muon_looseId",1);
+  chain->SetBranchAddress("Muon_looseId", &muLooseId_);
+
+  chain->SetBranchStatus("Muon_mediumPromptId",1);
+  chain->SetBranchAddress("Muon_mediumPromptId", &muMediumPromptId_);
 
   chain->SetBranchStatus("Muon_isPFcand",1);
   chain->SetBranchAddress("Muon_isPFcand", &muIsPFMuon_);

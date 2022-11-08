@@ -34,14 +34,16 @@ Selector::Selector(){
     QCDselect = false;
     DDselect = false;
     
-    // electrons TIGHT
+    // electrons 
     ele_Pt_cut = 35.0; // Default
     ele_Eta_cut = 2.4;
     // electron nanoAOD VETO
     ele_PtLoose_cut = 15.0;
     ele_EtaLoose_cut = 2.4;
-
-    // muons nanoAOD TIGHT
+    ele_RelIso_loose_EB = 0.175;
+    ele_RelIso_loose_EE = 0.159;
+    
+    // muons nanoAOD 
     mu_Pt_cut = 30; // Default
     mu_Eta_tight = 2.4;
     mu_RelIso_tight = 0.15;
@@ -166,65 +168,79 @@ void Selector::filter_electrons(EventTree *event){
   
   tree = event;
 
-  for(int eleInd = 0; eleInd < int(tree->nEle_) and int(tree->nMuon_) <= 20 ; ++eleInd){
+  for(int eleInd = 0; eleInd < int(tree->nEle_) and int(tree->nEle_) <= 20 ; ++eleInd){
     //20 is the arraysize for electron as defined in EventTree.h
 
-        double eta = tree->eleEta_[eleInd];
-        double absEta = TMath::Abs(eta);
-	double phi = tree->elePhi_[eleInd];
-        double SCeta = eta + tree->eleDeltaEtaSC_[eleInd];
-        double absSCEta = TMath::Abs(SCeta);
+    double eta = tree->eleEta_[eleInd];
+    double absEta = TMath::Abs(eta);
+    double phi = tree->elePhi_[eleInd];
+    double SCeta = eta + tree->eleDeltaEtaSC_[eleInd];
+    double absSCEta = TMath::Abs(SCeta);
 	
-        double pt = tree->elePt_[eleInd];
+    double pt = tree->elePt_[eleInd];
         
-        // // EA subtraction
-        double PFrelIso_corr = tree->elePFRelIso_[eleInd];
+    // // EA subtraction
+    double PFrelIso_corr = tree->elePFRelIso_[eleInd];
+    
+    uint eleID = tree->eleIDcutbased_[eleInd];
+    bool passVetoID   = eleID >= 1;
+    bool passLooseID  = eleID >= 2;
+    bool passMediumID = eleID >= 3;
+    bool passTightID  = eleID >= 4;
+    
+    bool passMVALooseID = tree->eleIDmvaLoose_[eleInd];
+    bool passMVAWP80ID = tree->eleIDmvaWP80_[eleInd];
+    //bool passMVAWP90ID = tree->eleIDmvaWP90_[eleInd];
+    
+    bool passRelIsoVeto = ((absSCEta < 1.479 && PFrelIso_corr < ele_RelIso_loose_EB) ||
+			   (absSCEta > 1.479 && PFrelIso_corr < ele_RelIso_loose_EE));
+    
+    // make sure it doesn't fall within the gap
+    bool passEtaEBEEGap = (absSCEta < 1.4442) || (absSCEta > 1.566);
+	
+    // D0 and Dz cuts are different for barrel and endcap
+    bool passD0 = ((absSCEta < 1.479 && TMath::Abs(tree->eleD0_[eleInd]) < 0.05) ||
+		   (absSCEta > 1.479 && TMath::Abs(tree->eleD0_[eleInd]) < 0.1));
+    bool passDz = ((absSCEta < 1.479 && TMath::Abs(tree->eleDz_[eleInd]) < 0.1) ||
+		   (absSCEta > 1.479 && TMath::Abs(tree->eleDz_[eleInd]) < 0.2));
         
-        uint eleID = tree->eleIDcutbased_[eleInd];
-        bool passVetoID   = eleID >= 1;
-        bool passLooseID  = eleID >= 2;
-	bool passMediumID = eleID >= 3;
-        bool passTightID  = eleID >= 4;
-	
-        // make sure it doesn't fall within the gap
-        bool passEtaEBEEGap = (absSCEta < 1.4442) || (absSCEta > 1.566);
-	
-        // D0 and Dz cuts are different for barrel and endcap
-        bool passD0 = ((absSCEta < 1.479 && TMath::Abs(tree->eleD0_[eleInd]) < 0.05) ||
-                       (absSCEta > 1.479 && TMath::Abs(tree->eleD0_[eleInd]) < 0.1));
-        bool passDz = ((absSCEta < 1.479 && TMath::Abs(tree->eleDz_[eleInd]) < 0.1) ||
-                       (absSCEta > 1.479 && TMath::Abs(tree->eleDz_[eleInd]) < 0.2));
         
-        
-	bool eleSel = (passEtaEBEEGap && 
-                       absSCEta <= ele_Eta_cut &&
-                       pt >= ele_Pt_cut &&
-                       passMediumID &&
-                       passD0 &&
-                       passDz);
+    // bool eleSel = (passEtaEBEEGap && 
+    // 		   absSCEta <= ele_Eta_cut &&
+    // 		   pt >= ele_Pt_cut &&
+    // 		   passMediumID &&
+    // 		   passD0 &&
+    // 		   passDz);
 	
-        bool looseSel = ( passEtaEBEEGap && 
-			  absSCEta <= ele_EtaLoose_cut &&
-			  pt >= ele_PtLoose_cut &&
-			  passVetoID &&
-			  passD0 &&
-			  passDz);
+    // bool looseSel = ( passEtaEBEEGap && 
+    // 		      absSCEta <= ele_EtaLoose_cut &&
+    // 		      pt >= ele_PtLoose_cut &&
+    // 		      passVetoID &&
+    // 		      passD0 &&
+    // 		      passDz);
+
+    bool eleSel = (passEtaEBEEGap && 
+		   absSCEta <= ele_Eta_cut &&
+		   pt >= ele_Pt_cut &&
+		   passMVAWP80ID &&
+		   passD0 &&
+		   passDz);
 	
-	// bool selectEle = (isNanoAOD) ? eleSel : passMiniAOD_presel ;
-	// //bool selectEleDD = (isNanoAOD) ? eleSel_noIso : passMiniAOD_presel ;
-	// bool selectEleDD = (isNanoAOD) ? eleSel_Medium_noIso : passMiniAOD_presel ;
+    bool looseSel = ( passEtaEBEEGap && 
+		      absSCEta <= ele_EtaLoose_cut &&
+		      pt >= ele_PtLoose_cut &&
+		      passMVALooseID &&
+		      passRelIsoVeto &&
+		      passD0 &&
+		      passDz);
 	
-        if( eleSel ){
-	  Electrons.push_back(eleInd);
-        }else if( looseSel ){ 
-	  ElectronsLoose.push_back(eleInd);
-        }
-        // if( selectEleDD ){
-	//   ElectronsNoIso.push_back(eleInd);
-        // } else if( eleSel_noIso_loose ){
-	//   ElectronsNoIsoLoose.push_back(eleInd);
-	// }
-  }
+	
+    if( eleSel ){
+      Electrons.push_back(eleInd);
+    }else if( looseSel ){ 
+      ElectronsLoose.push_back(eleInd);
+    }
+  }//ele loop
 
     
 }
@@ -233,7 +249,6 @@ void Selector::filter_muons(EventTree *event){
   
   tree = event;
   
-
   for(int muInd = 0; muInd < int(tree->nMuon_) and int(tree->nMuon_) <= 15; ++muInd){
     //15 is the arraysize for muon as defined in EventTree.h
     
@@ -253,10 +268,6 @@ void Selector::filter_muons(EventTree *event){
     
     double SFRochCorr = 1.0;
     if(!TMath::AreEqualAbs(eta,0.0,1.0e-7) and !TMath::AreEqualAbs(pt,0.0,1.0e-7) and !TMath::AreEqualAbs(phi,0.0,1.0e-7)){
-      // if (tree->isData_)
-      // 	SFRochCorr *= rc16.kScaleDT(charge, pt, eta, phi, s, m);
-      // else
-      // 	SFRochCorr *= rc16.kSmearMC(charge, pt, eta, phi, nTrackerLayers , generator->Rndm(), s, m);
       if (tree->isData_){
 	if(year=="2016"){
 	  if(isPreVFP)
@@ -286,32 +297,27 @@ void Selector::filter_muons(EventTree *event){
     
     double PFrelIso_corr = tree->muPFRelIso_[muInd];
     
-    bool vetoMuonID = tree->muIsPFMuon_[muInd] && (tree->muIsTracker_[muInd] || tree->muIsGlobal_[muInd]);
-    bool mediumMuonID = tree->muMediumId_[muInd];
-
+    //bool vetoMuonID = tree->muIsPFMuon_[muInd] && (tree->muIsTracker_[muInd] || tree->muIsGlobal_[muInd]);
+    //bool mediumMuonID = tree->muMediumId_[muInd];
+    bool looseMuonID = tree->muLooseId_[muInd]; //This is same as veto condition defined above
+    bool mediumPromptMuonID = tree->muMediumPromptId_[muInd];
+    
     bool muSel = (TMath::Abs(eta) <= mu_Eta_tight &&
 		  pt >= mu_Pt_cut &&
-		  mediumMuonID);
+		  mediumPromptMuonID);
     
     bool passLoose = (TMath::Abs(eta) <= mu_Eta_loose &&
 		      pt >= mu_PtLoose_cut &&
-		      vetoMuonID );
+		      looseMuonID &&
+		      PFrelIso_corr < mu_RelIso_loose);
     
     if(muSel){
       Muons.push_back(muInd);
     }else if (passLoose){
       MuonsLoose.push_back(muInd);
     }
-    // if(passMiniAOD_presel){
-    //   MuonsMiniAOD.push_back(muInd);
-    // }
-    // if(selectMuonDD){
-    //   MuonsNoIso.push_back(muInd);
-    // } else if(passLoose_noIso){
-    //   MuonsNoIsoLoose.push_back(muInd);
-    // }
     
-  }
+  }//muon loop
 }
 
 
@@ -335,11 +341,11 @@ void Selector::filter_jets(){
     //Applied for UL
     //bool jetID_pass = (tree->jetID_[jetInd]>=2) ;    
     //Applied for UL
-    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
+    //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
     //tight PU
     //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=7 or pt>=50.0)) ; //twp
     //TLV only
-    //bool jetID_pass = (tree->jetID_[jetInd]>=6 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //twp
+    bool jetID_pass = (tree->jetID_[jetInd]>=6 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //twp
     //Tightmost test
     //bool jetID_pass = (tree->jetID_[jetInd]>=6 and (tree->jetPUID_[jetInd]>=7 or pt>=50.0)) ; //twp
     
@@ -447,8 +453,10 @@ void Selector::filter_jetsNoCorr(){
     
     //Default applied for LRR
     //bool jetID_pass = (tree->jetID_[jetInd]>=2) ;    
-    bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //loose wp
-    
+    //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //loose wp
+    //TLV only
+    bool jetID_pass = (tree->jetID_[jetInd]>=6 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ; //twp
+
     if(IsDebug) Info("Selector::filter_jetsNoCorr","applied filter");
     //////////////////////////////////////////////// NanoAOD selection //////////////////////////////////////////////////////////
     bool passDR_lep_jet = true;

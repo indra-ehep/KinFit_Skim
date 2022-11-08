@@ -1367,20 +1367,20 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("Electron_sieie",1);
   tree->SetBranchAddress("Electron_sieie", &(event->eleSIEIE_));
 	
-  if (fYear==2016){
-    tree->SetBranchStatus("Electron_cutBased",1); 
-    tree->SetBranchAddress("Electron_cutBased", &(event->eleIDcutbased_));
-
-    tree->SetBranchStatus("Electron_vidNestedWPBitmap",1);
-    tree->SetBranchAddress("Electron_vidNestedWPBitmap", &(event->eleVidWPBitmap_));
-  }
-  if (fYear==2017 || fYear==2018){
-    tree->SetBranchStatus("Electron_cutBased",1);
-    tree->SetBranchAddress("Electron_cutBased", &(event->eleIDcutbased_));
-
-    tree->SetBranchStatus("Electron_vidNestedWPBitmap",1);
-    tree->SetBranchAddress("Electron_vidNestedWPBitmap", &(event->eleVidWPBitmap_));
-  }
+  tree->SetBranchStatus("Electron_cutBased",1);
+  tree->SetBranchAddress("Electron_cutBased", &(event->eleIDcutbased_));
+  
+  tree->SetBranchStatus("Electron_vidNestedWPBitmap",1);
+  tree->SetBranchAddress("Electron_vidNestedWPBitmap", &(event->eleVidWPBitmap_));
+  
+  tree->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1); 
+  tree->SetBranchAddress("Electron_mvaFall17V2noIso_WPL", &(event->eleIDmvaLoose_));
+  
+  tree->SetBranchStatus("Electron_mvaFall17V2noIso_WP80",1); 
+  tree->SetBranchAddress("Electron_mvaFall17V2noIso_WP80", &(event->eleIDmvaWP80_));
+  
+  tree->SetBranchStatus("Electron_mvaFall17V2noIso_WP90",1); 
+  tree->SetBranchAddress("Electron_mvaFall17V2noIso_WP90", &(event->eleIDmvaWP90_));			 
 
   tree->SetBranchStatus("Electron_dxy",1);
   tree->SetBranchAddress("Electron_dxy", &(event->eleD0_));
@@ -1426,7 +1426,6 @@ void SkimAna::Init(TTree *tree)
   // tree->SetBranchStatus("Muon_pfRelIso04_all",1);
   // tree->SetBranchAddress("Muon_pfRelIso04_all", &(event->muPFRelIso_));
 
-  //To have same deltaR = 0.3 as case of electron
   tree->SetBranchStatus("Muon_pfRelIso03_all",1);
   tree->SetBranchAddress("Muon_pfRelIso03_all", &(event->muPFRelIso_));
 
@@ -1435,6 +1434,12 @@ void SkimAna::Init(TTree *tree)
 
   tree->SetBranchStatus("Muon_mediumId",1);
   tree->SetBranchAddress("Muon_mediumId", &(event->muMediumId_));
+
+  tree->SetBranchStatus("Muon_looseId",1);
+  tree->SetBranchAddress("Muon_looseId", &(event->muLooseId_));
+
+  tree->SetBranchStatus("Muon_mediumPromptId",1);
+  tree->SetBranchAddress("Muon_mediumPromptId", &(event->muMediumPromptId_));
 
   tree->SetBranchStatus("Muon_isPFcand",1);
   tree->SetBranchAddress("Muon_isPFcand", &(event->muIsPFMuon_));

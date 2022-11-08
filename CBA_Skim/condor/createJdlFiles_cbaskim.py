@@ -32,7 +32,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_gdjsoncorr_pre'
+jdlDir = 'tmpLog_elemva80_pre'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -51,6 +51,7 @@ use_x509userproxy = true\n\
 +BenchmarkJob = True\n\
 #+MaxRuntime = 41220\n\
 +MaxRuntime = 7200\n\
+notification = Never\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
@@ -66,14 +67,16 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_gdjsoncorr/pre"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_gdjsoncorr/pre"
-    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_gdjsoncorr/pre"
-    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_gdjsoncorr/pre"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_elemva80/pre"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elemva80/pre"
+    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_elemva80/pre"
+    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva80/pre"
+    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/CBA_elemva80/pre"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir3, year))
+    os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir4, year))
     
     jdlFile.write("X=$(step)\n")
     
