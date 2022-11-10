@@ -92,7 +92,7 @@ for year in [2017,2018]:
     condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elemva80"
     condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_elemva80"
     condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva80"
-    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/CBA_elemva80"
+    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_elemva80"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))

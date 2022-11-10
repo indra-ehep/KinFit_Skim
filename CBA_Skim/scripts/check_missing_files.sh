@@ -118,6 +118,7 @@ do
 			ifindex=$[$imiss-1]
 			# Arguments  = 2017 TTbar input/eos/2017/TTbar_2017.txt $INT(X) jecup 
 			echo "Arguments  = $year ${sample} input/eos/$year/${sample}_${year}.txt $ifindex $syst" >> /tmp/idas/missing_${ftype}_${year}.txt
+			echo "Queue 1" >> /tmp/idas/missing_${ftype}_${year}.txt
 			echo "" >> /tmp/idas/missing_${ftype}_${year}.txt
 		    fi
 		done

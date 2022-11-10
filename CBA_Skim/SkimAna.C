@@ -3968,8 +3968,6 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(singleEle) elepfRelIso = event->elePFRelIso_[selector->Electrons.at(0)];
 
   FillLeptonIso();
-
-  //return true;
   
   if(!isData){
     if(singleMu){
@@ -4037,7 +4035,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillLeptonWt();
   if(systType == kBase) FillLeptonControlHists();
   if(IsDebug) Info("Process","Completed Lepton processing");
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   //######################################################

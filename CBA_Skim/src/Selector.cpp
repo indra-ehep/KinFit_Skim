@@ -304,7 +304,9 @@ void Selector::filter_muons(EventTree *event){
     
     bool muSel = (TMath::Abs(eta) <= mu_Eta_tight &&
 		  pt >= mu_Pt_cut &&
-		  mediumPromptMuonID);
+		  mediumPromptMuonID
+		  //mediumMuonID
+		  );
     
     bool passLoose = (TMath::Abs(eta) <= mu_Eta_loose &&
 		      pt >= mu_PtLoose_cut &&
