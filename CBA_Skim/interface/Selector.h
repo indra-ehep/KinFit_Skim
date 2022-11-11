@@ -145,9 +145,12 @@ public:
 	double ele_Dxy_cut;
 	int    ele_MissInnHit_cut;
 	bool   ele_Iso_MVA_invert;
+        float  ele_RelIso_tight_EB ;
+        float ele_RelIso_tight_EE ;
         float  ele_RelIso_loose_EB ;
         float ele_RelIso_loose_EE ;
- 
+        int nEleSelIso;
+  
 	// muons
 	double mu_PtLoose_cut;
 	double mu_RelIsoLoose_cut;
@@ -159,7 +162,7 @@ public:
 	double mu_Pt_cut;
 	double mu_RelIso_tight;
 	double mu_RelIso_loose;
-	
+	int nMuSelIso ;
 	//muons miniAOD
 	float mu_Pt_cut_miniAOD;
         int s;

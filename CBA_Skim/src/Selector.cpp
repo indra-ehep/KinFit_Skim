@@ -40,6 +40,8 @@ Selector::Selector(){
     // electron nanoAOD VETO
     ele_PtLoose_cut = 15.0;
     ele_EtaLoose_cut = 2.4;
+    ele_RelIso_tight_EB = 0.0821;
+    ele_RelIso_tight_EE = 0.0695;
     ele_RelIso_loose_EB = 0.175;
     ele_RelIso_loose_EE = 0.159;
     
@@ -162,6 +164,9 @@ void Selector::clear_vectors(){
     jet_isTagged.clear();
 
     JetsNoCorr.clear();
+
+    nEleSelIso = 0;
+    nMuSelIso = 0;
 }
 
 void Selector::filter_electrons(EventTree *event){
@@ -192,6 +197,8 @@ void Selector::filter_electrons(EventTree *event){
     bool passMVAWP80ID = tree->eleIDmvaWP80_[eleInd];
     //bool passMVAWP90ID = tree->eleIDmvaWP90_[eleInd];
     
+    bool passRelIsoSel = ((absSCEta < 1.479 && PFrelIso_corr < ele_RelIso_tight_EB) ||
+			   (absSCEta > 1.479 && PFrelIso_corr < ele_RelIso_tight_EE));
     bool passRelIsoVeto = ((absSCEta < 1.479 && PFrelIso_corr < ele_RelIso_loose_EB) ||
 			   (absSCEta > 1.479 && PFrelIso_corr < ele_RelIso_loose_EE));
     
@@ -234,9 +241,10 @@ void Selector::filter_electrons(EventTree *event){
 		      passD0 &&
 		      passDz);
 	
-	
+
     if( eleSel ){
       Electrons.push_back(eleInd);
+      if(passRelIsoSel) nEleSelIso++ ;
     }else if( looseSel ){ 
       ElectronsLoose.push_back(eleInd);
     }
@@ -315,6 +323,7 @@ void Selector::filter_muons(EventTree *event){
     
     if(muSel){
       Muons.push_back(muInd);
+      if(PFrelIso_corr<mu_RelIso_tight) nMuSelIso++;
     }else if (passLoose){
       MuonsLoose.push_back(muInd);
     }
