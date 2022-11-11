@@ -16,10 +16,14 @@ else
     # source /cvmfs/cms.cern.ch/cmsset_default.sh
     # scramv1 project CMSSW CMSSW_10_6_29
     # cd CMSSW_10_6_29/src
-    export SCRAM_ARCH=slc7_amd64_gcc900
+    # export SCRAM_ARCH=slc7_amd64_gcc900
+    # source /cvmfs/cms.cern.ch/cmsset_default.sh
+    # scramv1 project CMSSW CMSSW_12_1_0
+    # cd CMSSW_12_1_0/src
+    export SCRAM_ARCH=slc7_amd64_gcc10
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_12_1_0
-    cd CMSSW_12_1_0/src
+    scramv1 project CMSSW CMSSW_12_4_10
+    cd CMSSW_12_4_10/src
     eval `scramv1 runtime -sh`
     cd ../..
     
