@@ -230,6 +230,7 @@ void Selector::filter_electrons(EventTree *event){
 		   absSCEta <= ele_Eta_cut &&
 		   pt >= ele_Pt_cut &&
 		   passMVAWP80ID &&
+		   passRelIsoVeto &&
 		   passD0 &&
 		   passDz);
 	
@@ -312,8 +313,9 @@ void Selector::filter_muons(EventTree *event){
     
     bool muSel = (TMath::Abs(eta) <= mu_Eta_tight &&
 		  pt >= mu_Pt_cut &&
-		  mediumPromptMuonID
-		  //mediumMuonID
+		  mediumPromptMuonID &&
+		  //mediumMuonID &
+		  PFrelIso_corr < mu_RelIso_loose
 		  );
     
     bool passLoose = (TMath::Abs(eta) <= mu_Eta_loose &&
