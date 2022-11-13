@@ -187,11 +187,11 @@ void Selector::filter_electrons(EventTree *event){
     // // EA subtraction
     double PFrelIso_corr = tree->elePFRelIso_[eleInd];
     
-    uint eleID = tree->eleIDcutbased_[eleInd];
-    bool passVetoID   = eleID >= 1;
-    bool passLooseID  = eleID >= 2;
-    bool passMediumID = eleID >= 3;
-    bool passTightID  = eleID >= 4;
+    // uint eleID = tree->eleIDcutbased_[eleInd];
+    // bool passVetoID   = eleID >= 1;
+    // bool passLooseID  = eleID >= 2;
+    // bool passMediumID = eleID >= 3;
+    // bool passTightID  = eleID >= 4;
     
     bool passMVALooseID = tree->eleIDmvaLoose_[eleInd];
     bool passMVAWP80ID = tree->eleIDmvaWP80_[eleInd];
@@ -300,7 +300,7 @@ void Selector::filter_muons(EventTree *event){
 	}
       }
     }
-    tree->muRoccoR_[muInd] = SFRochCorr;
+    //tree->muRoccoR_[muInd] = SFRochCorr;
     pt = pt*SFRochCorr;
     
     double PFrelIso_corr = tree->muPFRelIso_[muInd];

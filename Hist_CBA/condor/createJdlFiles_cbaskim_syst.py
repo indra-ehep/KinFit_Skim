@@ -77,6 +77,7 @@ Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
 
+totjobs = 0
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
@@ -112,6 +113,7 @@ for year in [2017,2018]:
             inputfile = '../input/%s/%s_%s.txt'%(year, sample, syst)
             noflines = subprocess.Popen('wc -l %s | awk \'{print $1}\''%(inputfile),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
             nJob = int(noflines)
+            totjobs += nJob
             print "%s %s %s"%(sample,nJob,syst)
             if nJob==1:
                 run_command =  'Arguments  = %s %s input/%s/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
@@ -122,3 +124,4 @@ for year in [2017,2018]:
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()
+print "Total number of jobs to be submitted is %s"%(totjobs) 

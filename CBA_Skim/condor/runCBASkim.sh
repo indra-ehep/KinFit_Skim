@@ -28,7 +28,7 @@ else
     cd ../..
     
 fi
-tar --strip-components=1 -zxvf CBA_Skim.tar.gz
+tar --strip-components=1 -zxf CBA_Skim.tar.gz
 #Run for Base, Signal region
 #./complib.sh
 echo "All arguements: "$@
