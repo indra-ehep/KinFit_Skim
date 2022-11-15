@@ -279,28 +279,46 @@ void Selector::filter_muons(EventTree *event){
       if (tree->isData_){
 	if(year=="2016"){
 	  if(isPreVFP)
-	    SFRochCorr *= rc16a.kScaleDT(charge, pt, eta, phi, s, m);
+	    SFRochCorr *= rc16a.kScaleDT(charge, pt, eta, phi);
 	  if(isPostVFP)
-	    SFRochCorr *= rc16b.kScaleDT(charge, pt, eta, phi, s, m);
+	    SFRochCorr *= rc16b.kScaleDT(charge, pt, eta, phi);
 	}else if(year=="2017"){
-	  SFRochCorr *= rc17.kScaleDT(charge, pt, eta, phi, s, m);
+	  SFRochCorr *= rc17.kScaleDT(charge, pt, eta, phi);
 	}else if(year=="2018"){
-	  SFRochCorr *= rc18.kScaleDT(charge, pt, eta, phi, s, m);
+	  SFRochCorr *= rc18.kScaleDT(charge, pt, eta, phi);
 	}
       }else{
-	if(year=="2016"){
-	  if(isPreVFP)
-	    SFRochCorr *= rc16a.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm(), s, m);
-	  if(isPostVFP)
-	    SFRochCorr *= rc16b.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm(), s, m);	
-	}else if(year=="2017"){
-	  SFRochCorr *= rc17.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm(), s, m);	
-	}else if(year=="2018"){
-	  SFRochCorr *= rc18.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm(), s, m);	
-	}
-      }
+	int genIdx = tree->muGenPartIdx_[muInd];
+	
+	if ( (genIdx>-1) && (genIdx < int(tree->nGenPart_))){
+	  double genPt = tree->GenPart_pt_[genIdx];
+	  //cout << "rec PT " << pt << ", Gen PT " << genPt << endl;
+	  if(year=="2016"){
+	    if(isPreVFP)
+	      SFRochCorr *= rc16a.kSpreadMC(charge, pt, eta, phi, genPt);
+	    if(isPostVFP)
+	      SFRochCorr *= rc16b.kSpreadMC(charge, pt, eta, phi, genPt);	
+	  }else if(year=="2017"){
+	    SFRochCorr *= rc17.kSpreadMC(charge, pt, eta, phi, genPt);	
+	  }else if(year=="2018"){
+	    SFRochCorr *= rc18.kSpreadMC(charge, pt, eta, phi, genPt);	
+	  }
+	}else{
+	  if(year=="2016"){
+	    if(isPreVFP)
+	      SFRochCorr *= rc16a.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm());
+	    if(isPostVFP)
+	      SFRochCorr *= rc16b.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm());	
+	  }else if(year=="2017"){
+	    SFRochCorr *= rc17.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm());	
+	  }else if(year=="2018"){
+	    SFRochCorr *= rc18.kSmearMC(charge, pt, eta, phi, nTrackerLayers, generator->Rndm());	
+	  }	  
+	}//if GenPart
+
+      }//is Data or MC
     }
-    //tree->muRoccoR_[muInd] = SFRochCorr;
+    tree->muRoccoR_[muInd] = SFRochCorr;
     pt = pt*SFRochCorr;
     
     double PFrelIso_corr = tree->muPFRelIso_[muInd];

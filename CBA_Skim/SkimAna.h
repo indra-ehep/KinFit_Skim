@@ -1458,6 +1458,11 @@ void SkimAna::Init(TTree *tree)
 
   tree->SetBranchStatus("Muon_nTrackerLayers",1);
   tree->SetBranchAddress("Muon_nTrackerLayers", &(event->munTrackerLayers_));
+  
+  if (!isData){
+    tree->SetBranchStatus("Muon_genPartIdx",1);
+    tree->SetBranchAddress("Muon_genPartIdx", &(event->muGenPartIdx_));
+  }
 
   // jets
 	

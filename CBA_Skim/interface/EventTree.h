@@ -149,6 +149,7 @@ class EventTree{
     Float_t         mudz_[15];
     Int_t           munTrackerLayers_[15];
     Double_t        muRoccoR_[15];
+    Int_t           muGenPartIdx_[15];
 
     // Jet
 

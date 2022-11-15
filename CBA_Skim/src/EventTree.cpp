@@ -227,6 +227,9 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
   tree->SetBranchStatus("Muon_nTrackerLayers",1);
   tree->SetBranchAddress("Muon_nTrackerLayers", &munTrackerLayers_);
 
+  tree->SetBranchStatus("Muon_genPartIdx",1);
+  tree->SetBranchAddress("Muon_genPartIdx", &muGenPartIdx_);
+  
   // jets
 	
   tree->SetBranchStatus("nJet",1);
@@ -798,6 +801,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
   chain->SetBranchStatus("Muon_nTrackerLayers",1);
   chain->SetBranchAddress("Muon_nTrackerLayers", &munTrackerLayers_);
+
+  chain->SetBranchStatus("Muon_genPartIdx",1);
+  chain->SetBranchAddress("Muon_genPartIdx", &muGenPartIdx_);
 
   // jets
 	

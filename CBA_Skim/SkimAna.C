@@ -7886,8 +7886,8 @@ bool SkimAna::ExecSerial(const char* infile)
   tree->GetEntry(0);
   Notify();
   for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
