@@ -18,16 +18,16 @@ syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metu
 syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
-inputdir="CBA_elemva80"
-outputdir="CBA_elemva80-Hist1"
-iosubdir="pre"
+inputdir="CBA_elereliso"
+outputdir="CBA_elereliso-Hist1"
+iosubdir="post"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
 kinpath='/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
 
 for year in [2016]:
-    os.system("if [ ! -d ../input/%s/pre ] ; then mkdir -p ../input/%s/pre ; fi"%(year,year))
-    os.system("rm -f ../input/%s/pre/*"%year)
+    os.system("if [ ! -d ../input/%s/post ] ; then mkdir -p ../input/%s/post ; fi"%(year,year))
+    os.system("rm -f ../input/%s/post/*"%year)
     sampleList = eval("samples_%i"%year)
     for sample in sampleList:
 
@@ -39,7 +39,7 @@ for year in [2016]:
             systList = eval("syst_%i"%year)
 
         for syst in systList:
-            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
+            inputfile = '../input/%s/post/%s_%s.txt'%(year, sample, syst)
             os.system("for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep %s | grep -v \"sys.v\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done "%(kinpath, year, sample, syst, inputfile))
             print "Creating input file %s"%inputfile
 
@@ -100,15 +100,15 @@ for year in [2016]:
 
         for syst in systList:
             
-            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
+            inputfile = '../input/%s/post/%s_%s.txt'%(year, sample, syst)
             noflines = subprocess.Popen('wc -l %s | awk \'{print $1}\''%(inputfile),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
             nJob = int(noflines)
             totjobs += nJob
             print "%s %s %s"%(sample,nJob,syst)
             if nJob==1:
-                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
+                run_command =  'Arguments  = %s %s input/%s/post/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
             else:
-                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
+                run_command =  'Arguments  = %s %s input/%s/post/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
             jdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile
 

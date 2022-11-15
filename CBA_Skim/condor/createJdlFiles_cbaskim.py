@@ -32,7 +32,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_elereliso_pre1'
+jdlDir = 'tmpLog_elereliso_post2'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -67,11 +67,11 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_elereliso/pre"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso/pre"
-    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_elereliso/pre"
-    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso/pre"
-    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_elereliso/pre"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_elereliso/post"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso/post"
+    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_elereliso/post"
+    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso/post"
+    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_elereliso/post"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))
@@ -97,13 +97,13 @@ for year in [2016]:
             else:
                 fnamestart = sample
 
-            noflines = subprocess.Popen('wc -l ../input/eos/%i/pre/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
+            noflines = subprocess.Popen('wc -l ../input/eos/%i/post/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
             nJob = int(noflines)
             print "%s %s %s"%(sample,nJob,syst)
             if nJob==1:
-                run_command =  'Arguments  = %s %s input/eos/%i/pre/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, fnamestart, year, syst)
+                run_command =  'Arguments  = %s %s input/eos/%i/post/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, fnamestart, year, syst)
             else:
-                run_command =  'Arguments  = %s %s input/eos/%i/pre/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, fnamestart, year, syst, nJob)
+                run_command =  'Arguments  = %s %s input/eos/%i/post/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, fnamestart, year, syst, nJob)
             jdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile
 
