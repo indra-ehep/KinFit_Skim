@@ -8,6 +8,12 @@ if [ -f $resubmitfile ]; then rm $resubmitfile ; fi
 echo "This has to run from the log directory"
 echo "Curretly we are in $PWD"
 
+nofstderrs=`ls *.stderr | wc -l`
+nofstdouts=`ls *.stdout | wc -l`
+
+echo "The number of stderr files : $nofstderrs"
+echo "The number of stdout files : $nofstdouts"
+
 grep -i -E 'break|crash|segmentation|error' *.stderr | grep -v -E "TDecompLU|unknown\ branch|GenJet\_hadronFlavour" > $errorfile
 grep -i -E 'break|crash|segmentation|error' *.stderr | grep -v -E "TDecompLU|unknown\ branch|GenJet\_hadronFlavour" | cut -f 1 -d '.' > $outputfile
 noflines=`wc -l $outputfile | awk '{print $1}'`
