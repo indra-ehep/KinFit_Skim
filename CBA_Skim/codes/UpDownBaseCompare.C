@@ -27,7 +27,7 @@
 
 using namespace std;
 
-int UpDownBaseCompare(int ch = 1, int year = 2017, int isysup = 44){
+int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
 
   int PlotRatio(TH1D *h1, TH1D *h2, const char *cname);
   
@@ -36,12 +36,13 @@ int UpDownBaseCompare(int ch = 1, int year = 2017, int isysup = 44){
 			   "DataMu", "DataEle", "TTbar", "singleTop", 
 			   "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 			   "MCQCDEle"};
-
+  // const int nShapes = 0;
+  // const char* listShapes[] = {""};
   const int nShapes = 17;
   const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
-			      "bclhemuf", "bclhemur", "bcstat", "bcxdy",//8
-			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
-			      "bcintp", "bcextp", "bcxdyb", "bcxdyc",//16
+  			      "bclhemuf", "bclhemur", "bcstat", "bcxdy",//8
+  			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
+  			      "bcintp", "bcextp", "bcxdyb", "bcxdyc",//16
                               "bcwjc"}; //17
   
   const char *syst_2016[] = {"base", 
@@ -54,9 +55,9 @@ int UpDownBaseCompare(int ch = 1, int year = 2017, int isysup = 44){
 			     // CShapeCalib EOY
 			     "bcstatup", "bcstatdown",//26
 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", //32,34
-			     "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //36,38
-			     "bcbfragup", "bcbfragdown", //40
+			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+			     "bcxwjcup", "bcxwjcdown",//40
 			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
   };
 
@@ -88,11 +89,12 @@ int UpDownBaseCompare(int ch = 1, int year = 2017, int isysup = 44){
 			     // CShapeCalib EOY
 			     "bcstatup", "bcstatdown",//26
 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", //32,34
-			     "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //36,38
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//40,42,44
+			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+			     "bcxwjcup", "bcxwjcdown",//40
+			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
   };
-  
+
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v28_Syst/CBA_Skim_Syst" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagM" ;
@@ -104,18 +106,19 @@ int UpDownBaseCompare(int ch = 1, int year = 2017, int isysup = 44){
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt-Hist" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR" ;  
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist" ;  
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;  
     
-  int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
-  //int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
+  //int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
+  int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
   int ibase = 1; ibase--;
   int isysdown = isysup ;
   //int isysup = 2; 
   isysup--;
 
-  string lep = (ch==1) ? "mu" : "ele" ;
+  string lep = (isMu==1) ? "mu" : "ele" ;
   const char *histname = Form("_kb_mjj_%s",lep.c_str());
-  //const char *histname = Form("_ct_ExcM_mjj_%s",lep.c_str());
+  //const char *histname = Form("_ct_ExcT_mjj_%s",lep.c_str());
   
   // const char *histnameup = (isysup<=16) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysup]) ;
   // const char *histnamedown = (isysdown<=17) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysdown]) ;
@@ -201,7 +204,7 @@ int UpDownBaseCompare(int ch = 1, int year = 2017, int isysup = 44){
     leg->AddEntry(hSysDown, Form("%s",syst_2018[isysdown]) ,"lfp");
   }
   
-  hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(80.0)));
+  hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(120.0)));
   hSysUp->SetTitle("");
   hSysUp->GetXaxis()->SetRangeUser(0.,170.);
   PlotRatio(hSysUp, hBase, "c1");

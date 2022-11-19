@@ -40,8 +40,8 @@ bcstat          shape   1.0     1.0     1.0     1.0     1.0     1.0     -       
 bclhemuf	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemuf
 bclhemur	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemur
 # the line below is applicable for 2016
-bcbfrag		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcbfrag (2016)
-# the lines below are applicable for 2016 & 2018 
+# bcbfrag		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcbfrag (2016)
+# # the lines below are applicable for 2016 & 2018 
 bcxdy		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxdy (2016,2018)
 bcxst		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxst (2016,2018)
 bcxwj		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxwj (2016,2018)

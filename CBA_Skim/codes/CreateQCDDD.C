@@ -25,7 +25,7 @@
 #include <iostream>
 
 using namespace std;
-int CreateQCDDD(int year = 2018)
+int CreateQCDDD(int year = 2016)
 {
   
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
@@ -42,8 +42,10 @@ int CreateQCDDD(int year = 2018)
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";  
+  //const char* dir = "grid_v40_Syst/CBA_elemva80";  
+  const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";  
   
   // const char *syst[] = {"base", 
   // 			"pdfup", "pdfdown", "q2up", "q2down",
@@ -390,8 +392,19 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   double errDiffD   = getStatUnc(hcf_RegD_QCD, 0.0);
   //Ratio of (Data-MC) from RegionD and RegionC
   double SF = intDiffD/intDiffC;
+  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)){ //in case hit zero use absolute instead of (Data-MC) this only influencens the control plot of MET pt
+    double num = TMath::Max(TMath::Abs(hcf_RegD_data->Integral()-hcf_RegD_bkg->Integral()),1.0);
+    double deno = TMath::Max(TMath::Abs(hcf_RegC_data->Integral()-hcf_RegC_bkg->Integral()),1.0);
+    SF = num/deno;
+  }
   double tmpD = errDiffD/intDiffD;
+  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(errDiffD,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+    tmpD = getStatUnc(hcf_RegD_data, 0.0)/hcf_RegD_data->Integral();
+  
   double tmpC = errDiffC/intDiffC;
+  if(TMath::AreEqualAbs(errDiffC,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+     tmpC = getStatUnc(hcf_RegC_data, 0.0)/hcf_RegC_data->Integral();
+  
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);
   // printf("systType : %10s, intDiffC : %5.4lf +/- %5.4lf, , intDiffC : %5.4lf +/- %5.4lf, SF(%20s) : %5.4lf +/- %5.4lf\n",
   // 	 systType, intDiffC, errDiffC, intDiffD, errDiffD, histname.c_str(),SF,SF_error);

@@ -30,13 +30,14 @@ def moveDataCards(CHANNEL_NAME, HIST_ARRAY, MASS, CAT_DIR, LIMIT_DIR):
 def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     t2wDataCardName = "t2w_"+COMB_DATACARD_NAME.replace(".txt",".root")
     print("t2wDataCardName : %s, COMB_DATACARD_NAME : %s"%(t2wDataCardName,COMB_DATACARD_NAME))
+    #Original :  #execme('text2workspace.py '+COMB_DATACARD_NAME+'  -o '+t2wDataCardName )
     command1 = 'text2workspace.py '+COMB_DATACARD_NAME+' -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs -o '+t2wDataCardName
     print("command1 : %s"%command1)
-    execme('text2workspace.py '+COMB_DATACARD_NAME+' -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs -o '+t2wDataCardName )
-    #execme('text2workspace.py '+COMB_DATACARD_NAME+'  -o '+t2wDataCardName )
-    #Original
-    #execme('combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
-    command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0.0002,1.0 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    execme(command1 )
+    #Original #execme('combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    #command2 = 'combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    #Closest to PAG
+    command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0.00001,1.0 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     print("command2 : %s"%command2)
     execme(command2)
 
@@ -169,8 +170,12 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt/2018"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt-Hist/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR"
-    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist"
-
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist"
+    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-NJet4-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-Chi2Lt0p2-CombHist"
+    
     
     
     muon_file_dir=path_file_dir+""
@@ -180,8 +185,8 @@ if __name__=="__main__":
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
     #hist_array_Inc.append(["", "_kb_mjj_"])
     hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagL = []
     hist_array_CTagL.append(["KinFit", "mjj_kfit_CTagIncL"])
@@ -200,8 +205,8 @@ if __name__=="__main__":
     mass_array = [80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
     
     year_array = ["2016"]
-    #year_array.append("2017")
-    #year_array.append("2018")
+    year_array.append("2017")
+    year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")

@@ -38,7 +38,7 @@ string denoYaxis = "RegD/RegC";
 string xTitle = "";
 
 
-int QCDDDAll(int year = 2016, bool isBtag = 1, bool isMu = 1, int htype = 0)
+int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
 {
   // Setters
   int SetGlobalStyle(void);
@@ -108,9 +108,12 @@ int QCDDDAll(int year = 2016, bool isBtag = 1, bool isMu = 1, int htype = 0)
   
   string outputpdf = Form("ffigs/Week_Work_Report/2022-09-01/%d/DD/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
-  const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
   //const char* dir = "grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02";
-
+  //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";
+  const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
+  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
   TFile *fin_nano_data	= TFile::Open(datafile);
@@ -271,7 +274,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 1, bool isMu = 1, int htype = 0)
   double tmpD = errDiffD/intDiffD;
   double tmpC = errDiffC/intDiffC;
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);
-  printf("SF(%s) : %5.4lf +/- %5.4lf\n",histname.c_str(),SF,SF_error);
+  //printf("SF(%s) : %5.4lf +/- %5.4lf\n",histname.c_str(),SF,SF_error);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /////////////////////////////// Modify the Region B result //////////////////////////////////////////////

@@ -24,11 +24,9 @@
 
 using namespace std;
 
-int CutflowNanoAll(int year = 2017, bool isMu = 1)
+int CutflowNanoAll(int year = 2016, bool isMu = 1)
 {  
-  
-  
-  ;
+ 
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
@@ -86,16 +84,31 @@ int CutflowNanoAll(int year = 2017, bool isMu = 1)
   //const char* dir = "grid_v40_Syst/CBA_muFmuR";
   //const char* dir = "grid_v40_Syst/CBA_muFmuR-Hist";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-BCWt1";
-  const char* dir = "grid_v40_Syst/CBA_ctagv2";
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-BJetHist";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-Hist";
-  const char* dir1 = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  // const char* dir = "grid_v40_Syst/CBA_ctagv2pulwp";
-  // const char* dir1 = "grid_v40_Syst/CBA_ctagv2pulwp-CombHist";
+  //const char* dir1 = "grid_v40_Syst/CBA_ctagv2-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2pulwp";
+  //const char* dir1 = "grid_v40_Syst/CBA_ctagv2pulwp-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-BCWtExtp1";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-wtratio_evtwt";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest";
+
+  // const char* dir = "grid_v40_Syst/CBA_gdjsoncorr/post";
+  // const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";
+  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr/pre";
+  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr_chi2lt14-CombHist";
+  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr_chi2lt8-CombHist";
+  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr_chi2lt4-CombHist";  
+
+  // const char* dir = "grid_v40_Syst/CBA_elemva80";
+  // const char* dir1 = "grid_v40_Syst/CBA_elemva80-CombHist";
+  
+  const char* dir = "grid_v40_Syst/CBA_elereliso";
+  //const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
+  //const char* dir1 = "grid_v40_Syst/CBA_elereliso-NJet4-CombHist";
+  const char* dir1 = "grid_v40_Syst/CBA_elereliso-Chi2Lt0p2-CombHist";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;

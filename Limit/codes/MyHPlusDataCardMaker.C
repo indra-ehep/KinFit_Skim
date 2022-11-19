@@ -643,7 +643,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* ttbar_bcstatUp = DC.readWriteHisto(fTT, baseDir+"/bcstatup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatUp", true, isNormalized, ttbar);
   TH1F* ttbar_bcstatDown = DC.readWriteHisto(fTT, baseDir+"/bcstatdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcstatDown", true, isNormalized, ttbar);
   TH1F *ttbar_bcxdyUp, *ttbar_bcxdyDown, *ttbar_bcxstUp, *ttbar_bcxstDown, *ttbar_bcxwjUp, *ttbar_bcxwjDown, *ttbar_bcxttUp, *ttbar_bcxttDown;
-  if(year==2016 or year==2018){
+  if(year==20160 or year==20180){
     ttbar_bcxdyUp = DC.readWriteHisto(fTT, baseDir+"/bcxdyup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyUp", true, isNormalized, ttbar);
     ttbar_bcxdyDown = DC.readWriteHisto(fTT, baseDir+"/bcxdydown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdyDown", true, isNormalized, ttbar);
     ttbar_bcxstUp = DC.readWriteHisto(fTT, baseDir+"/bcxstup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxstUp", true, isNormalized, ttbar);
@@ -663,7 +663,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     ttbar_bcxttDown = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcxttDown", true);
   }
   TH1F *ttbar_bcbfragUp, *ttbar_bcbfragDown;
-  if(year==2016){
+  if(year==20160){
     ttbar_bcbfragUp = DC.readWriteHisto(fTT, baseDir+"/bcbfragup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcbfragUp", true, isNormalized, ttbar);
     ttbar_bcbfragDown = DC.readWriteHisto(fTT, baseDir+"/bcbfragdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcbfragDown", true, isNormalized, ttbar);
   }else{
@@ -671,7 +671,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     ttbar_bcbfragDown = DC.readWriteHisto(fTT, baseDir+"/base"+histSubDir, histName, sf_ttbar, fout, fTT,  "ttbar_bcbfragDown", true);
   }
   TH1F *ttbar_bcintpUp, *ttbar_bcintpDown, *ttbar_bcextpUp, *ttbar_bcextpDown, *ttbar_bcxdybUp, *ttbar_bcxdybDown, *ttbar_bcxdycUp, *ttbar_bcxdycDown, *ttbar_bcxwjcUp, *ttbar_bcxwjcDown;
-  if(year==2017){ 
+  if(year==2016 or year==2017 or year==2018){ 
     ttbar_bcintpUp = DC.readWriteHisto(fTT, baseDir+"/bcintpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpUp", true, isNormalized, ttbar);
     ttbar_bcintpDown = DC.readWriteHisto(fTT, baseDir+"/bcintpdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcintpDown", true, isNormalized, ttbar);
     ttbar_bcextpUp = DC.readWriteHisto(fTT, baseDir+"/bcextpup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcextpUp", true, isNormalized, ttbar);
@@ -771,7 +771,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wjet_bcstatUp = DC.readWriteHisto(fWJ, baseDir+"/bcstatup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatUp", true, isNormalized, wjet);
   TH1F* wjet_bcstatDown = DC.readWriteHisto(fWJ, baseDir+"/bcstatdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcstatDown", true, isNormalized, wjet);
   TH1F *wjet_bcxdyUp, *wjet_bcxdyDown, *wjet_bcxstUp, *wjet_bcxstDown, *wjet_bcxwjUp, *wjet_bcxwjDown, *wjet_bcxttUp, *wjet_bcxttDown;
-  if(year==2016 or year==2018){
+  if(year==20160 or year==20180){
     wjet_bcxdyUp = DC.readWriteHisto(fWJ, baseDir+"/bcxdyup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyUp", true, isNormalized, wjet);
     wjet_bcxdyDown = DC.readWriteHisto(fWJ, baseDir+"/bcxdydown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxdyDown", true, isNormalized, wjet);
     wjet_bcxstUp = DC.readWriteHisto(fWJ, baseDir+"/bcxstup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcxstUp", true, isNormalized, wjet);
@@ -791,7 +791,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     wjet_bcxttDown = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcxttDown", true);
   }
   TH1F *wjet_bcbfragUp, *wjet_bcbfragDown;
-  if(year==2016){
+  if(year==20160){
     wjet_bcbfragUp = DC.readWriteHisto(fWJ, baseDir+"/bcbfragup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcbfragUp", true, isNormalized, wjet);
     wjet_bcbfragDown = DC.readWriteHisto(fWJ, baseDir+"/bcbfragdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcbfragDown", true, isNormalized, wjet);
   }else{
@@ -799,7 +799,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     wjet_bcbfragDown = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT,  "wjet_bcbfragDown", true);
   }
   TH1F *wjet_bcintpUp, *wjet_bcintpDown, *wjet_bcextpUp, *wjet_bcextpDown, *wjet_bcxdybUp, *wjet_bcxdybDown, *wjet_bcxdycUp, *wjet_bcxdycDown, *wjet_bcxwjcUp, *wjet_bcxwjcDown;
-  if(year==2017){
+  if(year==2016 or year==2017 or year==2018){
     wjet_bcintpUp = DC.readWriteHisto(fWJ, baseDir+"/bcintpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpUp", true, isNormalized, wjet);
     wjet_bcintpDown = DC.readWriteHisto(fWJ, baseDir+"/bcintpdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcintpDown", true, isNormalized, wjet);
     wjet_bcextpUp = DC.readWriteHisto(fWJ, baseDir+"/bcextpup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcextpUp", true, isNormalized, wjet);
@@ -888,7 +888,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* zjet_bcstatUp = DC.readWriteHisto(fDY, baseDir+"/bcstatup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatUp", true, isNormalized, zjet);
   TH1F* zjet_bcstatDown = DC.readWriteHisto(fDY, baseDir+"/bcstatdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcstatDown", true, isNormalized, zjet);
   TH1F *zjet_bcxdyUp, *zjet_bcxdyDown, *zjet_bcxstUp, *zjet_bcxstDown, *zjet_bcxwjUp, *zjet_bcxwjDown, *zjet_bcxttUp, *zjet_bcxttDown;
-  if(year==2016 or year==2018){
+  if(year==20160 or year==20180){
     zjet_bcxdyUp = DC.readWriteHisto(fDY, baseDir+"/bcxdyup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyUp", true, isNormalized, zjet);
     zjet_bcxdyDown = DC.readWriteHisto(fDY, baseDir+"/bcxdydown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxdyDown", true, isNormalized, zjet);
     zjet_bcxstUp = DC.readWriteHisto(fDY, baseDir+"/bcxstup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcxstUp", true, isNormalized, zjet);
@@ -908,7 +908,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     zjet_bcxttDown = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcxttDown", true);
   }
   TH1F *zjet_bcbfragUp, *zjet_bcbfragDown;
-  if(year==2016){
+  if(year==20160){
     zjet_bcbfragUp = DC.readWriteHisto(fDY, baseDir+"/bcbfragup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcbfragUp", true, isNormalized, zjet);
     zjet_bcbfragDown = DC.readWriteHisto(fDY, baseDir+"/bcbfragdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcbfragDown", true, isNormalized, zjet);
   }else{
@@ -916,7 +916,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     zjet_bcbfragDown = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT,  "zjet_bcbfragDown", true);
   }
   TH1F *zjet_bcintpUp, *zjet_bcintpDown, *zjet_bcextpUp, *zjet_bcextpDown, *zjet_bcxdybUp, *zjet_bcxdybDown, *zjet_bcxdycUp, *zjet_bcxdycDown, *zjet_bcxwjcUp, *zjet_bcxwjcDown;
-  if(year==2017){
+  if(year==2016 or year==2017 or year==2018){
     zjet_bcintpUp = DC.readWriteHisto(fDY, baseDir+"/bcintpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpUp", true, isNormalized, zjet);
     zjet_bcintpDown = DC.readWriteHisto(fDY, baseDir+"/bcintpdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcintpDown", true, isNormalized, zjet);
     zjet_bcextpUp = DC.readWriteHisto(fDY, baseDir+"/bcextpup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcextpUp", true, isNormalized, zjet);
@@ -1006,7 +1006,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* stop_bcstatUp = DC.readWriteHisto(fST, baseDir+"/bcstatup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatUp", true, isNormalized, stop);
   TH1F* stop_bcstatDown = DC.readWriteHisto(fST, baseDir+"/bcstatdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcstatDown", true, isNormalized, stop);
   TH1F *stop_bcxdyUp, *stop_bcxdyDown, *stop_bcxstUp, *stop_bcxstDown, *stop_bcxwjUp, *stop_bcxwjDown, *stop_bcxttUp, *stop_bcxttDown;
-  if(year==2016 or year==2018){
+  if(year==20160 or year==20180){
     stop_bcxdyUp = DC.readWriteHisto(fST, baseDir+"/bcxdyup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyUp", true, isNormalized, stop);
     stop_bcxdyDown = DC.readWriteHisto(fST, baseDir+"/bcxdydown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxdyDown", true, isNormalized, stop);
     stop_bcxstUp = DC.readWriteHisto(fST, baseDir+"/bcxstup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcxstUp", true, isNormalized, stop);
@@ -1026,7 +1026,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     stop_bcxttDown = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcxttDown", true);
   }
   TH1F *stop_bcbfragUp, *stop_bcbfragDown;
-  if(year==2016){
+  if(year==20160){
     stop_bcbfragUp = DC.readWriteHisto(fST, baseDir+"/bcbfragup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcbfragUp", true, isNormalized, stop);
     stop_bcbfragDown = DC.readWriteHisto(fST, baseDir+"/bcbfragdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcbfragDown", true, isNormalized, stop);
   }else{
@@ -1034,7 +1034,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     stop_bcbfragDown = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT,  "stop_bcbfragDown", true);
   }
   TH1F *stop_bcintpUp, *stop_bcintpDown, *stop_bcextpUp, *stop_bcextpDown, *stop_bcxdybUp, *stop_bcxdybDown, *stop_bcxdycUp, *stop_bcxdycDown, *stop_bcxwjcUp, *stop_bcxwjcDown;
-  if(year==2017){    
+  if(year==2016 or year==2017 or year==2018){    
     stop_bcintpUp = DC.readWriteHisto(fST, baseDir+"/bcintpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpUp", true, isNormalized, stop);
     stop_bcintpDown = DC.readWriteHisto(fST, baseDir+"/bcintpdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcintpDown", true, isNormalized, stop);
     stop_bcextpUp = DC.readWriteHisto(fST, baseDir+"/bcextpup"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcextpUp", true, isNormalized, stop);
@@ -1123,7 +1123,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* vv_bcstatUp = DC.readWriteHisto(fVV, baseDir+"/bcstatup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatUp", true, isNormalized, vv);
   TH1F* vv_bcstatDown = DC.readWriteHisto(fVV, baseDir+"/bcstatdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcstatDown", true, isNormalized, vv);
   TH1F *vv_bcxdyUp, *vv_bcxdyDown, *vv_bcxstUp, *vv_bcxstDown, *vv_bcxwjUp, *vv_bcxwjDown, *vv_bcxttUp, *vv_bcxttDown;
-  if(year==2016 or year==2018){
+  if(year==20160 or year==20180){
     vv_bcxdyUp = DC.readWriteHisto(fVV, baseDir+"/bcxdyup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyUp", true, isNormalized, vv);
     vv_bcxdyDown = DC.readWriteHisto(fVV, baseDir+"/bcxdydown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxdyDown", true, isNormalized, vv);
     vv_bcxstUp = DC.readWriteHisto(fVV, baseDir+"/bcxstup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcxstUp", true, isNormalized, vv);
@@ -1143,7 +1143,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     vv_bcxttDown = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcxttDown", true);
   }  
   TH1F *vv_bcbfragUp, *vv_bcbfragDown;
-  if(year==2016){
+  if(year==20160){
     vv_bcbfragUp = DC.readWriteHisto(fVV, baseDir+"/bcbfragup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcbfragUp", true, isNormalized, vv);
     vv_bcbfragDown = DC.readWriteHisto(fVV, baseDir+"/bcbfragdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcbfragDown", true, isNormalized, vv);
   }else{
@@ -1151,7 +1151,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     vv_bcbfragDown = DC.readWriteHisto(fVV, baseDir+"/base"+histSubDir, histName, sf_vv, fout, fTT,  "vv_bcbfragDown", true);
   }
   TH1F *vv_bcintpUp, *vv_bcintpDown, *vv_bcextpUp, *vv_bcextpDown, *vv_bcxdybUp, *vv_bcxdybDown, *vv_bcxdycUp, *vv_bcxdycDown, *vv_bcxwjcUp, *vv_bcxwjcDown;
-  if(year==2017){
+  if(year==2016 or year==2017 or year==2018){
     vv_bcintpUp = DC.readWriteHisto(fVV, baseDir+"/bcintpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpUp", true, isNormalized, vv);
     vv_bcintpDown = DC.readWriteHisto(fVV, baseDir+"/bcintpdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcintpDown", true, isNormalized, vv);
     vv_bcextpUp = DC.readWriteHisto(fVV, baseDir+"/bcextpup"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcextpUp", true, isNormalized, vv);
@@ -1283,7 +1283,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wh_bcstatUp = DC.readWriteHisto(fWH, baseDir+"/bcstatup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatUp", true, isNormalized, wh);
   TH1F* wh_bcstatDown = DC.readWriteHisto(fWH, baseDir+"/bcstatdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcstatDown", true, isNormalized, wh);
   TH1F *wh_bcxdyUp, *wh_bcxdyDown, *wh_bcxstUp, *wh_bcxstDown, *wh_bcxwjUp, *wh_bcxwjDown, *wh_bcxttUp, *wh_bcxttDown;
-  if(year==2016 or year==2018){
+  if(year==20160 or year==20180){
      wh_bcxdyUp = DC.readWriteHisto(fWH, baseDir+"/bcxdyup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyUp", true, isNormalized, wh);
      wh_bcxdyDown = DC.readWriteHisto(fWH, baseDir+"/bcxdydown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxdyDown", true, isNormalized, wh);
      wh_bcxstUp = DC.readWriteHisto(fWH, baseDir+"/bcxstup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcxstUp", true, isNormalized, wh);
@@ -1303,7 +1303,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     wh_bcxttDown = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcxttDown", true);
   }
   TH1F *wh_bcbfragUp, *wh_bcbfragDown;
-  if(year==2016){
+  if(year==20160){
      wh_bcbfragUp = DC.readWriteHisto(fWH, baseDir+"/bcbfragup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcbfragUp", true, isNormalized, wh);
      wh_bcbfragDown = DC.readWriteHisto(fWH, baseDir+"/bcbfragdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcbfragDown", true, isNormalized, wh);
   }else{
@@ -1311,7 +1311,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     wh_bcbfragDown = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT,  label+"_bcbfragDown", true);
   }
   TH1F *wh_bcintpUp, *wh_bcintpDown, *wh_bcextpUp, *wh_bcextpDown, *wh_bcxdybUp, *wh_bcxdybDown, *wh_bcxdycUp, *wh_bcxdycDown, *wh_bcxwjcUp, *wh_bcxwjcDown;
-  if(year==2017){
+  if(year==2016 or year==2017 or year==2018){
      wh_bcintpUp = DC.readWriteHisto(fWH, baseDir+"/bcintpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpUp", true, isNormalized, wh);
      wh_bcintpDown = DC.readWriteHisto(fWH, baseDir+"/bcintpdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcintpDown", true, isNormalized, wh);
      wh_bcextpUp = DC.readWriteHisto(fWH, baseDir+"/bcextpup"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcextpUp", true, isNormalized, wh);

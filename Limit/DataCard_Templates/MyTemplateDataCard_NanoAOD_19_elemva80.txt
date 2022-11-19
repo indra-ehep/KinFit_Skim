@@ -20,7 +20,7 @@ CMS_lumi_13TeV  lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Luminosity un
 CMS_eff_lep     lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Lepton selection unc.
 CMS_prefire     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Prefire unc.
 CMS_pujetid     lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      PUJetID unc.
-CMS_Pileup      lnN	1.01	1.01	1.01	1.01	1.01	1.01	-         Pileup unc.
+CMS_pileup      lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Pileup unc.
 JES             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         JES unc.
 JER             shape   1.0     1.0     1.0     1.0     1.0     1.0     -         JER unc.
 CMS_norm_sig    lnN     1.061   1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
@@ -39,16 +39,8 @@ fsr             shape   1.0     1.0     1.0     1.0     1.0     1.0     -       
 bcstat          shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcstat
 bclhemuf	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemuf
 bclhemur	shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bclhemur
-# the line below is applicable for 2016
-bcbfrag		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcbfrag (2016)
-# the lines below are applicable for 2016 & 2018 
-bcxdy		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxdy (2016,2018)
-bcxst		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxst (2016,2018)
-bcxwj		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxwj (2016,2018)
-bcxtt		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxtt (2016,2018)
-# # the lines below are applicable for 2017
-# bcxdyb		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxdyb (2017)
-# bcxdyc		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxdyc (2017)
-# bcxwjc		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxwjc (2017)
-# bcintp		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcintp (2017)
-# bcextp		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcextp (2017)
+bcxdyb		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxdyb 
+bcxdyc		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxdyc 
+bcxwjc		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcxwjc 
+bcintp		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcintp 
+bcextp		shape   1.0     1.0     1.0     1.0     1.0     1.0     -         bcextp 
