@@ -112,7 +112,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
 
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2022-11-25/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figss/Week_Work_Report/2022-11-25/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";

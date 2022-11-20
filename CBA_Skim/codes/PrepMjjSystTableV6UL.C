@@ -26,6 +26,7 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -71,15 +72,17 @@ int PrepMjjSystTableV6UL(int year = 2018)
   bool isKFL = true;
   bool isInc = true;
   char cType = 'L';
-  string tab1_caption = "Event yield for inclusive category.";
-  string tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for inclusive category. ";
+  string tab1_caption = "Event yield for inclusive category in " + to_string(year) + ".";
+  string tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for inclusive category in " + to_string(year) + ".";
   string nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
 
   //Inclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:sec07_eventYield_Inc_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -118,12 +121,8 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:eventYieldInc}"<<endl;
-  outFile<<"\\end{center}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  //outFile<<"\\pagebreak"<<endl;
-  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
@@ -132,9 +131,9 @@ int PrepMjjSystTableV6UL(int year = 2018)
   bool ismu = true;
   //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\begin{adjustbox}{width=0.9\\textwidth}"<<endl;
-  outFile<<"\\scriptsize{"<<endl;
+  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
+  outFile<<"\\label{tab:sec07_syst_Inc_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
   outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -191,13 +190,13 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
   //outFile<<"\\end{landscape}"<<endl;
-  
+  outFile<<""<<endl;
+  outFile<<""<<endl;
+
+  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //exclusive loose charm
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,15 +204,17 @@ int PrepMjjSystTableV6UL(int year = 2018)
   isKFL = false;
   isInc = false;
   cType = 'L';
-  tab1_caption = "Event yield for exclusive loose charm tagging category.";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive loose charm tagging category. ";
+  tab1_caption = "Event yield for exclusive loose charm tagging category in " + to_string(year) + ".";;
+  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive loose charm tagging category in " + to_string(year) + ".";;
   
   nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:sec07_eventYield_ExcL_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -251,12 +252,8 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:eventYieldInc}"<<endl;
-  outFile<<"\\end{center}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  outFile<<"\\pagebreak"<<endl;
-  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
@@ -264,9 +261,9 @@ int PrepMjjSystTableV6UL(int year = 2018)
   ismu = true;
   //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\begin{adjustbox}{width=0.9\\textwidth}"<<endl;
-  outFile<<"\\scriptsize{"<<endl;
+  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
+  outFile<<"\\label{tab:sec07_syst_ExcL_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
   outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -323,12 +320,13 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
   //outFile<<"\\end{landscape}"<<endl;
+  outFile<<""<<endl;
+  outFile<<""<<endl;
+
+  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -339,15 +337,17 @@ int PrepMjjSystTableV6UL(int year = 2018)
   isKFL = false;
   isInc = false;
   cType = 'M';
-  tab1_caption = "Event yield for exclusive medium charm tagging category.";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive medium charm tagging category. ";
+  tab1_caption = "Event yield for exclusive medium charm tagging category in " + to_string(year) + ".";
+  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive medium charm tagging category in " + to_string(year) + ".";
   
   nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:sec07_eventYield_ExcM_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -385,12 +385,8 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:eventYieldInc}"<<endl;
-  outFile<<"\\end{center}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  outFile<<"\\pagebreak"<<endl;
-  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
@@ -398,9 +394,9 @@ int PrepMjjSystTableV6UL(int year = 2018)
   ismu = true;
   //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\begin{adjustbox}{width=0.9\\textwidth}"<<endl;
-  outFile<<"\\scriptsize{"<<endl;
+  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
+  outFile<<"\\label{tab:sec07_syst_ExcM_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
   outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -457,12 +453,13 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
   //outFile<<"\\end{landscape}"<<endl;
+  outFile<<""<<endl;
+  outFile<<""<<endl;
+
+  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -473,15 +470,17 @@ int PrepMjjSystTableV6UL(int year = 2018)
   isKFL = false;
   isInc = false;
   cType = 'T';
-  tab1_caption = "Event yield for exclusive tight charm tagging category.";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive tight charm tagging category. ";
+  tab1_caption = "Event yield for exclusive tight charm tagging category in " + to_string(year) + ".";
+  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive tight charm tagging category in " + to_string(year) + ".";
   
   nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:sec07_eventYield_ExcT_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -519,12 +518,8 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:eventYieldInc}"<<endl;
-  outFile<<"\\end{center}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  outFile<<"\\pagebreak"<<endl;
-  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
@@ -532,9 +527,9 @@ int PrepMjjSystTableV6UL(int year = 2018)
   ismu = true;
   //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\begin{center}"<<endl;
-  outFile<<"\\begin{adjustbox}{width=0.9\\textwidth}"<<endl;
-  outFile<<"\\scriptsize{"<<endl;
+  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
+  outFile<<"\\label{tab:sec07_syst_ExcT_"<<year<<"}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
   outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -591,13 +586,13 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
-  outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
   //outFile<<"\\end{landscape}"<<endl;
-  
+  outFile<<""<<endl;
+  outFile<<""<<endl;
+
+  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;  
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   outFile<<"\\end{document}"<<endl;

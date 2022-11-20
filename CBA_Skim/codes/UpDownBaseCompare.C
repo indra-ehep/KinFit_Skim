@@ -36,14 +36,15 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
 			   "DataMu", "DataEle", "TTbar", "singleTop", 
 			   "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 			   "MCQCDEle"};
-  // const int nShapes = 0;
-  // const char* listShapes[] = {""};
-  const int nShapes = 17;
-  const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
-  			      "bclhemuf", "bclhemur", "bcstat", "bcxdy",//8
-  			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
-  			      "bcintp", "bcextp", "bcxdyb", "bcxdyc",//16
-                              "bcwjc"}; //17
+  
+  const int nShapes = 0;
+  const char* listShapes[] = {""};
+  // const int nShapes = 17;
+  // const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
+  // 			      "bclhemuf", "bclhemur", "bcstat", "bcxdy",//8
+  // 			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
+  // 			      "bcintp", "bcextp", "bcxdyb", "bcxdyc",//16
+  //                             "bcwjc"}; //17
   
   const char *syst_2016[] = {"base", 
 			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
@@ -60,8 +61,7 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
 			     "bcxwjcup", "bcxwjcdown",//40
 			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
   };
-
-
+  
   const char *syst_2017[] = {"base", 
 			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
 			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
@@ -107,10 +107,11 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR" ;  
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;  
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80" ;  
     
-  //int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
-  int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
+  int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
+  //int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
   int ibase = 1; ibase--;
   int isysdown = isysup ;
   //int isysup = 2; 
@@ -203,8 +204,10 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
     leg->AddEntry(hBase, Form("%s",syst_2018[ibase]) ,"lfp");
     leg->AddEntry(hSysDown, Form("%s",syst_2018[isysdown]) ,"lfp");
   }
-  
-  hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(120.0)));
+  if(isample==7)
+    hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(120.0)));
+  else
+    hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(80.0)));
   hSysUp->SetTitle("");
   hSysUp->GetXaxis()->SetRangeUser(0.,170.);
   PlotRatio(hSysUp, hBase, "c1");
@@ -281,10 +284,10 @@ int PlotRatio(TH1D *h1, TH1D *h2, const char *cname)
     h3->Sumw2();
     h3->SetStats(0);      // No statistics on lower plot
     h3->Divide(h2);
-
+    
     h3->SetMinimum(0.8);  // Define Y ..
     h3->SetMaximum(1.2); // .. range
-
+    
     // cout << "h3->GetBinContent(h3->FindBin(80.0))" << h3->GetBinContent(h3->FindBin(80.0)) << endl;
     // h3->SetMaximum(1+2*(h3->GetBinContent(h3->FindBin(80.0))-1.));
     // h3->SetMinimum(1-2*(h3->GetBinContent(h3->FindBin(80.0))-1.));

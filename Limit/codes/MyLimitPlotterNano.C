@@ -26,8 +26,8 @@
 
 using namespace std;
 
-void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
-         bool obs= false, bool isOut= true )
+void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_Inc",
+		  bool obs= false, bool isOut= true)
   {
   gStyle->SetFrameLineWidth(3);
   TCanvas *c1 = new TCanvas();
@@ -76,7 +76,7 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   //higgsCombine_hcs_13TeV_mu_Cat1_Inc.AsymptoticLimits.mH80.root
   
   double maxY = 1.0;
-  TString year_dir = "";
+  //TString year_dir = "";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allexceptFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1FSRDo_5GeV_allexceptFSRsyst_trimhisto/";
@@ -98,7 +98,7 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
   //TString year_dir = "Higgs-Exo-2022-08-15/PAG/2018/ExcT/";
   //TString year_dir = "Higgs-Exo-2022-08-15/PAG/Run2/";
   //TString year_dir = "B2G-Reso-2022-11-25/03_elereliso-CombHist/2016/Comb/";
-  //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2016/Comb/";
+  TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/Run2/Comb/";
   
   for(int i = 0 ; i < nMassPoints; i++){
     //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
@@ -155,9 +155,13 @@ void LimitPlotter(TString CHANNEL="mu", TString CAT= "Cat1_Inc",
     if(obs){
       printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      Val.push_back(res);
     }else{
       printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
       fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ \n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      Val.push_back(res);
     }
     cout<<endl;
   }
@@ -310,14 +314,23 @@ void MyLimitPlotterNano(){
   
   // LimitPlotter("mu", "Cat1_Inc",     false, true );
   // LimitPlotter("ele", "Cat1_Inc",     false, true );
+  vector<string> muVal, eleVal, mueleVal;
+  float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
+    
+  LimitPlotter(muVal, "mu", "Cat1_Inc", false, true );
+  LimitPlotter(eleVal, "ele", "Cat1_Inc", false, true );
+  LimitPlotter(mueleVal, "mu_ele", "Cat1_Inc", false, true );
+
+  for(int i = 0; i < int(muVal.size()) ; i++)
+    if(i==(int(muVal.size())-1))
+      cout << "$m_{H^{+}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;
+    else
+      cout << "$m_{H^{+}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\" << endl;
   
-  // LimitPlotter("mu", "Cat1_Inc",     false, true );
-  // LimitPlotter("ele", "Cat1_Inc",     false, true );
-  // LimitPlotter("mu_ele", "Cat1_Inc",     false, true );
   
-  LimitPlotter("mu", "Cat1_Inc",     true, true );
-  LimitPlotter("ele", "Cat1_Inc",     true, true );
-  LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
+  // LimitPlotter("mu", "Cat1_Inc",     true, true );
+  // LimitPlotter("ele", "Cat1_Inc",     true, true );
+  // LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
   
   // LimitPlotter("mu", "Cat3_cTagEx",     false, true );
   // LimitPlotter("ele", "Cat3_cTagEx",     false, true );
