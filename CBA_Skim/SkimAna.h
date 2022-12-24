@@ -782,7 +782,7 @@ class SkimAna : public TSelector {
    BTagCalibrationReader readerb_CT;
    TH2D *l_eff = 0x0, *c_eff = 0x0, *b_eff = 0x0;
    string btagSystType ;
-
+  
    TH2D *l_CL_eff = 0x0, *c_CL_eff = 0x0, *b_CL_eff = 0x0;
    TH2D *l_CM_eff = 0x0, *c_CM_eff = 0x0, *b_CM_eff = 0x0;
    TH2D *l_CT_eff = 0x0, *c_CT_eff = 0x0, *b_CT_eff = 0x0;
@@ -1931,92 +1931,92 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("FSRweight_Up"		, &_FSRweight_Up		);
     outputTree->Branch("FSRweight_Do"		, &_FSRweight_Do		);
 
-    // outputTree->Branch("bTagWeight"		, &_bTagWeight			);
-    // outputTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
-    // outputTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
-    // outputTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
-    // outputTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
-    // outputTree->Branch("bTagWeight_bc1_Up"	, &_bTagWeight_bc1_Up		);
-    // outputTree->Branch("bTagWeight_bc1_Do"	, &_bTagWeight_bc1_Do		);
-    // outputTree->Branch("bTagWeight_bc2_Up"	, &_bTagWeight_bc2_Up		);
-    // outputTree->Branch("bTagWeight_bc2_Do"	, &_bTagWeight_bc2_Do		);
-    // outputTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
-    // outputTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
+    outputTree->Branch("bTagWeight"		, &_bTagWeight			);
+    outputTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
+    outputTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
+    outputTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
+    outputTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
+    outputTree->Branch("bTagWeight_bc1_Up"	, &_bTagWeight_bc1_Up		);
+    outputTree->Branch("bTagWeight_bc1_Do"	, &_bTagWeight_bc1_Do		);
+    outputTree->Branch("bTagWeight_bc2_Up"	, &_bTagWeight_bc2_Up		);
+    outputTree->Branch("bTagWeight_bc2_Do"	, &_bTagWeight_bc2_Do		);
+    outputTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
+    outputTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
     
     outputTree->Branch("isCTagged"		, &isCTagged         		);
     outputTree->Branch("count_cJetsIncL"	, &count_cJetsIncL      	);
     outputTree->Branch("count_cJetsIncM"	, &count_cJetsIncM      	);
     outputTree->Branch("count_cJetsIncT"	, &count_cJetsIncT      	);
-    // outputTree->Branch("cTagLWeight"		, &_cTagLWeight			);
-    // outputTree->Branch("cTagLWeight_bc1_Up"	, &_cTagLWeight_bc1_Up		);
-    // outputTree->Branch("cTagLWeight_bc1_Do"	, &_cTagLWeight_bc1_Do		);
-    // outputTree->Branch("cTagLWeight_bc2_Up"	, &_cTagLWeight_bc2_Up		);
-    // outputTree->Branch("cTagLWeight_bc2_Do"	, &_cTagLWeight_bc2_Do		);
-    // outputTree->Branch("cTagLWeight_bc3_Up"	, &_cTagLWeight_bc3_Up		);
-    // outputTree->Branch("cTagLWeight_bc3_Do"	, &_cTagLWeight_bc3_Do		);
+    outputTree->Branch("cTagLWeight"		, &_cTagLWeight			);
+    outputTree->Branch("cTagLWeight_bc1_Up"	, &_cTagLWeight_bc1_Up		);
+    outputTree->Branch("cTagLWeight_bc1_Do"	, &_cTagLWeight_bc1_Do		);
+    outputTree->Branch("cTagLWeight_bc2_Up"	, &_cTagLWeight_bc2_Up		);
+    outputTree->Branch("cTagLWeight_bc2_Do"	, &_cTagLWeight_bc2_Do		);
+    outputTree->Branch("cTagLWeight_bc3_Up"	, &_cTagLWeight_bc3_Up		);
+    outputTree->Branch("cTagLWeight_bc3_Do"	, &_cTagLWeight_bc3_Do		);
+    
+    outputTree->Branch("cTagMWeight"		, &_cTagMWeight			);
+    outputTree->Branch("cTagMWeight_bc1_Up"	, &_cTagMWeight_bc1_Up		);
+    outputTree->Branch("cTagMWeight_bc1_Do"	, &_cTagMWeight_bc1_Do		);
+    outputTree->Branch("cTagMWeight_bc2_Up"	, &_cTagMWeight_bc2_Up		);
+    outputTree->Branch("cTagMWeight_bc2_Do"	, &_cTagMWeight_bc2_Do		);
+    outputTree->Branch("cTagMWeight_bc3_Up"	, &_cTagMWeight_bc3_Up		);
+    outputTree->Branch("cTagMWeight_bc3_Do"	, &_cTagMWeight_bc3_Do		);
 
-    // outputTree->Branch("cTagMWeight"		, &_cTagMWeight			);
-    // outputTree->Branch("cTagMWeight_bc1_Up"	, &_cTagMWeight_bc1_Up		);
-    // outputTree->Branch("cTagMWeight_bc1_Do"	, &_cTagMWeight_bc1_Do		);
-    // outputTree->Branch("cTagMWeight_bc2_Up"	, &_cTagMWeight_bc2_Up		);
-    // outputTree->Branch("cTagMWeight_bc2_Do"	, &_cTagMWeight_bc2_Do		);
-    // outputTree->Branch("cTagMWeight_bc3_Up"	, &_cTagMWeight_bc3_Up		);
-    // outputTree->Branch("cTagMWeight_bc3_Do"	, &_cTagMWeight_bc3_Do		);
-
-    // outputTree->Branch("cTagTWeight"		, &_cTagTWeight			);
-    // outputTree->Branch("cTagTWeight_bc1_Up"	, &_cTagTWeight_bc1_Up		);
-    // outputTree->Branch("cTagTWeight_bc1_Do"	, &_cTagTWeight_bc1_Do		);
-    // outputTree->Branch("cTagTWeight_bc2_Up"	, &_cTagTWeight_bc2_Up		);
-    // outputTree->Branch("cTagTWeight_bc2_Do"	, &_cTagTWeight_bc2_Do		);
-    // outputTree->Branch("cTagTWeight_bc3_Up"	, &_cTagTWeight_bc3_Up		);
-    // outputTree->Branch("cTagTWeight_bc3_Do"	, &_cTagTWeight_bc3_Do		);
+    outputTree->Branch("cTagTWeight"		, &_cTagTWeight			);
+    outputTree->Branch("cTagTWeight_bc1_Up"	, &_cTagTWeight_bc1_Up		);
+    outputTree->Branch("cTagTWeight_bc1_Do"	, &_cTagTWeight_bc1_Do		);
+    outputTree->Branch("cTagTWeight_bc2_Up"	, &_cTagTWeight_bc2_Up		);
+    outputTree->Branch("cTagTWeight_bc2_Do"	, &_cTagTWeight_bc2_Do		);
+    outputTree->Branch("cTagTWeight_bc3_Up"	, &_cTagTWeight_bc3_Up		);
+    outputTree->Branch("cTagTWeight_bc3_Do"	, &_cTagTWeight_bc3_Do		);
     
     outputTree->Branch("nJet"			, &_nJet			);
     outputTree->Branch("nBJet"  		, &_nBJet			);
     outputTree->Branch("wt_before"		, &wt_before			);
     outputTree->Branch("wt_after"		, &wt_after			);
-    outputTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
-    //CTagShape EOY
-    outputTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
-    outputTree->Branch("bcTagWeight_stat_Do"	, &_bcTagWeight_stat_Do       	);    
-    outputTree->Branch("bcTagWeight_pu_Up"	, &_bcTagWeight_pu_Up       	);    
-    outputTree->Branch("bcTagWeight_pu_Do"	, &_bcTagWeight_pu_Do       	);    
-    outputTree->Branch("bcTagWeight_eleid_Up"	, &_bcTagWeight_eleid_Up      	);    
-    outputTree->Branch("bcTagWeight_eleid_Do"	, &_bcTagWeight_eleid_Do      	);    
-    outputTree->Branch("bcTagWeight_muid_Up"	, &_bcTagWeight_muid_Up       	);    
-    outputTree->Branch("bcTagWeight_muid_Do"	, &_bcTagWeight_muid_Do       	);    
-    outputTree->Branch("bcTagWeight_lhemuf_Up"	, &_bcTagWeight_lhemuf_Up     	);    
-    outputTree->Branch("bcTagWeight_lhemuf_Do"	, &_bcTagWeight_lhemuf_Do     	);    
-    outputTree->Branch("bcTagWeight_lhemur_Up"	, &_bcTagWeight_lhemur_Up    	);    
-    outputTree->Branch("bcTagWeight_lhemur_Do"	, &_bcTagWeight_lhemur_Do     	);    
-    outputTree->Branch("bcTagWeight_isr_Up"	, &_bcTagWeight_isr_Up       	);    
-    outputTree->Branch("bcTagWeight_isr_Do"	, &_bcTagWeight_isr_Do       	);    
-    outputTree->Branch("bcTagWeight_fsr_Up"	, &_bcTagWeight_fsr_Up       	);    
-    outputTree->Branch("bcTagWeight_fsr_Do"	, &_bcTagWeight_fsr_Do       	);    
-    outputTree->Branch("bcTagWeight_xdy_Up"	, &_bcTagWeight_xdy_Up       	);    
-    outputTree->Branch("bcTagWeight_xdy_Do"	, &_bcTagWeight_xdy_Do       	);    
-    outputTree->Branch("bcTagWeight_xst_Up"	, &_bcTagWeight_xst_Up       	);    
-    outputTree->Branch("bcTagWeight_xst_Do"	, &_bcTagWeight_xst_Do       	);     
-    outputTree->Branch("bcTagWeight_xwj_Up"	, &_bcTagWeight_xwj_Up       	);    
-    outputTree->Branch("bcTagWeight_xwj_Do"	, &_bcTagWeight_xwj_Do       	);    
-    outputTree->Branch("bcTagWeight_xtt_Up"	, &_bcTagWeight_xtt_Up       	);    
-    outputTree->Branch("bcTagWeight_xtt_Do"	, &_bcTagWeight_xtt_Do       	);    
-    outputTree->Branch("bcTagWeight_jes_Up"	, &_bcTagWeight_jes_Up       	);    
-    outputTree->Branch("bcTagWeight_jes_Do"	, &_bcTagWeight_jes_Do       	);    
-    outputTree->Branch("bcTagWeight_jer_Up"	, &_bcTagWeight_jer_Up       	);    
-    outputTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
-    outputTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
-    outputTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);        
-    outputTree->Branch("bcTagWeight_intp_Up"	, &_bcTagWeight_intp_Up	 ); 
-    outputTree->Branch("bcTagWeight_intp_Do"	, &_bcTagWeight_intp_Do	 );
-    outputTree->Branch("bcTagWeight_extp_Up"	, &_bcTagWeight_extp_Up	 );
-    outputTree->Branch("bcTagWeight_extp_Do"	, &_bcTagWeight_extp_Do	 );
-    outputTree->Branch("bcTagWeight_xdyb_Up"	, &_bcTagWeight_xdyb_Up	 ); 
-    outputTree->Branch("bcTagWeight_xdyb_Do"	, &_bcTagWeight_xdyb_Do	 );
-    outputTree->Branch("bcTagWeight_xdyc_Up"	, &_bcTagWeight_xdyc_Up	 );
-    outputTree->Branch("bcTagWeight_xdyc_Do"	, &_bcTagWeight_xdyc_Do	 );
-    outputTree->Branch("bcTagWeight_xwjc_Up"	, &_bcTagWeight_xwjc_Up	 ); 
-    outputTree->Branch("bcTagWeight_xwjc_Do"	, &_bcTagWeight_xwjc_Do	 );
+    // outputTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
+    // //CTagShape EOY
+    // outputTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
+    // outputTree->Branch("bcTagWeight_stat_Do"	, &_bcTagWeight_stat_Do       	);    
+    // outputTree->Branch("bcTagWeight_pu_Up"	, &_bcTagWeight_pu_Up       	);    
+    // outputTree->Branch("bcTagWeight_pu_Do"	, &_bcTagWeight_pu_Do       	);    
+    // outputTree->Branch("bcTagWeight_eleid_Up"	, &_bcTagWeight_eleid_Up      	);    
+    // outputTree->Branch("bcTagWeight_eleid_Do"	, &_bcTagWeight_eleid_Do      	);    
+    // outputTree->Branch("bcTagWeight_muid_Up"	, &_bcTagWeight_muid_Up       	);    
+    // outputTree->Branch("bcTagWeight_muid_Do"	, &_bcTagWeight_muid_Do       	);    
+    // outputTree->Branch("bcTagWeight_lhemuf_Up"	, &_bcTagWeight_lhemuf_Up     	);    
+    // outputTree->Branch("bcTagWeight_lhemuf_Do"	, &_bcTagWeight_lhemuf_Do     	);    
+    // outputTree->Branch("bcTagWeight_lhemur_Up"	, &_bcTagWeight_lhemur_Up    	);    
+    // outputTree->Branch("bcTagWeight_lhemur_Do"	, &_bcTagWeight_lhemur_Do     	);    
+    // outputTree->Branch("bcTagWeight_isr_Up"	, &_bcTagWeight_isr_Up       	);    
+    // outputTree->Branch("bcTagWeight_isr_Do"	, &_bcTagWeight_isr_Do       	);    
+    // outputTree->Branch("bcTagWeight_fsr_Up"	, &_bcTagWeight_fsr_Up       	);    
+    // outputTree->Branch("bcTagWeight_fsr_Do"	, &_bcTagWeight_fsr_Do       	);    
+    // outputTree->Branch("bcTagWeight_xdy_Up"	, &_bcTagWeight_xdy_Up       	);    
+    // outputTree->Branch("bcTagWeight_xdy_Do"	, &_bcTagWeight_xdy_Do       	);    
+    // outputTree->Branch("bcTagWeight_xst_Up"	, &_bcTagWeight_xst_Up       	);    
+    // outputTree->Branch("bcTagWeight_xst_Do"	, &_bcTagWeight_xst_Do       	);     
+    // outputTree->Branch("bcTagWeight_xwj_Up"	, &_bcTagWeight_xwj_Up       	);    
+    // outputTree->Branch("bcTagWeight_xwj_Do"	, &_bcTagWeight_xwj_Do       	);    
+    // outputTree->Branch("bcTagWeight_xtt_Up"	, &_bcTagWeight_xtt_Up       	);    
+    // outputTree->Branch("bcTagWeight_xtt_Do"	, &_bcTagWeight_xtt_Do       	);    
+    // outputTree->Branch("bcTagWeight_jes_Up"	, &_bcTagWeight_jes_Up       	);    
+    // outputTree->Branch("bcTagWeight_jes_Do"	, &_bcTagWeight_jes_Do       	);    
+    // outputTree->Branch("bcTagWeight_jer_Up"	, &_bcTagWeight_jer_Up       	);    
+    // outputTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
+    // outputTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
+    // outputTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);        
+    // outputTree->Branch("bcTagWeight_intp_Up"	, &_bcTagWeight_intp_Up	 ); 
+    // outputTree->Branch("bcTagWeight_intp_Do"	, &_bcTagWeight_intp_Do	 );
+    // outputTree->Branch("bcTagWeight_extp_Up"	, &_bcTagWeight_extp_Up	 );
+    // outputTree->Branch("bcTagWeight_extp_Do"	, &_bcTagWeight_extp_Do	 );
+    // outputTree->Branch("bcTagWeight_xdyb_Up"	, &_bcTagWeight_xdyb_Up	 ); 
+    // outputTree->Branch("bcTagWeight_xdyb_Do"	, &_bcTagWeight_xdyb_Do	 );
+    // outputTree->Branch("bcTagWeight_xdyc_Up"	, &_bcTagWeight_xdyc_Up	 );
+    // outputTree->Branch("bcTagWeight_xdyc_Do"	, &_bcTagWeight_xdyc_Do	 );
+    // outputTree->Branch("bcTagWeight_xwjc_Up"	, &_bcTagWeight_xwjc_Up	 ); 
+    // outputTree->Branch("bcTagWeight_xwjc_Do"	, &_bcTagWeight_xwjc_Do	 );
 
     outputTree->Branch("chi2"			, &kinFitMinChi2       		);
     outputTree->Branch("ndf"			, &_NDF         		);
@@ -2145,60 +2145,60 @@ void SkimAna::InitBjetOutBranches(){
   outputBjetTree->Branch("FSRweight_Up"		, &_FSRweight_Up		);
   outputBjetTree->Branch("FSRweight_Do"		, &_FSRweight_Do		);
 
-  // outputBjetTree->Branch("bTagWeight"		, &_bTagWeight			);
-  // outputBjetTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
-  // outputBjetTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
-  // outputBjetTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
-  // outputBjetTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
-  // outputBjetTree->Branch("bTagWeight_bc1_Up"	, &_bTagWeight_bc1_Up		);
-  // outputBjetTree->Branch("bTagWeight_bc1_Do"	, &_bTagWeight_bc1_Do		);
-  // outputBjetTree->Branch("bTagWeight_bc2_Up"	, &_bTagWeight_bc2_Up		);
-  // outputBjetTree->Branch("bTagWeight_bc2_Do"	, &_bTagWeight_bc2_Do		);
-  // outputBjetTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
-  // outputBjetTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
+  outputBjetTree->Branch("bTagWeight"		, &_bTagWeight			);
+  outputBjetTree->Branch("bTagWeight_b_Up"	, &_bTagWeight_b_Up		);
+  outputBjetTree->Branch("bTagWeight_b_Do"	, &_bTagWeight_b_Do		);
+  outputBjetTree->Branch("bTagWeight_l_Up"	, &_bTagWeight_l_Up		);
+  outputBjetTree->Branch("bTagWeight_l_Do"	, &_bTagWeight_l_Do		);
+  outputBjetTree->Branch("bTagWeight_bc1_Up"	, &_bTagWeight_bc1_Up		);
+  outputBjetTree->Branch("bTagWeight_bc1_Do"	, &_bTagWeight_bc1_Do		);
+  outputBjetTree->Branch("bTagWeight_bc2_Up"	, &_bTagWeight_bc2_Up		);
+  outputBjetTree->Branch("bTagWeight_bc2_Do"	, &_bTagWeight_bc2_Do		);
+  outputBjetTree->Branch("bTagWeight_bc3_Up"	, &_bTagWeight_bc3_Up		);
+  outputBjetTree->Branch("bTagWeight_bc3_Do"	, &_bTagWeight_bc3_Do		);
 
-  outputBjetTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
-  //CTagShape EOY
-  outputBjetTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_stat_Do"	, &_bcTagWeight_stat_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_pu_Up"	, &_bcTagWeight_pu_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_pu_Do"	, &_bcTagWeight_pu_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_eleid_Up"	, &_bcTagWeight_eleid_Up      	);    
-  outputBjetTree->Branch("bcTagWeight_eleid_Do"	, &_bcTagWeight_eleid_Do      	);    
-  outputBjetTree->Branch("bcTagWeight_muid_Up"	, &_bcTagWeight_muid_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_muid_Do"	, &_bcTagWeight_muid_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_lhemuf_Up"	, &_bcTagWeight_lhemuf_Up     	);    
-  outputBjetTree->Branch("bcTagWeight_lhemuf_Do"	, &_bcTagWeight_lhemuf_Do     	);    
-  outputBjetTree->Branch("bcTagWeight_lhemur_Up"	, &_bcTagWeight_lhemur_Up    	);    
-  outputBjetTree->Branch("bcTagWeight_lhemur_Do"	, &_bcTagWeight_lhemur_Do     	);    
-  outputBjetTree->Branch("bcTagWeight_isr_Up"	, &_bcTagWeight_isr_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_isr_Do"	, &_bcTagWeight_isr_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_fsr_Up"	, &_bcTagWeight_fsr_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_fsr_Do"	, &_bcTagWeight_fsr_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_xdy_Up"	, &_bcTagWeight_xdy_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_xdy_Do"	, &_bcTagWeight_xdy_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_xst_Up"	, &_bcTagWeight_xst_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_xst_Do"	, &_bcTagWeight_xst_Do       	);     
-  outputBjetTree->Branch("bcTagWeight_xwj_Up"	, &_bcTagWeight_xwj_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_xwj_Do"	, &_bcTagWeight_xwj_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_xtt_Up"	, &_bcTagWeight_xtt_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_xtt_Do"	, &_bcTagWeight_xtt_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_jes_Up"	, &_bcTagWeight_jes_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_jes_Do"	, &_bcTagWeight_jes_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_jer_Up"	, &_bcTagWeight_jer_Up       	);    
-  outputBjetTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
-  outputBjetTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
-  outputBjetTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);    
-  outputBjetTree->Branch("bcTagWeight_intp_Up"	, &_bcTagWeight_intp_Up	 ); 
-  outputBjetTree->Branch("bcTagWeight_intp_Do"	, &_bcTagWeight_intp_Do	 );
-  outputBjetTree->Branch("bcTagWeight_extp_Up"	, &_bcTagWeight_extp_Up	 );
-  outputBjetTree->Branch("bcTagWeight_extp_Do"	, &_bcTagWeight_extp_Do	 );
-  outputBjetTree->Branch("bcTagWeight_xdyb_Up"	, &_bcTagWeight_xdyb_Up	 ); 
-  outputBjetTree->Branch("bcTagWeight_xdyb_Do"	, &_bcTagWeight_xdyb_Do	 );
-  outputBjetTree->Branch("bcTagWeight_xdyc_Up"	, &_bcTagWeight_xdyc_Up	 );
-  outputBjetTree->Branch("bcTagWeight_xdyc_Do"	, &_bcTagWeight_xdyc_Do	 );
-  outputBjetTree->Branch("bcTagWeight_xwjc_Up"	, &_bcTagWeight_xwjc_Up	 ); 
-  outputBjetTree->Branch("bcTagWeight_xwjc_Do"	, &_bcTagWeight_xwjc_Do	 );
+  // outputBjetTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
+  // //CTagShape EOY
+  // outputBjetTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_stat_Do"	, &_bcTagWeight_stat_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_pu_Up"	, &_bcTagWeight_pu_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_pu_Do"	, &_bcTagWeight_pu_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_eleid_Up"	, &_bcTagWeight_eleid_Up      	);    
+  // outputBjetTree->Branch("bcTagWeight_eleid_Do"	, &_bcTagWeight_eleid_Do      	);    
+  // outputBjetTree->Branch("bcTagWeight_muid_Up"	, &_bcTagWeight_muid_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_muid_Do"	, &_bcTagWeight_muid_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_lhemuf_Up"	, &_bcTagWeight_lhemuf_Up     	);    
+  // outputBjetTree->Branch("bcTagWeight_lhemuf_Do"	, &_bcTagWeight_lhemuf_Do     	);    
+  // outputBjetTree->Branch("bcTagWeight_lhemur_Up"	, &_bcTagWeight_lhemur_Up    	);    
+  // outputBjetTree->Branch("bcTagWeight_lhemur_Do"	, &_bcTagWeight_lhemur_Do     	);    
+  // outputBjetTree->Branch("bcTagWeight_isr_Up"	, &_bcTagWeight_isr_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_isr_Do"	, &_bcTagWeight_isr_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_fsr_Up"	, &_bcTagWeight_fsr_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_fsr_Do"	, &_bcTagWeight_fsr_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_xdy_Up"	, &_bcTagWeight_xdy_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_xdy_Do"	, &_bcTagWeight_xdy_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_xst_Up"	, &_bcTagWeight_xst_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_xst_Do"	, &_bcTagWeight_xst_Do       	);     
+  // outputBjetTree->Branch("bcTagWeight_xwj_Up"	, &_bcTagWeight_xwj_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_xwj_Do"	, &_bcTagWeight_xwj_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_xtt_Up"	, &_bcTagWeight_xtt_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_xtt_Do"	, &_bcTagWeight_xtt_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_jes_Up"	, &_bcTagWeight_jes_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_jes_Do"	, &_bcTagWeight_jes_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_jer_Up"	, &_bcTagWeight_jer_Up       	);    
+  // outputBjetTree->Branch("bcTagWeight_jer_Do"	, &_bcTagWeight_jer_Do       	);    
+  // outputBjetTree->Branch("bcTagWeight_bfrag_Up"	, &_bcTagWeight_bfrag_Up      	);    
+  // outputBjetTree->Branch("bcTagWeight_bfrag_Do"	, &_bcTagWeight_bfrag_Do      	);    
+  // outputBjetTree->Branch("bcTagWeight_intp_Up"	, &_bcTagWeight_intp_Up	 ); 
+  // outputBjetTree->Branch("bcTagWeight_intp_Do"	, &_bcTagWeight_intp_Do	 );
+  // outputBjetTree->Branch("bcTagWeight_extp_Up"	, &_bcTagWeight_extp_Up	 );
+  // outputBjetTree->Branch("bcTagWeight_extp_Do"	, &_bcTagWeight_extp_Do	 );
+  // outputBjetTree->Branch("bcTagWeight_xdyb_Up"	, &_bcTagWeight_xdyb_Up	 ); 
+  // outputBjetTree->Branch("bcTagWeight_xdyb_Do"	, &_bcTagWeight_xdyb_Do	 );
+  // outputBjetTree->Branch("bcTagWeight_xdyc_Up"	, &_bcTagWeight_xdyc_Up	 );
+  // outputBjetTree->Branch("bcTagWeight_xdyc_Do"	, &_bcTagWeight_xdyc_Do	 );
+  // outputBjetTree->Branch("bcTagWeight_xwjc_Up"	, &_bcTagWeight_xwjc_Up	 ); 
+  // outputBjetTree->Branch("bcTagWeight_xwjc_Do"	, &_bcTagWeight_xwjc_Do	 );
      
 
   outputBjetTree->Branch("lepPt"		, &_lepPt			);
@@ -2516,148 +2516,148 @@ Bool_t SkimAna::Notify()
   
   if(!isData){
     
-    /* std::string fBCEffFileName = "" ; */
-    /* if(!selector->useDeepCSVbTag){ //Deepjet */
-    /*   if (fYear==2016){ */
-    /* 	if(isPreVFP) */
-    /* 	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/pre/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);     */
-    /* 	if(isPostVFP) */
-    /* 	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/post/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);     */
-    /*   }else{ */
-    /* 	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);     */
-    /*   } */
-    /* }else{ //DeepCSV     */
-    /*   fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);     */
-    /* } */
+    std::string fBCEffFileName = "" ;
+    if(!selector->useDeepCSVbTag){ //Deepjet
+      if (fYear==2016){
+    	if(isPreVFP)
+    	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/pre/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);
+    	if(isPostVFP)
+    	  fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/post/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);
+      }else{
+    	fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepjet/%d/%s_btag_eff_deepjet_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);
+      }
+    }else{ //DeepCSV
+      fBCEffFileName = Form("%s/weightUL/BtagSF/Efficiency/btag_deepcsv/%d/%s_btag_eff_deepcsv_%d.root",fBasePath.Data(),fYear,fSample.Data(),fYear);
+    }
   
-    /* Info("Notify","Efficientcy file : %s",fBCEffFileName.c_str()); */
-    /* Info("Notify","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut)); */
+    Info("Notify","Efficientcy file : %s",fBCEffFileName.c_str());
+    Info("Notify","Btag threshold : %lf",((selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut));
   
-    /* std::string effType = "BTag"; */
-    /* std::string effCType = "CTag"; */
+    std::string effType = "BTag";
+    std::string effCType = "CTag";
   
-    /* std::string leffName = effType+"_l_M_efficiency"; */
-    /* std::string ceffName = effType+"_c_M_efficiency"; */
-    /* std::string beffName = effType+"_b_M_efficiency"; */
+    std::string leffName = effType+"_l_M_efficiency";
+    std::string ceffName = effType+"_c_M_efficiency";
+    std::string beffName = effType+"_b_M_efficiency";
 
-    /* std::string leffCName = effCType+"_l_L_efficiency"; */
-    /* std::string ceffCName = effCType+"_c_L_efficiency"; */
-    /* std::string beffCName = effCType+"_b_L_efficiency"; */
+    std::string leffCName = effCType+"_l_L_efficiency";
+    std::string ceffCName = effCType+"_c_L_efficiency";
+    std::string beffCName = effCType+"_b_L_efficiency";
   
-    /* TFile* inputFile = TFile::Open(fBCEffFileName.c_str(),"read"); */
-    /* l_eff = (TH2D*) inputFile->Get(leffName.c_str()); */
-    /* c_eff = (TH2D*) inputFile->Get(ceffName.c_str()); */
-    /* b_eff = (TH2D*) inputFile->Get(beffName.c_str()); */
+    TFile* inputFile = TFile::Open(fBCEffFileName.c_str(),"read");
+    l_eff = (TH2D*) inputFile->Get(leffName.c_str());
+    c_eff = (TH2D*) inputFile->Get(ceffName.c_str());
+    b_eff = (TH2D*) inputFile->Get(beffName.c_str());
 
-    /* l_CL_eff = (TH2D*) inputFile->Get(leffCName.c_str()); */
-    /* c_CL_eff = (TH2D*) inputFile->Get(ceffCName.c_str()); */
-    /* b_CL_eff = (TH2D*) inputFile->Get(beffCName.c_str()); */
+    l_CL_eff = (TH2D*) inputFile->Get(leffCName.c_str());
+    c_CL_eff = (TH2D*) inputFile->Get(ceffCName.c_str());
+    b_CL_eff = (TH2D*) inputFile->Get(beffCName.c_str());
 
-    /* l_CM_eff = (TH2D*) inputFile->Get(Form("%s_l_M_efficiency",effCType.c_str())); */
-    /* c_CM_eff = (TH2D*) inputFile->Get(Form("%s_c_M_efficiency",effCType.c_str())); */
-    /* b_CM_eff = (TH2D*) inputFile->Get(Form("%s_b_M_efficiency",effCType.c_str())); */
+    l_CM_eff = (TH2D*) inputFile->Get(Form("%s_l_M_efficiency",effCType.c_str()));
+    c_CM_eff = (TH2D*) inputFile->Get(Form("%s_c_M_efficiency",effCType.c_str()));
+    b_CM_eff = (TH2D*) inputFile->Get(Form("%s_b_M_efficiency",effCType.c_str()));
 
-    /* l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str())); */
-    /* c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str())); */
-    /* b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str())); */
+    l_CT_eff = (TH2D*) inputFile->Get(Form("%s_l_T_efficiency",effCType.c_str()));
+    c_CT_eff = (TH2D*) inputFile->Get(Form("%s_c_T_efficiency",effCType.c_str()));
+    b_CT_eff = (TH2D*) inputFile->Get(Form("%s_b_T_efficiency",effCType.c_str()));
 
     //CTagShapeCalibration EOY
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    SFb_hist = (TH2F *)fBCSFFile->Get("SFb_hist");
-    SFc_hist = (TH2F *)fBCSFFile->Get("SFc_hist");
-    SFl_hist = (TH2F *)fBCSFFile->Get("SFl_hist");
+    // SFb_hist = (TH2F *)fBCSFFile->Get("SFb_hist");
+    // SFc_hist = (TH2F *)fBCSFFile->Get("SFc_hist");
+    // SFl_hist = (TH2F *)fBCSFFile->Get("SFl_hist");
   
-    SFb_hist_StatUp = (TH2F *)fBCSFFile->Get("SFb_hist_StatUp");
-    SFc_hist_StatUp = (TH2F *)fBCSFFile->Get("SFc_hist_StatUp");
-    SFl_hist_StatUp = (TH2F *)fBCSFFile->Get("SFl_hist_StatUp");
-    SFb_hist_StatDown = (TH2F *)fBCSFFile->Get("SFb_hist_StatDown");
-    SFc_hist_StatDown = (TH2F *)fBCSFFile->Get("SFc_hist_StatDown");
-    SFl_hist_StatDown = (TH2F *)fBCSFFile->Get("SFl_hist_StatDown");
+    // SFb_hist_StatUp = (TH2F *)fBCSFFile->Get("SFb_hist_StatUp");
+    // SFc_hist_StatUp = (TH2F *)fBCSFFile->Get("SFc_hist_StatUp");
+    // SFl_hist_StatUp = (TH2F *)fBCSFFile->Get("SFl_hist_StatUp");
+    // SFb_hist_StatDown = (TH2F *)fBCSFFile->Get("SFb_hist_StatDown");
+    // SFc_hist_StatDown = (TH2F *)fBCSFFile->Get("SFc_hist_StatDown");
+    // SFl_hist_StatDown = (TH2F *)fBCSFFile->Get("SFl_hist_StatDown");
     
-    SFb_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFUp");
-    SFc_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFUp");
-    SFl_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFUp");
-    SFb_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFDown");
-    SFc_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFDown");
-    SFl_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFDown");
+    // SFb_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFUp");
+    // SFc_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFUp");
+    // SFl_hist_LHEScaleWeight_muFUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFUp");
+    // SFb_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muFDown");
+    // SFc_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muFDown");
+    // SFl_hist_LHEScaleWeight_muFDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muFDown");
 
-    SFb_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRUp");
-    SFc_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRUp");
-    SFl_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRUp");
-    SFb_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRDown");
-    SFc_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRDown");
-    SFl_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRDown");
+    // SFb_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRUp");
+    // SFc_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRUp");
+    // SFl_hist_LHEScaleWeight_muRUp = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRUp");
+    // SFb_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFb_hist_LHEScaleWeight_muRDown");
+    // SFc_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFc_hist_LHEScaleWeight_muRDown");
+    // SFl_hist_LHEScaleWeight_muRDown = (TH2F *)fBCSFFile->Get("SFl_hist_LHEScaleWeight_muRDown");
 
-    SFb_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRUp");
-    SFc_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRUp");
-    SFl_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRUp");
-    SFb_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRDown");
-    SFc_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRDown");
-    SFl_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRDown");
+    // SFb_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRUp");
+    // SFc_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRUp");
+    // SFl_hist_PSWeightISRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRUp");
+    // SFb_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightISRDown");
+    // SFc_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightISRDown");
+    // SFl_hist_PSWeightISRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightISRDown");
 
-    SFb_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRUp");
-    SFc_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRUp");
-    SFl_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRUp");
-    SFb_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRDown");
-    SFc_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRDown");
-    SFl_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRDown");
+    // SFb_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRUp");
+    // SFc_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRUp");
+    // SFl_hist_PSWeightFSRUp = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRUp");
+    // SFb_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFb_hist_PSWeightFSRDown");
+    // SFc_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFc_hist_PSWeightFSRDown");
+    // SFl_hist_PSWeightFSRDown = (TH2F *)fBCSFFile->Get("SFl_hist_PSWeightFSRDown");
 
-    SFb_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightUp");
-    SFc_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightUp");
-    SFl_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightUp");
-    SFb_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightDown");
-    SFc_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightDown");
-    SFl_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightDown");
+    // SFb_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightUp");
+    // SFc_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightUp");
+    // SFl_hist_PUWeightUp = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightUp");
+    // SFb_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFb_hist_PUWeightDown");
+    // SFc_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFc_hist_PUWeightDown");
+    // SFl_hist_PUWeightDown = (TH2F *)fBCSFFile->Get("SFl_hist_PUWeightDown");
     
-    SFb_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalUp");
-    SFc_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalUp");
-    SFl_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalUp");
-    SFb_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalDown");
-    SFc_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalDown");
-    SFl_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalDown");
+    // SFb_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalUp");
+    // SFc_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalUp");
+    // SFl_hist_jesTotalUp = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalUp");
+    // SFb_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFb_hist_jesTotalDown");
+    // SFc_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFc_hist_jesTotalDown");
+    // SFl_hist_jesTotalDown = (TH2F *)fBCSFFile->Get("SFl_hist_jesTotalDown");
   
-    SFb_hist_jerUp = (TH2F *)fBCSFFile->Get("SFb_hist_jerUp");
-    SFc_hist_jerUp = (TH2F *)fBCSFFile->Get("SFc_hist_jerUp");
-    SFl_hist_jerUp = (TH2F *)fBCSFFile->Get("SFl_hist_jerUp");
-    SFb_hist_jerDown = (TH2F *)fBCSFFile->Get("SFb_hist_jerDown");
-    SFc_hist_jerDown = (TH2F *)fBCSFFile->Get("SFc_hist_jerDown");
-    SFl_hist_jerDown = (TH2F *)fBCSFFile->Get("SFl_hist_jerDown");
+    // SFb_hist_jerUp = (TH2F *)fBCSFFile->Get("SFb_hist_jerUp");
+    // SFc_hist_jerUp = (TH2F *)fBCSFFile->Get("SFc_hist_jerUp");
+    // SFl_hist_jerUp = (TH2F *)fBCSFFile->Get("SFl_hist_jerUp");
+    // SFb_hist_jerDown = (TH2F *)fBCSFFile->Get("SFb_hist_jerDown");
+    // SFc_hist_jerDown = (TH2F *)fBCSFFile->Get("SFc_hist_jerDown");
+    // SFl_hist_jerDown = (TH2F *)fBCSFFile->Get("SFl_hist_jerDown");
 
-    SFb_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFb_hist_InterpUp");
-    SFc_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFc_hist_InterpUp");
-    SFl_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFl_hist_InterpUp");
-    SFb_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFb_hist_InterpDown");
-    SFc_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFc_hist_InterpDown");
-    SFl_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFl_hist_InterpDown");
+    // SFb_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFb_hist_InterpUp");
+    // SFc_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFc_hist_InterpUp");
+    // SFl_hist_InterpUp = (TH2F *)fBCSFFile->Get("SFl_hist_InterpUp");
+    // SFb_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFb_hist_InterpDown");
+    // SFc_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFc_hist_InterpDown");
+    // SFl_hist_InterpDown = (TH2F *)fBCSFFile->Get("SFl_hist_InterpDown");
   
-    SFb_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapUp");
-    SFc_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapUp");
-    SFl_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapUp");
-    SFb_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapDown");
-    SFc_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapDown");
-    SFl_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapDown");
+    // SFb_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapUp");
+    // SFc_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapUp");
+    // SFl_hist_ExtrapUp = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapUp");
+    // SFb_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFb_hist_ExtrapDown");
+    // SFc_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFc_hist_ExtrapDown");
+    // SFl_hist_ExtrapDown = (TH2F *)fBCSFFile->Get("SFl_hist_ExtrapDown");
 
-    SFb_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bUp");
-    SFc_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bUp");
-    SFl_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bUp");
-    SFb_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bDown");
-    SFc_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bDown");
-    SFl_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bDown");
+    // SFb_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bUp");
+    // SFc_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bUp");
+    // SFl_hist_XSec_BRUnc_DYJets_bUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bUp");
+    // SFb_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_bDown");
+    // SFc_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_bDown");
+    // SFl_hist_XSec_BRUnc_DYJets_bDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_bDown");
 
-    SFb_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cUp");
-    SFc_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cUp");
-    SFl_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cUp");
-    SFb_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cDown");
-    SFc_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cDown");
-    SFl_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cDown");
+    // SFb_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cUp");
+    // SFc_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cUp");
+    // SFl_hist_XSec_BRUnc_DYJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cUp");
+    // SFb_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_DYJets_cDown");
+    // SFc_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_DYJets_cDown");
+    // SFl_hist_XSec_BRUnc_DYJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_DYJets_cDown");
   
-    SFb_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cUp");
-    SFc_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cUp");
-    SFl_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cUp");
-    SFb_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cDown");
-    SFc_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cDown");
-    SFl_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cDown");  
+    // SFb_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cUp");
+    // SFc_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cUp");
+    // SFl_hist_XSec_BRUnc_WJets_cUp = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cUp");
+    // SFb_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFb_hist_XSec_BRUnc_WJets_cDown");
+    // SFc_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFc_hist_XSec_BRUnc_WJets_cDown");
+    // SFl_hist_XSec_BRUnc_WJets_cDown = (TH2F *)fBCSFFile->Get("SFl_hist_XSec_BRUnc_WJets_cDown");  
 
   }
 
