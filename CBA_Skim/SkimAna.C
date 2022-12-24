@@ -38,7 +38,7 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////// Cut flow histograms //////////////////////////////////
 
   ////////////////////////////////// Observables //////////////////////////////////////
-  fNBObHists = 60;//132;
+  fNBObHists = 80;//132;
   fNObHists = fNDDReg*fNBObHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNObHists*fNSyst;
   histObs = new TH1D*[totNHists];
@@ -204,35 +204,35 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetNoBCBdisc_mu","bjjetBdisc mu wo bjetwt", 300, -1.5, 1.5);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_bjetNoBCBdisc_ele","bjetBdisc ele wo bjetwt", 300, -1.5, 1.5);
     
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_mu","_ct_yLyMyT_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_mu","_ct_yLyMnT_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMyT_mjj_mu","_ct_yLnMyT_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMnT_mjj_mu","_ct_yLnMnT_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMyT_mjj_mu","_ct_yMyT_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMnT_mjj_mu","_ct_yMnT_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yT_mjj_mu","_ct_yT_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_mu","_ct_IncL_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_mu","_ct_IncM_mjj_mu", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_mu","_ct_IncT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_mu","_ct_yLyMyT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_mu","_ct_yLyMnT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMyT_mjj_mu","_ct_yLnMyT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMnT_mjj_mu","_ct_yLnMnT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMyT_mjj_mu","_ct_yMyT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMnT_mjj_mu","_ct_yMnT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yT_mjj_mu","_ct_yT_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_mu","_ct_IncL_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_mu","_ct_IncM_mjj_mu", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_mu","_ct_IncT_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_mu","_ct_ExcL_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_mu","_ct_ExcM_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_mu","_ct_ExcT_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_Exc0_mjj_mu","_ct_Exc0_mjj_mu", 2400, 0., 240);
 
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_ele","_ct_yLyMyT_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_ele","_ct_yLyMnT_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMyT_mjj_ele","_ct_yLnMyT_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMnT_mjj_ele","_ct_yLnMnT_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMyT_mjj_ele","_ct_yMyT_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMnT_mjj_ele","_ct_yMnT_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yT_mjj_ele","_ct_yT_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_ele","_ct_IncL_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_ele","_ct_IncM_mjj_ele", 2400, 0., 240);
-    // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_ele","_ct_IncT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_ele","_ct_yLyMyT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_ele","_ct_yLyMnT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMyT_mjj_ele","_ct_yLnMyT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMnT_mjj_ele","_ct_yLnMnT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMyT_mjj_ele","_ct_yMyT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yMnT_mjj_ele","_ct_yMnT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yT_mjj_ele","_ct_yT_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncL_mjj_ele","_ct_IncL_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncM_mjj_ele","_ct_IncM_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_IncT_mjj_ele","_ct_IncT_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_ele","_ct_ExcL_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_ele","_ct_ExcM_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_ele","_ct_ExcT_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + 59] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + 79] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
 
     
     for(int icf=0;icf<fNBObHists;icf++)
