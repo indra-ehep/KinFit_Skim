@@ -98,8 +98,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   //TString year_dir = "Higgs-Exo-2022-08-15/PAG/2018/ExcT/";
   //TString year_dir = "Higgs-Exo-2022-08-15/PAG/Run2/";
   //TString year_dir = "B2G-Reso-2022-11-25/03_elereliso-CombHist/2016/Comb/";
-  //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/Run2/Comb/";
-  TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2018/Incl/";
+  TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2017/Comb/";
   
   for(int i = 0 ; i < nMassPoints; i++){
     //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
@@ -311,7 +310,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   }
 }
 
-void MyLimitPlotterNano(){
+void LoopLimitPlots(){
   
   // LimitPlotter("mu", "Cat1_Inc",     false, true );
   // LimitPlotter("ele", "Cat1_Inc",     false, true );
@@ -321,16 +320,17 @@ void MyLimitPlotterNano(){
   LimitPlotter(muVal, "mu", "Cat1_Inc", false, true );
   LimitPlotter(eleVal, "ele", "Cat1_Inc", false, true );
   LimitPlotter(mueleVal, "mu_ele", "Cat1_Inc", false, true );
-  
+
   for(int i = 0; i < int(muVal.size()) ; i++)
     if(i==(int(muVal.size())-1))
       cout << "$m_{H^{+}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;
     else
       cout << "$m_{H^{+}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\" << endl;
   
-  // LimitPlotter(muVal, "mu", "Cat1_Inc",     true, true );
-  // LimitPlotter(eleVal, "ele", "Cat1_Inc",     true, true );
-  // LimitPlotter(mueleVal, "mu_ele", "Cat1_Inc",     true, true );  
+  
+  // LimitPlotter("mu", "Cat1_Inc",     true, true );
+  // LimitPlotter("ele", "Cat1_Inc",     true, true );
+  // LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
   
   // LimitPlotter("mu", "Cat3_cTagEx",     false, true );
   // LimitPlotter("ele", "Cat3_cTagEx",     false, true );

@@ -1,1 +1,1 @@
-DataCard_Templates/MyTemplateDataCard_NanoAOD_18_PAG.txt
+DataCard_Templates/MyTemplateDataCard_NanoAOD_19_elemva80.txt
