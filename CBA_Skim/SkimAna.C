@@ -277,7 +277,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_puJetIDWeight","_puJetIDWeight",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_puJetIDWeight_Up","_puJetIDWeight_Up",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_puJetIDWeight_Do","_puJetIDWeight_Do",200, -10, 10);
-    histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1ao","_btagWeight_1a",200, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1a","_btagWeight_1a",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1a_b_Do","_btagWeight_1a_b_Do",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1a_b_Up","_btagWeight_1a_b_Up",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_btagWeight_1a_l_Do","_btagWeight_1a_l_Do",200, -10, 10);
