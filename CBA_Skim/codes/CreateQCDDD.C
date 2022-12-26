@@ -45,7 +45,8 @@ int CreateQCDDD(int year = 2016)
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80";  
-  const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";  
+  //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_bctag123";  
   
   // const char *syst[] = {"base", 
   // 			"pdfup", "pdfdown", "q2up", "q2down",
@@ -76,86 +77,118 @@ int CreateQCDDD(int year = 2016)
   // 			// "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
   // 			// "bcxwjcup", "bcxwjcdown"//16
   // };
-   const char *systbase_2016[] = {"base", 
-			    "pdfup", "pdfdown", "q2up", "q2down",
-			    "isrup", "isrdown", "fsrup", "fsrdown",
-			    "puup", "pudown", "prefireup", "prefiredown",
-			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-			    "pujetidup", "pujetiddown", "metup", "metdown",
-			    "jecup", "jecdown", "jerup", "jerdown",
-			    "iso20",  //26
-			    // CShapeCalib EOY
-			    "bcstatup", "bcstatdown",
-			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
-			    "bcbfragup", "bcbfragdown" //16
-                            };
+  
+  // const char *systbase_2016[] = {"base", 
+  // 			    "pdfup", "pdfdown", "q2up", "q2down",
+  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
+  // 			    "puup", "pudown", "prefireup", "prefiredown",
+  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+  // 			    "pujetidup", "pujetiddown", "metup", "metdown",
+  // 			    "jecup", "jecdown", "jerup", "jerdown",
+  // 			    "iso20",  //26
+  // 			    // CShapeCalib EOY
+  // 			    "bcstatup", "bcstatdown",
+  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+  // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
+  // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
+  // 			    "bcbfragup", "bcbfragdown" //16
+  //                           };
 
-    const char *systbase_2017[] = {"base", 
-			    "pdfup", "pdfdown", "q2up", "q2down",
-			    "isrup", "isrdown", "fsrup", "fsrdown",
-			    "puup", "pudown", "prefireup", "prefiredown",
-			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-			    "pujetidup", "pujetiddown", "metup", "metdown",
-			    "jecup", "jecdown", "jerup", "jerdown",
-			    "iso20",  //26
-			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
-			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown"//16
+  //   const char *systbase_2017[] = {"base", 
+  // 			    "pdfup", "pdfdown", "q2up", "q2down",
+  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
+  // 			    "puup", "pudown", "prefireup", "prefiredown",
+  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+  // 			    "pujetidup", "pujetiddown", "metup", "metdown",
+  // 			    "jecup", "jecdown", "jerup", "jerdown",
+  // 			    "iso20",  //26
+  // 			    // CShapeCalib UL
+  // 			    "bcstatup", "bcstatdown",
+  // 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+  // 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+  // 			    "bcxwjcup", "bcxwjcdown"//16
 
-                            };
+  //                           };
 
-    const char *systbase_2018[] = {"base", 
-			    "pdfup", "pdfdown", "q2up", "q2down",
-			    "isrup", "isrdown", "fsrup", "fsrdown",
-			    "puup", "pudown", "prefireup", "prefiredown",
-			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-			    "pujetidup", "pujetiddown", "metup", "metdown",
-			    "jecup", "jecdown", "jerup", "jerdown",
-			    "iso20",  //26
-			    //CShapeCalib EOY
-			    "bcstatup", "bcstatdown",
-			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown" //14
-                            };
+  //   const char *systbase_2018[] = {"base", 
+  // 			    "pdfup", "pdfdown", "q2up", "q2down",
+  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
+  // 			    "puup", "pudown", "prefireup", "prefiredown",
+  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+  // 			    "pujetidup", "pujetiddown", "metup", "metdown",
+  // 			    "jecup", "jecdown", "jerup", "jerdown",
+  // 			    "iso20",  //26
+  // 			    //CShapeCalib EOY
+  // 			    "bcstatup", "bcstatdown",
+  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+  // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
+  // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown" //14
+  //                           };
   
   
+  // TFile *fout = new TFile("all_QCDdd.root","recreate");
+  // TDirectory *d1 = fout->mkdir("QCDdd");
+  // d1->cd();
+
+  // //int maxsyst = (year==2018) ? 40 : 42 ;
+  // int maxsyst = 42 ;
+  
+  // for(int isys = 0 ; isys < maxsyst ; isys++) {
+  //   TDirectory *d2 = 0x0;
+  //   if(year==2016)
+  //     d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
+  //   else if(year==2017)
+  //     d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
+  //   else if(year==2018)
+  //     d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
+  //   d2->cd();
+  //   TDirectory *d3 = d2->mkdir("Iso");
+  //   d3->cd();
+  //   TH1D *hDD;
+  //   int htype_max[2] = {21, 10};
+  //   for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
+  //     for(int ismu = 0 ; ismu < 2 ; ismu++)
+  // 	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
+  // 	  if((htype>=11 and htype<=13) or (htype>=18 and htype<=21) ) continue;
+  // 	  if(year==2016)
+  // 	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
+  // 	  else if(year==2017)
+  // 	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
+  // 	  else if(year==2018)
+  // 	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
+  // 	}
+  //   d3->Write();
+  // }
+  // fout->Close();
+  // delete fout;
+  const char *syst[] = {"base", 
+			"puup", "pudown", "mueffup", "mueffdown", 
+			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
+			"jerup", "jerdown", "btagbup", "btagbdown", 
+			"btaglup", "btagldown", "prefireup", "prefiredown",
+			"pdfup", "pdfdown", "q2fup", "q2down",
+			"isrup", "isrdown", "fsrup", "fsrdown", 
+			"iso20", "metup", "metdown",
+			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
+			"bctag3up", "bctag3down"};
+
   TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
-
-  //int maxsyst = (year==2018) ? 40 : 42 ;
-  int maxsyst = 42 ;
   
-  for(int isys = 0 ; isys < maxsyst ; isys++) {
-    TDirectory *d2 = 0x0;
-    if(year==2016)
-      d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
-    else if(year==2017)
-      d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
-    else if(year==2018)
-      d2 = d1->mkdir(Form("%s",systbase_2017[isys]));
+  for(int isys = 0 ; isys < 34 ; isys++) {
+
+    TDirectory *d2 = d1->mkdir(Form("%s",syst[isys]));
     d2->cd();
     TDirectory *d3 = d2->mkdir("Iso");
     d3->cd();
     TH1D *hDD;
-    int htype_max[2] = {21, 10};
+    int htype_max[2] = {16, 9};
     for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
       for(int ismu = 0 ; ismu < 2 ; ismu++)
-	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
-	  if((htype>=11 and htype<=13) or (htype>=17 and htype<=19) ) continue;
-	  if(year==2016)
-	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
-	  else if(year==2017)
-	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
-	  else if(year==2018)
-	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
-	}
+	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++)
+	  QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, syst[isys], hDD);
     d3->Write();
   }
   fout->Close();
@@ -234,7 +267,17 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   string histname_RegB = histname + "_noniso";
   string histname_RegC = histname + "_noniso_lmet";
   string histname_RegD = histname + "_lmet";
-  
+
+  if(histname.find("_ct_")!=string::npos){
+    string histname1 = (isBtag) ? "_lb" : "_kb" ;   
+    histname1 += (isMu) ? "_mjj_mu" : "_mjj_ele" ;  
+    histname_RegC = histname1 + "_noniso_lmet";
+    histname_RegD = histname1 + "_lmet";
+    
+    // cout << "histname : " << histname <<  ", Reg A " << histname_RegA << ", Reg B "<< histname_RegB << endl;
+    // cout << "histname1 : " << histname1 <<  ", Reg C " << histname_RegC << ", Reg D "<< histname_RegD << endl;
+  }
+
   string outputpdf = Form("figs/Week_Work_Report/2021-11-05/%d/DD/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
@@ -386,10 +429,16 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
 
   
   //////////////////////////////// Calculate the QCD SF ///////////////////////////////////////////////////
-  double intDiffC   = hcf_RegC_QCD->Integral();
-  double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
-  double intDiffD   = hcf_RegD_QCD->Integral();
-  double errDiffD   = getStatUnc(hcf_RegD_QCD, 0.0);
+  // double intDiffC   = hcf_RegC_QCD->Integral();
+  // double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
+  // double intDiffD   = hcf_RegD_QCD->Integral();
+  // double errDiffD   = getStatUnc(hcf_RegD_QCD, 0.0);
+  
+  double intDiffC   = TMath::Abs(hcf_RegC_QCD->Integral());
+  double errDiffC   = TMath::Abs(getStatUnc(hcf_RegC_QCD, 0.0));
+  double intDiffD   = TMath::Abs(hcf_RegD_QCD->Integral());
+  double errDiffD   = TMath::Abs(getStatUnc(hcf_RegD_QCD, 0.0));
+
   //Ratio of (Data-MC) from RegionD and RegionC
   double SF = intDiffD/intDiffC;
   if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)){ //in case hit zero use absolute instead of (Data-MC) this only influencens the control plot of MET pt
@@ -398,11 +447,11 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
     SF = num/deno;
   }
   double tmpD = errDiffD/intDiffD;
-  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(errDiffD,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
     tmpD = getStatUnc(hcf_RegD_data, 0.0)/hcf_RegD_data->Integral();
   
   double tmpC = errDiffC/intDiffC;
-  if(TMath::AreEqualAbs(errDiffC,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+  if(TMath::AreEqualAbs(intDiffC,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
      tmpC = getStatUnc(hcf_RegC_data, 0.0)/hcf_RegC_data->Integral();
   
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);
