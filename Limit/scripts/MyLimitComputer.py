@@ -38,6 +38,8 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     #command2 = 'combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     #Closest to PAG
     command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0.00001,1.0 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    #Using Asimov
+    #command2 = 'combine --run blind --rAbsAcc 0.000001 --expectSignal 1 --setParameterRanges BR=0.0,1.0  -t -1 -d '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     print("command2 : %s"%command2)
     execme(command2)
 
@@ -69,8 +71,8 @@ def getCardsToBeCombined(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, MASS, YEA
         for HIST in range(len(HIST_ARRAY)):
             SIG_LABEL = "WH"+str(MASS)
             #SIG_FILE = "all_Hplus"+str(MASS)+".root"
-            SIG_FILE = "all_HplusM"+str(MASS)+".root"
-            #SIG_FILE = "all_HplmiM"+str(MASS)+".root"
+            #SIG_FILE = "all_HplusM"+str(MASS)+".root"
+            SIG_FILE = "all_HplmiM"+str(MASS)+".root"
             print "getCardsToBeCombined :: CH: %s, HIST: %s"%(CH,HIST)
             print "getCardsToBeCombined :: IN_FILE_DIR_ARRAY[CH]: %s, HIST_ARRAY[HIST][0]: %s, HIST_ARRAY[HIST][1]: %s, CHANNEL_ARRAY[CH]: %s"%(IN_FILE_DIR_ARRAY[CH],HIST_ARRAY[HIST][0],HIST_ARRAY[HIST][1],CHANNEL_ARRAY[CH]) 
             makeDataCards(IN_FILE_DIR_ARRAY[CH], HIST_ARRAY[HIST][0],HIST_ARRAY[HIST][1], CHANNEL_ARRAY[CH], MASS, SIG_LABEL, SIG_FILE, YEAR)
@@ -171,11 +173,11 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt-Hist/2016"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist"
-    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-NJet4-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-Chi2Lt0p2-CombHist"
-    
+    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_bctag123"
     
     
     muon_file_dir=path_file_dir+""
@@ -205,8 +207,8 @@ if __name__=="__main__":
     mass_array = [80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
     
     year_array = ["2016"]
-    year_array.append("2017")
-    year_array.append("2018")
+    # year_array.append("2017")
+    # year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")
