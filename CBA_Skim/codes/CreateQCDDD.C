@@ -148,7 +148,7 @@ int CreateQCDDD(int year = 2016)
     for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
       for(int ismu = 0 ; ismu < 2 ; ismu++)
 	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
-	  if((htype>=11 and htype<=13) or (htype>=17 and htype<=19) ) continue;
+	  if((htype>=11 and htype<=13) or (htype>=18 and htype<=21) ) continue;
 	  if(year==2016)
 	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
 	  else if(year==2017)
@@ -234,7 +234,17 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   string histname_RegB = histname + "_noniso";
   string histname_RegC = histname + "_noniso_lmet";
   string histname_RegD = histname + "_lmet";
-  
+
+  if(histname.find("_ct_")!=string::npos){
+    string histname1 = (isBtag) ? "_lb" : "_kb" ;   
+    histname1 += (isMu) ? "_mjj_mu" : "_mjj_ele" ;  
+    histname_RegC = histname1 + "_noniso_lmet";
+    histname_RegD = histname1 + "_lmet";
+    
+    // cout << "histname : " << histname <<  ", Reg A " << histname_RegA << ", Reg B "<< histname_RegB << endl;
+    // cout << "histname1 : " << histname1 <<  ", Reg C " << histname_RegC << ", Reg D "<< histname_RegD << endl;
+  }
+
   string outputpdf = Form("figs/Week_Work_Report/2021-11-05/%d/DD/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
@@ -386,10 +396,16 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
 
   
   //////////////////////////////// Calculate the QCD SF ///////////////////////////////////////////////////
-  double intDiffC   = hcf_RegC_QCD->Integral();
-  double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
-  double intDiffD   = hcf_RegD_QCD->Integral();
-  double errDiffD   = getStatUnc(hcf_RegD_QCD, 0.0);
+  // double intDiffC   = hcf_RegC_QCD->Integral();
+  // double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
+  // double intDiffD   = hcf_RegD_QCD->Integral();
+  // double errDiffD   = getStatUnc(hcf_RegD_QCD, 0.0);
+  
+  double intDiffC   = TMath::Abs(hcf_RegC_QCD->Integral());
+  double errDiffC   = TMath::Abs(getStatUnc(hcf_RegC_QCD, 0.0));
+  double intDiffD   = TMath::Abs(hcf_RegD_QCD->Integral());
+  double errDiffD   = TMath::Abs(getStatUnc(hcf_RegD_QCD, 0.0));
+
   //Ratio of (Data-MC) from RegionD and RegionC
   double SF = intDiffD/intDiffC;
   if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)){ //in case hit zero use absolute instead of (Data-MC) this only influencens the control plot of MET pt
@@ -398,11 +414,11 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
     SF = num/deno;
   }
   double tmpD = errDiffD/intDiffD;
-  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(errDiffD,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
     tmpD = getStatUnc(hcf_RegD_data, 0.0)/hcf_RegD_data->Integral();
   
   double tmpC = errDiffC/intDiffC;
-  if(TMath::AreEqualAbs(errDiffC,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+  if(TMath::AreEqualAbs(intDiffC,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
      tmpC = getStatUnc(hcf_RegC_data, 0.0)/hcf_RegC_data->Integral();
   
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);

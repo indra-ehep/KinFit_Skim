@@ -100,13 +100,24 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
     histname = (isMu) ? "_ct_ExcT_mjj_mu" : "_ct_ExcT_mjj_ele" ;  
   else if (htype==17)
     histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_ExcL_mjj_ele" ;  
-
+  
   string histname_RegA = histname ;
   string histname_RegB = histname + "_noniso";
   string histname_RegC = histname + "_noniso_lmet";
   string histname_RegD = histname + "_lmet";
-  
-  string outputpdf = Form("ffigs/Week_Work_Report/2022-09-01/%d/DD/hist%s.pdf",year,histname.c_str());
+
+  if(histname.find("_ct_")!=string::npos){
+    string histname1 = (isBtag) ? "_lb" : "_kb" ;   
+    histname1 += (isMu) ? "_mjj_mu" : "_mjj_ele" ;  
+    histname_RegC = histname1 + "_noniso_lmet";
+    histname_RegD = histname1 + "_lmet";
+    
+    // cout << "histname : " << histname <<  ", Reg A " << histname_RegA << ", Reg B "<< histname_RegB << endl;
+    // cout << "histname1 : " << histname1 <<  ", Reg C " << histname_RegC << ", Reg D "<< histname_RegD << endl;
+  }
+
+  string outputpdf = Form("figs/Week_Work_Report/2022-11-24/DD/%d/hist%s.pdf",year,histname.c_str());
+  //string outputpdf = Form("ffigs/Week_Work_Report/2022-09-01/%d/DD/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
   //const char* dir = "grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02";
@@ -250,7 +261,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   TH1D *hcf_RegD_QCD = (TH1D *)hcf_RegD_data->Clone("RegD_QCD");
   hcf_RegD_QCD->Add(hcf_RegD_bkg, -1);
   makeHistoPositive(hcf_RegD_QCD, false) ;
-    
+  
   TH1D *hcf_RegC_QCD = (TH1D *)hcf_RegC_data->Clone("RegC_QCD");
   hcf_RegC_QCD->Add(hcf_RegC_bkg, -1);
   makeHistoPositive(hcf_RegC_QCD, false) ;
@@ -258,23 +269,42 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   TH1D *hcf_RegB_QCD = (TH1D *)hcf_RegB_data->Clone("RegB_QCD");
   hcf_RegB_QCD->Add(hcf_RegB_bkg, -1);
   makeHistoPositive(hcf_RegB_QCD, false) ;
-
+  
   TH1D *hcf_RegA_QCD = (TH1D *)hcf_RegA_data->Clone("RegA_QCD");
   hcf_RegA_QCD->Add(hcf_RegA_bkg, -1);
   makeHistoPositive(hcf_RegA_QCD, false) ;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
   //////////////////////////////// Calculate the QCD SF ///////////////////////////////////////////////////
-  double intDiffC   = hcf_RegC_QCD->Integral();
-  double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
-  double intDiffD   = hcf_RegD_QCD->Integral();
-  double errDiffD   = getStatUnc(hcf_RegD_QCD, 0.0);
+  // double intDiffC   = hcf_RegC_QCD->Integral();
+  // double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
+  // double intDiffD   = hcf_RegD_QCD->Integral();
+  // double errDiffD   = getStatUnc(hcf_RegD_QCD, 0.0);
+  
+  double intDiffC   = TMath::Abs(hcf_RegC_QCD->Integral());
+  double errDiffC   = TMath::Abs(getStatUnc(hcf_RegC_QCD, 0.0));
+  double intDiffD   = TMath::Abs(hcf_RegD_QCD->Integral());
+  double errDiffD   = TMath::Abs(getStatUnc(hcf_RegD_QCD, 0.0));
+  
   //Ratio of (Data-MC) from RegionD and RegionC
+  // double SF = intDiffD/intDiffC;
+  // double tmpD = errDiffD/intDiffD;
+  // double tmpC = errDiffC/intDiffC;
   double SF = intDiffD/intDiffC;
+  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)){ //in case hit zero use absolute instead of (Data-MC) this only influencens the control plot of MET pt
+    double num = TMath::Max(TMath::Abs(hcf_RegD_data->Integral()-hcf_RegD_bkg->Integral()),1.0);
+    double deno = TMath::Max(TMath::Abs(hcf_RegC_data->Integral()-hcf_RegC_bkg->Integral()),1.0);
+    SF = num/deno;
+  }
   double tmpD = errDiffD/intDiffD;
+  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+    tmpD = getStatUnc(hcf_RegD_data, 0.0)/hcf_RegD_data->Integral();
+  
   double tmpC = errDiffC/intDiffC;
+  if(TMath::AreEqualAbs(intDiffC,0.0,1.e-5)) //in case hit zero use Data only instead of (Data-MC) this only influcens the control plot of MET pt
+    tmpC = getStatUnc(hcf_RegC_data, 0.0)/hcf_RegC_data->Integral();
   double SF_error = SF*sqrt(tmpD*tmpD + tmpC*tmpC);
-  //printf("SF(%s) : %5.4lf +/- %5.4lf\n",histname.c_str(),SF,SF_error);
+  printf("SF(%s,%d) : %5.4lf \\pm %5.4lf\n",histname.c_str(),year,SF,SF_error);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /////////////////////////////// Modify the Region B result //////////////////////////////////////////////
@@ -292,7 +322,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
       tot_bin_err = tot_bin_err + new_bin_err*new_bin_err;
       hcf_RegA_QCD->SetBinContent(ibin, new_bin_cont);
       hcf_RegA_QCD->SetBinError(ibin, new_bin_err);
-    }
+  }
   hcf_RegA_bkg->Add(hcf_RegA_QCD);
   //cout<<"tot_bin_cont= "<<tot_bin_cont<<", tot_bin_err = "<<sqrt(tot_bin_err)<<endl;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -549,7 +579,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   hcf_RegC_QCD->SetTitle("");
   
   TH1D *h1byh2 = 0x0;
-
+  
   TCanvas* c2 = 0x0;
   CalcRatio(hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
   PlotRatioCanvas(c2, hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
@@ -659,15 +689,18 @@ int PlotRatioCanvas(TCanvas*& c1, TH1D*& hData, TH1D*& hSim,  TH1D*& hDByS)
 
   hData->SetMarkerStyle(kFullCircle);
   hData->SetMarkerColor(kRed);
-
+  
+  
   hSim->SetMarkerStyle(kFullSquare);
   hSim->SetMarkerColor(kBlue);
 
   hDByS->SetMarkerStyle(kFullTriangleUp);
-  hDByS->SetMarkerColor(kMagenta);
+  hDByS->SetMarkerColor(kGreen+1);
+  hDByS->SetLineColor(kGreen+1);
 
   //gStyle->SetOptStat(1001111);
   gStyle->SetOptStat(0);
+
   
   TLegend *legend1=new TLegend(0.39162,0.6771911,0.642121,0.8745237);
   legend1->SetFillColor(0);
@@ -749,7 +782,7 @@ int PlotRatioCanvas(TCanvas*& c1, TH1D*& hData, TH1D*& hSim,  TH1D*& hDByS)
   
   c1_2->SetBottomMargin(0.04571135);
 
-  hSim->SetMaximum(2*hSim->GetBinContent(hSim->GetMaximumBin()));
+  hSim->SetMaximum(4*hSim->GetBinContent(hSim->GetMaximumBin()));
   hSim->SetMinimum(-0.05);
   
   hSim->SetAxisRange(MinX,MaxX);
@@ -778,9 +811,9 @@ int PlotRatioCanvas(TCanvas*& c1, TH1D*& hData, TH1D*& hSim,  TH1D*& hDByS)
 void makeHistoPositive(TH1D *hist, bool setErrorZero = false){
   for(int ibin=1; ibin<hist->GetNbinsX(); ibin++){
     double binCont = hist->GetBinContent(ibin);
-    if(binCont<0){
-      hist->SetBinContent(ibin, 0);
-      if(setErrorZero) hist->SetBinError(ibin, 0);
+    if(binCont<0.0){
+      hist->SetBinContent(ibin, 1.e-5);
+      if(setErrorZero) hist->SetBinError(ibin, 1.e-5);
     }
   }
 }

@@ -1,5 +1,5 @@
 /**********************************************************************
- Created on : 25/07/2021
+ Created on : 24/11/2022
  Purpose    : Plot the cut flow histogram
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
@@ -24,84 +24,12 @@
 
 using namespace std;
 
-int CutflowNanoAll(int year = 2016, bool isMu = 1)
+int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
 {  
  
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
-  //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
-  //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_metMG";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_njet4to8";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_lowreso";
-  //const char* dir = "grid_v36_Syst/CBA_Skim_Syst_btagCSV";
-  //const char* dir = "proof_v37_SlStudy/CBA_Skim_Syst_SlStudy1"; will not work but it is same as btagCSV
-  //const char* dir = "grid_v37_Syst/CBA_Skim_Syst_SlStudy7";
-  //const char* dir = "grid_v38_Syst/CBA_Skim_Syst_TuneTest1";
-  //const char* dir = "grid_v39_Syst/ULv9_long";
-  //const char* dir = "grid_v39_Syst/Leg_muMedID";
-
-  //const char* dir = "proof_v40_cutflow/Cutflow_test1";
-  //const char* dir = "proof_v40_cutflow/Cutflow_test2_LevelMu";
-
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t4";
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t5_mediumPromptID";
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t6_IsSolvedMuon";
-  //const char* dir = "grid_v39_Syst/ULv9_Nmu_t7_Jet";
-  //const char* dir = "grid_v39_Syst/ULv9_ctrl_twikicut_med_prompt";
-  //const char* dir = "grid_v39_Syst/ULv9_PAG_med_noprompt";
-  //const char* dir = "grid_v39_Syst/ULv9_miniAOD_med_prompt";
-  //const char* dir = "grid_v39_Syst/ULv9_DeepJet";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_pre";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_post";
-  // const char* dir = "grid_v39_Syst/ULv9_samplewt_noscale_pre";
-  // const char* dir = "grid_v39_Syst/ULv9_samplewt_noscale_post";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_mujets";
-  //const char* dir = "grid_v39_Syst/ULv9_samplewt_jetpuid_lwp";
-  //const char* dir = "grid_v39_Syst/CBA_KinFit_ULv9";
-  //const char* dir = "grid_v39_Syst/CBA_KinFit_ULv9/pre";
-  //const char* dir = "grid_v39_Syst/CBA_KinFit_ULv9/post";
-  //const char* dir = "grid_v39_Syst/CBA_CTag_ULv9_iter1";
-  //const char* dir = "grid_v39_Syst/CBA_CTag_ULv9_iter1/pre";
-  //const char* dir = "grid_v39_Syst/CBA_CTag_ULv9_iter1/post";
-  //const char* dir = "grid_v39_Syst/CBA_KFNewReso";
-  //const char* dir = "grid_v39_Syst/CBA_KFNewReso/pre";
-  //const char* dir = "grid_v39_Syst/CBA_KFNewReso/post";
-  //const char* dir = "grid_v39_Syst/CBA_TestYear";
-  //const char* dir = "grid_v39_Syst/CBA_1718_Resubmit";
-  //const char* dir = "grid_v39_Syst/CBA_CTagM/pre";
-  //const char* dir = "grid_v39_Syst/CBA_CTagM";
-  //const char* dir = "grid_v39_Syst/CBA_AllButBC";
-  //const char* dir = "grid_v39_Syst/CBA_MiniAODEqV";
-  //const char* dir = "grid_v39_Syst/CBA_CFGenWt";
-  //const char* dir = "grid_v39_Syst/CBA_CFGenWt_Method2";
-  //const char* dir = "grid_v39_Syst/CBA_CFGenWt_Method3";
-  //const char* dir = "grid_v39_Syst/CBA_ULXS";
-  //const char* dir = "grid_v39_Syst/CBA_GeneratorWt";
-  //const char* dir = "grid_v39_Syst/CBA_CTagDD";
-  //const char* dir = "grid_v40_Syst/CBA_CTagnPUJetID";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuR";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuR-Hist";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-BCWt1";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-BJetHist";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-Hist";
-  //const char* dir1 = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2pulwp";
-  //const char* dir1 = "grid_v40_Syst/CBA_ctagv2pulwp-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-BCWtExtp1";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-wtratio_evtwt";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest";
-
-  // const char* dir = "grid_v40_Syst/CBA_gdjsoncorr/post";
-  // const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";
-  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr/pre";
-  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr_chi2lt14-CombHist";
-  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr_chi2lt8-CombHist";
-  //const char* dir1 = "grid_v40_Syst/CBA_gdjsoncorr_chi2lt4-CombHist";  
-
   const char* dir = "grid_v40_Syst/CBA_elemva80";
   const char* dir1 = "grid_v40_Syst/CBA_elemva80-CombHist";
   
@@ -111,9 +39,7 @@ int CutflowNanoAll(int year = 2016, bool isMu = 1)
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
   TFile *fin_nano_data	= TFile::Open(datafile);
-  TFile *fin_nano_sig = 0x0 ;
-  if(year == 2016 or year == 2017 or year == 2018)
-    fin_nano_sig	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
+  TFile *fin_nano_sig = TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
   TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/all_TTbar.root",dir,year));
   TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/all_singleTop.root",dir,year));
   TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/all_Wjets.root",dir,year));
@@ -125,37 +51,17 @@ int CutflowNanoAll(int year = 2016, bool isMu = 1)
   const char* datafile1 = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir1,year) : Form("root_files/%s/%d/all_DataEle.root",dir1,year) ;
   const char* qcdfile1 = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir1,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir1,year) ;
   TFile *fin_nano_data1	= TFile::Open(datafile1);
-  TFile *fin_nano_sig1 = 0x0 ;
-  if(year == 2016 or year == 2017 or year == 2018)
-    fin_nano_sig1	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir1,year));
+  TFile *fin_nano_sig1 = TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir1,year));
   TFile *fin_nano_ttbar1 = TFile::Open(Form("root_files/%s/%d/all_TTbar.root",dir1,year));
   TFile *fin_nano_stop1	= TFile::Open(Form("root_files/%s/%d/all_singleTop.root",dir1,year));
   TFile *fin_nano_wjets1	= TFile::Open(Form("root_files/%s/%d/all_Wjets.root",dir1,year));
   TFile *fin_nano_dyjets1 = TFile::Open(Form("root_files/%s/%d/all_DYjets.root",dir1,year));
   TFile *fin_nano_vbf1	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir1,year));
   TFile *fin_nano_qcd1	= TFile::Open(qcdfile1);
-  TFile *fin_mini_qcd1	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");
-
-  // // MiniAOD Final
-  // const char* dir = "local_v26_Ele";
-  // const char* datafile = (isMu) ? Form("root_files/%s/DataMu_weight.root",dir) : Form("root_files/%s/DataEle_weight.root",dir) ;
-  // const char* qcdfile = (isMu) ? Form("root_files/%s/MCQCDMu_weight.root",dir) : Form("root_files/%s/MCQCDEle_weight.root",dir) ;
-  // TFile *fin_nano_data	= TFile::Open(datafile);
-  // TFile *fin_nano_sig	= TFile::Open("root_files/local_v26_Ele/HplusM120_weight.root");
-  // TFile *fin_nano_ttbar = TFile::Open("root_files/local_v26_Ele/TTbar_weight.root");
-  // TFile *fin_nano_stop	= TFile::Open("root_files/local_v26_Ele/singleTop_weight.root");
-  // TFile *fin_nano_wjets	= TFile::Open("root_files/local_v26_Ele/Wjets_weight.root");
-  // //TFile *fin_nano_wjets	= TFile::Open("root_files/local_v26_Ele/Wjets_weight_2016.root");
-  // TFile *fin_nano_dyjets = TFile::Open("root_files/local_v26_Ele/DYjets_weight.root");
-  // TFile *fin_nano_vbf	= TFile::Open("root_files/local_v26_Ele/VBFusion_weight.root");
-  // TFile *fin_nano_qcd	= TFile::Open(qcdfile);
-  // TFile *fin_mini_qcd	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");
-
+  TFile *fin_mini_qcd1	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");  
 
   TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",cutflowUS) : Form("DataEle/base/Iso/%s",cutflowUS)));
-  TH1D *hcf_nano_sig = 0x0 ;
-  if(year == 2016 or year == 2017 or year == 2018)
-    hcf_nano_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",cutflow));
+  TH1D *hcf_nano_sig = (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",cutflow));
   TH1D *hcf_nano_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",cutflow));
   TH1D *hcf_nano_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",cutflow)); 
   TH1D *hcf_nano_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/Iso/%s",cutflow));
@@ -165,9 +71,7 @@ int CutflowNanoAll(int year = 2016, bool isMu = 1)
   TH1F *hcf_mini_qcd	= (TH1F *)fin_mini_qcd->Get("base/Iso/cutflow");
 
   TH1D *hcf_nano_data1	= (TH1D *)fin_nano_data1->Get(((isMu) ? Form("DataMu/base/Iso/%s",cutflowUS) : Form("DataEle/base/Iso/%s",cutflowUS)));
-  TH1D *hcf_nano_sig1 = 0x0 ;
-  if(year == 2016 or year == 2017 or year == 2018)
-    hcf_nano_sig1	= (TH1D *)fin_nano_sig1->Get(Form("HplusM120/base/Iso/%s",cutflow));
+  TH1D *hcf_nano_sig1 = (TH1D *)fin_nano_sig1->Get(Form("HplusM120/base/Iso/%s",cutflow));
   TH1D *hcf_nano_ttbar1	= (TH1D *)fin_nano_ttbar1->Get(Form("TTbar/base/Iso/%s",cutflow));
   TH1D *hcf_nano_stop1	= (TH1D *)fin_nano_stop1->Get(Form("singleTop/base/Iso/%s",cutflow)); 
   TH1D *hcf_nano_wjets1	= (TH1D *)fin_nano_wjets1->Get(Form("Wjets/base/Iso/%s",cutflow));
@@ -215,29 +119,38 @@ int CutflowNanoAll(int year = 2016, bool isMu = 1)
   hcf_nano_bkg->Add(hcf_nano_vbf);
   hcf_nano_bkg->Add(hcf_nano_qcd);
   
-  int WeightedCounts(int, string, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *);
-  WeightedCounts(year, cutflow, hcf_nano_data, hcf_nano_bkg, hcf_nano_sig, hcf_nano_ttbar, hcf_nano_stop, hcf_nano_wjets, hcf_nano_dyjets, hcf_nano_vbf, hcf_nano_qcd);
+  // int WeightedCounts(int, string, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *, TH1D *);
+  // WeightedCounts(year, cutflow, hcf_nano_data, hcf_nano_bkg, hcf_nano_sig, hcf_nano_ttbar, hcf_nano_stop, hcf_nano_wjets, hcf_nano_dyjets, hcf_nano_vbf, hcf_nano_qcd);
+  // printf("\n");
+  
+  int PrintCounts(bool, string, string, TFile *, TFile *, TH1D*&, TH1D*&); //The third argument is latex ready name
+  int PrintDataBkg( TH1D*, TH1D*);
+  TH1D *hBkg = new TH1D("hBkg", "ALL BKG", 12, 0, 12);
+  TH1D *hData = new TH1D("hData", "Data", 12, 0, 12);
+  TH1D *hSig = new TH1D("hSig", "Signal", 12, 0, 12);
+  PrintCounts( isMu,  "Signal ($m_{H^{+}} = 120$ GeV)", "HplusM120/base/Iso", fin_nano_sig, fin_nano_sig1, hcf_nano_sig, hSig);
+  PrintCounts( isMu,  "SM $t\\bar{t}$", "TTbar/base/Iso", fin_nano_ttbar, fin_nano_ttbar1, hcf_nano_ttbar, hBkg);
+  PrintCounts( isMu,  "Single $t$", "singleTop/base/Iso", fin_nano_stop, fin_nano_stop1, hcf_nano_stop, hBkg);
+  PrintCounts( isMu,  "W + jets", "Wjets/base/Iso", fin_nano_wjets, fin_nano_wjets1, hcf_nano_wjets, hBkg);
+  PrintCounts( isMu,  "Z/$\\gamma$ + jets", "DYjets/base/Iso", fin_nano_dyjets, fin_nano_dyjets1, hcf_nano_dyjets, hBkg);
+  PrintCounts( isMu,  "VV", "VBFusion/base/Iso", fin_nano_vbf, fin_nano_vbf1, hcf_nano_vbf, hBkg);
+  PrintCounts( isMu,  "MC QCD", ((isMu) ? Form("MCQCDMu/base/Iso") : Form("MCQCDEle/base/Iso")), fin_nano_qcd, fin_nano_qcd1, hcf_nano_qcd, hBkg);
+  PrintCounts( isMu,  "Data", ((isMu) ? Form("DataMu/base/Iso") : Form("DataEle/base/Iso")), fin_nano_data, fin_nano_data1, hcf_nano_data, hData);
+  PrintDataBkg(hData,hBkg);
   
   hcf_nano_data->SetMarkerStyle(kFullCircle);
   hcf_nano_data->SetMarkerColor(kBlack);
   hcf_nano_data->SetMarkerSize(1.2);
   
-  if(year == 2016 or year == 2017 or year == 2018){
-    hcf_nano_sig->SetLineStyle(kDashed);
-    hcf_nano_sig->SetLineColor(kRed);
-    hcf_nano_sig->SetLineWidth(2);
-  }
-
-  hcf_nano_ttbar->SetFillColor(kCyan+1);
+  hcf_nano_sig->SetLineStyle(kDashed);
+  hcf_nano_sig->SetLineColor(kRed);
+  hcf_nano_sig->SetLineWidth(2);
   
+  hcf_nano_ttbar->SetFillColor(kCyan+1);  
   hcf_nano_stop->SetFillColor(kViolet);
-
   hcf_nano_wjets->SetFillColor(kYellow);
-
   hcf_nano_dyjets->SetFillColor(kOrange+1);
-  
   hcf_nano_vbf->SetFillColor(kGreen+2);
-
   hcf_nano_qcd->SetFillColor(kRed);
   
   THStack *hs = new THStack("hs","");
@@ -247,7 +160,10 @@ int CutflowNanoAll(int year = 2016, bool isMu = 1)
   hs->Add(hcf_nano_qcd);
   hs->Add(hcf_nano_stop);
   hs->Add(hcf_nano_ttbar);
-
+  
+  
+  hcf_nano_data->SetTitle(((isMu)? Form("%d : #mu + jets",year):Form("%d : #it{e} + jets",year)));
+  
   TLegend *leg = new TLegend(0.6962751,0.5611814,0.8925501,0.8924051);
   leg->SetFillColor(10);
   leg->AddEntry(hcf_nano_data, Form("Data") ,"lp");
@@ -260,39 +176,159 @@ int CutflowNanoAll(int year = 2016, bool isMu = 1)
   if(year == 2016 or year == 2017 or year == 2018)
     leg->AddEntry(hcf_nano_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
   
-  const char *cutnames[10] = {"Trigger", Form("Nof #mu = 1"), "No. of jets #geq 4", "MET #geq 20 GeV", "No. of #it{b}-jets #geq 2", "KinFit Sel.", "", "" ,"",""};
+  const char *cutnames[10] = {"Trigger", Form("Nof #mu = 1"), "No. of jets #geq 4", "MET #geq 20 GeV", "No. of #it{b} jets #geq 2", "KinFit Sel.", "Excl. #it{c} jet LWP", "Excl. #it{c} jet MWP" ,"Excl. #it{c} jet TWP",""};
   for (int ibin=2;ibin<hcf_nano_data->GetNbinsX();ibin++){
     hcf_nano_data->GetXaxis()->SetBinLabel(ibin, cutnames[ibin-2]);
   }
-
+  
   hcf_nano_data->SetMinimum(1.0e-1);
   hcf_nano_data->SetMaximum(1.0e12);
   //hcf_nano_data->SetMaximum(1.0e9);
   
-
+  string outname = (isMu) ? Form("cutflow_%d_mu.pdf",year) : Form("cutflow_%d_ele.pdf",year) ;
   TCanvas *c1 = new TCanvas("c1","c1");
   gStyle->SetOptStat(0);
-  gStyle->SetOptTitle(0);
+  //gStyle->SetOptTitle(0);
   c1->SetLogy();
   c1->SetTickx();
   c1->SetTicky();
   hcf_nano_data->Draw("e1p");
   hs->Draw("same hist");
-  // hcf_nano_qcd->Draw("same hist");
-  // hcf_nano_ttbar->Draw("same hist");
-  // hcf_nano_stop->Draw("same hist");
-  // hcf_nano_wjets->Draw("same hist");
-  // hcf_nano_dyjets->Draw("same hist");
-  // hcf_nano_vbf->Draw("same hist");
-  //hcf_nano_stop->Draw("same hist");
-  if(year == 2016 or year == 2017 or year == 2018)
-    hcf_nano_sig->Draw("same hist");
+  hcf_nano_sig->Draw("same hist");
   hcf_nano_data->Draw("e1p same");
   leg->Draw();
   c1->Update();
-
+  c1->SaveAs(outname.c_str());
   return true;
 }
+
+int PrintDataBkg(TH1D *hData, TH1D *hBkg)
+{
+  printf("%s & ",hBkg->GetTitle());
+  for (int ibin=2;ibin<hBkg->GetNbinsX();ibin++){
+    if(hBkg->GetBinContent(ibin)>0.0 and hBkg->GetBinContent(ibin+1)>0.0){
+      if(hBkg->GetBinContent(ibin)>1e6){
+	printf("%.4e & ",hBkg->GetBinContent(ibin));
+      }else{
+	printf("%.1f & ",hBkg->GetBinContent(ibin));
+      }
+    }else if(hBkg->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hBkg->GetBinContent(ibin+1),0.0,1.e-5)){
+      printf("%.1f \\\\\\hline ",hBkg->GetBinContent(ibin));
+    }
+  }
+  printf("\n");
+
+  printf("Data/Bkg & ");
+    for (int ibin=2;ibin<hData->GetNbinsX();ibin++){
+      // if(ibin==8) continue;
+      if(hData->GetBinContent(ibin)>0.0 and hData->GetBinContent(ibin+1)>0.0){
+	printf("%.4f & ",hData->GetBinContent(ibin)/hBkg->GetBinContent(ibin));
+      }else if(hData->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hData->GetBinContent(ibin+1),0.0,1.e-5)){
+	printf("%.4f \\\\\\hline ",hData->GetBinContent(ibin)/hBkg->GetBinContent(ibin));
+      }
+    }
+  printf("\n");
+
+ return true;
+}
+
+ int PrintCounts(bool isMu, string name, string path, TFile *fin, TFile *fin1, TH1D*& hInputHist, TH1D*& hBkg)
+{
+  const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
+  const char* excL = (isMu) ? "_ct_ExcL_mjj_mu" : "_ct_ExcL_mjj_ele";
+  const char* excM = (isMu) ? "_ct_ExcM_mjj_mu" : "_ct_ExcM_mjj_ele";
+  const char* excT = (isMu) ? "_ct_ExcT_mjj_mu" : "_ct_ExcT_mjj_ele";
+  
+  TH1D *hist	= (TH1D *)fin->Get(Form("%s/%s",path.c_str(),cutflow));
+  TH1D *hist1	= (TH1D *)fin1->Get(Form("%s/%s",path.c_str(),cutflow));
+  TH1D *hist1ExcL	= (TH1D *)fin1->Get(Form("%s/%s",path.c_str(),excL));
+  TH1D *hist1ExcM	= (TH1D *)fin1->Get(Form("%s/%s",path.c_str(),excM));
+  TH1D *hist1ExcT	= (TH1D *)fin1->Get(Form("%s/%s",path.c_str(),excT));
+
+  for (int ibin=6;ibin<hist1->GetNbinsX();ibin++)
+    hist->SetBinContent(ibin, hist1->GetBinContent(ibin));
+  if(name.find("Signal")!=string::npos){
+    hist->Scale(0.1211); //Scaledown to not display the original value
+    hist1->Scale(0.1211); //Scaledown to not display the original value
+    hist1ExcL->Scale(0.1211); //Scaledown to not display the original value
+    hist1ExcM->Scale(0.1211); //Scaledown to not display the original value
+    hist1ExcT->Scale(0.1211); //Scaledown to not display the original value
+  }
+  
+  printf("%s & ",name.c_str());
+  for (int ibin=2;ibin<hist->GetNbinsX();ibin++){
+    if(ibin>=8) continue; // To skip inclusive charm tagging counts after kinfit
+    if(hist->GetBinContent(ibin)>0.0 and hist->GetBinContent(ibin+1)>0.0){
+      if(hist->GetBinContent(ibin)>1e6){
+	printf("%.4e & ",hist->GetBinContent(ibin));
+      }else{
+	printf("%.1f & ",hist->GetBinContent(ibin));
+      }
+    }else{
+      //}else if(hist->GetBinContent(ibin)>0.0 and TMath::AreEqualAbs(hist->GetBinContent(ibin+1),0.0,1.e-5)){
+      //printf("%.1f \\\\ ",hist->GetBinContent(ibin)); 
+      printf("- & ");
+    }
+    hBkg->SetBinContent(ibin, hBkg->GetBinContent(ibin) + hist->GetBinContent(ibin));
+    hInputHist->SetBinContent(ibin, hist->GetBinContent(ibin));
+  }
+  int bin = 8;
+  double integral = hist1ExcL->Integral();
+  if(integral>0){
+    if(integral>1e6){
+      printf("%.4e & ",integral);
+    }else{
+      printf("%.1f & ",integral);
+    }
+    hBkg->SetBinContent(bin, hBkg->GetBinContent(bin) + integral);
+    hInputHist->SetBinContent(bin, integral);
+  }else{
+    printf("- & ");
+  }
+  bin++;
+
+  integral = hist1ExcM->Integral();
+  if(integral>0){
+    if(integral>1e6){
+      printf("%.4e & ",integral);
+    }else{
+      printf("%.1f & ",integral);
+    }
+    hBkg->SetBinContent(bin, hBkg->GetBinContent(bin) + integral);
+    hInputHist->SetBinContent(bin, integral);
+  }else{
+    printf("- & ");
+  }
+  bin++;
+  
+  integral = hist1ExcT->Integral();
+  if(integral>0){
+    if(integral>1e6){
+      if(name.find("QCD")!=string::npos or name.find("Data")!=string::npos)
+	printf("%.4e \\\\\\hline ",integral);
+      else
+	printf("%.4e \\\\ ",integral);
+    }else{
+      if(name.find("QCD")!=string::npos or name.find("Data")!=string::npos)
+	printf("%.1f \\\\\\hline ",integral);
+      else
+	printf("%.1f \\\\ ",integral);
+    }
+    hBkg->SetBinContent(bin, hBkg->GetBinContent(bin) + integral);
+    hInputHist->SetBinContent(bin, integral);
+  }else{
+    if(name.find("QCD")!=string::npos or name.find("Data")!=string::npos)
+      printf("- \\\\\\hline ");
+    else
+      printf("- \\\\ ");
+  }
+  bin++;
+
+  printf("\n");
+  
+  return true;
+}
+
 
 int WeightedCounts(int year, string cutflow, TH1D *hcf_nano_data, TH1D *hcf_nano_bkg, TH1D *hcf_nano_sig, TH1D *hcf_nano_ttbar, 
 		   TH1D *hcf_nano_stop,TH1D *hcf_nano_wjets, TH1D *hcf_nano_dyjets, TH1D *hcf_nano_vbf, TH1D *hcf_nano_qcd)

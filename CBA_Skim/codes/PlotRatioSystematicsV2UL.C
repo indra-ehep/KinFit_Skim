@@ -36,7 +36,7 @@ double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from system
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 int rebin = 50;
 
-int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 0){
+int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 17){
 
   // Setters
   int SetGlobalStyle(void);
@@ -112,7 +112,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
 
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figss/Week_Work_Report/2022-11-25/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2022-11-25/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
@@ -177,7 +177,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   files_avmc.push_back(fin_nano_dyjets) ; files_avdd.push_back(fin_nano_dyjets);
   files_avmc.push_back(fin_nano_vbf) ; files_avdd.push_back(fin_nano_vbf);
   files_avmc.push_back(fin_nano_qcd_mc) ; files_avdd.push_back(fin_nano_qcd);
-  
+
   TH1D	*hcf_nano_data	    = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname.c_str()) : Form("DataEle/base/Iso/%s",histname.c_str())));
   TH1D	*hcf_nano_sig	    = (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",histname.c_str()));
   TH1D	*hcf_nano_ttbar	    = (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",histname.c_str()));
@@ -188,7 +188,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   TH1D	*hcf_nano_qcd_mc    = (TH1D *)fin_nano_qcd_mc->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname.c_str()) : Form("MCQCDEle/base/Iso/%s",histname.c_str())));
   TH1D	*hcf_nano_qcd	    = (TH1D *)fin_nano_qcd->Get(Form("QCDdd/base/Iso/%s",histname.c_str()));
   TH1D	*hcf_nano_qcd_iso20 = (TH1D *)fin_nano_qcd->Get(Form("QCDdd/iso20/Iso/%s",histname.c_str()));
-  
+
   double stat_Error = 0.0;
   double Norm = hcf_nano_qcd->IntegralAndError(1,hcf_nano_qcd->GetNbinsX(),stat_Error); 
   double stat_Error_iso20 = 0.0;
@@ -392,7 +392,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   }else if(htype==9){
     upper_minX = 0.0; upper_maxX = 10.0;   //x-axis range
   }else if(htype>=10){
-    upper_minX = 0.0; upper_maxX = 200.0;   //x-axis range
+    upper_minX = 0.0; upper_maxX = 500.0;   //x-axis range
   // }else if(htype==20 or htype==21){
   //   upper_minX = -0.5; upper_maxX = 200.0;   //x-axis range
   }
@@ -414,8 +414,8 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   //hs->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
   hMC->SetMaximum(upper_maxY);
   hMC->SetMinimum(upper_minY);
-  //hMC->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
-  hMC->GetXaxis()->SetRangeUser(upper_minX, 200.0);
+  hMC->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
+  //hMC->GetXaxis()->SetRangeUser(upper_minX, 500.0);
   //hData->GetXaxis()->SetRange(hData->FindBin(upper_minX), hData->FindBin(upper_maxX));
   //hMC->GetXaxis()->SetRange(upper_minX, upper_maxX);
   //axis Titles
