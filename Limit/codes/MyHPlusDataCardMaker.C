@@ -359,12 +359,12 @@ void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
             << space << qcd_dd->Integral()
             << endl;
       }
-      else if(line.find("CMS_eff_lep")!=string::npos){  
+      else if(line.find("CMS_eff_lep ")!=string::npos){  
         if(isMuChannel) line.replace( line.find("lep") , 4 , string(Form("%s", "m")));   
         else line.replace( line.find("lep") , 4 , string(Form("%s", "e")));
         out << line << endl;
       }  
-      else if(line.find("CMS_eff_bcInc1")!=string::npos){
+      else if(line.find("CMS_eff_bcInc1 ")!=string::npos){
         float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag1Up, wh_bcTag1Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
         
@@ -384,7 +384,7 @@ void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
         out << line << endl;
       }
-      else if(line.find("CMS_eff_bcInc2")!=string::npos){
+      else if(line.find("CMS_eff_bcInc2 ")!=string::npos){
         float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag2Up, wh_bcTag2Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
         
@@ -404,7 +404,7 @@ void MyHPlusDataCardMakerMini(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
         out << line << endl;
       }
-      else if(line.find("CMS_eff_bcInc3")!=string::npos){
+      else if(line.find("CMS_eff_bcInc3 ")!=string::npos){
         float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag3Up, wh_bcTag3Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
         
@@ -607,7 +607,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   if(histName.Contains("ExL")) isExL = true;
   if(histName.Contains("ExM")) isExM = true;
   
-  bool isNormalized = true;
+  bool isNormalized = false;
   //ttbar
   double sf_ttbar = 1.0; 
   baseDir = "TTbar";
@@ -704,6 +704,13 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* ttbar_isrDown = DC.readWriteHisto(fTT, baseDir+"/isrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrDown", true, isNormalized, ttbar);
   TH1F* ttbar_fsrUp = DC.readWriteHisto(fTT, baseDir+"/fsrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrUp", true, isNormalized, ttbar);
   TH1F* ttbar_fsrDown = DC.readWriteHisto(fTT, baseDir+"/fsrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrDown", true, isNormalized, ttbar);
+  //isNormalized not applied
+  TH1F* ttbar_bcTag1Up = DC.readWriteHisto(fTT, baseDir+"/bctag1up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Up", true);
+  TH1F* ttbar_bcTag1Down = DC.readWriteHisto(fTT, baseDir+"/bctag1down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Down", true);
+  TH1F* ttbar_bcTag2Up = DC.readWriteHisto(fTT, baseDir+"/bctag2up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag2Up", true);
+  TH1F* ttbar_bcTag2Down = DC.readWriteHisto(fTT, baseDir+"/bctag2down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag2Down", true);
+  TH1F* ttbar_bcTag3Up = DC.readWriteHisto(fTT, baseDir+"/bctag3up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag3Up", true);
+  TH1F* ttbar_bcTag3Down = DC.readWriteHisto(fTT, baseDir+"/bctag3down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag3Down", true);
   
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -835,6 +842,13 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wjet_fsrUp = DC.readWriteHisto(fWJ, baseDir+"/fsrup"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrUp", true, isNormalized, wjet);
   TH1F* wjet_fsrDown = DC.readWriteHisto(fWJ, baseDir+"/fsrdown"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_fsrDown", true, isNormalized, wjet);
 
+  TH1F* wjet_bcTag1Up = DC.readWriteHisto(fWJ, baseDir+"/bctag1up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag1Up", true);
+  TH1F* wjet_bcTag1Down = DC.readWriteHisto(fWJ, baseDir+"/bctag1down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag1Down", true);
+  TH1F* wjet_bcTag2Up = DC.readWriteHisto(fWJ, baseDir+"/bctag2up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag2Up", true);
+  TH1F* wjet_bcTag2Down = DC.readWriteHisto(fWJ, baseDir+"/bctag2down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag2Down", true);
+  TH1F* wjet_bcTag3Up = DC.readWriteHisto(fWJ, baseDir+"/bctag3up"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag3Up", true);
+  TH1F* wjet_bcTag3Down = DC.readWriteHisto(fWJ, baseDir+"/bctag3down"+histSubDir, histName, sf_wjet, fout, fTT, "wjet_bcTag3Down", true);
+
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
       TH1F *wjet_bin_stat_Up = DC.readWriteHisto(fWJ, baseDir+"/base"+histSubDir, histName, sf_wjet, fout, fTT, Form("wjet_CMS_stat_cat1_wjet_bin_%dUp",ibin), true);
@@ -952,7 +966,13 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* zjet_fsrUp = DC.readWriteHisto(fDY, baseDir+"/fsrup"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrUp", true, isNormalized, zjet);
   TH1F* zjet_fsrDown = DC.readWriteHisto(fDY, baseDir+"/fsrdown"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_fsrDown", true, isNormalized, zjet);
 
-  
+  TH1F* zjet_bcTag1Up = DC.readWriteHisto(fDY, baseDir+"/bctag1up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag1Up", true);
+  TH1F* zjet_bcTag1Down = DC.readWriteHisto(fDY, baseDir+"/bctag1down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag1Down", true);
+  TH1F* zjet_bcTag2Up = DC.readWriteHisto(fDY, baseDir+"/bctag2up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag2Up", true);
+  TH1F* zjet_bcTag2Down = DC.readWriteHisto(fDY, baseDir+"/bctag2down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag2Down", true);
+  TH1F* zjet_bcTag3Up = DC.readWriteHisto(fDY, baseDir+"/bctag3up"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag3Up", true);
+  TH1F* zjet_bcTag3Down = DC.readWriteHisto(fDY, baseDir+"/bctag3down"+histSubDir, histName, sf_zjet, fout, fTT, "zjet_bcTag3Down", true);
+
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
       TH1F *zjet_bin_stat_Up = DC.readWriteHisto(fDY, baseDir+"/base"+histSubDir, histName, sf_zjet, fout, fTT, Form("zjet_CMS_stat_cat1_zjet_bin_%dUp",ibin), true);
@@ -1070,6 +1090,13 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* stop_fsrUp = DC.readWriteHisto(fST, baseDir+"/fsrup"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrUp", true, isNormalized, stop);
   TH1F* stop_fsrDown = DC.readWriteHisto(fST, baseDir+"/fsrdown"+histSubDir, histName, sf_stop, fout, fTT, "stop_fsrDown", true, isNormalized, stop);
 
+  TH1F* stop_bcTag1Up = DC.readWriteHisto(fST, baseDir+"/bctag1up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag1Up", true);
+  TH1F* stop_bcTag1Down = DC.readWriteHisto(fST, baseDir+"/bctag1down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag1Down", true);
+  TH1F* stop_bcTag2Up = DC.readWriteHisto(fST, baseDir+"/bctag2up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag2Up", true);
+  TH1F* stop_bcTag2Down = DC.readWriteHisto(fST, baseDir+"/bctag2down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag2Down", true);
+  TH1F* stop_bcTag3Up = DC.readWriteHisto(fST, baseDir+"/bctag3up"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag3Up", true);
+  TH1F* stop_bcTag3Down = DC.readWriteHisto(fST, baseDir+"/bctag3down"+histSubDir, histName, sf_stop, fout, fTT, "stop_bcTag3Down", true);
+
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
       TH1F *stop_bin_stat_Up = DC.readWriteHisto(fST, baseDir+"/base"+histSubDir, histName, sf_stop, fout, fTT, Form("stop_CMS_stat_cat1_stop_bin_%dUp",ibin), true);
@@ -1186,6 +1213,13 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* vv_isrDown = DC.readWriteHisto(fVV, baseDir+"/isrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_isrDown", true, isNormalized, vv);
   TH1F* vv_fsrUp = DC.readWriteHisto(fVV, baseDir+"/fsrup"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrUp", true, isNormalized, vv);
   TH1F* vv_fsrDown = DC.readWriteHisto(fVV, baseDir+"/fsrdown"+histSubDir, histName, sf_vv, fout, fTT, "vv_fsrDown", true, isNormalized, vv);
+
+  TH1F* vv_bcTag1Up = DC.readWriteHisto(fVV, baseDir+"/bctag1up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag1Up", true);
+  TH1F* vv_bcTag1Down = DC.readWriteHisto(fVV, baseDir+"/bctag1down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag1Down", true);
+  TH1F* vv_bcTag2Up = DC.readWriteHisto(fVV, baseDir+"/bctag2up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag2Up", true);
+  TH1F* vv_bcTag2Down = DC.readWriteHisto(fVV, baseDir+"/bctag2down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag2Down", true);
+  TH1F* vv_bcTag3Up = DC.readWriteHisto(fVV, baseDir+"/bctag3up"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag3Up", true);
+  TH1F* vv_bcTag3Down = DC.readWriteHisto(fVV, baseDir+"/bctag3down"+histSubDir, histName, sf_vv, fout, fTT, "vv_bcTag3Down", true);
 
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -1347,6 +1381,13 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wh_isrDown = DC.readWriteHisto(fWH, baseDir+"/isrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrDown", true, isNormalized, wh);
   TH1F* wh_fsrUp = DC.readWriteHisto(fWH, baseDir+"/fsrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrUp", true, isNormalized, wh);
   TH1F* wh_fsrDown = DC.readWriteHisto(fWH, baseDir+"/fsrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrDown", true, isNormalized, wh);
+
+  TH1F* wh_bcTag1Up = DC.readWriteHisto(fWH, baseDir+"/bctag1up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Up", true);
+  TH1F* wh_bcTag1Down = DC.readWriteHisto(fWH, baseDir+"/bctag1down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Down", true);
+  TH1F* wh_bcTag2Up = DC.readWriteHisto(fWH, baseDir+"/bctag2up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag2Up", true);
+  TH1F* wh_bcTag2Down = DC.readWriteHisto(fWH, baseDir+"/bctag2down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag2Down", true);
+  TH1F* wh_bcTag3Up = DC.readWriteHisto(fWH, baseDir+"/bctag3up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag3Up", true);
+  TH1F* wh_bcTag3Down = DC.readWriteHisto(fWH, baseDir+"/bctag3down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag3Down", true);
 
   if(isBinStat){
     for(int ibin = 1; ibin <= nonStatBins ; ibin++){
@@ -1663,6 +1704,66 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 
         float fsrUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_fsrUp, vv_fsrDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", fsrUnc_vv)) ); 
+        out << line << endl;
+      }
+      else if(line.find("CMS_eff_bcInc1 ")!=string::npos){
+        float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag1Up, wh_bcTag1Down) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
+        
+        float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag1Up, ttbar_bcTag1Down) : 1.00; 
+        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
+        
+        float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag1Up, wjet_bcTag1Down) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
+       
+        float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag1Up, zjet_bcTag1Down) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
+
+        float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag1Up, stop_bcTag1Down) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
+
+        float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag1Up, vv_bcTag1Down) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
+        out << line << endl;
+      }
+      else if(line.find("CMS_eff_bcInc2 ")!=string::npos){
+        float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag2Up, wh_bcTag2Down) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
+        
+        float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag2Up, ttbar_bcTag2Down) : 1.00; 
+        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
+        
+        float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag2Up, wjet_bcTag2Down) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
+       
+        float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag2Up, zjet_bcTag2Down) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
+        
+        float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag2Up, stop_bcTag2Down) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
+
+        float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag2Up, vv_bcTag2Down) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
+        out << line << endl;
+      }
+      else if(line.find("CMS_eff_bcInc3 ")!=string::npos){
+        float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag3Up, wh_bcTag3Down) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
+        
+        float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag3Up, ttbar_bcTag3Down) : 1.00; 
+        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
+        
+        float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag3Up, wjet_bcTag3Down) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
+       
+        float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag3Up, zjet_bcTag3Down) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
+        
+        float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag3Up, stop_bcTag3Down) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
+
+        float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag3Up, vv_bcTag3Down) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
         out << line << endl;
       }
       // else if(line.find("CMS_bcstat ")!=string::npos){
