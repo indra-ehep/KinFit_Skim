@@ -45,7 +45,7 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////////// Observables //////////////////////////////////////
   
   ////////////////////// Weight and other histograms histograms ///////////////////////
-  fNBWtHists = 102;
+  fNBWtHists = 103;
   fNWtHists = fNDDReg*fNBWtHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNWtHists*fNSyst;
   histWt = new TH1D*[totNHists];
@@ -300,7 +300,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ISRweight_Do","_ISRweight_Do",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_PUWeight_Up","_PUWeight_Up",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_PUWeight_Do","_PUWeight_Do",200, -10, 10);
-    // histWt[fNWtHists*isyst + hidx++] = new TH1D("_topPtReweight","_topPtReweight",200, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_topPtReweight","_topPtReweight",200, -10, 10);
 
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight","_bcTagWeight",300, -10, 50);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_stat_Up","_bcTagWeight_stat_Up",300, -10, 50);
@@ -412,7 +412,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muIso","_muIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_eleIso","_eleIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muMET","_muMET", 100, 0., 500.);
-    histWt[fNWtHists*isyst + 101] = new TH1D("_eleMET","_eleMET", 100, 0., 500.);
+    histWt[fNWtHists*isyst + 102] = new TH1D("_eleMET","_eleMET", 100, 0., 500.);
     
     // histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet1Pt_AF_mu","_bjet1Pt_AF_mu", 100, 0., 1000.);
     // histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet2Pt_AF_mu","_bjet2Pt_AF_mu", 100, 0., 1000.);
@@ -709,7 +709,9 @@ void SkimAna::SelectSyst()
 			    "pdfup", "pdfdown", "q2fup", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
                             "bctag1up", "bctag1down", "bctag2up", "bctag2down",
-                            "bctag3up", "bctag3down", "pujetidup", "pujetiddown"};
+                            "bctag3up", "bctag3down", "pujetidup", "pujetiddown",
+			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			    "topptup", "topptdown"};
   
   // for(int isyst=0;isyst<fNSyst;isyst++){
   //   //fSystList[isyst] = new char[20];
@@ -807,7 +809,7 @@ void SkimAna::SelectSyst()
       fNSyst = 1;
       fSystList.push_back(fSyst);       
     }else{//2016 or 2017 == 35, 2018 == 33
-      fNSyst = 29; 
+      fNSyst = 35; //35
       for(int isyst=0;isyst<fNSyst;isyst++)
 	fSystList.push_back(systbase[isyst]);
       
@@ -4271,8 +4273,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     
     btagSystType  = "central" ;
     GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
-    //_topPtReWeight = topPtReweight();
-    
+    _topPtReWeight = topPtReweight();    
   }
   
   //FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
@@ -5205,7 +5206,8 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
   double pujetidwt = _PUJetIDWeight ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Up ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Do ; 
   double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-
+  double topptwt = _topPtReWeight ; if(systname == "topptup") topptwt = _topPtReWeight*_topPtReWeight ;  if(systname == "topptdown") topptwt = 1.0 ;
+  
   if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
   if(systname == "bctag1up") btagwt = _bTagWeight_bc1_Up ; if(systname == "bctag1down") btagwt = _bTagWeight_bc1_Do ; 
   if(systname == "bctag2up") btagwt = _bTagWeight_bc2_Up ; if(systname == "bctag2down") btagwt = _bTagWeight_bc2_Do ; 
@@ -5214,17 +5216,18 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
-  double mufwt = 1.0 ; //if(systname == "bclhemufup") mufwt = _muFweight_Up ; if(systname == "bclhemufdown") mufwt = _muFweight_Do ;
-  double murwt = 1.0 ; //if(systname == "bclhemurup") murwt = _muRweight_Up ; if(systname == "bclhemurdown") murwt = _muRweight_Do ; 
+  double mufwt = 1.0 ; if(systname == "bclhemufup") mufwt = _muFweight_Up ; if(systname == "bclhemufdown") mufwt = _muFweight_Do ;
+  double murwt = 1.0 ; if(systname == "bclhemurup") murwt = _muRweight_Up ; if(systname == "bclhemurdown") murwt = _muRweight_Do ;
+
   
   // combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
   // combined_muwt1 = _sampleWeight * puwt * muwt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
   // combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * btagwt * pdfwt * q2wt * isrwt * fsrwt ;
 
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
-  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
-  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt;
+  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt;
+  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt;
 
   return true;
 }
@@ -6471,7 +6474,7 @@ bool SkimAna::FillEventCutFlow(){
 //_____________________________________________________________________________
 
 bool SkimAna::FillBTagWt(){
-  
+
   for(int isyst=0;isyst<fNSyst;isyst++){
     TList *list = (TList *)fFileDir[isyst*fNDDReg + 0]->GetList();
     
@@ -6492,7 +6495,10 @@ bool SkimAna::FillBTagWt(){
     // ((TH1D *) list->FindObject("_btagWeight_1a_l_Up"))->Fill(_bTagWeight_l_Up);
     // ((TH1D *) list->FindObject("_btagWeight_1a_l_Do"))->Fill(_bTagWeight_l_Do);
     // ((TH1D *) list->FindObject("_btagWeight_1a"))->Fill(_bTagWeight);
-    // ((TH1D *) list->FindObject("_topPtReweight"))->Fill(_topPtReWeight);
+    TString systname = fSystList[isyst];
+    double topptwt = _topPtReWeight ; if(systname == "topptup") topptwt = _topPtReWeight*_topPtReWeight ;  if(systname == "topptdown") topptwt = 1.0 ;
+    
+    ((TH1D *) list->FindObject("_topPtReweight"))->Fill(topptwt);
   }
   return true;
 }

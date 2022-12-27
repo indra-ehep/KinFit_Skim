@@ -32,7 +32,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_bctag123_post'
+jdlDir = 'tmpLog_rftoppt_post'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -67,11 +67,11 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_bctag123/post"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_bctag123/post"
-    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_bctag123/post"
-    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_bctag123/post"
-    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_bctag123/post"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_rftoppt/post"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_rftoppt/post"
+    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_rftoppt/post"
+    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_rftoppt/post"
+    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_rftoppt/post"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))

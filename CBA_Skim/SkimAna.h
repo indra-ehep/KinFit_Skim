@@ -2349,32 +2349,35 @@ float SkimAna::topPtReweight()
   
   float wt = 1.0;
   
-  // if(!fSample.Contains("TTbar") && !fSample.Contains("Hplus"))
-  //   return wt;
-
-  //for (int imc = 0 ; imc < int(_genPDGID->size()) ; imc++ ){      
-  int momtop = -12348, momtbar = -21356; //should not be initialized to same value
-  double topPt = -1, tbarPt = -1;
-  //for (int imc = 0 ; imc < 10 ; imc++ ){      
-  for (int imc = 0 ; imc < int(event->nGenPart_) ; imc++ ){      
-    TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenPart_pdgId_[imc]);
-    if(event->GenPart_pdgId_[imc]==6){
-      momtop = event->GenPart_genPartIdxMother_[imc] ;
-      topPt = event->GenPart_pt_[imc];
+  if(fSample.Contains("TTbar") or fSample.Contains("Hplus") or fSample.Contains("Hminus")){
+    
+    //for (int imc = 0 ; imc < int(_genPDGID->size()) ; imc++ ){      
+    int momtop = -12348, momtbar = -21356; //should not be initialized to same value
+    double topPt = -1, tbarPt = -1;
+    //for (int imc = 0 ; imc < 10 ; imc++ ){      
+    for (int imc = 0 ; imc < int(event->nGenPart_) ; imc++ ){      
+      TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(event->GenPart_pdgId_[imc]);
+      if(event->GenPart_pdgId_[imc]==6){
+	momtop = event->GenPart_genPartIdxMother_[imc] ;
+	topPt = event->GenPart_pt_[imc];
+      }
+      if(event->GenPart_pdgId_[imc]==-6){
+	momtbar = event->GenPart_genPartIdxMother_[imc] ;
+	tbarPt = event->GenPart_pt_[imc];
+      }
+      // if(momtop == momtbar)
+      //   break;
     }
-    if(event->GenPart_pdgId_[imc]==-6){
-      momtbar = event->GenPart_genPartIdxMother_[imc] ;
-      tbarPt = event->GenPart_pt_[imc];
-    }
-    if(momtop == momtbar)
-      break;
+  
+    double sfTop    = exp(0.09494 - 0.00084*topPt);
+    double sfTopBar = exp(0.09494 - 0.00084*tbarPt);
+  
+    // if(topPt>0 && tbarPt>0 && momtop==momtbar)
+    //   wt = wt*sqrt(sfTop*sfTopBar);
+    if(topPt>0 && tbarPt>0)
+      wt = wt*sqrt(sfTop*sfTopBar);
+    
   }
-  
-  double sfTop    = exp(0.09494 - 0.00084*topPt);
-  double sfTopBar = exp(0.09494 - 0.00084*tbarPt);
-  
-  if(topPt>0 && tbarPt>0 && momtop==momtbar)
-    wt = wt*sqrt(sfTop*sfTopBar);
   
   return wt;
 }
