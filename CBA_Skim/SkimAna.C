@@ -391,7 +391,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_ExcL","_ctagWeight_ExcL",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_ExcM","_ctagWeight_ExcM",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_ExcT","_ctagWeight_ExcT",200, -10, 10);
-    histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_Exc0","_ctagWeight_ExcT",200, -10, 10);
+    histWt[fNWtHists*isyst + hidx++] = new TH1D("_ctagWeight_Exc0","_ctagWeight_Exc0",200, -10, 10);
     
     //histWt[fNWtHists*isyst + hidx++] = new TH1D("_bctagWeight_2b","_bctagWeight_2b",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_wt_before_mu","_wt_before_mu",20, 0, 20);
@@ -2057,7 +2057,8 @@ void SkimAna::GetPUJetIDSF_1a(){
 }
 //_____________________________________________________________________________
 void SkimAna::GetBtagSF_1a(){
-  
+
+  _bTagWeight = 1.0;
   double jetPt;
   double jetEta;
   double jetBtag;
@@ -2184,7 +2185,8 @@ void SkimAna::GetBtagSF_1a(){
 
 //_____________________________________________________________________________
 void SkimAna::GetCLtagSF_1a(){
-  
+
+  _cTagLWeight = 1.0;
   double jetPt;
   double jetEta;
   double jetCvsLtag;
@@ -2320,7 +2322,8 @@ void SkimAna::GetCLtagSF_1a(){
 
 //_____________________________________________________________________________
 void SkimAna::GetCMtagSF_1a(){
-  
+
+  _cTagMWeight = 1.0;
   double jetPt;
   double jetEta;
   double jetCvsLtag;
@@ -2448,7 +2451,9 @@ void SkimAna::GetCMtagSF_1a(){
 
 //_____________________________________________________________________________
 void SkimAna::GetCTtagSF_1a(){
-  
+
+  _cTagTWeight = 1.0;
+  //Info("GetCTtagSF_1a","Before : ctagSystType : %s, _cTagTWeight : %f", ctagSystType.c_str(), _cTagTWeight);
   double jetPt;
   double jetEta;
   double jetCvsLtag;
@@ -2572,6 +2577,7 @@ void SkimAna::GetCTtagSF_1a(){
   else 
     _cTagTWeight = pData/pMC;
   
+  //Info("GetCTtagSF_1a","Final : ctagSystType : %s, _cTagTWeight : %f", ctagSystType.c_str(), _cTagTWeight);
 }
 
 //_____________________________________________________________________________
@@ -5299,6 +5305,7 @@ bool SkimAna::FillCTagObs(){
 	GetCLtagSF_1a(); if(_cTagLWeight < 0.) return kTRUE;
 	_cTagLWeight_bc3_Do = _cTagLWeight;
       }
+      ctagSystType  = "central" ;
       GetCLtagSF_1a(); 
       if(_cTagLWeight < 0.) return kTRUE;
       // Info("FillCTagObs","_cTagLWeight %5.2f", _cTagLWeight);
@@ -5329,6 +5336,7 @@ bool SkimAna::FillCTagObs(){
 	GetCMtagSF_1a(); if(_cTagMWeight < 0.) return kTRUE;
 	_cTagMWeight_bc3_Do = _cTagMWeight;
       }
+      ctagSystType  = "central" ;
       GetCMtagSF_1a(); 
       if(_cTagMWeight < 0.) return kTRUE;
     }
@@ -5358,6 +5366,7 @@ bool SkimAna::FillCTagObs(){
 	GetCTtagSF_1a(); if(_cTagTWeight < 0.) return kTRUE;
 	_cTagTWeight_bc3_Do = _cTagTWeight;
       }
+      ctagSystType  = "central" ;
       GetCTtagSF_1a(); 
       if(_cTagTWeight < 0.) return kTRUE;
     }
@@ -8016,19 +8025,18 @@ void SkimAna::SlaveTerminate()
   
   Info("SlaveTerminate",
        "sample : %s, year : %d, mode : %s", fSample.Data(), fYear, fMode.Data());
-
   
   // File closure
   TDirectory *savedir = gDirectory;
   
   for(int ifile=0;ifile<1;ifile++){
-
+    
     savedir->cd();
     
     fFile[ifile]->cd();
     
     for(int isyst=0;isyst<fNSyst;isyst++){
-
+      
       //method 1
       //fFileDir[isyst*fNDDReg + 0]->cd();
       // for(int icf=0;icf<fNBCFHists;icf++){
@@ -8065,14 +8073,13 @@ void SkimAna::SlaveTerminate()
     
     for(int iscl=0;iscl<fNBSelCols;iscl++)
       fSelColDir[iscl]->Write();
-
+    
     fFile[ifile]->cd();
-
+    
     // for(int icheck=0;icheck<fNWtHists;icheck++)
     //   histWt[icheck]->Write();
     // for(int icheck=0;icheck<fNObHists;icheck++)
     //   histObs[icheck]->Write();
-
     
     printf("DataMu & ");
     for (int ibin=2;ibin<hCutFlow[1]->GetNbinsX();ibin++){
@@ -8087,7 +8094,7 @@ void SkimAna::SlaveTerminate()
       }
     }
     printf("\n");
-
+    
     printf("WtMu & ");
     for (int ibin=2;ibin<hCutFlow[2]->GetNbinsX();ibin++){
       if(hCutFlow[2]->GetBinContent(ibin)>0.0 and hCutFlow[2]->GetBinContent(ibin+1)>0.0){
@@ -8130,13 +8137,11 @@ void SkimAna::SlaveTerminate()
     }
     printf("\n");
     
-      
     fFile[ifile]->cd();
     
     savedir->cd();
     
     fFile[ifile]->Close();
-    
     
     if (fMode.BeginsWith("proof")) {
       Info("SlaveTerminate", "objects saved into '%s%s': sending related TProofOutputFile ...",

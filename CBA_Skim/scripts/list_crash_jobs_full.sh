@@ -1,7 +1,7 @@
-outputfile=/tmp/idas/fl_crash_et_error.txt
-errorfile=/tmp/idas/crash_et_error.txt
-filteredoutputfile=/tmp/idas/fl_crash_et_error_filtered.txt
-resubmitfile=/tmp/idas/resubmit_sec.txt
+outputfile=/tmp/$USER/fl_crash_et_error.txt
+errorfile=/tmp/$USER/crash_et_error.txt
+filteredoutputfile=/tmp/$USER/fl_crash_et_error_filtered.txt
+resubmitfile=/tmp/$USER/resubmit_sec.txt
 resubmitjdl=../resubmit.jdl
 if [ -f $resubmitfile ]; then rm $resubmitfile ; fi
 
@@ -14,8 +14,8 @@ nofstdouts=`ls *.stdout | wc -l`
 echo "The number of stderr files : $nofstderrs"
 echo "The number of stdout files : $nofstdouts"
 
-grep -i -E 'break|crash|segmentation|error' *.stderr | grep -v -E "TDecompLU|unknown\ branch|GenJet\_hadronFlavour" > $errorfile
-grep -i -E 'break|crash|segmentation|error' *.stderr | grep -v -E "TDecompLU|unknown\ branch|GenJet\_hadronFlavour" | cut -f 1 -d '.' > $outputfile
+grep -i -E 'break|crash|segmentation|error' *.stderr | grep -v -E "TDecompLU|unknown\ branch|GenJet\_hadronFlavour|Unable\ to\ get\ quota\ space" > $errorfile
+grep -i -E 'break|crash|segmentation|error' *.stderr | grep -v -E "TDecompLU|unknown\ branch|GenJet\_hadronFlavour|Unable\ to\ get\ quota\ space" | cut -f 1 -d '.' > $outputfile
 noflines=`wc -l $outputfile | awk '{print $1}'`
 echo "See the errors in  $errorfile"
 echo "The list of files with error reports are saved in $outputfile with nof line $noflines"
