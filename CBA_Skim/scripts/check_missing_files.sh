@@ -29,7 +29,7 @@ syst_base="base iso20"
 #$1 pointing to the path containing the hist files e.g. /eos/user/i/idas/Output/cms-hcs-run2/CBA_gdjsoncorr/pre or /eos/user/i/idas/Output/cms-hcs-run2/CBA_gdjsoncorr"
 inputdir=$1
 inputend=`echo $1 | awk -F/ '{for(i=NF;i<=NF;i++) printf "%s", $i;}'`
-skimflistdir="/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
+skimflistdir="/afs/cern.ch/user/i/$USER/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 #years="2016 or 2017"
 years=$2
@@ -45,8 +45,8 @@ do
     samples=samples_$year
     echo year : $year samples : ${!samples}
     echo inputdir : $inputdir
-    if [ -f /tmp/idas/missing_${ftype}_${year}.txt ] ; then
-	rm /tmp/idas/missing_${ftype}_${year}.txt
+    if [ -f /tmp/$USER/missing_${ftype}_${year}.txt ] ; then
+	rm /tmp/$USER/missing_${ftype}_${year}.txt
     fi
     for sample in ${!samples}
     do
@@ -63,19 +63,19 @@ do
 	    noffiles=`ls $inputdir/$year/${sample}_${ftype}_${syst}*.root 2>/dev/null | wc -l`
 	    flist=`ls $inputdir/$year/${sample}_${ftype}_${syst}*.root  2>/dev/null `
 	    #echo -e "\t ${syst} has nof files ${noffiles}"
-	    if [ -f /tmp/idas/fl.txt ] ; then
-	        rm /tmp/idas/fl.txt
+	    if [ -f /tmp/$USER/fl.txt ] ; then
+	        rm /tmp/$USER/fl.txt
 	    fi
 	    if [ ! -d $inputdir/$year/syst ] ; then
 		mkdir $inputdir/$year/syst
 	    fi
 	    for file in ${flist} ; do
-		echo -e "\t ${file}" >> /tmp/idas/fl.txt
+		echo -e "\t ${file}" >> /tmp/$USER/fl.txt
 	    done
 	    #echo -e "Adding files for sample: ${sample} and syst ${syst}"
 	    if [[ ${syst} == "cp5"* ]] || [[ ${syst} == "hdamp"* ]]  || [[ ${syst} == "mtop"* ]] ; then
 		if [[ $sample == *"TTbar"* ]]; then
-		    #sh ~/scripts/addhisto_file.sh /tmp/idas/fl.txt > /tmp/idas/out.log 2>&1
+		    #sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 		    #mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		    if [ $year -eq 2016 ] ; then
 			if [ "$inputend" = "pre" ] ; then
@@ -92,7 +92,7 @@ do
 		    expected_noffiles=0
 		fi
 	    else
-		#sh ~/scripts/addhisto_file.sh /tmp/idas/fl.txt > /tmp/idas/out.log 2>&1
+		#sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 		#mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		if [ $year -eq 2016 ] ; then
 		    if [ "$inputend" = "pre" ] ; then
@@ -106,9 +106,10 @@ do
 		fi
 		#expected_noffiles=`wc -l $skimflistdir/$year/pre/${sample}_${year}.txt | cut -f 1 -d " "`
 	    fi
-	    echo -e "sample : ${sample} | syst : ${syst} | expected : ${expected_noffiles} | found : $noffiles"
-
 	    diff=`echo "${expected_noffiles} - ${noffiles}" | bc -l`
+	    fmt="sample : %-10s | syst : %-10s | expected : %4d | found : %4d | diff : %d\n"
+	    #echo -e "sample : ${sample} | syst : ${syst} | expected : ${expected_noffiles} | found : $noffiles | diff : $diff"
+	    printf "${fmt}" "${sample}" "${syst}" "${expected_noffiles}" "$noffiles" "$diff"
 	    if [ $diff -gt 0 ] ; then
 		echo Nof missing files : $diff for syst : ${syst}
 		for imiss in `seq 1 ${expected_noffiles}`
@@ -117,35 +118,60 @@ do
 			echo File : $inputdir/$year/${sample}_${ftype}_${syst}_${imiss}of${expected_noffiles}.root is missing.
 			ifindex=$[$imiss-1]
 			# Arguments  = 2017 TTbar input/eos/2017/TTbar_2017.txt $INT(X) jecup 
-			echo "Arguments  = $year ${sample} input/eos/$year/${sample}_${year}.txt $ifindex $syst" >> /tmp/idas/missing_${ftype}_${year}.txt
-			echo "Queue 1" >> /tmp/idas/missing_${ftype}_${year}.txt
-			echo "" >> /tmp/idas/missing_${ftype}_${year}.txt
+			if [[ ${syst} == "cp5"* ]] || [[ ${syst} == "hdamp"* ]]  || [[ ${syst} == "mtop"* ]] ; then
+			    if [[ $sample == *"TTbar"* ]]; then
+				if [ $year -eq 2016 ] ; then
+				    echo "Arguments  = $year ${sample} input/eos/$year/$inputend/${tunedict[$syst]}_${year}.txt $ifindex $syst" >> /tmp/$USER/missing_${ftype}_${year}_${inputend}.txt
+				    echo "Queue 1" >> /tmp/$USER/missing_${ftype}_${year}_${inputend}.txt
+				    echo "" >> /tmp/$USER/missing_${ftype}_${year}_${inputend}.txt			
+				else
+				    echo "Arguments  = $year ${sample} input/eos/$year/${tunedict[$syst]}_${year}.txt $ifindex $syst" >> /tmp/$USER/missing_${ftype}_${year}.txt
+				    echo "Queue 1" >> /tmp/$USER/missing_${ftype}_${year}.txt
+				    echo "" >> /tmp/$USER/missing_${ftype}_${year}.txt							    
+				fi
+			    fi
+			else
+			    echo "Arguments  = $year ${sample} input/eos/$year/${sample}_${year}.txt $ifindex $syst" >> /tmp/$USER/missing_${ftype}_${year}.txt
+			    echo "Queue 1" >> /tmp/$USER/missing_${ftype}_${year}.txt
+			    echo "" >> /tmp/$USER/missing_${ftype}_${year}.txt
+			fi
 		    fi
 		done
 	    fi
 	done
 
 	# flist=`ls $inputdir/$year/syst/${sample}_syst-*.root`
-	# if [ -f /tmp/idas/fl.txt ] ; then
-	#     rm /tmp/idas/fl.txt
+	# if [ -f /tmp/$USER/fl.txt ] ; then
+	#     rm /tmp/$USER/fl.txt
 	# fi
 	# if [ ! -d $inputdir/$year/all ] ; then
 	#     mkdir $inputdir/$year/all
 	# fi
 	# for file in ${flist} ; do
-	#     echo -e "\t ${file}" >> /tmp/idas/fl.txt
+	#     echo -e "\t ${file}" >> /tmp/$USER/fl.txt
 	# done
 	# echo -e "Adding files for sample ${sample}"
-	#sh ~/scripts/addhisto_file.sh /tmp/idas/fl.txt > /tmp/idas/out.log 2>&1
+	#sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 	#cp histo_merged.root $inputdir/$year/all/all_${sample}.root
-	#mv histo_merged.root /tmp/idas/all_${sample}.root	
+	#mv histo_merged.root /tmp/$USER/all_${sample}.root	
     done
-    if [ -f /tmp/idas/missing_${ftype}_${year}.txt ] ; then
-   	noflines=`wc -l /tmp/idas/missing_${ftype}_${year}.txt | awk '{print $1}'`
-    	if [ $noflines -gt 0 ] ; then
-    	    echo "See the input aruments for jdl files at /tmp/idas/missing_${ftype}_${year}.txt"
-    	fi
+    if [ $year -eq 2016 ] ; then
+	if [ -f /tmp/$USER/missing_${ftype}_${year}_${inputend}.txt ] ; then
+   	    noflines=`wc -l /tmp/$USER/missing_${ftype}_${year}_${inputend}.txt | awk '{print $1}'`
+    	    if [ $noflines -gt 0 ] ; then
+    		echo "See the input aruments for jdl files at /tmp/$USER/missing_${ftype}_${year}_${inputend}.txt"
+    	    fi
+	else
+    	    echo "No missing file has been created for 2016"
+	fi
     else
-    	echo "No missing file has been created"
+	if [ -f /tmp/$USER/missing_${ftype}_${year}.txt ] ; then
+   	    noflines=`wc -l /tmp/$USER/missing_${ftype}_${year}.txt | awk '{print $1}'`
+    	    if [ $noflines -gt 0 ] ; then
+    		echo "See the input aruments for jdl files at /tmp/$USER/missing_${ftype}_${year}.txt"
+    	    fi
+	else
+    	    echo "No missing file has been created"
+	fi
     fi
 done

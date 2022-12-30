@@ -23,7 +23,7 @@ tunedict["mtopdown"]="mtopdown_TTbar"
 syst_base="base iso20"
 #syst_base="base"
 
-inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_rftoppt/post"
+inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_ctagcorr/post"
 skimflistdir="/afs/cern.ch/user/i/$USER/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2016"
