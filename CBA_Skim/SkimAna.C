@@ -2059,6 +2059,7 @@ void SkimAna::GetPUJetIDSF_1a(){
 void SkimAna::GetBtagSF_1a(){
 
   _bTagWeight = 1.0;
+  // Info("GetBtagSF_1a","Before : btagSystType : %s, _bTagWeight : %f", btagSystType.c_str(), _bTagWeight);
   double jetPt;
   double jetEta;
   double jetBtag;
@@ -2181,12 +2182,15 @@ void SkimAna::GetBtagSF_1a(){
   else 
     _bTagWeight = pData/pMC;
 
+  // Info("GetBtagSF_1a","After : btagSystType : %s, _bTagWeight : %f", btagSystType.c_str(), _bTagWeight);
 }
 
 //_____________________________________________________________________________
 void SkimAna::GetCLtagSF_1a(){
 
   _cTagLWeight = 1.0;
+  // Info("GetCLtagSF_1a","Before : ctagSystType : %s, _cTagLWeight : %f", ctagSystType.c_str(), _cTagLWeight);
+
   double jetPt;
   double jetEta;
   double jetCvsLtag;
@@ -2224,7 +2228,7 @@ void SkimAna::GetCLtagSF_1a(){
   } else if (ctagSystType=="l_down"){
     l_sysType = "down";
   }	
-  
+  // Info("GetCLtagSF_1a","1.1 : ctagSystType : %s, c_sysType : %s, _cTagLWeight : %f", ctagSystType.c_str(), c_sysType.c_str(), _cTagLWeight);
   double ctagThresholdCvsLL = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_L_cut  ;
   double ctagThresholdCvsBL = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_L_cut  ;
   
@@ -2245,6 +2249,7 @@ void SkimAna::GetCLtagSF_1a(){
       jetPt = sjhadAF.Pt();
       jetEta = fabs(sjhadAF.Eta());
     }
+    // Info("GetCLtagSF_1a","1.2 : ctagSystType : %s, c_sysType : %s, _cTagLWeight : %f, ijet = %d, _cjhad_id = %d, _sjhad_id = %d", ctagSystType.c_str(), c_sysType.c_str(), _cTagLWeight, ijet, _cjhad_id, _sjhad_id);
     //jetFlavor = abs(event->jetPartFlvr_[jetInd]);
     jetFlavor = TMath::Abs(event->jetHadFlvr_[jetInd]);
     jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
@@ -2264,6 +2269,7 @@ void SkimAna::GetCLtagSF_1a(){
       maxbinX = b_CL_eff->GetXaxis()->GetLast();
       maxbinY = b_CL_eff->GetYaxis()->GetLast();
       Eff = b_CL_eff->GetBinContent(xbin,ybin);
+      // Info("GetCLtagSF_1a","1.3 : ctagSystType : %s, c_sysType : %s, _cTagLWeight : %f, ijet = %d, _cjhad_id = %d, _sjhad_id = %d, jetFlavor : %d", ctagSystType.c_str(), c_sysType.c_str(), _cTagLWeight, ijet, _cjhad_id, _sjhad_id, jetFlavor);
       //cout << "bjet : (pt,eta) : (" << jetPt << "," << jetEta << "), SFc : " << SFc << ", Eff : " <<  Eff << endl;
     }
     else if(jetFlavor == 4){
@@ -2279,6 +2285,7 @@ void SkimAna::GetCLtagSF_1a(){
       maxbinX = c_CL_eff->GetXaxis()->GetLast();
       maxbinY = c_CL_eff->GetYaxis()->GetLast();
       Eff = c_CL_eff->GetBinContent(xbin,ybin);
+      // Info("GetCLtagSF_1a","1.3 : ctagSystType : %s, c_sysType : %s, _cTagLWeight : %f, ijet = %d, _cjhad_id = %d, _sjhad_id = %d, jetFlavor : %d", ctagSystType.c_str(), c_sysType.c_str(), _cTagLWeight, ijet, _cjhad_id, _sjhad_id, jetFlavor);
       //cout << "cjet : (pt,eta) : (" << jetPt << "," << jetEta << "), SFc : " << SFc << ", Eff : " <<  Eff << endl;
     }
     else {
@@ -2294,6 +2301,7 @@ void SkimAna::GetCLtagSF_1a(){
       maxbinX = l_CL_eff->GetXaxis()->GetLast();
       maxbinY = l_CL_eff->GetYaxis()->GetLast();
       Eff = l_CL_eff->GetBinContent(xbin,ybin);
+      // Info("GetCLtagSF_1a","1.3 : ctagSystType : %s, c_sysType : %s, _cTagLWeight : %f, ijet = %d, _cjhad_id = %d, _sjhad_id = %d, jetFlavor : %d", ctagSystType.c_str(), c_sysType.c_str(), _cTagLWeight, ijet, _cjhad_id, _sjhad_id, jetFlavor);
       //cout << "ljet : (pt,eta) : (" << jetPt << "," << jetEta << "), SFc : " << SFc << ", Eff : " <<  Eff << endl;
     }
     
@@ -2318,12 +2326,14 @@ void SkimAna::GetCLtagSF_1a(){
   else 
     _cTagLWeight = pData/pMC;
 
+  // Info("GetCLtagSF_1a","After : ctagSystType : %s, _cTagLWeight : %f", ctagSystType.c_str(), _cTagLWeight);
 }
 
 //_____________________________________________________________________________
 void SkimAna::GetCMtagSF_1a(){
 
   _cTagMWeight = 1.0;
+  // Info("GetCMtagSF_1a","Before : ctagSystType : %s, _cTagMWeight : %f", ctagSystType.c_str(), _cTagMWeight);
   double jetPt;
   double jetEta;
   double jetCvsLtag;
@@ -2404,11 +2414,11 @@ void SkimAna::GetCMtagSF_1a(){
     else if(jetFlavor == 4){
       if(fYear==2016){
 	if(isPreVFP)
-	  SFc = readera_CM.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
+	  SFc = readera_CM.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
 	if(isPostVFP)
-	  SFc = readerb_CM.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+	  SFc = readerb_CM.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       }else
-	SFc = reader_CM.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+	SFc = reader_CM.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_CM_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = c_CM_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = c_CM_eff->GetXaxis()->GetLast();
@@ -2447,13 +2457,14 @@ void SkimAna::GetCMtagSF_1a(){
   else 
     _cTagMWeight = pData/pMC;
 
+  // Info("GetCMtagSF_1a","After : ctagSystType : %s, _cTagMWeight : %f", ctagSystType.c_str(), _cTagMWeight);
 }
 
 //_____________________________________________________________________________
 void SkimAna::GetCTtagSF_1a(){
 
   _cTagTWeight = 1.0;
-  //Info("GetCTtagSF_1a","Before : ctagSystType : %s, _cTagTWeight : %f", ctagSystType.c_str(), _cTagTWeight);
+  // Info("GetCTtagSF_1a","Before : ctagSystType : %s, _cTagTWeight : %f", ctagSystType.c_str(), _cTagTWeight);
   double jetPt;
   double jetEta;
   double jetCvsLtag;
@@ -2534,11 +2545,11 @@ void SkimAna::GetCTtagSF_1a(){
     else if(jetFlavor == 4){
       if(fYear==2016){
 	if(isPreVFP)
-	  SFc = readera_CT.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
+	  SFc = readera_CT.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt);  
 	if(isPostVFP)
-	  SFc = readerb_CT.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+	  SFc = readerb_CT.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       }else
-	SFc = reader_CT.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+	SFc = reader_CT.eval_auto_bounds(c_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
       xbin = c_CT_eff->GetXaxis()->FindBin(min(jetPt,799.));
       ybin = c_CT_eff->GetYaxis()->FindBin(TMath::Abs(jetEta));
       maxbinX = c_CT_eff->GetXaxis()->GetLast();
@@ -2577,7 +2588,7 @@ void SkimAna::GetCTtagSF_1a(){
   else 
     _cTagTWeight = pData/pMC;
   
-  //Info("GetCTtagSF_1a","Final : ctagSystType : %s, _cTagTWeight : %f", ctagSystType.c_str(), _cTagTWeight);
+  // Info("GetCTtagSF_1a","Final : ctagSystType : %s, _cTagTWeight : %f", ctagSystType.c_str(), _cTagTWeight);
 }
 
 //_____________________________________________________________________________
@@ -4229,6 +4240,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(selector->bJets.size() < 2) return true;
   //////=====================================================
   
+  // Info("Process","Processing : %lld(%lld) of number of events : %lld and total number of events : %.0lf, year : %s", 
+  //      fProcessed, entry, fChain->GetEntries(), totEventsUS[fSampleType.Data()],evtPick->year.c_str());
 
   //Processes after nbjet >= 2 selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5275,6 +5288,8 @@ bool SkimAna::FillCTagObs(){
       count_cJetsIncT++;	
     }
   }//jet loop
+  
+  // Info("FillCTagObs","Event : %lld, Before : count_cJetsIncL : %d, count_cJetsIncM : %d, count_cJetsIncT : %d",  fProcessed, count_cJetsIncL, count_cJetsIncM, count_cJetsIncT);
   
   //ctagLSystType  = "central" ;
   if(!isData){    
