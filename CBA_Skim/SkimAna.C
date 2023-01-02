@@ -4292,7 +4292,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     
     btagSystType  = "central" ;
     GetBtagSF_1a(); if(_bTagWeight < 0.) return kTRUE;
-    _topPtReWeight = topPtReweight();    
+    //_topPtReWeight = topPtReweight();    
   }
   
   //FillBTagCutFlow(singleMu, muonIsoCut, muonNonIsoCut, singleEle, eleIsoCut, eleNonIsoCut, isLowMET);
