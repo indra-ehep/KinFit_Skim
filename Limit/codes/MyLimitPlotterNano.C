@@ -253,7 +253,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   pl2->AddText("H^{+} #rightarrow c#bar{s}");
   pl2->AddText("BR(H^{+} #rightarrow c#bar{s}) = 1");
   
-  double totLumi = 137.1; //2016
+  double totLumi = 137.6; //2016
   if(year_dir.Contains("Run2"))
     totLumi = 137.6; //run2
   if(year_dir.Contains("2016"))

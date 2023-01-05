@@ -18,9 +18,8 @@ rate
 ---------------------------------------------------------------------------------------------------------
 CMS_lumi_13TeV  	lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Luminosity unc.
 CMS_eff_lep     	lnN     HHHH	TTTT	WWWW	DDDD	SSSS	VVVV    1.00      Lepton selection unc.
-CMS_eff_bcInc1  	lnN     HHHH    TTTT    WWWW    DDDD    SSSS    VVVV    1.00      cQcJ(cQuark_cJet) unc.
-CMS_eff_bcInc2  	lnN     HHHH    TTTT    WWWW    DDDD    SSSS    VVVV    1.00      lQbJ + lQcJ unc.
-CMS_eff_bcInc3  	lnN     HHHH    TTTT    WWWW    DDDD    SSSS    VVVV    1.00      bQbJ + bQcJ + cQbJ unc.
+CMS_eff_bTagbc  	lnN     HHHH    TTTT    WWWW    DDDD    SSSS    VVVV    1.00      btag-bc unc.
+CMS_eff_bTagl   	lnN     HHHH    TTTT    WWWW    DDDD    SSSS    VVVV    1.00      btag-l unc.
 CMS_pileup      	lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      Pileup unc.
 CMS_scale_j     	lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      JES unc.
 CMS_res_j       	lnN	HHHH	TTTT	WWWW	DDDD	SSSS	VVVV	1.00      JER unc.
