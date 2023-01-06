@@ -46,7 +46,10 @@ int CreateQCDDD(int year = 2016)
   //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_bctag123";  
+  //const char* dir = "grid_v40_Syst/CBA_bctag123";  
+  //const char* dir = "grid_v40_Syst/CBA_ctagcorr";
+  //const char* dir = "grid_v40_Syst/CBA_yearend22";
+  const char* dir = "grid_v40_Syst/CBA_notoppt";
   
   // const char *syst[] = {"base", 
   // 			"pdfup", "pdfdown", "q2up", "q2down",
@@ -162,22 +165,37 @@ int CreateQCDDD(int year = 2016)
   // }
   // fout->Close();
   // delete fout;
+  
+  // const char *syst[] = {"base", 
+  // 			"puup", "pudown", "mueffup", "mueffdown", 
+  // 			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
+  // 			"jerup", "jerdown", "btagbup", "btagbdown", 
+  // 			"btaglup", "btagldown", "prefireup", "prefiredown",
+  // 			"pdfup", "pdfdown", "q2fup", "q2down",
+  // 			"isrup", "isrdown", "fsrup", "fsrdown", 
+  // 			"iso20", "metup", "metdown",
+  // 			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
+  // 			"bctag3up", "bctag3down"};
+  
   const char *syst[] = {"base", 
-			"puup", "pudown", "mueffup", "mueffdown", 
-			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
-			"jerup", "jerdown", "btagbup", "btagbdown", 
-			"btaglup", "btagldown", "prefireup", "prefiredown",
-			"pdfup", "pdfdown", "q2fup", "q2down",
-			"isrup", "isrdown", "fsrup", "fsrdown", 
-			"iso20", "metup", "metdown",
-			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
-			"bctag3up", "bctag3down"};
-
+  			"puup", "pudown", "mueffup", "mueffdown", 
+  			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
+  			"jerup", "jerdown", "btagbup", "btagbdown", 
+  			"btaglup", "btagldown", "prefireup", "prefiredown",
+  			"pdfup", "pdfdown", "q2fup", "q2down",
+  			"isrup", "isrdown", "fsrup", "fsrdown", 
+  			"iso20", "metup", "metdown",
+  			"bctag1up", "bctag1down", "bctag2up", "bctag2down",
+  			"bctag3up", "bctag3down", "pujetidup", "pujetiddown",
+  			"bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+  			"topptup", "topptdown"};
+  
   TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
   
-  for(int isys = 0 ; isys < 34 ; isys++) {
+  //for(int isys = 0 ; isys < 34 ; isys++) {
+  for(int isys = 0 ; isys < 42 ; isys++) {
 
     TDirectory *d2 = d1->mkdir(Form("%s",syst[isys]));
     d2->cd();

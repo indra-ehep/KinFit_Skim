@@ -47,7 +47,7 @@ int PrepMjjSystTableV4UL()
   bool forPaper = false;
   double muTot[3],eleTot[3];
 
-  int year = 2016;
+  int year = 2017;
   
   ofstream outFile;
   outFile.open(Form("syst/mjjTable_%d.tex",year));

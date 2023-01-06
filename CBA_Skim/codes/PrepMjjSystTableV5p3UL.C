@@ -43,7 +43,7 @@ const char *sampleType[] = {
 			    "MCQCDMu", "MCQCDEle", "QCDdd", "QCDdd",
 			    "DataMu", "DataEle"};
 
-int PrepMjjSystTableV5UL(int year = 2017)
+int PrepMjjSystTableV5p3UL(int year = 2016)
 {
   string GetInclusive(string, int, bool, int, bool, bool, char, double *, double *);
   string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType);
@@ -135,12 +135,11 @@ int PrepMjjSystTableV5UL(int year = 2017)
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
-
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{btag bc}}  & {\\rotatebox{90}{btag l}}  & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
@@ -241,11 +240,11 @@ int PrepMjjSystTableV5UL(int year = 2017)
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{btag bc}}  & {\\rotatebox{90}{btag l}}  & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
 
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
@@ -347,11 +346,11 @@ int PrepMjjSystTableV5UL(int year = 2017)
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{btag bc}}  & {\\rotatebox{90}{btag l}}  & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
 
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
@@ -453,11 +452,11 @@ int PrepMjjSystTableV5UL(int year = 2017)
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{btag bc}}  & {\\rotatebox{90}{btag l}}  & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
 
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
@@ -498,15 +497,16 @@ string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKF
 {
   int CalcSystTable(int ifile, bool isMu, double output[], double error_percnt[], int year, bool isKFL, bool isIncl, char cType);
   
-  const int  nofSyst = 10;
+  const int  nofSyst = 12;//10;
   
   double muOut[3];
   double eleOut[3];
-  double muErr[11]; //nofSyst + stat
-  double eleErr[11]; //nofSyst + stat
+  double muErr[13]; //nofSyst + stat
+  double eleErr[13]; //nofSyst + stat
   
-  for(int i=0;i<11;i++) muErr[i] = eleErr[i] = 0.0 ;
+  for(int i=0;i<13;i++) muErr[i] = eleErr[i] = 0.0 ;
   for(int i=0;i<3;i++) muOut[i] = eleOut[i] = 0.0 ;
+
   CalcSystTable(ifile, 1, muOut, muErr,year, isKFL, isInc, cType);
   ifile = (inc) ? ifile+1 : ifile ;
   CalcSystTable(ifile, 0, eleOut, eleErr,year, isKFL, isInc, cType);
@@ -525,10 +525,14 @@ string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKF
       + " & " + Form("$%3.2f(%3.2f)$",muErr[7],eleErr[7]) 
       + " & " + Form("$%3.2f(%3.2f)$",muErr[8],eleErr[8]) 
       + " & " + Form("$%3.2f(%3.2f)$",muErr[9],eleErr[9]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[10],eleErr[10]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[11],eleErr[11]) 
       // + " & " + Form("$%3.2f(%3.2f)$",muErr[10],eleErr[10]) 
       +"\\\\";
   }else{
     combined = rowtitle 
+      + " & " + "--"
+      + " & " + "--"
       + " & " + "--"
       + " & " + "--"
       + " & " + "--"
@@ -552,19 +556,20 @@ string GetInclusive(string rowtitle, int ifile, bool inc, int year, bool isKFL, 
 {
   int CalcSystTable(int ifile, bool isMu, double output[], double error_percnt[], int year, bool isKFL, bool isIncl, char cType);
   
-  const int  nofSyst = 8;
+  const int  nofSyst = 10;
   double muOut[3];
   double eleOut[3];
-  double error_percnt[11]; //nofSyst + stat
+  double error_percnt[13]; //nofSyst + stat
 
   cout<<"Inclusive sample " << sampleType[ifile-1] <<", RowTitle : " << rowtitle << endl;
   string sampleName = sampleType[ifile-1];
 
-  for(int i=0;i<11;i++) error_percnt[i] = 0.0 ;
+  for(int i=0;i<13;i++) error_percnt[i] = 0.0 ;
   for(int i=0;i<3;i++) muOut[i] = eleOut[i] = 0.0 ;
   CalcSystTable(ifile, 1, muOut, error_percnt,year, isKFL, isInc, cType);
   ifile = (inc) ? ifile+1 : ifile ;
-  for(int i=0;i<11;i++) error_percnt[i] = 0.0 ;
+  
+  for(int i=0;i<13;i++) error_percnt[i] = 0.0 ;
   CalcSystTable(ifile, 0, eleOut, error_percnt,year, isKFL, isInc, cType);
   
   
@@ -649,14 +654,16 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 				 10.};
   
   const char *systDir[] = {"base", 
-  			     "puup", "pudown", "mueffup", "mueffdown", 
-  			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
-  			     "jerup", "jerdown", "btagbup", "btagbdown", 
-  			     "btaglup", "btagldown", "prefireup", "prefiredown",
-                             "pdfup", "pdfdown", "q2fup", "q2down",
-  			     "isrup", "isrdown", "fsrup", "fsrdown",
-                             "bctag1up", "bctag1down", "bctag2up", "bctag2down",
-  			     "bctag3up", "bctag3down"};
+			   "puup", "pudown", "mueffup", "mueffdown", 
+			   "eleeffup", "eleeffdown",  "jecup", "jecdown", 
+			   "jerup", "jerdown", "btagbup", "btagbdown", 
+			   "btaglup", "btagldown", "prefireup", "prefiredown",
+			   "pdfup", "pdfdown", "q2fup", "q2down",
+			   "isrup", "isrdown", "fsrup", "fsrdown",
+			   "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+			   "bctag3up", "bctag3down", "pujetidup", "pujetiddown",
+			   "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			   "topptup", "topptdown"};
   // const char *systDir[] = {"base", 
   // 			     "puup", "pudown", "mueffup", "mueffdown", 
   // 			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
@@ -669,14 +676,16 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 
 
   const char *systname[] = {"nominal", 
-				 "pileup up", "pileup down", "muon efficiency up", "muon efficiency down", 
-				 "electron efficiency up", "electron efficiency down",  "jet energy correction up", "jet energy correction down", 
-				 "jet energy resolution up", "jet energy resolution down", "btag b-quark up", "btag b-quark down", 
-				 "btag l-quark up", "btag l-quark down", "prefire up", "prefire down",
-				 "PDF up", "PDF down", "renormalization up", "renormalization down",
-				 "ISR up", "ISR down", "FSR up", "FSR down",
-                                 "bctag1up", "bctag1down", "bctag2up", "bctag2down",
-			         "bctag3up", "bctag3down"};
+			    "pileup up", "pileup down", "muon efficiency up", "muon efficiency down", 
+			    "electron efficiency up", "electron efficiency down",  "jet energy correction up", "jet energy correction down", 
+			    "jet energy resolution up", "jet energy resolution down", "btag b-quark up", "btag b-quark down", 
+			    "btag l-quark up", "btag l-quark down", "prefire up", "prefire down",
+			    "PDF up", "PDF down", "renormalization up", "renormalization down",
+			    "ISR up", "ISR down", "FSR up", "FSR down",
+			    "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+			    "bctag3up", "bctag3down", "pujetidup", "pujetiddown",
+			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			    "topptup", "topptdown"};
 
   
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_KFNewReso" ;
@@ -685,7 +694,8 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_GeneratorWt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagDD" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagv2-CombHist" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_bctag123" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_bctag123" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagcorr" ;
 
   //int isample = 17; 
   isample--;
@@ -745,17 +755,41 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   string baseFileName = finBase->GetName();
   
   TH1D *hIso20 = (TH1D *)finBase->Get(histiso20.c_str());
-
-  const int  nofSyst = 9;
-  const int  sysidlistMu[nofSyst] = {2, 4, 26, 28, 30, 16, 8, 10, 10};
-  const int  sysidlistEle[nofSyst] = {2, 6, 26, 28, 30, 16, 8, 10, 10};
+  
+  // const int  nofSyst = 9;
+  // const int  sysidlistMu[nofSyst] = {2, 4, 26, 28, 30, 16, 8, 10, 10};
+  // const int  sysidlistEle[nofSyst] = {2, 6, 26, 28, 30, 16, 8, 10, 10};
+  // const int  nofSyst = 12;
+  // const int  sysidlistMu[nofSyst] = {2, 4, 26, 28, 30, 16, 8, 10, 34, 36, 38, 10};
+  // const int  sysidlistEle[nofSyst] = {2, 6, 26, 28, 30, 16, 8, 10, 34, 36, 38, 10};
+  const int  nofSyst = 11;
+  const int  sysidlistMu[nofSyst] = {2, 4, 12, 14, 16, 8, 10, 34, 36, 38, 10};
+  const int  sysidlistEle[nofSyst] = {2, 6, 12, 14, 16, 8, 10, 34, 36, 38, 10};
   double error[nofSyst];
   double error_percent[nofSyst];
   
-  const int nSystGroups = 9 ; //pileup, lepton, btag-b, btag-l, prefire, jec, jer, normalization
-  //const char*  syst_group_name[] = {"Pileup", "Lepton", "btag-b", "btag-l", "Prefire", "JEC", "JER", "Norm"};
-  const char*  syst_group_name[] = {"Pileup", "Lepton", "b & c tagging-1", "b & c tagging-2", "b & c tagging-3", "Prefire", "JEC", "JER", "Norm"};
+  //const int nSystGroups = 9 ; //pileup, lepton, bc1, bc2, bc3, prefire, jec, jer, normalization
+  //const int nSystGroups = 12 ; //pileup, lepton, bc1, bc2, bc3, prefire, jec, jer, muF, muR, toppt, normalization
+  const int nSystGroups = 11 ; //pileup, lepton, btag-bc, btag-l, prefire, jec, jer, muF, muR, toppt, normalization
   
+  //const char*  syst_group_name[] = {"Pileup", "Lepton", "btag-b", "btag-l", "Prefire", "JEC", "JER", "Norm"};
+  //const char*  syst_group_name[] = {"Pileup", "Lepton", "b & c tagging-1", "b & c tagging-2", "b & c tagging-3", "Prefire", "JEC", "JER", "Norm"};
+  //const char*  syst_group_name[] = {"Pileup", "Lepton", "b & c tagging-1", "b & c tagging-2", "b & c tagging-3", "Prefire", "JEC", "JER", "muF", "muR", "toppt", "Norm"};
+  const char*  syst_group_name[] = {"Pileup", "Lepton", "btag-bc", "btag-l", "Prefire", "JEC", "JER", "muF", "muR", "toppt", "Norm"};
+
+  // const char *systDir[] = {"base", 
+  // 			   "puup", "pudown", "mueffup", "mueffdown",                   //2,  4
+  // 			   "eleeffup", "eleeffdown",  "jecup", "jecdown",              //6,  8
+  // 			   "jerup", "jerdown", "btagbup", "btagbdown",                 //10, 12
+  // 			   "btaglup", "btagldown", "prefireup", "prefiredown",         //14, 16
+  // 			   "pdfup", "pdfdown", "q2fup", "q2down",                      //18, 20
+  // 			   "isrup", "isrdown", "fsrup", "fsrdown",                     //22, 24
+  // 			   "bctag1up", "bctag1down", "bctag2up", "bctag2down",         //26, 28
+  // 			   "bctag3up", "bctag3down", "pujetidup", "pujetiddown",       //30, 32
+  // 			   "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown", //34, 36
+  // 			   "topptup", "topptdown"};                                    //38
+  //outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{btag bc}}  & {\\rotatebox{90}{btag l}}  & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+
   double syst_Error[nSystGroups];
 
   double syst_Error_Percent[nSystGroups];

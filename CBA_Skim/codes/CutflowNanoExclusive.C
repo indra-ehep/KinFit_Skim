@@ -26,18 +26,30 @@ using namespace std;
 
 int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
 {  
- 
+  
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
   // const char* dir = "grid_v40_Syst/CBA_elemva80";
   // const char* dir1 = "grid_v40_Syst/CBA_elemva80-CombHist";
-
-  const char* dir = "grid_v40_Syst/CBA_elereliso";
-  const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
-
+  
+  //const char* dir = "grid_v40_Syst/CBA_elereliso";
+  //const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
+  
   // const char* dir = "grid_v40_Syst/CBA_bctag123";
   // const char* dir1 = "grid_v40_Syst/CBA_bctag123";
+  
+  // const char* dir = "grid_v40_Syst/CBA_rftoppt";
+  // const char* dir1 = "grid_v40_Syst/CBA_rftoppt";
+  
+  // const char* dir = "grid_v40_Syst/CBA_ctagcorr";
+  // const char* dir1 = "grid_v40_Syst/CBA_ctagcorr";
+
+  // const char* dir = "grid_v40_Syst/CBA_yearend22";
+  // const char* dir1 = "grid_v40_Syst/CBA_yearend22";
+
+  const char* dir = "grid_v40_Syst/CBA_notoppt";
+  const char* dir1 = "grid_v40_Syst/CBA_notoppt";
 
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;

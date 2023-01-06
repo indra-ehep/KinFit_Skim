@@ -39,61 +39,122 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
   
   // const int nShapes = 0;
   // const char* listShapes[] = {""};
+  // const int nShapes = 17;
+  // const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
+  // 			      "bclhemuf", "bclhemur", "bcstat", "bcxdy",//8
+  // 			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
+  // 			      "bcintp", "bcextp", "bcxdyb", "bcxdyc",//16
+  //                             "bcwjc"}; //17
+
   const int nShapes = 17;
   const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
-  			      "bclhemuf", "bclhemur", "bcstat", "bcxdy",//8
-  			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
-  			      "bcintp", "bcextp", "bcxdyb", "bcxdyc",//16
-                              "bcwjc"}; //17
-  
-  const char *syst_2016[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
-			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
-			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
-			     "jecup", "jecdown", "jerup", "jerdown",//22,24
-			     // CShapeCalib EOY
-			     "bcstatup", "bcstatdown",//26
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
-			     "bcxwjcup", "bcxwjcdown",//40
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
-  };
-  
-  const char *syst_2017[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
-			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
-			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
-			     "jecup", "jecdown", "jerup", "jerdown",//22,24
-			     // CShapeCalib EOY
-			     "bcstatup", "bcstatdown",//26
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
-			     "bcxwjcup", "bcxwjcdown",//40
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
-  };
+  			      "bclhemuf", "bclhemur", "btagb", "btagl",//8
+  			      "bctag1", "bctag2", "bctag3", "toppt",//12
+  			      "hdamp", "mtop", "cp5", "jec",
+                              "jer"}; //15
 
 
-  const char *syst_2018[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
-			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
-			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
-			     "jecup", "jecdown", "jerup", "jerdown",//22,24
-			     // CShapeCalib EOY
-			     "bcstatup", "bcstatdown",//26
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
-			     "bcxwjcup", "bcxwjcdown",//40
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
-  };
+
+  // const char *syst_2016[] = {"base", 
+  // 			     "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+  // 			     "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+  // 			     "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+  // 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+  // 			     "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+  // 			     "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+  // 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+  // 			     "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+  // 			     "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+  // 			     "bctag3up", "bctag3down", "topptup", "topptdown"};            //38,40
+
+  // const char *syst_2016[] = {"base", 
+  // 			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
+  // 			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
+  // 			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
+  // 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
+  // 			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
+  // 			     "jecup", "jecdown", "jerup", "jerdown",//22,24
+  // 			     // CShapeCalib EOY
+  // 			     "bcstatup", "bcstatdown",//26
+  // 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
+  // 			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+  // 			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+  // 			     "bcxwjcup", "bcxwjcdown",//40
+  // 			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
+  // };
+  
+  // const char *syst_2017[] = {"base", 
+  // 			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
+  // 			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
+  // 			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
+  // 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
+  // 			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
+  // 			     "jecup", "jecdown", "jerup", "jerdown",//22,24
+  // 			     // CShapeCalib EOY
+  // 			     "bcstatup", "bcstatdown",//26
+  // 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
+  // 			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+  // 			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+  // 			     "bcxwjcup", "bcxwjcdown",//40
+  // 			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
+  // };  
+  
+  // const char *syst_2018[] = {"base", 
+  // 			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
+  // 			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
+  // 			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
+  // 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
+  // 			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
+  // 			     "jecup", "jecdown", "jerup", "jerdown",//22,24
+  // 			     // CShapeCalib EOY
+  // 			     "bcstatup", "bcstatdown",//26
+  // 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
+  // 			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+  // 			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+  // 			     "bcxwjcup", "bcxwjcdown",//40
+  // 			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
+  // };
+
+   const char *syst_2016[] = {"base", 
+			      "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+			      "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+			      "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+			      "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+			      "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+			      "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+			      "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+			      "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+			      "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+			      "bctag3up", "bctag3down", "topptup", "topptdown",             //38,40
+			      "cp5up", "cp5down","mtopup", "mtopdown",                      //42,44
+			      "hdampup", "hdampdown"};                                      //46
+   const char *syst_2017[] = {"base", 
+			      "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+			      "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+			      "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+			      "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+			      "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+			      "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+			      "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+			      "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+			      "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+			      "bctag3up", "bctag3down", "topptup", "topptdown",             //38,40
+			      "cp5up", "cp5down","mtopup", "mtopdown",                      //42,44
+			      "hdampup", "hdampdown"};                                      //46
+   const char *syst_2018[] = {"base", 
+			      "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+			      "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+			      "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+			      "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+			      "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+			      "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+			      "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+			      "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+			      "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+			      "bctag3up", "bctag3down", "topptup", "topptdown",             //38,40
+			      "cp5up", "cp5down","mtopup", "mtopdown",                      //42,44
+			      "hdampup", "hdampdown"};                                      //46
+
 
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v28_Syst/CBA_Skim_Syst" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
@@ -107,8 +168,8 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR" ;  
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;
-
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22" ;
     
   int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
   //int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
