@@ -38,6 +38,7 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     #command2 = 'combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     #Closest to PAG
     command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0.000001,1.0 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+
     #Using Asimov
     #command2 = 'combine --run blind --rAbsAcc 0.000001 --expectSignal 1 --setParameterRanges BR=0.0,1.0  -t -1 -d '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     print("command2 : %s"%command2)
@@ -174,22 +175,25 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
+    #path_file_dir="/home/idas/t3store3//NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist"
+    #path_file_dir="/home/idas/t3store3/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist"    
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-NJet4-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-Chi2Lt0p2-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_bctag123"
-    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22"
-    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_notoppt"
+    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22"
+    #path_file_dir="/home/idas/t3store3/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22"    
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_notoppt"
     
     muon_file_dir=path_file_dir+""
     ele_file_dir=path_file_dir+""
     
     hist_array_Inc = []
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
-    hist_array_Inc.append(["", "_kb_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
+    # hist_array_Inc.append(["", "_kb_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagL = []
     hist_array_CTagL.append(["KinFit", "mjj_kfit_CTagIncL"])

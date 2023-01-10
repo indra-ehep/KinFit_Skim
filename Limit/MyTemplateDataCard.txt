@@ -1,1 +1,1 @@
-DataCard_Templates/MyTemplateDataCard_NanoAOD_23_uptoKFbtagsyst_shape.txt
+DataCard_Templates/MyTemplateDataCard_NanoAOD_20_miniaodeqv.txt
