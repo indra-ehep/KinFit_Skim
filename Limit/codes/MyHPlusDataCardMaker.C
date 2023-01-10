@@ -1110,10 +1110,10 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   //cout<<":data_obs ================: "<<data_obs->Integral()<<endl;
   
   //wh
-  double sf_wh = 1.0;
-  baseDir = Form("HplusM%03d",mass);
-  // double sf_wh = 1.0/2.0;
-  // baseDir = Form("HplmiM%03d",mass);
+  // double sf_wh = 1.0;
+  // baseDir = Form("HplusM%03d",mass);
+  double sf_wh = 1.0/2.0;
+  baseDir = Form("HplmiM%03d",mass);
   TH1F* wh = DC.readWriteHisto(fWH, baseDir+"/base"+histSubDir, histName, sf_wh, fout, fTT, label, true);
   TH1F *wh_LeptonUp,*wh_LeptonDown;
   if(isMuChannel){
