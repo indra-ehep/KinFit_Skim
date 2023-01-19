@@ -310,7 +310,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   }
 }
 
-void LoopLimitPlotsNano(){
+void LoopLimitPlots(){
   
   // LimitPlotter("mu", "Cat1_Inc",     false, true );
   // LimitPlotter("ele", "Cat1_Inc",     false, true );
@@ -320,7 +320,7 @@ void LoopLimitPlotsNano(){
   LimitPlotter(muVal, "mu", "Cat1_Inc", false, true );
   LimitPlotter(eleVal, "ele", "Cat1_Inc", false, true );
   LimitPlotter(mueleVal, "mu_ele", "Cat1_Inc", false, true );
-  
+
   for(int i = 0; i < int(muVal.size()) ; i++)
     if(i==(int(muVal.size())-1))
       cout << "$m_{H^{+}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;

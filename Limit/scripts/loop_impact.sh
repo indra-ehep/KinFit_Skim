@@ -13,7 +13,7 @@ currdir=$PWD
 
 for i in 80 90 100 110 120 130 140 150 155 160 #nanoAOD
 #for i in 80 90 100 120 140 150 155 160  #miniAOD
-#for i in 90
+#for i in 80
 #for i in 110 120 130 140 150 155 160
 do
     python MyLimitComputer.py --ch ele --cat $category --mass $i  --year "run2" --isGOF 0
