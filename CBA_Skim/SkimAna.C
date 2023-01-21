@@ -4017,8 +4017,10 @@ Bool_t SkimAna::Process(Long64_t entry)
     double SCeta = event->eleEta_[selector->Electrons.at(0)] + event->eleDeltaEtaSC_[selector->Electrons.at(0)];
     double absSCEta = TMath::Abs(SCeta);
     if(systType == kIso20){
-      eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.11) ? true : false;
-      eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.11 ) ? true : false;
+      // eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.11) ? true : false;
+      // eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.11 ) ? true : false;
+      eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.17) ? true : false;
+      eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.17 ) ? true : false;
     }else{
       eleIsoCut =  ((absSCEta <= 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] <= 0.0695) 
       		    or 
