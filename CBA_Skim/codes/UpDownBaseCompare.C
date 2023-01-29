@@ -27,9 +27,9 @@
 
 using namespace std;
 
-int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
-
-  int PlotRatio(TH1D *h1, TH1D *h2, const char *cname);
+int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 26){
+  
+  int PlotRatio(TH1D *h1, TH1D *h2, TH1D *h3, const char *cname);
   
   const char *samples[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM140", 
 			   "HplusM150", "HplusM155", "HplusM160", "HplusM120", 
@@ -37,63 +37,126 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
 			   "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 			   "MCQCDEle"};
   
-  // const int nShapes = 0;
-  // const char* listShapes[] = {""};
-  const int nShapes = 17;
-  const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
-  			      "bclhemuf", "bclhemur", "bcstat", "bcxdy",//8
-  			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
-  			      "bcintp", "bcextp", "bcxdyb", "bcxdyc",//16
-                              "bcwjc"}; //17
+  const int nShapes = 0;
+  const char* listShapes[] = {""};
+  // const int nShapes = 13;
+  // const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
+  // 			      //"bclhemuf", "bclhemur",
+  // 			      "bcstat", "bcxdy",//8
+  // 			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
+  // 			      //"bcintp", "bcextp",
+  // 			      "bcxdyb", "bcxdyc",//16
+  //                             "bcwjc"}; //17
+
+  // const int nShapes = 17;
+  // const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
+  // 			      "bclhemuf", "bclhemur", "btagb", "btagl",//8
+  // 			      "bctag1", "bctag2", "bctag3", "toppt",//12
+  // 			      "hdamp", "mtop", "cp5", "jec",
+  //                             "jer"}; //15
+
+
+
+  // const char *syst_2016[] = {"base", 
+  // 			     "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+  // 			     "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+  // 			     "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+  // 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+  // 			     "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+  // 			     "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+  // 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+  // 			     "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+  // 			     "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+  // 			     "bctag3up", "bctag3down", "topptup", "topptdown"};            //38,40
   
   const char *syst_2016[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
-			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
-			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
-			     "jecup", "jecdown", "jerup", "jerdown",//22,24
-			     // CShapeCalib EOY
-			     "bcstatup", "bcstatdown",//26
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
-			     "bcxwjcup", "bcxwjcdown",//40
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
+  			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
+  			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
+  			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
+  			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
+  			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
+  			     "jecup", "jecdown", "jerup", "jerdown",//22,24
+  			     // CShapeCalib EOY
+  			     "bcstatup", "bcstatdown",//26
+  			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
+  			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+  			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+  			     "bcxwjcup", "bcxwjcdown",//40
+  			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
   };
   
   const char *syst_2017[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
-			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
-			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
-			     "jecup", "jecdown", "jerup", "jerdown",//22,24
-			     // CShapeCalib EOY
-			     "bcstatup", "bcstatdown",//26
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
-			     "bcxwjcup", "bcxwjcdown",//40
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
-  };
-
-
+  			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
+  			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
+  			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
+  			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
+  			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
+  			     "jecup", "jecdown", "jerup", "jerdown",//22,24
+  			     // CShapeCalib EOY
+  			     "bcstatup", "bcstatdown",//26
+  			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
+  			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+  			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+  			     "bcxwjcup", "bcxwjcdown",//40
+  			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
+  };  
+  
   const char *syst_2018[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
-			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
-			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
-			     "jecup", "jecdown", "jerup", "jerdown",//22,24
-			     // CShapeCalib EOY
-			     "bcstatup", "bcstatdown",//26
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
-			     "bcxwjcup", "bcxwjcdown",//40
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
+  			     "pdfup", "pdfdown", "q2up", "q2down",//2,4
+  			     "isrup", "isrdown", "fsrup", "fsrdown",//6,8
+  			     "puup", "pudown", "prefireup", "prefiredown",//10,12,
+  			     "mueffup", "mueffdown", "eleeffup", "eleeffdown", //14,16
+  			     "pujetidup", "pujetiddown", "metup", "metdown",//18,20
+  			     "jecup", "jecdown", "jerup", "jerdown",//22,24
+  			     // CShapeCalib EOY
+  			     "bcstatup", "bcstatdown",//26
+  			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",//28,30
+  			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown", //32,34
+  			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", //36,38
+  			     "bcxwjcup", "bcxwjcdown",//40
+  			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//42,44,46
   };
+
+   // const char *syst_2016[] = {"base", 
+   // 			      "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+   // 			      "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+   // 			      "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+   // 			      "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+   // 			      "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+   // 			      "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+   // 			      "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+   // 			      "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+   // 			      "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+   // 			      "bctag3up", "bctag3down", "topptup", "topptdown",             //38,40
+   // 			      "cp5up", "cp5down","mtopup", "mtopdown",                      //42,44
+   // 			      "hdampup", "hdampdown"};                                      //46
+   // const char *syst_2017[] = {"base", 
+   // 			      "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+   // 			      "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+   // 			      "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+   // 			      "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+   // 			      "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+   // 			      "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+   // 			      "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+   // 			      "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+   // 			      "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+   // 			      "bctag3up", "bctag3down", "topptup", "topptdown",             //38,40
+   // 			      "cp5up", "cp5down","mtopup", "mtopdown",                      //42,44
+   // 			      "hdampup", "hdampdown"};                                      //46
+   // const char *syst_2018[] = {"base", 
+   // 			      "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
+   // 			      "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
+   // 			      "puup", "pudown", "prefireup", "prefiredown",                 //10,12
+   // 			      "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
+   // 			      "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
+   // 			      "jecup", "jecdown", "jerup", "jerdown",                       //22,24
+   // 			      "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
+   // 			      "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
+   // 			      "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
+   // 			      "bctag3up", "bctag3down", "topptup", "topptdown",             //38,40
+   // 			      "cp5up", "cp5down","mtopup", "mtopdown",                      //42,44
+   // 			      "hdampup", "hdampdown"};                                      //46
+
 
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v28_Syst/CBA_Skim_Syst" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
@@ -107,8 +170,10 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagReWt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR" ;  
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;
-
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso30-CombHist" ;
     
   int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
   //int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
@@ -178,13 +243,29 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
     cout << "Using shape comparison " << endl;
   }
   
+  Double_t error_frac = max(fabs(hSysUp->Integral() - hBase->Integral()), fabs(hBase->Integral() - hSysDown->Integral()))/hBase->Integral();
+  TH1D *hRelErrUp = (TH1D *)hBase->Clone("hRelErrUp");
+  TH1D *hRelErrDown = (TH1D *)hBase->Clone("hRelErrDown");
+  for(int ibin=1; ibin<hRelErrUp->GetNbinsX(); ibin++){
+    //cout<<"ibin : "<<ibin<<", Error Frac : "<<error_frac<<endl;
+    hRelErrUp->SetBinContent(ibin, 1+error_frac);
+    hRelErrUp->SetBinError(ibin, 0.1*error_frac);
+    hRelErrDown->SetBinContent(ibin, 1.-error_frac);
+    hRelErrDown->SetBinError(ibin, 0.1*error_frac);
+  }
+  hRelErrUp->SetTitle(Form("Max. Unc. %5.3lf",(1+error_frac)));
+    
   hBase->SetLineColor(kRed);
   hSysUp->SetLineColor(kBlue);
   hSysDown->SetLineColor(kGreen+1);
-
+  hRelErrUp->SetLineColor(kMagenta);
+  hRelErrDown->SetLineColor(kMagenta);
+    
   hBase->SetLineWidth(2);
   hSysUp->SetLineWidth(2);
   hSysDown->SetLineWidth(2);
+  hRelErrUp->SetLineWidth(2);
+  hRelErrDown->SetLineWidth(2);
 
   TLegend *leg = new TLegend(0.6729323,0.803838,0.9974937,0.9957356);
   leg->SetFillColor(10);
@@ -204,14 +285,15 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
     leg->AddEntry(hBase, Form("%s",syst_2018[ibase]) ,"lfp");
     leg->AddEntry(hSysDown, Form("%s",syst_2018[isysdown]) ,"lfp");
   }
+  leg->AddEntry(hRelErrUp, Form("total uncertainty band") ,"lfp");
   if(isample==7)
     hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(120.0)));
   else
     hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(80.0)));
   hSysUp->SetTitle("");
   hSysUp->GetXaxis()->SetRangeUser(0.,170.);
-  PlotRatio(hSysUp, hBase, "c1");
-  PlotRatio(hSysDown, hBase, "c1");
+  PlotRatio(hSysUp, hBase, hRelErrUp, "c1");
+  PlotRatio(hSysDown, hBase, hRelErrDown, "c1");
   leg->Draw();
   
   TCanvas *c1 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
@@ -228,10 +310,10 @@ int UpDownBaseCompare(int isMu = 1, int year = 2017, int isysup = 28){
   return true;
 }
 
-int PlotRatio(TH1D *h1, TH1D *h2, const char *cname)
+int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
 {
   //cout<<"h1 name : "<<h1->GetName() <<", Directory : " << h1->GetDirectory()->GetMotherDir()->GetName() << endl;
-  
+
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject(cname);
   
   if(!canvas){
@@ -304,7 +386,8 @@ int PlotRatio(TH1D *h1, TH1D *h2, const char *cname)
     
     //h3->SetMarkerStyle(21);
     h3->Draw("ep");       // Draw the ratio plot
- 
+    hAvgErr->Draw("ep same");
+    
     // h1 settings
     //h1->SetLineColor(kBlue+1);
     //h1->SetLineWidth(2);
@@ -361,7 +444,7 @@ int PlotRatio(TH1D *h1, TH1D *h2, const char *cname)
     h3->SetStats(0);      // No statistics on lower plot
     h3->Divide(h2);
     h3->Draw("ep same");       // Draw the ratio plot
-    
+    hAvgErr->Draw("ep same");
     pad1->cd();
   }
 

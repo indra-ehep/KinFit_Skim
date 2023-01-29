@@ -17,7 +17,7 @@ mass=$2
 
 #test
 combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=0.0,1.0  -t -1 | tee doInitialFit.log 
-combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=0.0,1.0 --parallel 7 -t -1 | tee doFit.log
+combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=0.0,1.0 --parallel 16 -t -1 | tee doFit.log
 
 combineTool.py -M Impacts -d $t2wDataCard -m $mass -o nuisImpactJSON 
 plotImpacts.py --cms-label "Internal" -i nuisImpactJSON -o nuisImpactPDF

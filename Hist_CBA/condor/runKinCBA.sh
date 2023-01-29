@@ -4,24 +4,26 @@
 myArray=( "$@" )
 #Array: Size=$#, an element=$1, all element = $@
 
-export SCRAM_ARCH=slc7_amd64_gcc10
-export CMSVER=CMSSW_12_3_6
-
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
-printf "Worker node OS " ; lsb_release -d
-printf "SCRAM :  ${SCRAM_ARCH}\n"
-printf "CMSSW :  ${CMSVER}\n"
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then 
     echo "Running Interactively" ; 
 else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
-    
+    # export SCRAM_ARCH=slc7_amd64_gcc700
+    # source /cvmfs/cms.cern.ch/cmsset_default.sh
+    # scramv1 project CMSSW CMSSW_10_6_29
+    # cd CMSSW_10_6_29/src
+    # export SCRAM_ARCH=slc7_amd64_gcc900
+    # source /cvmfs/cms.cern.ch/cmsset_default.sh
+    # scramv1 project CMSSW CMSSW_12_1_0
+    # cd CMSSW_12_1_0/src
+    export SCRAM_ARCH=slc7_amd64_gcc10
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project $CMSVER
-    cd $CMSVER/src
+    scramv1 project CMSSW CMSSW_12_4_10
+    cd CMSSW_12_4_10/src
     eval `scramv1 runtime -sh`
     cd ../..
     
@@ -49,11 +51,11 @@ printf "Done Histogramming at ";/bin/date
 # condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 # condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 
-outputdir=CBA_elereliso-Hist1
-# condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir
-# condorOutDir1=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/$outputdir
-condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/post
-condorOutDir1=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/$outputdir/post
+outputdir=CBA_elereliso30-Hist1
+condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir
+condorOutDir1=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/$outputdir
+# condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/pre
+# condorOutDir1=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/$outputdir/pre
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;

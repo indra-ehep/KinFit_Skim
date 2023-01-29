@@ -1,5 +1,6 @@
-st=2
-year=2018
+st=0
+#year=2016
+year=$1
 for i in `seq 0 10` ; do root  -l -q -b codes/PlotRatioSystematicsV2UL.C+\($year,0,1,$i\) ; sleep $st ; done
 for i in `seq 14 17` ; do root  -l -q -b codes/PlotRatioSystematicsV2UL.C+\($year,0,1,$i\) ; sleep $st ; done 
 for i in `seq 0 10` ; do root  -l -q -b codes/PlotRatioSystematicsV2UL.C+\($year,0,0,$i\) ; sleep $st ; done 

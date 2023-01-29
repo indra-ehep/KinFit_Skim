@@ -56,7 +56,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   TGraphAsymmErrors *SystGraph(int year, string histname, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
   
   // ///////////////////////////////////////////////////////////////////////////////////////////  
-  float luminosity[3] = {35.9, 41.5, 59.8};
+  float luminosity[3] = {36.3, 41.5, 59.8};
 
   // bool isMu = 1; // 1 muon, 0 ele
   // bool isBtag = 1 ; // 1 btag, 0 kinfit
@@ -111,8 +111,9 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
     histname = (isMu) ? "_bjetNoBCBdisc_mu" : "_bjetNoBCBdisc_ele" ;  
 
   cout << "Histname : " << histname << endl;
-  
-  string outputpdf = Form("figs/Week_Work_Report/2022-11-25/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+
+  string outputpdf = Form("figs/Week_Work_Report/2023-01-26/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  //string outputpdf = Form("figs/Week_Work_Report/2023-01-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
@@ -152,7 +153,9 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-wtratio_evtwt"; int rebin = 50;
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1"; int rebin = 50;
   //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest"; int rebin = 1;
-  const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist"; 
+  //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist"; 
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -392,7 +395,11 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   }else if(htype==9){
     upper_minX = 0.0; upper_maxX = 10.0;   //x-axis range
   }else if(htype>=10){
-    upper_minX = 0.0; upper_maxX = 500.0;   //x-axis range
+    if(isBtag){
+      upper_minX = 0.0; upper_maxX = 500.0;   //x-axis range
+    }else{
+      upper_minX = 0.0; upper_maxX = 200.0;   //x-axis range
+    }
   // }else if(htype==20 or htype==21){
   //   upper_minX = -0.5; upper_maxX = 200.0;   //x-axis range
   }
@@ -486,7 +493,19 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   leg2->Draw();
   leg3->Draw();
 
-  TPaveText *t1 = new TPaveText(0.60,0.91,0.90,0.98,"NDC");
+  TPaveText *t0 = new TPaveText(0.19,0.91,0.37,0.96,"NDC");
+  t0->SetFillStyle(0);
+  t0->SetBorderSize(0);
+  //t0->SetTextFont(42);
+  t0->SetTextSize(.05); 
+  if(isBlinded)
+    t0->SetTextSize(.035); 
+  t0->SetMargin(0.1);
+  t0->AddText("CMS Preliminary");
+  t0->SetTextAlign(32); //left aligned middle vertically
+  t0->Draw();
+
+  TPaveText *t1 = new TPaveText(0.60,0.91,0.95,0.96,"NDC");
   t1->SetFillStyle(0);
   t1->SetBorderSize(0);
   t1->SetTextFont(42);
@@ -494,7 +513,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   if(isBlinded)
     t1->SetTextSize(.035); 
   t1->SetMargin(0.1);
-  t1->AddText(Form("%3.1f fb^{-1} (%d) (13 TeV)",luminosity[year%2016],year));
+  t1->AddText(Form("%3.1f fb^{-1} (13 TeV)",luminosity[year%2016]));
   t1->Draw();
   
   TPaveText *t2 = 0x0; 
@@ -546,7 +565,8 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     pad1->SetTicky();
     //h1->SetStats(0);          // No statistics on upper plot
     h1->Draw("e1p");               // Draw h1
-    syst->SetFillColorAlpha(kRed,0.7);
+    //syst->SetFillColorAlpha(kRed,0.7);
+    syst->SetFillColor(kRed-7);
     syst->Draw("e2 sames");
     // h2->Draw("hist same");         // Draw h2 on top of h1
     hs->Draw("sames hist");
@@ -634,8 +654,10 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     //h3->SetFillColor(kRed);
     h3->Draw("p");       // Draw the ratio plot
     //systRatio->SetFillColorAlpha(kRed-9,0.001);
-    systRatio->SetFillColorAlpha(kRed,0.7);
-    systRatio->SetFillStyle(3001);
+    //systRatio->SetFillColorAlpha(kRed,0.7);
+    //systRatio->SetFillColor(kGreen-8);
+    systRatio->SetFillColorAlpha(kGreen-8,0.8);
+    //systRatio->SetFillStyle(3001);
     systRatio->Draw("e2 sames");
     h3->Draw("p sames");       // Draw the ratio plot
     // h1 settings
@@ -1020,7 +1042,12 @@ double errBandUp(int iBin, int year, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *>
   for(unsigned int isys = 0 ; isys < vSystUp.size() ; isys++){
     TH1D *hSyst = vSystUp.at(isys);
     errUp += pow(fabs(hSyst->GetBinContent(iBin+1) - hCentral->GetBinContent(iBin+1)),2) ;
+    // if(iBin==41)
+    //   cout<<"hSyst : "<<hSyst->GetName()<<", bin value : "<<errUp <<", systTot : "<<hSyst->GetBinContent(iBin+1)<<", centralTot : "<<hCentral->GetBinContent(iBin+1)<<endl;
   }
+  // if(iBin==41)
+  //   cout<<"step1 : errU value : "<<errUp<<endl;
+
   if(TMath::Finite(hCentral->GetBinError(iBin+1))!=0)
     errUp += pow(hCentral->GetBinError(iBin+1),2);
   //errUp += pow(hQCD->GetBinError(iBin+1),2);
@@ -1040,10 +1067,18 @@ double errBandUp(int iBin, int year, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *>
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("VBF"))
       errUp += pow(hNom->GetBinContent(iBin+1)*0.04/2,2);
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("QCD"))
-      errUp += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);    
-  }  
+      errUp += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);
+    // if(iBin==41)
+    //   cout<<"hname : "<<hname<<", hNom : "<<hNom->GetName()<<", bin value : "<<errUp<<endl;
+  }
+  
+  // if(iBin==41)
+  //   cout<<"before : errU value : "<<errUp<<endl;
 
   errUp = sqrt(errUp) + 0.5*lumi_unc[year%2016]*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
+
+  // if(iBin==41)
+  //   cout<<"after : errU value : "<<errUp<<endl<<endl;;
 
   return errUp;
 }
@@ -1124,8 +1159,8 @@ TGraphAsymmErrors *SystGraph(int year, string histname, TH1D *hCentral,  TH1D *h
 	errorU[i] = 0.0;
 	errorD[i] = 0.0;
       }
-      // if(abs(errorU[i]) > 1.4)
-      //  	cout<<i<<", "<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<errorD[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
+      // if(abs(errorU[i]) > 1.2 or abs(errorD[i]) > 1.2)
+      // 	cout<<i<<", x : "<<hCentral->GetBinCenter(i+1)<<", Y : "<<Yval[i]<<", errU : "<<errorU[i]<<", errD : "<<errorD[i]<<", bintot : "<<hCentral->GetBinContent(i+1)<<endl;
     }
     Xval[i]   = hCentral->GetBinCenter(i+1);
     XerrorU[i]= hCentral->GetBinWidth(i+1)/2;

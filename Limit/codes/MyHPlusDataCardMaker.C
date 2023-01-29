@@ -1067,7 +1067,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     TH1F* vv_yMnT = DC.getHisto(fVV, baseDir+"/Iso/ExCTag/", "sf_CTag_yMnT_wt", fTT);
     unc_vv_ExM = DC.getUncExM(vv_yMyT, vv_yMnT);
   }
-
+  
   //QCD MC
   double sf_qcd = 1.0;
   /*
@@ -1101,6 +1101,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       TH1F *qcd_bin_stat_Do = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, Form("qcd_CMS_stat_cat1_qcd_bin_%dDown",ibin), true);
     }
   }
+  cout <<"QCD uncertainty : " << qcd_unc << endl;
   
   //Data
   double sf_data = 1.0; //should be 1, always

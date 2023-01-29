@@ -59,7 +59,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   ///////////////////////////////////////////////////////////////////////////////////////////////  
   //int year = 2016;
   
-  float luminosity[3] = {35.9, 41.5, 59.8};
+  float luminosity[3] = {36.3, 41.5, 59.8};
 
   string histname;
   histname += (isBtag) ? "_lb" : "_kb" ; 
@@ -115,15 +115,18 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
     // cout << "histname : " << histname <<  ", Reg A " << histname_RegA << ", Reg B "<< histname_RegB << endl;
     // cout << "histname1 : " << histname1 <<  ", Reg C " << histname_RegC << ", Reg D "<< histname_RegD << endl;
   }
-
-  string outputpdf = Form("figs/Week_Work_Report/2022-11-24/DD/%d/hist%s.pdf",year,histname.c_str());
+  
+  string outputpdf = Form("tt/figs/Week_Work_Report/2023-01-26/DD/%d/hist%s.pdf",year,histname.c_str());
+  //string outputpdf = Form("tt/figs/Week_Work_Report/2022-11-24/DD/%d/hist%s.pdf",year,histname.c_str());
   //string outputpdf = Form("ffigs/Week_Work_Report/2022-09-01/%d/DD/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
   //const char* dir = "grid_v33_Syst/CBA_Skim_Syst_EqPAGAug02";
   //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";
-  const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -260,18 +263,22 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   //////////////////////////////// Get the QCD for regions ////////////////////////////////////////////////
   TH1D *hcf_RegD_QCD = (TH1D *)hcf_RegD_data->Clone("RegD_QCD");
   hcf_RegD_QCD->Add(hcf_RegD_bkg, -1);
+  //hist->Scale(1./hist->Integral()); //Apply the following for normalized shape
   makeHistoPositive(hcf_RegD_QCD, false) ;
   
   TH1D *hcf_RegC_QCD = (TH1D *)hcf_RegC_data->Clone("RegC_QCD");
   hcf_RegC_QCD->Add(hcf_RegC_bkg, -1);
+  //hist->Scale(1./hist->Integral()); //Apply the following for normalized shape
   makeHistoPositive(hcf_RegC_QCD, false) ;
 
   TH1D *hcf_RegB_QCD = (TH1D *)hcf_RegB_data->Clone("RegB_QCD");
   hcf_RegB_QCD->Add(hcf_RegB_bkg, -1);
+  //hist->Scale(1./hist->Integral()); //Apply the following for normalized shape
   makeHistoPositive(hcf_RegB_QCD, false) ;
   
   TH1D *hcf_RegA_QCD = (TH1D *)hcf_RegA_data->Clone("RegA_QCD");
   hcf_RegA_QCD->Add(hcf_RegA_bkg, -1);
+  //hist->Scale(1./hist->Integral()); //Apply the following for normalized shape
   makeHistoPositive(hcf_RegA_QCD, false) ;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -310,7 +317,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   /////////////////////////////// Modify the Region B result //////////////////////////////////////////////
   double sError = 0.0;
   double  norm = hcf_RegB_QCD->IntegralAndError(1, hcf_RegB_QCD->GetNbinsX(), sError);
-  //cout<<"intB = "<<norm<<", intB_err = "<<sError<<endl;
+  cout<<"intB = "<<norm<<", intB_err = "<<sError<<endl;
   double tot_bin_cont = 0.0;
   double tot_bin_err = 0.0;
   for(int ibin=1; ibin<hcf_RegB_QCD->GetNbinsX(); ibin++){
@@ -324,7 +331,14 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
       hcf_RegA_QCD->SetBinError(ibin, new_bin_err);
   }
   hcf_RegA_bkg->Add(hcf_RegA_QCD);
-  //cout<<"tot_bin_cont= "<<tot_bin_cont<<", tot_bin_err = "<<sqrt(tot_bin_err)<<endl;
+
+  // hcf_RegA_bkg->Add(hcf_RegA_QCD);
+  // if(htype>=10 and htype<=17){
+  //   int rebin = 50;
+  //   hcf_RegA_QCD->Rebin(rebin);
+  // }
+
+  cout<<"tot_bin_cont= "<<tot_bin_cont<<", tot_bin_err = "<<sqrt(tot_bin_err)<<endl;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   hcf_RegA_data->SetMarkerStyle(kFullCircle);
@@ -573,8 +587,8 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   hcf_RegD_QCD->SetMarkerColor(kRed);
   hcf_RegC_QCD->SetMarkerColor(kBlue);
 
-  hcf_RegD_QCD->Scale(1./hcf_RegD_QCD->Integral());
-  hcf_RegC_QCD->Scale(1./hcf_RegC_QCD->Integral());
+  // hcf_RegD_QCD->Scale(1./hcf_RegD_QCD->Integral());
+  // hcf_RegC_QCD->Scale(1./hcf_RegC_QCD->Integral());
   hcf_RegD_QCD->SetTitle("");
   hcf_RegC_QCD->SetTitle("");
   
@@ -809,10 +823,16 @@ int PlotRatioCanvas(TCanvas*& c1, TH1D*& hData, TH1D*& hSim,  TH1D*& hDByS)
 
 
 void makeHistoPositive(TH1D *hist, bool setErrorZero = false){
+
+  //hist->Scale(1./hist->Integral());
+  
   for(int ibin=1; ibin<hist->GetNbinsX(); ibin++){
     double binCont = hist->GetBinContent(ibin);
+    //cout<<"Name : "<< hist->GetName() <<", center : " << hist->GetBinCenter(ibin) << ", bincontent : " << binCont << endl ;
     if(binCont<0.0){
       hist->SetBinContent(ibin, 1.e-5);
+      //hist->SetBinContent(ibin, 0.0);
+      //hist->SetBinError(ibin, 0.0);
       if(setErrorZero) hist->SetBinError(ibin, 1.e-5);
     }
   }
