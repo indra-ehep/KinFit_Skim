@@ -546,10 +546,12 @@ double MyHPlusDataCardMaker::getQcdSFNano(bool isMu, TString baseDir, TFile* fDa
       //hDiffD->SetBinError(ibin, 0);
     }
   }
+  //cout <<"hTT_RegC :: Name : "<< hTT_RegC->GetName()<<", bins : " << hTT_RegC->GetNbinsX() << ", Integral : " << hTT_RegC->Integral() << endl;
   double intDiffC   = hDiffC->Integral();
   double intDiffD   = hDiffD->Integral();
   double ratioDiffDC = intDiffD/intDiffC;
   return ratioDiffDC;
+  
 }
 
 double MyHPlusDataCardMaker::getQcdDDNano(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf=1.0){
@@ -587,23 +589,23 @@ double MyHPlusDataCardMaker::getQcdDDNano(bool isMu, TString baseDir, TFile* fDa
 }
 
 double MyHPlusDataCardMaker::getSysUncQcdNano(bool isMu, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF){
-
+  
   double sf_baseIsoDir = getQcdSFNano(isMu, "base", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName);
   double qcd_baseIsoDir = getQcdDDNano(isMu, "base", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName, sf_baseIsoDir);
   double sf_baseShiftedIsoDir = getQcdSFNano(isMu, "iso20", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName);
   double qcd_baseShiftedIsoDir = getQcdDDNano(isMu, "iso20", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName, sf_baseShiftedIsoDir);
-
+  
   double sf_unc = abs(sf_baseIsoDir - sf_baseShiftedIsoDir)/sf_baseIsoDir;
   double qcd_unc = sysSF* abs(qcd_baseIsoDir - qcd_baseShiftedIsoDir)/qcd_baseIsoDir;
-  /* cout<<"-------------------------------------"<<endl; */
-  /* cout<<"sysSF  	      = "<<sysSF<<endl; */
-  /* cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl; */
-  /* cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl; */
-  /* cout<<"sf_unc               = "<<sf_unc<<endl; */
-  /* cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl; */
-  /* cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl; */
-  /* cout<<"qcd_unc               = "<<qcd_unc<<endl; */
-  /* cout<<"-------------------------------------"<<endl; */
+  cout<<"-------------------------------------"<<endl;
+  cout<<"sysSF  	      = "<<sysSF<<endl;
+  cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl;
+  cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl;
+  cout<<"sf_unc               = "<<sf_unc<<endl;
+  cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl;
+  cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl;
+  cout<<"qcd_unc               = "<<qcd_unc<<endl;
+  cout<<"-------------------------------------"<<endl;
   double unc = 0.0;
   if(isUncSF) unc = sf_unc;
   else unc = qcd_unc;

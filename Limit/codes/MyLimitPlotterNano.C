@@ -31,7 +31,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   {
   gStyle->SetFrameLineWidth(3);
   TCanvas *c1 = new TCanvas();
-  gPad->SetLogy();
+  //gPad->SetLogy();
   c1->SetGrid(0,0);
   c1->SetFillStyle(4000);
   c1->SetFillColor(10);
@@ -76,7 +76,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   //higgsCombine_hcs_13TeV_mu_Cat1_Inc.AsymptoticLimits.mH80.root
   
   double maxY = 1.0;
-  TString year_dir = "";
+  //TString year_dir = "";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1_5GeV_allexceptFSRsyst_trimhisto/";
   //TString year_dir = "MC-GenPOG/Nom1FSRDo_5GeV_allexceptFSRsyst_trimhisto/";
@@ -101,6 +101,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/Run2/Comb/";
   //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2018/Incl/";
   //TString year_dir = "TIFRAPAR-2023-01-15/02_bctag123_Exclusive/2016/";
+  TString year_dir = "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2018/Comb/";
   
   for(int i = 0 ; i < nMassPoints; i++){
     //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
@@ -176,9 +177,12 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   if(CHANNEL=="ele") ch_name = "e";
   if(CHANNEL=="mu_ele") ch_name = "lep";
   //mg->SetMaximum(1.02*maxY);
-  mg->SetMaximum(80.);
-  mg->SetMinimum(0.05);
-  
+  // mg->SetMaximum(80.);
+  // mg->SetMinimum(0.05);
+
+  mg->SetMaximum(3.0);
+  mg->SetMinimum(0.0001);
+
   TGraphAsymmErrors* expected = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL ,expX1sL , expX1sL, expX1sL);
   TGraphAsymmErrors* oneSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL, expX1sL,  expY1sL, expY1sH);
   TGraphAsymmErrors* twoSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX2sL, expX2sL,  expY2sL, expY2sH);

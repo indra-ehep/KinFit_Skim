@@ -6,11 +6,13 @@ basedir=$PWD
 #inputdir=/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_CTagnPUJetID
 #inputdir=/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuRFSRDo
 #inputdir=/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagv2pulwp-CombHist
-inputdir=$basedir/root_files/grid_v40_Syst/CBA_elemva80
+#inputdir=$basedir/root_files/grid_v40_Syst/CBA_yearend22
+#inputdir=$basedir/root_files/grid_v40_Syst/CBA_notoppt
+inputdir=$basedir/root_files/grid_v40_Syst/CBA_elereliso30-CombHist
 
 
 years="2016 2017 2018"
-#years="2016"
+#years="2018"
 
 for year in $years
 do

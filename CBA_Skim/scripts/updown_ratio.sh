@@ -11,8 +11,8 @@ do
    if [ $(expr $i % 2) == 0 ]
    then
        echo $i
-       root -l -q codes/UpDownBaseCompare.C+\($ch,$year,$i\)
-       sleep 2
+       root -l -q -b codes/UpDownBaseCompare.C+\($ch,$year,$i\)
+       #sleep 2
    fi
 done
 

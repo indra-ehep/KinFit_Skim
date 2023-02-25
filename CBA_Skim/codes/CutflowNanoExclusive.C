@@ -26,16 +26,37 @@ using namespace std;
 
 int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
 {  
- 
+  
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
   
-  const char* dir = "grid_v40_Syst/CBA_elemva80";
-  const char* dir1 = "grid_v40_Syst/CBA_elemva80-CombHist";
+  // const char* dir = "grid_v40_Syst/CBA_elemva80";
+  // const char* dir1 = "grid_v40_Syst/CBA_elemva80-CombHist";
   
   // const char* dir = "grid_v40_Syst/CBA_elereliso";
   // const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
   
+  // const char* dir = "grid_v40_Syst/CBA_bctag123";
+  // const char* dir1 = "grid_v40_Syst/CBA_bctag123";
+  
+  // const char* dir = "grid_v40_Syst/CBA_rftoppt";
+  // const char* dir1 = "grid_v40_Syst/CBA_rftoppt";
+  
+  // const char* dir = "grid_v40_Syst/CBA_ctagcorr";
+  // const char* dir1 = "grid_v40_Syst/CBA_ctagcorr";
+
+  // const char* dir = "grid_v40_Syst/CBA_yearend22";
+  // const char* dir1 = "grid_v40_Syst/CBA_yearend22";
+
+  // const char* dir = "grid_v40_Syst/CBA_notoppt";
+  // const char* dir1 = "grid_v40_Syst/CBA_notoppt";
+
+  // const char* dir = "grid_v40_Syst/CBA_elereliso20";
+  // const char* dir1 = "grid_v40_Syst/CBA_elereliso20-CombHist";
+
+  const char* dir = "grid_v40_Syst/CBA_elereliso30";
+  const char* dir1 = "grid_v40_Syst/CBA_elereliso30-CombHist";
+
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
   TFile *fin_nano_data	= TFile::Open(datafile);
@@ -46,7 +67,7 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   TFile *fin_nano_dyjets = TFile::Open(Form("root_files/%s/%d/all_DYjets.root",dir,year));
   TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir,year));
   TFile *fin_nano_qcd	= TFile::Open(qcdfile);
-  TFile *fin_mini_qcd	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");
+  //TFile *fin_mini_qcd	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");
 
   const char* datafile1 = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir1,year) : Form("root_files/%s/%d/all_DataEle.root",dir1,year) ;
   const char* qcdfile1 = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir1,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir1,year) ;
@@ -58,7 +79,7 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   TFile *fin_nano_dyjets1 = TFile::Open(Form("root_files/%s/%d/all_DYjets.root",dir1,year));
   TFile *fin_nano_vbf1	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir1,year));
   TFile *fin_nano_qcd1	= TFile::Open(qcdfile1);
-  TFile *fin_mini_qcd1	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");  
+  //TFile *fin_mini_qcd1	= TFile::Open("/Data/CMS-Software/local/CMSSW_8_0_28/src/Analysis/stack/HIG-18-021_PRD_Histograms_Ele/all_QCD.root");  
 
   TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",cutflowUS) : Form("DataEle/base/Iso/%s",cutflowUS)));
   TH1D *hcf_nano_sig = (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",cutflow));
@@ -68,7 +89,7 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   TH1D *hcf_nano_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",cutflow));
   TH1D *hcf_nano_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",cutflow));
   TH1D *hcf_nano_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",cutflow) : Form("MCQCDEle/base/Iso/%s",cutflow)));
-  TH1F *hcf_mini_qcd	= (TH1F *)fin_mini_qcd->Get("base/Iso/cutflow");
+  //TH1F *hcf_mini_qcd	= (TH1F *)fin_mini_qcd->Get("base/Iso/cutflow");
 
   TH1D *hcf_nano_data1	= (TH1D *)fin_nano_data1->Get(((isMu) ? Form("DataMu/base/Iso/%s",cutflowUS) : Form("DataEle/base/Iso/%s",cutflowUS)));
   TH1D *hcf_nano_sig1 = (TH1D *)fin_nano_sig1->Get(Form("HplusM120/base/Iso/%s",cutflow));
@@ -78,7 +99,7 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   TH1D *hcf_nano_dyjets1	= (TH1D *)fin_nano_dyjets1->Get(Form("DYjets/base/Iso/%s",cutflow));
   TH1D *hcf_nano_vbf1	= (TH1D *)fin_nano_vbf1->Get(Form("VBFusion/base/Iso/%s",cutflow));
   TH1D *hcf_nano_qcd1	= (TH1D *)fin_nano_qcd1->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",cutflow) : Form("MCQCDEle/base/Iso/%s",cutflow)));
-  TH1F *hcf_mini_qcd1	= (TH1F *)fin_mini_qcd1->Get("base/Iso/cutflow");
+  //TH1F *hcf_mini_qcd1	= (TH1F *)fin_mini_qcd1->Get("base/Iso/cutflow");
   
   // TH1D *hcf_nano_qcd	= (TH1D *)hcf_nano_vbf->Clone("hcf_nano_qcd");
   for (int ibin=6;ibin<hcf_nano_ttbar1->GetNbinsX();ibin++){

@@ -26,7 +26,6 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
-#include <string>
 
 using namespace std;
 
@@ -44,10 +43,10 @@ const char *sampleType[] = {
 			    "MCQCDMu", "MCQCDEle", "QCDdd", "QCDdd",
 			    "DataMu", "DataEle"};
 
-int PrepMjjSystTableV6UL(int year = 2018)
+int PrepMjjSystTableV5p2UL(int year = 2016)
 {
   string GetInclusive(string, int, bool, int, bool, bool, char, double *, double *);
-  string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType, bool ismu);
+  string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType);
   
   bool forPaper = false;
   double muTot[3],eleTot[3];
@@ -72,16 +71,14 @@ int PrepMjjSystTableV6UL(int year = 2018)
   bool isKFL = true;
   bool isInc = true;
   char cType = 'L';
-  string tab1_caption = "Event yield for inclusive category in " + to_string(year) + ".";
-  string tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for inclusive category in " + to_string(year) + ".";
+  string tab1_caption = "Event yield for inclusive category.";
+  string tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for inclusive category. ";
   string nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
-
   //Inclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:sec07_eventYield_Inc_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -121,82 +118,58 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:eventYieldInc}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
+  outFile<<"\\pagebreak"<<endl;
+  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
-  
+
   ifile = 1;
-  bool ismu = true;
-  //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
-  outFile<<"\\label{tab:sec07_syst_Inc_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
+  outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cccc cc}"<<endl;
+  outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process " 
-  	 <<"& {\\rotatebox{90}{Pileup (corrl. wt b\\&c tagging)} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JES (corrl. wt b\\&c tagging)}  } & { \\rotatebox{90}{JER (corrl. wt b\\&c tagging)}  } "
-  	 <<"& {\\rotatebox{90}{PDF}}  & {\\rotatebox{90}{Renorm. (corrl. wt b\\&c tagging)}}  & { \\rotatebox{90}{Factorizn. (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{ISR (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{FSR (corrl. wt b\\&c tagging)} } "
-  	 <<"& {\\rotatebox{90}{PU JetID}}  & { \\rotatebox{90}{b\\&c tagging Interp.} } & { \\rotatebox{90}{b\\&c tagging Extrap.} } & {\\rotatebox{90}{b\\&c tagging XS DY-b}} & {\\rotatebox{90}{b\\&c tagging XS DY-c}}   "
-  	 <<"& { \\rotatebox{90}{b\\&c tagging XS Wjet-c} } & { \\rotatebox{90}{b\\&c tagging statistics} } &  { \\rotatebox{90}{Normalization} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "
-  	 <<""<<endl;
-  
+  outFile<<"\\hline "<<endl;
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{PDF}  } & { \\rotatebox{90}{ISR}  } & { \\rotatebox{90}{FSR}  } & { \\rotatebox{90}{PU JetID}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{\$\\mu\$ + jets } \\\\"<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
-  ifile = 1;
-  ismu = false;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{$e$ + jets } \\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
+  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl; ifile = ifile+2;
+  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  //outFile<<"\\end{landscape}"<<endl;
-  outFile<<""<<endl;
-  outFile<<""<<endl;
 
-  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //exclusive loose charm
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -204,16 +177,15 @@ int PrepMjjSystTableV6UL(int year = 2018)
   isKFL = false;
   isInc = false;
   cType = 'L';
-  tab1_caption = "Event yield for exclusive loose charm tagging category in " + to_string(year) + ".";;
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive loose charm tagging category in " + to_string(year) + ".";;
+  tab1_caption = "Event yield for exclusive loose charm tagging category.";
+  tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for exclusive loose charm tagging category. ";
   
   nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:sec07_eventYield_ExcL_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -252,101 +224,74 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:eventYieldInc}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
+  outFile<<"\\pagebreak"<<endl;
+  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
+
   ifile = 1;
-  ismu = true;
-  //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
-  outFile<<"\\label{tab:sec07_syst_ExcL_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
+  outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cccc cc}"<<endl;
+  outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process " 
-  	 <<"& {\\rotatebox{90}{Pileup (corrl. wt b\\&c tagging)} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JES (corrl. wt b\\&c tagging)}  } & { \\rotatebox{90}{JER (corrl. wt b\\&c tagging)}  } "
-  	 <<"& {\\rotatebox{90}{PDF}}  & {\\rotatebox{90}{Renorm. (corrl. wt b\\&c tagging)}}  & { \\rotatebox{90}{Factorizn. (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{ISR (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{FSR (corrl. wt b\\&c tagging)} } "
-  	 <<"& {\\rotatebox{90}{PU JetID}}  & { \\rotatebox{90}{b\\&c tagging Interp.} } & { \\rotatebox{90}{b\\&c tagging Extrap.} } & {\\rotatebox{90}{b\\&c tagging XS DY-b}} & {\\rotatebox{90}{b\\&c tagging XS DY-c}}   "
-  	 <<"& { \\rotatebox{90}{b\\&c tagging XS Wjet-c} } & { \\rotatebox{90}{b\\&c tagging statistics} } &  { \\rotatebox{90}{Normalization} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "
-  	 <<""<<endl;
-  
+  outFile<<"\\hline "<<endl;
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{PDF}  } & { \\rotatebox{90}{ISR}  } & { \\rotatebox{90}{FSR}  } & { \\rotatebox{90}{PU JetID}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{\$\\mu\$ + jets } \\\\"<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
-  ifile = 1;
-  ismu = false;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{$e$ + jets } \\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
+  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl;ifile = ifile+2;
+  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  //outFile<<"\\end{landscape}"<<endl;
-  outFile<<""<<endl;
-  outFile<<""<<endl;
-
-  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //exclusive medium charm
   //////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
   isKFL = false;
   isInc = false;
   cType = 'M';
-  tab1_caption = "Event yield for exclusive medium charm tagging category in " + to_string(year) + ".";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive medium charm tagging category in " + to_string(year) + ".";
+  tab1_caption = "Event yield for exclusive medium charm tagging category.";
+  tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for exclusive medium charm tagging category. ";
   
   nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:sec07_eventYield_ExcM_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -385,101 +330,74 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:eventYieldInc}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
+  outFile<<"\\pagebreak"<<endl;
+  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
+
   ifile = 1;
-  ismu = true;
-  //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
-  outFile<<"\\label{tab:sec07_syst_ExcM_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
+  outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cccc cc}"<<endl;
+  outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process " 
-  	 <<"& {\\rotatebox{90}{Pileup (corrl. wt b\\&c tagging)} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JES (corrl. wt b\\&c tagging)}  } & { \\rotatebox{90}{JER (corrl. wt b\\&c tagging)}  } "
-  	 <<"& {\\rotatebox{90}{PDF}}  & {\\rotatebox{90}{Renorm. (corrl. wt b\\&c tagging)}}  & { \\rotatebox{90}{Factorizn. (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{ISR (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{FSR (corrl. wt b\\&c tagging)} } "
-  	 <<"& {\\rotatebox{90}{PU JetID}}  & { \\rotatebox{90}{b\\&c tagging Interp.} } & { \\rotatebox{90}{b\\&c tagging Extrap.} } & {\\rotatebox{90}{b\\&c tagging XS DY-b}} & {\\rotatebox{90}{b\\&c tagging XS DY-c}}   "
-  	 <<"& { \\rotatebox{90}{b\\&c tagging XS Wjet-c} } & { \\rotatebox{90}{b\\&c tagging statistics} } &  { \\rotatebox{90}{Normalization} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "
-  	 <<""<<endl;
-  
+  outFile<<"\\hline "<<endl;
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{PDF}  } & { \\rotatebox{90}{ISR}  } & { \\rotatebox{90}{FSR}  } & { \\rotatebox{90}{PU JetID}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{\$\\mu\$ + jets } \\\\"<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
-  ifile = 1;
-  ismu = false;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{$e$ + jets } \\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
+  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl; ifile = ifile + 2;
+  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  //outFile<<"\\end{landscape}"<<endl;
-  outFile<<""<<endl;
-  outFile<<""<<endl;
-
-  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //exclusive tight charm
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   isKFL = false;
   isInc = false;
   cType = 'T';
-  tab1_caption = "Event yield for exclusive tight charm tagging category in " + to_string(year) + ".";
-  tab2_caption = "Systematic and statistical uncertainties in \\% for muon(above) and electron(below) channel for exclusive tight charm tagging category in " + to_string(year) + ".";
+  tab1_caption = "Event yield for exclusive tight charm tagging category.";
+  tab2_caption = "Systematic and statistical uncertainties in \\% for muon (electron) channel for exclusive tight charm tagging category. ";
   
   nEvents = "";
   if(forPaper) nEvents = "$N_{events}  \\pm unc$";
   else nEvents = "$N_{events} \\pm stat \\pm sys$";
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
-  outFile<<"\\label{tab:sec07_eventYield_ExcT_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
@@ -518,102 +436,78 @@ int PrepMjjSystTableV6UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  outFile<<"\\label{tab:eventYieldInc}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
+  outFile<<"\\pagebreak"<<endl;
+  outFile<<"\\newpage"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
   
+
   ifile = 1;
-  ismu = true;
-  //outFile<<"\\begin{landscape}"<<endl;
   outFile<<"\\begin{table}"<<endl;
-  outFile<<"\\centering\\caption{"+tab2_caption+"}"<<endl;
-  outFile<<"\\label{tab:sec07_syst_ExcT_"<<year<<"}"<<endl;
+  outFile<<"\\begin{center}"<<endl;
   outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
+  outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c  c c c c c  c c c c c  c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc cccc cccc cc}"<<endl;
+  outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<"Process " 
-  	 <<"& {\\rotatebox{90}{Pileup (corrl. wt b\\&c tagging)} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JES (corrl. wt b\\&c tagging)}  } & { \\rotatebox{90}{JER (corrl. wt b\\&c tagging)}  } "
-  	 <<"& {\\rotatebox{90}{PDF}}  & {\\rotatebox{90}{Renorm. (corrl. wt b\\&c tagging)}}  & { \\rotatebox{90}{Factorizn. (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{ISR (corrl. wt b\\&c tagging)} } & { \\rotatebox{90}{FSR (corrl. wt b\\&c tagging)} } "
-  	 <<"& {\\rotatebox{90}{PU JetID}}  & { \\rotatebox{90}{b\\&c tagging Interp.} } & { \\rotatebox{90}{b\\&c tagging Extrap.} } & {\\rotatebox{90}{b\\&c tagging XS DY-b}} & {\\rotatebox{90}{b\\&c tagging XS DY-c}}   "
-  	 <<"& { \\rotatebox{90}{b\\&c tagging XS Wjet-c} } & { \\rotatebox{90}{b\\&c tagging statistics} } &  { \\rotatebox{90}{Normalization} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "
-  	 <<""<<endl;
-  
+  outFile<<"\\hline "<<endl;
+  outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{PDF}  } & { \\rotatebox{90}{ISR}  } & { \\rotatebox{90}{FSR}  } & { \\rotatebox{90}{PU JetID}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+
   //pu, mu, btagb, btagl, prefire, jec, jer, norm
   outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{\$\\mu\$ + jets } \\\\"<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType)<<endl;
   outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
-  ifile = 1;
-  ismu = false;
-  outFile<<"\\hline "<<endl;
-  outFile<<"\\multicolumn{20}{c}{$e$ + jets } \\\\"<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=120$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=130$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=140$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=150$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=155$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=160$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<"\\hline "<<endl;
-  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
-  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
+  outFile<<GetDifferential("SM $t\\bar{t}$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("Single ~t", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType)<<endl;
+  outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType)<<endl; ifile = ifile + 2;
+  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
+  outFile<<"}"<<endl;
   outFile<<"\\end{adjustbox}"<<endl;
+  outFile<<"\\end{center}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
-  //outFile<<"\\end{landscape}"<<endl;
-  outFile<<""<<endl;
-  outFile<<""<<endl;
-
-  outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;  
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   outFile<<"\\end{document}"<<endl;
   outFile.close();
   
   return true;
 }
 
-string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType, bool ismu)
+string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType)
 {
   int CalcSystTable(int ifile, bool isMu, double output[], double error_percnt[], int year, bool isKFL, bool isIncl, char cType);
   
-  const int  nofSyst = 19;//10;
+  const int  nofSyst = 16;//10;
   
   double muOut[3];
   double eleOut[3];
-  double muErr[20]; //nofSyst + stat
-  double eleErr[20]; //nofSyst + stat
+  double muErr[17]; //nofSyst + stat
+  double eleErr[17]; //nofSyst + stat
   
-  for(int i=0;i<20;i++) muErr[i] = eleErr[i] = 0.0 ;
+  for(int i=0;i<17;i++) muErr[i] = eleErr[i] = 0.0 ;
   for(int i=0;i<3;i++) muOut[i] = eleOut[i] = 0.0 ;
+
   CalcSystTable(ifile, 1, muOut, muErr,year, isKFL, isInc, cType);
   ifile = (inc) ? ifile+1 : ifile ;
   CalcSystTable(ifile, 0, eleOut, eleErr,year, isKFL, isInc, cType);
@@ -622,28 +516,24 @@ string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKF
   cout<<"Diff sample " << sampleType[ifile-1] <<", RowTitle : " << rowtitle << endl;
   string sampleName = sampleType[ifile-1];
   if(sampleName.find("QCDdd")==string::npos){
-    combined = rowtitle
-      + " & " + Form("$%3.2f$",((ismu)?muErr[0]:eleErr[0])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[1]:eleErr[1])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[2]:eleErr[2])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[3]:eleErr[3])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[4]:eleErr[4])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[5]:eleErr[5])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[6]:eleErr[6])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[7]:eleErr[7])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[8]:eleErr[8])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[9]:eleErr[9])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[10]:eleErr[10])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[11]:eleErr[11])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[12]:eleErr[12])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[13]:eleErr[13])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[14]:eleErr[14])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[15]:eleErr[15])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[16]:eleErr[16])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[17]:eleErr[17])) 
-      + " & " + Form("$%3.2f$",((ismu)?muErr[18]:eleErr[18])) 
-      //+ " & " + Form("$%3.2f(%3.2f)$",muErr[26],eleErr[26]) 
-      // + " & " + Form("$%3.2f(%3.2f)$",muErr[27],eleErr[27]) 
+    combined = rowtitle + " & " + Form("$%3.2f(%3.2f)$",muErr[0],eleErr[0]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[1],eleErr[1]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[2],eleErr[2]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[3],eleErr[3]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[4],eleErr[4]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[5],eleErr[5]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[6],eleErr[6]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[7],eleErr[7]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[8],eleErr[8]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[9],eleErr[9]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[10],eleErr[10]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[11],eleErr[11]) 
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[12],eleErr[12])
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[13],eleErr[13])
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[14],eleErr[14])
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[15],eleErr[15])
+      + " & " + Form("$%3.2f(%3.2f)$",muErr[16],eleErr[16]) 
+      // + " & " + Form("$%3.2f(%3.2f)$",muErr[10],eleErr[10]) 
       +"\\\\";
   }else{
     combined = rowtitle 
@@ -662,17 +552,12 @@ string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKF
       + " & " + "--"
       + " & " + "--"
       + " & " + "--"
-      + " & " + "--"
-      + " & " + "--"
-      + " & " + Form("$%3.2f$",((ismu)?100.*muOut[2]/muOut[0]:100.*eleOut[2]/eleOut[0])) 
-      + " & " + Form("$%3.2f$",((ismu)?100.*muOut[1]/muOut[0]:100.*eleOut[1]/eleOut[0])) 
-      // + " & " + Form("$%3.2f(%3.2f)$",100.*muOut[2]/muOut[0],100.*eleOut[2]/eleOut[0]) 
-      // + " & " + Form("$%3.2f(%3.2f)$",100.*muOut[1]/muOut[0],100.*eleOut[1]/eleOut[0]) 
+      + " & " + Form("$%3.2f(%3.2f)$",100.*muOut[2]/muOut[0],100.*eleOut[2]/eleOut[0]) 
+      + " & " + Form("$%3.2f(%3.2f)$",100.*muOut[1]/muOut[0],100.*eleOut[1]/eleOut[0]) 
       // + " & " + Form("$%3.2f(%3.2f)$",muErr[10],eleErr[10]) 
       +"\\\\";
-    cout<<" isMu : "<< ismu << ", Diff : " << ((ismu)?muOut[2]:eleOut[2]) << ", Nom : "<< ((ismu)?muOut[0]:eleOut[0]) << ", stat : " << ((ismu)?muOut[1]:eleOut[1]) << endl;
   }
-  
+
   //cout << combined << endl;
 
   return combined;
@@ -685,17 +570,19 @@ string GetInclusive(string rowtitle, int ifile, bool inc, int year, bool isKFL, 
   const int  nofSyst = 17;
   double muOut[3];
   double eleOut[3];
-  double error_percnt[20]; //nofSyst + stat
+  double error_percnt[18]; //nofSyst + stat
 
   cout<<"Inclusive sample " << sampleType[ifile-1] <<", RowTitle : " << rowtitle << endl;
   string sampleName = sampleType[ifile-1];
 
-  for(int i=0;i<20;i++) error_percnt[i] = 0.0 ;
+  for(int i=0;i<18;i++) error_percnt[i] = 0.0 ;
   for(int i=0;i<3;i++) muOut[i] = eleOut[i] = 0.0 ;
   CalcSystTable(ifile, 1, muOut, error_percnt,year, isKFL, isInc, cType);
   ifile = (inc) ? ifile+1 : ifile ;
-  for(int i=0;i<20;i++) error_percnt[i] = 0.0 ;
-  CalcSystTable(ifile, 0, eleOut, error_percnt,year, isKFL, isInc, cType);  
+  
+  for(int i=0;i<18;i++) error_percnt[i] = 0.0 ;
+  CalcSystTable(ifile, 0, eleOut, error_percnt,year, isKFL, isInc, cType);
+  
   
   string combined = "";
   
@@ -733,7 +620,7 @@ string GetInclusive(string rowtitle, int ifile, bool inc, int year, bool isKFL, 
     eleTot[2] += eleOut[2]*eleOut[2];
   }
   //cout << combined << endl;
-  
+
   return combined;
 }
 
@@ -762,62 +649,55 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   const float norm_mu_syst[] = {6.1, 6.1, 6.1, 6.1,
 				6.1, 6.1, 6.1, 6.1,
 				6.1, 6.1,
-				// 6.1, 6.1, 6.1, 6.1,
-				// 6.1, 6.1, 6.1, 6.1,
-				// 6.1, 6.1,
+				6.1, 6.1, 6.1, 6.1,
+				6.1, 6.1, 6.1, 6.1,
+				6.1, 6.1,
                                 6.1, 5.0, 5.0, 4.5, 4.0, 
                                 10.};
 
   const float norm_ele_syst[] = {6.1, 6.1, 6.1, 6.1,
 				 6.1, 6.1, 6.1, 6.1,
 				 6.1, 6.1,
-				 // 6.1, 6.1, 6.1, 6.1,
-				 // 6.1, 6.1, 6.1, 6.1,
-				 // 6.1, 6.1,
+				 6.1, 6.1, 6.1, 6.1,
+				 6.1, 6.1, 6.1, 6.1,
+				 6.1, 6.1,
 				 6.1, 5.0, 5.0, 4.5, 4.0,
 				 10.};
   
+  const char *systDir[] = {"base", 
+			   "puup", "pudown", "mueffup", "mueffdown", 
+			   "eleeffup", "eleeffdown",  "jecup", "jecdown", 
+			   "jerup", "jerdown", "btagbup", "btagbdown", 
+			   "btaglup", "btagldown", "prefireup", "prefiredown",
+			   "pdfup", "pdfdown", "q2fup", "q2down",
+			   "isrup", "isrdown", "fsrup", "fsrdown",
+			   "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+			   "bctag3up", "bctag3down", "pujetidup", "pujetiddown",
+			   "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			   "topptup", "topptdown"};
   // const char *systDir[] = {"base", 
   // 			     "puup", "pudown", "mueffup", "mueffdown", 
   // 			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
-  // 			     "jerup", "jerdown", "btagbup", "btagbdown", 
-  // 			     "btaglup", "btagldown", "prefireup", "prefiredown",
+  // 			     "jerup", "jerdown", "bcintpup", "bcintpdown", 
+  // 			     "bcextpup", "bcextpdown", "prefireup", "prefiredown",
   //                            "pdfup", "pdfdown", "q2fup", "q2down",
   // 			     "isrup", "isrdown", "fsrup", "fsrdown",
-  //                            "bctag1up", "bctag1down", "bctag2up", "bctag2down",
-  // 			     "bctag3up", "bctag3down"};
-  // outFile<<"Process "
-  
-  // 	 <<"& {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JES}  } & { \\rotatebox{90}{JER}  } "
-  // 	 <<"& {\\rotatebox{90}{PDF}}  & {\\rotatebox{90}{Renormalization}}  & { \\rotatebox{90}{Factorization} } & { \\rotatebox{90}{ISR} } & { \\rotatebox{90}{FSR} } "
-  // 	 <<"& {\\rotatebox{90}{PU JetID}}  & { \\rotatebox{90}{b\\&c tagging Interpolation} } & { \\rotatebox{90}{b\\&c tagging Extrapolation} } & {\\rotatebox{90}{b\\&c tagging XS DY-b}} & {\\rotatebox{90}{b\\&c tagging XS DY-c}}   "
-  // 	 <<"& { \\rotatebox{90}{b\\&c tagging XS Wjet-c} } & { \\rotatebox{90}{b\\&c tagging statistics} } &  { \\rotatebox{90}{Normalization} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "
-  // 	 <<""<<endl;
-  
-  const char *systDir[] = {"base",
-			   "puup", "pudown", "mueffup", "mueffdown",                    //2,4
-			   "eleeffup", "eleeffdown", "prefireup", "prefiredown",        //6,8
-			   "jecup", "jecdown", "jerup", "jerdown",                      //10,12,
-			   "pdfup", "pdfdown", "q2up", "q2down",                        //14,16
-			   "bclhemurup", "bclhemurdown", "bclhemufup", "bclhemufdown",  //18,20
-			   "isrup", "isrdown", "fsrup", "fsrdown",                      //22,24
-			   "pujetidup", "pujetiddown", "bcintpup", "bcintpdown",        //26,28
-			   "bcextpup", "bcextpdown", "bcxdybup", "bcxdybdown",          //30.32
-			   "bcxdycup", "bcxdycdown", "bcxwjcup", "bcxwjcdown",          //34.36
-			   "bcstatup", "bcstatdown"                                    //38
-  };
-  const char *systname[] = {"base",
-			   "puup", "pudown", "mueffup", "mueffdown",                    //2,4
-			   "eleeffup", "eleeffdown", "prefireup", "prefiredown",        //6,8
-			   "jecup", "jecdown", "jerup", "jerdown",                      //10,12,
-			   "pdfup", "pdfdown", "q2up", "q2down",                        //14,16
-			   "bclhemurup", "bclhemurdown", "bclhemufup", "bclhemufdown",  //18,20
-			   "isrup", "isrdown", "fsrup", "fsrdown",                      //22,24
-			   "pujetidup", "pujetiddown", "bcintpup", "bcintpdown",        //26,28
-			   "bcextpup", "bcextpdown", "bcxdybup", "bcxdybdown",          //30.32
-			   "bcxdycup", "bcxdycdown", "bcxwjcup", "bcxwjcdown",          //34.36
-			   "bcstatup", "bcstatdown"                                    //38
-  };
+  //                            "bcstatup", "bcstatdown", "bclhemufup", "bclhemufdown",
+  // 			     "bclhemurup", "bclhemurdown"};
+
+
+  const char *systname[] = {"nominal", 
+			    "pileup up", "pileup down", "muon efficiency up", "muon efficiency down", 
+			    "electron efficiency up", "electron efficiency down",  "jet energy correction up", "jet energy correction down", 
+			    "jet energy resolution up", "jet energy resolution down", "btag b-quark up", "btag b-quark down", 
+			    "btag l-quark up", "btag l-quark down", "prefire up", "prefire down",
+			    "PDF up", "PDF down", "renormalization up", "renormalization down",
+			    "ISR up", "ISR down", "FSR up", "FSR down",
+			    "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+			    "bctag3up", "bctag3down", "pujetidup", "pujetiddown",
+			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			    "topptup", "topptdown"};
+
   
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_KFNewReso" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_1718_Resubmit" ;
@@ -825,12 +705,10 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_GeneratorWt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagDD" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagv2-CombHist" ;
-  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist" ;
-  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;
-  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist" ;
-  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso20-CombHist" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso30-CombHist" ;
-  
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_bctag123" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagcorr" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22" ;
+
   //int isample = 17; 
   isample--;
   //bool isMu = 1 ;
@@ -889,48 +767,45 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   string baseFileName = finBase->GetName();
   
   TH1D *hIso20 = (TH1D *)finBase->Get(histiso20.c_str());
-
-  // 	 <<"& {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JES}  } & { \\rotatebox{90}{JER}  } "
-  // 	 <<"& {\\rotatebox{90}{PDF}}  & {\\rotatebox{90}{Renormalization}}  & { \\rotatebox{90}{Factorization} } & { \\rotatebox{90}{ISR} } & { \\rotatebox{90}{FSR} } "
-  // 	 <<"& {\\rotatebox{90}{PU JetID}}  & { \\rotatebox{90}{b\\&c tagging Interpolation} } & { \\rotatebox{90}{b\\&c tagging Extrapolation} } & {\\rotatebox{90}{b\\&c tagging XS DY-b}} & {\\rotatebox{90}{b\\&c tagging XS DY-c}}   "
-  // 	 <<"& { \\rotatebox{90}{b\\&c tagging XS Wjet-c} } & { \\rotatebox{90}{b\\&c tagging statistics} } &  { \\rotatebox{90}{Normalization} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "
-  // 	 <<""<<endl;
-
-  // const char *systDir[] = {"base",
-  // 			   "puup", "pudown", "mueffup", "mueffdown",                    //2,4
-  // 			   "eleeffup", "eleeffdown", "prefireup", "prefiredown",        //6,8
-  // 			   "jecup", "jecdown", "jerup", "jerdown",                      //10,12,
-  // 			   "pdfup", "pdfdown", "q2up", "q2down",                        //14,16
-  // 			   "bclhemurup", "bclhemurdown", "bclhemufup", "bclhemufdown",  //18,20
-  // 			   "isrup", "isrdown", "fsrup", "fsrdown",                      //22,24
-  // 			   "pujetidup", "pujetiddown", "bcintpup", "bcintpdown",        //26,28
-  // 			   "bcextpup", "bcextpdown", "bcxdybup", "bcxdybdown",          //30.32
-  // 			   "bcxdycup", "bcxdycdown", "bcxwjcup", "bcxwjcdown",          //34.36
-  // 			   "bcstatup", "bcstatdown"                                    //38
-  // };
   
   // const int  nofSyst = 9;
   // const int  sysidlistMu[nofSyst] = {2, 4, 26, 28, 30, 16, 8, 10, 10};
   // const int  sysidlistEle[nofSyst] = {2, 6, 26, 28, 30, 16, 8, 10, 10};
-  // double error[nofSyst];
-  // double error_percent[nofSyst];
-  
-  // const int nSystGroups = 9 ; //pileup, lepton, btag-b, btag-l, prefire, jec, jer, normalization
-  // //const char*  syst_group_name[] = {"Pileup", "Lepton", "btag-b", "btag-l", "Prefire", "JEC", "JER", "Norm"};
-  // const char*  syst_group_name[] = {"Pileup", "Lepton", "b & c tagging-1", "b & c tagging-2", "b & c tagging-3", "Prefire", "JEC", "JER", "Norm"};
-
-  const int  nofSyst = 18;
-  const int  sysidlistMu[nofSyst] = {2, 4, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 38};
-  const int  sysidlistEle[nofSyst] = {2, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 38};
+  // const int  nofSyst = 12;
+  // const int  sysidlistMu[nofSyst] = {2, 4, 26, 28, 30, 16, 8, 10, 34, 36, 38, 10};
+  // const int  sysidlistEle[nofSyst] = {2, 6, 26, 28, 30, 16, 8, 10, 34, 36, 38, 10};
+  const int  nofSyst = 16;
+  const int  sysidlistMu[nofSyst] = {2, 4, 26, 28, 30, 16, 8, 10, 34, 36, 38, 18, 22, 24, 32, 10};
+  const int  sysidlistEle[nofSyst] = {2, 6, 26, 28, 30, 16, 8, 10, 34, 36, 38, 18, 22, 24, 32, 10};
+  // const int  nofSyst = 11;
+  // const int  sysidlistMu[nofSyst] = {2, 4, 12, 14, 16, 8, 10, 34, 36, 38, 10};
+  // const int  sysidlistEle[nofSyst] = {2, 6, 12, 14, 16, 8, 10, 34, 36, 38, 10};
   double error[nofSyst];
   double error_percent[nofSyst];
   
-  const int nSystGroups = 18 ; 
-  const char*  syst_group_name[] = {"Pileup", "Lepton", "Prefire", "JES", "JER",
-				    "PDF", "Renorm", "Facto", "ISR", "FSR",
-				    "PU JetID", "bc interp", "bc extrap", "bc dyb", "bc dyc",
-				    "bc wjetc", "bc stat", "Norm"};
+  //const int nSystGroups = 9 ; //pileup, lepton, bc1, bc2, bc3, prefire, jec, jer, normalization
+  //const int nSystGroups = 12 ; //pileup, lepton, bc1, bc2, bc3, prefire, jec, jer, muF, muR, toppt, normalization
+  const int nSystGroups = 16 ; //pileup, lepton, bc1, bc2, bc3, prefire, jec, jer, muF, muR, toppt, pdf, isr, fsr, pujetid, normalization
+  //const int nSystGroups = 11 ; //pileup, lepton, btag-bc, btag-l, prefire, jec, jer, muF, muR, toppt, normalization
   
+  //const char*  syst_group_name[] = {"Pileup", "Lepton", "btag-b", "btag-l", "Prefire", "JEC", "JER", "Norm"};
+  //const char*  syst_group_name[] = {"Pileup", "Lepton", "b & c tagging-1", "b & c tagging-2", "b & c tagging-3", "Prefire", "JEC", "JER", "Norm"};
+  const char*  syst_group_name[] = {"Pileup", "Lepton", "b & c tagging-1", "b & c tagging-2", "b & c tagging-3", "Prefire", "JEC", "JER", "muF", "muR", "toppt", "Norm"};
+  //const char*  syst_group_name[] = {"Pileup", "Lepton", "btag-bc", "btag-l", "Prefire", "JEC", "JER", "muF", "muR", "toppt", "Norm"};
+
+  // const char *systDir[] = {"base", 
+  // 			   "puup", "pudown", "mueffup", "mueffdown",                   //2,  4
+  // 			   "eleeffup", "eleeffdown",  "jecup", "jecdown",              //6,  8
+  // 			   "jerup", "jerdown", "btagbup", "btagbdown",                 //10, 12
+  // 			   "btaglup", "btagldown", "prefireup", "prefiredown",         //14, 16
+  // 			   "pdfup", "pdfdown", "q2fup", "q2down",                      //18, 20
+  // 			   "isrup", "isrdown", "fsrup", "fsrdown",                     //22, 24
+  // 			   "bctag1up", "bctag1down", "bctag2up", "bctag2down",         //26, 28
+  // 			   "bctag3up", "bctag3down", "pujetidup", "pujetiddown",       //30, 32
+  // 			   "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown", //34, 36
+  // 			   "topptup", "topptdown"};                                    //38
+  //outFile<<"Process & {\\rotatebox{90}{Pileup} } & {\\rotatebox{90}{Lepton }} & {\\rotatebox{90}{b \\& c tagging 1}}  & {\\rotatebox{90}{b \\& c tagging 2}}  & { \\rotatebox{90}{b \\& c tagging 3} } & {\\rotatebox{90}{Prefire }} & {\\rotatebox{90}{JEC}  } & { \\rotatebox{90}{JER}  } & { \\rotatebox{90}{factorization}  } & { \\rotatebox{90}{renormalization}  } & { \\rotatebox{90}{top pt reweight}  } & { \\rotatebox{90}{PDF}  } & { \\rotatebox{90}{ISR}  } & { \\rotatebox{90}{FSR}  } & { \\rotatebox{90}{PU JetID}  } & { \\rotatebox{90}{Norm} }  & {\\rotatebox{90}{Statistical}  }  \\\\ "<<endl;
+
   double syst_Error[nSystGroups];
 
   double syst_Error_Percent[nSystGroups];
@@ -951,12 +826,10 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   //if(isample>=13){
     output[0] = Norm;
     output[1] = stat_Error ;
-    if(baseFileName.find("all_QCDdd")!=string::npos){
+    if(baseFileName.find("all_QCDdd")!=string::npos)
       output[2] = TMath::Abs(Norm-Norm_iso20) ;
-      cout<<"all_QCDdd :: Norm : " << Norm <<", Norm_iso20 : " << Norm_iso20 << endl;
-    }else{
+    else
       output[2] = 0 ;
-    }
     return true;
   }
   
@@ -1016,8 +889,8 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
     
     TH1D *hSysUp = (TH1D *)finBase->Get(histnameup.c_str());
     TH1D *hSysDown = (TH1D *)finBase->Get(histnamedown.c_str());
+    cout <<"Hello there 1 " << histnameup << ", " << histnamedown << endl;
     error[idx] = CalcSysError(hSysUp, hBase, hSysDown);
-    
     if(idx<(nofSyst-1)){
       error_percent[idx] = 100.*error[idx]/Norm ;
     }else{ // This is only for normalization which is predefined
@@ -1081,16 +954,23 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   finBase->Close();
 
   delete finBase;
+  
 
+  
   return true;
 }
 
 double CalcSysError(TH1D *hSysUp, TH1D *hBase, TH1D *hSysDown)
 {
+  // cout<<"upP : " << hSysUp <<", base : " << hBase << ", downP : " << hSysDown << endl;
+  // cout<<"upName : " << hSysUp->GetName() <<", base : " << hBase->GetName() << ", downName : " << hSysDown->GetName() << endl;
+  
   double valUp    = hSysUp->Integral();
   double valBase  = hBase->Integral();
   double valDown  = hSysDown->Integral();
-
+  
+  // cout<<"upVal : " << valUp <<", base : " << valBase << ", downVal : " << valDown << endl;
+  
   double sys = TMath::Max(fabs(valUp - valBase), fabs(valBase - valDown));
 
   return sys;

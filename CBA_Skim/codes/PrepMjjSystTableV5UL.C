@@ -43,7 +43,7 @@ const char *sampleType[] = {
 			    "MCQCDMu", "MCQCDEle", "QCDdd", "QCDdd",
 			    "DataMu", "DataEle"};
 
-int PrepMjjSystTableV5UL(int year = 2018)
+int PrepMjjSystTableV5UL(int year = 2017)
 {
   string GetInclusive(string, int, bool, int, bool, bool, char, double *, double *);
   string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType);
@@ -60,6 +60,8 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<"\\usepackage{array}"<<endl;
   outFile<<"\\usepackage{multirow}"<<endl;
   outFile<<"\\usepackage{graphicx}"<<endl;
+  outFile<<"\\usepackage{adjustbox}"<<endl;
+  outFile<<"\\usepackage{pdflscape}"<<endl;
   outFile<<"\\usepackage[cm]{fullpage}"<<endl;
   outFile<<"\\begin{document}"<<endl;
   outFile<<""<<endl;
@@ -77,6 +79,7 @@ int PrepMjjSystTableV5UL(int year = 2018)
   //Inclusive Mjj
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -115,8 +118,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
   outFile<<"\\label{tab:eventYieldInc}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
   outFile<<"\\pagebreak"<<endl;
@@ -128,9 +132,10 @@ int PrepMjjSystTableV5UL(int year = 2018)
   ifile = 1;
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -159,8 +164,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
 
 
@@ -180,6 +186,7 @@ int PrepMjjSystTableV5UL(int year = 2018)
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -217,8 +224,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
   outFile<<"\\label{tab:eventYieldInc}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
   outFile<<"\\pagebreak"<<endl;
@@ -230,9 +238,10 @@ int PrepMjjSystTableV5UL(int year = 2018)
   ifile = 1;
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -261,8 +270,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -282,6 +292,7 @@ int PrepMjjSystTableV5UL(int year = 2018)
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -319,8 +330,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
   outFile<<"\\label{tab:eventYieldInc}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
   outFile<<"\\pagebreak"<<endl;
@@ -332,9 +344,10 @@ int PrepMjjSystTableV5UL(int year = 2018)
   ifile = 1;
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -363,8 +376,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -384,6 +398,7 @@ int PrepMjjSystTableV5UL(int year = 2018)
   //Exclusive Mjj
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\begin{tabular}{cccc}"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -421,8 +436,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<GetInclusive("Data/Bkg", ifileData, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
-  outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
+  //outFile<<"\\caption{"<<tab1_caption<<"}"<<endl;
   outFile<<"\\label{tab:eventYieldInc}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
   outFile<<"\\end{table}"<<endl;
   outFile<<"\\pagebreak"<<endl;
@@ -434,9 +450,10 @@ int PrepMjjSystTableV5UL(int year = 2018)
   ifile = 1;
   outFile<<"\\begin{table}"<<endl;
   outFile<<"\\begin{center}"<<endl;
+  outFile<<"\\begin{adjustbox}{width=\\textwidth}"<<endl;
   outFile<<"\\scriptsize{"<<endl;
   ///outFile<<"\\footnotesize\\setlength{\\tabcolsep}{0.3pt}"<<endl;
-  outFile<<"\\begin{tabular}{  c c c c c c c c c c c c c c c}"<<endl;
+  outFile<<"\\begin{tabular}{  cccc cccc ccc}"<<endl;
   outFile<<"\\multicolumn{5}{c}{ } \\\\"<<endl;
   outFile<<"\\hline "<<endl;
   outFile<<"\\hline "<<endl;
@@ -465,8 +482,9 @@ int PrepMjjSystTableV5UL(int year = 2018)
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
   outFile<<"}"<<endl;
+  outFile<<"\\end{adjustbox}"<<endl;
   outFile<<"\\end{center}"<<endl;
-  outFile<<"\\caption{"+tab2_caption+"}"<<endl;
+  //outFile<<"\\caption{"+tab2_caption+"}"<<endl;
   outFile<<"\\end{table}"<<endl;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -630,24 +648,24 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 				 6.1, 5.0, 5.0, 4.5, 4.0,
 				 10.};
   
+  const char *systDir[] = {"base", 
+  			     "puup", "pudown", "mueffup", "mueffdown", 
+  			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
+  			     "jerup", "jerdown", "btagbup", "btagbdown", 
+  			     "btaglup", "btagldown", "prefireup", "prefiredown",
+                             "pdfup", "pdfdown", "q2fup", "q2down",
+  			     "isrup", "isrdown", "fsrup", "fsrdown",
+                             "bctag1up", "bctag1down", "bctag2up", "bctag2down",
+  			     "bctag3up", "bctag3down"};
   // const char *systDir[] = {"base", 
   // 			     "puup", "pudown", "mueffup", "mueffdown", 
   // 			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
-  // 			     "jerup", "jerdown", "btagbup", "btagbdown", 
-  // 			     "btaglup", "btagldown", "prefireup", "prefiredown",
+  // 			     "jerup", "jerdown", "bcintpup", "bcintpdown", 
+  // 			     "bcextpup", "bcextpdown", "prefireup", "prefiredown",
   //                            "pdfup", "pdfdown", "q2fup", "q2down",
   // 			     "isrup", "isrdown", "fsrup", "fsrdown",
-  //                            "bctag1up", "bctag1down", "bctag2up", "bctag2down",
-  // 			     "bctag3up", "bctag3down"};
-  const char *systDir[] = {"base", 
-			     "puup", "pudown", "mueffup", "mueffdown", 
-			     "eleeffup", "eleeffdown",  "jecup", "jecdown", 
-			     "jerup", "jerdown", "bcintpup", "bcintpdown", 
-			     "bcextpup", "bcextpdown", "prefireup", "prefiredown",
-                             "pdfup", "pdfdown", "q2fup", "q2down",
-			     "isrup", "isrdown", "fsrup", "fsrdown",
-                             "bcstatup", "bcstatdown", "bclhemufup", "bclhemufdown",
-			     "bclhemurup", "bclhemurdown"};
+  //                            "bcstatup", "bcstatdown", "bclhemufup", "bclhemufdown",
+  // 			     "bclhemurup", "bclhemurdown"};
 
 
   const char *systname[] = {"nominal", 
@@ -666,7 +684,8 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagM" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_GeneratorWt" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v39_Syst/CBA_CTagDD" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagv2-CombHist" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagv2-CombHist" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_bctag123" ;
 
   //int isample = 17; 
   isample--;
@@ -736,7 +755,7 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   const int nSystGroups = 9 ; //pileup, lepton, btag-b, btag-l, prefire, jec, jer, normalization
   //const char*  syst_group_name[] = {"Pileup", "Lepton", "btag-b", "btag-l", "Prefire", "JEC", "JER", "Norm"};
   const char*  syst_group_name[] = {"Pileup", "Lepton", "b & c tagging-1", "b & c tagging-2", "b & c tagging-3", "Prefire", "JEC", "JER", "Norm"};
-
+  
   double syst_Error[nSystGroups];
 
   double syst_Error_Percent[nSystGroups];
@@ -820,8 +839,8 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
     
     TH1D *hSysUp = (TH1D *)finBase->Get(histnameup.c_str());
     TH1D *hSysDown = (TH1D *)finBase->Get(histnamedown.c_str());
+    cout <<"Hello there 1 " << histnameup << ", " << histnamedown << endl;
     error[idx] = CalcSysError(hSysUp, hBase, hSysDown);
-    
     if(idx<(nofSyst-1)){
       error_percent[idx] = 100.*error[idx]/Norm ;
     }else{ // This is only for normalization which is predefined
@@ -885,16 +904,23 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   finBase->Close();
 
   delete finBase;
+  
 
+  
   return true;
 }
 
 double CalcSysError(TH1D *hSysUp, TH1D *hBase, TH1D *hSysDown)
 {
+  // cout<<"upP : " << hSysUp <<", base : " << hBase << ", downP : " << hSysDown << endl;
+  // cout<<"upName : " << hSysUp->GetName() <<", base : " << hBase->GetName() << ", downName : " << hSysDown->GetName() << endl;
+  
   double valUp    = hSysUp->Integral();
   double valBase  = hBase->Integral();
   double valDown  = hSysDown->Integral();
-
+  
+  // cout<<"upVal : " << valUp <<", base : " << valBase << ", downVal : " << valDown << endl;
+  
   double sys = TMath::Max(fabs(valUp - valBase), fabs(valBase - valDown));
 
   return sys;

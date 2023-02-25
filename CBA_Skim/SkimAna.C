@@ -4005,8 +4005,12 @@ Bool_t SkimAna::Process(Long64_t entry)
   
   if(singleMu){
     if(systType == kIso20){
-      muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.17) ? true : false; 
-      muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.17) ? true : false; 
+      //20
+      // muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.17) ? true : false; 
+      // muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.17) ? true : false; 
+      //30
+      muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.19) ? true : false; 
+      muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.19) ? true : false; 
     }else{
       muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.15) ? true : false; 
       muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.15) ? true : false; 
@@ -4017,8 +4021,14 @@ Bool_t SkimAna::Process(Long64_t entry)
     double SCeta = event->eleEta_[selector->Electrons.at(0)] + event->eleDeltaEtaSC_[selector->Electrons.at(0)];
     double absSCEta = TMath::Abs(SCeta);
     if(systType == kIso20){
-      eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.11) ? true : false;
-      eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.11 ) ? true : false;
+      // eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.11) ? true : false;
+      // eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.11 ) ? true : false;
+      //20
+      // eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.17) ? true : false;
+      // eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.17 ) ? true : false;
+      //30
+      eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.14) ? true : false;
+      eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.14 ) ? true : false;
     }else{
       eleIsoCut =  ((absSCEta <= 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] <= 0.0695) 
       		    or 

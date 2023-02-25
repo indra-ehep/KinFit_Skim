@@ -600,14 +600,14 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   
   //OUTPUT FILE
   TFile *fout = new TFile(TString("Shapes_hcs_13TeV_")+channelName+TString("_")+histSubDir_+TString("_")+histName+TString("_")+label+TString("_")+syear+TString(".root"), "RECREATE");
-
+  
   //For one extra NP
   bool isExL = false;
   bool isExM = false;
   if(histName.Contains("ExL")) isExL = true;
   if(histName.Contains("ExM")) isExM = true;
   
-  bool isNormalized = true;
+  bool isNormalized = false;
   //ttbar
   double sf_ttbar = 1.0; 
   baseDir = "TTbar";
@@ -653,7 +653,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   ttbar_bcxdycDown = DC.readWriteHisto(fTT, baseDir+"/bcxdycdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxdycDown", true, isNormalized, ttbar);
   ttbar_bcxwjcUp = DC.readWriteHisto(fTT, baseDir+"/bcxwjcup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcUp", true, isNormalized, ttbar);
   ttbar_bcxwjcDown = DC.readWriteHisto(fTT, baseDir+"/bcxwjcdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcxwjcDown", true, isNormalized, ttbar);
-
+  
   TH1F* ttbar_pdfUp = DC.readWriteHisto(fTT, baseDir+"/pdfup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfUp", true);
   TH1F* ttbar_pdfDown = DC.readWriteHisto(fTT, baseDir+"/pdfdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_pdfDown", true);
   TH1F* ttbar_bclhemufUp = DC.readWriteHisto(fTT, baseDir+"/bclhemufup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bclhemufUp", true, isNormalized, ttbar);
@@ -1067,7 +1067,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     TH1F* vv_yMnT = DC.getHisto(fVV, baseDir+"/Iso/ExCTag/", "sf_CTag_yMnT_wt", fTT);
     unc_vv_ExM = DC.getUncExM(vv_yMyT, vv_yMnT);
   }
-
+  
   //QCD MC
   double sf_qcd = 1.0;
   /*
@@ -1101,6 +1101,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       TH1F *qcd_bin_stat_Do = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, Form("qcd_CMS_stat_cat1_qcd_bin_%dDown",ibin), true);
     }
   }
+  cout <<"QCD uncertainty : " << qcd_unc << endl;
   
   //Data
   double sf_data = 1.0; //should be 1, always

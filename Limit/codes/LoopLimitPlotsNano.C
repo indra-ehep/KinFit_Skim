@@ -26,20 +26,26 @@
 
 using namespace std;
 
-void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_Inc",
+vector<string> dummy;
+void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANNEL="mu", TString CAT= "Cat1_Inc",
 		  bool obs= false, bool isOut= true)
   {
-  gStyle->SetFrameLineWidth(3);
+  gStyle->SetFrameLineWidth(0);
   TCanvas *c1 = new TCanvas();
+  c1->SetCanvasSize(775,775);
+  c1->SetWindowSize(800,800);
+  c1->Update();
   gPad->SetLogy();
   c1->SetGrid(0,0);
   c1->SetFillStyle(4000);
   c1->SetFillColor(10);
+  c1->SetTickx();
   c1->SetTicky();
   c1->SetObjectStat(0);
-  TLegend* leg = new TLegend(0.34,0.67,0.50,0.87,NULL,"brNDC");
+
+  TLegend* leg = new TLegend(0.65,0.68,0.93,0.88,NULL,"brNDC");
   leg->SetBorderSize(0);
-  leg->SetTextSize(0.05);
+  leg->SetTextSize(0.026);
   leg->SetFillColor(0);
 
   float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
@@ -98,7 +104,8 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   //TString year_dir = "Higgs-Exo-2022-08-15/PAG/2018/ExcT/";
   //TString year_dir = "Higgs-Exo-2022-08-15/PAG/Run2/";
   //TString year_dir = "B2G-Reso-2022-11-25/03_elereliso-CombHist/2016/Comb/";
-  TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2017/Comb/";
+  //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2017/Comb/";
+  ;
   
   for(int i = 0 ; i < nMassPoints; i++){
     //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
@@ -133,13 +140,13 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
     //if(massFiles[i].Contains("80")) maxY = expY2sH[i];
     if(massFiles[i].Contains("80")) maxY = 0.38;
   }
-  for(int i = 0 ; i < nMassPoints; i++){
-    cout << "obsY[i] " << obsY[i] << endl;
-  }
-  cout<<std::setprecision(4)<<endl;
-  cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
+  // for(int i = 0 ; i < nMassPoints; i++){
+  //   cout << "obsY[i] " << obsY[i] << endl;
+  // }
+  //cout<<std::setprecision(4)<<endl;
+  // cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
-  cout<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
+  // cout<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
     expY1sH[i1] = TMath::Abs(expY1sH[i1]-expY[i1]);
     expY1sL[i1] = TMath::Abs(expY1sL[i1]-expY[i1]);
     expY2sH[i1] = TMath::Abs(expY2sH[i1]-expY[i1]);
@@ -153,29 +160,29 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
     // cout<<"$"<<std::setprecision(2)<<100*expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
     //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$\n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
     if(obs){
-      printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
-      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      // printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      // fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       Val.push_back(res);
     }else{
-      printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
-      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ \n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      // printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      // fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ \n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
       Val.push_back(res);
     }
-    cout<<endl;
+    //cout<<endl;
   }
   fclose(fout);
 
   TMultiGraph *mg = new TMultiGraph();
   TString ch_name = "ch";
-  cout<<CHANNEL<<endl;
+  //cout<<CHANNEL<<endl;
   if(CHANNEL=="mu") ch_name = "#mu";
   if(CHANNEL=="ele") ch_name = "e";
   if(CHANNEL=="mu_ele") ch_name = "lep";
   //mg->SetMaximum(1.02*maxY);
-  mg->SetMaximum(80.);
-  mg->SetMinimum(0.05);
+  mg->SetMaximum(50.);
+  mg->SetMinimum(0.06);
   
   TGraphAsymmErrors* expected = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL ,expX1sL , expX1sL, expX1sL);
   TGraphAsymmErrors* oneSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL, expX1sL,  expY1sL, expY1sH);
@@ -190,19 +197,21 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
 
   //twoSigma->SetMarkerColor(kBlack);
   //twoSigma->SetMarkerStyle(kFullCircle);
-  twoSigma->SetFillColor(kYellow+1);
+  //twoSigma->SetFillColor(kYellow);
+  twoSigma->SetFillColor(kOrange-2);
   twoSigma->SetFillStyle(1001);
 
   //expected->SetMarkerColor(kBlack);
   //expected->SetMarkerStyle(kFullCircle);
   //expected->SetMarkerSize(0.0);
-  expected->SetLineColor(kBlack);
-  expected->SetLineWidth(2);
-
-  observed->SetMarkerColor(kBlue);
+  expected->SetLineColor(kBlue);
+  expected->SetLineWidth(3);
+  expected->SetLineStyle(2);
+  
+  observed->SetMarkerColor(kBlack);
   observed->SetMarkerStyle(20);
-  observed->SetLineColor(kBlue);
-  observed->SetLineStyle(2);
+  observed->SetLineColor(kBlack);
+  observed->SetLineStyle(1);
   observed->SetLineWidth(4);
 
   mg->Add(twoSigma);
@@ -224,67 +233,77 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   mg->GetXaxis()->SetTitleOffset(1.00);
   //mg->SetMinimum(0.);
   //mg->SetMaximum(yMax);
-  mg->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
-  mg->GetYaxis()->SetTitle("95% CL limit for BR(t#rightarrow bH^{#pm})"); 
-  mg->GetYaxis()->SetTitleSize(0.07);   
-  mg->GetXaxis()->SetTitleSize(0.08);
-  mg->GetXaxis()->SetLabelSize(0.07);   
-  mg->GetYaxis()->SetLabelSize(0.07);   
+  mg->GetXaxis()->SetTitle("m_{H^{#pm}} (GeV)");
+  mg->GetYaxis()->SetTitle("B(t #rightarrow H^{#pm}b) (%)"); 
+  mg->GetYaxis()->SetTitleSize(0.04);   
+  mg->GetXaxis()->SetTitleSize(0.04);
+  mg->GetXaxis()->SetLabelSize(0.04);   
+  mg->GetYaxis()->SetLabelSize(0.04);   
   //mg->GetXaxis()->SetTickLength(0.07);
   mg->GetYaxis()->SetTickLength(0.04);
 
   //leg->SetHeader(Form("#splitline{CMS Preliminary #sqrt{s}=13 TeV}{ LUMI fb^{-1}, %s}",CHANNEL.Data()));
 
-  leg->AddEntry(expected,"Expected","L");
+  leg->SetHeader("95% CL upper limits");
+  leg->AddEntry(expected,"Median Expected","L");
   if(obs) leg->AddEntry(observed,"Observed","LP");
-  leg->AddEntry(oneSigma, "#pm 1 #sigma","F");
-  leg->AddEntry(twoSigma, "#pm 2 #sigma","F");
+  leg->AddEntry(oneSigma, "68% expected","F");
+  leg->AddEntry(twoSigma, "95% expected","F");
   leg->Draw();
 
- TPaveText *pl2 = new TPaveText(0.64,0.67,0.75,0.87, "brNDC");
-  pl2->SetTextSize(0.052);
+  TPaveText *pl2 = new TPaveText(0.22,0.79,0.57,0.87, "brNDC");
+  pl2->SetTextSize(0.026);
   pl2->SetFillColor(0);
-  pl2->SetTextFont(132);
   pl2->SetBorderSize(0);
   pl2->SetTextAlign(11);
-  pl2->AddText("t #rightarrow H^{#pm}b,");
-  pl2->AddText("H^{+} #rightarrow c#bar{s}");
-  pl2->AddText("BR(H^{+} #rightarrow c#bar{s}) = 1");
+  pl2->AddText("t #rightarrow H^{#pm}b, H^{#pm}#rightarrow cs");
+  pl2->AddText("B(H^{#pm}#rightarrow cs) = 100%");
   
   double totLumi = 137.1; //2016
   if(year_dir.Contains("Run2"))
-    totLumi = 137.2; //run2
+    totLumi = 137.6; //run2
   if(year_dir.Contains("2016"))
-    totLumi = 35.9; // 2016
+    totLumi = 36.3; // 2016
   if(year_dir.Contains("2017"))
     totLumi = 41.5; // 2017
   if(year_dir.Contains("2018"))
     totLumi = 59.8; //2018
   
   //pave text CMS box
-  TPaveText *pt = new TPaveText(0.20,0.9354,0.90,0.9362, "brNDC"); // good_v1
+  TPaveText *pt = new TPaveText(0.5,0.9354,0.95,0.9362, "brNDC"); // good_v1
   pt->SetBorderSize(1);
-  pt->SetFillColor(19);
-  pt->SetFillStyle(0);
-  pt->SetTextSize(0.08);
+  pt->SetTextSize(0.035);
   pt->SetLineColor(0);
-  pt->SetTextFont(132);
-  TText *text = pt->AddText(Form("#sqrt{s}=13 TeV, %3.1f fb^{-1} ",totLumi));
+  pt->SetFillColor(0);
+  pt->SetTextFont(42);
+  TText *text = pt->AddText(Form("%3.1f fb^{-1} (13 TeV)",totLumi));
   //TText *text = pt->AddText(dir+":  CMS Preliminary,    #sqrt{s} = 13 TeV,    35.45 fb^{-1}; ");
-  text->SetTextAlign(11);
-  
+  //text->SetTextAlign(11); //left aligned
+  text->SetTextAlign(32); //left aligned
+
+  TPaveText *pt1 = new TPaveText(0.2,0.93,0.5,0.94, "brNDC"); // good_v1
+  pt1->SetBorderSize(1);
+  pt1->SetTextSize(0.035);
+  pt1->SetLineColor(0);
+  pt1->SetFillColor(0);
+  //pt1->SetTextFont(42);
+  //TText *text1 = pt1->AddText("CMS Preliminary");
+  TText *text1 = pt1->AddText("CMS Preliminary");
+  text1->SetTextAlign(12); //left aligned
+  //text1->SetTextAlign(32); //left aligned
+
   //pave text channel box
-  TPaveText *ch = new TPaveText(1.00,0.9154898,0.7510067,0.9762187,"brNDC");
-  ch->SetFillColor(19);
+  TPaveText *ch = new TPaveText(0.63,0.61,0.88,0.67,"brNDC");
   ch->SetFillStyle(0);
   ch->SetLineColor(0);
-  ch->SetTextSize(0.08);
-  ch->SetBorderSize(1);
+  ch->SetTextSize(0.026);
+  ch->SetBorderSize(0);
   if(CHANNEL=="mu")ch->AddText("#mu + jets");
-  if(CHANNEL=="ele") ch->AddText("e + jets");
-  if(CHANNEL=="mu_ele") ch->AddText("l + jets");
+  if(CHANNEL=="ele") ch->AddText("#it{e} + jets");
+  if(CHANNEL=="mu_ele") ch->AddText("#it{l} + jets");
   pl2->Draw("SAME");
   pt->Draw("SAME");
+  pt1->Draw("SAME");
   ch->Draw("SAME");
   leg->Draw("SAME");
   
@@ -297,8 +316,10 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   gPad->RedrawAxis();
   TString outFile = "limit_"+CHANNEL+"_"+CAT;
   TString outDir = "limit/"+CHANNEL+"/"+CAT;
+  cout<< year_dir+CHANNEL+".pdf" << endl;
   //gPad->SaveAs(outDir+"/"+outFile+".pdf");
-  gPad->SaveAs("result.pdf");
+  //gPad->SaveAs("result.pdf");
+  gPad->SaveAs(year_dir+CHANNEL+".pdf");
   if(isOut){
     //TFile *fout = new TFile(outDir+"/"+outFile+".root", "RECREATE");
     TFile *fout = new TFile("result.root", "RECREATE");
@@ -310,46 +331,27 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   }
 }
 
-void LoopLimitPlotsNano(){
+void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2016/ExcL/"){
   
   // LimitPlotter("mu", "Cat1_Inc",     false, true );
   // LimitPlotter("ele", "Cat1_Inc",     false, true );
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
     
-  LimitPlotter(muVal, "mu", "Cat1_Inc", false, true );
-  LimitPlotter(eleVal, "ele", "Cat1_Inc", false, true );
-  LimitPlotter(mueleVal, "mu_ele", "Cat1_Inc", false, true );
-  
+  LimitPlotter(year_dir, muVal, "mu", "Cat1_Inc", false, true );
+  LimitPlotter(year_dir, eleVal, "ele", "Cat1_Inc", false, true );
+  LimitPlotter(year_dir, mueleVal, "mu_ele", "Cat1_Inc", false, true );
+
+  cout<<"\\centering\\begin{adjustbox}{width=\\textwidth}"<<endl;
+  cout<<"\\begin{tabular}{ | c | c | c | c | }\\hline"<<endl;
+  cout<<"\\multicolumn{4}{|c|}{Tight WP}\\\\\\hline"<<endl;
+  cout<<"mass point     & $\\mu$ + jets  & $e$ + jets  & $l$ + jets  \\\\ \\cline{2-4}"<<endl;
+  cout<<"&  expected      & expected     & expected      \\\\ \\hline"<<endl;
   for(int i = 0; i < int(muVal.size()) ; i++)
     if(i==(int(muVal.size())-1))
-      cout << "$m_{H^{+}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;
+      cout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;
     else
-      cout << "$m_{H^{+}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\" << endl;
-  
-  
-  // LimitPlotter("mu", "Cat1_Inc",     true, true );
-  // LimitPlotter("ele", "Cat1_Inc",     true, true );
-  // LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
-  
-  // LimitPlotter("mu", "Cat3_cTagEx",     false, true );
-  // LimitPlotter("ele", "Cat3_cTagEx",     false, true );
-  // LimitPlotter("mu_ele", "Cat3_cTagEx",  false, true );
-
-  // LimitPlotter("mu", "Cat3_cTagEx",     true, true );
-  // LimitPlotter("ele", "Cat3_cTagEx",     true, true );
-  // LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
-
-  /*
-  LimitPlotter("mu", "Cat2_cTagInc", true, true );
-  LimitPlotter("mu", "Cat3_cTagEx",  true, true );
-
-  LimitPlotter("ele", "Cat1_Inc",     true, true );
-  LimitPlotter("ele", "Cat2_cTagInc", true, true );
-  LimitPlotter("ele", "Cat3_cTagEx",  true, true );
-
-  LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
-  LimitPlotter("mu_ele", "Cat2_cTagInc", true, true );
-  */
-  //LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
+      cout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\" << endl;
+  cout<<"\\end{tabular}"<<endl;
+  cout<<"\\end{adjustbox}"<<endl;
 }

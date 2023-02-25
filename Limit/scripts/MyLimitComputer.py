@@ -37,16 +37,14 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     #Original #execme('combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
     #command2 = 'combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     #Closest to PAG
-    command2 = 'combine --rAbsAcc 0.000001 --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=0.000001,1.0 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    command2 = 'combine --rAbsAcc 0.000001 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    #command2 = 'combine --rAbsAcc 0.000001  --redefineSignalPOIs BR --setParameterRanges BR=0.000001,1.0 --expectSignal 1 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     
-    #Using Asimov
-    #command2 = 'combine --run blind --rAbsAcc 0.000001 --expectSignal 1 --setParameterRanges BR=0.0,1.0  -t -1 -d '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     print("command2 : %s"%command2)
     execme(command2)
 
-    #execme('combine --rAbsAcc 0.000001 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
-    
-    #execme('combine  '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --setParameterRanges r=0.,1. --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
+    #Using Asimov
+    #command2 = 'combine --run blind --rAbsAcc 0.000001 --expectSignal 1 --setParameterRanges BR=0.0,1.0  -t -1 -d '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     #Blind
     #execme('combine --rAbsAcc 0.000001 --setParameters BR=1 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
     #Expected
@@ -175,7 +173,7 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
-    path_file_dir="/home/idas/t3store3//NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
+    #path_file_dir="/home/idas/t3store3//NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist"
     #path_file_dir="/home/idas/t3store3/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist"    
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-NJet4-CombHist"
@@ -184,15 +182,17 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22"
     #path_file_dir="/home/idas/t3store3/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22"    
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_notoppt"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso20-CombHist"
+    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso30-CombHist"
     
     muon_file_dir=path_file_dir+""
     ele_file_dir=path_file_dir+""
     
     hist_array_Inc = []
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
-    #hist_array_Inc.append(["", "_kb_mjj_"])
-    hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
-    hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
+    # hist_array_Inc.append(["", "_kb_mjj_"])
+    # hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
+    # hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
     hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagL = []

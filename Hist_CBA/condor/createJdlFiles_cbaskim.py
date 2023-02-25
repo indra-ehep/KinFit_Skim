@@ -10,24 +10,33 @@ samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "
                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 
-syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
-syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
-syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
+# syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
+# syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
+# syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
 
-syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+# syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+# syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+# syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
 
-inputdir="CBA_elereliso"
-outputdir="CBA_elereliso-Hist1"
-iosubdir="post"
+syst_2016 = ["iso20"]
+syst_2017 = ["iso20"]
+syst_2018 = ["iso20"]
+
+syst_long_2016 = ["iso20"]
+syst_long_2017 = ["iso20"]
+syst_long_2018 = ["iso20"]
+
+inputdir="CBA_elereliso30"
+outputdir="CBA_elereliso30-Hist1"
+iosubdir="pre"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
-kinpath='/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
+#kinpath='/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
+kinpath='/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
 
 for year in [2016]:
-    os.system("if [ ! -d ../input/%s/post ] ; then mkdir -p ../input/%s/post ; fi"%(year,year))
-    os.system("rm -f ../input/%s/post/*"%year)
+    os.system("if [ ! -d ../input/%s/pre ] ; then mkdir -p ../input/%s/pre ; fi"%(year,year))
+    os.system("rm -f ../input/%s/pre/*"%year)
     sampleList = eval("samples_%i"%year)
     for sample in sampleList:
 
@@ -39,8 +48,8 @@ for year in [2016]:
             systList = eval("syst_%i"%year)
 
         for syst in systList:
-            inputfile = '../input/%s/post/%s_%s.txt'%(year, sample, syst)
-            os.system("for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep %s | grep -v \"sys.v\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done "%(kinpath, year, sample, syst, inputfile))
+            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
+            os.system("for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep \"_%s_\" | grep -v \".sys.\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done "%(kinpath, year, sample, syst, inputfile))
             print "Creating input file %s"%inputfile
 
 
@@ -100,15 +109,15 @@ for year in [2016]:
 
         for syst in systList:
             
-            inputfile = '../input/%s/post/%s_%s.txt'%(year, sample, syst)
+            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
             noflines = subprocess.Popen('wc -l %s | awk \'{print $1}\''%(inputfile),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
             nJob = int(noflines)
             totjobs += nJob
             print "%s %s %s"%(sample,nJob,syst)
             if nJob==1:
-                run_command =  'Arguments  = %s %s input/%s/post/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
+                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
             else:
-                run_command =  'Arguments  = %s %s input/%s/post/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
+                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
             jdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile
 

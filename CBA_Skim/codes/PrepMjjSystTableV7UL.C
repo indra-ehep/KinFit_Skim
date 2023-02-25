@@ -44,7 +44,7 @@ const char *sampleType[] = {
 			    "MCQCDMu", "MCQCDEle", "QCDdd", "QCDdd",
 			    "DataMu", "DataEle"};
 
-int PrepMjjSystTableV6UL(int year = 2018)
+int PrepMjjSystTableV7UL(int year = 2018)
 {
   string GetInclusive(string, int, bool, int, bool, bool, char, double *, double *);
   string GetDifferential(string rowtitle, int ifile, bool inc, int year, bool isKFL, bool isInc, char cType, bool ismu);
@@ -591,7 +591,7 @@ int PrepMjjSystTableV6UL(int year = 2018)
   //outFile<<"\\end{landscape}"<<endl;
   outFile<<""<<endl;
   outFile<<""<<endl;
-
+  
   outFile<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;  
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -939,10 +939,50 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
   double totSys = 0.0;
   
   double stat_Error = 0.0;
-  double Norm = hBase->IntegralAndError(1,hBase->GetNbinsX(),stat_Error); 
+  //double Norm = hBase->IntegralAndError(1,hBase->GetNbinsX(),stat_Error);
+  if(baseFileName.find("all_QCDdd")==string::npos)
+    hBase->Rebin(50);
+  double minBin = hBase->GetXaxis()->FindBin(20.0);
+  double maxBin = hBase->GetXaxis()->FindBin(160.0);
+  double Norm = hBase->IntegralAndError(minBin,maxBin,stat_Error); 
   double stat_Error_iso20 = 0.0;
   double Norm_iso20 = 0.0;
-  if(baseFileName.find("all_QCDdd")!=string::npos or baseFileName.find("all_Data")!=string::npos)
+  if(baseFileName.find("all_QCDdd")!=string::npos){
+    double getSysUncQcd(bool isMu, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF, double Norm, double& Norm_iso20);
+    TString histName = "";
+    if(isKFL)
+      histName = (isMu) ? Form("_kb_mjj_mu") : Form("_kb_mjj_ele")  ;
+    else{
+      if(isIncl){
+	if(cType=='L')
+	  histName = (isMu) ? Form("_ct_IncL_mjj_mu") : Form("_ct_IncL_mjj_ele")  ;
+	else if(cType=='M')
+	  histName = (isMu) ? Form("_ct_IncM_mjj_mu") : Form("_ct_IncM_mjj_ele")  ;
+	else if(cType=='T')
+	  histName = (isMu) ? Form("_ct_IncT_mjj_mu") : Form("_ct_IncT_mjj_ele")  ;
+      }else{
+	if(cType=='L')
+	  histName = (isMu) ? Form("_ct_ExcL_mjj_mu") : Form("_ct_ExcL_mjj_ele")  ;
+	else if(cType=='M')
+	  histName = (isMu) ? Form("_ct_ExcM_mjj_mu") : Form("_ct_ExcM_mjj_ele")  ;
+	else if(cType=='T')
+	  histName = (isMu) ? Form("_ct_ExcT_mjj_mu") : Form("_ct_ExcT_mjj_ele")  ;
+      }//incl or excl
+    }//ctag level
+
+    
+    const char* datafile = (isMu) ? Form("%s/%d/all_DataMu.root",inputdir,year) : Form("%s/%d/all_DataEle.root",inputdir,year);
+    TFile *fData	= TFile::Open(datafile);
+    TFile *fTT = TFile::Open(Form("%s/%d/all_TTbar.root",inputdir,year));
+    TFile *fST	= TFile::Open(Form("%s/%d/all_singleTop.root",inputdir,year));
+    TFile *fWJ	= TFile::Open(Form("%s/%d/all_Wjets.root",inputdir,year));
+    TFile *fDY = TFile::Open(Form("%s/%d/all_DYjets.root",inputdir,year));
+    TFile *fVV	= TFile::Open(Form("%s/%d/all_VBFusion.root",inputdir,year));
+
+    getSysUncQcd(isMu, fData, fTT, fST, fWJ, fDY, fVV, "", histName, false, Norm, Norm_iso20);
+    
+  }
+  if(baseFileName.find("all_Data")!=string::npos)
     Norm_iso20 = hIso20->IntegralAndError(1,hIso20->GetNbinsX(),stat_Error_iso20); 
 
   //The following line is for DD row.
@@ -1016,6 +1056,10 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
     
     TH1D *hSysUp = (TH1D *)finBase->Get(histnameup.c_str());
     TH1D *hSysDown = (TH1D *)finBase->Get(histnamedown.c_str());
+    if(baseFileName.find("all_QCDdd")==string::npos){
+      hSysDown->Rebin(50);
+      hSysUp->Rebin(50);
+    }
     error[idx] = CalcSysError(hSysUp, hBase, hSysDown);
     
     if(idx<(nofSyst-1)){
@@ -1087,9 +1131,14 @@ int CalcSystTable(int isample, bool isMu, double output[], double error_percnt[]
 
 double CalcSysError(TH1D *hSysUp, TH1D *hBase, TH1D *hSysDown)
 {
-  double valUp    = hSysUp->Integral();
-  double valBase  = hBase->Integral();
-  double valDown  = hSysDown->Integral();
+  // double valUp    = hSysUp->Integral();
+  // double valBase  = hBase->Integral();
+  // double valDown  = hSysDown->Integral();
+  
+  double valUp    = hSysUp->Integral(hSysUp->GetXaxis()->FindBin(20.0), hSysUp->GetXaxis()->FindBin(160.0));
+  double valBase  = hBase->Integral(hBase->GetXaxis()->FindBin(20.0), hBase->GetXaxis()->FindBin(160.0));
+  double valDown  = hSysDown->Integral(hSysDown->GetXaxis()->FindBin(20.0), hSysDown->GetXaxis()->FindBin(160.0));
+
 
   double sys = TMath::Max(fabs(valUp - valBase), fabs(valBase - valDown));
 
@@ -1219,112 +1268,138 @@ int PlotRatio(TH1D *h1, TH1D *h2, const char *cname)
 }
 
 
-// // qcd SF for data-driven QCD
-// double MyHPlusDataCardMakerNano::getQcdSF(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName){
-//   //RegionC = LowMET, NonIso
-//   TH1F* hVV_RegC = getHisto(fVV,   "VBFusion/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
-//   TH1F* hDY_RegC = getHisto(fDY,   "DYjets/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
-//   TH1F* hWJ_RegC = getHisto(fWJ,   "Wjets/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
-//   TH1F* hST_RegC = getHisto(fST,   "singleTop/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
-//   TH1F* hTT_RegC = getHisto(fTT,   "TTbar/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
-//   TH1F* hMC_RegC = (TH1F*)hVV_RegC->Clone("hAllMC_RegC");
-//   hMC_RegC->Add(hDY_RegC);
-//   hMC_RegC->Add(hWJ_RegC);
-//   hMC_RegC->Add(hST_RegC);
-//   hMC_RegC->Add(hTT_RegC);
-//   TH1F* hData_RegC = (isMu) ? getHisto(fData, "DataMu/"+baseDir+"/NonIsoLowMET/", histName+"_noniso_lmet") : getHisto(fData, "DataEle/"+baseDir+"/NonIsoLowMET/", histName+"_noniso_lmet");
+// qcd SF for data-driven QCD
+
+TH1F* getHisto(TFile *inRootFile, TString histPath, TString histName){
+  TH1F* hist;
+  TString fullPath = histPath+histName;
+  //cout<<"\n inRootFile : " << inRootFile->GetName() << "\n histPath : " << histPath << ", histName : " << histName  <<"\n fullPath : " << fullPath << endl;
+  string exception_msg (inRootFile->GetName()+TString("/")+fullPath+", does not exist");
+  try{
+    if(!(inRootFile->Get(fullPath)))
+      throw  exception_msg.c_str();
+  }catch (const char *e){
+    cout<<"WARNING:"<<e<<endl;
+  }
+
+  hist = (TH1F*)(inRootFile->Get(fullPath))->Clone(histName);
   
-//   //RegionD = LowMET, Iso
-//   TH1F* hVV_RegD = getHisto(fVV,   "VBFusion/"+baseDir+"/LowMET/" , histName+"_lmet");
-//   TH1F* hDY_RegD = getHisto(fDY,   "DYjets/"+baseDir+"/LowMET/" , histName+"_lmet");
-//   TH1F* hWJ_RegD = getHisto(fWJ,   "Wjets/"+baseDir+"/LowMET/" , histName+"_lmet");
-//   TH1F* hST_RegD = getHisto(fST,   "singleTop/"+baseDir+"/LowMET/" , histName+"_lmet");
-//   TH1F* hTT_RegD = getHisto(fTT,   "TTbar/"+baseDir+"/LowMET/" , histName+"_lmet");
-//   TH1F* hMC_RegD = (TH1F*)hVV_RegD->Clone("hAllMC_RegD");
-//   hMC_RegD->Add(hDY_RegD);
-//   hMC_RegD->Add(hWJ_RegD);
-//   hMC_RegD->Add(hST_RegD);
-//   hMC_RegD->Add(hTT_RegD);
-//   TH1F* hData_RegD=  (isMu) ? getHisto(fData, "DataMu/"+baseDir+"/LowMET/", histName+"_lmet") : getHisto(fData, "DataEle/"+baseDir+"/LowMET/", histName+"_lmet");
+  return hist;
+}
 
-//   TH1F* hDiffC = (TH1F*)hData_RegC->Clone("hDiffC");
-//   hDiffC->Add(hMC_RegC, -1);
-//   //If binContent < 0, set it to 0
-//   for(int ibin=1; ibin<hDiffC->GetNbinsX(); ibin++){
-//     double binCont = hDiffC->GetBinContent(ibin);
-//     if(binCont<0){
-//       hDiffC->SetBinContent(ibin, 0);
-//       //hDiffC->SetBinError(ibin, 0);
-//     }
-//   }
-//   TH1F* hDiffD = (TH1F*)hData_RegD->Clone("hDiffD");
-//   hDiffD->Add(hMC_RegD, -1);
-//   for(int ibin=1; ibin<hDiffD->GetNbinsX(); ibin++){
-//     double binCont = hDiffD->GetBinContent(ibin);
-//     if(binCont<0){
-//       hDiffD->SetBinContent(ibin, 0);
-//       //hDiffD->SetBinError(ibin, 0);
-//     }
-//   }
-//   double intDiffC   = hDiffC->Integral();
-//   double intDiffD   = hDiffD->Integral();
-//   double ratioDiffDC = intDiffD/intDiffC;
-//   return ratioDiffDC;
-// }
-
-// double MyHPlusDataCardMakerNano::getQcdDD(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf=1.0){
-//   /* TH1F* hVV = getHisto(fVV,   baseDir+"/NonIso/"+histDir, histName, fTT); */
-//   /* TH1F* hDY = getHisto(fDY,   baseDir+"/NonIso/"+histDir, histName, fTT); */
-//   /* TH1F* hWJ = getHisto(fWJ,   baseDir+"/NonIso/"+histDir, histName, fTT); */
-//   /* TH1F* hST = getHisto(fST,   baseDir+"/NonIso/"+histDir, histName, fTT); */
-//   /* TH1F* hTT = getHisto(fTT,   baseDir+"/NonIso/"+histDir, histName, fTT); */
-//   /* TH1F* hData= getHisto(fData, baseDir+"/NonIso/"+histDir, histName, fTT); */
+//double MyHPlusDataCardMakerNano::getQcdSF(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName){
+double getQcdSF(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName){
+  //RegionC = LowMET, NonIso
+  TH1F* hVV_RegC = getHisto(fVV,   "VBFusion/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
+  TH1F* hDY_RegC = getHisto(fDY,   "DYjets/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
+  TH1F* hWJ_RegC = getHisto(fWJ,   "Wjets/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
+  TH1F* hST_RegC = getHisto(fST,   "singleTop/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
+  TH1F* hTT_RegC = getHisto(fTT,   "TTbar/"+baseDir+"/NonIsoLowMET/" , histName+"_noniso_lmet");
+  TH1F* hMC_RegC = (TH1F*)hVV_RegC->Clone("hAllMC_RegC");
+  hMC_RegC->Add(hDY_RegC);
+  hMC_RegC->Add(hWJ_RegC);
+  hMC_RegC->Add(hST_RegC);
+  hMC_RegC->Add(hTT_RegC);
+  TH1F* hData_RegC = (isMu) ? getHisto(fData, "DataMu/"+baseDir+"/NonIsoLowMET/", histName+"_noniso_lmet") : getHisto(fData, "DataEle/"+baseDir+"/NonIsoLowMET/", histName+"_noniso_lmet");
   
-//   TH1F* hVV = getHisto(fVV,   "VBFusion/"+baseDir+"/NonIso/" , histName+"_noniso");
-//   TH1F* hDY = getHisto(fDY,   "DYjets/"+baseDir+"/NonIso/", histName+"_noniso");
-//   TH1F* hWJ = getHisto(fWJ,   "Wjets/"+baseDir+"/NonIso/", histName+"_noniso");
-//   TH1F* hST = getHisto(fST,   "singleTop/"+baseDir+"/NonIso/", histName+"_noniso");
-//   TH1F* hTT = getHisto(fTT,   "TTbar/"+baseDir+"/NonIso/", histName+"_noniso");
-//   TH1F* hData= (isMu) ? getHisto(fData,"DataMu/"+baseDir+"/NonIso/", histName+"_noniso") : getHisto(fData,"DataEle/"+baseDir+"/NonIso/", histName+"_noniso");
+  //RegionD = LowMET, Iso
+  TH1F* hVV_RegD = getHisto(fVV,   "VBFusion/"+baseDir+"/LowMET/" , histName+"_lmet");
+  TH1F* hDY_RegD = getHisto(fDY,   "DYjets/"+baseDir+"/LowMET/" , histName+"_lmet");
+  TH1F* hWJ_RegD = getHisto(fWJ,   "Wjets/"+baseDir+"/LowMET/" , histName+"_lmet");
+  TH1F* hST_RegD = getHisto(fST,   "singleTop/"+baseDir+"/LowMET/" , histName+"_lmet");
+  TH1F* hTT_RegD = getHisto(fTT,   "TTbar/"+baseDir+"/LowMET/" , histName+"_lmet");
+  TH1F* hMC_RegD = (TH1F*)hVV_RegD->Clone("hAllMC_RegD");
+  hMC_RegD->Add(hDY_RegD);
+  hMC_RegD->Add(hWJ_RegD);
+  hMC_RegD->Add(hST_RegD);
+  hMC_RegD->Add(hTT_RegD);
+  TH1F* hData_RegD=  (isMu) ? getHisto(fData, "DataMu/"+baseDir+"/LowMET/", histName+"_lmet") : getHisto(fData, "DataEle/"+baseDir+"/LowMET/", histName+"_lmet");
+
+  TH1F* hDiffC = (TH1F*)hData_RegC->Clone("hDiffC");
+  hDiffC->Add(hMC_RegC, -1);
+  //If binContent < 0, set it to 0
+  for(int ibin=1; ibin<hDiffC->GetNbinsX(); ibin++){
+    double binCont = hDiffC->GetBinContent(ibin);
+    if(binCont<0){
+      hDiffC->SetBinContent(ibin, 0);
+      //hDiffC->SetBinError(ibin, 0);
+    }
+  }
+  TH1F* hDiffD = (TH1F*)hData_RegD->Clone("hDiffD");
+  hDiffD->Add(hMC_RegD, -1);
+  for(int ibin=1; ibin<hDiffD->GetNbinsX(); ibin++){
+    double binCont = hDiffD->GetBinContent(ibin);
+    if(binCont<0){
+      hDiffD->SetBinContent(ibin, 0);
+      //hDiffD->SetBinError(ibin, 0);
+    }
+  }
+  double intDiffC   = hDiffC->Integral();
+  double intDiffD   = hDiffD->Integral();
+  double ratioDiffDC = intDiffD/intDiffC;
+  return ratioDiffDC;
+}
+
+//double MyHPlusDataCardMakerNano::getQcdDD(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf=1.0){
+double getQcdDD(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf=1.0){
+  /* TH1F* hVV = getHisto(fVV,   baseDir+"/NonIso/"+histDir, histName, fTT); */
+  /* TH1F* hDY = getHisto(fDY,   baseDir+"/NonIso/"+histDir, histName, fTT); */
+  /* TH1F* hWJ = getHisto(fWJ,   baseDir+"/NonIso/"+histDir, histName, fTT); */
+  /* TH1F* hST = getHisto(fST,   baseDir+"/NonIso/"+histDir, histName, fTT); */
+  /* TH1F* hTT = getHisto(fTT,   baseDir+"/NonIso/"+histDir, histName, fTT); */
+  /* TH1F* hData= getHisto(fData, baseDir+"/NonIso/"+histDir, histName, fTT); */
   
-//   TH1F* hOtherMC = (TH1F*)hVV->Clone("hOtherMC");
-//   hOtherMC->Add(hDY);
-//   hOtherMC->Add(hST);
-//   hOtherMC->Add(hWJ);
-//   hOtherMC->Add(hTT);
-//   TH1F* hQCD = (TH1F*)hData->Clone(histName+"_noniso");
-//   hQCD->Add(hOtherMC, -1);
-//   //If binContent < 0, set it to 0
-//   for(int ibin=1; ibin<hQCD->GetNbinsX(); ibin++){
-//     double binCont = hQCD->GetBinContent(ibin);
-//     if(binCont<0){
-//       hQCD->SetBinContent(ibin, 0);
-//       //hQCD->SetBinError(ibin, 0);
-//     }
-//   }
-//   hQCD->Scale(qcd_sf);
-//   return hQCD->Integral();
-// }
+  TH1F* hVV = getHisto(fVV,   "VBFusion/"+baseDir+"/NonIso/" , histName+"_noniso");
+  TH1F* hDY = getHisto(fDY,   "DYjets/"+baseDir+"/NonIso/", histName+"_noniso");
+  TH1F* hWJ = getHisto(fWJ,   "Wjets/"+baseDir+"/NonIso/", histName+"_noniso");
+  TH1F* hST = getHisto(fST,   "singleTop/"+baseDir+"/NonIso/", histName+"_noniso");
+  TH1F* hTT = getHisto(fTT,   "TTbar/"+baseDir+"/NonIso/", histName+"_noniso");
+  TH1F* hData= (isMu) ? getHisto(fData,"DataMu/"+baseDir+"/NonIso/", histName+"_noniso") : getHisto(fData,"DataEle/"+baseDir+"/NonIso/", histName+"_noniso");
+  
+  TH1F* hOtherMC = (TH1F*)hVV->Clone("hOtherMC");
+  hOtherMC->Add(hDY);
+  hOtherMC->Add(hST);
+  hOtherMC->Add(hWJ);
+  hOtherMC->Add(hTT);
+  TH1F* hQCD = (TH1F*)hData->Clone(histName+"_noniso");
+  hQCD->Add(hOtherMC, -1);
+  //If binContent < 0, set it to 0
+  for(int ibin=1; ibin<hQCD->GetNbinsX(); ibin++){
+    double binCont = hQCD->GetBinContent(ibin);
+    if(binCont<0){
+      hQCD->SetBinContent(ibin, 0);
+      //hQCD->SetBinError(ibin, 0);
+    }
+  }
+  hQCD->Scale(qcd_sf);
+  return hQCD->Integral();
+}
 
-// double MyHPlusDataCardMakerNano::getSysUncQcd(bool isMu, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF){
+//double MyHPlusDataCardMakerNano::getSysUncQcd(bool isMu, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF){
+double getSysUncQcd(bool isMu, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF, double Norm, double& Norm_iso20){
 
-//   double sf_baseIsoDir = getQcdSF(isMu, "base", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName);
-//   double qcd_baseIsoDir = getQcdDD(isMu, "base", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName, sf_baseIsoDir);
-//   double sf_baseShiftedIsoDir = getQcdSF(isMu, "iso20", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName);
-//   double qcd_baseShiftedIsoDir = getQcdDD(isMu, "iso20", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName, sf_baseShiftedIsoDir);
+  double sf_baseIsoDir = getQcdSF(isMu, "base", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName);
+  double qcd_baseIsoDir = getQcdDD(isMu, "base", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName, sf_baseIsoDir);
+  double sf_baseShiftedIsoDir = getQcdSF(isMu, "iso20", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName);
+  double qcd_baseShiftedIsoDir = getQcdDD(isMu, "iso20", fData, fTT, fST, fWJ, fDY, fVV, histDir, histName, sf_baseShiftedIsoDir);
 
-//   double sf_unc = abs(sf_baseIsoDir - sf_baseShiftedIsoDir)/sf_baseIsoDir;
-//   double qcd_unc = sysSF* abs(qcd_baseIsoDir - qcd_baseShiftedIsoDir)/qcd_baseIsoDir;
-//   cout<<"-------------------------------------"<<endl;
-//   cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl;
-//   cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl;
-//   cout<<"sf_unc               = "<<sf_unc<<endl;
-//   cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl;
-//   cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl;
-//   cout<<"qcd_unc               = "<<qcd_unc<<endl;
-//   cout<<"-------------------------------------"<<endl;
-//   double unc = 0.0;
-//   if(isUncSF) unc = sf_unc;
-//   else unc = qcd_unc;
-//   return 1+unc;
-// }
+  double sf_unc = abs(sf_baseIsoDir - sf_baseShiftedIsoDir)/sf_baseIsoDir;
+  //double qcd_unc = sysSF* abs(qcd_baseIsoDir - qcd_baseShiftedIsoDir)/qcd_baseIsoDir;
+  double qcd_unc = abs(qcd_baseIsoDir - qcd_baseShiftedIsoDir)/qcd_baseIsoDir;
+  cout<<"-------------------------------------"<<endl;
+  cout<<"sf_baseIsoDir 	      = "<<sf_baseIsoDir<<endl;
+  cout<<"sf_baseShiftedIsoDir = "<<sf_baseShiftedIsoDir<<endl;
+  cout<<"sf_unc               = "<<sf_unc<<endl;
+  cout<<"qcd_baseIsoDir 	   = "<<qcd_baseIsoDir<<endl;
+  cout<<"qcd_baseShiftedIsoDir = "<<qcd_baseShiftedIsoDir<<endl;
+  cout<<"qcd_unc               = "<<qcd_unc<<endl;
+  cout<<"-------------------------------------"<<endl;
+  if((qcd_baseIsoDir - qcd_baseShiftedIsoDir)>0)
+    Norm_iso20 = Norm*(1.0 - qcd_unc);
+  else
+    Norm_iso20 = Norm*(1.0 + qcd_unc);
+  double unc = 0.0;
+  if(isUncSF) unc = sf_unc;
+  else unc = qcd_unc;
+  return 1+unc;
+}
