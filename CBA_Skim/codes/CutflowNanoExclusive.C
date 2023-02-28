@@ -33,8 +33,8 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   // const char* dir = "grid_v40_Syst/CBA_elemva80";
   // const char* dir1 = "grid_v40_Syst/CBA_elemva80-CombHist";
   
-  // const char* dir = "grid_v40_Syst/CBA_elereliso";
-  // const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_elereliso";
+  const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
   
   // const char* dir = "grid_v40_Syst/CBA_bctag123";
   // const char* dir1 = "grid_v40_Syst/CBA_bctag123";
@@ -54,8 +54,19 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   // const char* dir = "grid_v40_Syst/CBA_elereliso20";
   // const char* dir1 = "grid_v40_Syst/CBA_elereliso20-CombHist";
 
-  const char* dir = "grid_v40_Syst/CBA_elereliso30";
-  const char* dir1 = "grid_v40_Syst/CBA_elereliso30-CombHist";
+  // const char* dir = "grid_v40_Syst/CBA_elereliso30";
+  // const char* dir1 = "grid_v40_Syst/CBA_elereliso30-CombHist";
+
+  double totLumi = 36.31; //2016
+  float lumiUnc = 1.012;//2.5% for 2016 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
+  if(year==2017){
+    totLumi = 41.48; // 2017
+    lumiUnc = 1.023; //
+  }
+  if(year==2018){
+    totLumi = 59.83; //2018
+    lumiUnc = 1.025; //
+  }
 
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -182,8 +193,8 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   hs->Add(hcf_nano_stop);
   hs->Add(hcf_nano_ttbar);
   
-  
-  hcf_nano_data->SetTitle(((isMu)? Form("%d : #mu + jets",year):Form("%d : #it{e} + jets",year)));
+
+  hcf_nano_data->SetTitle(((isMu)? Form("%d : #mu + jets (#it{L}_{int} = %3.1f fb^{-1})",year,totLumi):Form("%d : #it{e} + jets (#it{L}_{int} = %3.1f fb^{-1})",year,totLumi)));
   
   TLegend *leg = new TLegend(0.6962751,0.5611814,0.8925501,0.8924051);
   leg->SetFillColor(10);

@@ -36,7 +36,7 @@ double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from system
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 int rebin = 50;
 
-int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 17){
+int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, int htype = 10){
 
   // Setters
   int SetGlobalStyle(void);
@@ -154,8 +154,8 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1"; int rebin = 50;
   //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest"; int rebin = 1;
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist"; 
+  const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist"; 
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -396,7 +396,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
     upper_minX = 0.0; upper_maxX = 10.0;   //x-axis range
   }else if(htype>=10){
     if(isBtag){
-      upper_minX = 0.0; upper_maxX = 500.0;   //x-axis range
+      upper_minX = 0.0; upper_maxX = 450.0;   //x-axis range
     }else{
       upper_minX = 0.0; upper_maxX = 200.0;   //x-axis range
     }
