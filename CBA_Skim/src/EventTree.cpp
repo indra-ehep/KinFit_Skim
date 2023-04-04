@@ -433,12 +433,12 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
   if (year=="2017"){
     tree->SetBranchStatus("HLT_Ele32_WPTight_Gsf_L1DoubleEG",1);
     tree->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG",&HLT_Ele32_WPTight_Gsf_L1DoubleEG_);
-	
+    
     // tree->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
     // tree->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
-	
-    // tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-    // tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
+    
+    tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
+    tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
 	
     // tree->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
     // tree->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
@@ -1012,8 +1012,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     // chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
     // chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
 	
-    // chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-    // chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
+    chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
+    chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
 	
     // chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
     // chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);

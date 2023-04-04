@@ -970,7 +970,7 @@ class SkimAna : public TSelector {
 
    //top pt
    double _topPtReWeight = 1.0;
-  
+
    //Theory weights
    float _q2weight_Up = 1.0, _q2weight_Do = 1.0 ;
    float _muRweight_Up = 1.0, _muRweight_Do = 1.0 ;
@@ -1679,9 +1679,9 @@ void SkimAna::Init(TTree *tree)
 	
     // tree->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
     // tree->SetBranchAddress("HLT_Ele32_WPTight_Gsf", &(event->HLT_Ele32_WPTight_Gsf_));
-    
-    tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-    tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf", &(event->HLT_Ele35_WPTight_Gsf_));
+	
+    // tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
+    // tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf", &(event->HLT_Ele35_WPTight_Gsf_));
 	
     // tree->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
     // tree->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT", &(event->HLT_Ele115_CaloIdVT_GsfTrkIdT_));
@@ -1975,7 +1975,6 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("nBJet"  		, &_nBJet			);
     outputTree->Branch("wt_before"		, &wt_before			);
     outputTree->Branch("wt_after"		, &wt_after			);
-    outputTree->Branch("topPtReWeight"		, &_topPtReWeight       	);
     outputTree->Branch("bcTagWeight"		, &_bcTagWeight       		);
     //CTagShape EOY
     outputTree->Branch("bcTagWeight_stat_Up"	, &_bcTagWeight_stat_Up       	);    
@@ -2367,16 +2366,14 @@ float SkimAna::topPtReweight()
       momtbar = event->GenPart_genPartIdxMother_[imc] ;
       tbarPt = event->GenPart_pt_[imc];
     }
-    // if(momtop == momtbar)
-    //   break;
+    if(momtop == momtbar)
+      break;
   }
   
   double sfTop    = exp(0.09494 - 0.00084*topPt);
   double sfTopBar = exp(0.09494 - 0.00084*tbarPt);
   
-  // if(topPt>0 && tbarPt>0 && momtop==momtbar)
-  //   wt = wt*sqrt(sfTop*sfTopBar);
-  if(topPt>0 && tbarPt>0)
+  if(topPt>0 && tbarPt>0 && momtop==momtbar)
     wt = wt*sqrt(sfTop*sfTopBar);
   
   return wt;
@@ -3797,7 +3794,7 @@ bool KinFit::Fit(){
   	    /* mbh(0,0) = ErrEt (bjhad.Et(), bjhad.Eta()); // et */
   	    /* mbh(1,1) = ErrEta(bjhad.Et(), bjhad.Eta()); // eta */
   	    /* mbh(2,2) = ErrPhi(bjhad.Et(), bjhad.Eta()); // phi */
-	    
+	      
   	    /* mc(0,0) = ErrEt (cjhad.Et(), cjhad.Eta()); // et */
   	    /* mc(1,1) = ErrEta(cjhad.Et(), cjhad.Eta()); // eta */
   	    /* mc(2,2) = ErrPhi(cjhad.Et(), cjhad.Eta()); // phi */
@@ -3836,7 +3833,7 @@ bool KinFit::Fit(){
 		/* lepton.SetPtEtaPhiM(modpt, lepton.Eta(), lepton.Phi(), lepton.M()); */
 	      }else
 		muonResolution(lepton.Et(), lepton.Eta(), resEt, resEta, resPhi);
-	      
+
 	    }
   	    if(leptonType == kElectron){
 	     
@@ -3858,11 +3855,12 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      metExtResolution(neutrino.Et(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et());
-	      modpt = ((neutrino.Pt()-ptOffSet)>0.0) ? (neutrino.Pt()-ptOffSet) : 0.0;
-	      neutrino.SetPtEtaPhiM(modpt, 0.0, neutrino.Phi(), 0.0);
+	      // ptOffSet = GetReso1D(hMETPtDiff, neutrino.Et());
+	      // modpt = ((neutrino.Pt()-ptOffSet)>0.0) ? (neutrino.Pt()-ptOffSet) : 0.0;
+	      // neutrino.SetPtEtaPhiM(modpt, 0.0, neutrino.Phi(), 0.0);
 	    }else
 	      metResolution(neutrino.Et(), resEt, resEta, resPhi);
+
 
   	    //resEta	= 1.e-7; // This is to avoid the matrix inversion problem: such as panic printout below
   	    resEta	= 9999.; // This is from miniAOD
@@ -3888,10 +3886,10 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
-	      modpt = ((bjlep.Pt()-ptOffSet)>0.0) ? (bjlep.Pt()-ptOffSet) : 0.0;
-	      //Info("KinFit::Fit", "Before TFinFitter::Fit Bjlep Pt %lf, offset : %lf, modpt : %lf",bjlep.Pt(),ptOffSet,modpt);
-	      bjlep.SetPtEtaPhiM(modpt, bjlep.Eta(), bjlep.Phi(), bjlep.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, bjlep.Eta(), bjlep.Et());
+	      // modpt = ((bjlep.Pt()-ptOffSet)>0.0) ? (bjlep.Pt()-ptOffSet) : 0.0;
+	      // //Info("KinFit::Fit", "Before TFinFitter::Fit Bjlep Pt %lf, offset : %lf, modpt : %lf",bjlep.Pt(),ptOffSet,modpt);
+	      // bjlep.SetPtEtaPhiM(modpt, bjlep.Eta(), bjlep.Phi(), bjlep.M());
 	    }else
 	      bjetResolution(bjlep.Et(), bjlep.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjlep.Eta(), JERbase, JERdown, JERup);
@@ -3908,9 +3906,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      bjetExtResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
-	      modpt = ((bjhad.Pt()-ptOffSet)>0.0) ? (bjhad.Pt()-ptOffSet) : 0.0;
-	      bjhad.SetPtEtaPhiM(modpt, bjhad.Eta(), bjhad.Phi(), bjhad.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, bjhad.Eta(), bjhad.Et());
+	      // modpt = ((bjhad.Pt()-ptOffSet)>0.0) ? (bjhad.Pt()-ptOffSet) : 0.0;
+	      // bjhad.SetPtEtaPhiM(modpt, bjhad.Eta(), bjhad.Phi(), bjhad.M());
 	    }else
 	      bjetResolution(bjhad.Et(), bjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(bjhad.Eta(), JERbase, JERdown, JERup);
@@ -3926,9 +3924,9 @@ bool KinFit::Fit(){
 	    
 	    if(useExtReso){
 	      udscExtResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
-	      modpt = ((cjhad.Pt()-ptOffSet)>0.0) ? (cjhad.Pt()-ptOffSet) : 0.0;
-	      cjhad.SetPtEtaPhiM(modpt, cjhad.Eta(), cjhad.Phi(), cjhad.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, cjhad.Eta(), cjhad.Et());
+	      // modpt = ((cjhad.Pt()-ptOffSet)>0.0) ? (cjhad.Pt()-ptOffSet) : 0.0;
+	      // cjhad.SetPtEtaPhiM(modpt, cjhad.Eta(), cjhad.Phi(), cjhad.M());
 	    }else
 	      udscResolution(cjhad.Et(), cjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(cjhad.Eta(), JERbase, JERdown, JERup);
@@ -3944,9 +3942,9 @@ bool KinFit::Fit(){
 	      
 	    if(useExtReso){
 	      udscExtResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
-	      ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
-	      modpt = ((sjhad.Pt()-ptOffSet)>0.0) ? (sjhad.Pt()-ptOffSet) : 0.0;
-	      sjhad.SetPtEtaPhiM(modpt, sjhad.Eta(), sjhad.Phi(), sjhad.M());
+	      // ptOffSet = GetReso2D(hBJetPtDiff, sjhad.Eta(), sjhad.Et());
+	      // modpt = ((sjhad.Pt()-ptOffSet)>0.0) ? (sjhad.Pt()-ptOffSet) : 0.0;
+	      // sjhad.SetPtEtaPhiM(modpt, sjhad.Eta(), sjhad.Phi(), sjhad.M());
 	    }else
 	      udscResolution(sjhad.Et(), sjhad.Eta(), resEt, resEta, resPhi);
   	    //JetEnergyResolution(sjhad.Eta(), JERbase, JERdown, JERup);

@@ -34,7 +34,6 @@ EventPick::EventPick(std::string titleIn){
     NlooseMuVeto_le = 0;
     NlooseEleVeto_le = 0;
 
-
     // These dR cuts are all done at selection level now
     // assign cut values
     //	veto_jet_dR = 0.1;
@@ -156,7 +155,8 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 	
 	// Info("EventPick","allSingleEGL1or : %d",allSingleEGL1or);
 
-	Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or) || no_trigger;
+	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or) || no_trigger;
+	Pass_trigger_ele = tree->HLT_Ele35_WPTight_Gsf_ || no_trigger;
 	
     }
     if (year=="2018"){

@@ -38,14 +38,14 @@ Int_t SkimAna::CreateHistoArrays()
   ////////////////////////////// Cut flow histograms //////////////////////////////////
 
   ////////////////////////////////// Observables //////////////////////////////////////
-  fNBObHists = 96;//132;
+  fNBObHists = 60;//132;
   fNObHists = fNDDReg*fNBObHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNObHists*fNSyst;
   histObs = new TH1D*[totNHists];
   ////////////////////////////////// Observables //////////////////////////////////////
   
   ////////////////////// Weight and other histograms histograms ///////////////////////
-  fNBWtHists = 98;
+  fNBWtHists = 97;
   fNWtHists = fNDDReg*fNBWtHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNWtHists*fNSyst;
   histWt = new TH1D*[totNHists];
@@ -135,7 +135,7 @@ Int_t SkimAna::CreateHistoArrays()
       hCutFlow[fNCFHists*isyst + iniso]->SetTitle(Form("%s_noniso",hCutFlow[iniso-minHs]->GetTitle()));
       hCutFlow[fNCFHists*isyst + iniso]->SetDirectory(fFileDir[isyst*fNDDReg + 2]);
     }
-    
+
     fFileDir[isyst*fNDDReg + 3]->cd();
     //fFileDir[isyst*fNDDReg + 3]->pwd(); cout <<" path " << fFileDir[isyst*fNDDReg+3]->GetPath() << endl;
     minHs = 3*fNBCFHists ;
@@ -218,45 +218,7 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_mu","_ct_ExcM_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_mu","_ct_ExcT_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_Exc0_mjj_mu","_ct_Exc0_mjj_mu", 2400, 0., 240);
-    
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_pt_jets_mu","_ct_chad_ExcL_pt_jets_mu",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_eta_jets_mu","_ct_chad_ExcL_eta_jets_mu", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_phi_jets_mu","_ct_chad_ExcL_phi_jets_mu", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_pt_jets_ele","_ct_chad_ExcL_pt_jets_ele",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_eta_jets_ele","_ct_chad_ExcL_eta_jets_ele", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_phi_jets_ele","_ct_chad_ExcL_phi_jets_ele", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_pt_jets_mu","_ct_chad_ExcM_pt_jets_mu",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_eta_jets_mu","_ct_chad_ExcM_eta_jets_mu", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_phi_jets_mu","_ct_chad_ExcM_phi_jets_mu", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_pt_jets_ele","_ct_chad_ExcM_pt_jets_ele",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_eta_jets_ele","_ct_chad_ExcM_eta_jets_ele", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_phi_jets_ele","_ct_chad_ExcM_phi_jets_ele", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_pt_jets_mu","_ct_chad_ExcT_pt_jets_mu",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_eta_jets_mu","_ct_chad_ExcT_eta_jets_mu", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_phi_jets_mu","_ct_chad_ExcT_phi_jets_mu", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_pt_jets_ele","_ct_chad_ExcT_pt_jets_ele",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_eta_jets_ele","_ct_chad_ExcT_eta_jets_ele", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_phi_jets_ele","_ct_chad_ExcT_phi_jets_ele", 35, -3.5, 3.5);
-    
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_pt_jets_mu","_ct_shad_ExcL_pt_jets_mu",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_eta_jets_mu","_ct_shad_ExcL_eta_jets_mu", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_phi_jets_mu","_ct_shad_ExcL_phi_jets_mu", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_pt_jets_ele","_ct_shad_ExcL_pt_jets_ele",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_eta_jets_ele","_ct_shad_ExcL_eta_jets_ele", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_phi_jets_ele","_ct_shad_ExcL_phi_jets_ele", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_pt_jets_mu","_ct_shad_ExcM_pt_jets_mu",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_eta_jets_mu","_ct_shad_ExcM_eta_jets_mu", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_phi_jets_mu","_ct_shad_ExcM_phi_jets_mu", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_pt_jets_ele","_ct_shad_ExcM_pt_jets_ele",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_eta_jets_ele","_ct_shad_ExcM_eta_jets_ele", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_phi_jets_ele","_ct_shad_ExcM_phi_jets_ele", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_pt_jets_mu","_ct_shad_ExcT_pt_jets_mu",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_eta_jets_mu","_ct_shad_ExcT_eta_jets_mu", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_phi_jets_mu","_ct_shad_ExcT_phi_jets_mu", 35, -3.5, 3.5);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_pt_jets_ele","_ct_shad_ExcT_pt_jets_ele",100, 0., 1000.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_eta_jets_ele","_ct_shad_ExcT_eta_jets_ele", 30, -3., 3.);
-    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_phi_jets_ele","_ct_shad_ExcT_phi_jets_ele", 35, -3.5, 3.5);
-    
+
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_ele","_ct_yLyMyT_mjj_ele", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_ele","_ct_yLyMnT_mjj_ele", 2400, 0., 240);
     // histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLnMyT_mjj_ele","_ct_yLnMyT_mjj_ele", 2400, 0., 240);
@@ -270,7 +232,7 @@ Int_t SkimAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_ele","_ct_ExcL_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_ele","_ct_ExcM_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_ele","_ct_ExcT_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + 95] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + 59] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
 
     
     for(int icf=0;icf<fNBObHists;icf++)
@@ -338,7 +300,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_ISRweight_Do","_ISRweight_Do",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_PUWeight_Up","_PUWeight_Up",200, -10, 10);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_PUWeight_Do","_PUWeight_Do",200, -10, 10);
-    histWt[fNWtHists*isyst + hidx++] = new TH1D("_topPtReweight","_topPtReweight",200, -10, 10);
+    // histWt[fNWtHists*isyst + hidx++] = new TH1D("_topPtReweight","_topPtReweight",200, -10, 10);
 
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight","_bcTagWeight",300, -10, 50);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_bcTagWeight_stat_Up","_bcTagWeight_stat_Up",300, -10, 50);
@@ -450,7 +412,7 @@ Int_t SkimAna::CreateHistoArrays()
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muIso","_muIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_eleIso","_eleIso", 100, 0., 1.);
     histWt[fNWtHists*isyst + hidx++] = new TH1D("_muMET","_muMET", 100, 0., 500.);
-    histWt[fNWtHists*isyst + 97] = new TH1D("_eleMET","_eleMET", 100, 0., 500.);
+    histWt[fNWtHists*isyst + 96] = new TH1D("_eleMET","_eleMET", 100, 0., 500.);
     
     // histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet1Pt_AF_mu","_bjet1Pt_AF_mu", 100, 0., 1000.);
     // histWt[fNWtHists*isyst + hidx++] = new TH1D("_bjet2Pt_AF_mu","_bjet2Pt_AF_mu", 100, 0., 1000.);
@@ -797,8 +759,7 @@ void SkimAna::SelectSyst()
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown",//16
-			    "topptup", "topptdown"//2  
+			    "bcxwjcup", "bcxwjcdown"//16
                             };
 
     const char *systbase_2017[] = {"base", 
@@ -812,8 +773,7 @@ void SkimAna::SelectSyst()
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown",//16
-			    "topptup", "topptdown"//2  
+			    "bcxwjcup", "bcxwjcdown"//16
                             };
 
     const char *systbase_2018[] = {"base", 
@@ -827,8 +787,7 @@ void SkimAna::SelectSyst()
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown",//16
-			     "topptup", "topptdown"//2  
+			    "bcxwjcup", "bcxwjcdown"//16
                             };
 
   if (fSyst == "base"){
@@ -840,15 +799,15 @@ void SkimAna::SelectSyst()
       fSystList.push_back(fSyst);       
     }else{//2016 or 2017 == 35, 2018 == 33 
       if(fYear==2016){
-	fNSyst = 37; 
+	fNSyst = 35; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2016[isyst]);
       }else if(fYear==2017){
-	fNSyst = 37; 
+	fNSyst = 35; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2017[isyst]);
       }else if(fYear==2018){
-	fNSyst = 37; 
+	fNSyst = 35; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2018[isyst]);
       }
@@ -1018,19 +977,18 @@ void SkimAna::SetTrio()
   }else if(fYear==2017){
     selector->mu_Pt_cut = 30.;
     selector->mu_Eta_tight = 2.4;
-    //selector->ele_Pt_cut = 35.;
-    selector->ele_Pt_cut = 38.;
+    selector->ele_Pt_cut = 35.;
     selector->ele_Eta_cut = 2.4;
-    selector->jet_Pt_cut = 25.;
-    //selector->jet_Pt_cut = 30.;
+    //selector->jet_Pt_cut = 25.;
+    selector->jet_Pt_cut = 30.;
     selector->jet_Eta_cut = 2.4;
   }else if(fYear==2018){
     selector->mu_Pt_cut = 26.;
     selector->mu_Eta_tight = 2.4;
     selector->ele_Pt_cut = 35.;
     selector->ele_Eta_cut = 2.4;
-    selector->jet_Pt_cut = 25.;
-    //selector->jet_Pt_cut = 30.;
+    //selector->jet_Pt_cut = 25.;
+    selector->jet_Pt_cut = 30.;
     selector->jet_Eta_cut = 2.4;
   }
   
@@ -1947,7 +1905,7 @@ void SkimAna::LoadLeptonSF(){
     string eleIDFile = (isEleTightID) ? "egammaEffiptxt_EGM2D_Tight_UL17.root" : "egammaEffiptxt_EGM2D_MVA80noIso_UL17.root";
     
     string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2017.root",elePath_UL.c_str());
-    
+
     //string eleTrigFile = Form("%s/sf_ele_2017_trig_v5.root",elePath_LRR.c_str()) ;
     string eleTrigFile = Form("%s/trig_2017.root",elePath_UL.c_str()) ;
       
@@ -4048,11 +4006,11 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(singleMu){
     if(systType == kIso20){
       //20
-      muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.17) ? true : false; 
-      muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.17) ? true : false; 
+      // muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.17) ? true : false; 
+      // muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.17) ? true : false; 
       //30
-      // muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.19) ? true : false; 
-      // muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.19) ? true : false; 
+      muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.19) ? true : false; 
+      muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.19) ? true : false; 
     }else{
       muonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] <= 0.15) ? true : false; 
       muonNonIsoCut = (event->muPFRelIso_[selector->Muons.at(0)] > 0.15) ? true : false; 
@@ -4063,14 +4021,14 @@ Bool_t SkimAna::Process(Long64_t entry)
     double SCeta = event->eleEta_[selector->Electrons.at(0)] + event->eleDeltaEtaSC_[selector->Electrons.at(0)];
     double absSCEta = TMath::Abs(SCeta);
     if(systType == kIso20){
-      eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.11) ? true : false;
-      eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.11 ) ? true : false;
+      // eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.11) ? true : false;
+      // eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.11 ) ? true : false;
       //20
       // eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.17) ? true : false;
       // eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.17 ) ? true : false;
       //30
-      // eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.14) ? true : false;
-      // eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.14 ) ? true : false;
+      eleIsoCut =  (event->elePFRelIso_[selector->Electrons.at(0)] <= 0.14) ? true : false;
+      eleNonIsoCut = (event->elePFRelIso_[selector->Electrons.at(0)] > 0.14 ) ? true : false;
     }else{
       eleIsoCut =  ((absSCEta <= 1.479 and event->elePFRelIso_[selector->Electrons.at(0)] <= 0.0695) 
       		    or 
@@ -4250,9 +4208,8 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBJetTree();
   if(systType == kBase) FillBTagControlHists();
   if(IsDebug) Info("Process","Completed b-jet processing");
-  _topPtReWeight = topPtReweight();
   //return true;
-  
+
   //Processes for KinFit selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   FillKFCFObs();
@@ -4701,37 +4658,18 @@ bool SkimAna::FillCTHists(TList *list, string hist_extn, bool isMu, double wt,
     //((TH1D *) list->FindObject(Form("_ct_IncT_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagTwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_IncT%s",hist_extn.c_str())))->Fill(ctagTwt);  
   }
-
-
+  
   //Exclusive categorization
   if(count_cJetsIncT> 0){
     ((TH1D *) list->FindObject(Form("_ct_ExcT_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcT_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcT_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcT_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcT_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcT_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcT_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), ctagTwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_ExcT%s",hist_extn.c_str())))->Fill(ctagTwt);		
   }
   else if(count_cJetsIncM> 0){ 
     ((TH1D *) list->FindObject(Form("_ct_ExcM_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagMwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcM_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcM_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcM_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcM_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcM_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcM_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), ctagTwt*wt);
-   ((TH1D *) list->FindObject(Form("_ctagWeight_ExcM%s",hist_extn.c_str())))->Fill(ctagMwt);		
+    ((TH1D *) list->FindObject(Form("_ctagWeight_ExcM%s",hist_extn.c_str())))->Fill(ctagMwt);		
   }
   else if(count_cJetsIncL > 0){ 
     ((TH1D *) list->FindObject(Form("_ct_ExcL_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagLwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcL_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcL_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_chad_ExcL_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcL_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcL_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), ctagTwt*wt);
-    ((TH1D *) list->FindObject(Form("_ct_shad_ExcL_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), ctagTwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_ExcL%s",hist_extn.c_str())))->Fill(ctagLwt);		
   }
   else{
@@ -5007,7 +4945,6 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   if(systname == "bcxwjcup") btagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown") btagwt = _bcTagWeight_xwjc_Do ; 
   // if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
   // if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
-  double topptwt = _topPtReWeight ; if(systname == "topptup") topptwt = _topPtReWeight*_topPtReWeight ;  if(systname == "topptdown") topptwt = 1.0 ;
   
   double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
   double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
@@ -5016,10 +4953,10 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt;
-  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt;
-  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
+  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt;
+  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt ;
   
   return true;
 }
@@ -6189,9 +6126,6 @@ bool SkimAna::FillBTagWt(){
     // ((TH1D *) list->FindObject("_btagWeight_1a_l_Do"))->Fill(_bTagWeight_l_Do);
     // ((TH1D *) list->FindObject("_btagWeight_1a"))->Fill(_bTagWeight);
     // ((TH1D *) list->FindObject("_topPtReweight"))->Fill(_topPtReWeight);
-    TString systname = fSystList[isyst];                                                                                                                                                                       
-    double topptwt = _topPtReWeight ; if(systname == "topptup") topptwt = _topPtReWeight*_topPtReWeight ;  if(systname == "topptdown") topptwt = 1.0 ;
-    ((TH1D *) list->FindObject("_topPtReweight"))->Fill(topptwt); 
   }
   return true;
 }
