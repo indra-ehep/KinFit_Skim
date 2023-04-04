@@ -48,10 +48,10 @@ int CreateQCDDD(int year = 2016)
   //const char* dir = "grid_v40_Syst/CBA_elemva80";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_elereliso";
-  //const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
   
   //const char* dir = "grid_v40_Syst/CBA_elereliso20-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist";
   
   //const char* dir = "grid_v40_Syst/CBA_bctag123";  
   //const char* dir = "grid_v40_Syst/CBA_ctagcorr";
