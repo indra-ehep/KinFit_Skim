@@ -271,7 +271,7 @@ string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
   else if (htype==16)
     histname = (isMu) ? "_ct_ExcT_mjj_mu" : "_ct_ExcT_mjj_ele" ;  
   else if (htype==17)
-    histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_ExcL_mjj_ele" ;  
+    histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_Exc0_mjj_ele" ;  
   else if (htype==18)
     histname += (isMu) ? "_bjhadBdisc_mu" : "_bjhadBdisc_ele" ;  
   else if (htype==19)

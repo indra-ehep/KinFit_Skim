@@ -140,13 +140,13 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
     //if(massFiles[i].Contains("80")) maxY = expY2sH[i];
     if(massFiles[i].Contains("80")) maxY = 0.38;
   }
-  // for(int i = 0 ; i < nMassPoints; i++){
-  //   cout << "obsY[i] " << obsY[i] << endl;
-  // }
-  //cout<<std::setprecision(4)<<endl;
-  // cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
+  for(int i = 0 ; i < nMassPoints; i++){
+    cout << "obsY[i] " << obsY[i] << endl;
+  }
+  cout<<std::setprecision(4)<<endl;
+  cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
-  // cout<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
+  cout<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
     expY1sH[i1] = TMath::Abs(expY1sH[i1]-expY[i1]);
     expY1sL[i1] = TMath::Abs(expY1sL[i1]-expY[i1]);
     expY2sH[i1] = TMath::Abs(expY2sH[i1]-expY[i1]);
@@ -160,23 +160,23 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
     // cout<<"$"<<std::setprecision(2)<<100*expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
     //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$\n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
     if(obs){
-      // printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
-      // fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       Val.push_back(res);
     }else{
-      // printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
-      // fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ \n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ \n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
       Val.push_back(res);
     }
-    //cout<<endl;
+    cout<<endl;
   }
   fclose(fout);
 
   TMultiGraph *mg = new TMultiGraph();
   TString ch_name = "ch";
-  //cout<<CHANNEL<<endl;
+  cout<<CHANNEL<<endl;
   if(CHANNEL=="mu") ch_name = "#mu";
   if(CHANNEL=="ele") ch_name = "e";
   if(CHANNEL=="mu_ele") ch_name = "lep";
@@ -316,10 +316,8 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   gPad->RedrawAxis();
   TString outFile = "limit_"+CHANNEL+"_"+CAT;
   TString outDir = "limit/"+CHANNEL+"/"+CAT;
-  cout<< year_dir+CHANNEL+".pdf" << endl;
   //gPad->SaveAs(outDir+"/"+outFile+".pdf");
-  //gPad->SaveAs("result.pdf");
-  gPad->SaveAs(year_dir+CHANNEL+".pdf");
+  gPad->SaveAs("result.pdf");
   if(isOut){
     //TFile *fout = new TFile(outDir+"/"+outFile+".root", "RECREATE");
     TFile *fout = new TFile("result.root", "RECREATE");
@@ -341,17 +339,36 @@ void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/09_elereliso-Nan
   LimitPlotter(year_dir, muVal, "mu", "Cat1_Inc", false, true );
   LimitPlotter(year_dir, eleVal, "ele", "Cat1_Inc", false, true );
   LimitPlotter(year_dir, mueleVal, "mu_ele", "Cat1_Inc", false, true );
-
-  cout<<"\\centering\\begin{adjustbox}{width=\\textwidth}"<<endl;
-  cout<<"\\begin{tabular}{ | c | c | c | c | }\\hline"<<endl;
-  cout<<"\\multicolumn{4}{|c|}{Tight WP}\\\\\\hline"<<endl;
-  cout<<"mass point     & $\\mu$ + jets  & $e$ + jets  & $l$ + jets  \\\\ \\cline{2-4}"<<endl;
-  cout<<"&  expected      & expected     & expected      \\\\ \\hline"<<endl;
+  
   for(int i = 0; i < int(muVal.size()) ; i++)
     if(i==(int(muVal.size())-1))
       cout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;
     else
       cout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\" << endl;
-  cout<<"\\end{tabular}"<<endl;
-  cout<<"\\end{adjustbox}"<<endl;
+  
+  
+  // LimitPlotter("mu", "Cat1_Inc",     true, true );
+  // LimitPlotter("ele", "Cat1_Inc",     true, true );
+  // LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
+  
+  // LimitPlotter("mu", "Cat3_cTagEx",     false, true );
+  // LimitPlotter("ele", "Cat3_cTagEx",     false, true );
+  // LimitPlotter("mu_ele", "Cat3_cTagEx",  false, true );
+
+  // LimitPlotter("mu", "Cat3_cTagEx",     true, true );
+  // LimitPlotter("ele", "Cat3_cTagEx",     true, true );
+  // LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
+
+  /*
+  LimitPlotter("mu", "Cat2_cTagInc", true, true );
+  LimitPlotter("mu", "Cat3_cTagEx",  true, true );
+
+  LimitPlotter("ele", "Cat1_Inc",     true, true );
+  LimitPlotter("ele", "Cat2_cTagInc", true, true );
+  LimitPlotter("ele", "Cat3_cTagEx",  true, true );
+
+  LimitPlotter("mu_ele", "Cat1_Inc",     true, true );
+  LimitPlotter("mu_ele", "Cat2_cTagInc", true, true );
+  */
+  //LimitPlotter("mu_ele", "Cat3_cTagEx",  true, true );
 }

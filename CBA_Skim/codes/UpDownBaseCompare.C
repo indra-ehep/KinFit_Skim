@@ -37,17 +37,11 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 26){
 			   "Wjets", "DYjets", "VBFusion", "MCQCDMu", 
 			   "MCQCDEle"};
   
-  const int nShapes = 0;
-  const char* listShapes[] = {""};
-  // const int nShapes = 13;
-  // const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
-  // 			      //"bclhemuf", "bclhemur",
-  // 			      "bcstat", "bcxdy",//8
-  // 			      "bcxst", "bcxwj", "bcxtt", "bcbfrag",//12
-  // 			      //"bcintp", "bcextp",
-  // 			      "bcxdyb", "bcxdyc",//16
-  //                             "bcwjc"}; //17
-
+  // const int nShapes = 0;
+  // const char* listShapes[] = {""};
+  const int nShapes = 3;
+  const char* listShapes[] = {"bcstat", "mtop", "hdamp"};
+  
   // const int nShapes = 17;
   // const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
   // 			      "bclhemuf", "bclhemur", "btagb", "btagl",//8
@@ -171,9 +165,9 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 26){
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR" ;  
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_muFmuR-Hist" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva80-CombHist" ;
-  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist" ;
+  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso-CombHist" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_yearend22" ;
-  const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso30-CombHist" ;
+  //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elereliso30-CombHist" ;
 
 
   int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
