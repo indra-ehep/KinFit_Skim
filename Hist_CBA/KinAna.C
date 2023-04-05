@@ -35,7 +35,7 @@ Int_t KinAna::CreateHistoArrays()
   ////////////////////////////// Cut flow histograms //////////////////////////////////
   
   ////////////////////////////////// Observables //////////////////////////////////////
-  fNBObHists = 56;//132;
+  fNBObHists = 92;//132;
   fNObHists = fNDDReg*fNBObHists; // if fNBaseHists = 100, then == 0:99 for Iso HighMET | 100:199 for Iso LowMET | 200:299 nonIso HighMET | 300:399 nonIso LowMET
   totNHists = fNObHists*fNSyst;
   histObs = new TH1D*[totNHists];
@@ -165,6 +165,44 @@ Int_t KinAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_bjhadBdisc_ele","bjhadBdisc ele", 300, -1.5, 1.5);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_bjlepBdisc_mu","bjlepBdisc mu", 300, -1.5, 1.5);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_kb_bjlepBdisc_ele","bjlepBdisc ele", 300, -1.5, 1.5);
+    
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_pt_jets_mu","_ct_chad_ExcL_pt_jets_mu",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_eta_jets_mu","_ct_chad_ExcL_eta_jets_mu", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_phi_jets_mu","_ct_chad_ExcL_phi_jets_mu", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_pt_jets_ele","_ct_chad_ExcL_pt_jets_ele",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_eta_jets_ele","_ct_chad_ExcL_eta_jets_ele", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcL_phi_jets_ele","_ct_chad_ExcL_phi_jets_ele", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_pt_jets_mu","_ct_chad_ExcM_pt_jets_mu",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_eta_jets_mu","_ct_chad_ExcM_eta_jets_mu", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_phi_jets_mu","_ct_chad_ExcM_phi_jets_mu", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_pt_jets_ele","_ct_chad_ExcM_pt_jets_ele",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_eta_jets_ele","_ct_chad_ExcM_eta_jets_ele", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcM_phi_jets_ele","_ct_chad_ExcM_phi_jets_ele", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_pt_jets_mu","_ct_chad_ExcT_pt_jets_mu",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_eta_jets_mu","_ct_chad_ExcT_eta_jets_mu", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_phi_jets_mu","_ct_chad_ExcT_phi_jets_mu", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_pt_jets_ele","_ct_chad_ExcT_pt_jets_ele",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_eta_jets_ele","_ct_chad_ExcT_eta_jets_ele", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_chad_ExcT_phi_jets_ele","_ct_chad_ExcT_phi_jets_ele", 35, -3.5, 3.5);
+    
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_pt_jets_mu","_ct_shad_ExcL_pt_jets_mu",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_eta_jets_mu","_ct_shad_ExcL_eta_jets_mu", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_phi_jets_mu","_ct_shad_ExcL_phi_jets_mu", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_pt_jets_ele","_ct_shad_ExcL_pt_jets_ele",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_eta_jets_ele","_ct_shad_ExcL_eta_jets_ele", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcL_phi_jets_ele","_ct_shad_ExcL_phi_jets_ele", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_pt_jets_mu","_ct_shad_ExcM_pt_jets_mu",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_eta_jets_mu","_ct_shad_ExcM_eta_jets_mu", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_phi_jets_mu","_ct_shad_ExcM_phi_jets_mu", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_pt_jets_ele","_ct_shad_ExcM_pt_jets_ele",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_eta_jets_ele","_ct_shad_ExcM_eta_jets_ele", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcM_phi_jets_ele","_ct_shad_ExcM_phi_jets_ele", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_pt_jets_mu","_ct_shad_ExcT_pt_jets_mu",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_eta_jets_mu","_ct_shad_ExcT_eta_jets_mu", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_phi_jets_mu","_ct_shad_ExcT_phi_jets_mu", 35, -3.5, 3.5);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_pt_jets_ele","_ct_shad_ExcT_pt_jets_ele",100, 0., 1000.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_eta_jets_ele","_ct_shad_ExcT_eta_jets_ele", 30, -3., 3.);
+    histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_shad_ExcT_phi_jets_ele","_ct_shad_ExcT_phi_jets_ele", 35, -3.5, 3.5);
 
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMyT_mjj_mu","_ct_yLyMyT_mjj_mu", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_yLyMnT_mjj_mu","_ct_yLyMnT_mjj_mu", 2400, 0., 240);
@@ -194,7 +232,7 @@ Int_t KinAna::CreateHistoArrays()
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcL_mjj_ele","_ct_ExcL_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcM_mjj_ele","_ct_ExcM_mjj_ele", 2400, 0., 240);
     histObs[fNObHists*isyst + hidx++] = new TH1D("_ct_ExcT_mjj_ele","_ct_ExcT_mjj_ele", 2400, 0., 240);
-    histObs[fNObHists*isyst + 55] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
+    histObs[fNObHists*isyst + 91] = new TH1D("_ct_Exc0_mjj_ele","_ct_Exc0_mjj_ele", 2400, 0., 240);
     
     for(int icf=0;icf<fNBObHists;icf++)
       histObs[fNObHists*isyst + icf]->SetDirectory(fFileDir[isyst*fNDDReg + 0]);
@@ -499,66 +537,6 @@ void KinAna::SelectSyst()
   jecvar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   jervar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   
-  // fNSyst = 34 ; 
-  // //fSystList = new char*[fNSyst];
-  // const char *syst[] = {"base", 
-  // 			"puup", "pudown", "mueffup", "mueffdown", 
-  // 			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
-  // 			"jerup", "jerdown", "btagbup", "btagbdown", 
-  // 			"btaglup", "btagldown", "prefireup", "prefiredown",
-  // 			"pdfup", "pdfdown", "q2fup", "q2down",
-  // 			"isrup", "isrdown", "fsrup", "fsrdown",
-  // 			"iso20", "metup", "metdown",
-  //                       "cp5up","cp5down","hdampup","hdampdown", 
-  // 			"mtopup", "mtopdown"};
-  
-  // for(int isyst=0;isyst<fNSyst;isyst++){
-  //   //fSystList[isyst] = new char[20];
-  //   //strcpy(fSystList[isyst],syst[isyst]);
-  //   fSystList.push_back(syst[isyst]);
-  // }
-
-  // const char *systbase[] = {"base", 
-  // 			    "pdfup", "pdfdown", "q2up", "q2down",
-  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-  // 			    "puup", "pudown", "prefireup", "prefiredown",
-  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-  // 			    "pujetidup", "pujetiddown",  //19
-  // 			    // //OLD
-  // 			    // "btagbup", "btagbdown", 
-  // 			    // "btaglup", "btagldown", 
-  //                           // "bctag1up", "bctag1down", 
-  // 			    // "bctag2up", "bctag2down",
-  //                           // "bctag3up", "bctag3down" //10
-  // 			    //CShapeCalib EOY
-  // 			    "bcstatup", "bcstatdown",
-  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-  // 			    "bcbfragup", "bcbfragdown" //16
-  // 			    // CShapeCalib UL
-  // 			    // "bcstatup", "bcstatdown",
-  // 			    // "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-  // 			    // "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			    // "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-  // 			    // "bcxwjcup", "bcxwjcdown"//16
-
-  //                           };
-
-    // const char *systbase_2016[] = {"base", 
-    // 			    "pdfup", "pdfdown", "q2up", "q2down",
-    // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-    // 			    "puup", "pudown", "prefireup", "prefiredown",
-    // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-    // 			    "pujetidup", "pujetiddown",  //19
-    // 			    // CShapeCalib EOY
-    // 			    "bcstatup", "bcstatdown",
-    // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-    // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-    // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
-    // 			    "bcbfragup", "bcbfragdown" //16
-    //                         };
-
     const char *systbase_2016[] = {"base", 
 			    "pdfup", "pdfdown", "q2up", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
@@ -570,10 +548,11 @@ void KinAna::SelectSyst()
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown"//16
+			    "bcxwjcup", "bcxwjcdown",//16
+			    "topptup", "topptdown"//2  
                             };
 
-      const char *systbase_2017[] = {"base", 
+    const char *systbase_2017[] = {"base", 
 			    "pdfup", "pdfdown", "q2up", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
 			    "puup", "pudown", "prefireup", "prefiredown",
@@ -584,10 +563,11 @@ void KinAna::SelectSyst()
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown"//16
+			    "bcxwjcup", "bcxwjcdown",//16
+			    "topptup", "topptdown"//2  
                             };
 
-      const char *systbase_2018[] = {"base", 
+    const char *systbase_2018[] = {"base", 
 			    "pdfup", "pdfdown", "q2up", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
 			    "puup", "pudown", "prefireup", "prefiredown",
@@ -598,21 +578,9 @@ void KinAna::SelectSyst()
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown"//16
+			    "bcxwjcup", "bcxwjcdown",//16
+			     "topptup", "topptdown"//2  
                             };
-
-    // const char *systbase_2018[] = {"base", 
-    // 			    "pdfup", "pdfdown", "q2up", "q2down",
-    // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-    // 			    "puup", "pudown", "prefireup", "prefiredown",
-    // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-    // 			    "pujetidup", "pujetiddown",  //19
-    // 			    //CShapeCalib EOY
-    // 			    "bcstatup", "bcstatdown",
-    // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-    // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-    // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown" //14
-    //                         };
 
   if (fSyst == "base"){
 
@@ -623,15 +591,15 @@ void KinAna::SelectSyst()
       fSystList.push_back(fSyst);       
     }else{
       if(fYear==2016){
-	fNSyst = 35; 
+	fNSyst = 37; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2016[isyst]);
       }else if(fYear==2017){
-	fNSyst = 35; 
+	fNSyst = 37; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2017[isyst]);
       }else if(fYear==2018){
-	fNSyst = 35; 
+	fNSyst = 37; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2018[isyst]);
       }
@@ -1416,58 +1384,16 @@ bool KinAna::GetWtRatio(TString systname, TString DDzone, string hist_extn){
 //_____________________________________________________________________________
 bool KinAna::GetCTagWt(char CType, TString systname, double& ctagwt){
   
-  // if(CType=='L' or CType=='M' or CType=='T'){
-  //   // ctagwt = _cTagLWeight ; 
-  //   // if(systname == "bctag1up") ctagwt = _cTagLWeight_bc1_Up ; if(systname == "bctag1down") ctagwt = _cTagLWeight_bc1_Do ; 
-  //   // if(systname == "bctag2up") ctagwt = _cTagLWeight_bc2_Up ; if(systname == "bctag2down") ctagwt = _cTagLWeight_bc2_Do ; 
-  //   // if(systname == "bctag3up") ctagwt = _cTagLWeight_bc3_Up ; if(systname == "bctag3down") ctagwt = _cTagLWeight_bc3_Do ; 
-  //   ctagwt = _bcTagWeight ;
-  //   if(systname == "bcstatup") ctagwt = _bcTagWeight_stat_Up ;		if(systname == "bcstatdown") ctagwt = _bcTagWeight_stat_Do ;
-  //   if(systname == "puup") ctagwt = _bcTagWeight_pu_Up ;		if(systname == "pudown") ctagwt = _bcTagWeight_pu_Do ; 
-  //   if(systname == "eleeffup") ctagwt = _bcTagWeight_eleid_Up ;	if(systname == "eleeffdown") ctagwt = _bcTagWeight_eleid_Do ; 
-  //   if(systname == "mueffup") ctagwt = _bcTagWeight_muid_Up ;		if(systname == "mueffdown") ctagwt = _bcTagWeight_muid_Do ; 
-  //   if(systname == "bclhemufup") ctagwt = _bcTagWeight_lhemuf_Up ;	if(systname == "bclhemufdown") ctagwt = _bcTagWeight_lhemuf_Do ; 
-  //   if(systname == "bclhemurup") ctagwt = _bcTagWeight_lhemur_Up ;	if(systname == "bclhemurdown") ctagwt = _bcTagWeight_lhemur_Do ; 
-  //   if(systname == "isrup") ctagwt = _bcTagWeight_isr_Up ;		if(systname == "isrdown") ctagwt = _bcTagWeight_isr_Do ; 
-  //   if(systname == "fsrup") ctagwt = _bcTagWeight_fsr_Up ;		if(systname == "fsrdown") ctagwt = _bcTagWeight_fsr_Do ; 
-  //   if(systname == "bcxdyup") ctagwt = _bcTagWeight_xdy_Up ;		if(systname == "bcxdydown") ctagwt = _bcTagWeight_xdy_Do ; 
-  //   if(systname == "bcxstup") ctagwt = _bcTagWeight_xst_Up ;		if(systname == "bcxstdown") ctagwt = _bcTagWeight_xst_Do ; 
-  //   if(systname == "bcxwjup") ctagwt = _bcTagWeight_xwj_Up ;		if(systname == "bcxwjdown") ctagwt = _bcTagWeight_xwj_Do ; 
-  //   if(systname == "bcxttup") ctagwt = _bcTagWeight_xtt_Up ;		if(systname == "bcxttdown") ctagwt = _bcTagWeight_xtt_Do ; 
-  //   if(systname == "jecup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "jecdown") ctagwt = _bcTagWeight_jes_Do ; 
-  //   if(systname == "jerup") ctagwt = _bcTagWeight_jer_Up ;		if(systname == "jerdown") ctagwt = _bcTagWeight_jer_Do ; 
-  //   if(systname == "bcbfragup") ctagwt = _bcTagWeight_bfrag_Up ;	if(systname == "bcbfragdown") ctagwt = _bcTagWeight_bfrag_Do ; 
-  // }
-
     if(CType=='L' or CType=='M' or CType=='T'){
-    // ctagwt = _cTagLWeight ; 
-    // if(systname == "bctag1up") ctagwt = _cTagLWeight_bc1_Up ; if(systname == "bctag1down") ctagwt = _cTagLWeight_bc1_Do ; 
-    // if(systname == "bctag2up") ctagwt = _cTagLWeight_bc2_Up ; if(systname == "bctag2down") ctagwt = _cTagLWeight_bc2_Do ; 
-    // if(systname == "bctag3up") ctagwt = _cTagLWeight_bc3_Up ; if(systname == "bctag3down") ctagwt = _cTagLWeight_bc3_Do ; 
     ctagwt = _bcTagWeight ;
     if(systname == "bcstatup") ctagwt = _bcTagWeight_stat_Up ;		if(systname == "bcstatdown") ctagwt = _bcTagWeight_stat_Do ;
     if(systname == "puup") ctagwt = _bcTagWeight_pu_Up ;		if(systname == "pudown") ctagwt = _bcTagWeight_pu_Do ; 
-    // if(systname == "eleeffup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_eleid_Up ;
-    // if(systname == "eleeffdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_eleid_Do ; 
-    // if(systname == "mueffup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_muid_Up ;
-    // if(systname == "mueffdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_muid_Do ; 
     if(systname == "bclhemufup") ctagwt = _bcTagWeight_lhemuf_Up ;	if(systname == "bclhemufdown") ctagwt = _bcTagWeight_lhemuf_Do ; 
     if(systname == "bclhemurup") ctagwt = _bcTagWeight_lhemur_Up ;	if(systname == "bclhemurdown") ctagwt = _bcTagWeight_lhemur_Do ; 
     if(systname == "isrup") ctagwt = _bcTagWeight_isr_Up ;		if(systname == "isrdown") ctagwt = _bcTagWeight_isr_Do ; 
     if(systname == "fsrup") ctagwt = _bcTagWeight_fsr_Up ;		if(systname == "fsrdown") ctagwt = _bcTagWeight_fsr_Do ; 
-    // if(systname == "bcxdyup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xdy_Up ;
-    // if(systname == "bcxdydown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xdy_Do ; 
-    // if(systname == "bcxstup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xst_Up ;
-    // if(systname == "bcxstdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xst_Do ; 
-    // if(systname == "bcxwjup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Up ;
-    // if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Do ; 
-    // if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Up ;
-    // if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Do ; 
     if(systname == "jecup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "jecdown") ctagwt = _bcTagWeight_jes_Do ; 
     if(systname == "jerup") ctagwt = _bcTagWeight_jer_Up ;		if(systname == "jerdown") ctagwt = _bcTagWeight_jer_Do ; 
-    // if(systname == "bcbfragup" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Up ;
-    // if(systname == "bcbfragdown" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Do ; 
-
     if(systname == "bcintpup") ctagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown") ctagwt = _bcTagWeight_intp_Do ; 
     if(systname == "bcextpup") ctagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown") ctagwt = _bcTagWeight_extp_Do ; 
     
@@ -1484,75 +1410,6 @@ bool KinAna::GetCTagWt(char CType, TString systname, double& ctagwt){
 //_____________________________________________________________________________
 bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& combined_muwt_nobtagwt, double& combined_elewt, double& combined_elewt_nobtagwt){
 
-  // double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
-  // double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
-  // double muwt = _muEffWeight ; if(systname == "mueffup") muwt = _muEffWeight_Up ; if(systname == "mueffdown") muwt = _muEffWeight_Do ; 
-  // double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
-  // double pujetidwt = _PUJetIDWeight ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Up ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Do ; 
-
-  // // double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-  // // if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-  // // if(systname == "bctag1up") btagwt = _bTagWeight_bc1_Up ; if(systname == "bctag1down") btagwt = _bTagWeight_bc1_Do ; 
-  // // if(systname == "bctag2up") btagwt = _bTagWeight_bc2_Up ; if(systname == "bctag2down") btagwt = _bTagWeight_bc2_Do ; 
-  // // if(systname == "bctag3up") btagwt = _bTagWeight_bc3_Up ; if(systname == "bctag3down") btagwt = _bTagWeight_bc3_Do ; 
-
-  // //CShapeCalib EOY
-  // // "bcstatup", "bcstatdown",
-  // // "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // // "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // // "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-  // // "bcbfragup", "bcbfragdown" //16
-  
-  // //CShapeCalib EOY
-  // double btagwt = _bcTagWeight ; if(systname == "bcstatup") btagwt = _bcTagWeight_stat_Up ; if(systname == "bcstatdown") btagwt = _bcTagWeight_stat_Do ;
-  // if(systname == "puup") btagwt = _bcTagWeight_pu_Up ; if(systname == "pudown") btagwt = _bcTagWeight_pu_Do ; 
-  // if(systname == "eleeffup") btagwt = _bcTagWeight_eleid_Up ; if(systname == "eleeffdown") btagwt = _bcTagWeight_eleid_Do ; 
-  // if(systname == "mueffup") btagwt = _bcTagWeight_muid_Up ; if(systname == "mueffdown") btagwt = _bcTagWeight_muid_Do ; 
-  // if(systname == "bclhemufup") btagwt = _bcTagWeight_lhemuf_Up ; if(systname == "bclhemufdown") btagwt = _bcTagWeight_lhemuf_Do ; 
-  // if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
-  // if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
-  // if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
-  // if(systname == "bcxdyup") btagwt = _bcTagWeight_xdy_Up ; if(systname == "bcxdydown") btagwt = _bcTagWeight_xdy_Do ; 
-  // if(systname == "bcxstup") btagwt = _bcTagWeight_xst_Up ; if(systname == "bcxstdown") btagwt = _bcTagWeight_xst_Do ; 
-  // if(systname == "bcxwjup") btagwt = _bcTagWeight_xwj_Up ; if(systname == "bcxwjdown") btagwt = _bcTagWeight_xwj_Do ; 
-  // if(systname == "bcxttup") btagwt = _bcTagWeight_xtt_Up ; if(systname == "bcxttdown") btagwt = _bcTagWeight_xtt_Do ; 
-  // if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
-  // if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
-  // if(systname == "bcbfragup") btagwt = _bcTagWeight_bfrag_Up ; if(systname == "bcbfragdown") btagwt = _bcTagWeight_bfrag_Do ; 
-  
-  // // CShapeCalib UL
-  // // "bcstatup", "bcstatdown",
-  // // "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-  // // "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // // "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-  // // "bcxwjcup", "bcxwjcdown"//16
-  
-  // // CShapeCalib UL
-  // // double btagwt = _bcTagWeight ; if(systname == "bcstatup") btagwt = _bcTagWeight_stat_Up ; if(systname == "bcstatdown") btagwt = _bcTagWeight_stat_Do ;
-  // // if(systname == "puup") btagwt = _bcTagWeight_pu_Up ; if(systname == "pudown") btagwt = _bcTagWeight_pu_Do ; 
-  // // if(systname == "bcintpup") btagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown") btagwt = _bcTagWeight_intp_Do ; 
-  // // if(systname == "bcextpup") btagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown") btagwt = _bcTagWeight_extp_Do ; 
-  // // if(systname == "bclhemufup") btagwt = _bcTagWeight_lhemuf_Up ; if(systname == "bclhemufdown") btagwt = _bcTagWeight_lhemuf_Do ; 
-  // // if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
-  // // if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
-  // // if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
-  // // if(systname == "bcxdybup") btagwt = _bcTagWeight_xdyb_Up ; if(systname == "bcxdybdown") btagwt = _bcTagWeight_xdyb_Do ; 
-  // // if(systname == "bcxdycup") btagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown") btagwt = _bcTagWeight_xdyc_Do ; 
-  // // if(systname == "bcxwjcup") btagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown") btagwt = _bcTagWeight_xwjc_Do ; 
-  // // if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
-  // // if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
-  
-  // double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
-  // double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
-  // double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
-  // double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
-  
-  // combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt * btagwt * wt_ratio;
-  // combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt * wt_ratio;
-  // combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt * btagwt * wt_ratio;
-  // combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * isrwt * fsrwt * wt_ratio;
-
-  // //cout<<"combined_muwt : " << combined_muwt << endl;
 
   double puwt = _PUWeight ; if(systname == "puup") puwt = _PUWeight_Up ; if(systname == "pudown") puwt = _PUWeight_Do ;
   double prefirewt = _prefireWeight ; if(systname == "prefireup")  prefirewt = _prefireWeight_Up ; if(systname == "prefiredown") prefirewt = _prefireWeight_Do ;
@@ -1560,63 +1417,24 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   double elewt = _eleEffWeight ; if(systname == "eleeffup") elewt = _eleEffWeight_Up ; if(systname == "eleeffdown") elewt = _eleEffWeight_Do ; 
   double pujetidwt = _PUJetIDWeight ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Up ; if(systname == "pujetidup") pujetidwt = _PUJetIDWeight_Do ; 
 
-  // double btagwt = _bTagWeight ; if(systname == "btagbup") btagwt = _bTagWeight_b_Up ; if(systname == "btagbdown") btagwt = _bTagWeight_b_Do ; 
-  // if(systname == "btaglup") btagwt = _bTagWeight_l_Up ; if(systname == "btagldown") btagwt = _bTagWeight_l_Do ; 
-  // if(systname == "bctag1up") btagwt = _bTagWeight_bc1_Up ; if(systname == "bctag1down") btagwt = _bTagWeight_bc1_Do ; 
-  // if(systname == "bctag2up") btagwt = _bTagWeight_bc2_Up ; if(systname == "bctag2down") btagwt = _bTagWeight_bc2_Do ; 
-  // if(systname == "bctag3up") btagwt = _bTagWeight_bc3_Up ; if(systname == "bctag3down") btagwt = _bTagWeight_bc3_Do ; 
-
-  //CShapeCalib EOY
-  // "bcstatup", "bcstatdown",
-  // "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-  // "bcbfragup", "bcbfragdown" //16
   
   //CShapeCalib EOY
   double btagwt = _bcTagWeight ; if(systname == "bcstatup") btagwt = _bcTagWeight_stat_Up ; if(systname == "bcstatdown") btagwt = _bcTagWeight_stat_Do ;
   if(systname == "puup") btagwt = _bcTagWeight_pu_Up ; if(systname == "pudown") btagwt = _bcTagWeight_pu_Do ; 
-  // if(systname == "eleeffup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_eleid_Up ;
-  // if(systname == "eleeffdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_eleid_Do ; 
-  // if(systname == "mueffup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_muid_Up ;
-  // if(systname == "mueffdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_muid_Do ; 
   if(systname == "bclhemufup") btagwt = _bcTagWeight_lhemuf_Up ; if(systname == "bclhemufdown") btagwt = _bcTagWeight_lhemuf_Do ; 
   if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
   if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
   if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
-  // if(systname == "bcxdyup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xdy_Up ;
-  // if(systname == "bcxdydown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xdy_Do ; 
-  // if(systname == "bcxstup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xst_Up ;
-  // if(systname == "bcxstdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xst_Do ; 
-  // if(systname == "bcxwjup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xwj_Up ;
-  // if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xwj_Do ; 
-  // if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Up ;
-  // if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Do ; 
   if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
-  if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
-  // if(systname == "bcbfragup" and fYear==2016) btagwt = _bcTagWeight_bfrag_Up ; if(systname == "bcbfragdown" and fYear==2016) btagwt = _bcTagWeight_bfrag_Do ; 
+  if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ;
   
-  // CShapeCalib UL
-  // "bcstatup", "bcstatdown",
-  // "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-  // "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-  // "bcxwjcup", "bcxwjcdown"//16
-  
-  // CShapeCalib UL
-  // double btagwt = _bcTagWeight ; if(systname == "bcstatup") btagwt = _bcTagWeight_stat_Up ; if(systname == "bcstatdown") btagwt = _bcTagWeight_stat_Do ;
-  // if(systname == "puup") btagwt = _bcTagWeight_pu_Up ; if(systname == "pudown") btagwt = _bcTagWeight_pu_Do ; 
   if(systname == "bcintpup") btagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown") btagwt = _bcTagWeight_intp_Do ; 
   if(systname == "bcextpup") btagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown") btagwt = _bcTagWeight_extp_Do ; 
-  // if(systname == "bclhemufup") btagwt = _bcTagWeight_lhemuf_Up ; if(systname == "bclhemufdown") btagwt = _bcTagWeight_lhemuf_Do ; 
-  // if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
-  // if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
-  // if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
   if(systname == "bcxdybup") btagwt = _bcTagWeight_xdyb_Up ; if(systname == "bcxdybdown") btagwt = _bcTagWeight_xdyb_Do ; 
   if(systname == "bcxdycup") btagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown") btagwt = _bcTagWeight_xdyc_Do ; 
   if(systname == "bcxwjcup") btagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown") btagwt = _bcTagWeight_xwjc_Do ; 
-  // if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
-  // if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
+
+  double topptwt = _topPtReWeight ; if(systname == "topptup") topptwt = _topPtReWeight*_topPtReWeight ;  if(systname == "topptdown") topptwt = 1.0 ;
   
   double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
   double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
@@ -1625,10 +1443,17 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
 
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
-  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
-  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
+  // //w/o top pt reweight
+  // combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
+  // combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
+  // combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
+  // combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
+
+  //with top pt rewight
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
+  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * wt_ratio;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
+  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * wt_ratio;
 
   return true;
 }

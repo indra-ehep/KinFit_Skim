@@ -139,6 +139,8 @@ public :
   Double_t _PUJetIDWeight_Up;
   Double_t _PUJetIDWeight_Do;
 
+  Double_t _topPtReWeight;
+  
   // CShapeCalib EOY
   Double_t _bcTagWeight;
   Double_t _bcTagWeight_stat_Up, _bcTagWeight_stat_Do, _bcTagWeight_pu_Up, _bcTagWeight_pu_Do; 
@@ -548,7 +550,8 @@ void KinAna::Init(TTree *tree)
   // outputTree->Branch("muFweight_Up"		, &_muFweight_Up       	        );
   // outputTree->Branch("muFweight_Do"		, &_muFweight_Do       	        );
   
-  
+    tree->SetBranchStatus("topPtReWeight",1);		   tree->SetBranchAddress("topPtReWeight", &_topPtReWeight);
+
   //Theory weights
   //if(fYear==2017){
   tree->SetBranchStatus("muRweight_Up",1);	   tree->SetBranchAddress("muRweight_Up", &_muRweight_Up);
