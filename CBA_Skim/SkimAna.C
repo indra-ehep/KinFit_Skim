@@ -975,8 +975,8 @@ void SkimAna::SetTrio()
   
   //selector->QCDselect = true ;
   selector->DDselect = true ;
-  isMuTightID = false; //false for mediumID in efficiency
-  isEleTightID = false; //false for mediumID in efficiency
+  isMuTightID = true; //false for mediumID in efficiency
+  isEleTightID = true; //false for mediumID in efficiency
   
   if(systType == kMETUp){
     selector->METUnc = 1.0;
@@ -1872,8 +1872,8 @@ void SkimAna::LoadLeptonSF(){
       
       // string eleIDFile_preVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_preVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_preVFP_EGM2D.root";
       // string eleIDFile_postVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_postVFP_EGM2D.root" : "egammaEffiptxt_Ele_Medium_postVFP_EGM2D.root";
-      string eleIDFile_preVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_preVFP_EGM2D.root" : "egammaEffiptxt_Ele_wp80noiso_preVFP_EGM2D.root";
-      string eleIDFile_postVFP = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_postVFP_EGM2D.root" : "egammaEffiptxt_Ele_wp80noiso_postVFP_EGM2D.root";
+      string eleIDFile_preVFP = (isEleTightID) ?  "egammaEffiptxt_Ele_wp80noiso_preVFP_EGM2D.root" : "egammaEffiptxt_Ele_wp90noiso_preVFP_EGM2D.root" ;
+      string eleIDFile_postVFP = (isEleTightID) ? "egammaEffiptxt_Ele_wp80noiso_postVFP_EGM2D.root" : "egammaEffiptxt_Ele_wp90noiso_postVFP_EGM2D.root" ;
       
       string eleRECOFile_preVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016preVFP.root",elePath_UL.c_str());
       string eleRECOFile_postVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016postVFP.root",elePath_UL.c_str());
@@ -1923,7 +1923,7 @@ void SkimAna::LoadLeptonSF(){
     // eleSFa = new ElectronSF(Form("%s/weight/MuEleSF/ele2017/2017_ElectronTight.root",fBasePath.Data()),
     // 			    Form("%s/weight/MuEleSF/ele2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root",fBasePath.Data()),
     // 			    Form("%s/weight/MuEleSF/ele2017/sf_ele_2017_trig_v5.root",fBasePath.Data()));
-
+    
     string muPath = Form("%s/weightUL/MuEleSF/mu2017/2017_Z",fBasePath.Data());
     string muTrigPath = Form("%s/weightUL/MuEleSF/mu2017/2017_trigger",fBasePath.Data());
     // //MediumID
@@ -1944,7 +1944,7 @@ void SkimAna::LoadLeptonSF(){
     string elePath_LRR = Form("%s/weight/MuEleSF/ele2017",fBasePath.Data());
     
     //string eleIDFile = (isEleTightID) ? "egammaEffiptxt_EGM2D_Tight_UL17.root" : "egammaEffiptxt_EGM2D_Medium_UL17.root";
-    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_EGM2D_Tight_UL17.root" : "egammaEffiptxt_EGM2D_MVA80noIso_UL17.root";
+    string eleIDFile = (isEleTightID) ?  "egammaEffiptxt_EGM2D_MVA80noIso_UL17.root" : "egammaEffiptxt_EGM2D_MVA90noIso_UL17.root"  ;
     
     string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2017.root",elePath_UL.c_str());
     
@@ -1952,7 +1952,6 @@ void SkimAna::LoadLeptonSF(){
     string eleTrigFile = Form("%s/trig_2017.root",elePath_UL.c_str()) ;
       
     eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile.c_str()), eleRECOFile, eleTrigFile);
-
 
 
   } else if (fYear==2018) {
@@ -1995,7 +1994,7 @@ void SkimAna::LoadLeptonSF(){
     string elePath_LRR = Form("%s/weight/MuEleSF/ele2018",fBasePath.Data());
     
     //string eleIDFile = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_EGM2D.root" : "egammaEffiptxt_Ele_Medium_EGM2D.root";
-    string eleIDFile = (isEleTightID) ? "egammaEffiptxt_Ele_Tight_EGM2D.root" : "egammaEffiptxt_Ele_wp80noiso_EGM2D.root";
+    string eleIDFile = (isEleTightID) ?  "egammaEffiptxt_Ele_wp80noiso_EGM2D.root" : "egammaEffiptxt_Ele_wp90noiso_EGM2D.root";
     
     string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2018.root",elePath_UL.c_str());
     
