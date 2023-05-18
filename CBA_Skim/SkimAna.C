@@ -975,8 +975,8 @@ void SkimAna::SetTrio()
   
   //selector->QCDselect = true ;
   selector->DDselect = true ;
-  isMuTightID = true; //false for mediumID in efficiency
-  isEleTightID = true; //false for mediumID in efficiency
+  isMuTightID = false; //false for mediumID in efficiency
+  isEleTightID = false; //false for mediumID in efficiency
   
   if(systType == kMETUp){
     selector->METUnc = 1.0;
@@ -1877,9 +1877,12 @@ void SkimAna::LoadLeptonSF(){
       
       string eleRECOFile_preVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016preVFP.root",elePath_UL.c_str());
       string eleRECOFile_postVFP = Form("%s/egammaEffi_ptAbove20ptxt_EGM2D_UL2016postVFP.root",elePath_UL.c_str());
+      
       //string eleTrigFile = Form("%s/sf_ele_2016_trig_v5.root",elePath_LRR.c_str()) ;
-      string eleTrigFile_preVFP = Form("%s/trig_2016preVFP.root",elePath_UL.c_str()) ;
-      string eleTrigFile_postVFP = Form("%s/trig_2016postVFP.root",elePath_UL.c_str()) ;
+      // string eleTrigFile_preVFP = Form("%s/trig_2016preVFP.root",elePath_UL.c_str()) ;
+      // string eleTrigFile_postVFP = Form("%s/trig_2016postVFP.root",elePath_UL.c_str()) ;
+      string eleTrigFile_preVFP = (isEleTightID) ? Form("%s/egammaTrigEffi_wp80noiso_preVFP_EGM2D.root",elePath_UL.c_str()) : Form("%s/egammaTrigEffi_wp90noiso_preVFP_EGM2D.root",elePath_UL.c_str())  ;  ;
+      string eleTrigFile_postVFP = (isEleTightID) ? Form("%s/egammaTrigEffi_wp80noiso_postVFP_EGM2D.root",elePath_UL.c_str()) : Form("%s/egammaTrigEffi_wp90noiso_postVFP_EGM2D.root",elePath_UL.c_str())  ;  ;;
       
       eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile_preVFP.c_str()), eleRECOFile_preVFP, eleTrigFile_preVFP);
       eleSFb = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile_postVFP.c_str()), eleRECOFile_postVFP, eleTrigFile_postVFP);
@@ -1949,13 +1952,14 @@ void SkimAna::LoadLeptonSF(){
     string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2017.root",elePath_UL.c_str());
     
     //string eleTrigFile = Form("%s/sf_ele_2017_trig_v5.root",elePath_LRR.c_str()) ;
-    string eleTrigFile = Form("%s/trig_2017.root",elePath_UL.c_str()) ;
-      
+    //string eleTrigFile = Form("%s/trig_2017.root",elePath_UL.c_str()) ;
+    string eleTrigFile = (isEleTightID) ? Form("%s/egammaTrigEffi_wp80noiso_EGM2D.root",elePath_UL.c_str()) : Form("%s/egammaTrigEffi_wp90noiso_EGM2D.root",elePath_UL.c_str())  ;
+    
     eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile.c_str()), eleRECOFile, eleTrigFile);
 
 
   } else if (fYear==2018) {
-
+    
     // muSFa = new MuonSF(Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",fBasePath.Data()),  
     // 		       "NUM_TightID_DEN_TrackerMuons_pt_abseta",
     // 		       Form("%s/weight/MuEleSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root",fBasePath.Data()), 
@@ -1999,8 +2003,9 @@ void SkimAna::LoadLeptonSF(){
     string eleRECOFile = Form("%s/egammaEffi_ptAbove20.txt_EGM2D_UL2018.root",elePath_UL.c_str());
     
     //string eleTrigFile = Form("%s/sf_ele_2018_trig_v5.root",elePath_LRR.c_str()) ;
-    string eleTrigFile = Form("%s/trig_2018.root",elePath_UL.c_str()) ;
-      
+    //string eleTrigFile = Form("%s/trig_2018.root",elePath_UL.c_str()) ;
+    string eleTrigFile = (isEleTightID) ? Form("%s/egammaTrigEffi_wp80noiso_EGM2D.root",elePath_UL.c_str()) : Form("%s/egammaTrigEffi_wp90noiso_EGM2D.root",elePath_UL.c_str())  ;  ;
+    
     eleSFa = new ElectronSF( Form("%s/%s",elePath_UL.c_str(),eleIDFile.c_str()), eleRECOFile, eleTrigFile);
   }
 

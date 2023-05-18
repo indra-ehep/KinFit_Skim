@@ -25,8 +25,13 @@ syst_base="base iso20"
 
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso20/post"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso30/post"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elemva90/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso20-BJetHist1/post"
-inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-BJetHist1/post"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-BJetHist1/post"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_mutight-BJetHist1/post"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva90-BJetHist1/post"
+#inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_mutight-Hist1/post"
+inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_elemva90-Hist1/post"
 skimflistdir="/afs/cern.ch/user/i/$USER/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2016"
@@ -70,7 +75,8 @@ do
 	    echo -e "Adding files for sample: ${sample} and syst ${syst}"
 	    if [[ ${syst} == "cp5"* ]] || [[ ${syst} == "hdamp"* ]]  || [[ ${syst} == "mtop"* ]] ; then
 		if [[ $sample == *"TTbar"* ]]; then
-		    sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+		    #sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+		    sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 		    mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		    #expected_noffiles=`wc -l $skimflistdir/$year/${tunedict[$syst]}_${year}.txt | cut -f 1 -d " "`
 		    expected_noffiles=`wc -l $skimflistdir/$year/post/${tunedict[$syst]}_${year}.txt | cut -f 1 -d " "`
@@ -78,7 +84,8 @@ do
 		    expected_noffiles=0
 		fi
 	    else
-		sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee  /tmp/$USER/out.log 2>&1
+		#sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee  /tmp/$USER/out.log 2>&1
+		sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 		mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		#expected_noffiles=`wc -l $skimflistdir/$year/${sample}_${year}.txt | cut -f 1 -d " "`
 		expected_noffiles=`wc -l $skimflistdir/$year/post/${sample}_${year}.txt | cut -f 1 -d " "`
@@ -113,7 +120,8 @@ do
 	    echo -e "\t ${file}" >> /tmp/$USER/fl.txt
 	done
 	echo -e "Adding files for sample ${sample}"
-	sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+	#sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+	sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 	cp histo_merged.root $inputdir/$year/all/all_${sample}.root
 	mv histo_merged.root /tmp/$USER/all_${sample}.root	
     done

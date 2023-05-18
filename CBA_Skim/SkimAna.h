@@ -2371,8 +2371,10 @@ float SkimAna::topPtReweight()
     //   break;
   }
   
-  double sfTop    = exp(0.09494 - 0.00084*topPt);
-  double sfTopBar = exp(0.09494 - 0.00084*tbarPt);
+  // double sfTop    = exp(0.09494 - 0.00084*topPt);
+  // double sfTopBar = exp(0.09494 - 0.00084*tbarPt);
+  double sfTop    = exp(0.0615 - 0.0005*topPt);
+  double sfTopBar = exp(0.0615 - 0.0005*tbarPt);
   
   // if(topPt>0 && tbarPt>0 && momtop==momtbar)
   //   wt = wt*sqrt(sfTop*sfTopBar);
