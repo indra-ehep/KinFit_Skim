@@ -182,7 +182,9 @@ class EventTree{
 
     Float_t  rho_;
 
-
+    UInt_t   nTrigObj_;
+    Int_t    TrigObj_filterBits_[200];
+  
     Bool_t   HLT_Ele32_eta2p1_WPTight_Gsf_;
     Bool_t   HLT_IsoMu24_;
     Bool_t   HLT_IsoTkMu24_;

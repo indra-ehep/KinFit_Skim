@@ -1679,7 +1679,13 @@ void SkimAna::Init(TTree *tree)
 	
     // tree->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
     // tree->SetBranchAddress("HLT_Ele32_WPTight_Gsf", &(event->HLT_Ele32_WPTight_Gsf_));
-    
+
+    tree->SetBranchStatus("nTrigObj",1);
+    tree->SetBranchAddress("nTrigObj", &(event->nTrigObj_));
+
+    tree->SetBranchStatus("TrigObj_filterBits",1);
+    tree->SetBranchAddress("TrigObj_filterBits", &(event->TrigObj_filterBits_));
+
     tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
     tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf", &(event->HLT_Ele35_WPTight_Gsf_));
 	

@@ -92,35 +92,35 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
     if (year=="2017"){
 	Pass_trigger_mu = (tree->HLT_IsoMu27_) || no_trigger;
 	
-	bool allSingleEGL1or = (tree->L1_SingleEG24_ ||
-				tree->L1_SingleEG26_ ||
-				tree->L1_SingleEG30_ ||
-				tree->L1_SingleEG32_ ||
-				tree->L1_SingleEG34_ ||
-				tree->L1_SingleEG36_ ||
-				tree->L1_SingleEG38_ ||
-				tree->L1_SingleEG40_ ||
-				tree->L1_SingleEG42_ ||
-				tree->L1_SingleEG45_ ||
-				tree->L1_SingleEG50_ ||
-				tree->L1_SingleEG34er2p1_ ||
-				tree->L1_SingleEG36er2p1_ ||
-				tree->L1_SingleEG38er2p1_ ||
-				tree->L1_SingleIsoEG24er2p1_ ||
-				tree->L1_SingleIsoEG26er2p1_ ||
-				tree->L1_SingleIsoEG28er2p1_ ||
-				tree->L1_SingleIsoEG30er2p1_ ||
-				tree->L1_SingleIsoEG32er2p1_ ||
-				tree->L1_SingleIsoEG34er2p1_ ||
-				tree->L1_SingleIsoEG36er2p1_ ||
-				tree->L1_SingleIsoEG24_ ||
-				tree->L1_SingleIsoEG26_ ||
-				tree->L1_SingleIsoEG28_ ||
-				tree->L1_SingleIsoEG30_ ||
-				tree->L1_SingleIsoEG32_ ||
-				tree->L1_SingleIsoEG34_ ||
-				tree->L1_SingleIsoEG36_ ||
-				tree->L1_SingleIsoEG38_);
+	// bool allSingleEGL1or = (tree->L1_SingleEG24_ ||
+	// 			tree->L1_SingleEG26_ ||
+	// 			tree->L1_SingleEG30_ ||
+	// 			tree->L1_SingleEG32_ ||
+	// 			tree->L1_SingleEG34_ ||
+	// 			tree->L1_SingleEG36_ ||
+	// 			tree->L1_SingleEG38_ ||
+	// 			tree->L1_SingleEG40_ ||
+	// 			tree->L1_SingleEG42_ ||
+	// 			tree->L1_SingleEG45_ ||
+	// 			tree->L1_SingleEG50_ ||
+	// 			tree->L1_SingleEG34er2p1_ ||
+	// 			tree->L1_SingleEG36er2p1_ ||
+	// 			tree->L1_SingleEG38er2p1_ ||
+	// 			tree->L1_SingleIsoEG24er2p1_ ||
+	// 			tree->L1_SingleIsoEG26er2p1_ ||
+	// 			tree->L1_SingleIsoEG28er2p1_ ||
+	// 			tree->L1_SingleIsoEG30er2p1_ ||
+	// 			tree->L1_SingleIsoEG32er2p1_ ||
+	// 			tree->L1_SingleIsoEG34er2p1_ ||
+	// 			tree->L1_SingleIsoEG36er2p1_ ||
+	// 			tree->L1_SingleIsoEG24_ ||
+	// 			tree->L1_SingleIsoEG26_ ||
+	// 			tree->L1_SingleIsoEG28_ ||
+	// 			tree->L1_SingleIsoEG30_ ||
+	// 			tree->L1_SingleIsoEG32_ ||
+	// 			tree->L1_SingleIsoEG34_ ||
+	// 			tree->L1_SingleIsoEG36_ ||
+	// 			tree->L1_SingleIsoEG38_);
 	//allSingleEGL1or = true;
 	// Info("EventPick", "tree->L1_SingleEG24_ : %d, tree->L1_SingleEG26_ : %d, tree->L1_SingleEG30_ : %d, tree->L1_SingleEG32_ : %d, tree->L1_SingleEG34_ : %d, tree->L1_SingleEG36_ : %d, tree->L1_SingleEG38_ : %d, tree->L1_SingleEG40_ : %d, tree->L1_SingleEG42_ : %d, tree->L1_SingleEG45_ : %d, tree->L1_SingleEG50_ : %d, tree->L1_SingleEG34er2p1_ : %d, tree->L1_SingleEG36er2p1_ : %d, tree->L1_SingleEG38er2p1_ : %d, tree->L1_SingleIsoEG24er2p1_ : %d, tree->L1_SingleIsoEG26er2p1_ : %d, tree->L1_SingleIsoEG28er2p1_ : %d, tree->L1_SingleIsoEG30er2p1_ : %d, tree->L1_SingleIsoEG32er2p1_ : %d, tree->L1_SingleIsoEG34er2p1_ : %d,  tree->L1_SingleIsoEG36er2p1_ : %d, tree->L1_SingleIsoEG24_ : %d, tree->L1_SingleIsoEG26_ : %d, tree->L1_SingleIsoEG28_ : %d, tree->L1_SingleIsoEG30_ : %d, tree->L1_SingleIsoEG32_ : %d, tree->L1_SingleIsoEG34_ : %d, tree->L1_SingleIsoEG36_ : %d, tree->L1_SingleIsoEG38 : %d",
 	//      tree->L1_SingleEG24_ ,
@@ -154,9 +154,19 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 	//      tree->L1_SingleIsoEG38_);
 	
 	// Info("EventPick","allSingleEGL1or : %d",allSingleEGL1or);
-
+	
+	bool isL1SeedAND = false;
+	for(int itobj = 0; itobj < tree->nTrigObj_ ; itobj++){
+	  if(tree->TrigObj_filterBits_[itobj]==1024){
+	    isL1SeedAND = true;
+	    break;
+	  }
+	}
+	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_) || no_trigger;
+	Pass_trigger_ele = (isL1SeedAND) || no_trigger;
+	
 	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or) || no_trigger;
-	Pass_trigger_ele = tree->HLT_Ele35_WPTight_Gsf_ || no_trigger;
+	//Pass_trigger_ele = tree->HLT_Ele35_WPTight_Gsf_ || no_trigger;
 	
     }
     if (year=="2018"){

@@ -436,7 +436,13 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
     
     // tree->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
     // tree->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
-    
+
+    tree->SetBranchStatus("nTrigObj",1);
+    tree->SetBranchAddress("nTrigObj", &nTrigObj_);
+
+    tree->SetBranchStatus("TrigObj_filterBits",1);
+    tree->SetBranchAddress("TrigObj_filterBits", &TrigObj_filterBits_);
+
     tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
     tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
 	
@@ -1011,7 +1017,13 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	
     // chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
     // chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
-	
+
+    chain->SetBranchStatus("nTrigObj",1);
+    chain->SetBranchAddress("nTrigObj", &nTrigObj_);
+
+    chain->SetBranchStatus("TrigObj_filterBits",1);
+    chain->SetBranchAddress("TrigObj_filterBits", &TrigObj_filterBits_);
+
     chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
     chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
 	
