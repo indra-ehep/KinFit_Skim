@@ -184,6 +184,10 @@ class EventTree{
 
     UInt_t   nTrigObj_;
     Int_t    TrigObj_filterBits_[200];
+    Float_t  TrigObj_pt_[200];
+    Float_t  TrigObj_eta_[200];
+    Float_t  TrigObj_phi_[200]; 
+    Int_t    TrigObj_id_[200]; 
   
     Bool_t   HLT_Ele32_eta2p1_WPTight_Gsf_;
     Bool_t   HLT_IsoMu24_;

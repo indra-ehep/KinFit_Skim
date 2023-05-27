@@ -40,10 +40,8 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
     tree->SetBranchStatus("Pileup_nTrueInt",1);
     tree->SetBranchAddress("Pileup_nTrueInt", &nPUTrue_);
   }
-
-	
-  // event
-	
+  
+  // event	
   tree->SetBranchStatus("run",1);
   tree->SetBranchAddress("run", &run_);
 
@@ -104,13 +102,10 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
     tree->SetBranchStatus("GenMET_phi",1);
     tree->SetBranchAddress("GenMET_phi", &GenMET_phi_);
   }
-
-	
+  
   // electrons	
-	
   tree->SetBranchStatus("nElectron",1);
   tree->SetBranchAddress("nElectron", &nEle_);
-
 
   tree->SetBranchStatus("Electron_charge",1);
   tree->SetBranchAddress("Electron_charge", &eleCharge_);	
@@ -159,7 +154,6 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
 
   tree->SetBranchStatus("Electron_dz",1);
   tree->SetBranchAddress("Electron_dz", &eleDz_);
-
     
   tree->SetBranchStatus("Electron_dr03EcalRecHitSumEt",1);
   tree->SetBranchAddress("Electron_dr03EcalRecHitSumEt", &eleEcalSumEtDr03_);
@@ -442,6 +436,18 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
 
     tree->SetBranchStatus("TrigObj_filterBits",1);
     tree->SetBranchAddress("TrigObj_filterBits", &TrigObj_filterBits_);
+    
+    tree->SetBranchStatus("TrigObj_pt",1);
+    tree->SetBranchAddress("TrigObj_pt", &TrigObj_pt_);
+    
+    tree->SetBranchStatus("TrigObj_eta",1);
+    tree->SetBranchAddress("TrigObj_eta", &TrigObj_eta_);
+    
+    tree->SetBranchStatus("TrigObj_phi",1);
+    tree->SetBranchAddress("TrigObj_phi", &TrigObj_phi_);
+    
+    tree->SetBranchStatus("TrigObj_id",1);
+    tree->SetBranchAddress("TrigObj_id", &TrigObj_id_);
 
     tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
     tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
@@ -1023,6 +1029,18 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
     chain->SetBranchStatus("TrigObj_filterBits",1);
     chain->SetBranchAddress("TrigObj_filterBits", &TrigObj_filterBits_);
+
+    chain->SetBranchStatus("TrigObj_pt",1);
+    chain->SetBranchAddress("TrigObj_pt", &TrigObj_pt_);
+    
+    chain->SetBranchStatus("TrigObj_eta",1);
+    chain->SetBranchAddress("TrigObj_eta", &TrigObj_eta_);
+    
+    chain->SetBranchStatus("TrigObj_phi",1);
+    chain->SetBranchAddress("TrigObj_phi", &TrigObj_phi_);
+    
+    chain->SetBranchStatus("TrigObj_id",1);
+    chain->SetBranchAddress("TrigObj_id", &TrigObj_id_);
 
     chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
     chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
