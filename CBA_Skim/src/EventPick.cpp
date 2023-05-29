@@ -157,11 +157,11 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 	
 	bool isL1SeedAND = false;
 	for(int itobj = 0; itobj < tree->nTrigObj_ and tree->nTrigObj_ <= 200; itobj++){
-	  if(tree->TrigObj_filterBits_[itobj]==1024){
+	  if((tree->TrigObj_filterBits_[itobj] & 1024) && tree->TrigObj_pt_[itobj]>32.0 && tree->TrigObj_id_[itobj]==11){
 	    for(int eleInd = 0; eleInd < int(tree->nEle_) and int(tree->nEle_) <= 20 ; ++eleInd){
 	      double deltaR = dR(tree->eleEta_[eleInd],  tree->elePhi_[eleInd], tree->TrigObj_eta_[itobj], tree->TrigObj_phi_[itobj]);
 	      //if(deltaR <0.1 && tree->TrigObj_pt_[itobj]>32.0 && TMath::Abs(tree->TrigObj_id_[itobj])==11  && (tree->TrigObj_filterBits[itobj] & 1)){
-	      if(deltaR < 0.1 && tree->TrigObj_pt_[itobj]>32.0 ){
+	      if(deltaR < 0.1){
 		isL1SeedAND = true;
 		break;
 	      }
@@ -169,6 +169,7 @@ void EventPick::process_event(string path, EventTree* tree, Selector* selector, 
 	  }
 	}
 	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_) || no_trigger;
+	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_) || no_trigger;
 	Pass_trigger_ele = (isL1SeedAND) || no_trigger;
 	
 	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or) || no_trigger;
