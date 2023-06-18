@@ -793,7 +793,7 @@ void SkimAna::SelectSyst()
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
@@ -808,7 +808,7 @@ void SkimAna::SelectSyst()
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
@@ -823,7 +823,7 @@ void SkimAna::SelectSyst()
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
@@ -840,15 +840,15 @@ void SkimAna::SelectSyst()
       fSystList.push_back(fSyst);       
     }else{//2016 or 2017 == 35, 2018 == 33 
       if(fYear==2016){
-	fNSyst = 37; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2016[isyst]);
       }else if(fYear==2017){
-	fNSyst = 37; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2017[isyst]);
       }else if(fYear==2018){
-	fNSyst = 37; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2018[isyst]);
       }
@@ -862,6 +862,102 @@ void SkimAna::SelectSyst()
     fSystList.push_back(fSyst);
 
   } else if (fSyst == "jecdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotpuup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotpudown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotrelup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotreldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotptup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotptdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotscaleup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotscaledown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "flavorqcdup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "flavorqcddown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "timeptetaup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "timeptetadown") {
     
     systType = kJECDown;
     jecvar012_g = 0;      
@@ -1285,11 +1381,26 @@ void SkimAna::LoadJECJER()
     if (fYear==2016) selector->init_JER( Form("%s/weightUL/JetSF/JER/2016",fBasePath.Data()) );
     if (fYear==2017) selector->init_JER( Form("%s/weightUL/JetSF/JER/2017/JRV2/Summer19UL17_JRV2",fBasePath.Data()) );
     if (fYear==2018) selector->init_JER( Form("%s/weightUL/JetSF/JER/2018/JRV2/Summer19UL18_JRV2",fBasePath.Data()) );
-  
+
+    //Total, SubTotalPileUp, SubTotalRelative, SubTotalPt, SubTotalScale, FlavorQCD, TimePtEta 
     if (systType == kJECUp or systType == kJECDown) { // if (isMC && jecvar012_g!=1) {
       //		jecvar = new JECvariation("weight/JetSF/Summer16_23Sep2016V4", isMC, "Total");//SubTotalAbsolute");
       //cout << "Applying JEC uncertainty variations : " << JECsystLevel << endl;
       string JECsystLevel = "Total";
+      if (fSyst == "jecup" or fSyst == "jecdown") 
+	JECsystLevel = "Total";
+      else if (fSyst == "stotpuup" or fSyst == "stotpudown")
+	JECsystLevel = "SubTotalPileUp";
+      else if (fSyst == "stotrelup" or fSyst == "stotreldown")
+	JECsystLevel = "SubTotalRelative";
+      else if (fSyst == "stotptup" or fSyst == "stotptdown")
+	JECsystLevel = "SubTotalPt";
+      else if (fSyst == "stotscaleup" or fSyst == "stotscaledown")
+	JECsystLevel = "SubTotalScale";
+      else if (fSyst == "flavorqcdup" or fSyst == "flavorqcddown")
+	JECsystLevel = "FlavorQCD";
+      else if (fSyst == "timeptetaup" or fSyst == "timeptetadown")
+	JECsystLevel = "TimePtEta";
       if (std::end(allowedJECUncertainties) == std::find(std::begin(allowedJECUncertainties), std::end(allowedJECUncertainties), JECsystLevel)){
             cout << "The JEC systematic source, " << JECsystLevel << ", is not in the list of allowed sources (found in JEC/UncertaintySourcesList.h" << endl;
             cout << "Exiting" << endl;
@@ -2718,11 +2829,19 @@ void SkimAna::GetLMTBCtagSF_2b(){
     // SFbhist = SFb_hist_bFragDown ;
     // SFchist = SFc_hist_bFragDown ;
     // SFlhist = SFl_hist_bFragDown ;
-  } else if (bctagSystType=="jecup"){
+  // } else if (bctagSystType=="jecup"){
+  //   SFbhist = SFb_hist_jesTotalUp ;
+  //   SFchist = SFc_hist_jesTotalUp ;
+  //   SFlhist = SFl_hist_jesTotalUp ;
+  // } else if (bctagSystType=="jecdown"){
+  //   SFbhist = SFb_hist_jesTotalDown ;
+  //   SFchist = SFc_hist_jesTotalDown ;
+  //   SFlhist = SFl_hist_jesTotalDown ;
+  } else if (bctagSystType=="bcjesup"){
     SFbhist = SFb_hist_jesTotalUp ;
     SFchist = SFc_hist_jesTotalUp ;
     SFlhist = SFl_hist_jesTotalUp ;
-  } else if (bctagSystType=="jecdown"){
+  } else if (bctagSystType=="bcjesdown"){
     SFbhist = SFb_hist_jesTotalDown ;
     SFchist = SFc_hist_jesTotalDown ;
     SFlhist = SFl_hist_jesTotalDown ;
@@ -3733,10 +3852,16 @@ Bool_t SkimAna::GetBCTagWt(void)
     // } else if (bctagSystType=="bcbfragdown" and fYear==2016){
     //   _bcTagWeight_bfrag_Do = _bcTagWeight;      
                   
-    } else if (bctagSystType=="jecup"){
+    // } else if (bctagSystType=="jecup"){
+    //   _bcTagWeight_jes_Up = _bcTagWeight;      
+            
+    // } else if (bctagSystType=="jecdown"){
+    //   _bcTagWeight_jes_Do = _bcTagWeight;      
+            
+    } else if (bctagSystType=="bcjesup"){
       _bcTagWeight_jes_Up = _bcTagWeight;      
             
-    } else if (bctagSystType=="jecdown"){
+    } else if (bctagSystType=="bcjesdown"){
       _bcTagWeight_jes_Do = _bcTagWeight;      
             
     } else if (bctagSystType=="jerup"){
@@ -4921,7 +5046,8 @@ bool SkimAna::GetCTagWt(char CType, TString systname, double& ctagwt){
     // if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Do ; 
     // if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Up ;
     // if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Do ; 
-    if(systname == "jecup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "jecdown") ctagwt = _bcTagWeight_jes_Do ; 
+    //if(systname == "jecup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "jecdown") ctagwt = _bcTagWeight_jes_Do ;
+    if(systname == "bcjesup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "bcjesdown") ctagwt = _bcTagWeight_jes_Do ; 
     if(systname == "jerup") ctagwt = _bcTagWeight_jer_Up ;		if(systname == "jerdown") ctagwt = _bcTagWeight_jer_Do ; 
     // if(systname == "bcbfragup" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Up ;
     // if(systname == "bcbfragdown" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Do ; 
@@ -4980,7 +5106,8 @@ bool SkimAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   // if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xwj_Do ; 
   // if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Up ;
   // if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) btagwt = _bcTagWeight_xtt_Do ; 
-  if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
+  //if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ;
+  if(systname == "bcjesup") btagwt = _bcTagWeight_jes_Up ; if(systname == "bcjesdown") btagwt = _bcTagWeight_jes_Do ; 
   if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
   // if(systname == "bcbfragup" and fYear==2016) btagwt = _bcTagWeight_bfrag_Up ; if(systname == "bcbfragdown" and fYear==2016) btagwt = _bcTagWeight_bfrag_Do ; 
   
@@ -5390,7 +5517,7 @@ bool SkimAna::FillKFCFObs(){
       hasKFMu = true;
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -5419,7 +5546,7 @@ bool SkimAna::FillKFCFObs(){
       hasKFMu = true;
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")	    
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -5446,7 +5573,7 @@ bool SkimAna::FillKFCFObs(){
       hasKFEle = true;
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -5475,7 +5602,7 @@ bool SkimAna::FillKFCFObs(){
       hasKFEle = true;
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -5597,7 +5724,7 @@ bool SkimAna::FillBTagObs(){
       
     }else{ //if(systType == kBase
       
-      if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+      if( (systType == kJECUp) or (systType == kJECDown) 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	  or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -5818,7 +5945,7 @@ bool SkimAna::FillMETCutFlow(){
       
     }else {// if(systType == kBase){
 
-      if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+      if( (systType == kJECUp) or (systType == kJECDown) 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	  or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -5911,7 +6038,7 @@ bool SkimAna::FillNjetCutFlow(){
       
     }else {// if(systType == kBase){
 
-      if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+      if( (systType == kJECUp) or (systType == kJECDown) 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	  or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -6022,7 +6149,7 @@ bool SkimAna::FillLeptonCutFlow(){
       
     }else {// if(systType == kBase){
 
-      if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+      if( (systType == kJECUp) or (systType == kJECDown) 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	  or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -6145,7 +6272,7 @@ bool SkimAna::FillEventCutFlow(){
 
     }else { //if(systType == kBase){
       
-      if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+      if( (systType == kJECUp) or (systType == kJECDown) 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	  or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -7959,9 +8086,9 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
