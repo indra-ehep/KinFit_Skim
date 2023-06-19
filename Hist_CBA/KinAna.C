@@ -544,7 +544,7 @@ void KinAna::SelectSyst()
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
@@ -559,7 +559,7 @@ void KinAna::SelectSyst()
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
@@ -574,7 +574,7 @@ void KinAna::SelectSyst()
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
@@ -591,15 +591,15 @@ void KinAna::SelectSyst()
       fSystList.push_back(fSyst);       
     }else{
       if(fYear==2016){
-	fNSyst = 37; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2016[isyst]);
       }else if(fYear==2017){
-	fNSyst = 37; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2017[isyst]);
       }else if(fYear==2018){
-	fNSyst = 37; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2018[isyst]);
       }
@@ -613,6 +613,102 @@ void KinAna::SelectSyst()
     fSystList.push_back(fSyst);
 
   } else if (fSyst == "jecdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotpuup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotpudown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotrelup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotreldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotptup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotptdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotscaleup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotscaledown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "flavorqcdup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "flavorqcddown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "timeptetaup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "timeptetadown") {
     
     systType = kJECDown;
     jecvar012_g = 0;      
@@ -1287,20 +1383,54 @@ bool KinAna::FillCTHists(TList *list, string hist_extn, bool isMu, double wt,
   //Exclusive categorization
   if(count_cJetsIncT> 0){
     ((TH1D *) list->FindObject(Form("_ct_ExcT_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcT_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcT_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcT_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcT_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcT_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcT_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), ctagTwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_ExcT%s",hist_extn.c_str())))->Fill(ctagTwt);		
   }
   else if(count_cJetsIncM> 0){ 
     ((TH1D *) list->FindObject(Form("_ct_ExcM_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagMwt*wt);
-    ((TH1D *) list->FindObject(Form("_ctagWeight_ExcM%s",hist_extn.c_str())))->Fill(ctagMwt);		
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcM_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcM_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcM_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcM_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcM_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcM_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), ctagTwt*wt);
+   ((TH1D *) list->FindObject(Form("_ctagWeight_ExcM%s",hist_extn.c_str())))->Fill(ctagMwt);		
   }
   else if(count_cJetsIncL > 0){ 
     ((TH1D *) list->FindObject(Form("_ct_ExcL_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagLwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcL_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Pt(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcL_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Eta(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_chad_ExcL_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(cjhadAF.Phi(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcL_pt_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Pt(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcL_eta_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Eta(), ctagTwt*wt);
+    ((TH1D *) list->FindObject(Form("_ct_shad_ExcL_phi_jets_%s%s",lep.c_str(),hist_extn.c_str())))->Fill(sjhadAF.Phi(), ctagTwt*wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_ExcL%s",hist_extn.c_str())))->Fill(ctagLwt);		
   }
   else{
     ((TH1D *) list->FindObject(Form("_ct_Exc0_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
     ((TH1D *) list->FindObject(Form("_ctagWeight_Exc0%s",hist_extn.c_str())))->Fill(wt);		
   }
+  // if(count_cJetsIncT> 0){
+  //   ((TH1D *) list->FindObject(Form("_ct_ExcT_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagTwt*wt);
+  //   ((TH1D *) list->FindObject(Form("_ctagWeight_ExcT%s",hist_extn.c_str())))->Fill(ctagTwt);		
+  // }
+  // else if(count_cJetsIncM> 0){ 
+  //   ((TH1D *) list->FindObject(Form("_ct_ExcM_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagMwt*wt);
+  //   ((TH1D *) list->FindObject(Form("_ctagWeight_ExcM%s",hist_extn.c_str())))->Fill(ctagMwt);		
+  // }
+  // else if(count_cJetsIncL > 0){ 
+  //   ((TH1D *) list->FindObject(Form("_ct_ExcL_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagLwt*wt);
+  //   ((TH1D *) list->FindObject(Form("_ctagWeight_ExcL%s",hist_extn.c_str())))->Fill(ctagLwt);		
+  // }
+  // else{
+  //   ((TH1D *) list->FindObject(Form("_ct_Exc0_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), wt);
+  //   ((TH1D *) list->FindObject(Form("_ctagWeight_Exc0%s",hist_extn.c_str())))->Fill(wt);		
+  // }
   
   return true;
 }
@@ -1392,7 +1522,7 @@ bool KinAna::GetCTagWt(char CType, TString systname, double& ctagwt){
     if(systname == "bclhemurup") ctagwt = _bcTagWeight_lhemur_Up ;	if(systname == "bclhemurdown") ctagwt = _bcTagWeight_lhemur_Do ; 
     if(systname == "isrup") ctagwt = _bcTagWeight_isr_Up ;		if(systname == "isrdown") ctagwt = _bcTagWeight_isr_Do ; 
     if(systname == "fsrup") ctagwt = _bcTagWeight_fsr_Up ;		if(systname == "fsrdown") ctagwt = _bcTagWeight_fsr_Do ; 
-    if(systname == "jecup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "jecdown") ctagwt = _bcTagWeight_jes_Do ; 
+    if(systname == "bcjesup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "bcjesdown") ctagwt = _bcTagWeight_jes_Do ; 
     if(systname == "jerup") ctagwt = _bcTagWeight_jer_Up ;		if(systname == "jerdown") ctagwt = _bcTagWeight_jer_Do ; 
     if(systname == "bcintpup") ctagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown") ctagwt = _bcTagWeight_intp_Do ; 
     if(systname == "bcextpup") ctagwt = _bcTagWeight_extp_Up ; if(systname == "bcextpdown") ctagwt = _bcTagWeight_extp_Do ; 
@@ -1425,7 +1555,7 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
   if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
   if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
-  if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
+  if(systname == "bcjesup") btagwt = _bcTagWeight_jes_Up ; if(systname == "bcjesdown") btagwt = _bcTagWeight_jes_Do ; 
   if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ;
   
   if(systname == "bcintpup") btagwt = _bcTagWeight_intp_Up ; if(systname == "bcintpdown") btagwt = _bcTagWeight_intp_Do ; 
@@ -1443,13 +1573,13 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
 
-  // //w/o top pt reweight
+  //w/o top pt reweight
   // combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
   // combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
   // combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
   // combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
 
-  //with top pt rewight
+  // //with top pt rewight
   combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
   combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * wt_ratio;
   combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
@@ -1881,7 +2011,7 @@ bool KinAna::FillKFCFObs(){
     if((singleMu and muonIsoCut) and !singleEle){      
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -1915,7 +2045,7 @@ bool KinAna::FillKFCFObs(){
     if((singleMu and muonNonIsoCut) and !singleEle){      
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")	    
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -1947,7 +2077,7 @@ bool KinAna::FillKFCFObs(){
     if(!singleMu and (singleEle and eleIsoCut)){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -1981,7 +2111,7 @@ bool KinAna::FillKFCFObs(){
     if(!singleMu and (singleEle and eleNonIsoCut)){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
