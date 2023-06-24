@@ -34,12 +34,14 @@ using namespace std;
 
 #endif
 
-int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/HminusM120_Skim_NanoAOD.root")
-//int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/TTbarPowheg_Semilept_Skim_NanoAOD_1of59.root")
+//int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/HminusM120_Skim_NanoAOD.root")
+int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/TTbarPowheg_Semilept_Skim_NanoAOD_1of59.root")
+//int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TTbarPowheg_Semilept_preVFP_Skim_NanoAOD_1of23.root")
 //int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/Data_SingleMu_c_Skim_NanoAOD_2of23.root")
 //int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/Data_SingleEle_c_Skim_NanoAOD_1of12.root")
 {
   //25 for muon, 34 for electron
+  TH1F *hJetPtSkim = new TH1F("hJetPtSkim","hJetPt in Skim",100,0,100);
   TH1F *hJetPt = new TH1F("hJetPt","hJetPt : HminusM120 (2017) Eta+JetID+PUJetID+njetGT4+ptcutGT25+eventVeto25",100,0,100);
   
   TFile *fin = TFile::Open(infile.c_str());
@@ -76,6 +78,7 @@ int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/H
     for(int jetInd = 0; jetInd < int(nJet_) and int(nJet_) <= 200 ; ++jetInd){ //200 is the array size for jets as defined in EventTree 
       double pt = jetPt_[jetInd];
       double eta = jetEta_[jetInd];
+      hJetPtSkim->Fill(pt);
       bool jetID_pass = (jetID_[jetInd]>=2 and (jetPUID_[jetInd]>=1 or pt>=50.0)) ; //lwp
       // Original condition
       // bool jetPresel = (pt >= jet_Pt_cut &&
@@ -111,10 +114,14 @@ int ReadJetInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2017/H
 
   hJetPt->GetXaxis()->SetTitle("p_{T} GeV/c");
   hJetPt->GetYaxis()->SetTitle("Entries");
-  hJetPt->Scale(1./hJetPt->Integral());
-  
-  TFile *fout = new TFile("Pt_uncut_8_HminusM120_evtVeto.root","recreate");
+  //hJetPt->Scale(1./hJetPt->Integral());
+
+  hJetPtSkim->GetXaxis()->SetTitle("p_{T} GeV/c");
+  hJetPtSkim->GetYaxis()->SetTitle("Entries");
+
+  TFile *fout = new TFile("PtJet.root","recreate");
   hJetPt->Write();
+  hJetPtSkim->Write();
   fout->Close();
   delete fout;
 

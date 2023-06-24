@@ -18,11 +18,11 @@ mass=$2
 # combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=0.0,1.0 --parallel 16 -t -1 | tee doFit.log
 
 #test1 no parameter range
-# combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-1.0,1.0 -t -1 | tee doInitialFit.log 
-# combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-1.0,1.0 --parallel 19 -t -1 | tee doFit.log
+combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-1.0,1.0 -t -1 | tee doInitialFit.log 
+combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-1.0,1.0 --parallel 19 -t -1 | tee doFit.log
 
-# combineTool.py -M Impacts -d $t2wDataCard -m $mass -o nuisImpactJSON 
-# plotImpacts.py --cms-label "Internal" -i nuisImpactJSON -o nuisImpactPDF
+combineTool.py -M Impacts -d $t2wDataCard -m $mass -o nuisImpactJSON 
+plotImpacts.py --cms-label "Internal" -i nuisImpactJSON -o nuisImpactPDF
 
 ######################################## Nuisance parameter pulls / Fit dianostics ############################################
 # AN
@@ -37,7 +37,7 @@ mass=$2
 
 #combine $t2wDataCard -m $mass -M FitDiagnostics  --expectSignal 1 --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5 -t -1 --plots --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 
 
-python3 $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/data/tutorials/longexercise/diffNuisances.py -a fitDiagnosticsTest.root --poi=BR -g pull_result.root
+# python3 $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/data/tutorials/longexercise/diffNuisances.py -a fitDiagnosticsTest.root --poi=BR -g pull_result.root
 # cp pull_result.root /tmp/pull_result.root
 
 ######################################## Scan parameters ############################################

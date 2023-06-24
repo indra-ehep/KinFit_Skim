@@ -1,5 +1,5 @@
 /**********************************************************************
- Created on : 03/11/2021
+ Created on : 19/11/2022
  Purpose    : Draw the ratio plots with systematics
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
@@ -28,43 +28,15 @@
 
 using namespace std;
 
-double lumi_unc = 0.025 ;
+double lumi_unc[3] = {0.012, 0.023, 0.025} ;
 
 // //2016 mu
 double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from systematics
 // //2016 ele
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
+int rebin = 50;
 
-//2017 mu
-//double qcd_frac = 0.0464 ; //One needs to check the QCD contribution from systematics
-// //2017 ele
-//double qcd_frac = 0.2576 ; //One needs to check the QCD contribution from systematics
-
-// //2018 mu
-//double qcd_frac = 0.1097 ; //One needs to check the QCD contribution from systematics
-// //2018 ele
-//double qcd_frac = 0.2184 ; //One needs to check the QCD contribution from systematics
-
-/// Excl loose numbers
-// //2016 mu
-//double qcd_frac = 0.0531 ; //One needs to check the QCD contribution from systematics
-// //2016 ele
-//double qcd_frac = 0.275 ; //One needs to check the QCD contribution from systematics
-
-/// Excl medium numbers
-// //2016 mu
-//double qcd_frac = 0.0551 ; //One needs to check the QCD contribution from systematics
-// //2016 ele
-//double qcd_frac = 0.1237 ; //One needs to check the QCD contribution from systematics
-
-/// Excl tight numbers
-// //2016 mu
-//double qcd_frac = 0.2857 ; //One needs to check the QCD contribution from systematics
-// //2016 ele
-//double qcd_frac = 0.3439 ; //One needs to check the QCD contribution from systematics
-
-
-int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
+int PlotRatioSystematicsV3UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 18){
 
   // Setters
   int SetGlobalStyle(void);
@@ -81,11 +53,10 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
 
   TH1D *GetUpDownHistDD(vector<TFile *>, const char *, const char *, string);
   TH1D *GetUpDownHistMC(vector<TFile *>, const char *, const char *, string, bool);  
-  TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
+  TGraphAsymmErrors *SystGraph(int year, string histname, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, bool isFullGraph = false, bool isRatioGraph = false);
   
   // ///////////////////////////////////////////////////////////////////////////////////////////  
-  int year = 2018;
-  float luminosity[3] = {35.9, 41.5, 59.8};
+  float luminosity[3] = {36.3, 41.5, 59.8};
 
   // bool isMu = 1; // 1 muon, 0 ele
   // bool isBtag = 1 ; // 1 btag, 0 kinfit
@@ -131,17 +102,55 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   else if (htype==17)
     histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_Exc0_mjj_ele" ;  
   else if (htype==18)
-    histname += (isMu) ? "_bjhadBdisc_mu" : "_bjhadBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcL_pt_jets_mu" : "_ct_chad_ExcL_pt_jets_ele" ;  
   else if (htype==19)
-    histname += (isMu) ? "_bjlepBdisc_mu" : "_bjlepBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcM_pt_jets_mu" : "_ct_chad_ExcM_pt_jets_ele" ;  
   else if (htype==20)
-    histname = (isMu) ? "_bjetBdisc_mu" : "_bjetBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcT_pt_jets_mu" : "_ct_chad_ExcT_pt_jets_ele" ;  
   else if (htype==21)
-    histname = (isMu) ? "_bjetNoBCBdisc_mu" : "_bjetNoBCBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcL_eta_jets_mu" : "_ct_chad_ExcL_eta_jets_ele" ;  
+  else if (htype==22)
+    histname = (isMu) ? "_ct_chad_ExcM_eta_jets_mu" : "_ct_chad_ExcM_eta_jets_ele" ;  
+  else if (htype==23)
+    histname = (isMu) ? "_ct_chad_ExcT_eta_jets_mu" : "_ct_chad_ExcT_eta_jets_ele" ;  
+  else if (htype==24)
+    histname = (isMu) ? "_ct_chad_ExcL_phi_jets_mu" : "_ct_chad_ExcL_phi_jets_ele" ;  
+  else if (htype==25)
+    histname = (isMu) ? "_ct_chad_ExcM_phi_jets_mu" : "_ct_chad_ExcM_phi_jets_ele" ;  
+  else if (htype==26)
+    histname = (isMu) ? "_ct_chad_ExcT_phi_jets_mu" : "_ct_chad_ExcT_phi_jets_ele" ;  
+  else if (htype==27)
+    histname = (isMu) ? "_ct_shad_ExcL_pt_jets_mu" : "_ct_shad_ExcL_pt_jets_ele" ;  
+  else if (htype==28)
+    histname = (isMu) ? "_ct_shad_ExcM_pt_jets_mu" : "_ct_shad_ExcM_pt_jets_ele" ;  
+  else if (htype==29)
+    histname = (isMu) ? "_ct_shad_ExcT_pt_jets_mu" : "_ct_shad_ExcT_pt_jets_ele" ;  
+  else if (htype==30)
+    histname = (isMu) ? "_ct_shad_ExcL_eta_jets_mu" : "_ct_shad_ExcL_eta_jets_ele" ;  
+  else if (htype==31)
+    histname = (isMu) ? "_ct_shad_ExcM_eta_jets_mu" : "_ct_shad_ExcM_eta_jets_ele" ;  
+  else if (htype==32)
+    histname = (isMu) ? "_ct_shad_ExcT_eta_jets_mu" : "_ct_shad_ExcT_eta_jets_ele" ;  
+  else if (htype==33)
+    histname = (isMu) ? "_ct_shad_ExcL_phi_jets_mu" : "_ct_shad_ExcL_phi_jets_ele" ;  
+  else if (htype==34)
+    histname = (isMu) ? "_ct_shad_ExcM_phi_jets_mu" : "_ct_shad_ExcM_phi_jets_ele" ;  
+  else if (htype==35)
+    histname = (isMu) ? "_ct_shad_ExcT_phi_jets_mu" : "_ct_shad_ExcT_phi_jets_ele" ;  
+
+  // else if (htype==18)
+  //   histname += (isMu) ? "_bjhadBdisc_mu" : "_bjhadBdisc_ele" ;  
+  // else if (htype==19)
+  //   histname += (isMu) ? "_bjlepBdisc_mu" : "_bjlepBdisc_ele" ;  
+  // else if (htype==20)
+  //   histname = (isMu) ? "_bjetBdisc_mu" : "_bjetBdisc_ele" ;  
+  // else if (htype==21)
+  //   histname = (isMu) ? "_bjetNoBCBdisc_mu" : "_bjetNoBCBdisc_ele" ;  
 
   cout << "Histname : " << histname << endl;
-  
-  string outputpdf = Form("figs/Week_Work_Report/2023-06-02/ctrl_plt_pujetid/%d/llinear_hist%s.pdf",year,histname.c_str());
+
+  string outputpdf = Form("figs/Week_Work_Report/2023-06-02/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  //string outputpdf = Form("figs/Week_Work_Report/2023-01-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";
@@ -180,7 +189,14 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   //const char* dir = "grid_v40_Syst/CBA_muFmuR-Hist"; int rebin = 50;
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-wtratio_evtwt"; int rebin = 50;
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1"; int rebin = 50;
-  const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest"; int rebin = 1;
+  //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest"; int rebin = 1;
+  //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
+  // const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist"; 
+  //const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist-toppt";
+  //const char* dir = "grid_v40_Syst/CBA_kfwidth-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_trigSF-CombHist";
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -189,9 +205,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   //const char* qcdfile = Form("%s",qcdfile_mc);
   
   TFile *fin_nano_data	= TFile::Open(datafile);
-  TFile *fin_nano_sig = 0x0 ;
-  if(year == 2016 or year == 2017 or year == 2018)
-    fin_nano_sig	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
+  TFile *fin_nano_sig	= TFile::Open(Form("root_files/%s/%d/all_HplusM120.root",dir,year));
   TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/all_TTbar.root",dir,year));
   TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/all_singleTop.root",dir,year));
   TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/all_Wjets.root",dir,year));
@@ -208,45 +222,61 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   files_avmc.push_back(fin_nano_vbf) ; files_avdd.push_back(fin_nano_vbf);
   files_avmc.push_back(fin_nano_qcd_mc) ; files_avdd.push_back(fin_nano_qcd);
 
-  TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname.c_str()) : Form("DataEle/base/Iso/%s",histname.c_str())));
-  TH1D *hcf_nano_sig = 0x0 ;
-  if(year == 2016 or year == 2017 or year == 2018)
-    hcf_nano_sig	= (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",histname.c_str()));
-  TH1D *hcf_nano_ttbar	= (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",histname.c_str()));
-  TH1D *hcf_nano_stop	= (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",histname.c_str())); 
-  TH1D *hcf_nano_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/Iso/%s",histname.c_str()));
-  TH1D *hcf_nano_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",histname.c_str()));
-  TH1D *hcf_nano_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",histname.c_str()));
-  TH1D *hcf_nano_qcd_mc	= (TH1D *)fin_nano_qcd_mc->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname.c_str()) : Form("MCQCDEle/base/Iso/%s",histname.c_str())));
-  TH1D *hcf_nano_qcd	= (TH1D *)fin_nano_qcd->Get(Form("QCDdd/base/Iso/%s",histname.c_str()));
+  TH1D	*hcf_nano_data	    = (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/Iso/%s",histname.c_str()) : Form("DataEle/base/Iso/%s",histname.c_str())));
+  TH1D	*hcf_nano_sig	    = (TH1D *)fin_nano_sig->Get(Form("HplusM120/base/Iso/%s",histname.c_str()));
+  TH1D	*hcf_nano_ttbar	    = (TH1D *)fin_nano_ttbar->Get(Form("TTbar/base/Iso/%s",histname.c_str()));
+  TH1D	*hcf_nano_stop	    = (TH1D *)fin_nano_stop->Get(Form("singleTop/base/Iso/%s",histname.c_str())); 
+  TH1D	*hcf_nano_wjets	    = (TH1D *)fin_nano_wjets->Get(Form("Wjets/base/Iso/%s",histname.c_str()));
+  TH1D	*hcf_nano_dyjets    = (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",histname.c_str()));
+  TH1D	*hcf_nano_vbf	    = (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",histname.c_str()));
+  TH1D	*hcf_nano_qcd_mc    = (TH1D *)fin_nano_qcd_mc->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname.c_str()) : Form("MCQCDEle/base/Iso/%s",histname.c_str())));
+  TH1D	*hcf_nano_qcd	    = (TH1D *)fin_nano_qcd->Get(Form("QCDdd/base/Iso/%s",histname.c_str()));
+  TH1D	*hcf_nano_qcd_iso20 = (TH1D *)fin_nano_qcd->Get(Form("QCDdd/iso20/Iso/%s",histname.c_str()));
 
-  
-
+  double stat_Error = 0.0;
+  double Norm = hcf_nano_qcd->IntegralAndError(1,hcf_nano_qcd->GetNbinsX(),stat_Error); 
+  cout<<"Norm : "<<Norm<<", stat_Error : "<<stat_Error<<endl;
+  double stat_Error_iso20 = 0.0;
+  double Norm_iso20 = hcf_nano_qcd_iso20->IntegralAndError(1,hcf_nano_qcd_iso20->GetNbinsX(),stat_Error_iso20); 
+  qcd_frac = TMath::Abs((Norm-Norm_iso20)/Norm);
+  cout << "Iso Syst (in %) : " << qcd_frac*100.0 << endl;
   
   if(histname.find("_mjj_")!=string::npos){
     hcf_nano_data->Rebin(rebin);
-    if(year == 2016 or year == 2017 or year == 2018)
-      hcf_nano_sig->Rebin(rebin);
+    hcf_nano_sig->Rebin(rebin);
     hcf_nano_ttbar->Rebin(rebin);
     hcf_nano_stop->Rebin(rebin);
     hcf_nano_wjets->Rebin(rebin);
     hcf_nano_dyjets->Rebin(rebin);
     hcf_nano_vbf->Rebin(rebin);
     hcf_nano_qcd_mc->Rebin(rebin);
-    hcf_nano_qcd->Rebin(rebin);
+    //hcf_nano_qcd->Rebin(rebin);
   }
+  hcf_nano_sig->Scale(0.1211); //Scaledown to not display the original value
   
+  // const char *systDir[] = {"base",
+  // 			   "puup", "pudown", "mueffup", "mueffdown",                    //2,4
+  // 			   "eleeffup", "eleeffdown", "prefireup", "prefiredown",        //6,8
+  // 			   "jecup", "jecdown", "jerup", "jerdown",                      //10,12,
+  // 			   "pdfup", "pdfdown", "q2up", "q2down",                        //14,16
+  // 			   "bclhemurup", "bclhemurdown", "bclhemufup", "bclhemufdown",  //18,20
+  // 			   "isrup", "isrdown", "fsrup", "fsrdown",                      //22,24
+  // 			   "pujetidup", "pujetiddown", "bcintpup", "bcintpdown",        //26,28
+  // 			   "bcextpup", "bcextpdown", "bcxdybup", "bcxdybdown",          //30.32
+  // 			   "bcxdycup", "bcxdycdown", "bcxwjcup", "bcxwjcdown",          //34.36
+  // 			   "bcstatup", "bcstatdown"                                    //38
+  // };
 
-  
-  if(year == 2016 or year == 2017 or year == 2018)
-    hcf_nano_sig->Scale(0.1211);
-  
   //"mueffup", "mueffdown", "eleeffup", "eleeffdown",
   //const char *syst[] = {"pu", "jec", "jer", "btagb", "btagl", "prefire", "met"};
-  const char *syst[] = {"pu", "jec", "jer", "bcstat", "bclhemuf", "prefire", "met"};
-  TH1D *hPileupUp =  GetUpDownHistDD(files_avdd,syst[0],"up",histname);
-  TH1D *hPileupDown =  GetUpDownHistDD(files_avdd,syst[0],"down",histname);
-
+  //const char *syst[] = {"pu", "jec", "jer", "bcstat", "bclhemuf", "prefire", "met"};
+  const int nSyst = 19;
+  const char *syst[] = {   "mueff", "eleeff", "pu", "prefire",
+  			   "jec",  "jer", "pdf", "bclhemur", //"q2"
+  			   "bclhemuf", "isr", "fsr", "pujetid",
+  			   "bcintp", "bcextp", "bcxdyb", "bcxdyc",        
+  			   "bcxwjc", "bcstat", "toppt"};
+    
   TH1D *hLeptonUp, *hLeptonDown;
   if(isMu){
     hLeptonUp = GetUpDownHistDD(files_avdd,"mueff","up",histname);;
@@ -255,65 +285,32 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
     hLeptonUp = GetUpDownHistDD(files_avdd,"eleeff","up",histname);;
     hLeptonDown = GetUpDownHistDD(files_avdd,"eleeff","down",histname);;
   }
-
-  // TH1D *hJESUp =  GetUpDownHistMC(files_avmc,syst[1],"up",histname,isMu);
-  // TH1D *hJESDown =  GetUpDownHistMC(files_avmc,syst[1],"down",histname,isMu);
-  // TH1D *hJERUp =  GetUpDownHistMC(files_avmc,syst[2],"up",histname,isMu);
-  // TH1D *hJERDown =  GetUpDownHistMC(files_avmc,syst[2],"down",histname,isMu);
+  vector<TH1D *> vSystUp, vSystDown, vSystNominal;
+  vSystUp.push_back(hLeptonUp); vSystDown.push_back(hLeptonDown);
   
-
-  TH1D *hJESUp =  GetUpDownHistDD(files_avdd,syst[1],"up",histname);
-  TH1D *hJESDown =  GetUpDownHistDD(files_avdd,syst[1],"down",histname);
-  TH1D *hJERUp =  GetUpDownHistDD(files_avdd,syst[2],"up",histname);
-  TH1D *hJERDown =  GetUpDownHistDD(files_avdd,syst[2],"down",histname);
-
-  TH1D *hBTagbUp =  GetUpDownHistDD(files_avdd,syst[3],"up",histname);
-  TH1D *hBTagbDown =  GetUpDownHistDD(files_avdd,syst[3],"down",histname);
-
-  TH1D *hBTaglUp =  GetUpDownHistDD(files_avdd,syst[4],"up",histname);
-  TH1D *hBTaglDown =  GetUpDownHistDD(files_avdd,syst[4],"down",histname);
-
-  TH1D *hPrefireUp =  GetUpDownHistDD(files_avdd,syst[5],"up",histname);
-  TH1D *hPrefireDown =  GetUpDownHistDD(files_avdd,syst[5],"down",histname);
-  TH1D *hMETUp =  GetUpDownHistDD(files_avdd,syst[6],"up",histname);
-  TH1D *hMETDown =  GetUpDownHistDD(files_avdd,syst[6],"down",histname);
+  const int nofSyst = nSyst - 2;
+  TH1D *hSystUp[nofSyst], *hSystDown[nofSyst];
+  for(int isyst = 2 ; isyst<nSyst    ; isyst++){
+    if(year==2018 and strcmp(syst[isyst],"prefire")==0) continue;
+    hSystUp[isyst-2] = GetUpDownHistDD(files_avdd,syst[isyst],"up",histname);
+    hSystDown[isyst-2] = GetUpDownHistDD(files_avdd,syst[isyst],"down",histname);
+    vSystUp.push_back(hSystUp[isyst-2]); vSystDown.push_back(hSystDown[isyst-2]);
+  }
   
   TH1D *hcf_nano_bkg = (TH1D *)hcf_nano_ttbar->Clone("Bkg");
   hcf_nano_bkg->Add(hcf_nano_stop);
   hcf_nano_bkg->Add(hcf_nano_wjets);
   hcf_nano_bkg->Add(hcf_nano_dyjets);
   hcf_nano_bkg->Add(hcf_nano_vbf);
-  //hcf_nano_bkg->Add(hcf_nano_qcd);
-  hcf_nano_bkg->Add(hcf_nano_qcd_mc);
-
+  hcf_nano_bkg->Add(hcf_nano_qcd);
+  //hcf_nano_bkg->Add(hcf_nano_qcd_mc);
+  
   hcf_nano_ttbar->SetName(Form("%s_TTbar",hcf_nano_ttbar->GetName()));
   hcf_nano_stop->SetName(Form("%s_Stop",hcf_nano_stop->GetName()));
   hcf_nano_wjets->SetName(Form("%s_Wjets",hcf_nano_wjets->GetName()));
   hcf_nano_dyjets->SetName(Form("%s_DYjets",hcf_nano_dyjets->GetName()));
   hcf_nano_vbf->SetName(Form("%s_VBF",hcf_nano_vbf->GetName()));
   hcf_nano_qcd->SetName(Form("%s_QCD",hcf_nano_qcd->GetName()));
-  
-  vector<TH1D *> vSystUp, vSystDown, vSystNominal;
-  vSystUp.push_back(hPileupUp); vSystDown.push_back(hPileupDown);
-  vSystUp.push_back(hLeptonUp); vSystDown.push_back(hLeptonDown);
-  vSystUp.push_back(hJESUp); vSystDown.push_back(hJESDown);
-  vSystUp.push_back(hJERUp); vSystDown.push_back(hJERDown);
-  vSystUp.push_back(hBTagbUp); vSystDown.push_back(hBTagbDown);
-  vSystUp.push_back(hBTaglUp); vSystDown.push_back(hBTaglDown);
-  if(year == 2017 || year == 2016)
-    vSystUp.push_back(hPrefireUp); vSystDown.push_back(hPrefireDown);
-  vSystUp.push_back(hMETUp); vSystDown.push_back(hMETDown);
-
-  if(histname.find("_mjj_")!=string::npos){
-    for(unsigned int isys = 0 ; isys < vSystUp.size() ; isys++){
-      TH1D *hSyst = vSystUp.at(isys);
-      hSyst->Rebin(rebin);
-    }
-    for(unsigned int isys = 0 ; isys < vSystDown.size() ; isys++){
-      TH1D *hSyst = vSystDown.at(isys);
-      hSyst->Rebin(rebin);
-    }
-  }
   
   vSystNominal.push_back(hcf_nano_ttbar);
   vSystNominal.push_back(hcf_nano_stop);
@@ -322,10 +319,8 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   vSystNominal.push_back(hcf_nano_vbf);
   vSystNominal.push_back(hcf_nano_qcd);
   
-  
-
-  TGraphAsymmErrors *grSystFull = SystGraph(hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, true, false);
-  TGraphAsymmErrors *grSystRatio = SystGraph(hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, false, true);
+  TGraphAsymmErrors *grSystFull = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, true, false);
+  TGraphAsymmErrors *grSystRatio = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, false, true);
 
   hcf_nano_data->SetMarkerStyle(kFullCircle);
   hcf_nano_data->SetMarkerColor(kBlack);
@@ -336,17 +331,17 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
     hcf_nano_sig->SetLineColor(kRed);
     hcf_nano_sig->SetLineWidth(2);
   }
-
+  
   hcf_nano_ttbar->SetFillColor(kCyan+1);
   
   hcf_nano_stop->SetFillColor(kViolet);
-
+  
   hcf_nano_wjets->SetFillColor(kYellow+1);
-
+  
   hcf_nano_dyjets->SetFillColor(kOrange+1);
   
   hcf_nano_vbf->SetFillColor(kGreen+2);
-
+  
   hcf_nano_qcd->SetFillColor(kBlue);
   hcf_nano_qcd_mc->SetFillColor(kBlue);
   
@@ -354,12 +349,10 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   hs->Add(hcf_nano_vbf);
   hs->Add(hcf_nano_dyjets);
   hs->Add(hcf_nano_wjets);
-  hs->Add(hcf_nano_qcd_mc);
+  hs->Add(hcf_nano_qcd);
   hs->Add(hcf_nano_stop);
   hs->Add(hcf_nano_ttbar);
-
   
-
   TH1D *hData = (TH1D*)hcf_nano_data->Clone("hData"); 
   hData->SetTitle("");
   TH1D *hMC = (TH1D*)hcf_nano_bkg->Clone("hMC"); 
@@ -422,39 +415,58 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   }else if(htype==10){
     upper_pad_yaxis_title = "Events / bin"; upper_pad_xaxis_title = "m_{jj} (GeV)"; // upper pad axis titles
     lower_pad_yaxis_title = "#frac{Data}{Bkg}"; lower_pad_xaxis_title = "m_{jj} (GeV)"; // lower pad axis titles
+  }else if((htype>=18 and htype<=20) or (htype>=27 and htype<=29)){
+    upper_pad_yaxis_title = "Events / bin"; upper_pad_xaxis_title = "p_{T}^{jets} (GeV)"; // upper pad axis titles
+    lower_pad_yaxis_title = "#frac{Data}{Bkg}"; lower_pad_xaxis_title = "p_{T}^{jets} (GeV)"; // lower pad axis titles
+  }else if((htype>=21 and htype<=23) or (htype>=30 and htype<=32) ){
+     upper_pad_yaxis_title = "Events / bin"; upper_pad_xaxis_title = "#eta^{jets}"; // upper pad axis titles
+     lower_pad_yaxis_title = "#frac{Data}{Bkg}"; lower_pad_xaxis_title = "#eta^{jets}"; // lower pad axis titles
+  }else if((htype>=24 and htype<=26)  or (htype>=33 and htype<=35) ){
+    upper_pad_yaxis_title = "Events / bin"; upper_pad_xaxis_title = "#phi^{jets}"; // upper pad axis titles
+    lower_pad_yaxis_title = "#frac{Data}{Bkg}"; lower_pad_xaxis_title = "#phi^{jets}"; // lower pad axis titles
   }
 
-  float upper_minY = 1.0e-1; float upper_maxY = 8.e6;  //y-axis range of upper pad
+  float upper_minY = 1.0e-1; float upper_maxY = 8.e7;  //y-axis range of upper pad
   //float upper_minY = 1.0e-1; float upper_maxY = 5.e12;  //y-axis range of upper pad
-  float lower_minY = 0.5; float lower_maxY = 1.5;     //y-axis range of lower pad
+  float lower_minY = 0.0; float lower_maxY = 2.0;     //y-axis range of lower pad
   
   // 0:leppt, 1:jetpt, 2:metpt, 3:lepeta, 4:jeteta, 5:lepphi, 6:jetphi, 7:metphi, 8:njet, 9:nbjet, 10:mjj
   float upper_minX = 0.0; float upper_maxX = 500.0;
   //if(htype>=0 and htype<=2){
   if(htype==1){
     upper_minX = 0.0; upper_maxX = 700.0;   //x-axis range
-  }else if(htype>=3 and htype<=7){
-    upper_minX = -5.0; upper_maxX = 5.0;   //x-axis range
+  }else if(htype>=3 and htype<=4){
+    upper_minX = -2.9; upper_maxX = 2.9;   //x-axis range
+  }else if(htype>=5 and htype<=7){
+    upper_minX = -3.4; upper_maxX = 3.4;   //x-axis range
   }else if(htype==8){
     upper_minX = 0.0; upper_maxX = 20.0;   //x-axis range
   }else if(htype==9){
     upper_minX = 0.0; upper_maxX = 10.0;   //x-axis range
-  }else if(htype==10){
-    upper_minX = 0.0; upper_maxX = 200.0;   //x-axis range
-  // }else if(htype==20 or htype==21){
-  //   upper_minX = -0.5; upper_maxX = 200.0;   //x-axis range
+  }else if(htype>=10 and htype<=17){
+    if(isBtag){
+      upper_minX = 0.0; upper_maxX = 450.0;   //x-axis range
+    }else{
+      upper_minX = 0.0; upper_maxX = 200.0;   //x-axis range
+    }
+  }else if((htype>=18 and htype<=20) or (htype>=27 and htype<=29)){
+    upper_minX = 0.0; upper_maxX = 500.0;  //x-axis range
+  }else if((htype>=21 and htype<=23) or (htype>=30 and htype<=32)){
+    upper_minX = -2.9; upper_maxX = 2.9;   //x-axis range
+  }else if((htype>=24 and htype<=26)  or (htype>=33 and htype<=35)){
+    upper_minX = -3.4; upper_maxX = 3.4;   //x-axis range
   }
-
+  
   float integral_min = upper_minX; float integral_max = upper_maxX; // for integral calculation
   //float integral_min = 4.0; float integral_max = upper_maxX; // for integral calculation
 
   //float legend_pos[4] = {0.5, 0.65, 0.88, 0.86};
-  float legend_pos1[4] = {0.38, 0.70, 0.54, 0.86};
-  float legend_pos2[4] = {0.55, 0.70, 0.71, 0.86};
-  float legend_pos3[4] = {0.72, 0.70, 0.88, 0.86};
+  float legend_pos1[4] = {0.38, 0.75, 0.54, 0.86};
+  float legend_pos2[4] = {0.50, 0.75, 0.71, 0.86};
+  float legend_pos3[4] = {0.65, 0.70, 0.88, 0.86};
   ///////////////////////////////////////////////////////////////////////////////////////////      
 
-  //gStyle->SetOptStat(0);
+  gStyle->SetOptStat(0);
   //Ranges
   hData->SetMaximum(upper_maxY);
   hData->SetMinimum(upper_minY);
@@ -462,8 +474,8 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   //hs->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
   hMC->SetMaximum(upper_maxY);
   hMC->SetMinimum(upper_minY);
-  //hMC->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
-  //hMC->GetXaxis()->SetRangeUser(upper_minX, 200.0);
+  hMC->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
+  //hMC->GetXaxis()->SetRangeUser(upper_minX, 500.0);
   //hData->GetXaxis()->SetRange(hData->FindBin(upper_minX), hData->FindBin(upper_maxX));
   //hMC->GetXaxis()->SetRange(upper_minX, upper_maxX);
   //axis Titles
@@ -489,8 +501,8 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
     p = Plot(hs, hcf_nano_sig, hMC, grSystFull, "c1", true);
     //p = Plot(hs, hcf_nano_sig, hMC, grSystFull, "c1", false);
   }else{
-    //p = PlotRatio(hs, hcf_nano_sig, hData, hMC, grSystFull, grSystRatio, "c1", true);
-    p = PlotRatio(hs, hcf_nano_sig, hData, hMC, grSystFull, grSystRatio, "c1", false);
+    p = PlotRatio(hs, hcf_nano_sig, hData, hMC, grSystFull, grSystRatio, "c1", true);
+    //p = PlotRatio(hs, hcf_nano_sig, hData, hMC, grSystFull, grSystRatio, "c1", false);
   }
 
   TLegend *leg1 = p->BuildLegend();
@@ -511,7 +523,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   for(int i = 0 ; i < 15 ; i++)
     leg3->DeleteEntry() ;// This is to delete default title of hData  
   leg3->AddEntry(hcf_nano_vbf, Form("VV") ,"f");
-  leg3->AddEntry(hcf_nano_qcd, Form("MC QCD") ,"f");
+  leg3->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");
   leg3->AddEntry(grSystFull, Form("Unc") ,"f");
 
   if(year == 2016 or year == 2017 or year == 2018)
@@ -534,7 +546,19 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   leg2->Draw();
   leg3->Draw();
 
-  TPaveText *t1 = new TPaveText(0.60,0.91,0.90,0.98,"NDC");
+  TPaveText *t0 = new TPaveText(0.19,0.91,0.37,0.96,"NDC");
+  t0->SetFillStyle(0);
+  t0->SetBorderSize(0);
+  //t0->SetTextFont(42);
+  t0->SetTextSize(.05); 
+  if(isBlinded)
+    t0->SetTextSize(.035); 
+  t0->SetMargin(0.1);
+  t0->AddText("CMS Preliminary");
+  t0->SetTextAlign(32); //left aligned middle vertically
+  t0->Draw();
+
+  TPaveText *t1 = new TPaveText(0.60,0.91,0.95,0.96,"NDC");
   t1->SetFillStyle(0);
   t1->SetBorderSize(0);
   t1->SetTextFont(42);
@@ -542,14 +566,14 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   if(isBlinded)
     t1->SetTextSize(.035); 
   t1->SetMargin(0.1);
-  t1->AddText(Form("%3.1f fb^{-1} (%d) (13 TeV)",luminosity[year%2016],year));
+  t1->AddText(Form("%3.1f fb^{-1} (13 TeV)",luminosity[year%2016]));
   t1->Draw();
   
   TPaveText *t2 = 0x0; 
   if(isBlinded)
-    t2 = new TPaveText(0.11,0.78,0.39,0.86,"NDC");
+    t2 = new TPaveText(0.13, 0.78, 0.39, 0.86,"NDC");
   else
-    t2 = new TPaveText(0.08, 0.78, 0.36, 0.86,"NDC");
+    t2 = new TPaveText(0.13, 0.78, 0.36, 0.86,"NDC");
   t2->SetFillStyle(0);
   t2->SetBorderSize(0);
   t2->SetTextFont(42);
@@ -566,7 +590,33 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
   if(!isBtag and !isMu)
     t2->AddText("KinFit: (#it{e} + jets)");
   t2->Draw();
+  
+  TPaveText *t3 = 0x0; 
+  if(isBlinded)
+    t3 = new TPaveText(0.13, 0.75, 0.36, 0.80,"NDC");
+  else
+    t3 = new TPaveText(0.13, 0.75, 0.36, 0.80,"NDC");
+  t3->SetFillStyle(0);
+  t3->SetBorderSize(0);
+  t3->SetTextFont(42);
+  t3->SetTextSize(.05); 
+  if(isBlinded)
+    t3->SetTextSize(.035); 
+  t3->SetMargin(0.1);
+  if (htype==10)
+    t3->AddText("Inclusive");
+  else if (htype==14 || htype==18 || htype==21 || htype==24 || htype==27 || htype==30 || htype==33 )
+    t3->AddText("Exclusive loose");
+  else if (htype==15 || htype==19 || htype==22 || htype==25 || htype==28 || htype==31 || htype==34 )
+    t3->AddText("Exclusive medium");
+  else if (htype==16 || htype==20 || htype==23 || htype==26 || htype==29 || htype==32 || htype==35 )
+    t3->AddText("Exclusive tight");
+  else if (htype==17)
+    t3->AddText("No charm");
 
+  
+  t3->Draw();
+  
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
   canvas->SaveAs(outputpdf.c_str());
   canvas->SaveAs("output.pdf");
@@ -594,23 +644,25 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     pad1->SetTicky();
     //h1->SetStats(0);          // No statistics on upper plot
     h1->Draw("e1p");               // Draw h1
-    syst->SetFillColorAlpha(kRed,0.7);
+    //syst->SetFillColorAlpha(kRed,0.7);
+    syst->SetFillColor(kRed-7);
+    syst->Draw("e2 sames");
     // h2->Draw("hist same");         // Draw h2 on top of h1
     hs->Draw("sames hist");
-    TList *hlist = hs->GetHists();
-    TH1F *ht0 = (TH1F *)hlist->At(0);
-    TH1F *ht1 = (TH1F *)hlist->At(1);
-    TH1F *ht2 = (TH1F *)hlist->At(2);
-    TH1F *ht3 = (TH1F *)hlist->At(3);
-    TH1F *ht4 = (TH1F *)hlist->At(4);
-    TH1F *ht5 = (TH1F *)hlist->At(5);
-    cout << "ht5 name : " << ht5->GetName() << endl;
-    ht0->Draw("sames");
-    ht1->Draw("sames");
-    ht2->Draw("sames");
-    ht3->Draw("sames");
-    ht4->Draw("sames");
-    ht5->Draw("sames");
+    // TList *hlist = hs->GetHists();
+    // TH1F *ht0 = (TH1F *)hlist->At(0);
+    // TH1F *ht1 = (TH1F *)hlist->At(1);
+    // TH1F *ht2 = (TH1F *)hlist->At(2);
+    // TH1F *ht3 = (TH1F *)hlist->At(3);
+    // TH1F *ht4 = (TH1F *)hlist->At(4);
+    // TH1F *ht5 = (TH1F *)hlist->At(5);
+    // cout << "ht5 name : " << ht5->GetName() << endl;
+    // ht0->Draw("sames");
+    // ht1->Draw("sames");
+    // ht2->Draw("sames");
+    // ht3->Draw("sames");
+    // ht4->Draw("sames");
+    // ht5->Draw("sames");
     h1->Draw("e1p same");               // Draw h1
     hsig->Draw("hist sames");               // Draw hsig
     
@@ -669,8 +721,8 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     // h3->SetMaximum(1.6); // .. range
     // h3->SetMinimum(0.8);  // Define Y ..
     // h3->SetMaximum(1.2); // .. range
-    h3->SetMinimum(0.5);  // Define Y ..
-    h3->SetMaximum(1.5); // .. range
+    h3->SetMinimum(0.4);  // Define Y ..
+    h3->SetMaximum(1.6); // .. range
     //h3->SetMinimum(0.6);  // Define Y ..
     //h3->SetMaximum(1.4); // .. range
     h3->Sumw2();
@@ -681,8 +733,10 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     //h3->SetFillColor(kRed);
     h3->Draw("p");       // Draw the ratio plot
     //systRatio->SetFillColorAlpha(kRed-9,0.001);
-    systRatio->SetFillColorAlpha(kRed,0.7);
-    systRatio->SetFillStyle(3001);
+    //systRatio->SetFillColorAlpha(kRed,0.7);
+    //systRatio->SetFillColor(kGreen-8);
+    systRatio->SetFillColorAlpha(kGreen-8,0.8);
+    //systRatio->SetFillStyle(3001);
     systRatio->Draw("e2 sames");
     h3->Draw("p sames");       // Draw the ratio plot
     // h1 settings
@@ -1062,15 +1116,22 @@ int SetStatMarkerStyle(TH1D*& h1, Color_t color, Style_t style, Size_t markerSiz
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-double errBandUp(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp){
+double errBandUp(int iBin, int year, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystUp){
   double errUp = 0.0;
   for(unsigned int isys = 0 ; isys < vSystUp.size() ; isys++){
     TH1D *hSyst = vSystUp.at(isys);
     errUp += pow(fabs(hSyst->GetBinContent(iBin+1) - hCentral->GetBinContent(iBin+1)),2) ;
+    // if(iBin==41)
+    //   cout<<"hSyst : "<<hSyst->GetName()<<", bin value : "<<errUp <<", systTot : "<<hSyst->GetBinContent(iBin+1)<<", centralTot : "<<hCentral->GetBinContent(iBin+1)<<endl;
   }
-  errUp += pow(hCentral->GetBinError(iBin+1),2);
-  //errUp += pow(hQCD->GetBinError(iBin+1),2);
+  // if(iBin==41)
+  //   cout<<"step1 : errU value : "<<errUp<<endl;
 
+  if(TMath::Finite(hCentral->GetBinError(iBin+1))!=0)
+    errUp += pow(hCentral->GetBinError(iBin+1),2);
+  //errUp += pow(hQCD->GetBinError(iBin+1),2);
+  
+  //The following section is to add the XS normalization uncertainty
   for(unsigned int inom = 0 ; inom < vSystNom.size() ; inom++){
     TH1D *hNom = vSystNom.at(inom);
     TString hname = hNom->GetName();
@@ -1085,23 +1146,33 @@ double errBandUp(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom,
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("VBF"))
       errUp += pow(hNom->GetBinContent(iBin+1)*0.04/2,2);
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("QCD"))
-      errUp += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);    
-  }  
+      errUp += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);
+    // if(iBin==41)
+    //   cout<<"hname : "<<hname<<", hNom : "<<hNom->GetName()<<", bin value : "<<errUp<<endl;
+  }
+  
+  // if(iBin==41)
+  //   cout<<"before : errU value : "<<errUp<<endl;
 
-  errUp = sqrt(errUp) + 0.5*lumi_unc*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
+  errUp = sqrt(errUp) + 0.5*lumi_unc[year%2016]*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
+
+  // if(iBin==41)
+  //   cout<<"after : errU value : "<<errUp<<endl<<endl;;
 
   return errUp;
 }
 
-double errBandDown(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystDown){
+double errBandDown(int iBin, int year, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom, vector<TH1D *> vSystDown){
   double errDown = 0.0;
   for(unsigned int isys = 0 ; isys < vSystDown.size() ; isys++){
     TH1D *hSyst = vSystDown.at(isys);
     errDown += pow(fabs(hCentral->GetBinContent(iBin+1) - hSyst->GetBinContent(iBin+1)),2) ;
   }
-  errDown += pow(hCentral->GetBinError(iBin+1),2);
+  if(TMath::Finite(hCentral->GetBinError(iBin+1))!=0)
+    errDown += pow(hCentral->GetBinError(iBin+1),2);
   //errDown += pow(hQCD->GetBinError(iBin+1),2);
 
+  //The following section is to add the XS normalization uncertainty
   for(unsigned int inom = 0 ; inom < vSystNom.size() ; inom++){
     TH1D *hNom = vSystNom.at(inom);
     TString hname = hNom->GetName();
@@ -1119,12 +1190,12 @@ double errBandDown(int iBin, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNo
       errDown += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);    
   }  
 
-  errDown = sqrt(errDown) + 0.5*lumi_unc*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
+  errDown = sqrt(errDown) + 0.5*lumi_unc[year%2016]*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
 
   return errDown;
 }
 
-TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom,  vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, 
+TGraphAsymmErrors *SystGraph(int year, string histname, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNom,  vector<TH1D *> vSystUp, vector<TH1D *> vSystDown, 
 			     bool isFullGraph = false, bool isRatioGraph = false){
   
   TGraphAsymmErrors *gr;
@@ -1138,10 +1209,16 @@ TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNo
   int nmax = 0;
   for(int i=0; i<n1; i++){
     if(!(hCentral->GetBinContent(i+1)>0.0)) continue;
+
+    double lowedge = hCentral->GetXaxis()->GetBinLowEdge(i+1);
+    double upedge = hCentral->GetXaxis()->GetBinUpEdge(i);
+    if(histname.find("eta")!=string::npos and (TMath::Abs(lowedge) > 2.4 or TMath::Abs(upedge) > 2.4)) continue;
+    //if(histname.find("met")!=string::npos and histname.find("pt")!=string::npos and TMath::Abs(lowedge) < 20.) continue;
+    
     if(isFullGraph){
       Yval[i]   = hCentral->GetBinContent(i+1);
-      errorU[i] = errBandUp(i, hCentral, hQCD, vSystNom, vSystUp); 
-      errorD[i] = errBandDown(i, hCentral, hQCD, vSystNom, vSystDown); 
+      errorU[i] = errBandUp(i, year, hCentral, hQCD, vSystNom, vSystUp); 
+      errorD[i] = errBandDown(i, year, hCentral, hQCD, vSystNom, vSystDown); 
       if(hCentral->GetBinContent(i+1)>0.0) nmax = i+1 ;
       // if(abs(errorD[i]) > 1.0e3)
       // 	cout<<i<<", "<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<errorD[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
@@ -1149,8 +1226,8 @@ TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNo
     }
     if(isRatioGraph){
       Yval[i]   = 1;
-      errorU[i] = errBandUp(i, hCentral, hQCD, vSystNom, vSystUp); 
-      errorD[i] = errBandDown(i, hCentral, hQCD, vSystNom, vSystDown); 
+      errorU[i] = errBandUp(i, year, hCentral, hQCD, vSystNom, vSystUp); 
+      errorD[i] = errBandDown(i, year, hCentral, hQCD, vSystNom, vSystDown);
       //cout<<"bin = "<<i<<endl;
       //cout<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
       if(hCentral->GetBinContent(i+1)>0.0){ 
@@ -1161,8 +1238,8 @@ TGraphAsymmErrors *SystGraph(TH1D *hCentral,  TH1D *hQCD, vector<TH1D *> vSystNo
 	errorU[i] = 0.0;
 	errorD[i] = 0.0;
       }
-      // if(abs(errorU[i]) > 1.4)
-      // 	cout<<i<<", "<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<errorD[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
+      // if(abs(errorU[i]) > 1.2 or abs(errorD[i]) > 1.2)
+      // 	cout<<i<<", x : "<<hCentral->GetBinCenter(i+1)<<", Y : "<<Yval[i]<<", errU : "<<errorU[i]<<", errD : "<<errorD[i]<<", bintot : "<<hCentral->GetBinContent(i+1)<<endl;
     }
     Xval[i]   = hCentral->GetBinCenter(i+1);
     XerrorU[i]= hCentral->GetBinWidth(i+1)/2;
@@ -1260,8 +1337,11 @@ TH1D *GetUpDownHistDD(vector<TFile *> filelist, const char *syst, const char *up
     //cout << filelist[ifile]->GetName() << endl; 
     TString fname = filelist[ifile]->GetName();
     for(int isample = 0 ; isample < 6; isample++)
-      if(fname.Contains(sample[isample]))
+      if(fname.Contains(sample[isample])){
 	hcf_nano[ifile]	= (TH1D *)filelist[ifile]->Get(Form("%s/%s%s/Iso/%s",sample[isample],syst,updown,histname.c_str()));
+	if(histname.find("_mjj_")!=string::npos and strcmp(sample[isample],"QCDdd")!=0)
+	  hcf_nano[ifile]->Rebin(rebin);
+      }
   }
   h1 = (TH1D *)hcf_nano[0]->Clone(Form("%s%s",syst,updown));
   for(unsigned int ifile=1; ifile < filelist.size() ; ifile++)

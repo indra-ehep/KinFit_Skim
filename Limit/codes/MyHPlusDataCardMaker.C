@@ -570,7 +570,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   inFileDir = inFileDir + "/" + syear;
   int year = syear.Atoi();
   double totLumi = 36.31; //2016
-  float lumiUnc = 1.012;//2.5% for 2016 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
+  float lumiUnc = 1.012;//1.2% for 2016 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
   if(year==2017){
     totLumi = 41.48; // 2017
     lumiUnc = 1.023; //
@@ -579,6 +579,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
     totLumi = 59.83; //2018
     lumiUnc = 1.025; //
   }
+  //lumiUnc = 1.016; //run2
   histName += channelName;
   
   printf("==== Year : %d ======\n",year);
@@ -664,6 +665,8 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* ttbar_isrDown = DC.readWriteHisto(fTT, baseDir+"/isrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_isrDown", true, isNormalized, ttbar);
   TH1F* ttbar_fsrUp = DC.readWriteHisto(fTT, baseDir+"/fsrup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrUp", true, isNormalized, ttbar);
   TH1F* ttbar_fsrDown = DC.readWriteHisto(fTT, baseDir+"/fsrdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_fsrDown", true, isNormalized, ttbar);
+  TH1F* ttbar_topPtUp = DC.readWriteHisto(fTT, baseDir+"/topptup"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_topPtUp", true, isNormalized, ttbar);
+  TH1F* ttbar_topPtDown = DC.readWriteHisto(fTT, baseDir+"/topptdown"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_topPtDown", true, isNormalized, ttbar);
   // //MiniAOD nuisances
   // TH1F* ttbar_bcTag1Up = DC.readWriteHisto(fTT, baseDir+"/bctag1up"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Up", true, isNormalized, ttbar);
   // TH1F* ttbar_bcTag1Down = DC.readWriteHisto(fTT, baseDir+"/bctag1down"+histSubDir, histName, sf_ttbar, fout, fTT, "ttbar_bcTag1Down", true, isNormalized, ttbar);
@@ -1088,7 +1091,10 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   //QCD data driven
   //cout<<baseDir+"/base"+histSubDir+"/"+histName<<endl;
   baseDir = "QCDdd";
+  TH1F* qcd_dd_raw = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd_base", false);
+  //TH1F* qcd_dd = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd", true, true, 0x0);
   TH1F* qcd_dd = DC.readWriteHisto(fQCD_dd, baseDir+"/base"+histSubDir, histName, sf_qcd, fout, fTT, "qcd", true);
+  double QCD_DD_Integral = qcd_dd_raw->Integral();
   double stat_unc_qcd = DC.getStatUnc(qcd_dd, 0);
   // cout<<"qcd stat unc: "<<stat_unc_qcd<<endl;
   // cout<<"qcd = "<<qcd_dd->Integral()<<endl;
@@ -1166,6 +1172,8 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   TH1F* wh_isrDown = DC.readWriteHisto(fWH, baseDir+"/isrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_isrDown", true, isNormalized, wh);
   TH1F* wh_fsrUp = DC.readWriteHisto(fWH, baseDir+"/fsrup"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrUp", true, isNormalized, wh);
   TH1F* wh_fsrDown = DC.readWriteHisto(fWH, baseDir+"/fsrdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_fsrDown", true, isNormalized, wh);
+  TH1F* wh_topPtUp = DC.readWriteHisto(fWH, baseDir+"/topptup"+histSubDir, histName, sf_wh, fout, fTT, label+"_topPtUp", true, isNormalized, wh);
+  TH1F* wh_topPtDown = DC.readWriteHisto(fWH, baseDir+"/topptdown"+histSubDir, histName, sf_wh, fout, fTT, label+"_topPtDown", true, isNormalized, wh);
   // //MiniAOD nuisances
   // TH1F* wh_bcTag1Up = DC.readWriteHisto(fWH, baseDir+"/bctag1up"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Up", true, isNormalized, wh);
   // TH1F* wh_bcTag1Down = DC.readWriteHisto(fWH, baseDir+"/bctag1down"+histSubDir, histName, sf_wh, fout, fTT, label+"_bcTag1Down", true, isNormalized, wh);
@@ -1267,14 +1275,62 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	
       }
       else if(line.find("CMS_lumi_13TeV ")!=string::npos){
-        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", lumiUnc)) );
-        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", lumiUnc)) ); 
-        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", lumiUnc)) ); 
-        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", lumiUnc)) ); 
-        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", lumiUnc)) ); 
-        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", lumiUnc)) ); 
-        out << line << endl;
+	
+        // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", lumiUnc)) );
+        // line.replace( line.find("TTTT") , 4 , string(Form("%.3f", lumiUnc)) ); 
+        // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", lumiUnc)) ); 
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", lumiUnc)) ); 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", lumiUnc)) ); 
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", lumiUnc)) ); 
+        // out << line << endl;
 
+	float corr_16_17_18 = 1.006;//following
+	if(year==2016){
+	  corr_16_17_18 = 1.006;
+	  float uncorr_16 = 1.01;
+	  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", corr_16_17_18)) );
+	  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  out << line << endl;
+	  out << "CMS_lumi_16\tlnN\t"<< uncorr_16 << "\t" << uncorr_16 << "\t" << uncorr_16 << "\t"
+	                              << uncorr_16 << "\t" << uncorr_16 << "\t" << uncorr_16 << "\t 1.00 \t   2016 uncorr"<<endl;
+	    
+	}else if (year==2017){
+	  corr_16_17_18 = 1.009;
+	  float uncorr_17 = 1.02;
+	  float corr_17_18 = 1.006;
+	  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", corr_16_17_18)) );
+	  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  out << line << endl;
+	  out << "CMS_lumi_17\tlnN\t"<< uncorr_17 << "\t" << uncorr_17 << "\t" << uncorr_17 << "\t"
+	                              << uncorr_17 << "\t" << uncorr_17 << "\t" << uncorr_17 << "\t 1.00 \t   2017 uncorr"<<endl;
+	  out << "CMS_lumi_17_18\tlnN\t"<< corr_17_18 << "\t" << corr_17_18 << "\t" << corr_17_18 << "\t"
+	                              << corr_17_18 << "\t" << corr_17_18 << "\t" << corr_17_18 << "\t 1.00 \t   2017-18 corr"<<endl;
+
+	}else if (year==2018){
+	  corr_16_17_18 = 1.02;
+	  float uncorr_18 = 1.015;
+	  float corr_17_18 = 1.002;
+	  line.replace( line.find("HHHH") , 4 , string(Form("%.3f", corr_16_17_18)) );
+	  line.replace( line.find("TTTT") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("WWWW") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("DDDD") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("SSSS") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  line.replace( line.find("VVVV") , 4 , string(Form("%.3f", corr_16_17_18)) ); 
+	  out << line << endl;
+	  out << "CMS_lumi_18\tlnN\t"<< uncorr_18 << "\t" << uncorr_18 << "\t" << uncorr_18 << "\t"
+	                              << uncorr_18 << "\t" << uncorr_18 << "\t" << uncorr_18 << "\t 1.00 \t   2018 uncorr"<<endl;
+	  out << "CMS_lumi_17_18\tlnN\t"<< corr_17_18 << "\t" << corr_17_18 << "\t" << corr_17_18 << "\t"
+	                              << corr_17_18 << "\t" << corr_17_18 << "\t" << corr_17_18 << "\t 1.00 \t   2017-18 corr"<<endl;
+
+	}
       }
       else if(line.find("CMS_eff_lep ")!=string::npos){  
 
@@ -1936,6 +1992,8 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   }
   if(!isBinStat)
     out<<"* autoMCStats 0 1"<<endl;
+  //out<<"qcdrate rateParam * qcd "<< QCD_DD_Integral <<" ["<<0.5*QCD_DD_Integral<<","<<2.*QCD_DD_Integral<<"]"<<endl;
+  //out<<"qcdrate rateParam * qcd 1.0 [0.0,2.0]"<<endl;
   out.close();
   in.close();
   fout->Close();

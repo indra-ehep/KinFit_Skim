@@ -34,11 +34,12 @@ Float_t MaxX = -4.0;
 float defaultRatioYmin = -4.0;
 float defaultRatioYmax = 4.0;
 
-string denoYaxis = "RegD/RegC";
+string denoYaxis = "RegB/RegC";
+//string denoYaxis = "Ratio";
 string xTitle = "";
 
 
-int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
+int QCDClosure3(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
 {
   // Setters
   int SetGlobalStyle(void);
@@ -116,7 +117,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
     // cout << "histname1 : " << histname1 <<  ", Reg C " << histname_RegC << ", Reg D "<< histname_RegD << endl;
   }
   
-  string outputpdf = Form("tt/figs/Week_Work_Report/2023-01-26/DD/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2023-05-11/DD/%d/hist%s.pdf",year,histname.c_str());
   //string outputpdf = Form("tt/figs/Week_Work_Report/2022-11-24/DD/%d/hist%s.pdf",year,histname.c_str());
   //string outputpdf = Form("ffigs/Week_Work_Report/2022-09-01/%d/DD/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
@@ -258,6 +259,58 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   //   hcf_RegD_bkg->Rebin(50);
   //   hcf_RegD_data->Rebin(50);
   // }
+  // if(htype>=10 and htype<=17){
+    
+  //   hcf_RegA_bkg->Rebin(50);
+  //   hcf_RegB_bkg->Rebin(50);
+  //   hcf_RegC_bkg->Rebin(50);
+  //   hcf_RegD_bkg->Rebin(50);
+    
+  //   hcf_RegA_data->Rebin(50);
+  //   hcf_RegB_data->Rebin(50);
+  //   hcf_RegC_data->Rebin(50);
+  //   hcf_RegD_data->Rebin(50);
+    
+  //   hcf_RegA_vbf->Rebin(50);
+  //   hcf_RegB_vbf->Rebin(50);
+  //   hcf_RegC_vbf->Rebin(50);
+  //   hcf_RegD_vbf->Rebin(50);
+    
+  //   hcf_RegA_dyjets->Rebin(50);
+  //   hcf_RegB_dyjets->Rebin(50);
+  //   hcf_RegC_dyjets->Rebin(50);
+  //   hcf_RegD_dyjets->Rebin(50);
+    
+  //   hcf_RegA_wjets->Rebin(50);
+  //   hcf_RegB_wjets->Rebin(50);
+  //   hcf_RegC_wjets->Rebin(50);
+  //   hcf_RegD_wjets->Rebin(50);
+    
+  //   hcf_RegA_stop->Rebin(50);
+  //   hcf_RegB_stop->Rebin(50);
+  //   hcf_RegC_stop->Rebin(50);
+  //   hcf_RegD_stop->Rebin(50);
+    
+  //   hcf_RegA_ttbar->Rebin(50);
+  //   hcf_RegB_ttbar->Rebin(50);
+  //   hcf_RegC_ttbar->Rebin(50);
+  //   hcf_RegD_ttbar->Rebin(50);
+    
+  //   // hcf_RegA_QCD->Rebin(50);
+  //   // hcf_RegB_QCD->Rebin(50);
+  //   // hcf_RegC_QCD->Rebin(50);
+  //   // hcf_RegD_QCD->Rebin(50);
+
+  //   hcf_RegA_qcd->Rebin(50);
+  //   hcf_RegB_qcd->Rebin(50);
+  //   hcf_RegC_qcd->Rebin(50);
+  //   hcf_RegD_qcd->Rebin(50);
+
+  //   hcf_RegA_sig->Rebin(50);
+  //   hcf_RegB_sig->Rebin(50);
+  //   hcf_RegC_sig->Rebin(50);
+  //   hcf_RegD_sig->Rebin(50);
+  // }
 
   //////////////////////////////// Get the QCD for regions ////////////////////////////////////////////////
   TH1D *hcf_RegD_QCD = (TH1D *)hcf_RegD_data->Clone("RegD_QCD");
@@ -282,22 +335,60 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   if(htype>=10 and htype<=17){
+    
     hcf_RegA_bkg->Rebin(50);
-    hcf_RegA_data->Rebin(50);
     hcf_RegB_bkg->Rebin(50);
-    hcf_RegB_data->Rebin(50);
     hcf_RegC_bkg->Rebin(50);
-    hcf_RegC_data->Rebin(50);
     hcf_RegD_bkg->Rebin(50);
+    
+    hcf_RegA_data->Rebin(50);
+    hcf_RegB_data->Rebin(50);
+    hcf_RegC_data->Rebin(50);
     hcf_RegD_data->Rebin(50);
-
+    
+    hcf_RegA_vbf->Rebin(50);
+    hcf_RegB_vbf->Rebin(50);
+    hcf_RegC_vbf->Rebin(50);
+    hcf_RegD_vbf->Rebin(50);
+    
+    hcf_RegA_dyjets->Rebin(50);
+    hcf_RegB_dyjets->Rebin(50);
+    hcf_RegC_dyjets->Rebin(50);
+    hcf_RegD_dyjets->Rebin(50);
+    
+    hcf_RegA_wjets->Rebin(50);
+    hcf_RegB_wjets->Rebin(50);
+    hcf_RegC_wjets->Rebin(50);
+    hcf_RegD_wjets->Rebin(50);
+    
+    hcf_RegA_stop->Rebin(50);
+    hcf_RegB_stop->Rebin(50);
+    hcf_RegC_stop->Rebin(50);
+    hcf_RegD_stop->Rebin(50);
+    
+    hcf_RegA_ttbar->Rebin(50);
+    hcf_RegB_ttbar->Rebin(50);
+    hcf_RegC_ttbar->Rebin(50);
+    hcf_RegD_ttbar->Rebin(50);
+    
     hcf_RegA_QCD->Rebin(50);
     hcf_RegB_QCD->Rebin(50);
     hcf_RegC_QCD->Rebin(50);
     hcf_RegD_QCD->Rebin(50);
-    
-  }
 
+    hcf_RegA_qcd->Rebin(50);
+    hcf_RegB_qcd->Rebin(50);
+    hcf_RegC_qcd->Rebin(50);
+    hcf_RegD_qcd->Rebin(50);
+
+    hcf_RegA_sig->Rebin(50);
+    hcf_RegB_sig->Rebin(50);
+    hcf_RegC_sig->Rebin(50);
+    hcf_RegD_sig->Rebin(50);
+  }
+  
+  TH1D *hcf_RegA_QCD_org = (TH1D *)hcf_RegA_QCD->Clone("RegA_QCD_subtracted");
+  
   //////////////////////////////// Calculate the QCD SF ///////////////////////////////////////////////////
   // double intDiffC   = hcf_RegC_QCD->Integral();
   // double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
@@ -346,7 +437,6 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
       hcf_RegA_QCD->SetBinContent(ibin, new_bin_cont);
       hcf_RegA_QCD->SetBinError(ibin, new_bin_err);
   }
-  hcf_RegA_bkg->Add(hcf_RegA_QCD);
 
   // hcf_RegA_bkg->Add(hcf_RegA_QCD);
   // if(htype>=10 and htype<=17){
@@ -356,7 +446,8 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
 
   cout<<"tot_bin_cont= "<<tot_bin_cont<<", tot_bin_err = "<<sqrt(tot_bin_err)<<endl;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
+  hcf_RegA_bkg->Add(hcf_RegA_QCD);
   hcf_RegA_data->SetMarkerStyle(kFullCircle);
   hcf_RegA_data->SetMarkerColor(kBlack);
   hcf_RegA_data->SetMarkerSize(1.2);
@@ -368,29 +459,101 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   }
 
   hcf_RegA_ttbar->SetFillColor(kCyan+1);
-  
   hcf_RegA_stop->SetFillColor(kViolet);
-
   hcf_RegA_wjets->SetFillColor(kYellow+1);
-
   hcf_RegA_dyjets->SetFillColor(kOrange+1);
-  
   hcf_RegA_vbf->SetFillColor(kGreen+2);
-
   hcf_RegA_QCD->SetFillColor(kBlue);
   
-  THStack *hs = new THStack("hs","");
-  hs->Add(hcf_RegA_vbf);
-  hs->Add(hcf_RegA_dyjets);
-  hs->Add(hcf_RegA_wjets);
-  hs->Add(hcf_RegA_QCD);
-  hs->Add(hcf_RegA_stop);
-  hs->Add(hcf_RegA_ttbar);
+  THStack *hs_RegA = new THStack("hs_RegA","");
+  hs_RegA->Add(hcf_RegA_vbf);
+  hs_RegA->Add(hcf_RegA_dyjets);
+  hs_RegA->Add(hcf_RegA_wjets);
+  hs_RegA->Add(hcf_RegA_QCD);
+  hs_RegA->Add(hcf_RegA_stop);
+  hs_RegA->Add(hcf_RegA_ttbar);
 
+  /////////////////////////////////////////////////////////////////
+  hcf_RegB_bkg->Add(hcf_RegB_QCD);
+  hcf_RegB_data->SetMarkerStyle(kFullCircle);
+  hcf_RegB_data->SetMarkerColor(kBlack);
+  hcf_RegB_data->SetMarkerSize(1.2);
+  
+  if(year == 2016){
+    hcf_RegB_sig->SetLineStyle(kDashed);
+    hcf_RegB_sig->SetLineColor(kRed);
+    hcf_RegB_sig->SetLineWidth(2);
+  }
 
+  hcf_RegB_ttbar->SetFillColor(kCyan+1);
+  hcf_RegB_stop->SetFillColor(kViolet);
+  hcf_RegB_wjets->SetFillColor(kYellow+1);
+  hcf_RegB_dyjets->SetFillColor(kOrange+1);
+  hcf_RegB_vbf->SetFillColor(kGreen+2);
+  hcf_RegB_QCD->SetFillColor(kBlue);
+  THStack *hs_RegB = new THStack("hs_RegB","");
+  hs_RegB->Add(hcf_RegB_vbf);
+  hs_RegB->Add(hcf_RegB_dyjets);
+  hs_RegB->Add(hcf_RegB_wjets);
+  hs_RegB->Add(hcf_RegB_QCD);
+  hs_RegB->Add(hcf_RegB_stop);
+  hs_RegB->Add(hcf_RegB_ttbar);
+  /////////////////////////////////////////////////////////////////
+  hcf_RegC_bkg->Add(hcf_RegC_QCD);
+  hcf_RegC_data->SetMarkerStyle(kFullCircle);
+  hcf_RegC_data->SetMarkerColor(kBlack);
+  hcf_RegC_data->SetMarkerSize(1.2);
+  
+  if(year == 2016){
+    hcf_RegC_sig->SetLineStyle(kDashed);
+    hcf_RegC_sig->SetLineColor(kRed);
+    hcf_RegC_sig->SetLineWidth(2);
+  }
+
+  hcf_RegC_ttbar->SetFillColor(kCyan+1);
+  hcf_RegC_stop->SetFillColor(kViolet);
+  hcf_RegC_wjets->SetFillColor(kYellow+1);
+  hcf_RegC_dyjets->SetFillColor(kOrange+1);
+  hcf_RegC_vbf->SetFillColor(kGreen+2);
+  hcf_RegC_QCD->SetFillColor(kBlue);
+  THStack *hs_RegC = new THStack("hs_RegC","");
+  hs_RegC->Add(hcf_RegC_vbf);
+  hs_RegC->Add(hcf_RegC_dyjets);
+  hs_RegC->Add(hcf_RegC_wjets);
+  hs_RegC->Add(hcf_RegC_QCD);
+  hs_RegC->Add(hcf_RegC_stop);
+  hs_RegC->Add(hcf_RegC_ttbar);
+  /////////////////////////////////////////////////////////////////
+  hcf_RegD_bkg->Add(hcf_RegD_QCD);
+  hcf_RegD_data->SetMarkerStyle(kFullCircle);
+  hcf_RegD_data->SetMarkerColor(kBlack);
+  hcf_RegD_data->SetMarkerSize(1.2);
+  
+  if(year == 2016){
+    hcf_RegD_sig->SetLineStyle(kDashed);
+    hcf_RegD_sig->SetLineColor(kRed);
+    hcf_RegD_sig->SetLineWidth(2);
+  }
+
+  hcf_RegD_ttbar->SetFillColor(kCyan+1);
+  hcf_RegD_stop->SetFillColor(kViolet);
+  hcf_RegD_wjets->SetFillColor(kYellow+1);
+  hcf_RegD_dyjets->SetFillColor(kOrange+1);
+  hcf_RegD_vbf->SetFillColor(kGreen+2);
+  hcf_RegD_QCD->SetFillColor(kBlue);
+  THStack *hs_RegD = new THStack("hs_RegD","");
+  hs_RegD->Add(hcf_RegD_vbf);
+  hs_RegD->Add(hcf_RegD_dyjets);
+  hs_RegD->Add(hcf_RegD_wjets);
+  hs_RegD->Add(hcf_RegD_QCD);
+  hs_RegD->Add(hcf_RegD_stop);
+  hs_RegD->Add(hcf_RegD_ttbar);
+  
   TH1D *hData = (TH1D*)hcf_RegA_data->Clone("hData"); 
-  hData->SetTitle("");
-  TH1D *hMC = (TH1D*)hcf_RegA_bkg->Clone("hMC"); 
+  hData->SetTitle("Region A");
+  TH1D *hMC = (TH1D*)hcf_RegA_bkg->Clone("hMC");
+  hMC->SetTitle("Region A");
+  hs_RegA->SetTitle("Region A");
   ///////////////////////////////////////////////////////////////////////////////////////////  
   const char *hist_num_title = "Data";
   const char *hist_den_title = "All Bkg";
@@ -484,6 +647,8 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   //Ranges
   hData->SetMaximum(upper_maxY);
   hData->SetMinimum(upper_minY);
+  hs_RegA->SetMaximum(upper_maxY);
+  hs_RegA->SetMinimum(upper_minY);
   hData->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
   hMC->GetXaxis()->SetRangeUser(upper_minX, upper_maxX);
   //hData->GetXaxis()->SetRange(hData->FindBin(upper_minX), hData->FindBin(upper_maxX));
@@ -498,77 +663,77 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   float canvas_scale = 1;
   int canvas_width = TMath::Nint(canvas_scale*900) ;
   int canvas_height = TMath::Nint(canvas_scale*800) ;
-  // auto c1 = new TCanvas("c1", canvas_title, canvas_width, canvas_height);
+  auto c1 = new TCanvas("c1", canvas_title, canvas_width, canvas_height);
   // //auto rp = new TRatioPlot(hData, hMC, "divsym");
   // auto rp = new TRatioPlot(hData, hMC, "divsym");
   // //auto rp = new TRatioPlot(hs, hData, "divsym");
   // rp->SetH1DrawOpt("e1");
   // rp->SetH2DrawOpt("hist");
-  // c1->SetTicks(1, 1);
+  c1->SetTicks(1, 1);
   // //rp->GetLowerRefYaxis()->SetMaximum(1.4);
   // rp->Draw();
   // gPad->Modified(); gPad->Update(); // make sure it’s really (re)drawn
   // TPad *p = rp->GetUpperPad();
   // p->cd();
-  // // //hData->Draw("e1p");
-  // hs->Draw("same hist");
-  // if(year == 2016)
-  //   hcf_RegA_sig->Draw("same hist");
-  // hData->Draw("e1p same");
+  TPad *p = c1;
+  p->cd();
+  // //hData->Draw("e1p");
+  hs_RegA->Draw("hist");
+  //hcf_RegB_sig->Draw("same hist");
+  //hData->Draw("e1p same");
 
-  // TLegend *leg1 = p->BuildLegend();
-  // for(int i = 0 ; i < 10 ; i++)
-  //   leg1->DeleteEntry() ;// This is to delete default title of hData
-  // leg1->AddEntry(hData, Form("%s",hist_num_title) ,"lp");
-  // leg1->AddEntry(hMC, Form("%s",hist_den_title) ,"lp");
-  // leg1->AddEntry(hcf_RegA_ttbar, Form("#it{t}#bar{#it{t}}") ,"f");
+  TLegend *leg1 = p->BuildLegend();
+  for(int i = 0 ; i < 10 ; i++)
+    leg1->DeleteEntry() ;// This is to delete default title of hData
+  leg1->AddEntry(hData, Form("%s",hist_num_title) ,"lp");
+  leg1->AddEntry(hMC, Form("%s",hist_den_title) ,"lp");
+  leg1->AddEntry(hcf_RegA_ttbar, Form("#it{t}#bar{#it{t}}") ,"f");
 
-  // TLegend *leg2 = p->BuildLegend();
-  // for(int i = 0 ; i < 10 ; i++)
-  //   leg2->DeleteEntry() ;// This is to delete default title of hData  
-  // leg2->AddEntry(hcf_RegA_stop, Form("Single #it{t}") ,"f");
-  // leg2->AddEntry(hcf_RegA_wjets, Form("#it{W} + jets") ,"f");
-  // leg2->AddEntry(hcf_RegA_dyjets, Form("#it{Z}/#gamma + jets") ,"f");
+  TLegend *leg2 = p->BuildLegend();
+  for(int i = 0 ; i < 10 ; i++)
+    leg2->DeleteEntry() ;// This is to delete default title of hData  
+  leg2->AddEntry(hcf_RegA_stop, Form("Single #it{t}") ,"f");
+  leg2->AddEntry(hcf_RegA_wjets, Form("#it{W} + jets") ,"f");
+  leg2->AddEntry(hcf_RegA_dyjets, Form("#it{Z}/#gamma + jets") ,"f");
   
-  // TLegend *leg3 = p->BuildLegend();
-  // for(int i = 0 ; i < 10 ; i++)
-  //   leg3->DeleteEntry() ;// This is to delete default title of hData  
-  // leg3->AddEntry(hcf_RegA_vbf, Form("VV") ,"f");
-  // leg3->AddEntry(hcf_RegA_QCD, Form("QCD") ,"f");
-  // if(year == 2016)
-  //   leg3->AddEntry(hcf_RegA_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
+  TLegend *leg3 = p->BuildLegend();
+  for(int i = 0 ; i < 10 ; i++)
+    leg3->DeleteEntry() ;// This is to delete default title of hData  
+  leg3->AddEntry(hcf_RegA_vbf, Form("VV") ,"f");
+  leg3->AddEntry(hcf_RegA_QCD, Form("QCD") ,"f");
+  //leg3->AddEntry(hcf_RegA_sig, Form("m_{H^{+}} = 120 GeV") ,"l");
 
-  // leg1->SetX1(legend_pos1[0]); leg1->SetY1(legend_pos1[1]); 
-  // leg1->SetX2(legend_pos1[2]); leg1->SetY2(legend_pos1[3]); 
+  leg1->SetX1(legend_pos1[0]); leg1->SetY1(legend_pos1[1]); 
+  leg1->SetX2(legend_pos1[2]); leg1->SetY2(legend_pos1[3]); 
 
-  // leg2->SetX1(legend_pos2[0]); leg2->SetY1(legend_pos2[1]); 
-  // leg2->SetX2(legend_pos2[2]); leg2->SetY2(legend_pos2[3]); 
+  leg2->SetX1(legend_pos2[0]); leg2->SetY1(legend_pos2[1]); 
+  leg2->SetX2(legend_pos2[2]); leg2->SetY2(legend_pos2[3]); 
 
-  // leg3->SetX1(legend_pos3[0]); leg3->SetY1(legend_pos3[1]); 
-  // leg3->SetX2(legend_pos3[2]); leg3->SetY2(legend_pos3[3]); 
+  leg3->SetX1(legend_pos3[0]); leg3->SetY1(legend_pos3[1]); 
+  leg3->SetX2(legend_pos3[2]); leg3->SetY2(legend_pos3[3]); 
   
-  // SetLegendStyle(leg1);
-  // SetLegendStyle(leg2);
-  // SetLegendStyle(leg3);
+  SetLegendStyle(leg1);
+  SetLegendStyle(leg2);
+  SetLegendStyle(leg3);
 
-  // leg1->Draw();
-  // leg2->Draw();
-  // leg3->Draw();
+  leg1->Draw();
+  leg2->Draw();
+  leg3->Draw();
 
   TPaveText *t1 = new TPaveText(0.60,0.91,0.90,0.98,"NDC");
   t1->SetFillStyle(0);
   t1->SetBorderSize(0);
   t1->SetTextFont(42);
-  t1->SetTextSize(.05); 
+  t1->SetTextSize(.04); 
   t1->SetMargin(0.1);
   t1->AddText(Form("%3.1f fb^{-1} (13 TeV)",luminosity[year%2016]));
-  // t1->Draw();
+  t1->Draw();
   
   TPaveText *t2 = new TPaveText(0.08, 0.78, 0.36, 0.86,"NDC");
   t2->SetFillStyle(0);
   t2->SetBorderSize(0);
   t2->SetTextFont(42);
-  t2->SetTextSize(.05); 
+  t2->SetTextSize(.04); 
   t2->SetMargin(0.1);
   if(isBtag and isMu)
     t2->AddText("BTag: (#mu + jets)");
@@ -578,7 +743,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
     t2->AddText("KinFit: (#mu + jets)");
   if(!isBtag and !isMu)
     t2->AddText("KinFit: (#it{e} + jets)");
-  // t2->Draw();
+  t2->Draw();
 
   // //rp->GetLowYaxis()->SetNdivisions(402);
   // rp->GetLowYaxis()->SetNdivisions(406);
@@ -592,32 +757,53 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   // // rp->GetUpperPad()->SetTickY();
   // p->Modified(); p->Update();
 
-  // c1->Update();
-  // c1->SaveAs(outputpdf.c_str());
-  // c1->SaveAs("plot.pdf");
-
-
-  ///////////////////////////////////////////////////////////////////////////
-  hcf_RegD_QCD->SetLineColor(kRed);
-  hcf_RegC_QCD->SetLineColor(kBlue);
-  hcf_RegD_QCD->SetMarkerColor(kRed);
-  hcf_RegC_QCD->SetMarkerColor(kBlue);
-
-  // hcf_RegD_QCD->Scale(1./hcf_RegD_QCD->Integral());
-  // hcf_RegC_QCD->Scale(1./hcf_RegC_QCD->Integral());
-  hcf_RegD_QCD->SetTitle("");
-  hcf_RegC_QCD->SetTitle("");
+  hs_RegA->GetYaxis()->SetTitle(lower_pad_yaxis_title.c_str());
+  hs_RegA->GetXaxis()->SetTitleOffset(1.2);
+  hs_RegA->GetYaxis()->SetTitle(upper_pad_yaxis_title.c_str());
+  hs_RegA->GetYaxis()->SetRangeUser(lower_minY, lower_maxY);
+  p->SetLogy();
+  p->Modified(); p->Update();
   
-  TH1D *h1byh2 = 0x0;
+  c1->Update();
+  c1->SaveAs(outputpdf.c_str());
+  c1->SaveAs("plot.pdf");
+
+
+  // ///////////////////////////////////////////////////////////////////////////
+  // hcf_RegD_QCD->SetLineColor(kRed);
+  // hcf_RegC_QCD->SetLineColor(kBlue);
+  // hcf_RegD_QCD->SetMarkerColor(kRed);
+  // hcf_RegC_QCD->SetMarkerColor(kBlue);
+
+  // // hcf_RegD_QCD->Scale(1./hcf_RegD_QCD->Integral());
+  // // hcf_RegC_QCD->Scale(1./hcf_RegC_QCD->Integral());
+  // hcf_RegA_QCD_org->SetTitle("");
+  // hcf_RegA_QCD->SetTitle("");
+  // hcf_RegB_QCD->SetTitle("");
+  // hcf_RegD_QCD->SetTitle("");
+  // hcf_RegC_QCD->SetTitle("");
   
-  TCanvas* c2 = 0x0;
-  CalcRatio(hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
-  PlotRatioCanvas(c2, hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
-  // CalcRatio(hcf_RegD_data, hcf_RegC_data, h1byh2);
-  // PlotRatioCanvas(c2, hcf_RegD_data, hcf_RegC_data, h1byh2);
-  t1->Draw();
-  t2->Draw();
-  ///////////////////////////////////////////////////////////////////////////
+  // TH1D *h1byh2 = 0x0;
+  
+  // TCanvas* c2 = 0x0;
+  // // CalcRatio(hcf_RegA_QCD_org, hcf_RegB_QCD, h1byh2);
+  // // PlotRatioCanvas(c2, hcf_RegA_QCD_org, hcf_RegB_QCD, h1byh2);
+  // CalcRatio(hcf_RegB_QCD, hcf_RegC_QCD, h1byh2);
+  // PlotRatioCanvas(c2, hcf_RegB_QCD, hcf_RegC_QCD, h1byh2);
+  
+  // // CalcRatio(hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
+  // // PlotRatioCanvas(c2, hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
+
+  // // CalcRatio(hcf_RegB_QCD, hcf_RegD_QCD, h1byh2);
+  // // PlotRatioCanvas(c2, hcf_RegB_QCD, hcf_RegD_QCD, h1byh2);
+
+  // // CalcRatio(hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
+  // // PlotRatioCanvas(c2, hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
+  // // CalcRatio(hcf_RegD_data, hcf_RegC_data, h1byh2);
+  // // PlotRatioCanvas(c2, hcf_RegD_data, hcf_RegC_data, h1byh2);
+  // t1->Draw();
+  // t2->Draw();
+  // ///////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////////
   // hcf_RegA_QCD->SetLineColor(kRed);
@@ -639,55 +825,55 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   // t2->Draw();
   ///////////////////////////////////////////////////////////////////////////
   
-  c2->SaveAs(outputpdf.c_str());
+  // c2->SaveAs(outputpdf.c_str());
   
 
-  string lepname = (isMu)? "\\mu" : "e" ;
-  string color = (isMu)? "red" : "blue" ;
-  string levelname = "";
-  if(isBtag){
-    levelname = "BTag";
-  }else{
-    if(htype==14)
-      levelname = "Exclusive loose";
-    else if(htype==15)
-      levelname = "Exclusive medium";
-    else if(htype==16)
-      levelname = "Exclusive tight";
-    else
-      levelname = "KF";
-  }
+  // string lepname = (isMu)? "\\mu" : "e" ;
+  // string color = (isMu)? "red" : "blue" ;
+  // string levelname = "";
+  // if(isBtag){
+  //   levelname = "BTag";
+  // }else{
+  //   if(htype==14)
+  //     levelname = "Exclusive loose";
+  //   else if(htype==15)
+  //     levelname = "Exclusive medium";
+  //   else if(htype==16)
+  //     levelname = "Exclusive tight";
+  //   else
+  //     levelname = "KF";
+  // }
 
-  printf("\\begin{tabular}{c c c c c}\n");
-  printf("\\hline\n");
-  printf("\\multicolumn{5}{>{\\color{%s}\\columncolor[gray]{0.8}}c}{ %s : ($%s$ + jets) for %d } \\\\\\hline \n",color.c_str(),levelname.c_str(),lepname.c_str(),year);
-  printf("Process & Region-A & Region-B & Region-C & Region-D \\\\ \n");
-  printf("        & (Iso,High MET) & (non-iso,High MET) & (non-iso, Low MET) &  (Iso,Low MET) \\\\\\hline \n");
-  printf("MC QCD  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline \n",
-         hcf_RegA_qcd->Integral(), getStatUnc(hcf_RegA_qcd, 0.0), hcf_RegB_qcd->Integral(), getStatUnc(hcf_RegB_qcd, 0.0),
-         hcf_RegC_qcd->Integral(), getStatUnc(hcf_RegC_qcd, 0.0), hcf_RegD_qcd->Integral(), getStatUnc(hcf_RegD_qcd, 0.0));
-  printf("$t\\bar{t}$ + jets   & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
-         hcf_RegA_ttbar->Integral(), getStatUnc(hcf_RegA_ttbar, 0.0), hcf_RegB_ttbar->Integral(), getStatUnc(hcf_RegB_ttbar, 0.0),
-         hcf_RegC_ttbar->Integral(), getStatUnc(hcf_RegC_ttbar, 0.0), hcf_RegD_ttbar->Integral(), getStatUnc(hcf_RegD_ttbar, 0.0));
-  printf("Single $t$   & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
-         hcf_RegA_stop->Integral(), getStatUnc(hcf_RegA_stop, 0.0), hcf_RegB_stop->Integral(), getStatUnc(hcf_RegB_stop, 0.0),
-         hcf_RegC_stop->Integral(), getStatUnc(hcf_RegC_stop, 0.0), hcf_RegD_stop->Integral(), getStatUnc(hcf_RegD_stop, 0.0));
-  printf("W + jets  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
-         hcf_RegA_wjets->Integral(), getStatUnc(hcf_RegA_wjets, 0.0), hcf_RegB_wjets->Integral(), getStatUnc(hcf_RegB_wjets, 0.0),
-         hcf_RegC_wjets->Integral(), getStatUnc(hcf_RegC_wjets, 0.0), hcf_RegD_wjets->Integral(), getStatUnc(hcf_RegD_wjets, 0.0));
-  printf("Z/$\\gamma$ + jets  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
-         hcf_RegA_dyjets->Integral(), getStatUnc(hcf_RegA_dyjets, 0.0), hcf_RegB_dyjets->Integral(), getStatUnc(hcf_RegB_dyjets, 0.0),
-         hcf_RegC_dyjets->Integral(), getStatUnc(hcf_RegC_dyjets, 0.0), hcf_RegD_dyjets->Integral(), getStatUnc(hcf_RegD_dyjets, 0.0));
-  printf("VV  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline \n",
-         hcf_RegA_vbf->Integral(), getStatUnc(hcf_RegA_vbf, 0.0), hcf_RegB_vbf->Integral(), getStatUnc(hcf_RegB_vbf, 0.0),
-         hcf_RegC_vbf->Integral(), getStatUnc(hcf_RegC_vbf, 0.0), hcf_RegD_vbf->Integral(), getStatUnc(hcf_RegD_vbf, 0.0));
-  printf("Non QCD  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline \n",
-         hcf_RegA_bkg->Integral(), getStatUnc(hcf_RegA_bkg, 0.0), hcf_RegB_bkg->Integral(), getStatUnc(hcf_RegB_bkg, 0.0),
-         hcf_RegC_bkg->Integral(), getStatUnc(hcf_RegC_bkg, 0.0), hcf_RegD_bkg->Integral(), getStatUnc(hcf_RegD_bkg, 0.0));
-  printf("Data  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline\n",
-         hcf_RegA_data->Integral(), getStatUnc(hcf_RegA_data, 0.0), hcf_RegB_data->Integral(), getStatUnc(hcf_RegB_data, 0.0),
-         hcf_RegC_data->Integral(), getStatUnc(hcf_RegC_data, 0.0), hcf_RegD_data->Integral(), getStatUnc(hcf_RegD_data, 0.0));
-  printf("\\end{tabular}\n");
+  // printf("\\begin{tabular}{c c c c c}\n");
+  // printf("\\hline\n");
+  // printf("\\multicolumn{5}{>{\\color{%s}\\columncolor[gray]{0.8}}c}{ %s : ($%s$ + jets) for %d } \\\\\\hline \n",color.c_str(),levelname.c_str(),lepname.c_str(),year);
+  // printf("Process & Region-A & Region-B & Region-C & Region-D \\\\ \n");
+  // printf("        & (Iso,High MET) & (non-iso,High MET) & (non-iso, Low MET) &  (Iso,Low MET) \\\\\\hline \n");
+  // printf("MC QCD  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline \n",
+  //        hcf_RegA_qcd->Integral(), getStatUnc(hcf_RegA_qcd, 0.0), hcf_RegB_qcd->Integral(), getStatUnc(hcf_RegB_qcd, 0.0),
+  //        hcf_RegC_qcd->Integral(), getStatUnc(hcf_RegC_qcd, 0.0), hcf_RegD_qcd->Integral(), getStatUnc(hcf_RegD_qcd, 0.0));
+  // printf("$t\\bar{t}$ + jets   & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
+  //        hcf_RegA_ttbar->Integral(), getStatUnc(hcf_RegA_ttbar, 0.0), hcf_RegB_ttbar->Integral(), getStatUnc(hcf_RegB_ttbar, 0.0),
+  //        hcf_RegC_ttbar->Integral(), getStatUnc(hcf_RegC_ttbar, 0.0), hcf_RegD_ttbar->Integral(), getStatUnc(hcf_RegD_ttbar, 0.0));
+  // printf("Single $t$   & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
+  //        hcf_RegA_stop->Integral(), getStatUnc(hcf_RegA_stop, 0.0), hcf_RegB_stop->Integral(), getStatUnc(hcf_RegB_stop, 0.0),
+  //        hcf_RegC_stop->Integral(), getStatUnc(hcf_RegC_stop, 0.0), hcf_RegD_stop->Integral(), getStatUnc(hcf_RegD_stop, 0.0));
+  // printf("W + jets  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
+  //        hcf_RegA_wjets->Integral(), getStatUnc(hcf_RegA_wjets, 0.0), hcf_RegB_wjets->Integral(), getStatUnc(hcf_RegB_wjets, 0.0),
+  //        hcf_RegC_wjets->Integral(), getStatUnc(hcf_RegC_wjets, 0.0), hcf_RegD_wjets->Integral(), getStatUnc(hcf_RegD_wjets, 0.0));
+  // printf("Z/$\\gamma$ + jets  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\\n",
+  //        hcf_RegA_dyjets->Integral(), getStatUnc(hcf_RegA_dyjets, 0.0), hcf_RegB_dyjets->Integral(), getStatUnc(hcf_RegB_dyjets, 0.0),
+  //        hcf_RegC_dyjets->Integral(), getStatUnc(hcf_RegC_dyjets, 0.0), hcf_RegD_dyjets->Integral(), getStatUnc(hcf_RegD_dyjets, 0.0));
+  // printf("VV  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline \n",
+  //        hcf_RegA_vbf->Integral(), getStatUnc(hcf_RegA_vbf, 0.0), hcf_RegB_vbf->Integral(), getStatUnc(hcf_RegB_vbf, 0.0),
+  //        hcf_RegC_vbf->Integral(), getStatUnc(hcf_RegC_vbf, 0.0), hcf_RegD_vbf->Integral(), getStatUnc(hcf_RegD_vbf, 0.0));
+  // printf("Non QCD  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline \n",
+  //        hcf_RegA_bkg->Integral(), getStatUnc(hcf_RegA_bkg, 0.0), hcf_RegB_bkg->Integral(), getStatUnc(hcf_RegB_bkg, 0.0),
+  //        hcf_RegC_bkg->Integral(), getStatUnc(hcf_RegC_bkg, 0.0), hcf_RegD_bkg->Integral(), getStatUnc(hcf_RegD_bkg, 0.0));
+  // printf("Data  & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ & $%2.0lf\\pm%2.0lf$ \\\\ \\hline\n",
+  //        hcf_RegA_data->Integral(), getStatUnc(hcf_RegA_data, 0.0), hcf_RegB_data->Integral(), getStatUnc(hcf_RegB_data, 0.0),
+  //        hcf_RegC_data->Integral(), getStatUnc(hcf_RegC_data, 0.0), hcf_RegD_data->Integral(), getStatUnc(hcf_RegD_data, 0.0));
+  // printf("\\end{tabular}\n");
     
   return true;
 }
@@ -878,7 +1064,7 @@ int SetLegendStyle(TLegend *& leg)
   leg->SetFillStyle(0);
   leg->SetBorderSize(0);
   leg->SetTextFont(42);
-  leg->SetTextSize(.04); 
+  leg->SetTextSize(.03); 
   leg->SetMargin(0.1);
   leg->SetEntrySeparation(0.2);
   

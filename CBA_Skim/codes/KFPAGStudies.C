@@ -39,8 +39,8 @@ using namespace std;
 
 void KFPAGStudies()
 {
-  string signal = "TTbar";
-  int year = 2016;
+  string signal = "DataEle";
+  int year = 2018;
   
   Double_t  chi2;
   Int_t  ndf;
@@ -98,11 +98,14 @@ void KFPAGStudies()
   Int_t count_cJetsIncL;
   Int_t count_cJetsIncM;
   Int_t count_cJetsIncT;
-
+  
   Double_t weight, mjjKF;
   
   //string inpath_tree = Form("/Data/root_files/KinFit/CBA_elereliso/pre/%d",year);
-  string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/");
+  //string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/");
+  //string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/pre/%d",year);
+  //string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/post/%d",year);
+  string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/%d",year);
   string treelist = "/tmp/fl_tree_list.txt";
   string command = Form("find %s -name \"%s_tree_base_*.root\" > %s",inpath_tree.data(),signal.data(),treelist.data());
   system(command.c_str());
@@ -204,7 +207,7 @@ void KFPAGStudies()
   bool isControl_ele = false;
   cout << "Signal : " << signal << ", Total Entries : " << tr->GetEntries() << endl;
   for (Long64_t ievent = 0 ; ievent < tr->GetEntries() ; ievent++ ) {    
-  //for (Long64_t ievent = 0 ; ievent < tr->GetEntries()/4 ; ievent++ ) {    
+  //for (Long64_t ievent = 0 ; ievent < tr->GetEntries()/10 ; ievent++ ) {    
     
     tr->GetEntry(ievent) ;
     if(ievent%1000000==0)
@@ -370,6 +373,32 @@ void KFPAGStudies()
   METele_BC->Draw("sames");
   METele_AD->GetXaxis()->SetTitle("E_{T}^{miss} (GeV)");
   METele_AD->GetYaxis()->SetTitle("Arb.");
+
+  TFile *fout = TFile::Open(Form("output/KFPAGSudies_%s_%d.root",signal.c_str(),year),"recreate");
+  topHM->Write();
+  topLM->Write();
+  wLM->Write();
+  prefire_Eta_bjet->Write();
+  prefire_Eta_ljet->Write();
+  SFWt_Pt_mu->Write();
+  SFWt_Pt_ele->Write();
+  
+  Isomu_vs_MET->Write();
+  Isoele_vs_MET->Write();
+
+  Isomu_vs_MET_th2->Write();
+  Isoele_vs_MET_th2->Write();
+
+  Isomu_AB->Write(); 
+  Isomu_CD->Write(); 
+  Isoele_AB->Write(); 
+  Isoele_CD->Write(); 
+  METmu_AD->Write(); 
+  METmu_BC->Write(); 
+  METele_AD->Write(); 
+  METele_BC->Write();
+  fout->Close();
+  delete fout;
 
   //delete tr;
 }

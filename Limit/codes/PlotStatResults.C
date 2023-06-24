@@ -307,337 +307,350 @@ int PlotStatResults(int mass = 80)
   // // cout <<"Integral : " << fgaus->Integral(histData->GetMean(),1000.)/fgaus->Integral(0,1000.) << endl;;
   // /////////////////////////////////////////////////////////////////////
 
-  /////////////////////////// GoF MC ///////////////////////////////////
-  ifstream flimit((indir+"limit.txt").c_str());
-  string sline;
-  float br[3]; char lname[3][10];
-  int id = 0;
-  while(getline(flimit,sline)){
-    stringstream s(sline);
-    s >> lname[id] >> br[id] ;
-    cout << sline << endl;
-    id++;
-  }
-  flimit.close();
-  
-  TH1F *histToy_0 = new TH1F("histToy_0", "histToy_0", 80, 0., 800.);
-  histToy_0->SetLineColor(kRed);  
-  //histToy_0->SetLineWidth(2);  
-  histToy_0->SetTitle("");
-  histToy_0->GetYaxis()->SetTitle("Number of Toys");
-  histToy_0->GetXaxis()->SetTitle("q_{GoF,saturated}");
-  histToy_0->GetYaxis()->SetTitleSize(0.04);
-  histToy_0->GetXaxis()->SetTitleSize(0.04);
-
-  TH1F *histToy_M = (TH1F *)histToy_0->Clone("histToy_M");
-  TH1F *histToy_1 = (TH1F *)histToy_0->Clone("histToy_1");
-
-  histToy_1->SetLineColor(kBlue);
-  histToy_0->SetLineColor(kBlack);
-
-  TFile *fgof_toy_M = TFile::Open((indir+Form("higgsCombine_SRMR_M.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
-  TFile *fgof_toy_0 = TFile::Open((indir+Form("higgsCombine_SRMR_0.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
-  TFile *fgof_toy_1 = TFile::Open((indir+Form("higgsCombine_SRMR_1.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
-  TTree *limit = (TTree *)fgof_toy_M->Get("limit");
-  Double_t limit_M;
-  limit->SetBranchAddress("limit", &limit_M);
-  for(int ie=0;ie<limit->GetEntries();ie++){
-    limit->GetEntry(ie);
-    histToy_M->Fill(limit_M);
-  }
-  limit = (TTree *)fgof_toy_0->Get("limit");
-  Double_t limit_0;
-  limit->SetBranchAddress("limit", &limit_0);
-  for(int ie=0;ie<limit->GetEntries();ie++){
-    limit->GetEntry(ie);
-    histToy_0->Fill(limit_0);
-  }
-  limit = (TTree *)fgof_toy_1->Get("limit");
-  Double_t limit_1;
-  limit->SetBranchAddress("limit", &limit_1);
-  for(int ie=0;ie<limit->GetEntries();ie++){
-    limit->GetEntry(ie);
-    histToy_1->Fill(limit_1);
-  }
-  delete fgof_toy_M;
-  delete fgof_toy_0;
-  delete fgof_toy_1;
-  
-  // TArrow *ar = new TArrow(histToy_M->GetMean(),3.0,histToy_M->GetMean(),30,0.02,"<|");
-  // ar->SetLineWidth(2);
-  // ar->SetLineColor(kBlack);
-  // ar->SetFillColor(kOrange +7);
-  
-  TPaveText *pt = paveText(0.4,0.9254,0.6,0.9562, 0, 19, 1, 0, 132);
-  pt->SetTextSize(0.06);
-  TText *text = pt->AddText("l + jets         137.6 fb^{-1} (13 TeV) ");
-  
-  TPaveText *cct_0 = paveText(0.30, 0.78, 0.40, 0.85, 0, 19, 1, 0, 132);
-  cct_0->SetTextSize(0.05);
-  TPaveText *cct_1 = (TPaveText *) cct_0->Clone("cct_1");
-  TPaveText *cct_M = (TPaveText *) cct_0->Clone("cct_M");
-  cct_0->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = 0}",mass));
-  if(strcmp(lname[2],"M")==0)
-    cct_M->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = %5.4f}",mass,br[2]));
-  else
-    cct_M->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = M}",mass));
-  cct_1->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = 1}",mass));
-  
-  TLegend* legGoF_0 = new TLegend(0.15,0.50,0.30,0.75,NULL,"brNDC");
-  legGoF_0->SetBorderSize(0);
-  legGoF_0->SetTextSize(0.04);
-  legGoF_0->SetFillColor(0);
-  TLegend* legGoF_M = (TLegend *)legGoF_0->Clone("legGoF_M");
-  TLegend* legGoF_1 = (TLegend *)legGoF_0->Clone("legGoF_1");
-  TString meanToy = TString(Form("%3.1f #pm %3.1f",histToy_0->GetMean(),histToy_0->GetStdDev()));
-  TString legToy = Form("#splitline{Expected from %d Toys}{(Mean = %s)}",int(histToy_0->GetEntries()),meanToy.Data());
-  legGoF_0->AddEntry(histToy_0, legToy,"L");
-  meanToy = TString(Form("%3.1f #pm %3.1f",histToy_M->GetMean(),histToy_M->GetStdDev()));
-  legToy = Form("#splitline{Expected from %d Toys}{(Mean = %s)}",int(histToy_M->GetEntries()),meanToy.Data());
-  legGoF_M->AddEntry(histToy_M, legToy,"L");
-  meanToy = TString(Form("%3.1f #pm %3.1f",histToy_1->GetMean(),histToy_1->GetStdDev()));
-  legToy = Form("#splitline{Expected from %d Toys}{(Mean = %s)}",int(histToy_1->GetEntries()),meanToy.Data());
-  legGoF_1->AddEntry(histToy_1, legToy,"L");
-  
-  TF1 *fgaus_0 = new TF1("fgaus_0","gaus",0,1000);
-  fgaus_0->SetLineColor(kGreen+2);
-  fgaus_0->SetNpx(1000);
-  TF1 *fgaus_M = new TF1("fgaus_M","gaus",0,1000);
-  fgaus_M->SetLineColor(kGreen+2);
-  fgaus_M->SetNpx(1000);
-  TF1 *fgaus_1 = new TF1("fgaus_1","gaus",0,1000);
-  fgaus_1->SetLineColor(kGreen+2);
-  fgaus_1->SetNpx(1000);
-
-  fgaus_0->SetParameter(1,histToy_0->GetMean());
-  fgaus_0->SetParameter(2,histToy_0->GetRMS());
-  histToy_0->Fit(fgaus_0,"NQLR");
-  TString legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus_0->GetParameter(1),fgaus_0->GetParameter(2));
-  legGoF_0->AddEntry(fgaus_0,legchi,"L");
-
-  fgaus_M->SetParameter(1,histToy_M->GetMean());
-  fgaus_M->SetParameter(2,histToy_M->GetRMS());
-  histToy_M->Fit(fgaus_M,"NQLR");
-  legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus_M->GetParameter(1),fgaus_M->GetParameter(2));
-  legGoF_M->AddEntry(fgaus_M,legchi,"L");
-
-  fgaus_1->SetParameter(1,histToy_1->GetMean());
-  fgaus_1->SetParameter(2,histToy_1->GetRMS());
-  histToy_1->Fit(fgaus_1,"NQLR");
-  legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus_1->GetParameter(1),fgaus_1->GetParameter(2));
-  legGoF_1->AddEntry(fgaus_1,legchi,"L");
-
-  gStyle->SetOptStat(0);
-  TCanvas *cGoF_MC = new TCanvas("cGoF_MC","cGoF_MC",1800,600);
-  cGoF_MC->Divide(3,1);
-
-  cGoF_MC->cd(1)->SetTickx();
-  cGoF_MC->cd(1)->SetTicky();
-  histToy_0->Draw();
-  fgaus_0->Draw("same");
-  pt->Draw();
-  cct_0->Draw();
-  legGoF_0->Draw();
-
-  cGoF_MC->cd(2)->SetTickx();
-  cGoF_MC->cd(2)->SetTicky();
-  histToy_M->Draw();
-  fgaus_M->Draw("same");
-  pt->Draw();
-  cct_M->Draw();
-  legGoF_M->Draw();
-
-  cGoF_MC->cd(3)->SetTickx();
-  cGoF_MC->cd(3)->SetTicky();
-  histToy_1->Draw();
-  fgaus_1->Draw("same");
-  pt->Draw();
-  cct_1->Draw();
-  legGoF_1->Draw();
-
-  cGoF_MC->SaveAs(Form("%sgof_m%d.png",indir.c_str(),mass));
-  cGoF_MC->SaveAs(Form("%sgof_m%d.pdf",indir.c_str(),mass));
-  /////////////////////////////////////////////////////////////////////
-
-  // /////////////////////////// Bias Test ///////////////////////////////////
-  
+  // /////////////////////////// GoF MC ///////////////////////////////////
   // ifstream flimit((indir+"limit.txt").c_str());
   // string sline;
-  // vector<string> lsig;
-  // vector<double> brval;
   // float br[3]; char lname[3][10];
   // int id = 0;
   // while(getline(flimit,sline)){
   //   stringstream s(sline);
   //   s >> lname[id] >> br[id] ;
+  //   cout << sline << endl;
   //   id++;
   // }
+  // flimit.close();
   
-  // lsig.push_back(lname[0]);
-  // brval.push_back(br[0]);
-  // lsig.push_back(lname[2]);
-  // brval.push_back(br[2]);
-  // lsig.push_back(lname[1]);
-  // brval.push_back(br[1]);
-  
-  // for(int ival = 0; ival < 3 ; ival++){
-  //   cout <<"lname "<<lsig[ival] <<", Br : " << brval[ival] << endl;
+  // TH1F *histToy_0 = new TH1F("histToy_0", "histToy_0", 80, 0., 800.);
+  // histToy_0->SetLineColor(kRed);  
+  // //histToy_0->SetLineWidth(2);  
+  // histToy_0->SetTitle("");
+  // histToy_0->GetYaxis()->SetTitle("Number of Toys");
+  // histToy_0->GetXaxis()->SetTitle("q_{GoF,saturated}");
+  // histToy_0->GetYaxis()->SetTitleSize(0.04);
+  // histToy_0->GetXaxis()->SetTitleSize(0.04);
+
+  // TH1F *histToy_M = (TH1F *)histToy_0->Clone("histToy_M");
+  // TH1F *histToy_1 = (TH1F *)histToy_0->Clone("histToy_1");
+
+  // histToy_1->SetLineColor(kBlue);
+  // histToy_0->SetLineColor(kBlack);
+
+  // TFile *fgof_toy_M = TFile::Open((indir+Form("higgsCombine_SRMR_M.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
+  // TFile *fgof_toy_0 = TFile::Open((indir+Form("higgsCombine_SRMR_0.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
+  // TFile *fgof_toy_1 = TFile::Open((indir+Form("higgsCombine_SRMR_1.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
+  // TTree *limit = (TTree *)fgof_toy_M->Get("limit");
+  // Double_t limit_M;
+  // limit->SetBranchAddress("limit", &limit_M);
+  // for(int ie=0;ie<limit->GetEntries();ie++){
+  //   limit->GetEntry(ie);
+  //   histToy_M->Fill(limit_M);
   // }
-  
-  // TH1F **hDiffBr, **hDiffSigBr;
-  // hDiffBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
-  // hDiffSigBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
-  
-  // for(int ih = 0; ih < (brval.size()+2) ; ih++){
-  //   string BrName, fname_extn ;
-  //   Double_t BRInj;
-  //   if(ih==0){
-  //     fname_extn = "0";
-  //     BrName = "BR_{inj} = 0";
-  //     BRInj = 0.0;
-  //   }else if(ih==(brval.size()+1)){
-  //     fname_extn = "0"; //actually 1
-  //     BrName = "BR_{inj} = 1" ;
-  //     BRInj = 0.0; //ideally 1
-  //   }else{
-  //     fname_extn = lsig[ih-1]; //actually 1
-  //     if(fname_extn=="1sL")
-  // 	BrName = "BR_{inj} = -1#sigmaCL_{s}";
-  //     else if (fname_extn=="1sH")
-  // 	BrName = "BR_{inj} = +1#sigmaCL_{s}";
-  //     else if (fname_extn=="M")
-  // 	BrName = "BR_{inj} = Median";
-  //     BRInj = brval[ih-1];
-  //   }
-  //   //cout << "ih " << ih << ", fname_extn : " << fname_extn << ", BrName : " << BrName << endl;
-    
-  //   hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit} - BR_{inj}): %s",BrName.c_str()),50,-0.1,0.1);
-  //   hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit} - BR_{inj})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
-  //   TFile *fBT = TFile::Open((indir+Form("fitDiagnosticsBR_%s.root",fname_extn.c_str())).c_str());
-    
-  //   TTree *trbias = (TTree *)fBT->Get("tree_fit_sb");
-  //   Int_t fit_status;
-  //   Double_t BR,BRErr,BRLoErr,BRHiErr;
-  //   trbias->SetBranchAddress("fit_status", &fit_status);
-  //   trbias->SetBranchAddress("BR", &BR);
-  //   trbias->SetBranchAddress("BRErr", &BRErr);
-  //   trbias->SetBranchAddress("BRLoErr", &BRLoErr);
-  //   trbias->SetBranchAddress("BRHiErr", &BRHiErr);
-  
-  //   int nofconv = 0;
-  //   //cout << "Nof Events : " << trbias->GetEntries() << endl;
-  //   for(int ie=0;ie<trbias->GetEntries();ie++){
-  //     trbias->GetEntry(ie);
-  //     //cout << "ie : " << ie << ", fit_status" << fit_status << endl;
-  //     if(fit_status==0){
-  //   	hDiffBr[ih]->Fill(BR-BRInj);
-  //   	double err = BRHiErr*(BR-BRInj<0)+BRLoErr*(BR-BRInj>0);
-  //   	//cout <<" Herr :" << BRHiErr << ", BR :" << BR << ", BRInj : " << BRInj << ", (BR-BRInj<0) " << (BR-BRInj<0) << " LErr : " << BRLoErr << ", (BR-BRInj>0) : " << (BR-BRInj>0) << endl;
-  //   	if(!TMath::AreEqualAbs(err,0.0,1.e-5))
-  //   	  hDiffSigBr[ih]->Fill((BR-BRInj)/err);
-  //   	nofconv++;
-  //     }
-  //   }
-  //   delete fBT;
+  // limit = (TTree *)fgof_toy_0->Get("limit");
+  // Double_t limit_0;
+  // limit->SetBranchAddress("limit", &limit_0);
+  // for(int ie=0;ie<limit->GetEntries();ie++){
+  //   limit->GetEntry(ie);
+  //   histToy_0->Fill(limit_0);
   // }
-
-  // TF1 *fn = new TF1("fn","gaus",hDiffSigBr[0]->GetMean()-2*hDiffSigBr[0]->GetRMS(),hDiffSigBr[0]->GetMean()+2*hDiffSigBr[0]->GetRMS());
-  // fn->SetParameter(1,hDiffSigBr[0]->GetMean());
-  // fn->SetParameter(2,hDiffSigBr[0]->GetRMS());
-  // fn->SetNpx(1000);
-  
-  // gStyle->SetOptStat(0); 
-  // gStyle->SetOptFit(0);
-
-  // TCanvas *cDiff = new TCanvas("cDiff","cDiff",1200,800);
-  // cDiff->Divide(2,2);
-  
-  // TCanvas *cBias = new TCanvas("cBias","cBias",1200,800);
-  // cBias->Divide(2,2);
-  // for(int ih = 0; ih < (brval.size()+1) ; ih++){
-  //   string BrName, fname_extn ;
-  //   Double_t BRInj;
-  //   if(ih==0){
-  //     fname_extn = "0";
-  //     BrName = "BR_{inj} = 0";
-  //     BRInj = 0.0;
-  //   }else if(ih==(brval.size()+1)){
-  //     fname_extn = "0"; //actually 1
-  //     BrName = "BR_{inj} = 1" ;
-  //     BRInj = 0.0; //ideally 1
-  //   }else{
-  //     fname_extn = lsig[ih-1]; //actually 1
-  //     if(fname_extn=="1sL")
-  // 	BrName = "BR_{inj} = -1#sigmaCL_{s}";
-  //     else if (fname_extn=="1sH")
-  // 	BrName = "BR_{inj} = +1#sigmaCL_{s}";
-  //     else if (fname_extn=="M")
-  // 	BrName = "BR_{inj} = Median";
-  //     BRInj = brval[ih-1];
-  //   }
-    
-  //   cDiff->cd(ih+1);
-  //   cDiff->cd(ih+1)->SetTickx();
-  //   cDiff->cd(ih+1)->SetTicky();
-  //   hDiffBr[ih]->Draw();
-  //   hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})");
-  //   hDiffBr[ih]->GetYaxis()->SetTitle("Entries/bin");
-  //   hDiffBr[ih]->GetXaxis()->SetTitleOffset(1.2);
-  //   hDiffBr[ih]->GetYaxis()->SetTitleOffset(1.4);
-  //   hDiffBr[ih]->SetMaximum(1.2*hDiffBr[ih]->GetBinContent(hDiffBr[ih]->GetMaximumBin()));
-    
-  //   TLegend* legDiff = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
-  //   legDiff->SetBorderSize(0);
-  //   legDiff->SetTextSize(0.04);
-  //   legDiff->SetFillColor(0);
-  //   legDiff->AddEntry(hDiffBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
-  //   legDiff->AddEntry(hDiffBr[ih], Form("nToys : %d",int(hDiffBr[ih]->GetEntries())),"");
-  //   legDiff->AddEntry(hDiffBr[ih], Form("%s",BrName.c_str()),"L");
-  //   legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("Mean : %3.2e",hDiffBr[ih]->GetMean())),"L");
-  //   legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("RMS : %3.2e",hDiffBr[ih]->GetRMS())),"L");
-  //   legDiff->DrawClone();
-
-    
-  //   //cout <<"ih " << ih << ", hist " << hDiffSigBr[ih] <<endl;
-  //   cBias->cd(ih+1);
-  //   cBias->cd(ih+1)->SetTickx();
-  //   cBias->cd(ih+1)->SetTicky();
-  //   hDiffSigBr[ih]->Draw();
-  //   fn->SetParameter(1,hDiffSigBr[ih]->GetMean());
-  //   fn->SetParameter(2,hDiffSigBr[ih]->GetRMS());
-  //   fn->SetRange(hDiffSigBr[ih]->GetMean()-2*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+2*hDiffSigBr[ih]->GetRMS());
-  //   hDiffSigBr[ih]->Fit(fn,"NQLR");
-  //   //cout <<" Mean " << fn->GetParameter(1)  << ", width : " <<fn->GetParameter(2) << endl;
-  //   fn->SetRange(hDiffSigBr[ih]->GetMean()-5*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+5*hDiffSigBr[ih]->GetRMS());
-  //   //hDiffSigBr[ih]->Draw("hist sames");
-  //   fn->DrawClone("same");
-  //   hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})/Br_{err}");
-  //   hDiffSigBr[ih]->GetYaxis()->SetTitle("Entries/bin");
-  //   hDiffSigBr[ih]->GetXaxis()->SetTitleOffset(1.2);
-  //   hDiffSigBr[ih]->GetYaxis()->SetTitleOffset(1.4);
-  //   hDiffSigBr[ih]->SetMaximum(1.2*hDiffSigBr[ih]->GetBinContent(hDiffSigBr[ih]->GetMaximumBin()));
-    
-  //   TLegend* legBias = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
-  //   legBias->SetBorderSize(0);
-  //   legBias->SetTextSize(0.04);
-  //   legBias->SetFillColor(0);
-  //   legBias->AddEntry(hDiffSigBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
-  //   legBias->AddEntry(hDiffSigBr[ih], Form("nToys : %d",int(hDiffSigBr[ih]->GetEntries())),"");
-  //   legBias->AddEntry(hDiffSigBr[ih], Form("%s",BrName.c_str()),"L");
-  //   legBias->AddEntry(fn, fn->GetTitle(),"L");
-  //   legBias->AddEntry(fn, Form("mean : %3.2f",fn->GetParameter(1)),"L");
-  //   legBias->AddEntry(fn, Form("#sigma : %3.2f",fn->GetParameter(2)),"L");
-  //   legBias->DrawClone();
-
+  // limit = (TTree *)fgof_toy_1->Get("limit");
+  // Double_t limit_1;
+  // limit->SetBranchAddress("limit", &limit_1);
+  // for(int ie=0;ie<limit->GetEntries();ie++){
+  //   limit->GetEntry(ie);
+  //   histToy_1->Fill(limit_1);
   // }
-  // cDiff->SaveAs(Form("%sdiff_m%d.png",indir.c_str(),mass));
-  // cDiff->SaveAs(Form("%sdiff_m%d.pdf",indir.c_str(),mass));
-
-  // cBias->SaveAs(Form("%sbias_m%d.png",indir.c_str(),mass));
-  // cBias->SaveAs(Form("%sbias_m%d.pdf",indir.c_str(),mass));
+  // delete fgof_toy_M;
+  // delete fgof_toy_0;
+  // delete fgof_toy_1;
   
-  // lsig.clear();
-  // brval.clear();
+  // // TArrow *ar = new TArrow(histToy_M->GetMean(),3.0,histToy_M->GetMean(),30,0.02,"<|");
+  // // ar->SetLineWidth(2);
+  // // ar->SetLineColor(kBlack);
+  // // ar->SetFillColor(kOrange +7);
+  
+  // TPaveText *pt = paveText(0.4,0.9254,0.6,0.9562, 0, 19, 1, 0, 132);
+  // pt->SetTextSize(0.06);
+  // TText *text = pt->AddText("l + jets         137.6 fb^{-1} (13 TeV) ");
+  
+  // TPaveText *cct_0 = paveText(0.30, 0.78, 0.40, 0.85, 0, 19, 1, 0, 132);
+  // cct_0->SetTextSize(0.05);
+  // TPaveText *cct_1 = (TPaveText *) cct_0->Clone("cct_1");
+  // TPaveText *cct_M = (TPaveText *) cct_0->Clone("cct_M");
+  // cct_0->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = 0}",mass));
+  // if(strcmp(lname[2],"M")==0)
+  //   cct_M->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = %5.4f}",mass,br[2]));
+  // else
+  //   cct_M->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = M}",mass));
+  // cct_1->AddText(Form("#splitline{m_{H^{#pm}} = %d GeV}{BR_{inj} = 1}",mass));
+  
+  // TLegend* legGoF_0 = new TLegend(0.15,0.50,0.30,0.75,NULL,"brNDC");
+  // legGoF_0->SetBorderSize(0);
+  // legGoF_0->SetTextSize(0.04);
+  // legGoF_0->SetFillColor(0);
+  // TLegend* legGoF_M = (TLegend *)legGoF_0->Clone("legGoF_M");
+  // TLegend* legGoF_1 = (TLegend *)legGoF_0->Clone("legGoF_1");
+  // TString meanToy = TString(Form("%3.1f #pm %3.1f",histToy_0->GetMean(),histToy_0->GetStdDev()));
+  // TString legToy = Form("#splitline{Expected from %d Toys}{(Mean = %s)}",int(histToy_0->GetEntries()),meanToy.Data());
+  // legGoF_0->AddEntry(histToy_0, legToy,"L");
+  // meanToy = TString(Form("%3.1f #pm %3.1f",histToy_M->GetMean(),histToy_M->GetStdDev()));
+  // legToy = Form("#splitline{Expected from %d Toys}{(Mean = %s)}",int(histToy_M->GetEntries()),meanToy.Data());
+  // legGoF_M->AddEntry(histToy_M, legToy,"L");
+  // meanToy = TString(Form("%3.1f #pm %3.1f",histToy_1->GetMean(),histToy_1->GetStdDev()));
+  // legToy = Form("#splitline{Expected from %d Toys}{(Mean = %s)}",int(histToy_1->GetEntries()),meanToy.Data());
+  // legGoF_1->AddEntry(histToy_1, legToy,"L");
+  
+  // TF1 *fgaus_0 = new TF1("fgaus_0","gaus",0,1000);
+  // fgaus_0->SetLineColor(kGreen+2);
+  // fgaus_0->SetNpx(1000);
+  // TF1 *fgaus_M = new TF1("fgaus_M","gaus",0,1000);
+  // fgaus_M->SetLineColor(kGreen+2);
+  // fgaus_M->SetNpx(1000);
+  // TF1 *fgaus_1 = new TF1("fgaus_1","gaus",0,1000);
+  // fgaus_1->SetLineColor(kGreen+2);
+  // fgaus_1->SetNpx(1000);
+
+  // fgaus_0->SetParameter(1,histToy_0->GetMean());
+  // fgaus_0->SetParameter(2,histToy_0->GetRMS());
+  // histToy_0->Fit(fgaus_0,"NQLR");
+  // TString legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus_0->GetParameter(1),fgaus_0->GetParameter(2));
+  // legGoF_0->AddEntry(fgaus_0,legchi,"L");
+
+  // fgaus_M->SetParameter(1,histToy_M->GetMean());
+  // fgaus_M->SetParameter(2,histToy_M->GetRMS());
+  // histToy_M->Fit(fgaus_M,"NQLR");
+  // legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus_M->GetParameter(1),fgaus_M->GetParameter(2));
+  // legGoF_M->AddEntry(fgaus_M,legchi,"L");
+
+  // fgaus_1->SetParameter(1,histToy_1->GetMean());
+  // fgaus_1->SetParameter(2,histToy_1->GetRMS());
+  // histToy_1->Fit(fgaus_1,"NQLR");
+  // legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus_1->GetParameter(1),fgaus_1->GetParameter(2));
+  // legGoF_1->AddEntry(fgaus_1,legchi,"L");
+
+  // gStyle->SetOptStat(0);
+  // TCanvas *cGoF_MC = new TCanvas("cGoF_MC","cGoF_MC",1800,600);
+  // cGoF_MC->Divide(3,1);
+
+  // cGoF_MC->cd(1)->SetTickx();
+  // cGoF_MC->cd(1)->SetTicky();
+  // histToy_0->Draw();
+  // fgaus_0->Draw("same");
+  // pt->Draw();
+  // cct_0->Draw();
+  // legGoF_0->Draw();
+
+  // cGoF_MC->cd(2)->SetTickx();
+  // cGoF_MC->cd(2)->SetTicky();
+  // histToy_M->Draw();
+  // fgaus_M->Draw("same");
+  // pt->Draw();
+  // cct_M->Draw();
+  // legGoF_M->Draw();
+
+  // cGoF_MC->cd(3)->SetTickx();
+  // cGoF_MC->cd(3)->SetTicky();
+  // histToy_1->Draw();
+  // fgaus_1->Draw("same");
+  // pt->Draw();
+  // cct_1->Draw();
+  // legGoF_1->Draw();
+
+  // cGoF_MC->SaveAs(Form("%sgof_m%d.png",indir.c_str(),mass));
+  // cGoF_MC->SaveAs(Form("%sgof_m%d.pdf",indir.c_str(),mass));
+  // /////////////////////////////////////////////////////////////////////
+
+  /////////////////////////// Bias Test ///////////////////////////////////
+  
+  ifstream flimit((indir+"limit.txt").c_str());
+  string sline;
+  vector<string> lsig;
+  vector<double> brval;
+  float br[3]; char lname[3][10];
+  int id = 0;
+  while(getline(flimit,sline)){
+    stringstream s(sline);
+    s >> lname[id] >> br[id] ;
+    id++;
+  }
+  
+  lsig.push_back(lname[0]);
+  brval.push_back(br[0]);
+  lsig.push_back(lname[2]);
+  brval.push_back(br[2]);
+  lsig.push_back(lname[1]);
+  brval.push_back(br[1]);
+  
+  for(int ival = 0; ival < 3 ; ival++){
+    cout <<"lname "<<lsig[ival] <<", Br : " << brval[ival] << endl;
+  }
+  
+  TH1F **hDiffBr, **hDiffSigBr;
+  hDiffBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
+  hDiffSigBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
+  
+  for(int ih = 0; ih < (brval.size()+2) ; ih++){
+  //for(int ih = 1; ih < 2 ; ih++){
+    string BrName, fname_extn ;
+    Double_t BRInj;
+    if(ih==0){
+      fname_extn = "0";
+      BrName = "BR_{inj} = 0";
+      BRInj = 0.0;
+    }else if(ih==int(brval.size()+1)){
+      fname_extn = "1"; //actually 1
+      BrName = "BR_{inj} = 1" ;
+      BRInj = 1.0; //ideally 1
+    }else{
+      fname_extn = lsig[ih-1]; //actually 1
+      if(fname_extn=="1sL")
+  	BrName = "BR_{inj} = -1#sigmaCL_{s}";
+      else if (fname_extn=="1sH")
+  	BrName = "BR_{inj} = +1#sigmaCL_{s}";
+      else if (fname_extn=="M")
+  	BrName = "BR_{inj} = Median";
+      BRInj = brval[ih-1];
+    }
+    cout << "ih " << ih << ", fname_extn : " << fname_extn << ", BrName : " << BrName << endl;
+    
+    // hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit} - BR_{inj}): %s",BrName.c_str()),50,-0.1,0.1);
+    // hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit} - BR_{inj})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
+    hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit}): %s",BrName.c_str()),50,-0.1,0.1);
+    hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
+    TFile *fBT = TFile::Open((indir+Form("fitDiagnosticsBR_%s.root",fname_extn.c_str())).c_str());
+    
+    TTree *trbias = (TTree *)fBT->Get("tree_fit_sb");
+    Int_t fit_status;
+    Double_t BR,BRErr,BRLoErr,BRHiErr;
+    trbias->SetBranchAddress("fit_status", &fit_status);
+    trbias->SetBranchAddress("BR", &BR);
+    trbias->SetBranchAddress("BRErr", &BRErr);
+    trbias->SetBranchAddress("BRLoErr", &BRLoErr);
+    trbias->SetBranchAddress("BRHiErr", &BRHiErr);
+
+    ///////// Dangerous ////////////
+    BRInj = 0.0;
+    ///////// Dangerous ////////////
+
+    int nofconv = 0;
+    // cout << "Nof Events : " << trbias->GetEntries() << endl;
+    for(int ie=0;ie<trbias->GetEntries();ie++){
+      trbias->GetEntry(ie);
+      // cout << "ie : " << ie << ", fit_status : " << fit_status << endl;
+      if(fit_status==0){
+    	hDiffBr[ih]->Fill(BR-BRInj);
+    	double err = BRHiErr*(BR-BRInj<0)+BRLoErr*(BR-BRInj>0);
+	double fillVal = (BR-BRInj)/err;
+    	// cout <<"BR :" << BR << ", BRInj : " << BRInj << ", (BR-BRInj>0) : " << (BR-BRInj>0) << ", (BR-BRInj<0) " << (BR-BRInj<0) 
+	//      <<", (LErr,HErr) : (" << BRLoErr <<", " << BRHiErr << ") " 
+	//      <<", err : " << err << ", fillVal : " << fillVal
+	//      << endl;
+    	if(!TMath::AreEqualAbs(err,0.0,1.e-5))
+    	  hDiffSigBr[ih]->Fill(fillVal);
+    	nofconv++;
+      }
+    }
+    delete fBT;
+  }
+
+  TF1 *fn = new TF1("fn","gaus",hDiffSigBr[0]->GetMean()-2*hDiffSigBr[0]->GetRMS(),hDiffSigBr[0]->GetMean()+2*hDiffSigBr[0]->GetRMS());
+  fn->SetParameter(1,hDiffSigBr[0]->GetMean());
+  fn->SetParameter(2,hDiffSigBr[0]->GetRMS());
+  fn->SetNpx(1000);
+  
+  gStyle->SetOptStat(0); 
+  gStyle->SetOptFit(0);
+
+  TCanvas *cDiff = new TCanvas("cDiff","cDiff",1200,800);
+  cDiff->Divide(2,2);
+  
+  TCanvas *cBias = new TCanvas("cBias","cBias",1200,800);
+  cBias->Divide(2,2);
+  for(int ih = 0; ih < (brval.size()+1) ; ih++){
+    string BrName, fname_extn ;
+    Double_t BRInj;
+    if(ih==0){
+      fname_extn = "0";
+      BrName = "BR_{inj} = 0";
+      BRInj = 0.0;
+    }else if(ih==int(brval.size()+1)){
+      fname_extn = "1"; //actually 1
+      BrName = "BR_{inj} = 1" ;
+      BRInj = 1.0; //ideally 1
+    }else{
+      fname_extn = lsig[ih-1]; //actually 1
+      if(fname_extn=="1sL")
+  	BrName = "BR_{inj} = -1#sigmaCL_{s}";
+      else if (fname_extn=="1sH")
+  	BrName = "BR_{inj} = +1#sigmaCL_{s}";
+      else if (fname_extn=="M")
+  	BrName = "BR_{inj} = Median";
+      BRInj = brval[ih-1];
+    }
+    
+    cDiff->cd(ih+1);
+    cDiff->cd(ih+1)->SetTickx();
+    cDiff->cd(ih+1)->SetTicky();
+    hDiffBr[ih]->Draw();
+    //hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})");
+    hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit})");
+    hDiffBr[ih]->GetYaxis()->SetTitle("Entries/bin");
+    hDiffBr[ih]->GetXaxis()->SetTitleOffset(1.2);
+    hDiffBr[ih]->GetYaxis()->SetTitleOffset(1.4);
+    hDiffBr[ih]->SetMaximum(1.2*hDiffBr[ih]->GetBinContent(hDiffBr[ih]->GetMaximumBin()));
+    
+    TLegend* legDiff = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
+    legDiff->SetBorderSize(0);
+    legDiff->SetTextSize(0.04);
+    legDiff->SetFillColor(0);
+    legDiff->AddEntry(hDiffBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
+    legDiff->AddEntry(hDiffBr[ih], Form("nToys : %d",int(hDiffBr[ih]->GetEntries())),"");
+    legDiff->AddEntry(hDiffBr[ih], Form("%s",BrName.c_str()),"L");
+    legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("Mean : %3.2e",hDiffBr[ih]->GetMean())),"L");
+    legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("RMS : %3.2e",hDiffBr[ih]->GetRMS())),"L");
+    legDiff->DrawClone();
+
+    
+    //cout <<"ih " << ih << ", hist " << hDiffSigBr[ih] <<endl;
+    cBias->cd(ih+1);
+    cBias->cd(ih+1)->SetTickx();
+    cBias->cd(ih+1)->SetTicky();
+    hDiffSigBr[ih]->Draw();
+    fn->SetParameter(1,hDiffSigBr[ih]->GetMean());
+    fn->SetParameter(2,hDiffSigBr[ih]->GetRMS());
+    fn->SetRange(hDiffSigBr[ih]->GetMean()-2*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+2*hDiffSigBr[ih]->GetRMS());
+    hDiffSigBr[ih]->Fit(fn,"NQLR");
+    //cout <<" Mean " << fn->GetParameter(1)  << ", width : " <<fn->GetParameter(2) << endl;
+    fn->SetRange(hDiffSigBr[ih]->GetMean()-5*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+5*hDiffSigBr[ih]->GetRMS());
+    //hDiffSigBr[ih]->Draw("hist sames");
+    fn->DrawClone("same");
+    //hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})/Br_{err}");
+    hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit})/Br_{err}");
+    hDiffSigBr[ih]->GetYaxis()->SetTitle("Entries/bin");
+    hDiffSigBr[ih]->GetXaxis()->SetTitleOffset(1.2);
+    hDiffSigBr[ih]->GetYaxis()->SetTitleOffset(1.4);
+    hDiffSigBr[ih]->SetMaximum(1.2*hDiffSigBr[ih]->GetBinContent(hDiffSigBr[ih]->GetMaximumBin()));
+    
+    TLegend* legBias = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
+    legBias->SetBorderSize(0);
+    legBias->SetTextSize(0.04);
+    legBias->SetFillColor(0);
+    legBias->AddEntry(hDiffSigBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
+    legBias->AddEntry(hDiffSigBr[ih], Form("nToys : %d",int(hDiffSigBr[ih]->GetEntries())),"");
+    legBias->AddEntry(hDiffSigBr[ih], Form("%s",BrName.c_str()),"L");
+    legBias->AddEntry(fn, fn->GetTitle(),"L");
+    legBias->AddEntry(fn, Form("mean : %3.2f",fn->GetParameter(1)),"L");
+    legBias->AddEntry(fn, Form("#sigma : %3.2f",fn->GetParameter(2)),"L");
+    legBias->DrawClone();
+
+  }
+  cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.png",indir.c_str(),mass));
+  cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.pdf",indir.c_str(),mass));
+
+  cBias->SaveAs(Form("%sbias_no-subtraction_m%d.png",indir.c_str(),mass));
+  cBias->SaveAs(Form("%sbias_no-subtraction_m%d.pdf",indir.c_str(),mass));
+  
+  lsig.clear();
+  brval.clear();
  
   return true;
 }

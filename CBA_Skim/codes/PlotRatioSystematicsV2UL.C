@@ -36,7 +36,7 @@ double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from system
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 int rebin = 50;
 
-int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 17){
+int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 15){
 
   // Setters
   int SetGlobalStyle(void);
@@ -112,7 +112,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
 
   cout << "Histname : " << histname << endl;
 
-  string outputpdf = Form("figs/Week_Work_Report/2023-01-26/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2023-05-02/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //string outputpdf = Form("figs/Week_Work_Report/2023-01-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
@@ -154,8 +154,11 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1"; int rebin = 50;
   //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest"; int rebin = 1;
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  // const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist"; 
+  //const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist-toppt";
+  //const char* dir = "grid_v40_Syst/CBA_kfwidth-CombHist";
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -228,12 +231,12 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   //"mueffup", "mueffdown", "eleeffup", "eleeffdown",
   //const char *syst[] = {"pu", "jec", "jer", "btagb", "btagl", "prefire", "met"};
   //const char *syst[] = {"pu", "jec", "jer", "bcstat", "bclhemuf", "prefire", "met"};
-  const int nSyst = 18;
+  const int nSyst = 19;
   const char *syst[] = {   "mueff", "eleeff", "pu", "prefire",
   			   "jec",  "jer", "pdf", "bclhemur", //"q2"
   			   "bclhemuf", "isr", "fsr", "pujetid",
 			   "bcintp", "bcextp", "bcxdyb", "bcxdyc",        
-  			   "bcxwjc", "bcstat"};
+  			   "bcxwjc", "bcstat", "toppt"};
     
   TH1D *hLeptonUp, *hLeptonDown;
   if(isMu){
