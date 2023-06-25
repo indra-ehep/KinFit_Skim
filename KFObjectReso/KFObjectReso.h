@@ -275,6 +275,7 @@ class KFObjectReso : public TSelector {
    bool CheckTrigFilterVertex(void);
    bool passEleID(int eleInd, int cutVal, bool doRelisoCut);
 
+   double dR(double eta1, double phi1, double eta2, double phi2);
    ClassDef(KFObjectReso,2);
 
 };
