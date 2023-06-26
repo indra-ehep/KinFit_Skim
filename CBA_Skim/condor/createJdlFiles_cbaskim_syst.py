@@ -90,8 +90,8 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
 #for year in [2017,2018]:
+#for year in [2018]:
 for year in [2017]:
-#for year in [2017]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')

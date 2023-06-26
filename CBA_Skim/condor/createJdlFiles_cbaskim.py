@@ -6,13 +6,13 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-# samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
+                "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 
 
-# syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
-# syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
+syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
 
 # samples_2016 = ["TTbar"]
 # syst_2016 = ["base"]
@@ -20,12 +20,12 @@ import time
 # samples_2016 = ["TTbar"]
 # syst_long_2016 = ["mtopup", "mtopdown"]
 
-samples_2016 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-                "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-                "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+# samples_2016 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
+#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
 
-syst_2016 = ["stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
-syst_long_2016 = ["stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
+# syst_2016 = ["stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
+# syst_long_2016 = ["stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
 
 
 tunedict = {
@@ -37,7 +37,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_trigSF_post'
+jdlDir = 'tmpLog_jetpt15_pre'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -72,11 +72,11 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_trigSF/post"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_trigSF/post"
-    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_trigSF/post"
-    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_trigSF/post"
-    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_trigSF/post"
+    condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_jetpt15/pre"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jetpt15/pre"
+    condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_jetpt15/pre"
+    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_jetpt15/pre"
+    condorOutDir4="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_jetpt15/pre"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))
@@ -102,13 +102,13 @@ for year in [2016]:
             else:
                 fnamestart = sample
 
-            noflines = subprocess.Popen('wc -l ../input/eos/%i/post/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
+            noflines = subprocess.Popen('wc -l ../input/eos/%i/pre/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
             nJob = int(noflines)
             print "%s %s %s"%(sample,nJob,syst)
             if nJob==1:
-                run_command =  'Arguments  = %s %s input/eos/%i/post/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, fnamestart, year, syst)
+                run_command =  'Arguments  = %s %s input/eos/%i/pre/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, fnamestart, year, syst)
             else:
-                run_command =  'Arguments  = %s %s input/eos/%i/post/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, fnamestart, year, syst, nJob)
+                run_command =  'Arguments  = %s %s input/eos/%i/pre/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, fnamestart, year, syst, nJob)
             jdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile
 

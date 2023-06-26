@@ -104,12 +104,19 @@ Float_t jetEtaBin[53] = {-2.500, -2.322,
 // Float_t jetEtaBin[2] = {0.435, 0.783};
 
 
-  const Int_t nETBins = 37;
-  Float_t ETBin[38] = {25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,  
+  const Int_t nETBins = 42;
+  Float_t ETBin[43] = {15., 16., 18., 20., 22., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,  
                        110., 120., 130., 140., 150., 160., 170., 180., 190., 200.,
 	               220., 240., 260., 280., 300.,
 	               330., 360., 390., 420.,
                        440., 480., 520.}; 
+
+// const Int_t nETBins = 37;
+//   Float_t ETBin[38] = {25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,  
+//                        110., 120., 130., 140., 150., 160., 170., 180., 190., 200.,
+// 	               220., 240., 260., 280., 300.,
+// 	               330., 360., 390., 420.,
+//                        440., 480., 520.}; 
   
 // const Int_t nETBins = 19;
 // Float_t ETBin[20] = {20., 30., 40., 50., 60.,
@@ -189,8 +196,8 @@ int ReadKinFitObjectResolution(int year = 2017)
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2016/post/TTbar_KFObjectsReso_2016.root"; //It is all merged, wrong naming
   //string infile = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/2017/AllBkg_KFObjectsReso_2017.root";
   //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
-  //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d_post/AllBkg_KFObjectsReso_%d.root",year,year);
-  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
+  string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d_pre/AllBkg_KFObjectsReso_%d.root",year,year);
+  //string infile = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/proof_v41_KFObjects/%d/AllBkg_KFObjectsReso_%d.root",year,year);
 
   TH2F *hBJetETRes = new TH2F("hBJetETRes","hBJetETRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
   TH2F *hBJetEtaRes = new TH2F("hBJetEtaRes","hBJetEtaRes",nJetEtaBins,jetEtaBin,nETBins,ETBin);
