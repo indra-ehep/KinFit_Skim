@@ -2148,8 +2148,12 @@ void SkimAna::GetPUJetIDSF_1a(){
     
   }else
     hpujetid_eff = hPUJetIDEff;
+  
   double maxbinX = hpujetid_eff->GetXaxis()->GetBinUpEdge(hpujetid_eff->GetNbinsX());
   double maxbinY = hpujetid_eff->GetYaxis()->GetBinUpEdge(hpujetid_eff->GetNbinsY());
+  double minbinX = hpujetid_eff->GetXaxis()->GetBinLowEdge(1);
+  double minbinY = hpujetid_eff->GetYaxis()->GetBinLowEdge(1);
+  //GetBinLowEdge
 
   for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
     
@@ -2157,7 +2161,7 @@ void SkimAna::GetPUJetIDSF_1a(){
     jetEta = event->jetEta_[*jetInd];
     jetPUJetID = event->jetPUID_[*jetInd] ;
     
-    if(jetPt>maxbinX) continue;
+    if(jetPt>=maxbinX or jetPt<=minbinX or jetPt<=selector->jet_Pt_cut) continue;
     
     if(fYear==2016){
       if(isPreVFP)
@@ -4030,7 +4034,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     Info("Process","Processing : %lld(%lld) of number of events : %lld and total number of events : %.0lf, year : %s", 
 	 fProcessed, entry, fChain->GetEntries(), totEventsUS[fSampleType.Data()],evtPick->year.c_str());
   }
-  if(IsDebug) Info("Process","Completed process count");
+  if(IsDebug) Info("Process","Completed process count : %lld(%lld)",fProcessed, entry);
 
   // Set JEC syst
   if( !isData and (systType == kJECUp or systType == kJECDown)){
@@ -4042,15 +4046,15 @@ Bool_t SkimAna::Process(Long64_t entry)
     }else
       jecvar->applyJEC(event, jecvar012_g); // 0:down, 1:norm, 2:up
   }
-  if(IsDebug) Info("Process","Completed JEC correction");
+  if(IsDebug) Info("Process","Completed JEC correction : %lld(%lld)",fProcessed, entry);
   
   // //Clear selector vectors
   selector->clear_vectors();
-  if(IsDebug) Info("Process","Completed cleaning vectors");
+  if(IsDebug) Info("Process","Completed cleaning vectors : %lld(%lld)",fProcessed, entry);
   
   // This is main method to process the objects read from tree
   evtPick->process_event(fBasePath.Data(), event, selector, 1.0); // here last argument 1.0 is weight applied to cutflow
-  if(IsDebug) Info("Process","Completed selector process");
+  if(IsDebug) Info("Process","Completed selector process : %lld(%lld)",fProcessed, entry);
   
   //Special case of Wjets and DY
   if(!isData and fSampleType.Contains("Wjets")){
@@ -4079,7 +4083,7 @@ Bool_t SkimAna::Process(Long64_t entry)
     //_sampleWeight = _sampleWeight*_FSRweight_Do ; //The FSRdown is multiplied
     //_sampleWeight = _sampleWeight*_FSRweight_Up ; //The FSRup is actually FSRdown 
   }
-  if(IsDebug) Info("Process","Completed event weight application");
+  if(IsDebug) Info("Process","Completed event weight application : %lld(%lld)",fProcessed, entry);
   
   // Access the prefire weight
   if(!isData){
@@ -4107,7 +4111,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillEventCutFlow();
   FillEventWt();
   if(systType == kBase) FillTriggerControlHists();
-  if(IsDebug) Info("Process","Completed Event filling");
+  if(IsDebug) Info("Process","Completed Event filling : %lld(%lld)",fProcessed, entry);
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -4210,7 +4214,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillLeptonCutFlow();
   FillLeptonWt();
   if(systType == kBase) FillLeptonControlHists();
-  if(IsDebug) Info("Process","Completed Lepton processing");
+  if(IsDebug) Info("Process","Completed Lepton processing : %lld(%lld)",fProcessed, entry);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -4229,6 +4233,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(selector->Jets.size() < 4) return true; //original condn
   //////=====================================================
   
+  if(IsDebug) Info("Process","Completed Njet >=4 : %lld(%lld)",fProcessed, entry);
   //Processes after njet >= 4 selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if(!isData){
@@ -4245,11 +4250,15 @@ Bool_t SkimAna::Process(Long64_t entry)
     GetPUJetIDSF_1a(); if(_PUJetIDWeight < 0.) return kTRUE;
     //cout <<" fProcessed : " << fProcessed << " (do,nom,up) : (" << _PUJetIDWeight_Do <<", " << _PUJetIDWeight << ", " << _PUJetIDWeight_Up <<")"<<endl;
   }
+  if(IsDebug) Info("Process","Completed PU JetID weight : %lld(%lld)",fProcessed, entry);
 
   FillNjetCutFlow();
+  if(IsDebug) Info("Process","Completed NJet cutflow : %lld(%lld)",fProcessed, entry);
   FillNjetWt();
+  if(IsDebug) Info("Process","Completed NjetWt weight : %lld(%lld)",fProcessed, entry);
+
   if(systType == kBase) FillJetControlHists();
-  if(IsDebug) Info("Process","Completed Njet processing");
+  if(IsDebug) Info("Process","Completed Njet processing : %lld(%lld)",fProcessed, entry);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //######################################################
@@ -4270,7 +4279,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   FillMETCutFlow();
   if(systType == kBase) FillMETControlHists();
-  if(IsDebug) Info("Process","Completed MET processing");
+  if(IsDebug) Info("Process","Completed MET processing : %lld(%lld)",fProcessed, entry);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4372,15 +4381,15 @@ Bool_t SkimAna::Process(Long64_t entry)
   FillBTagWt();
   FillBJetTree();
   if(systType == kBase) FillBTagControlHists();
-  if(IsDebug) Info("Process","Completed b-jet processing");
+  if(IsDebug) Info("Process","Completed b-jet processing : %lld(%lld)",fProcessed, entry);
   _topPtReWeight = topPtReweight();
-  //return true;
-  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   //Processes for KinFit selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   FillKFCFObs();
   if(systType == kBase) FillKinFitControlHists();
-  if(IsDebug) Info("Process","Completed KinFit processing");
+  if(IsDebug) Info("Process","Completed KinFit processing : %lld(%lld)",fProcessed, entry);
   if(!isKFValid) return kTRUE;
   if(_kFType == 13) FillMCInfo();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4390,7 +4399,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   FillCTagObs();
   if(systType == kBase) FillCTagControlHists();
-  if(IsDebug) Info("Process","Completed CTagging");
+  if(IsDebug) Info("Process","Completed CTagging : %lld(%lld)",fProcessed, entry);
   //Fill for non-negative chi2
   if(doTreeSave)
     outputTree->Fill();
@@ -7470,6 +7479,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
+    if(selector->JetsPtSmeared.at(ijet)<=jetPtThresh) continue;
     jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     //jetVector.SetPtEtaPhiM(event->jetPt_[jetInd], event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);

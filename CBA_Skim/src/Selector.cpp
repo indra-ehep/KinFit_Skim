@@ -361,7 +361,9 @@ void Selector::filter_jets(){
     double eta = tree->jetEta_[jetInd];
     double phi = tree->jetPhi_[jetInd];
     double smearedpt = tree->jetPt_[jetInd];
-    
+
+    if(pt<=jet_Pt_cut) continue;
+
     //Applied for Legacy Rereco
     // //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
     // int jetID_cutBit = 1;
