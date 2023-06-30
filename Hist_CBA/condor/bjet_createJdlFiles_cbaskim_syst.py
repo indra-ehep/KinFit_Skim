@@ -51,6 +51,7 @@ syst_long_2016 = ["stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptu
 syst_long_2017 = ["stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
 syst_long_2018 = ["stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
 
+#HLTeleEmul
 inputdir="CBA_HLTeleEmul"
 outputdir="CBA_HLTeleEmul-BJetHist1"
 

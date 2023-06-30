@@ -176,7 +176,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
 
   TMultiGraph *mg = new TMultiGraph();
   TString ch_name = "ch";
-  cout<<CHANNEL<<endl;
+  //cout<<CHANNEL<<endl;
   if(CHANNEL=="mu") ch_name = "#mu";
   if(CHANNEL=="ele") ch_name = "e";
   if(CHANNEL=="mu_ele") ch_name = "lep";

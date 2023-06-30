@@ -25,9 +25,15 @@
 #include <iostream>
 
 using namespace std;
-int QCDDDSyst(int year = 2016, bool ismu = true, int htype = 10)
+int QCDDDSyst(int year = 2016)
 {
   double QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
+  string GetHistName(bool isBtag, bool isMu, int htype);
+  
+  double closureSyst[3][2] = { {54.,16.}, //2016 : ele, mu
+			       {37.,20.}, //2017 : ele, mu
+			       {64.,23.}, //2018 : ele, mu
+  };
   //const char* dir = "grid_v40_Syst/CBA_trigSF-CombHist";
   const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
 
@@ -44,7 +50,7 @@ int QCDDDSyst(int year = 2016, bool ismu = true, int htype = 10)
 			    "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
 			    "iso20",  //26
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
@@ -58,8 +64,12 @@ int QCDDDSyst(int year = 2016, bool ismu = true, int htype = 10)
 
   //int maxsyst = (year==2018) ? 40 : 42 ;
   const int maxsyst = 50 ;
+  const int maxch = 2 ;
+  const int maxhype_kb = 33 ;
+  const int maxhype_lb = 11 ;
   //int maxsyst = 2 ;
-  double intg_syst[maxsyst];
+  double intg_syst_kb[maxhype_kb][maxch][maxsyst];
+  double intg_syst_lb[maxhype_lb][maxch][maxsyst];
 
   for(int isys = 0 ; isys < maxsyst ; isys++) {
     TDirectory *d2 = d1->mkdir(Form("%s",systbase[isys]));
@@ -67,26 +77,65 @@ int QCDDDSyst(int year = 2016, bool ismu = true, int htype = 10)
     TDirectory *d3 = d2->mkdir("Iso");
     d3->cd();
     TH1D *hDD = 0x0;
-    //int htype_max[2] = {32, 10};
-    //int htype_max[1] = {10};
-    for(int ibtag = 0 ; ibtag < 1 ; ibtag++){ //only kf
-      //for(int ismu = 1 ; ismu < 2 ; ismu++){ //only mu
-  	//for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
-      double integral = QCDDDAll((bool)ibtag, ismu, htype, year, d3, dir, systbase[isys], hDD);
-      cout <<"Syst : " << systbase[isys] << ", integral : " << integral << endl ;
-      //}
-      intg_syst[isys] = integral;
-      //}
+    int htype_max[2] = {32, 10};
+    for(int ibtag = 0 ; ibtag < 2 ; ibtag++){ //only kf
+      for(int ismu = 0 ; ismu < 2 ; ismu++){ //only mu
+  	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
+	  if(ibtag==0)
+	    intg_syst_kb[htype][ismu][isys] = QCDDDAll((bool)ibtag, ismu, htype, year, d3, dir, systbase[isys], hDD);
+	  else
+	    intg_syst_lb[htype][ismu][isys] = QCDDDAll((bool)ibtag, ismu, htype, year, d3, dir, systbase[isys], hDD);
+	  //cout <<"Syst : " << systbase[isys] << ", integral : " << integral << endl ;
+	}
+	
+      }
     }
     d3->Write();
   }
+
+  TDirectory *d2 = d1->mkdir("syst");
+  d2->cd();
+  TDirectory *d3 = d2->mkdir("Iso");
+  d3->cd();
+  int htype_max[2] = {32, 10};
+  for(int ibtag = 0 ; ibtag < 2 ; ibtag++){ //only kf
+    for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
+      for(int ismu = 0 ; ismu < 2 ; ismu++){ //only mu
+	TH1D *hDD = 0x0;
+	int yrid = year%2016 ;
+	if(ibtag==0){
+	  string histname = GetHistName((bool)ibtag, (bool)ismu, htype);
+	  double mean = TMath::Mean(maxsyst, intg_syst_kb[htype][ismu]);
+	  double rms = TMath::RMS(maxsyst, intg_syst_kb[htype][ismu]);
+	  double rmsprcnt = 100.*rms/mean;
+	  double totprcnt = TMath::Sqrt(rmsprcnt*rmsprcnt + closureSyst[yrid][ismu]*closureSyst[yrid][ismu]);
+	  printf("Name : %25s, (mean,rms,rms_percent,tot_percent) : (%8.2lf,%8.2lf,%8.2lf,%8.2lf)\n",histname.c_str(), mean, rms, rmsprcnt, totprcnt);
+	  hDD = new TH1D(histname.c_str(),histname.c_str(),1,-0.5,0.5);
+	  hDD->SetBinContent(1,mean);
+	  hDD->SetBinError(1,totprcnt);
+	  // if(histname=="_kb_mjj_ele" or histname=="_kb_mjj_mu"){
+	  //   for(int isyst=0;isyst<maxsyst;isyst++)
+	  //     printf("\t Syst : %15s, integral : %8.2lf\n",systbase[isyst],intg_syst_kb[htype][ismu][isyst]);
+	  // }
+	}else{
+	  string histname = GetHistName((bool)ibtag, (bool)ismu, htype);
+	  double mean = TMath::Mean(maxsyst, intg_syst_lb[htype][ismu]);
+	  double rms = TMath::RMS(maxsyst, intg_syst_lb[htype][ismu]);
+	  double rmsprcnt = 100.*rms/mean;
+	  double totprcnt = TMath::Sqrt(rmsprcnt*rmsprcnt + closureSyst[yrid][ismu]*closureSyst[yrid][ismu]);
+	  printf("Name : %25s, (mean,rms,rms_percent,tot_percent) : (%8.2lf,%8.2lf,%8.2lf,%8.2lf)\n",histname.c_str(), mean, rms, rmsprcnt, totprcnt);	  
+	  hDD = new TH1D(histname.c_str(),histname.c_str(),1,-0.5,0.5);
+	  hDD->SetBinContent(1,mean);
+	  hDD->SetBinError(1,totprcnt);
+	}
+	//cout <<"Syst : " << systbase[isys] << ", integral : " << integral << endl ;
+      }
+    }
+  }
+  d3->Write();
   fout->Close();
   delete fout;
-
-  cout<<"Mean : "<<TMath::Mean(maxsyst, intg_syst)
-      <<", RMS : "<<TMath::RMS(maxsyst, intg_syst)
-      <<", Syst : " << 100.*TMath::RMS(maxsyst, intg_syst)/TMath::Mean(maxsyst, intg_syst)
-      <<endl;
+  
   return true;
 }
 
@@ -233,7 +282,19 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   // 	 systType, histname.c_str(), hcf_RegA_data->Integral(),hcf_RegB_data->Integral(),hcf_RegB_data->Integral(),hcf_RegD_data->Integral(), 
   // 	 hcf_RegA_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegD_bkg->Integral());
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
+  if(htype>=10 and htype<=14){
+    int rebin = 50;
+    hcf_RegA_bkg->Rebin(rebin);
+    hcf_RegA_data->Rebin(rebin);
+    hcf_RegB_bkg->Rebin(rebin);
+    hcf_RegB_data->Rebin(rebin);
+    hcf_RegC_bkg->Rebin(rebin);
+    hcf_RegC_data->Rebin(rebin);
+    hcf_RegD_bkg->Rebin(rebin);
+    hcf_RegD_data->Rebin(rebin);
+  }
+
   
   //////////////////////////////// Get the QCD for regions ////////////////////////////////////////////////
   TH1D *hcf_RegD_QCD = (TH1D *)hcf_RegD_data->Clone("RegD_QCD");
@@ -252,24 +313,6 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   hcf_RegA_QCD->Add(hcf_RegA_bkg, -1);
   makeHistoPositive(hcf_RegA_QCD, false) ;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  if(htype>=10 and htype<=14){
-    int rebin = 50;
-    hcf_RegA_bkg->Rebin(rebin);
-    hcf_RegB_bkg->Rebin(rebin);
-    hcf_RegC_bkg->Rebin(rebin);
-    hcf_RegD_bkg->Rebin(rebin);
-    
-    hcf_RegA_data->Rebin(rebin);
-    hcf_RegB_data->Rebin(rebin);
-    hcf_RegC_data->Rebin(rebin);
-    hcf_RegD_data->Rebin(rebin);
-
-    hcf_RegA_QCD->Rebin(rebin);
-    hcf_RegB_QCD->Rebin(rebin);
-    hcf_RegC_QCD->Rebin(rebin);
-    hcf_RegD_QCD->Rebin(rebin);
-}
 
   
   //////////////////////////////// Calculate the QCD SF ///////////////////////////////////////////////////

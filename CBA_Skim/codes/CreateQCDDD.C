@@ -31,20 +31,6 @@ int CreateQCDDD(int year = 2016)
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
   string GetHistName(bool isBtag, bool isMu, int htype);
   
-  //int year = 2018;
-  //const char* dir = "grid_v40_Syst/CBA_CTagValidated";
-  //const char* dir = "grid_v40_Syst/CBA_CTagValidated-Hist";
-  //const char* dir = "grid_v40_Syst/CBA_CTagReWt";
-  //const char* dir = "grid_v40_Syst/CBA_CTagReWt-Hist";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuR";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuR-Hist";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuRFSRDo";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-wtratio_evtwt";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_elereliso";
@@ -58,59 +44,6 @@ int CreateQCDDD(int year = 2016)
   //const char* dir = "grid_v40_Syst/CBA_trigSF-CombHist";
   const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
   
-  //const char* dir = "grid_v40_Syst/CBA_elereliso20-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist";
-  
-  //const char* dir = "grid_v40_Syst/CBA_bctag123";  
-  //const char* dir = "grid_v40_Syst/CBA_ctagcorr";
-  //const char* dir = "grid_v40_Syst/CBA_yearend22";
-  //const char* dir = "grid_v40_Syst/CBA_notoppt";
-  
-  // const char *syst[] = {"base", 
-  // 			"pdfup", "pdfdown", "q2up", "q2down",
-  // 			"isrup", "isrdown", "fsrup", "fsrdown", 
-  // 			"puup", "pudown","prefireup", "prefiredown",
-  // 			"mueffup", "mueffdown", "eleeffup", "eleeffdown",
-  // 			"pujetidup", "pujetiddown", "metup", "metdown",
-  // 			"jecup", "jecdown", "jerup", "jerdown",
-  // 			"iso20", //26
-  // 			//Followings are only for TTbar not for QCD DDD
-  // 			//"cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown",
-  // 			//The followings are used in earlier versions of BTV applications 
-  // 			// "btagbup", "btagbdown", 
-  // 			// "btaglup", "btagldown"
-  // 			// "bctag1up", "bctag1down",
-  // 			// "bctag2up", "bctag2down",
-  // 			// "bctag3up", "bctag3down", //10
-  // 			//CShapeCalib EOY
-  // 			"bcstatup", "bcstatdown",
-  // 			"bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			"bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // 			"bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-  // 			"bcbfragup", "bcbfragdown" //16
-  // 			// CShapeCalib UL
-  // 			// "bcstatup", "bcstatdown",
-  // 			// "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-  // 			// "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			// "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-  // 			// "bcxwjcup", "bcxwjcdown"//16
-  // };
-  
-  // const char *systbase_2016[] = {"base", 
-  // 			    "pdfup", "pdfdown", "q2up", "q2down",
-  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-  // 			    "puup", "pudown", "prefireup", "prefiredown",
-  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-  // 			    "pujetidup", "pujetiddown", "metup", "metdown",
-  // 			    "jecup", "jecdown", "jerup", "jerdown",
-  // 			    "iso20",  //26
-  // 			    // CShapeCalib EOY
-  // 			    "bcstatup", "bcstatdown",
-  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
-  // 			    "bcbfragup", "bcbfragdown" //16
-  //                           };
 
     const char *systbase_2017[] = {"base", 
     			    "pdfup", "pdfdown", "q2up", "q2down",

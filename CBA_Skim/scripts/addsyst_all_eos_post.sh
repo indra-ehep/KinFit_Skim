@@ -9,8 +9,7 @@
 
 samples_2016="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
 
-# syst_2018="base jecup jecdown jerup jerdown iso20 metup metdown"
-syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown"
+syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
 
 declare -A tunedict
 tunedict["cp5up"]="CP5up_TTbar"
@@ -25,13 +24,15 @@ syst_base="base iso20"
 
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso20/post"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso30/post"
-#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elemva90/post"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jetpt15/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso20-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_mutight-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva90-BJetHist1/post"
 #inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_mutight-Hist1/post"
-inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_elemva90-Hist1/post"
+#inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_elemva90-Hist1/post"
+#inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jetpt15-Hist1/post"
+inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jetpt15-BJetHist1/post"
 skimflistdir="/afs/cern.ch/user/i/$USER/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2016"

@@ -39,8 +39,10 @@ using namespace std;
 
 void KFPAGStudies()
 {
-  string signal = "DataEle";
-  int year = 2018;
+  // string signal = "DataEle";
+  // int year = 2018;
+  string signal = "TTbar";
+  int year = 2016;
   
   Double_t  chi2;
   Int_t  ndf;
@@ -105,7 +107,8 @@ void KFPAGStudies()
   //string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/");
   //string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/pre/%d",year);
   //string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/post/%d",year);
-  string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/%d",year);
+  //string inpath_tree = Form("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/KinFit/CBA_elereliso/%d",year);
+  string inpath_tree = Form("/nfs/home/common/cms-hcs-run2/KinTree/CBA_trigSF/*/%d",year);
   string treelist = "/tmp/fl_tree_list.txt";
   string command = Form("find %s -name \"%s_tree_base_*.root\" > %s",inpath_tree.data(),signal.data(),treelist.data());
   system(command.c_str());

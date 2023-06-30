@@ -50,17 +50,18 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_jetpt15
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_jetpt15
-# condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_jetpt15
-# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_jetpt15
-# condorOutDir4=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_jetpt15
+# #condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_lowjetpt-highmet
+# #condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_lowjetpt-highmet
+#condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_lowjetpt-highmet/pre
+#condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_lowjetpt-highmet/pre
 
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_jetpt15/pre
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_jetpt15/pre
-condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_jetpt15/pre
-condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_jetpt15/pre
-condorOutDir4=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_jetpt15/pre
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet
+# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet
+# condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_lowjetpt-highmet
+
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet/pre
+condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet/pre
+condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_lowjetpt-highmet/pre
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;

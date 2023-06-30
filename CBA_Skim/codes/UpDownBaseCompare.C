@@ -164,8 +164,8 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 42){
   //const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_trigSF-CombHist";
   const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_JECSplit-CombHist";
   
-  //int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
-  int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
+  int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
+  //int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
   //int isample = 13; isample--; //11 for TTbar,  8  for HplusM120
   int ibase = 1; ibase--;
   int isysdown = isysup ;
@@ -289,10 +289,13 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 42){
   TCanvas *c1 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
   if(year==2016){
     c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),syst_2016[isysup],year));
+    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),syst_2016[isysup],year));
   }else if(year==2017){
     c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),syst_2017[isysup],year));
+    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),syst_2017[isysup],year));
   }else if(year==2018){
     c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),syst_2018[isysup],year));
+    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),syst_2018[isysup],year));
   }
   
   c1->SaveAs("output.pdf");

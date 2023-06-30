@@ -305,7 +305,11 @@ void CompareLimits(){
   ReadLimitNanoAOD(lexclNano16, "TIFRAPAR-2023-01-15/22_elereliso_bld_unNorm_cmdMiniAOD_7Shapes_RD/2016/Comb", "mu");
   //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/28_elereliso_bld_7Shapes_bcStat_lnN/Default_lnN/2016/Comb", "mu");
   //ReadLimitNanoAOD(lexclMEqv16lnN, "TIFRAPAR-2023-01-15/28_elereliso_bld_7Shapes_bcStat_lnN/bcStat_15prcnt/2016/Comb", "mu");
-  ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/44_trigSF_impacts_bld_excLMT/Run2/Comb", "mu_ele");
+  //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/44_trigSF_impacts_bld_excLMT/Run2/Comb", "mu_ele");
+  //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/65_JECSplit_bld_all_uncorr_7Shapes_HighQCDSyst/2016/Comb", "mu_ele");
+  //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/66_jetpt15_bld_all_uncorr_7Shapes/2016/Comb", "mu_ele");
+  //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/67_JECSplit_bld_all_uncorr_all_lnN_HighQCDSyst/2016/Comb", "mu_ele");
+  ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/68_jetpt15_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
   
   //MiniAOD graphs
   TGraph *grlexclMini = new TGraph(int(lexclMini.size()));
@@ -511,7 +515,7 @@ int PlotRatio(TGraph *gr1, TGraph *gr2, TGraph *grRatio, TLegend *leg, const cha
 
     
     grRatio->SetMinimum(0.0);  // Define Y ..
-    grRatio->SetMaximum(1.2); // .. range
+    grRatio->SetMaximum(2.0); // .. range
     
     grRatio->Draw("ALP");       // Draw the ratio plot
     

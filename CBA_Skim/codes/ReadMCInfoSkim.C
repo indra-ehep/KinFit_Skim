@@ -34,10 +34,10 @@ using namespace std;
 
 #endif
 
-//int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/HplusM120_postVFP_Skim_NanoAOD.root")
+int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/HplusM120_postVFP_Skim_NanoAOD.root")
 //int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_20of21.root")
 //int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TTbarPowheg_Semilept_postVFP_Skim_NanoAOD_1of27.root")
-int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM080_Skim_NanoAOD.root")
+//int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM080_Skim_NanoAOD.root")
 //ReadMCInfoSkim()
 {
   
@@ -81,6 +81,7 @@ int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL
   TH1F *hPtcsDiffLHE = new TH1F("hPtcsDiffLHE","hPtDiff c-s in LHE",2000,-1000,1000);
   TH1F *hPtudDiffLHE = new TH1F("hPtudDiffLHE","hPtDiff u-d in LHE",2000,-1000,1000);
   //TH1F *hPtcuDiffLHE = new TH1F("hPtcuDiffLHE","hPtDiff c-u in LHE",2000,-1000,1000);
+  TH1F *hPThetaCS = new TH1F("hPThetaCS","p theta",70,0,1.4);
   
   int momPDG = (ishplus) ? 37 : 24 ; //hplus or W+
   // string infile;
@@ -153,7 +154,7 @@ int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL
   else
     hCostheta = new TH1F("hCostheta","SM t#bar{t}", 80, -2.0, 2.0);
 
-  
+  TLorentzVector p4;
   //for(int ievent = 0 ; ievent < 10; ievent++){
   for(int ievent = 0 ; ievent < tr->GetEntries() ; ievent++){
     
@@ -171,7 +172,12 @@ int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL
     bool hasFc = false, hasFs = false, hasFu = false, hasFd = false;
     int pdgc = 4000, pdgs = 4000, pdgu = 4000, pdgd = 4000;
     int idc = -1, ids = -1, idu = -1, idd = -1;
+    int idcp = -1, idsp = -1, idup = -1, iddp = -1;
     float ptc = 0.0, pts = 0.0, ptu = 0.0, ptd = 0.0;
+    float Ec = 0.0, Es = 0.0, Eu = 0.0, Ed = 0.0;
+    float ptcp = 0.0, ptsp = 0.0, ptup = 0.0, ptdp = 0.0;
+
+    
     for (unsigned int imc = 0 ; imc < nLHEPart_ ; imc++ ){      
       //for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(LHEPart_pdgId_[imc]);
@@ -225,7 +231,15 @@ int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL
 	  nofPromptGluon++;
 	}
       }
-      
+
+      hasFc = false; hasFs = false; hasFu = false; hasFd = false;
+      pdgc = 4000; pdgs = 4000; pdgu = 4000; pdgd = 4000;
+      idc = -1; ids = -1; idu = -1; idd = -1;
+      idcp = -1; idsp = -1; idup = -1; iddp = -1;
+      ptc = 0.0; pts = 0.0; ptu = 0.0; ptd = 0.0;
+      Ec = 0.0; Es = 0.0; Eu = 0.0; Ed = 0.0;
+      ptcp = 0.0; ptsp = 0.0; ptup = 0.0; ptdp = 0.0;
+
       for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
       //for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
     	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
@@ -285,23 +299,52 @@ int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL
 	if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==6){
 	  if(TMath::Abs(GenPart_pdgId_[imc])==5)  hPtbFT->Fill(GenPart_pt_[imc]);
 	}
-	if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==24){
+	//if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==24){
+	if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==momPDG){
 	  
 	  if(TMath::Abs(GenPart_pdgId_[imc])==11)  hPtEleFW->Fill(GenPart_pt_[imc]);
 	  if(TMath::Abs(GenPart_pdgId_[imc])==13)  hPtMuFW->Fill(GenPart_pt_[imc]);
-	  if(TMath::Abs(GenPart_pdgId_[imc])==4)  hPtcFW->Fill(GenPart_pt_[imc]);
-	  if(TMath::Abs(GenPart_pdgId_[imc])==3)  hPtsFW->Fill(GenPart_pt_[imc]);
-	  if(TMath::Abs(GenPart_pdgId_[imc])==2)  hPtuFW->Fill(GenPart_pt_[imc]);
-	  if(TMath::Abs(GenPart_pdgId_[imc])==1)  hPtdFW->Fill(GenPart_pt_[imc]);
+	  if(TMath::Abs(GenPart_pdgId_[imc])==4){
+	    hPtcFW->Fill(GenPart_pt_[imc]);
+	    hasFc = true; pdgc = GenPart_pdgId_[imc]; idc = imc; ptc = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Ec = p4.E(); idcp = GenPart_genPartIdxMother_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[GenPart_genPartIdxMother_[imc]], GenPart_eta_[GenPart_genPartIdxMother_[imc]] , GenPart_phi_[GenPart_genPartIdxMother_[imc]], GenPart_mass_[GenPart_genPartIdxMother_[imc]]);
+	    ptcp = p4.P();
+
+	  }
+	  if(TMath::Abs(GenPart_pdgId_[imc])==3){
+	    hPtsFW->Fill(GenPart_pt_[imc]);
+	    hasFs = true; pdgs = GenPart_pdgId_[imc]; ids = imc; pts = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Es = p4.E(); idsp = GenPart_genPartIdxMother_[imc]; ptsp = GenPart_pt_[GenPart_genPartIdxMother_[imc]];
+	  }
+	  if(TMath::Abs(GenPart_pdgId_[imc])==2){
+	    hPtuFW->Fill(GenPart_pt_[imc]);
+	    hasFu = true; pdgu = GenPart_pdgId_[imc]; idu = imc; ptu = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Eu = p4.E(); idup = GenPart_genPartIdxMother_[imc]; ptup = GenPart_pt_[GenPart_genPartIdxMother_[imc]];
+	  }
+	  if(TMath::Abs(GenPart_pdgId_[imc])==1){
+	    hPtdFW->Fill(GenPart_pt_[imc]);
+	    hasFd = true; pdgd = GenPart_pdgId_[imc]; idd = imc; ptd = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Ed = p4.E(); iddp = GenPart_genPartIdxMother_[imc]; ptdp = GenPart_pt_[GenPart_genPartIdxMother_[imc]];
+	  }
 	  
-	}
+	}//isW
+	
 	// if(GenPart_pdgId_[imc]==21 and nofPromptGluon==0 and GenPart_genPartIdxMother_[imc]==0){
 	//   hPtPromptGluon->Fill(GenPart_pt_[imc]);
 	//   nofPromptGluon++;
 	// }
       }// PYTHIA mc particle loop
     // }else{
-      
+
+      if(hasFc and hasFs and pdgc*pdgs < 0 and TMath::Abs(idc-ids)==1 and idsp==idcp){
+	hPThetaCS->Fill(TMath::Abs(Ec-Es)/ptcp);
+      }
+
       if(ievent%10000==0)
 	printf("Processing Event : %03d (total:%lld), npart : %u\n",ievent,tr->GetEntries(),nGenPart_);
       
@@ -401,7 +444,8 @@ int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL
   c6->cd(2)->SetLogy();
   hWPM->Draw();
   
-
+  hPThetaCS->Scale(1./hPThetaCS->Integral());
+  
   TFile *fout = TFile::Open("Kinout.root","recreate");
   hTTbar->Write();
   hWPM->Write();
@@ -431,6 +475,7 @@ int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL
   hPtuLHE->Write();
   hPtcsDiffLHE->Write();
   hPtudDiffLHE->Write();
+  hPThetaCS->Write();
   //hPtcuDiffLHE->Write();  
   fout->Close();
   delete fout;
