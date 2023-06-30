@@ -34,25 +34,55 @@ using namespace std;
 
 #endif
 
-//int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/HplusM120_Skim_NanoAOD.root")
+int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/HplusM120_postVFP_Skim_NanoAOD.root")
 //int ReadMCInfoSkim(string infile = "/run/media/indra/DHEP_Storage_1/Data/NanoAOD/Skim_NanoAOD/2016/TTbarPowheg_Semilept_Skim_NanoAOD_20of21.root")
-int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TTbarPowheg_Semilept_postVFP_Skim_NanoAOD_1of27.root")
+//int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TTbarPowheg_Semilept_postVFP_Skim_NanoAOD_1of27.root")
+//int ReadMCInfoSkim(string infile = "/nfs/home/common/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM080_Skim_NanoAOD.root")
 //ReadMCInfoSkim()
 {
   
-  bool ishplus = 0; //Use this switch to run for hplus or ttbar
+  bool ishplus = 1; //Use this switch to run for hplus or ttbar 
   TH1F *hWPlus = new TH1F("hWPlus","hWPlus",250,0,250);
   TH1F *hWMinus = new TH1F("hWMinus","hWMinus",250,0,250);
+  TH1F *hWPt = new TH1F("hWPt","pt of W",14000,0,14000);
   // TH1F *hTopPlus = new TH1F("hTopPlus","top",100,150.,200.);
   // TH1F *hTopMinus = new TH1F("hTopMinus","anti-top",100,150.,200.);
   TH1F *hTopPlus = new TH1F("hTopPlus","top",500,0,500);
   TH1F *hTopMinus = new TH1F("hTopMinus","anti-top",500,0,500);
+  TH1F *hTopPt = new TH1F("hTopPt","pt of top or anti-top",14000,0,14000);
   TH1F *hTopPlusNoG = new TH1F("hTopPlusNoG","top (events with no prompt gluon)",250,0,250);
   TH1F *hTopMinusNoG = new TH1F("hTopMinusNoG","anti-top (events with no prompt gluon)",250,0,250);
   TH1F *hTopPlusWtG = new TH1F("hTopPlusWtG","top (events with prompt gluon)",250,0,250);
   TH1F *hTopMinusWtG = new TH1F("hTopMinusWtG","anti-top (events with prompt gluon)",250,0,250);
   TH1F *hPtPromptGluon = new TH1F("hPtPromptGluon","hPtPromptGluon",100,0,1000);
-
+  TH1F *hPtEleNeu = new TH1F("hPtEleNeu","hPtEleNeu all",1000,0,1000);
+  TH1F *hPtMuNeu = new TH1F("hPtMuNeu","hPtMuNeu all",1000,0,1000);
+  TH1F *hPtEleNeuFW = new TH1F("hPtEleNeuFW","hPtEleNeu from W",1000,0,1000);
+  TH1F *hPtMuNeuFW = new TH1F("hPtMuNeuFW","hPtMuNeu from W",1000,0,1000);
+  TH1F *hPtEleNeuNFW = new TH1F("hPtEleNeuNFW","hPtEleNeu not from W",1000,0,1000);
+  TH1F *hPtMuNeuNFW = new TH1F("hPtMuNeuNFW","hPtMuNeu not from W",1000,0,1000);
+  TH1F *hPtEleFW = new TH1F("hPtEleFW","hPtEle from W",1000,0,1000);
+  TH1F *hPtMuFW = new TH1F("hPtMuFW","hPtMu from W",1000,0,1000);
+  TH1F *hPtbFT = new TH1F("hPtbFT","hPt b from top",1000,0,1000);
+  TH1F *hPtcFW = new TH1F("hPtcFW","hPt c from W",1000,0,1000);
+  TH1F *hPtsFW = new TH1F("hPtsFW","hPt s from W",1000,0,1000);
+  TH1F *hPtdFW = new TH1F("hPtdFW","hPt d from W",1000,0,1000);
+  TH1F *hPtuFW = new TH1F("hPtuFW","hPt u from W",1000,0,1000);
+  //LHE fills
+  TH1F *hPtEleNeuLHE = new TH1F("hPtEleNeuLHE","hPtEleNeu LHE",1000,0,1000);
+  TH1F *hPtMuNeuLHE = new TH1F("hPtMuNeuLHE","hPtMuNeu LHE",1000,0,1000);
+  TH1F *hPtEleLHE = new TH1F("hPtEleLHE","hPtEle in LHE",1000,0,1000);
+  TH1F *hPtMuLHE = new TH1F("hPtMuLHE","hPtMu in LHE",1000,0,1000);
+  TH1F *hPtbLHE = new TH1F("hPtbLHE","hPt b in LHE",1000,0,1000);
+  TH1F *hPtcLHE = new TH1F("hPtcLHE","hPt c in LHE",1000,0,1000);
+  TH1F *hPtsLHE = new TH1F("hPtsLHE","hPt s in LHE",1000,0,1000);
+  TH1F *hPtdLHE = new TH1F("hPtdLHE","hPt d in LHE",1000,0,1000);
+  TH1F *hPtuLHE = new TH1F("hPtuLHE","hPt u in LHE",1000,0,1000);
+  TH1F *hPtcsDiffLHE = new TH1F("hPtcsDiffLHE","hPtDiff c-s in LHE",2000,-1000,1000);
+  TH1F *hPtudDiffLHE = new TH1F("hPtudDiffLHE","hPtDiff u-d in LHE",2000,-1000,1000);
+  //TH1F *hPtcuDiffLHE = new TH1F("hPtcuDiffLHE","hPtDiff c-u in LHE",2000,-1000,1000);
+  TH1F *hPThetaCS = new TH1F("hPThetaCS","p theta",70,0,1.4);
+  
   int momPDG = (ishplus) ? 37 : 24 ; //hplus or W+
   // string infile;
   // if(ishplus)
@@ -124,8 +154,8 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
   else
     hCostheta = new TH1F("hCostheta","SM t#bar{t}", 80, -2.0, 2.0);
 
-  
-  //for(int ievent = 0 ; ievent < 10000; ievent++){
+  TLorentzVector p4;
+  //for(int ievent = 0 ; ievent < 10; ievent++){
   for(int ievent = 0 ; ievent < tr->GetEntries() ; ievent++){
     
     tr->GetEntry(ievent);
@@ -139,22 +169,59 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
       
     // if(ievent%10000==0)
     //printf("Event : %03d, npart : %u\n",ievent,nGenPart_);
+    bool hasFc = false, hasFs = false, hasFu = false, hasFd = false;
+    int pdgc = 4000, pdgs = 4000, pdgu = 4000, pdgd = 4000;
+    int idc = -1, ids = -1, idu = -1, idd = -1;
+    int idcp = -1, idsp = -1, idup = -1, iddp = -1;
+    float ptc = 0.0, pts = 0.0, ptu = 0.0, ptd = 0.0;
+    float Ec = 0.0, Es = 0.0, Eu = 0.0, Ed = 0.0;
+    float ptcp = 0.0, ptsp = 0.0, ptup = 0.0, ptdp = 0.0;
 
-      for (unsigned int imc = 0 ; imc < nLHEPart_ ; imc++ ){      
+    
+    for (unsigned int imc = 0 ; imc < nLHEPart_ ; imc++ ){      
       //for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
 	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(LHEPart_pdgId_[imc]);
-	if(!partPDG){
-	  // printf("\t LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
-	  // 	 imc, LHEPart_pdgId_[imc], LHEPart_pt_[imc], 
-	  // 	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
-
-	}else{
-	  // printf("\t LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
-	  // 	 imc, LHEPart_pdgId_[imc], partPDG->GetName(), LHEPart_pt_[imc],
-	  // 	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
+	// if(!partPDG){
+	//   printf("\t LHE : %03d, PDG : %5d ( noPDGname), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
+	//   	 imc, LHEPart_pdgId_[imc], LHEPart_pt_[imc], 
+	//   	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
+	// }else{
+	//   printf("\t LHE : %03d, PDG : %5d (%7s), (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f)\n", 
+	//   	 imc, LHEPart_pdgId_[imc], partPDG->GetName(), LHEPart_pt_[imc],
+	//   	 LHEPart_eta_[imc] , LHEPart_phi_[imc], LHEPart_mass_[imc]);
+	// }
+	if(imc>=2){
+	  if(TMath::Abs(LHEPart_pdgId_[imc])==5)  hPtbLHE->Fill(LHEPart_pt_[imc]);
+	  if(imc>=(nLHEPart_-5)){
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==11)  hPtEleLHE->Fill(LHEPart_pt_[imc]);
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==13)  hPtMuLHE->Fill(LHEPart_pt_[imc]);
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==12)  hPtEleNeuLHE->Fill(LHEPart_pt_[imc]);
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==14)  hPtMuNeuLHE->Fill(LHEPart_pt_[imc]);
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==4){
+	      hPtcLHE->Fill(LHEPart_pt_[imc]);
+	      hasFc = true; pdgc = LHEPart_pdgId_[imc]; idc = imc; ptc = LHEPart_pt_[imc];
+	    }
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==3){
+	      hPtsLHE->Fill(LHEPart_pt_[imc]);
+	      hasFs = true; pdgs = LHEPart_pdgId_[imc]; ids = imc; pts = LHEPart_pt_[imc];
+	    }
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==2){
+	      hPtuLHE->Fill(LHEPart_pt_[imc]);
+	      hasFu = true; pdgu = LHEPart_pdgId_[imc]; idu = imc; ptu = LHEPart_pt_[imc];
+	    }
+	    if(TMath::Abs(LHEPart_pdgId_[imc])==1){
+	      hPtdLHE->Fill(LHEPart_pt_[imc]);
+	      hasFd = true; pdgd = LHEPart_pdgId_[imc]; idd = imc; ptd = LHEPart_pt_[imc];
+	    }
+	  }
 	}
-      }// mc particle loop
-      
+    }// LHE mc particle loop
+    if(hasFc and hasFs and pdgc*pdgs < 0 and TMath::Abs(idc-ids)==1){
+      hPtcsDiffLHE->Fill((ptc-pts));
+    }
+    if(hasFu and hasFd and pdgu*pdgd < 0 and TMath::Abs(idu-idd)==1){
+      hPtudDiffLHE->Fill((ptu-ptd));
+    }
       int nofTop = 0, nofTbar = 0;
       int nofWplus = 0, nofWminus = 0;
       int nofPromptGluon = 0;
@@ -164,54 +231,120 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
 	  nofPromptGluon++;
 	}
       }
-      
+
+      hasFc = false; hasFs = false; hasFu = false; hasFd = false;
+      pdgc = 4000; pdgs = 4000; pdgu = 4000; pdgd = 4000;
+      idc = -1; ids = -1; idu = -1; idd = -1;
+      idcp = -1; idsp = -1; idup = -1; iddp = -1;
+      ptc = 0.0; pts = 0.0; ptu = 0.0; ptd = 0.0;
+      Ec = 0.0; Es = 0.0; Eu = 0.0; Ed = 0.0;
+      ptcp = 0.0; ptsp = 0.0; ptup = 0.0; ptdp = 0.0;
+
       for (unsigned int imc = 0 ; imc < nGenPart_ ; imc++ ){      
       //for (unsigned int imc = 0 ; imc < 30 ; imc++ ){      
     	TParticlePDG *partPDG = TDatabasePDG::Instance()->GetParticle(GenPart_pdgId_[imc]);
-	// if(nofPromptGluon==0){
-	//   if(!partPDG){
-	//     printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-	// 	   imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
-	// 	   GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-	// 	   );
-	//   }else{
-	//     printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
-	// 	   imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
-	// 	   GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
-	// 	   );
-	//   }
-	// }
-	if(GenPart_pdgId_[imc]==24 and nofWplus==0 and abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==6) {
+	  // if(!partPDG){
+	  //   printf("\t id : %03d, PDG : %5d ( noPDGname), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+	  // 	   imc, GenPart_pdgId_[imc], GenPart_status_[imc], GenPart_pt_[imc], 
+	  // 	   GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+	  // 	   );
+	  // }else{
+	  //   printf("\t id : %03d, PDG : %5d (%7s), status : %2d, (Pt, Eta, Phi, Mass) = (%5.2f, %5.2f, %5.2f, %5.2f), Mother-id : %03d\n", 
+	  // 	   imc, GenPart_pdgId_[imc], partPDG->GetName(), GenPart_status_[imc], GenPart_pt_[imc],
+	  // 	   GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc], GenPart_genPartIdxMother_[imc]
+	  // 	   );
+	  // }
+	if(GenPart_pdgId_[imc]==24 and nofWplus==0 and abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==6) { //W+
 	  hWPlus->Fill(GenPart_mass_[imc]);
+	  hWPt->Fill(GenPart_pt_[imc]);
 	  nofWplus++;
 	}
-	if(GenPart_pdgId_[imc]==-24 and nofWminus==0 and abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==6) {
+	if(GenPart_pdgId_[imc]==-24 and nofWminus==0 and abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==6) { //W-
 	  hWMinus->Fill(GenPart_mass_[imc]);
+	  hWPt->Fill(GenPart_pt_[imc]);
 	  nofWminus++;
 	}
-	if(GenPart_pdgId_[imc]==6 and nofTop==0 and GenPart_genPartIdxMother_[imc]==0){
+	if(GenPart_pdgId_[imc]==6 and nofTop==0 and GenPart_genPartIdxMother_[imc]==0){ //Top
 	  hTopPlus->Fill(GenPart_mass_[imc]);
+	  hTopPt->Fill(GenPart_pt_[imc]);
 	  nofTop++;
 	  if(nofPromptGluon==0) 
 	    hTopPlusNoG->Fill(GenPart_mass_[imc]);
 	  else
 	    hTopPlusWtG->Fill(GenPart_mass_[imc]);
 	}
-	if(GenPart_pdgId_[imc]==-6 and nofTbar==0 and GenPart_genPartIdxMother_[imc]==0) {
+	if(GenPart_pdgId_[imc]==-6 and nofTbar==0 and GenPart_genPartIdxMother_[imc]==0) { //tbar
 	  hTopMinus->Fill(GenPart_mass_[imc]);
+	  hTopPt->Fill(GenPart_pt_[imc]);
 	  nofTbar++;
 	  if(nofPromptGluon==0) 
 	    hTopMinusNoG->Fill(GenPart_mass_[imc]);
 	  else
 	    hTopMinusWtG->Fill(GenPart_mass_[imc]);
 	}
+	if(TMath::Abs(GenPart_pdgId_[imc])==12){
+	  hPtEleNeu->Fill(GenPart_pt_[imc]);
+	  if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==24)
+	    hPtEleNeuFW->Fill(GenPart_pt_[imc]);
+	  else
+	    hPtEleNeuNFW->Fill(GenPart_pt_[imc]);
+	}
+	if(TMath::Abs(GenPart_pdgId_[imc])==14){
+	  hPtMuNeu->Fill(GenPart_pt_[imc]);
+	  if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==24)
+	    hPtMuNeuFW->Fill(GenPart_pt_[imc]);
+	  else
+	    hPtMuNeuNFW->Fill(GenPart_pt_[imc]);
+	}
+	if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==6){
+	  if(TMath::Abs(GenPart_pdgId_[imc])==5)  hPtbFT->Fill(GenPart_pt_[imc]);
+	}
+	//if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==24){
+	if(TMath::Abs(GenPart_pdgId_[GenPart_genPartIdxMother_[imc]])==momPDG){
+	  
+	  if(TMath::Abs(GenPart_pdgId_[imc])==11)  hPtEleFW->Fill(GenPart_pt_[imc]);
+	  if(TMath::Abs(GenPart_pdgId_[imc])==13)  hPtMuFW->Fill(GenPart_pt_[imc]);
+	  if(TMath::Abs(GenPart_pdgId_[imc])==4){
+	    hPtcFW->Fill(GenPart_pt_[imc]);
+	    hasFc = true; pdgc = GenPart_pdgId_[imc]; idc = imc; ptc = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Ec = p4.E(); idcp = GenPart_genPartIdxMother_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[GenPart_genPartIdxMother_[imc]], GenPart_eta_[GenPart_genPartIdxMother_[imc]] , GenPart_phi_[GenPart_genPartIdxMother_[imc]], GenPart_mass_[GenPart_genPartIdxMother_[imc]]);
+	    ptcp = p4.P();
+
+	  }
+	  if(TMath::Abs(GenPart_pdgId_[imc])==3){
+	    hPtsFW->Fill(GenPart_pt_[imc]);
+	    hasFs = true; pdgs = GenPart_pdgId_[imc]; ids = imc; pts = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Es = p4.E(); idsp = GenPart_genPartIdxMother_[imc]; ptsp = GenPart_pt_[GenPart_genPartIdxMother_[imc]];
+	  }
+	  if(TMath::Abs(GenPart_pdgId_[imc])==2){
+	    hPtuFW->Fill(GenPart_pt_[imc]);
+	    hasFu = true; pdgu = GenPart_pdgId_[imc]; idu = imc; ptu = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Eu = p4.E(); idup = GenPart_genPartIdxMother_[imc]; ptup = GenPart_pt_[GenPart_genPartIdxMother_[imc]];
+	  }
+	  if(TMath::Abs(GenPart_pdgId_[imc])==1){
+	    hPtdFW->Fill(GenPart_pt_[imc]);
+	    hasFd = true; pdgd = GenPart_pdgId_[imc]; idd = imc; ptd = GenPart_pt_[imc];
+	    p4.SetPtEtaPhiM(GenPart_pt_[imc], GenPart_eta_[imc] , GenPart_phi_[imc], GenPart_mass_[imc]);
+	    Ed = p4.E(); iddp = GenPart_genPartIdxMother_[imc]; ptdp = GenPart_pt_[GenPart_genPartIdxMother_[imc]];
+	  }
+	  
+	}//isW
+	
 	// if(GenPart_pdgId_[imc]==21 and nofPromptGluon==0 and GenPart_genPartIdxMother_[imc]==0){
 	//   hPtPromptGluon->Fill(GenPart_pt_[imc]);
 	//   nofPromptGluon++;
 	// }
-      }// mc particle loop
+      }// PYTHIA mc particle loop
     // }else{
-      
+
+      if(hasFc and hasFs and pdgc*pdgs < 0 and TMath::Abs(idc-ids)==1 and idsp==idcp){
+	hPThetaCS->Fill(TMath::Abs(Ec-Es)/ptcp);
+      }
+
       if(ievent%10000==0)
 	printf("Processing Event : %03d (total:%lld), npart : %u\n",ievent,tr->GetEntries(),nGenPart_);
       
@@ -311,10 +444,39 @@ int ReadMCInfoSkim(string infile = "/Data/root_files/AOD_files/NanoAODUL/2016/TT
   c6->cd(2)->SetLogy();
   hWPM->Draw();
   
-
+  hPThetaCS->Scale(1./hPThetaCS->Integral());
+  
   TFile *fout = TFile::Open("Kinout.root","recreate");
   hTTbar->Write();
   hWPM->Write();
+  hWPt->Write();
+  hTopPt->Write();
+  hPtEleNeu->Write();
+  hPtEleNeuFW->Write();
+  hPtEleNeuNFW->Write();
+  hPtMuNeu->Write();
+  hPtMuNeuFW->Write();
+  hPtMuNeuNFW->Write();
+  hPtEleFW->Write();
+  hPtMuFW->Write();
+  hPtbFT->Write();
+  hPtcFW->Write();
+  hPtsFW->Write();
+  hPtuFW->Write();
+  hPtdFW->Write();
+  hPtEleNeuLHE->Write();
+  hPtMuNeuLHE->Write();
+  hPtEleLHE->Write();
+  hPtMuLHE->Write();
+  hPtbLHE->Write();
+  hPtcLHE->Write();
+  hPtsLHE->Write();
+  hPtdLHE->Write();
+  hPtuLHE->Write();
+  hPtcsDiffLHE->Write();
+  hPtudDiffLHE->Write();
+  hPThetaCS->Write();
+  //hPtcuDiffLHE->Write();  
   fout->Close();
   delete fout;
 

@@ -9,8 +9,7 @@
 
 samples_2016="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
 
-# syst_2018="base jecup jecdown jerup jerdown iso20 metup metdown"
-syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown"
+syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
 
 declare -A tunedict
 tunedict["cp5up"]="CP5up_TTbar"
@@ -24,9 +23,15 @@ syst_base="base iso20"
 #syst_base="base"
 
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso20/pre"
-#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso30/pre"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elemva90/pre"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jetpt15/pre"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso20-BJetHist1/pre"
-inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-BJetHist1/pre"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-BJetHist1/pre"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_mutight-BJetHist1/pre"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva90-BJetHist1/pre"
+#inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_mutight-Hist1/pre"
+#inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jetpt15-Hist1/pre"
+inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jetpt15-BJetHist1/pre"
 skimflistdir="/afs/cern.ch/user/i/$USER/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2016"
@@ -70,7 +75,8 @@ do
 	    echo -e "Adding files for sample: ${sample} and syst ${syst}"
 	    if [[ ${syst} == "cp5"* ]] || [[ ${syst} == "hdamp"* ]]  || [[ ${syst} == "mtop"* ]] ; then
 		if [[ $sample == *"TTbar"* ]]; then
-		    sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+		    #sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+		    sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 		    mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		    #expected_noffiles=`wc -l $skimflistdir/$year/${tunedict[$syst]}_${year}.txt | cut -f 1 -d " "`
 		    expected_noffiles=`wc -l $skimflistdir/$year/pre/${tunedict[$syst]}_${year}.txt | cut -f 1 -d " "`
@@ -78,7 +84,8 @@ do
 		    expected_noffiles=0
 		fi
 	    else
-		sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee  /tmp/$USER/out.log 2>&1
+		#sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee  /tmp/$USER/out.log 2>&1
+		sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 		mv histo_merged.root $inputdir/$year/syst/${sample}_syst-${syst}.root
 		#expected_noffiles=`wc -l $skimflistdir/$year/${sample}_${year}.txt | cut -f 1 -d " "`
 		expected_noffiles=`wc -l $skimflistdir/$year/pre/${sample}_${year}.txt | cut -f 1 -d " "`
@@ -113,7 +120,8 @@ do
 	    echo -e "\t ${file}" >> /tmp/$USER/fl.txt
 	done
 	echo -e "Adding files for sample ${sample}"
-	sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+	#sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt | tee /tmp/$USER/out.log 2>&1
+	sh ~/scripts/addhisto_file.sh /tmp/$USER/fl.txt > /tmp/$USER/out.log 2>&1
 	cp histo_merged.root $inputdir/$year/all/all_${sample}.root
 	mv histo_merged.root /tmp/$USER/all_${sample}.root	
     done

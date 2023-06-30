@@ -141,7 +141,7 @@ int PlotRatioSystematics(bool isBtag = 1, bool isMu = 1, int htype = 10){
 
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2022-08-25/ctrl_plt_pujetid/%d/llinear_hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2023-06-02/ctrl_plt_pujetid/%d/llinear_hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
   //const char* dir = "grid_v35_Syst/CBA_Skim_Syst_jetsmeared";

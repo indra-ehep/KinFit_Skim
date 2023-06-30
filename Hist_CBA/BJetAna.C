@@ -467,66 +467,6 @@ void BJetAna::SelectSyst()
   jecvar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   jervar012_g		= 1 ;		// 0:down, 1:norm, 2:up
   
-  // fNSyst = 34 ; 
-  // //fSystList = new char*[fNSyst];
-  // const char *syst[] = {"base", 
-  // 			"puup", "pudown", "mueffup", "mueffdown", 
-  // 			"eleeffup", "eleeffdown",  "jecup", "jecdown", 
-  // 			"jerup", "jerdown", "btagbup", "btagbdown", 
-  // 			"btaglup", "btagldown", "prefireup", "prefiredown",
-  // 			"pdfup", "pdfdown", "q2fup", "q2down",
-  // 			"isrup", "isrdown", "fsrup", "fsrdown",
-  // 			"iso20", "metup", "metdown",
-  //                       "cp5up","cp5down","hdampup","hdampdown", 
-  // 			"mtopup", "mtopdown"};
-  
-  // for(int isyst=0;isyst<fNSyst;isyst++){
-  //   //fSystList[isyst] = new char[20];
-  //   //strcpy(fSystList[isyst],syst[isyst]);
-  //   fSystList.push_back(syst[isyst]);
-  // }
-
-  // const char *systbase[] = {"base", 
-  // 			    "pdfup", "pdfdown", "q2up", "q2down",
-  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-  // 			    "puup", "pudown", "prefireup", "prefiredown",
-  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-  // 			    "pujetidup", "pujetiddown",  //19
-  // 			    // //OLD
-  // 			    // "btagbup", "btagbdown", 
-  // 			    // "btaglup", "btagldown", 
-  //                           // "bctag1up", "bctag1down", 
-  // 			    // "bctag2up", "bctag2down",
-  //                           // "bctag3up", "bctag3down" //10
-  // 			    //CShapeCalib EOY
-  // 			    "bcstatup", "bcstatdown",
-  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-  // 			    "bcbfragup", "bcbfragdown" //16
-  // 			    // CShapeCalib UL
-  // 			    // "bcstatup", "bcstatdown",
-  // 			    // "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-  // 			    // "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			    // "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-  // 			    // "bcxwjcup", "bcxwjcdown"//16
-
-  //                           };
-
-    // const char *systbase_2016[] = {"base", 
-    // 			    "pdfup", "pdfdown", "q2up", "q2down",
-    // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-    // 			    "puup", "pudown", "prefireup", "prefiredown",
-    // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-    // 			    "pujetidup", "pujetiddown",  //19
-    // 			    // CShapeCalib EOY
-    // 			    "bcstatup", "bcstatdown",
-    // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-    // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-    // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
-    // 			    "bcbfragup", "bcbfragdown" //16
-    //                         };
-
     const char *systbase_2016[] = {"base", 
 			    "pdfup", "pdfdown", "q2up", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
@@ -534,53 +474,43 @@ void BJetAna::SelectSyst()
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown"//16
+			    "bcxwjcup", "bcxwjcdown",//16
+			    "topptup", "topptdown"//2  
                             };
 
-      const char *systbase_2017[] = {"base", 
+    const char *systbase_2017[] = {"base", 
 			    "pdfup", "pdfdown", "q2up", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
 			    "puup", "pudown", "prefireup", "prefiredown",
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown"//16
+			    "bcxwjcup", "bcxwjcdown",//16
+			    "topptup", "topptdown"//2  
                             };
 
-      const char *systbase_2018[] = {"base", 
+    const char *systbase_2018[] = {"base", 
 			    "pdfup", "pdfdown", "q2up", "q2down",
 			    "isrup", "isrdown", "fsrup", "fsrdown",
 			    "puup", "pudown", "prefireup", "prefiredown",
 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
 			    "pujetidup", "pujetiddown",  //19
 			    // CShapeCalib UL
-			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-			    "bcxwjcup", "bcxwjcdown"//16
+			    "bcxwjcup", "bcxwjcdown",//16
+			     "topptup", "topptdown"//2  
                             };
-
-    // const char *systbase_2018[] = {"base", 
-    // 			    "pdfup", "pdfdown", "q2up", "q2down",
-    // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-    // 			    "puup", "pudown", "prefireup", "prefiredown",
-    // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-    // 			    "pujetidup", "pujetiddown",  //19
-    // 			    //CShapeCalib EOY
-    // 			    "bcstatup", "bcstatdown",
-    // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-    // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-    // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown" //14
-    //                         };
 
   if (fSyst == "base"){
 
@@ -591,15 +521,15 @@ void BJetAna::SelectSyst()
       fSystList.push_back(fSyst);       
     }else{
       if(fYear==2016){
-	fNSyst = 35; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2016[isyst]);
       }else if(fYear==2017){
-	fNSyst = 35; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2017[isyst]);
       }else if(fYear==2018){
-	fNSyst = 35; 
+	fNSyst = 39; 
 	for(int isyst=0;isyst<fNSyst;isyst++)
 	  fSystList.push_back(systbase_2018[isyst]);
       }
@@ -613,6 +543,102 @@ void BJetAna::SelectSyst()
     fSystList.push_back(fSyst);
 
   } else if (fSyst == "jecdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotpuup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotpudown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotrelup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotreldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotptup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotptdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "stotscaleup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "stotscaledown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "flavorqcdup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "flavorqcddown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "timeptetaup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "timeptetadown") {
     
     systType = kJECDown;
     jecvar012_g = 0;      
@@ -1265,7 +1291,7 @@ bool BJetAna::FillBTagObs(){
       
     }else{ //if(systType == kBase
       
-      if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+      if( (systType == kJECUp) or (systType == kJECDown) 
 	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	  or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -1647,7 +1673,7 @@ bool BJetAna::GetCTagWt(char CType, TString systname, double& ctagwt){
     // if(systname == "bcxwjdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xwj_Do ; 
     // if(systname == "bcxttup" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Up ;
     // if(systname == "bcxttdown" and (fYear==2016 or fYear==2018)) ctagwt = _bcTagWeight_xtt_Do ; 
-    if(systname == "jecup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "jecdown") ctagwt = _bcTagWeight_jes_Do ; 
+    if(systname == "bcjesup") ctagwt = _bcTagWeight_jes_Up ;		if(systname == "bcjesdown") ctagwt = _bcTagWeight_jes_Do ; 
     if(systname == "jerup") ctagwt = _bcTagWeight_jer_Up ;		if(systname == "jerdown") ctagwt = _bcTagWeight_jer_Do ; 
     // if(systname == "bcbfragup" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Up ;
     // if(systname == "bcbfragdown" and fYear==2016) ctagwt = _bcTagWeight_bfrag_Do ; 
@@ -1683,7 +1709,7 @@ bool BJetAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   if(systname == "bclhemurup") btagwt = _bcTagWeight_lhemur_Up ; if(systname == "bclhemurdown") btagwt = _bcTagWeight_lhemur_Do ; 
   if(systname == "isrup") btagwt = _bcTagWeight_isr_Up ; if(systname == "isrdown") btagwt = _bcTagWeight_isr_Do ; 
   if(systname == "fsrup") btagwt = _bcTagWeight_fsr_Up ; if(systname == "fsrdown") btagwt = _bcTagWeight_fsr_Do ; 
-  if(systname == "jecup") btagwt = _bcTagWeight_jes_Up ; if(systname == "jecdown") btagwt = _bcTagWeight_jes_Do ; 
+  if(systname == "bcjesup") btagwt = _bcTagWeight_jes_Up ; if(systname == "bcjesdown") btagwt = _bcTagWeight_jes_Do ; 
   if(systname == "jerup") btagwt = _bcTagWeight_jer_Up ; if(systname == "jerdown") btagwt = _bcTagWeight_jer_Do ; 
 
   // CShapeCalib UL
@@ -1692,6 +1718,9 @@ bool BJetAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   if(systname == "bcxdybup") btagwt = _bcTagWeight_xdyb_Up ; if(systname == "bcxdybdown") btagwt = _bcTagWeight_xdyb_Do ; 
   if(systname == "bcxdycup") btagwt = _bcTagWeight_xdyc_Up ; if(systname == "bcxdycdown") btagwt = _bcTagWeight_xdyc_Do ; 
   if(systname == "bcxwjcup") btagwt = _bcTagWeight_xwjc_Up ; if(systname == "bcxwjcdown") btagwt = _bcTagWeight_xwjc_Do ; 
+
+  //double topptwt = _topPtReWeight ; if(systname == "topptup") topptwt = _topPtReWeight*_topPtReWeight ;  if(systname == "topptdown") topptwt = 1.0 ;
+  double topptwt = 1.0 ; if(systname == "topptup") topptwt = 1.0 ;  if(systname == "topptdown") topptwt = 1.0 ;
   
   double pdfwt = 1.0 ; if(systname == "pdfup") pdfwt = _pdfweight_Up ; if(systname == "pdfdown") pdfwt = _pdfweight_Do ;
   double q2wt = 1.0 ; if(systname == "q2up") q2wt = _q2weight_Up ; if(systname == "q2down") q2wt = _q2weight_Do ;
@@ -1699,11 +1728,12 @@ bool BJetAna::GetCombinedWt(TString systname, double& combined_muwt, double& com
   double murwt = 1.0 ; if(systname == "bclhemurup") murwt = _muRweight_Up ; if(systname == "bclhemurdown") murwt = _muRweight_Do ; 
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
+
   
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
-  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
-  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
+  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * wt_ratio;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
+  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * wt_ratio;
 
   return true;
 }
@@ -2131,7 +2161,7 @@ bool BJetAna::FillKFCFObs(){
     if((singleMu and muonIsoCut) and !singleEle){      
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -2165,7 +2195,7 @@ bool BJetAna::FillKFCFObs(){
     if((singleMu and muonNonIsoCut) and !singleEle){      
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")	    
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -2197,7 +2227,7 @@ bool BJetAna::FillKFCFObs(){
     if(!singleMu and (singleEle and eleIsoCut)){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
@@ -2231,7 +2261,7 @@ bool BJetAna::FillKFCFObs(){
     if(!singleMu and (singleEle and eleNonIsoCut)){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
-	if( (systType == kJECUp and systname == "jecup") or (systType == kJECDown and systname == "jecdown") 
+	if( (systType == kJECUp) or (systType == kJECDown) 
 	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")

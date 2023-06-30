@@ -210,6 +210,13 @@ class KFObjectReso : public TSelector {
    Float_t	btag_cut_DeepCSVa;
    Float_t	btag_cut_DeepCSVb;
 
+   UInt_t   nTrigObj_;
+   Int_t    TrigObj_filterBits_[200];
+   Float_t  TrigObj_pt_[200];
+   Float_t  TrigObj_eta_[200];
+   Float_t  TrigObj_phi_[200]; 
+   Int_t    TrigObj_id_[200]; 
+
    //MET
    Float_t	MET_pt_;
    Float_t	MET_phi_;
@@ -268,6 +275,7 @@ class KFObjectReso : public TSelector {
    bool CheckTrigFilterVertex(void);
    bool passEleID(int eleInd, int cutVal, bool doRelisoCut);
 
+   double dR(double eta1, double phi1, double eta2, double phi2);
    ClassDef(KFObjectReso,2);
 
 };
@@ -359,6 +367,25 @@ void KFObjectReso::Init(TTree *tree)
   }
   
   if (fYear==2017){
+
+    fChain->SetBranchStatus("nTrigObj",1);
+    fChain->SetBranchAddress("nTrigObj", &nTrigObj_);
+
+    fChain->SetBranchStatus("TrigObj_filterBits",1);
+    fChain->SetBranchAddress("TrigObj_filterBits", &TrigObj_filterBits_);
+    
+    fChain->SetBranchStatus("TrigObj_pt",1);
+    fChain->SetBranchAddress("TrigObj_pt", &TrigObj_pt_);
+    
+    fChain->SetBranchStatus("TrigObj_eta",1);
+    fChain->SetBranchAddress("TrigObj_eta", &TrigObj_eta_);
+    
+    fChain->SetBranchStatus("TrigObj_phi",1);
+    fChain->SetBranchAddress("TrigObj_phi", &TrigObj_phi_);
+    
+    fChain->SetBranchStatus("TrigObj_id",1);
+    fChain->SetBranchAddress("TrigObj_id", &TrigObj_id_);
+
     fChain->SetBranchStatus("HLT_IsoMu27",1);
     fChain->SetBranchAddress("HLT_IsoMu27",&HLT_IsoMu27_);
     

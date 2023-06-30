@@ -18,6 +18,14 @@
 #include "TParticlePDG.h"
 #include "TDatabasePDG.h"
 
+double KFObjectReso::dR(double eta1, double phi1, double eta2, double phi2){
+    double dphi = phi2 - phi1;
+    double deta = eta2 - eta1;
+    static const double pi = TMath::Pi();
+    dphi = TMath::Abs( TMath::Abs(dphi) - pi ) - pi;
+    return TMath::Sqrt( dphi*dphi + deta*deta );
+}
+
 //_____________________________________________________________________________
 void KFObjectReso::GetArguments(){
 
@@ -56,7 +64,7 @@ void KFObjectReso::GetArguments(){
     
     mu_Pt_cut = 26.;
     ele_Pt_cut = 30.;
-    jet_Pt_cut = 25.;
+    jet_Pt_cut = 15.;
     
     //DeepCSV
     btag_cut_DeepCSVa = 0.6001; 
@@ -69,7 +77,7 @@ void KFObjectReso::GetArguments(){
 
     mu_Pt_cut = 30.;
     ele_Pt_cut = 35.;
-    jet_Pt_cut = 25.;
+    jet_Pt_cut = 15.;
 
     btag_cut_DeepCSV = 0.4506;
     btag_cut = 0.3040 ;
@@ -78,8 +86,8 @@ void KFObjectReso::GetArguments(){
 
     mu_Pt_cut = 26.;
     ele_Pt_cut = 35.;
-    jet_Pt_cut = 25.;
-
+    jet_Pt_cut = 15.;
+    
     btag_cut_DeepCSV = 0.4168;
     btag_cut = 0.2783 ;
 
@@ -169,8 +177,8 @@ Int_t KFObjectReso::CreateHistoArrays()
   // nJetEtaBins = 1;
   // Float_t jetEtaBin[2] = {0.435, 0.783};
   
-  nETBins = 37;
-  Float_t ETBin[38] = {25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,  
+  nETBins = 42;
+  Float_t ETBin[43] = {15., 16., 18., 20., 22., 25., 30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,  
                        110., 120., 130., 140., 150., 160., 170., 180., 190., 200.,
 	               220., 240., 260., 280., 300.,
 	               330., 360., 390., 420.,
@@ -504,37 +512,51 @@ bool KFObjectReso::CheckTrigFilterVertex()
   if (fYear==2017){
     Pass_trigger_mu = HLT_IsoMu27_ ;
     
-    bool allSingleEGL1or = ( L1_SingleEG24_ ||
-			    L1_SingleEG26_ ||
-			    L1_SingleEG30_ ||
-			    L1_SingleEG32_ ||
-			    L1_SingleEG34_ ||
-			    L1_SingleEG36_ ||
-			    L1_SingleEG38_ ||
-			    L1_SingleEG40_ ||
-			    L1_SingleEG42_ ||
-			    L1_SingleEG45_ ||
-			    L1_SingleEG50_ ||
-			    L1_SingleEG34er2p1_ ||
-			    L1_SingleEG36er2p1_ ||
-			    L1_SingleEG38er2p1_ ||
-			    L1_SingleIsoEG24er2p1_ ||
-			    L1_SingleIsoEG26er2p1_ ||
-			    L1_SingleIsoEG28er2p1_ ||
-			    L1_SingleIsoEG30er2p1_ ||
-			    L1_SingleIsoEG32er2p1_ ||
-			    L1_SingleIsoEG34er2p1_ ||
-			    L1_SingleIsoEG36er2p1_ ||
-			    L1_SingleIsoEG24_ ||
-			    L1_SingleIsoEG26_ ||
-			    L1_SingleIsoEG28_ ||
-			    L1_SingleIsoEG30_ ||
-			    L1_SingleIsoEG32_ ||
-			    L1_SingleIsoEG34_ ||
-			    L1_SingleIsoEG36_ ||
-			    L1_SingleIsoEG38_ );
+    // bool allSingleEGL1or = ( L1_SingleEG24_ ||
+    // 			    L1_SingleEG26_ ||
+    // 			    L1_SingleEG30_ ||
+    // 			    L1_SingleEG32_ ||
+    // 			    L1_SingleEG34_ ||
+    // 			    L1_SingleEG36_ ||
+    // 			    L1_SingleEG38_ ||
+    // 			    L1_SingleEG40_ ||
+    // 			    L1_SingleEG42_ ||
+    // 			    L1_SingleEG45_ ||
+    // 			    L1_SingleEG50_ ||
+    // 			    L1_SingleEG34er2p1_ ||
+    // 			    L1_SingleEG36er2p1_ ||
+    // 			    L1_SingleEG38er2p1_ ||
+    // 			    L1_SingleIsoEG24er2p1_ ||
+    // 			    L1_SingleIsoEG26er2p1_ ||
+    // 			    L1_SingleIsoEG28er2p1_ ||
+    // 			    L1_SingleIsoEG30er2p1_ ||
+    // 			    L1_SingleIsoEG32er2p1_ ||
+    // 			    L1_SingleIsoEG34er2p1_ ||
+    // 			    L1_SingleIsoEG36er2p1_ ||
+    // 			    L1_SingleIsoEG24_ ||
+    // 			    L1_SingleIsoEG26_ ||
+    // 			    L1_SingleIsoEG28_ ||
+    // 			    L1_SingleIsoEG30_ ||
+    // 			    L1_SingleIsoEG32_ ||
+    // 			    L1_SingleIsoEG34_ ||
+    // 			    L1_SingleIsoEG36_ ||
+    // 			    L1_SingleIsoEG38_ );
     
-    Pass_trigger_ele = ( HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or );
+    // Pass_trigger_ele = ( HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or );
+
+    bool isL1SeedAND = false;
+    for(int itobj = 0; itobj < int(nTrigObj_) and nTrigObj_ <= 200; itobj++){
+      if((TrigObj_filterBits_[itobj] & 1024) && TrigObj_pt_[itobj]>32.0 && TrigObj_id_[itobj]==11){
+	for(int eleInd = 0; eleInd < int(nEle_) and int(nEle_) <= 20 ; ++eleInd){
+	  double deltaR = dR(eleEta_[eleInd],  elePhi_[eleInd], TrigObj_eta_[itobj], TrigObj_phi_[itobj]);
+	  if(deltaR < 0.1){
+	    isL1SeedAND = true;
+	    break;
+	  }
+	}
+      }
+    }
+    Pass_trigger_ele = isL1SeedAND ;
     
   }
   if (fYear==2018){

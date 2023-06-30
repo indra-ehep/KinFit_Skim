@@ -26,8 +26,9 @@ tunedict["mtopdown"]="mtopdown_TTbar"
 syst_base="base iso20"
 #syst_base="base"
 
-#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso30"
-inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-Hist1"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_HLTeleEmul"
+inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_HLTeleEmul-BJetHist1"
+#inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_HLTeleEmul-Hist1"
 skimflistdir="/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2017 2018"

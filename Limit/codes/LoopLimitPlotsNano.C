@@ -146,7 +146,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   //cout<<std::setprecision(4)<<endl;
   // cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
-  // cout<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
+    //cout<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
     expY1sH[i1] = TMath::Abs(expY1sH[i1]-expY[i1]);
     expY1sL[i1] = TMath::Abs(expY1sL[i1]-expY[i1]);
     expY2sH[i1] = TMath::Abs(expY2sH[i1]-expY[i1]);
@@ -160,13 +160,13 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
     // cout<<"$"<<std::setprecision(2)<<100*expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
     //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$\n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
     if(obs){
-      // printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
-      // fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       Val.push_back(res);
     }else{
-      // printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
-      // fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ \n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
+      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ \n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ ",expY[i1],expY1sH_[i1],expY1sL_[i1]);
       Val.push_back(res);
     }
@@ -261,7 +261,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   
   double totLumi = 137.1; //2016
   if(year_dir.Contains("Run2"))
-    totLumi = 137.6; //run2
+    totLumi = 138; //run2
   if(year_dir.Contains("2016"))
     totLumi = 36.3; // 2016
   if(year_dir.Contains("2017"))
@@ -276,7 +276,11 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   pt->SetLineColor(0);
   pt->SetFillColor(0);
   pt->SetTextFont(42);
-  TText *text = pt->AddText(Form("%3.1f fb^{-1} (13 TeV)",totLumi));
+  TText *text = 0x0;
+  if(year_dir.Contains("Run2"))
+    text = pt->AddText(Form("%3.0f fb^{-1} (13 TeV)",totLumi));
+  else
+    text = pt->AddText(Form("%3.1f fb^{-1} (13 TeV)",totLumi));
   //TText *text = pt->AddText(dir+":  CMS Preliminary,    #sqrt{s} = 13 TeV,    35.45 fb^{-1}; ");
   //text->SetTextAlign(11); //left aligned
   text->SetTextAlign(32); //left aligned
@@ -314,15 +318,16 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   // line->Draw("SAME");
 
   gPad->RedrawAxis();
-  TString outFile = "limit_"+CHANNEL+"_"+CAT;
-  TString outDir = "limit/"+CHANNEL+"/"+CAT;
-  cout<< year_dir+CHANNEL+".pdf" << endl;
-  //gPad->SaveAs(outDir+"/"+outFile+".pdf");
+  //TString outFile = "limit_"+CHANNEL+"_"+CAT;
+  TString outFile = CHANNEL;
+  //TString outDir = "local/"+CHANNEL+"/"+CAT;
+  //TString outDir = year_dir+CHANNEL+"/"+CAT;
+  TString outDir = year_dir;
+  gPad->SaveAs(outDir+"/"+outFile+".pdf");
   //gPad->SaveAs("result.pdf");
-  gPad->SaveAs(year_dir+CHANNEL+".pdf");
   if(isOut){
-    //TFile *fout = new TFile(outDir+"/"+outFile+".root", "RECREATE");
-    TFile *fout = new TFile("result.root", "RECREATE");
+    TFile *fout = new TFile(outDir+"/"+outFile+".root", "RECREATE");
+    //TFile *fout = new TFile("result.root", "RECREATE");
     expected->Write("expected");
     observed->Write("observed");
     oneSigma->Write("oneSigma");
@@ -331,10 +336,8 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   }
 }
 
-void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2016/ExcL/"){
+void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/40_trigSF-iter1_bld_excLMT/Run2/Comb/"){
   
-  // LimitPlotter("mu", "Cat1_Inc",     false, true );
-  // LimitPlotter("ele", "Cat1_Inc",     false, true );
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
     
@@ -342,16 +345,35 @@ void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/09_elereliso-Nan
   LimitPlotter(year_dir, eleVal, "ele", "Cat1_Inc", false, true );
   LimitPlotter(year_dir, mueleVal, "mu_ele", "Cat1_Inc", false, true );
 
-  cout<<"\\centering\\begin{adjustbox}{width=\\textwidth}"<<endl;
-  cout<<"\\begin{tabular}{ | c | c | c | c | }\\hline"<<endl;
-  cout<<"\\multicolumn{4}{|c|}{Tight WP}\\\\\\hline"<<endl;
-  cout<<"mass point     & $\\mu$ + jets  & $e$ + jets  & $l$ + jets  \\\\ \\cline{2-4}"<<endl;
-  cout<<"&  expected      & expected     & expected      \\\\ \\hline"<<endl;
-  for(int i = 0; i < int(muVal.size()) ; i++)
-    if(i==(int(muVal.size())-1))
+  string table_name = "";
+  if(year_dir.Contains("Exc")){
+    if(year_dir.Contains("ExcL"))
+      table_name = "Loose WP";
+    else if(year_dir.Contains("ExcM"))
+      table_name = "Medium WP";
+    else if(year_dir.Contains("ExcT"))
+      table_name = "Tight WP";
+  }else{
+    TObjArray *array = year_dir.Tokenize("/");
+    cout << "array->GetEntriesFast() : " << array->GetEntriesFast() << endl;
+    TString str = ((TObjString *) array->At(array->GetEntriesFast()-2))->GetString();
+    table_name = str.Data();
+  }
+  ofstream fout;
+  fout.open(Form("%s/limit.tex",year_dir.Data()));
+  fout<<"\\begin{tabular}{ | c | c | c | c | }\\hline"<<endl;
+  fout<<"\\multicolumn{4}{|c|}{"<< table_name <<"}\\\\\\hline"<<endl;
+  fout<<"mass point     & $\\mu$ + jets  & $e$ + jets  & $l$ + jets  \\\\ \\cline{2-4}"<<endl;
+  fout<<"&  expected      & expected     & expected      \\\\ \\hline"<<endl;
+  for(int i = 0; i < int(muVal.size()) ; i++){
+    if(i==(int(muVal.size())-1)){
       cout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;
-    else
+      fout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\\\hline" << endl;
+    }else{
       cout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\" << endl;
-  cout<<"\\end{tabular}"<<endl;
-  cout<<"\\end{adjustbox}"<<endl;
+      fout << "$m_{H^{\\pm}}$ = "<< X[i] <<" GeV " << muVal[i] << " " << eleVal[i] << " " << mueleVal[i] << "\\\\" << endl;
+    }
+  }
+  fout<<"\\end{tabular}"<<endl;
+  fout.close();
 }

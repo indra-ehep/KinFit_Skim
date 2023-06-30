@@ -50,22 +50,24 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-# condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_kfoffset
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_kfoffset
-# condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_kfoffset
-# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_kfoffset
-# condorOutDir4=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_kfoffset
-condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_kfoffset/post
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_kfoffset/post
-condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_kfoffset/post
-condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_kfoffset/post
-condorOutDir4=/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_kfoffset/post
+# #condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_lowjetpt-highmet
+# #condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_lowjetpt-highmet
+#condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_lowjetpt-highmet/pre
+#condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_lowjetpt-highmet/pre
+
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet
+# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet
+# condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_lowjetpt-highmet
+
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet/pre
+condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet/pre
+condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_lowjetpt-highmet/pre
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
     #xrdcp -f ${sample}_tree_*.root root://se01.indiacms.res.in:1094/${condorOutDir}/${year} 
-    xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
+    #xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir}/${year}
     xrdcp -f ${sample}_hist_*.root root://eosuser.cern.ch/${condorOutDir1}/${year}
     xrdcp -f ${sample}_bjet_*.root root://eosuser.cern.ch/${condorOutDir3}/${year}
     xrdcp -f ${sample}_tree_*.root root://eosuser.cern.ch/${condorOutDir4}/${year}

@@ -114,7 +114,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<GetInclusive("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl; outFile<<"\\\\"<<endl;
   outFile<<GetInclusive("VV", ifile++, false, year, isKFL, isInc, cType, muTot, eleTot)<<endl; outFile<<"\\\\"<<endl; ifile = ifile+2;
   //outFile<<GetInclusive("MC QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; outFile<<"\\\\"<<endl; ifile++ ;
-  outFile<<GetInclusive("DD QCD", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; outFile<<"\\\\"<<endl; ifile++ ;
+  outFile<<GetInclusive("QCD multijet", ifile++, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; outFile<<"\\\\"<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;
   outFile<<GetInclusive("All background", ifile, true, year, isKFL, isInc, cType, muTot, eleTot)<<endl; outFile<<"\\\\"<<endl; ifileData = ifile;
   outFile<<"\\hline "<<endl;
@@ -174,7 +174,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
+  outFile<<GetDifferential("QCD multijet", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
   ifile = 1;
   ismu = false;
   outFile<<"\\hline "<<endl;
@@ -196,7 +196,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<GetDifferential("W + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$Z/\\gamma$ + jets", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("VV", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl; ifile = ifile+2;
-  outFile<<GetDifferential("DD QCD", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
+  outFile<<GetDifferential("QCD multijet", ifile++, true, year, isKFL, isInc, cType, ismu)<<endl; ifile++ ;
   outFile<<"\\hline "<<endl;  
   outFile<<"\\hline "<<endl;
   outFile<<"\\end{tabular}"<<endl;
@@ -338,7 +338,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<"\\hline "<<endl;
   cType = 'L';   ifile = 1;
   outFile<<"loose "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
@@ -358,7 +358,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<"\\hline "<<endl;  
   cType = 'M';   ifile = 1;
   outFile<<"medium "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
@@ -378,7 +378,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<"\\hline "<<endl;  
   cType = 'T';   ifile = 1;
   outFile<<"tight "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
@@ -433,7 +433,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<"\\hline "<<endl;
   cType = 'L';   ifile = 1;
   outFile<<"loose "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
@@ -453,7 +453,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<"\\hline "<<endl;  
   cType = 'M';   ifile = 1;
   outFile<<"medium "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
@@ -473,7 +473,7 @@ int PrepMjjSystTableV8UL(int year = 2016)
   outFile<<"\\hline "<<endl;  
   cType = 'T';   ifile = 1;
   outFile<<"tight "<<endl;
-  outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
+  outFile<<GetDifferential("$H^{+} + H^{-} (m=80$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=90$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=100$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;
   outFile<<GetDifferential("$H^{+} + H^{-} (m=110$ GeV)", ifile++, false, year, isKFL, isInc, cType, ismu)<<endl;

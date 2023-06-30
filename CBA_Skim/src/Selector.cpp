@@ -195,7 +195,7 @@ void Selector::filter_electrons(EventTree *event){
     
     bool passMVALooseID = tree->eleIDmvaLoose_[eleInd];
     bool passMVAWP80ID = tree->eleIDmvaWP80_[eleInd];
-    //bool passMVAWP90ID = tree->eleIDmvaWP90_[eleInd];
+    bool passMVAWP90ID = tree->eleIDmvaWP90_[eleInd];
     
     bool passRelIsoSel = ((absSCEta < 1.479 && PFrelIso_corr < ele_RelIso_tight_EB) ||
 			   (absSCEta > 1.479 && PFrelIso_corr < ele_RelIso_tight_EE));
@@ -229,7 +229,8 @@ void Selector::filter_electrons(EventTree *event){
     bool eleSel = (passEtaEBEEGap && 
 		   absSCEta <= ele_Eta_cut &&
 		   pt >= ele_Pt_cut &&
-		   passMVAWP80ID &&
+		   //passMVAWP80ID &&
+		   passMVAWP90ID &&
 		   passD0 &&
 		   passDz);
 	
@@ -327,9 +328,11 @@ void Selector::filter_muons(EventTree *event){
     //bool mediumMuonID = tree->muMediumId_[muInd];
     bool looseMuonID = tree->muLooseId_[muInd]; //This is same as veto condition defined above
     bool mediumPromptMuonID = tree->muMediumPromptId_[muInd];
+    bool tightMuonID = tree->muTightId_[muInd];
     
     bool muSel = (TMath::Abs(eta) <= mu_Eta_tight &&
 		  pt >= mu_Pt_cut &&
+		  //tightMuonID
 		  mediumPromptMuonID 
 		  //mediumMuonID 
 		  );
@@ -358,7 +361,9 @@ void Selector::filter_jets(){
     double eta = tree->jetEta_[jetInd];
     double phi = tree->jetPhi_[jetInd];
     double smearedpt = tree->jetPt_[jetInd];
-    
+
+    if(pt<=jet_Pt_cut) continue;
+
     //Applied for Legacy Rereco
     // //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
     // int jetID_cutBit = 1;

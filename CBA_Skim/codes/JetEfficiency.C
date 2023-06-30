@@ -34,7 +34,8 @@
 int JetEfficiency()
 {
 
-  TFile *fin = TFile::Open("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/Skim_NanoAODUL/2016/TTbarPowheg_Semilept_postVFP_Skim_NanoAOD_1of27.root");
+  TFile *fin = TFile::Open("/Data/root_files/AOD_files/NanoAODUL/2017/HminusM120_Skim_NanoAOD.root");
+  //TFile *fin = TFile::Open("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/Skim_NanoAODUL/2016/TTbarPowheg_Semilept_postVFP_Skim_NanoAOD_1of27.root");
   // //TFile *fin = TFile::Open("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/Skim_NanoAODUL/2016/Wjets_postVFP_Skim_NanoAOD_5of13.root");
   // //TFile *fin = TFile::Open("/run/media/indra/DHEP_Storage_3/Data/NanoAOD/Raw_NanoAOD/2016/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8__RunIISummer20UL16NanoAODv9__106X_mcRun2_asymptotic_v17-v1__120000__38728C1E-8B09-954D-8F53-FD7D939FFFBE.root");
   TTree *tree = (TTree *)fin->Get("Events");

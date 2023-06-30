@@ -33,8 +33,8 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   // const char* dir = "grid_v40_Syst/CBA_elemva80";
   // const char* dir1 = "grid_v40_Syst/CBA_elemva80-CombHist";
   
-  const char* dir = "grid_v40_Syst/CBA_elereliso";
-  const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
+  // const char* dir = "grid_v40_Syst/CBA_elereliso";
+  // const char* dir1 = "grid_v40_Syst/CBA_elereliso-CombHist";
   
   // const char* dir = "grid_v40_Syst/CBA_bctag123";
   // const char* dir1 = "grid_v40_Syst/CBA_bctag123";
@@ -44,18 +44,40 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   
   // const char* dir = "grid_v40_Syst/CBA_ctagcorr";
   // const char* dir1 = "grid_v40_Syst/CBA_ctagcorr";
-
+  
   // const char* dir = "grid_v40_Syst/CBA_yearend22";
   // const char* dir1 = "grid_v40_Syst/CBA_yearend22";
-
+  
   // const char* dir = "grid_v40_Syst/CBA_notoppt";
   // const char* dir1 = "grid_v40_Syst/CBA_notoppt";
-
+  
   // const char* dir = "grid_v40_Syst/CBA_elereliso20";
   // const char* dir1 = "grid_v40_Syst/CBA_elereliso20-CombHist";
-
+  
   // const char* dir = "grid_v40_Syst/CBA_elereliso30";
   // const char* dir1 = "grid_v40_Syst/CBA_elereliso30-CombHist";
+  
+  // const char* dir = "grid_v40_Syst/CBA_kfoffset";
+  // const char* dir1 = "grid_v40_Syst/CBA_kfoffset-CombHist";
+  // const char* dir1 = "grid_v40_Syst/CBA_kfoffset-CombHist-toppt";
+
+  // const char* dir = "grid_v40_Syst/CBA_kfwidth";
+  // const char* dir1 = "grid_v40_Syst/CBA_kfwidth-CombHist";
+
+  // const char* dir = "grid_v40_Syst/CBA_mutight";
+  // const char* dir1 = "grid_v40_Syst/CBA_mutight-CombHist";
+  
+  // const char* dir = "grid_v40_Syst/CBA_elemva90";
+  // const char* dir1 = "grid_v40_Syst/CBA_elemva90-CombHist";
+
+  const char* dir = "grid_v40_Syst/CBA_trigSF";
+  const char* dir1 = "grid_v40_Syst/CBA_trigSF-CombHist";
+
+  // const char* dir = "grid_v40_Syst/CBA_trigSF-32HLTTrigObj";
+  // const char* dir1 = "grid_v40_Syst/CBA_trigSF-32HLTTrigObj-CombHist";
+
+  // const char* dir = "grid_v40_Syst/CBA_trigSF-TrigObj";
+  // const char* dir1 = "grid_v40_Syst/CBA_trigSF-TrigObj-CombHist";
 
   double totLumi = 36.31; //2016
   float lumiUnc = 1.012;//2.5% for 2016 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM

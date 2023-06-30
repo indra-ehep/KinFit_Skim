@@ -1679,7 +1679,25 @@ void SkimAna::Init(TTree *tree)
 	
     // tree->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
     // tree->SetBranchAddress("HLT_Ele32_WPTight_Gsf", &(event->HLT_Ele32_WPTight_Gsf_));
+
+    tree->SetBranchStatus("nTrigObj",1);
+    tree->SetBranchAddress("nTrigObj", &(event->nTrigObj_));
+
+    tree->SetBranchStatus("TrigObj_filterBits",1);
+    tree->SetBranchAddress("TrigObj_filterBits", &(event->TrigObj_filterBits_));
     
+    tree->SetBranchStatus("TrigObj_pt",1);
+    tree->SetBranchAddress("TrigObj_pt", &(event->TrigObj_pt_));
+    
+    tree->SetBranchStatus("TrigObj_eta",1);
+    tree->SetBranchAddress("TrigObj_eta", &(event->TrigObj_eta_));
+    
+    tree->SetBranchStatus("TrigObj_phi",1);
+    tree->SetBranchAddress("TrigObj_phi", &(event->TrigObj_phi_));
+    
+    tree->SetBranchStatus("TrigObj_id",1);
+    tree->SetBranchAddress("TrigObj_id", &(event->TrigObj_id_));
+
     tree->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
     tree->SetBranchAddress("HLT_Ele35_WPTight_Gsf", &(event->HLT_Ele35_WPTight_Gsf_));
 	
@@ -2371,8 +2389,10 @@ float SkimAna::topPtReweight()
     //   break;
   }
   
-  double sfTop    = exp(0.09494 - 0.00084*topPt);
-  double sfTopBar = exp(0.09494 - 0.00084*tbarPt);
+  // double sfTop    = exp(0.09494 - 0.00084*topPt);
+  // double sfTopBar = exp(0.09494 - 0.00084*tbarPt);
+  double sfTop    = exp(0.0615 - 0.0005*topPt);
+  double sfTopBar = exp(0.0615 - 0.0005*tbarPt);
   
   // if(topPt>0 && tbarPt>0 && momtop==momtbar)
   //   wt = wt*sqrt(sfTop*sfTopBar);

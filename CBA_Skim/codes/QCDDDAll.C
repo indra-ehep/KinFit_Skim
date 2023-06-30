@@ -126,7 +126,8 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist";
   
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
   const char* qcdfile = (isMu) ? Form("root_files/%s/%d/all_MCQCDMu.root",dir,year) : Form("root_files/%s/%d/all_MCQCDEle.root",dir,year) ;
@@ -152,7 +153,6 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   TH1D *hcf_RegA_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/Iso/%s",histname_RegA.c_str()));
   TH1D *hcf_RegA_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/Iso/%s",histname_RegA.c_str()));
   TH1D *hcf_RegA_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/Iso/%s",histname_RegA.c_str()) : Form("MCQCDEle/base/Iso/%s",histname_RegA.c_str())));  
-  
 
   TH1D *hcf_RegB_data	= (TH1D *)fin_nano_data->Get(((isMu) ? Form("DataMu/base/NonIso/%s",histname_RegB.c_str()) : Form("DataEle/base/NonIso/%s",histname_RegB.c_str())));
   TH1D *hcf_RegB_sig = 0x0 ;
@@ -186,8 +186,7 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   TH1D *hcf_RegD_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/base/LowMET/%s",histname_RegD.c_str()));
   TH1D *hcf_RegD_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/base/LowMET/%s",histname_RegD.c_str()));
   TH1D *hcf_RegD_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/base/LowMET/%s",histname_RegD.c_str()) : Form("MCQCDEle/base/LowMET/%s",histname_RegD.c_str()))); 
-
-
+  
   // TH1D *hcf_RegB_data	= (TH1D *)fin_nano_data->Get(histname_RegB.c_str());
   // TH1D *hcf_RegB_sig = 0x0 ;
   // if(year == 2016)
@@ -249,16 +248,16 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   hcf_RegD_bkg->Add(hcf_RegD_vbf);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  if(htype>=10 and htype<=17){
-    hcf_RegA_bkg->Rebin(50);
-    hcf_RegA_data->Rebin(50);
-    hcf_RegB_bkg->Rebin(50);
-    hcf_RegB_data->Rebin(50);
-    hcf_RegC_bkg->Rebin(50);
-    hcf_RegC_data->Rebin(50);
-    hcf_RegD_bkg->Rebin(50);
-    hcf_RegD_data->Rebin(50);
-  }
+  // if(htype>=10 and htype<=17){
+  //   hcf_RegA_bkg->Rebin(50);
+  //   hcf_RegA_data->Rebin(50);
+  //   hcf_RegB_bkg->Rebin(50);
+  //   hcf_RegB_data->Rebin(50);
+  //   hcf_RegC_bkg->Rebin(50);
+  //   hcf_RegC_data->Rebin(50);
+  //   hcf_RegD_bkg->Rebin(50);
+  //   hcf_RegD_data->Rebin(50);
+  // }
 
   //////////////////////////////// Get the QCD for regions ////////////////////////////////////////////////
   TH1D *hcf_RegD_QCD = (TH1D *)hcf_RegD_data->Clone("RegD_QCD");
@@ -281,7 +280,24 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   //hist->Scale(1./hist->Integral()); //Apply the following for normalized shape
   makeHistoPositive(hcf_RegA_QCD, false) ;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
+  if(htype>=10 and htype<=17){
+    hcf_RegA_bkg->Rebin(50);
+    hcf_RegA_data->Rebin(50);
+    hcf_RegB_bkg->Rebin(50);
+    hcf_RegB_data->Rebin(50);
+    hcf_RegC_bkg->Rebin(50);
+    hcf_RegC_data->Rebin(50);
+    hcf_RegD_bkg->Rebin(50);
+    hcf_RegD_data->Rebin(50);
+
+    hcf_RegA_QCD->Rebin(50);
+    hcf_RegB_QCD->Rebin(50);
+    hcf_RegC_QCD->Rebin(50);
+    hcf_RegD_QCD->Rebin(50);
+    
+  }
+
   //////////////////////////////// Calculate the QCD SF ///////////////////////////////////////////////////
   // double intDiffC   = hcf_RegC_QCD->Integral();
   // double errDiffC   = getStatUnc(hcf_RegC_QCD, 0.0);
@@ -597,6 +613,8 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
   TCanvas* c2 = 0x0;
   CalcRatio(hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
   PlotRatioCanvas(c2, hcf_RegD_QCD, hcf_RegC_QCD, h1byh2);
+  // CalcRatio(hcf_RegD_data, hcf_RegC_data, h1byh2);
+  // PlotRatioCanvas(c2, hcf_RegD_data, hcf_RegC_data, h1byh2);
   t1->Draw();
   t2->Draw();
   ///////////////////////////////////////////////////////////////////////////
@@ -677,9 +695,11 @@ int QCDDDAll(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 10)
 int CalcRatio(TH1D*& hDataEff, TH1D*& hSimEff, TH1D*& hRatio)
 {
 
-  // hDataEff->Sumw2();
-  // hSimEff->Sumw2();
-  
+  hDataEff->Sumw2();
+  hSimEff->Sumw2();
+  hDataEff->Scale(1./hDataEff->Integral());
+  hSimEff->Scale(1./hSimEff->Integral());
+
   hRatio = (TH1D*)hDataEff->Clone(Form("hRatio_%d",icounter++));
   hRatio->SetTitle("");
   hRatio->Divide(hSimEff);

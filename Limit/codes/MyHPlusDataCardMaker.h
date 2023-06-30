@@ -151,7 +151,13 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
     delete trimmedHist_Temp ; 
   }
   if(isNorm){
-    if(trimmedHist->Integral() > 0.) trimmedHist->Scale(hBase->Integral()/trimmedHist->Integral());
+    if(!hBase){
+      trimmedHist->Scale(1.0/trimmedHist->Integral());
+    }else{
+      cout<<"====trimmed name : "<<trimmedHist->GetName()<<", base name : "<<hBase->GetName() << endl;
+      cout<<"====trimmed integral : "<<trimmedHist->Integral()<<", base integral : "<<hBase->Integral() << endl;
+      if(trimmedHist->Integral() > 0.) trimmedHist->Scale(hBase->Integral()/trimmedHist->Integral());
+    }
   }
   if(isWrite){
     outFile->cd();
@@ -550,6 +556,12 @@ double MyHPlusDataCardMaker::getQcdSFNano(bool isMu, TString baseDir, TFile* fDa
   double intDiffC   = hDiffC->Integral();
   double intDiffD   = hDiffD->Integral();
   double ratioDiffDC = intDiffD/intDiffC;
+  if(TMath::AreEqualAbs(intDiffD,0.0,1.e-5) or TMath::AreEqualAbs(intDiffC,0.0,1.e-5)){ //in case hit zero use absolute instead of (Data-MC) this only influencens the control plot of MET pt
+    double num = TMath::Max(TMath::Abs(hData_RegD->Integral()-hMC_RegD->Integral()),1.0);
+    double deno = TMath::Max(TMath::Abs(hData_RegC->Integral()-hMC_RegC->Integral()),1.0);
+    ratioDiffDC = num/deno;
+  }
+  cout<<"intDiffC : " << intDiffC <<", intDiffD : "<<intDiffD<<", ratioDiffDC : " << ratioDiffDC<<endl;
   return ratioDiffDC;
   
 }

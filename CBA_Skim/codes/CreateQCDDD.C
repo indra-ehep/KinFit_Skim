@@ -31,78 +31,19 @@ int CreateQCDDD(int year = 2016)
   int QCDDDAll(bool isBtag, bool isMu, int htype,int year,TDirectory *d3, const char *, const char *, TH1D *hDD);
   string GetHistName(bool isBtag, bool isMu, int htype);
   
-  //int year = 2018;
-  //const char* dir = "grid_v40_Syst/CBA_CTagValidated";
-  //const char* dir = "grid_v40_Syst/CBA_CTagValidated-Hist";
-  //const char* dir = "grid_v40_Syst/CBA_CTagReWt";
-  //const char* dir = "grid_v40_Syst/CBA_CTagReWt-Hist";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuR";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuR-Hist";
-  //const char* dir = "grid_v40_Syst/CBA_muFmuRFSRDo";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-wtratio_evtwt";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_ctagv2-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_gdjsoncorr-CombHist/post";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80";  
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_elereliso";
-  const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  // const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_kfoffset";
+  //const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist-toppt";
+  //const char* dir = "grid_v40_Syst/CBA_kfwidth-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_mutight-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_elemva90-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_trigSF-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
   
-  //const char* dir = "grid_v40_Syst/CBA_elereliso20-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist";
-  
-  //const char* dir = "grid_v40_Syst/CBA_bctag123";  
-  //const char* dir = "grid_v40_Syst/CBA_ctagcorr";
-  //const char* dir = "grid_v40_Syst/CBA_yearend22";
-  //const char* dir = "grid_v40_Syst/CBA_notoppt";
-  
-  // const char *syst[] = {"base", 
-  // 			"pdfup", "pdfdown", "q2up", "q2down",
-  // 			"isrup", "isrdown", "fsrup", "fsrdown", 
-  // 			"puup", "pudown","prefireup", "prefiredown",
-  // 			"mueffup", "mueffdown", "eleeffup", "eleeffdown",
-  // 			"pujetidup", "pujetiddown", "metup", "metdown",
-  // 			"jecup", "jecdown", "jerup", "jerdown",
-  // 			"iso20", //26
-  // 			//Followings are only for TTbar not for QCD DDD
-  // 			//"cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown",
-  // 			//The followings are used in earlier versions of BTV applications 
-  // 			// "btagbup", "btagbdown", 
-  // 			// "btaglup", "btagldown"
-  // 			// "bctag1up", "bctag1down",
-  // 			// "bctag2up", "bctag2down",
-  // 			// "bctag3up", "bctag3down", //10
-  // 			//CShapeCalib EOY
-  // 			"bcstatup", "bcstatdown",
-  // 			"bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			"bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // 			"bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", 
-  // 			"bcbfragup", "bcbfragdown" //16
-  // 			// CShapeCalib UL
-  // 			// "bcstatup", "bcstatdown",
-  // 			// "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-  // 			// "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			// "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-  // 			// "bcxwjcup", "bcxwjcdown"//16
-  // };
-  
-  // const char *systbase_2016[] = {"base", 
-  // 			    "pdfup", "pdfdown", "q2up", "q2down",
-  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-  // 			    "puup", "pudown", "prefireup", "prefiredown",
-  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-  // 			    "pujetidup", "pujetiddown", "metup", "metdown",
-  // 			    "jecup", "jecdown", "jerup", "jerdown",
-  // 			    "iso20",  //26
-  // 			    // CShapeCalib EOY
-  // 			    "bcstatup", "bcstatdown",
-  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			    "bcxdyup", "bcxdydown", "bcxstup", "bcxstdown", 
-  // 			    "bcxwjup", "bcxwjdown", "bcxttup", "bcxttdown", //14
-  // 			    "bcbfragup", "bcbfragdown" //16
-  //                           };
 
     const char *systbase_2017[] = {"base", 
     			    "pdfup", "pdfdown", "q2up", "q2down",
@@ -111,13 +52,17 @@ int CreateQCDDD(int year = 2016)
     			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
     			    "pujetidup", "pujetiddown", "metup", "metdown",
     			    "jecup", "jecdown", "jerup", "jerdown",
-    			    "iso20",  //26
+			    "stotpuup", "stotpudown", "stotrelup", "stotreldown", 
+			    "stotptup", "stotptdown", "stotscaleup", "stotscaledown", 
+			    "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",
+    			    "iso20",  //38
     			    // CShapeCalib UL
-    			    "bcstatup", "bcstatdown",
+			    "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",
     			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
     			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
     			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-    			    "bcxwjcup", "bcxwjcdown"//16
+			    "bcxwjcup", "bcxwjcdown",//16
+			    "topptup", "topptdown" //18
                             };
 
     // const char *systbase_2017[] = {"base", 
@@ -145,7 +90,7 @@ int CreateQCDDD(int year = 2016)
   d1->cd();
 
   //int maxsyst = (year==2018) ? 40 : 42 ;
-  int maxsyst = 42 ;
+  int maxsyst = 56 ;
   //int maxsyst = 2 ;
   
   for(int isys = 0 ; isys < maxsyst ; isys++) {
@@ -160,14 +105,15 @@ int CreateQCDDD(int year = 2016)
     TDirectory *d3 = d2->mkdir("Iso");
     d3->cd();
     TH1D *hDD;
-    int htype_max[2] = {21, 10};
+    int htype_max[2] = {32, 10};
     for(int ibtag = 0 ; ibtag < 2 ; ibtag++)
       for(int ismu = 0 ; ismu < 2 ; ismu++)
   	for(int htype = 0 ; htype <= htype_max[ibtag] ; htype++){
 	  // bool isBTag = (ibtag>0) ? true : false ;
 	  // bool isMu = (ismu>0) ? true : false ; 
 	  // cout<<"syst : "<<Form("%s",systbase_2017[isys])<<", ibtag : " << ibtag <<", isMu " << ismu <<", hype : " << htype <<", histname : " << GetHistName(isBTag, isMu, htype) << endl;
-  	  if((htype>=11 and htype<=13) or (htype>=18 and htype<=21) ) continue;
+  	  //if((htype>=11 and htype<=13) or (htype>=18 and htype<=21) ) continue;
+	  //if(htype!=15) continue;
   	  if(year==2016)
   	    QCDDDAll((bool)ibtag, (bool)ismu, htype, year, d3, dir, systbase_2017[isys], hDD);
   	  else if(year==2017)
@@ -259,27 +205,49 @@ string GetHistName(bool isBtag = 1, bool isMu = 1, int htype = 0)
   else if (htype==10)
     histname += (isMu) ? "_mjj_mu" : "_mjj_ele" ;  
   else if (htype==11)
-    histname = (isMu) ? "_ct_IncL_mjj_mu" : "_ct_IncL_mjj_ele" ;  
-  else if (htype==12)
-    histname = (isMu) ? "_ct_IncM_mjj_mu" : "_ct_IncM_mjj_ele" ;  
-  else if (htype==13)
-    histname = (isMu) ? "_ct_IncT_mjj_mu" : "_ct_IncT_mjj_ele" ;  
-  else if (htype==14)
     histname = (isMu) ? "_ct_ExcL_mjj_mu" : "_ct_ExcL_mjj_ele" ;  
-  else if (htype==15)
+  else if (htype==12)
     histname = (isMu) ? "_ct_ExcM_mjj_mu" : "_ct_ExcM_mjj_ele" ;  
-  else if (htype==16)
+  else if (htype==13)
     histname = (isMu) ? "_ct_ExcT_mjj_mu" : "_ct_ExcT_mjj_ele" ;  
+  else if (htype==14)
+    histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_Exc0_mjj_ele" ;  
+  else if (htype==15)
+    histname = (isMu) ? "_ct_chad_ExcL_pt_jets_mu" : "_ct_chad_ExcL_pt_jets_ele" ;  
+  else if (htype==16)
+    histname = (isMu) ? "_ct_chad_ExcM_pt_jets_mu" : "_ct_chad_ExcM_pt_jets_ele" ;  
   else if (htype==17)
-    histname = (isMu) ? "_ct_Exc0_mjj_mu" : "_ct_ExcL_mjj_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcT_pt_jets_mu" : "_ct_chad_ExcT_pt_jets_ele" ;  
   else if (htype==18)
-    histname += (isMu) ? "_bjhadBdisc_mu" : "_bjhadBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcL_eta_jets_mu" : "_ct_chad_ExcL_eta_jets_ele" ;  
   else if (htype==19)
-    histname += (isMu) ? "_bjlepBdisc_mu" : "_bjlepBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcM_eta_jets_mu" : "_ct_chad_ExcM_eta_jets_ele" ;  
   else if (htype==20)
-    histname = (isMu) ? "_bjetBdisc_mu" : "_bjetBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcT_eta_jets_mu" : "_ct_chad_ExcT_eta_jets_ele" ;  
   else if (htype==21)
-    histname = (isMu) ? "_bjetNoBCBdisc_mu" : "_bjetNoBCBdisc_ele" ;  
+    histname = (isMu) ? "_ct_chad_ExcL_phi_jets_mu" : "_ct_chad_ExcL_phi_jets_ele" ;  
+  else if (htype==22)
+    histname = (isMu) ? "_ct_chad_ExcM_phi_jets_mu" : "_ct_chad_ExcM_phi_jets_ele" ;  
+  else if (htype==23)
+    histname = (isMu) ? "_ct_chad_ExcT_phi_jets_mu" : "_ct_chad_ExcT_phi_jets_ele" ;  
+  else if (htype==24)
+    histname = (isMu) ? "_ct_shad_ExcL_pt_jets_mu" : "_ct_shad_ExcL_pt_jets_ele" ;  
+  else if (htype==25)
+    histname = (isMu) ? "_ct_shad_ExcM_pt_jets_mu" : "_ct_shad_ExcM_pt_jets_ele" ;  
+  else if (htype==26)
+    histname = (isMu) ? "_ct_shad_ExcT_pt_jets_mu" : "_ct_shad_ExcT_pt_jets_ele" ;  
+  else if (htype==27)
+    histname = (isMu) ? "_ct_shad_ExcL_eta_jets_mu" : "_ct_shad_ExcL_eta_jets_ele" ;  
+  else if (htype==28)
+    histname = (isMu) ? "_ct_shad_ExcM_eta_jets_mu" : "_ct_shad_ExcM_eta_jets_ele" ;  
+  else if (htype==29)
+    histname = (isMu) ? "_ct_shad_ExcT_eta_jets_mu" : "_ct_shad_ExcT_eta_jets_ele" ;  
+  else if (htype==30)
+    histname = (isMu) ? "_ct_shad_ExcL_phi_jets_mu" : "_ct_shad_ExcL_phi_jets_ele" ;  
+  else if (htype==31)
+    histname = (isMu) ? "_ct_shad_ExcM_phi_jets_mu" : "_ct_shad_ExcM_phi_jets_ele" ;  
+  else if (htype==32)
+    histname = (isMu) ? "_ct_shad_ExcT_phi_jets_mu" : "_ct_shad_ExcT_phi_jets_ele" ;  
 
   return histname;
 }
@@ -430,7 +398,7 @@ int QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, const 
   // 	 hcf_RegA_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegD_bkg->Integral());
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  if(htype>=10 and htype<=17){
+  if(htype>=10 and htype<=14){
     int rebin = 50;
     hcf_RegA_bkg->Rebin(rebin);
     hcf_RegA_data->Rebin(rebin);

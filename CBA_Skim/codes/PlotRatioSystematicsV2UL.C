@@ -36,7 +36,7 @@ double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from system
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 int rebin = 50;
 
-int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, int htype = 10){
+int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 15){
 
   // Setters
   int SetGlobalStyle(void);
@@ -112,7 +112,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, in
 
   cout << "Histname : " << histname << endl;
 
-  string outputpdf = Form("figs/Week_Work_Report/2023-01-26/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2023-05-02/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //string outputpdf = Form("figs/Week_Work_Report/2023-01-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
@@ -154,8 +154,11 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, in
   //const char* dir = "grid_v40_Syst/CBA_ctagv2-bcwt1"; int rebin = 50;
   //const char* dir = "grid_v40_Syst/CBA_ctagv2pujetidtest"; int rebin = 1;
   //const char* dir = "grid_v40_Syst/CBA_elemva80-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
+  // const char* dir = "grid_v40_Syst/CBA_elereliso-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_elereliso30-CombHist"; 
+  //const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist-toppt";
+  //const char* dir = "grid_v40_Syst/CBA_kfwidth-CombHist";
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -228,12 +231,12 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, in
   //"mueffup", "mueffdown", "eleeffup", "eleeffdown",
   //const char *syst[] = {"pu", "jec", "jer", "btagb", "btagl", "prefire", "met"};
   //const char *syst[] = {"pu", "jec", "jer", "bcstat", "bclhemuf", "prefire", "met"};
-  const int nSyst = 18;
+  const int nSyst = 19;
   const char *syst[] = {   "mueff", "eleeff", "pu", "prefire",
   			   "jec",  "jer", "pdf", "bclhemur", //"q2"
   			   "bclhemuf", "isr", "fsr", "pujetid",
 			   "bcintp", "bcextp", "bcxdyb", "bcxdyc",        
-  			   "bcxwjc", "bcstat"};
+  			   "bcxwjc", "bcstat", "toppt"};
     
   TH1D *hLeptonUp, *hLeptonDown;
   if(isMu){
@@ -289,17 +292,17 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, in
     hcf_nano_sig->SetLineColor(kRed);
     hcf_nano_sig->SetLineWidth(2);
   }
-
+  
   hcf_nano_ttbar->SetFillColor(kCyan+1);
   
   hcf_nano_stop->SetFillColor(kViolet);
-
+  
   hcf_nano_wjets->SetFillColor(kYellow+1);
-
+  
   hcf_nano_dyjets->SetFillColor(kOrange+1);
   
   hcf_nano_vbf->SetFillColor(kGreen+2);
-
+  
   hcf_nano_qcd->SetFillColor(kBlue);
   hcf_nano_qcd_mc->SetFillColor(kBlue);
   
@@ -310,9 +313,7 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, in
   hs->Add(hcf_nano_qcd);
   hs->Add(hcf_nano_stop);
   hs->Add(hcf_nano_ttbar);
-
   
-
   TH1D *hData = (TH1D*)hcf_nano_data->Clone("hData"); 
   hData->SetTitle("");
   TH1D *hMC = (TH1D*)hcf_nano_bkg->Clone("hMC"); 
@@ -537,7 +538,33 @@ int PlotRatioSystematicsV2UL(int year = 2016, bool isBtag = 1, bool isMu = 1, in
   if(!isBtag and !isMu)
     t2->AddText("KinFit: (#it{e} + jets)");
   t2->Draw();
+  
+  TPaveText *t3 = 0x0; 
+  if(isBlinded)
+    t3 = new TPaveText(0.13, 0.75, 0.36, 0.80,"NDC");
+  else
+    t3 = new TPaveText(0.13, 0.75, 0.36, 0.80,"NDC");
+  t3->SetFillStyle(0);
+  t3->SetBorderSize(0);
+  t3->SetTextFont(42);
+  t3->SetTextSize(.05); 
+  if(isBlinded)
+    t3->SetTextSize(.035); 
+  t3->SetMargin(0.1);
+  if (htype==10)
+    t3->AddText("Inclusive");
+  else if (htype==14)
+    t3->AddText("Exclusive loose");
+  else if (htype==15)
+    t3->AddText("Exclusive medium");
+  else if (htype==16)
+    t3->AddText("Exclusive tight");
+  else if (htype==17)
+    t3->AddText("No charm");
 
+  
+  t3->Draw();
+  
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
   canvas->SaveAs(outputpdf.c_str());
   canvas->SaveAs("output.pdf");

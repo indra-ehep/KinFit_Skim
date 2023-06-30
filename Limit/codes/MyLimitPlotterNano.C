@@ -31,7 +31,7 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   {
   gStyle->SetFrameLineWidth(3);
   TCanvas *c1 = new TCanvas();
-  //gPad->SetLogy();
+  gPad->SetLogy();
   c1->SetGrid(0,0);
   c1->SetFillStyle(4000);
   c1->SetFillColor(10);
@@ -101,7 +101,13 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/Run2/Comb/";
   //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2018/Incl/";
   //TString year_dir = "TIFRAPAR-2023-01-15/02_bctag123_Exclusive/2016/";
-  TString year_dir = "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2018/Comb/";
+  //TString year_dir = "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2018/Comb/";
+  //TString year_dir = "TIFRAPAR-2023-01-15/21_elereliso_unbld_unNorm_cmdMiniAOD_7Shapes_RD/2016/Comb/";
+  //TString year_dir = "TIFRAPAR-2023-01-15/29_elereliso_unbld_7Shapes_bcStat_lnN/Default_lnN/2016/Comb/";
+  //TString year_dir = "TIFRAPAR-2023-01-15/29_elereliso_unbld_7Shapes_bcStat_lnN/bcStat_05prcnt/2016/Comb/";
+  //TString year_dir = "TIFRAPAR-2023-01-15/29_elereliso_unbld_7Shapes_bcStat_lnN/bcStat_10prcnt/2016/Comb/";
+  //TString year_dir = "TIFRAPAR-2023-01-15/29_elereliso_unbld_7Shapes_bcStat_lnN/bcStat_15prcnt/2016/Comb/";
+  TString year_dir = "TIFRAPAR-2023-01-15/11_elereliso-NanoAOD_logN/2016/Comb/";
   
   for(int i = 0 ; i < nMassPoints; i++){
     //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
@@ -180,8 +186,8 @@ void LimitPlotter(vector<string>& Val, TString CHANNEL="mu", TString CAT= "Cat1_
   // mg->SetMaximum(80.);
   // mg->SetMinimum(0.05);
 
-  mg->SetMaximum(3.0);
-  mg->SetMinimum(0.0001);
+  mg->SetMaximum(30.0);
+  mg->SetMinimum(0.1);
 
   TGraphAsymmErrors* expected = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL ,expX1sL , expX1sL, expX1sL);
   TGraphAsymmErrors* oneSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL, expX1sL,  expY1sL, expY1sH);
@@ -323,9 +329,9 @@ void MyLimitPlotterNano(){
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
     
-  LimitPlotter(muVal, "mu", "Cat1_Inc", false, true );
-  LimitPlotter(eleVal, "ele", "Cat1_Inc", false, true );
-  LimitPlotter(mueleVal, "mu_ele", "Cat1_Inc", false, true );
+  LimitPlotter(muVal, "mu", "Cat1_Inc", true, true );
+  LimitPlotter(eleVal, "ele", "Cat1_Inc", true, true );
+  LimitPlotter(mueleVal, "mu_ele", "Cat1_Inc", true, true );
   
   for(int i = 0; i < int(muVal.size()) ; i++)
     if(i==(int(muVal.size())-1))
