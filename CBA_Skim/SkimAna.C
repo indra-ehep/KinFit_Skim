@@ -1100,7 +1100,7 @@ void SkimAna::SetTrio()
     selector->mu_Eta_tight = 2.4;
     selector->ele_Pt_cut = 30.;
     selector->ele_Eta_cut = 2.4;
-    selector->jet_Pt_cut = 15.;
+    selector->jet_Pt_cut = 25.;
     selector->jet_Eta_cut = 2.4;
     
   }else if(fYear==2017){

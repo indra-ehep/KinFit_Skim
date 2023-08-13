@@ -27,7 +27,7 @@
 
 using namespace std;
 
-int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 42){
+int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 40){
   
   int PlotRatio(TH1D *h1, TH1D *h2, TH1D *h3, const char *cname);
   
@@ -74,13 +74,14 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 42){
 			     "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
 			     "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
 			     // CShapeCalib UL
-			     "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",               //38,   
+			     "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",                 //38,40   
 			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //40,42
 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //44,46
 			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //48,50
 			     "bcxwjcup", "bcxwjcdown",                                         //52
 			     "topptup", "topptdown",                                           //54
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,60
+			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,62
+			     //"jecup", "jecdown"
   };
   
   const char *syst_2017[] = {"base", 
@@ -162,7 +163,8 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 42){
   //const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_kfoffset-CombHist-toppt";
   //const char* inputdir = "grid_v40_Syst/CBA_kfwidth-CombHist";
   //const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_trigSF-CombHist";
-  const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_JECSplit-CombHist";
+  //const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_JECSplit-CombHist";
+  const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-CombHist";
   
   int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
   //int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
