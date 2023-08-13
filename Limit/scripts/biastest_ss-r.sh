@@ -16,7 +16,8 @@ indir_SR_base=$PWD/TIFRAPAR-2023-01-15/81_JECSplit_bld_all_uncorr_7Shapes_unboun
 indir_MR_base=$PWD/TIFRAPAR-2023-01-15/80_JECSplit_unbld_exc0x200_all_uncorr_7Shapes_unbound_qcdrate/${year}/Comb/${ch}/Cat1_Inc/Mass$mass
 
 #testdir=$PWD/local/${ch}_${year}_x200_t1K_test/Cat1_Inc/Mass$mass
-testdir=$PWD/local/${ch}_${year}_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass$mass
+#testdir=$PWD/local/${ch}_${year}_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass$mass
+testdir=$PWD/local/${ch}_${year}_x200_t${ntoys}_test_unbound_qcdrate_ss-r/Cat1_Inc/Mass$mass
 
 if [ ! -d $testdir ] ; then
     mkdir -p $testdir
@@ -60,16 +61,18 @@ echo $app
 
 # First perform FitDiagnostics SR+MR with mask for SR
 # Step 1 "Measure the Nuisance Parameters in the MR" (https://twiki.cern.ch/twiki/bin/viewauth/CMS/B2GStatisticsRecommendations#B2G_Requested_Statistical_Tests)
-combine datacard_SR_MR_WH${mass}.root -M FitDiagnostics --setParameters $app -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0  --cminDefaultMinimizerStrategy 0 --robustFit 1 -n _SRMR
+combine datacard_SR_MR_WH${mass}.root -M FitDiagnostics --setParameters $app -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --rMin -2.0 --rMax 2.0  --cminDefaultMinimizerStrategy 0 --robustFit 1 -n _SRMR
 echo "==== END OF STEP1 ========"
 
 # Step 2 "Generate Toys"
 python3 $basedir/importPars.py $testdir/datacard_SR_WH${mass}.txt $testdir/fitDiagnostics_SRMR.root
+echo "==== END OF import ========"
+
 combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=0.0 -n _SRMR_0
 echo "==== END OF STEP2 BRinj=0.0 ========"
 
 # Step 3 "Input the toys" + "Signal injection tests"
-combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_0.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0  --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_0
+combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_0.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --rMin -2.0 --rMax 2.0 --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_0
 echo "==== END OF STEP3 BRinj=0.0 ========"
 
 # Now repeat step2+3 other BR values from AsymptoticLimits
@@ -78,10 +81,11 @@ while read sigma brval
 do
     echo $brval  and $sigma
     echo "==== BEGIN for BRinj=$brval  ========"
-    #combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=$brval --freezeParameters BR  -n _SRMR_${sigma}
     combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=$brval  -n _SRMR_${sigma}
     echo "==== END OF STEP2 BRinj=$brval ========"
-    combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_${sigma}.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0  --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_${sigma}
+
+    combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_${sigma}.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --rMin -2.0 --rMax 2.0 --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_${sigma}
+
     echo "==== END OF STEP3 BRinj=$brval ========"
 done < $outfile
 echo "==== END Loop ========"
@@ -93,7 +97,7 @@ combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequent
 echo "==== END OF STEP2 BRinj=1.0 ========"
 
 # Step 3 "Input the toys" + "Signal injection tests"
-combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_1.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0  --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_1
+combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_1.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --rMin -2.0 --rMax 2.0 --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_1
 echo "==== END OF STEP3 BRinj=1.0 ========"
 
 
