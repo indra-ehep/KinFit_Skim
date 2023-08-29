@@ -33,7 +33,7 @@ Set the environment for CMSSW. The CMSSW_X_X_X can be created in other location 
    root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/savarghe/cms-hcs-run2/Skim_NanoAODUL/2017/TTTT_Skim_NanoAOD_6of6.root
    ```
 
-   We keep it at your preferred path and mention that path in 'runloop.sh' file
+   Keep it at your preferred path and mention that path in 'runloop.sh' file
    ```console
    input=../CBA_Skim/input/eos/$year/${sample}_${year}.txt
    ```
