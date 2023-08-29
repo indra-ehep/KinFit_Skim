@@ -89,7 +89,7 @@ Set the environment for CMSSW. The CMSSW_X_X_X can be created in other location 
 
    Once completed, it will produce file 'TTTT_pujetid_eff_raw_2017.root'
 
-   The last step is to modify 'codes/CreatePUJetIDEff.C' so that is processes the raw histograms of TTTT_pujetid_eff_raw_2017.root to produce 'TTTT_pujetid_eff_2017.root'. Use the later file for the CBA analysis.
+   The last step is to modify 'codes/CreatePUJetIDEff.C' so that it processes the raw histograms of TTTT_pujetid_eff_raw_2017.root and produce 'TTTT_pujetid_eff_2017.root'. Use the later file in CBA analysis.
    The expected contents of the two files are shown below.
 
    ```console
