@@ -1,0 +1,9 @@
+#!/bin/bash
+
+root -l -b $1 <<EOF
+TTree *ev = (TTree *)_file0->Get("Events")
+cout << "Nof events : " << ev->GetEntries() << endl;
+.q
+EOF
+
+

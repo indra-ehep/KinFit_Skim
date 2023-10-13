@@ -2,7 +2,7 @@ from NanoAOD_Gen_Samples import sampleList_2016, sampleList_2017, sampleList_201
 from getFilesFromDisk import getFileList_DAS, getNEvents_DAS, getFileList_EOS
 
 totevents = 0;
-for year in [2018]:
+for year in [2016,2017,2018]:
     splitJobs = {}
     print '--------------------------'
     print  year 
@@ -13,7 +13,7 @@ for year in [2018]:
     sampleList = sorted(sampleListTmp.items())
     for sampleName, sample in sampleList:
         nevents = getNEvents_DAS(sample)
-        evt = int(nevents)
+        evt = int(float(nevents))
         totevents += evt
         print("%s  %s"%(nevents,sample))
     print '=================='

@@ -113,7 +113,7 @@ int main(int ac, char** av){
 	    std::cout << "Will access files from xRootD" << std::endl;
 	    for (int i = 3; i < ac-1; i++){
 		av[i] = av[i+1];
-		//cout << av[i] << " ";
+		cout << av[i] << " ";
 	    }
 	    ac = ac-1;
 	}
