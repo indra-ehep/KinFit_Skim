@@ -4,10 +4,11 @@ import subprocess
 import ROOT as rt
 
 #directory = '/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016'
-#directory = '/eos/user/d/dugad/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2017'
-directory = '/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018'
+#directory = '/eos/user/d/dugad/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018'
+#directory = '/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018'
+directory = '/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2017/'
 
-for year in [2018]:
+for year in [2017]:
     splitJobs = {}
     print '----------------------------------------------'
     print  year 
@@ -33,7 +34,7 @@ for year in [2018]:
             tfile = rt.TFile(fname, 'READ')
             hEvents = tfile.Get('hEvents')
             nofevents += hEvents.GetEntries()/2.0
-        evt = int(nevents)
+        evt = int(float(nevents))
         diffevt = evt - nofevents
         difference = nJob - nskims
         print("%40s\t  %s\t  %i\t %i"%(sampleName, nevents, nofevents, diffevt))

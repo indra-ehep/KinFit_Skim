@@ -173,6 +173,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
 	chain->SetBranchStatus("Flag_ecalBadCalibFilter",1);
 	chain->SetBranchAddress("Flag_ecalBadCalibFilter",&Flag_ecalBadCalibFilterV2_);
     }
+    chain->SetBranchStatus("Flag_*",1);
 
     //TRIGGERS
     std::cout << "Triggers" << std::endl;
@@ -212,6 +213,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
 	chain->SetBranchAddress("HLT_OldMu100",&HLT_OldMu100_);
 	chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
 
+	chain->SetBranchStatus("nTrigObj*",1);
+	chain->SetBranchStatus("TrigObj_*",1);
     }
 
     if (year=="2018"){
