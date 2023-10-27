@@ -4136,7 +4136,7 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   if(singleMu) muonpfRelIso = event->muPFRelIso_[selector->Muons.at(0)];
   if(singleEle) elepfRelIso = event->elePFRelIso_[selector->Electrons.at(0)];
-
+  
   FillLeptonIso();
   
   if(!isData){
@@ -6392,7 +6392,7 @@ bool SkimAna::FillNjetWt(){
 
 bool SkimAna::FillLeptonIso(){
   
-  float metCut = 20.;
+  float metCut = METThreshold;
   float muIsoCut = 0.15;
   float eleIsoCut = 0.082;
   

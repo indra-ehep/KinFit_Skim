@@ -1,0 +1,12 @@
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_postVFP_Skim_NanoAOD_1of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_postVFP_Skim_NanoAOD_2of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_postVFP_Skim_NanoAOD_3of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_postVFP_Skim_NanoAOD_4of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_postVFP_Skim_NanoAOD_5of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_postVFP_Skim_NanoAOD_6of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_preVFP_Skim_NanoAOD_1of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_preVFP_Skim_NanoAOD_2of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_preVFP_Skim_NanoAOD_3of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_preVFP_Skim_NanoAOD_4of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_preVFP_Skim_NanoAOD_5of6.root
+/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HplusM050_preVFP_Skim_NanoAOD_6of6.root

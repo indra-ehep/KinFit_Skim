@@ -7,7 +7,8 @@
 #  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
 # **********************************************************************/
 
-samples_2016="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
+#samples_2016="DataMu DataEle TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
+samples_2016="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
 
 syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
 
@@ -25,14 +26,18 @@ syst_base="base iso20"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso20/post"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_elereliso30/post"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jetpt15/post"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet/post"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowmass/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso20-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_mutight-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elemva90-BJetHist1/post"
+#inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_lowmass-BJetHist1/post"
 #inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_mutight-Hist1/post"
 #inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_elemva90-Hist1/post"
-#inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jetpt15-Hist1/post"
-inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jetpt15-BJetHist1/post"
+#inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jetpt15-ptcut25-Hist1/post"
+#inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_lowjetpt-highmet-BJetHist1/post"
+inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_lowmass-Hist1/post"
 skimflistdir="/afs/cern.ch/user/i/$USER/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2016"
