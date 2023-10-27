@@ -6,9 +6,9 @@ import ROOT as rt
 #directory = '/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016'
 #directory = '/eos/user/d/dugad/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018'
 #directory = '/eos/user/i/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018'
-directory = '/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2017/'
+directory = '/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/'
 
-for year in [2017]:
+for year in [2018]:
     splitJobs = {}
     print '----------------------------------------------'
     print  year 
