@@ -13,7 +13,7 @@ def getRunList_DAS(sample):
     return names
 
 def getFileList_DAS(sample):
-    std_output, std_error = subprocess.Popen("dasgoclient --query='file dataset=%s status=*'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
+    std_output, std_error = subprocess.Popen("dasgoclient --query='file dataset=%s status=VALID'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
 
     names = std_output.decode("ascii").replace('\n',' ')
 

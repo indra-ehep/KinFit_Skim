@@ -28,6 +28,7 @@ old_1_MCType16      = 'RunIISummer19UL16NanoAODv2-106X_mcRun2_asymptotic_v15-v1'
 
 MCType16_preVFP     = 'RunIISummer20UL16NanoAODAPVv9-106X_mcRun2_asymptotic_preVFP_v11-v1'
 MCType16_preVFP_v2  = MCType16_preVFP.replace('-v1','-v2')
+MCType16_preVFP_v3  = MCType16_preVFP.replace('-v1','-v3')
 old_MCType16_preVFP = 'RunIISummer20UL16NanoAODAPVv2-106X_mcRun2_asymptotic_preVFP_v9-v1'
 old_1_MCType16_preVFP = 'RunIISummer19UL16NanoAODAPVv2-106X_mcRun2_asymptotic_preVFP_v9-v1'
 
@@ -259,6 +260,28 @@ sampleList_2016 = {
 # 'QCD_Pt170to300_Ele_postVFP'      : '/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType16_v2+'/NANOAODSIM',
 # 'QCD_Pt300toInf_Ele_postVFP'      : '/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType16_v2+'/NANOAODSIM',
 
+ 'TTZToQQ_preVFP': '/TTZToQQ_TuneCP5_13TeV_amcatnlo-pythia8/'+MCType16_preVFP_v2+'/NANOAODSIM',
+ 'TTZToLLNuNu_preVFP':'/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType16_preVFP+'/NANOAODSIM',
+ 'TTWJetsToLNu_preVFP': '/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType16_preVFP_v2+'/NANOAODSIM',
+ 'TTWJetsToQQ_preVFP': '/TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType16_preVFP_v2+'/NANOAODSIM',
+ 'TTGToLL_preVFP_preVFP': '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+MCType16_preVFP+'/NANOAODSIM',
+ 'TTGToLNu_preVFP': '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+MCType16_preVFP+'/NANOAODSIM',
+ 'TTGToQQ_preVFP': '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+MCType16_preVFP+'/NANOAODSIM',
+ 'TTHTobb_preVFP': '/ttHJetTobb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType16_preVFP+'/NANOAODSIM',
+ 'TTHToNonbb_preVFP': '/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType16_preVFP+'/NANOAODSIM',
+ 'TTHToGG_preVFP': '/ttHJetToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType16_preVFP_v3+'/NANOAODSIM',
+
+ 'TTZToQQ_postVFP': '/TTZToQQ_TuneCP5_13TeV_amcatnlo-pythia8/'+MCType16_v2+'/NANOAODSIM',
+ 'TTZToLLNuNu_postVFP':'/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTWJetsToLNu_postVFP': '/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTWJetsToQQ_postVFP': '/TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTGToLL_postVFP_postVFP': '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTGToLNu_postVFP': '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTGToQQ_postVFP': '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTHTobb_postVFP': '/ttHJetTobb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTHToNonbb_postVFP': '/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType16+'/NANOAODSIM',
+ 'TTHToGG_postVFP': '/ttHJetToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType16_v2+'/NANOAODSIM',
+
 }
 
 #--------------------------
@@ -284,6 +307,7 @@ sampleList_2016 = {
 #########################################################################################
 MCType17    = 'RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1'
 MCType17_v2 = MCType17.replace('-v1','-v2')
+MCType17_v3 = MCType17.replace('-v1','-v3')
 old_MCType17   = 'RunIISummer20UL17NanoAODv2-106X_mc2017_realistic_v8-v1'
 old_1_MCType17   = 'RunIISummer19UL17NanoAODv2-106X_mc2017_realistic_v8-v1'
 old_1_MCType17_v2 = old_1_MCType17.replace('-v1','-v2')
@@ -407,7 +431,27 @@ sampleList_2017 = {
 # 'QCD_Pt170to300_Ele'      : '/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType17_v2+'/NANOAODSIM',
 # 'QCD_Pt300toInf_Ele'      : '/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType17_v2+'/NANOAODSIM',
 
- 'TTZToLLNuNu' :  '/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTTT': '/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17_v2+'/NANOAODSIM',
+ # 'TTZToQQ': '/TTZToQQ_TuneCP5_13TeV_amcatnlo-pythia8/'+MCType17_v3+'/NANOAODSIM',
+ # 'TTZToLLNuNu':'/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTWJetsToLNu': '/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTWJetsToQQ': '/TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTGToLL': '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTGToLNu': '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTGToQQ': '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTHTobb': '/ttHJetTobb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTHToNonbb': '/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType17+'/NANOAODSIM',
+ # 'TTHToGG': '/ttHJetToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType17_v2+'/NANOAODSIM',
+ # 'WWW': '/WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'WWZ': '/WWZ_4F_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'WZZ': '/WZZ_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'ZZZ': '/ZZZ_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'WWG': '/WWG_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+ # 'WZG': '/WZG_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType17+'/NANOAODSIM',
+
+ # 'VHToEE': '/VHToEE_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType17_v2+'/NANOAODSIM',
+ # 'VHToGG': '/VHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType17_v2+'/NANOAODSIM',
+ # 'VHToNonbb': '/VHToNonbb_M125_TuneCP5_13TeV-amcatnloFXFX_madspin_pythia8/'+MCType17_v2+'/NANOAODSIM',
 
 }
 
@@ -434,6 +478,7 @@ sampleList_2017 = {
 #########################################################################################
 MCType18         ='RunIISummer20UL18NanoAODv9-106X_upgrade2018_realistic_v16_L1v1-v1'
 MCType18_v2      = MCType18.replace('-v1','-v2')
+MCType18_v3      = MCType18.replace('-v1','-v3')
 old_MCType18     ='RunIISummer20UL18NanoAODv2-106X_upgrade2018_realistic_v15_L1v1-v1'
 old_MCType18_ele ='RunIISummer19UL18NanoAODv2-106X_upgrade2018_realistic_v15_L1v1-v1'
 
@@ -556,6 +601,17 @@ sampleList_2018 = {
 # 'QCD_Pt120to170_Ele'      : '/QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
 # 'QCD_Pt170to300_Ele'      : '/QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
 # 'QCD_Pt300toInf_Ele'      : '/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV-pythia8/'+MCType18_v2+'/NANOAODSIM',
+
+ 'TTZToQQ': '/TTZToQQ_TuneCP5_13TeV_amcatnlo-pythia8/'+MCType18_v3+'/NANOAODSIM',
+ 'TTZToLLNuNu':'/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTWJetsToLNu': '/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTWJetsToQQ': '/TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTGToLL': '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTGToLNu': '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTGToQQ': '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTHTobb': '/ttHJetTobb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTHToNonbb': '/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/'+MCType18+'/NANOAODSIM',
+ 'TTHToGG': '/ttHJetToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+MCType18_v2+'/NANOAODSIM',
 
 
 }
