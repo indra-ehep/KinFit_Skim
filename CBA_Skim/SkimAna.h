@@ -1132,7 +1132,9 @@ class SkimAna : public TSelector {
 
    bool    SelectTTbarChannel();
    bool    FillMCInfo();
-  
+   std::vector<double> minGenDr(int, const EventTree*, std::vector<int>);
+   bool overlapRemoval(EventTree*, double, double, double, bool);
+    
    bool    ExecSerial(const char* infile);
    
    
