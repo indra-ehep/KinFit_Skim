@@ -1,0 +1,4 @@
+/Data/root_files/AOD_files/NanoAODUL/2017/TTGToLNu_Skim_NanoAOD_1of4.root
+/Data/root_files/AOD_files/NanoAODUL/2017/TTGToLNu_Skim_NanoAOD_2of4.root
+/Data/root_files/AOD_files/NanoAODUL/2017/TTGToLNu_Skim_NanoAOD_3of4.root
+/Data/root_files/AOD_files/NanoAODUL/2017/TTGToLNu_Skim_NanoAOD_4of4.root
