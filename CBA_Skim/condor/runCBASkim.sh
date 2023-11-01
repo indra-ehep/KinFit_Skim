@@ -5,7 +5,7 @@ myArray=( "$@" )
 #Array: Size=$#, an element=$1, all element = $@
 
 export SCRAM_ARCH=slc7_amd64_gcc10
-export CMSVER=CMSSW_12_3_6
+export CMSVER=CMSSW_12_4_10
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname

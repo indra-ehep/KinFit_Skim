@@ -18,7 +18,7 @@
 
 samples_2016="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
 #samples_2017="TTGToLL TTGToLNu TTGToQQ TTHToNonbb TTHTobb TTHToGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ VHToEE VHToGG VHToNonbb WWG WWW WWZ WZG WZZ ZZZ" #TTTT 
-samples_2017="TTTT" 
+samples_2017="TTbar" 
 samples_2018="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
 
 syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
