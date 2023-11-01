@@ -8,28 +8,7 @@ std::map<std::string, vector<double> > numberOfEvents;
 
 void initCrossSections(){
 
-  /* crossSections["HminusM080"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM090"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM100"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM110"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM120"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM130"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM140"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM150"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM155"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HminusM160"] = {19.13, 19.13, 19.13}; */
-
-  /* crossSections["HplusM080"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM090"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM100"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM110"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM120"] = {19.13, 19.13, 19.13}; //Try 56.15 to get the previous values */
-  /* crossSections["HplusM130"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM140"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM150"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM155"] = {19.13, 19.13, 19.13}; */
-  /* crossSections["HplusM160"] = {19.13, 19.13, 19.13}; */
-
+  // Corresponding to AN2021_224_v8.pdf 
   crossSections["HminusM040"] = {266.16, 266.16, 266.16};
   crossSections["HminusM050"] = {266.16, 266.16, 266.16};
   crossSections["HminusM060"] = {266.16, 266.16, 266.16};
@@ -60,96 +39,117 @@ void initCrossSections(){
   crossSections["HplusM155"] = {266.16, 266.16, 266.16};
   crossSections["HplusM160"] = {266.16, 266.16, 266.16};
 
-  /* crossSections["TTbarPowheg_Dilepton"] = {687.10, 0.0, 0.0}; */
-  /* crossSections["TTbarPowheg_Hadronic"] = {687.10, 0.0, 0.0}; */
-  /* crossSections["TTbarPowheg_Semilept"] = {687.10, 0.0, 0.0}; */
-  crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315};
-  crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352};
-  crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095};
-  
-  crossSections["TTbarPowheg_Dilepton_CP5up"]		 =  { 87.315, 87.315, 87.315};
-  crossSections["TTbarPowheg_Dilepton_CP5down"]	 =  { 87.315, 87.315, 87.315};
-  crossSections["TTbarPowheg_Dilepton_hdampup"]	 =  { 87.315, 87.315, 87.315};
-  crossSections["TTbarPowheg_Dilepton_hdampdown"]      =  { 87.315, 87.315, 87.315};
-  /* crossSections["TTbarPowheg_Dilepton_mtop1695"]       =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Dilepton_mtop1755"]       =  { 87.315, 87.315, 87.315}; */
-  crossSections["TTbarPowheg_Dilepton_mtop1715"]       =  { 87.315, 87.315, 87.315};
-  crossSections["TTbarPowheg_Dilepton_mtop1735"]       =  { 87.315, 87.315, 87.315};
 
-  crossSections["TTbarPowheg_Semilept_CP5up"]		 =  {364.352,364.352,364.352};
-  crossSections["TTbarPowheg_Semilept_CP5down"]	 =  {364.352,364.352,364.352};
-  crossSections["TTbarPowheg_Semilept_hdampup"]	 =  {364.352,364.352,364.352};
-  crossSections["TTbarPowheg_Semilept_hdampdown"]      =  {364.352,364.352,364.352};
-  /* crossSections["TTbarPowheg_Semilept_mtop1695"]       =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Semilept_mtop1755"]       =  {364.352,364.352,364.352}; */
-  crossSections["TTbarPowheg_Semilept_mtop1715"]       =  {364.352,364.352,364.352};
-  crossSections["TTbarPowheg_Semilept_mtop1735"]       =  {364.352,364.352,364.352};
+  //================================
+  //Updated following GEN OR by Soti
+  //================================
+
+  // Corresponding to AN2021_224_v8.pdf 
+  /* crossSections["TTbarPowheg_Dilepton"]			 =  { 87.315, 87.315, 87.315}; */
+  /* crossSections["TTbarPowheg_Semilept"]			 =  {364.352,364.352,364.352}; */
+  /* crossSections["TTbarPowheg_Hadronic"]			 =  {380.095,380.095,380.095}; */
+
+  // https://twiki.cern.ch/twiki/bin/view/LHCPhysics/TtbarNNLO (version r21, 2023-03-03, WolfgangWagner) = 833.9 pb
+  //Multiply by the numbers of eqn A,B,C of https://pdg.lbl.gov/2023/reviews/rpp2022-rev-top-quark.pdf, i.e. 45.7%, 43.8%,10.5% for hadronic, semileptonic and dilepton channels, respectively
+  crossSections["TTbarPowheg_Dilepton"]			 =  { 87.559, 87.559, 87.559};
+  crossSections["TTbarPowheg_Semilept"]			 =  {365.248,365.248,365.248};
+  crossSections["TTbarPowheg_Hadronic"]			 =  {381.092,381.092,381.092};
+  
+  crossSections["TTbarPowheg_Dilepton_CP5up"]		 =  { 87.559, 87.559, 87.559};
+  crossSections["TTbarPowheg_Dilepton_CP5down"]		 =  { 87.559, 87.559, 87.559};
+  crossSections["TTbarPowheg_Dilepton_hdampup"]		 =  { 87.559, 87.559, 87.559};
+  crossSections["TTbarPowheg_Dilepton_hdampdown"]	 =  { 87.559, 87.559, 87.559};
+  crossSections["TTbarPowheg_Dilepton_mtop1715"]	 =  { 87.559, 87.559, 87.559};
+  crossSections["TTbarPowheg_Dilepton_mtop1735"]	 =  { 87.559, 87.559, 87.559};
+
+  crossSections["TTbarPowheg_Semilept_CP5up"]		 =  {365.248,365.248,365.248};
+  crossSections["TTbarPowheg_Semilept_CP5down"]		 =  {365.248,365.248,365.248};
+  crossSections["TTbarPowheg_Semilept_hdampup"]		 =  {365.248,365.248,365.248};
+  crossSections["TTbarPowheg_Semilept_hdampdown"]	 =  {365.248,365.248,365.248};
+  crossSections["TTbarPowheg_Semilept_mtop1715"]	 =  {365.248,365.248,365.248};
+  crossSections["TTbarPowheg_Semilept_mtop1735"]	 =  {365.248,365.248,365.248};
     
-  crossSections["TTbarPowheg_Hadronic_CP5up"]		 =  {380.095,380.095,380.095};
-  crossSections["TTbarPowheg_Hadronic_CP5down"]	 =  {380.095,380.095,380.095};
-  crossSections["TTbarPowheg_Hadronic_hdampup"]	 =  {380.095,380.095,380.095};
-  crossSections["TTbarPowheg_Hadronic_hdampdown"]      =  {380.095,380.095,380.095};
-  /* crossSections["TTbarPowheg_Hadronic_mtop1695"]       =  {380.095,380.095,380.095}; */
-  /* crossSections["TTbarPowheg_Hadronic_mtop1755"]       =  {380.095,380.095,380.095}; */
-  crossSections["TTbarPowheg_Hadronic_mtop1715"]       =  {380.095,380.095,380.095};
-  crossSections["TTbarPowheg_Hadronic_mtop1735"]       =  {380.095,380.095,380.095};
+  crossSections["TTbarPowheg_Hadronic_CP5up"]		 =  {381.092,381.092,381.092};
+  crossSections["TTbarPowheg_Hadronic_CP5down"]		 =  {381.092,381.092,381.092};
+  crossSections["TTbarPowheg_Hadronic_hdampup"]		 =  {381.092,381.092,381.092};
+  crossSections["TTbarPowheg_Hadronic_hdampdown"]	 =  {381.092,381.092,381.092};
+  crossSections["TTbarPowheg_Hadronic_mtop1715"]	 =  {381.092,381.092,381.092};
+  crossSections["TTbarPowheg_Hadronic_mtop1735"]	 =  {381.092,381.092,381.092};
   
-  /* //UL */
-  /* crossSections["ST_s_channel"] = {3.55, 3.55, 3.55}; */
-  /* crossSections["ST_t_channel"] = {113.40, 113.40, 113.40}; */
-  /* crossSections["ST_tbar_channel"] = {67.93, 67.93, 67.93}; */
-  /* crossSections["ST_tW_channel"] = {32.45, 32.45, 32.45}; */
-  /* crossSections["ST_tbarW_channel"] = {32.51, 32.51, 32.51}; */
-  // MiniAOD
-  crossSections["ST_s_channel"]		=  {3.36, 3.36, 3.36}; //// Default setting
-  crossSections["ST_t_channel"]		=  {136.02, 136.02, 136.02};
-  crossSections["ST_tbar_channel"]		=  { 80.95,  80.95,  80.95};
-  crossSections["ST_tW_channel"]		=  { 35.85,  35.85,  35.85};
-  crossSections["ST_tbarW_channel"]		=  { 35.85,  35.85,  35.85};
+  // MiniAOD and Corresponding to AN2021_224_v8.pdf 
+  /* crossSections["ST_s_channel"]	=  {  3.36,   3.36,   3.36}; */
+  /* crossSections["ST_t_channel"]	=  {136.02, 136.02, 136.02}; */
+  /* crossSections["ST_tbar_channel"]	=  { 80.95,  80.95,  80.95}; */
+  /* crossSections["ST_tW_channel"]	=  { 35.85,  35.85,  35.85}; */
+  /* crossSections["ST_tbarW_channel"]	=  { 35.85,  35.85,  35.85}; */
 
-  /* //UL */
-  /* crossSections["Wjets"] = {53690.00, 53690.00, 53690.00}; */
-  /* crossSections["W1jets"] = {8919.00, 8919.00, 8919.00}; */
-  /* crossSections["W2jets"] = {2824.00, 2824.00, 2824.00}; */
-  /* crossSections["W3jets"] = {822.70, 822.70, 822.70}; */
-  /* crossSections["W4jets"] = {389.00, 389.00, 389.00}; */
-  /* //MiniAOD */
-  crossSections["Wjets"]			=  {50690., 50690., 50690.};//50380.0;
-  crossSections["W1jets"]			=  {9493.0, 9493.0, 9493.0};//9493.0;
-  crossSections["W2jets"]			=  {3120.0, 3120.0, 3120.0}; //3120.0;
-  crossSections["W3jets"]			=  { 942.3,  942.3,  942.3};//942.3;
-  crossSections["W4jets"]			=  { 524.2,  524.2,  524.2};//524.2;
+  //https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SingleTopNNLORef (version r20, 2023-02-27, LukasKretschmann)
+  crossSections["ST_s_channel"]		=  {  3.42,   3.42,   3.42}; 
+  crossSections["ST_t_channel"]		=  { 134.2,  134.2,  134.2};
+  crossSections["ST_tbar_channel"]	=  {  80.0,   80.0,   80.0};
+  crossSections["ST_tW_channel"]	=  { 39.65,  39.65,  39.65};
+  crossSections["ST_tbarW_channel"]	=  { 39.65,  39.65,  39.65};
 
-  /* crossSections["DYjetsM10to50"] = {15970.00, 0.0, 0.0}; */
-  crossSections["DYjetsM10to50"]	=  {15810.0, 15810.0, 15810.0}; //16290.
-  crossSections["DY1jetsM10to50"] = {565.30, 565.30, 565.30};
-  crossSections["DY2jetsM10to50"] = {314.80, 314.80, 314.80};
-  crossSections["DY3jetsM10to50"] = {76.94, 76.94, 76.94};
-  crossSections["DY4jetsM10to50"] = {28.61, 28.61, 28.61};
+  // MiniAOD and Corresponding to AN2021_224_v8.pdf 
+  crossSections["Wjets"]	=  {50690., 50690., 50690.};
+  crossSections["W1jets"]	=  {9493.0, 9493.0, 9493.0};
+  crossSections["W2jets"]	=  {3120.0, 3120.0, 3120.0}; 
+  crossSections["W3jets"]	=  { 942.3,  942.3,  942.3};
+  crossSections["W4jets"]	=  { 524.2,  524.2,  524.2};
 
-  /* //UL */
-  /* crossSections["DYjetsM50"] = {5361.00, 5361.00, 5361.00}; */
-  /* crossSections["DY1jetsM50"] = {927.80, 927.80, 927.80}; */
-  /* crossSections["DY2jetsM50"] = {292.70, 292.70, 292.70}; */
-  /* crossSections["DY3jetsM50"] = {86.27, 86.27, 86.27}; */
-  /* crossSections["DY4jetsM50"] = {40.85, 40.85, 40.85}; */
-  // MiniAOD
-  crossSections["DYjetsM50"]			=  {4963.0, 4963.0, 4963.0}; // 4957. , 6077.22 (NNLO) so kf = 1.2245 for LO=4963
-  crossSections["DY1jetsM50"]			=  {1012.0, 1012.0, 1012.0}; //1003.0
-  crossSections["DY2jetsM50"]			=  { 334.7,  334.7,  334.7}; //336.7
-  crossSections["DY3jetsM50"]			=  { 102.3,  102.3,  102.3}; //102.9
-  crossSections["DY4jetsM50"]			=  { 54.52,  54.52,  54.52}; //54.71
+  // MiniAOD and Corresponding to AN2021_224_v8.pdf 
+  crossSections["DYjetsM10to50"]	=  {15810.0, 15810.0, 15810.0}; 
+  crossSections["DY1jetsM10to50"]	= {565.30, 565.30, 565.30};
+  crossSections["DY2jetsM10to50"]	= {314.80, 314.80, 314.80};
+  crossSections["DY3jetsM10to50"]	= {76.94, 76.94, 76.94};
+  crossSections["DY4jetsM10to50"]	= {28.61, 28.61, 28.61};
+
+  // MiniAOD and Corresponding to AN2021_224_v8.pdf 
+  crossSections["DYjetsM50"]	=  {4963.0, 4963.0, 4963.0}; 
+  crossSections["DY1jetsM50"]	=  {1012.0, 1012.0, 1012.0}; 
+  crossSections["DY2jetsM50"]	=  { 334.7,  334.7,  334.7}; 
+  crossSections["DY3jetsM50"]	=  { 102.3,  102.3,  102.3}; 
+  crossSections["DY4jetsM50"]	=  { 54.52,  54.52,  54.52}; 
   
-  /* //UL */
-  /* crossSections["WW"] = {75.59, 75.59, 75.59}; */
-  /* crossSections["WZ"] = {27.49, 27.49, 27.49}; */
-  /* crossSections["ZZ"] = {12.11, 12.11, 12.11}; */
-  // MiniAOD
-  crossSections["WW"]				= {118.7, 118.7, 118.7};
-  crossSections["WZ"]				= {46.74, 46.74, 46.74};
-  crossSections["ZZ"]				= {17.72, 17.72, 17.72};
+  /* // MiniAOD and Corresponding to AN2021_224_v8.pdf  */
+  /* crossSections["WW"]	= {118.7, 118.7, 118.7};  */
+  /* crossSections["WZ"]	= {46.74, 46.74, 46.74};  */
+  /* crossSections["ZZ"]	= {17.72, 17.72, 17.72};  */
+  
+  //New following GEN OR
+  crossSections["WW"]	= {118.7, 118.7, 118.7}; //https://arxiv.org/pdf/1408.5243.pdf
+  crossSections["WZ"]	= {46.74, 46.74, 46.74}; //https://arxiv.org/pdf/1105.0020.pdf
+  crossSections["ZZ"]	= {16.91, 16.91, 16.91}; //https://arxiv.org/pdf/1405.2219.pdf
 
-  //UL
+  //First GEN OR following https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns (r155, 2022-11-02, IzaakNeutelings)
+  /* crossSections["TTZToQQ"]		=  {0.5297, 0.5297, 0.5297}; */
+  /* crossSections["TTZToLLNuNu"]	=  {0.2529, 0.2529, 0.2529}; */
+  /* crossSections["TTWJetsToLNu"]	=  {0.2043, 0.2043, 0.2043}; */
+  /* crossSections["TTWJetsToQQ"]	=  {0.4062, 0.4062, 0.4062}; */
+  /* crossSections["TTGToLL"]		=  {2.2204, 2.2204, 2.2204}; //1.495(MCM page for LO)* kf (=1.4852) of B2G-23-001 */
+  /* crossSections["TTGToLNu"]		=  {7.5092, 7.5092, 7.5092}; //5.056 * kf (=1.4852) of B2G-23-001 */
+  /* crossSections["TTGToQQ"]		=  {6.1621, 6.1621, 6.1621}; //4.149 * kf (=1.4852) of B2G-23-001 */
+  /* crossSections["TTHTobb"]		=  {0.2934, 0.2934, 0.2934}; */
+  /* crossSections["TTHToNonbb"]	=  {0.2151, 0.2151, 0.2151}; */
+  /* crossSections["TTHToGG"]		=  {0.0012, 0.0012, 0.0012}; */
+
+  //https://link.springer.com/article/10.1140/epjc/s10052-019-6746-z
+  crossSections["TTZToQQ"]      =  {0.6012, 0.6012, 0.6012}; //0.86 * br(Z->qq = 0.6991) https://pdg.lbl.gov/2022/listings/rpp2022-list-z-boson.pdf
+  crossSections["TTZToLLNuNu"]  =  {0.2588, 0.2588, 0.2588}; //0.86 * br(Z->ll+missing = 1-0.6991) https://pdg.lbl.gov/2022/listings/rpp2022-list-z-boson.pdf
+  crossSections["TTWJetsToLNu"] =  {0.1792, 0.1792, 0.1792}; //0.55 * br(W->lnu = 3*0.1086) https://pdg.lbl.gov/2022/listings/rpp2022-list-w-boson.pdf 
+  crossSections["TTWJetsToQQ"]  =  {0.3708, 0.3708, 0.3708}; //0.55 * br(W->qq = 0.6741)
+
+  crossSections["TTGToLL"]	=  {2.2204, 2.2204, 2.2204}; //1.495(MCM page for LO)* kf (=1.4852) of B2G-23-001 
+  crossSections["TTGToLNu"]	=  {7.5092, 7.5092, 7.5092}; //5.056 * kf (=1.4852) of B2G-23-001
+  crossSections["TTGToQQ"]	=  {6.1621, 6.1621, 6.1621}; //4.149 * kf (=1.4852) of B2G-23-001
+
+  //https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBR shared by Danny(IC)
+  //https://e-publishing.cern.ch/index.php/CYRM/issue/view/32/3 (see appendix E for 13 TeV and mH=125.25 GeV as in https://pdg.lbl.gov/2022/listings/rpp2022-list-higgs-boson.pdf) = 504.75 fb (NLO+EW)
+  crossSections["TTHTobb"]      =  {0.2919, 0.2919, 0.2919}; //0.50475 * br(SM H->bb = 0.5784 for mH=125.25 GeV ) https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBR (version r22, 2016-12-08, MarcoPieri)
+  crossSections["TTHToNonbb"]   =  {0.2128, 0.2128, 0.2128}; //0.50475 * br(SM H->nonbb = 1-0.5784 for mH=125.25 GeV ) https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBR (version r22, 2016-12-08, MarcoPieri)
+  crossSections["TTHToGG"]      =  {0.0011, 0.0011, 0.0011}; //0.50475 * br(SM H->gamma gamma = 0.002270 for mH=125.25 GeV ) https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBR (version r22, 2016-12-08, MarcoPieri)
+
+  // MiniAOD and Corresponding to AN2021_224_v8.pdf (not important due to DD application in analysis)
   crossSections["QCD_Pt15to20_Mu"]	= {2799000.00, 2799000.00, 2799000.00};
   crossSections["QCD_Pt20to30_Mu"]	= {2538000.00, 2538000.00, 2538000.00};
   crossSections["QCD_Pt30to50_Mu"]	= {1359000.00, 1359000.00, 1359000.00};
@@ -169,27 +169,10 @@ void initCrossSections(){
   crossSections["QCD_Pt80to120_Ele"]	= {358600.00, 358600.00, 358600.00};
   crossSections["QCD_Pt120to170_Ele"]	= {66860.00, 66860.00, 66860.00};
   crossSections["QCD_Pt170to300_Ele"]	= {16320.00, 16320.00, 16320.00};
-  crossSections["QCD_Pt300toInf_Ele"]	= {1088.00, 1088.00, 1088.00};
+  crossSections["QCD_Pt300toInf_Ele"]	= {1088.00, 1088.00, 1088.00};  
 
-
-
-  /* crossSections["TTTT"]       =  {0.009103,0.009103,0.009103}; */
-  /* crossSections["triboson"]       =  {0.2086,0.2086,0.2086}; */
-  /* crossSections["ttH"]       =  {0.2934,0.2934,0.2934}; */
-  /* crossSections["VH"]       =  {0.952,0.952,0.952}; */
-  /* crossSections["TTZ"]       =  {0.2529,0.2529,0.2529}; */
-  
+  //The following were used as a test purpose for 2017 and not planned for final result
   crossSections["TTTT"]		=  {0.009103, 0.009103, 0.009103};
-  crossSections["TTZToQQ"]      =  {0.5297, 0.5297, 0.5297};
-  crossSections["TTZToLLNuNu"]  =  {0.2529, 0.2529, 0.2529};
-  crossSections["TTWJetsToLNu"] =  {0.2043, 0.2043, 0.2043};
-  crossSections["TTWJetsToQQ"]  =  {0.4062, 0.4062, 0.4062};
-  crossSections["TTGToLL"]	=  {2.2204, 2.2204, 2.2204}; //1.495(MCM page for LO)* kf (=1.4852) of B2G-23-001
-  crossSections["TTGToLNu"]	=  {7.5092, 7.5092, 7.5092}; //5.056 * kf (=1.4852) of B2G-23-001
-  crossSections["TTGToQQ"]	=  {6.1621, 6.1621, 6.1621}; //4.149 * kf (=1.4852) of B2G-23-001
-  crossSections["TTHTobb"]      =  {0.2934, 0.2934, 0.2934};
-  crossSections["TTHToNonbb"]   =  {0.2151, 0.2151, 0.2151};
-  crossSections["TTHToGG"]      =  {0.0012, 0.0012, 0.0012};
   crossSections["WWW"]		=  {0.2086, 0.2086, 0.2086};
   crossSections["WWZ"]		=  {0.1651, 0.1651, 0.1651};
   crossSections["WZZ"]		=  {0.05565, 0.05565, 0.05565};
@@ -199,216 +182,6 @@ void initCrossSections(){
   crossSections["VHToGG"]	=  {2.456, 2.456, 2.456}; //check XSDB corresponding to dataset in CMS DAS as well as AN2022_104_v6.pdf of HIG-23-004
   crossSections["VHToNonbb"]	=  {2.605, 2.605, 2.605}; //check XSDB corresponding to dataset in CMS DAS as well as AN2022_156_v18.pdf of HIG-23-007
   crossSections["VHToEE"]	=  {2.439, 2.439, 2.439}; //check XSDB corresponding to dataset in CMS DAS
-
-  /* crossSections["QCD_Pt15to20_Mu"]		= {3819570.0, 3819570.0, 3819570.0}; */
-  /* crossSections["QCD_Pt20to30_Mu"]		= {2960198.4   , 2960198.4   , 2960198.4   }; */
-  /* crossSections["QCD_Pt30to50_Mu"]		= {1652471.46  , 1652471.46  , 1652471.46  }; */
-  /* crossSections["QCD_Pt50to80_Mu"]		= { 437504.1   ,  437504.1   ,  437504.1   }; */
-  /* crossSections["QCD_Pt80to120_Mu"]		= { 106033.6648,  106033.6648,  106033.6648}; */
-  /* crossSections["QCD_Pt120to170_Mu"]		= {  25190.5151,   25190.5151,   25190.5151}; */
-  /* crossSections["QCD_Pt170to300_Mu"]		= {   8654.4932,    8654.4932,    8654.4932}; */
-  /* crossSections["QCD_Pt300to470_Mu"]		= {    797.3527,     797.3527,     797.3527}; */
-  /* crossSections["QCD_Pt470to600_Mu"]		= {     79.0255,      79.0255,      79.0255}; */
-  /* crossSections["QCD_Pt600to800_Mu"]		= {     25.0951,      25.0951,      25.0951}; */
-  /* crossSections["QCD_Pt800to1000_Mu"]		= {      4.7074,       4.7074,       4.7074}; */
-  /* crossSections["QCD_Pt1000toInf_Mu"]		= {      1.6213,       1.6213,       1.6213}; */
-
-  /* crossSections["QCD_Pt20to30_Ele"]		= {5352960., 5352960., 5352960.}; */
-  /* crossSections["QCD_Pt30to50_Ele"]		= {9928000., 9928000., 9928000.}; */
-  /* crossSections["QCD_Pt50to80_Ele"]		= {2890800., 2890800., 2890800.}; */
-  /* crossSections["QCD_Pt80to120_Ele"]		= { 350000.,  350000.,  350000.}; */
-  /* crossSections["QCD_Pt120to170_Ele"]		= {  62964.,   62964.,   62964.}; */
-  /* crossSections["QCD_Pt170to300_Ele"]		= {  18810.,   18810.,   18810.}; */
-  /* crossSections["QCD_Pt300toInf_Ele"]		= {   1350.,    1350.,    1350.}; */
-
-  /* crossSections["TTbarPowheg_inclusive"]     	=  {831.76, 831.76, 831.76};  //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675) */
-  /* crossSections["TTbarPowheg_Dilepton"]       =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Semilept"]       =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Hadronic"]       =  {380.095,380.095,380.095}; */
-  /* crossSections["TTbarMadgraph_inclusive"]    =  {831.76, 831.76, 831.76}; */
-    
-  /* crossSections["TTbarPowheg_Dilepton_CP5up"]		 =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Dilepton_CP5down"]	 =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Dilepton_hdampup"]	 =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Dilepton_hdampdown"]      =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Dilepton_mtop1695"]       =  { 87.315, 87.315, 87.315}; */
-  /* crossSections["TTbarPowheg_Dilepton_mtop1755"]       =  { 87.315, 87.315, 87.315}; */
-
-  /* crossSections["TTbarPowheg_Semilept_CP5up"]		 =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Semilept_CP5down"]	 =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Semilept_hdampup"]	 =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Semilept_hdampdown"]      =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Semilept_mtop1695"]       =  {364.352,364.352,364.352}; */
-  /* crossSections["TTbarPowheg_Semilept_mtop1755"]       =  {364.352,364.352,364.352}; */
-    
-  /* crossSections["TTbarPowheg_Hadronic_CP5up"]		 =  {380.095,380.095,380.095}; */
-  /* crossSections["TTbarPowheg_Hadronic_CP5down"]	 =  {380.095,380.095,380.095}; */
-  /* crossSections["TTbarPowheg_Hadronic_hdampup"]	 =  {380.095,380.095,380.095}; */
-  /* crossSections["TTbarPowheg_Hadronic_hdampdown"]      =  {380.095,380.095,380.095}; */
-  /* crossSections["TTbarPowheg_Hadronic_mtop1695"]       =  {380.095,380.095,380.095}; */
-  /* crossSections["TTbarPowheg_Hadronic_mtop1755"]       =  {380.095,380.095,380.095}; */
-    
-  /* // Obtained using CMSDAS and CMS_XSDB */
-  /* //crossSections["TTbarPowheg_Dilepton"]       =  { 88.29, 88.29, 88.29}; //687.1 */
-  /* //crossSections["TTbarPowheg_Semilept"]       =  {365.34, 365.34, 365.34}; //687.1 */
-  /* //crossSections["TTbarPowheg_Hadronic"]       =  {377.96, 377.96, 377.96}; //687.1 */
-    
-    
-  /* // // Default setting */
-  /* /\* crossSections["HplusM080"]               =  {6.77, 6.77, 6.77};  *\/ */
-  /* // //MiniAOD setting */
-  /* crossSections["HplusM080"]                  =  {21.55, 21.55, 21.55}; //831.76*0.21322.39*scaleSig;  */
-  /* //with scaleSig = 0.12155 = 2*0.065*(1-0.065), where 6.5% is the observed limit for 90 GeV at 8 TeV */
-  /* crossSections["HplusM090"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM100"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM110"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM120"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM130"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM140"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM150"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM155"]                  =  {21.55, 21.55, 21.55};  */
-  /* crossSections["HplusM160"]                  =  {21.55, 21.55, 21.55};  */
-    
-
-  /* // Obtained from MiniAOD except s_channel using the updated https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#Single_top */
-  /* crossSections["ST_s_channel"]		=  {3.36, 3.36, 3.36}; //// Default setting */
-  /* /\* crossSections["ST_s_channel"]		=  { 10.32,  10.32,  10.32}; *\/ */
-  /* crossSections["ST_t_channel"]		=  {136.02, 136.02, 136.02}; */
-  /* crossSections["ST_tbar_channel"]		=  { 80.95,  80.95,  80.95}; */
-  /* crossSections["ST_tW_channel"]		=  { 35.85,  35.85,  35.85}; */
-  /* crossSections["ST_tbarW_channel"]		=  { 35.85,  35.85,  35.85}; */
-    
-  /* // Obtained using CMSDAS and CMS_XSDB */
-  /* /\* crossSections["ST_s_channel"]		=  { 3.74,  3.74,  3.74};  *\/ */
-  /* /\* crossSections["ST_t_channel"]		=  {113.3, 113.3, 113.3}; *\/ */
-  /* /\* crossSections["ST_tbar_channel"]		=  {67.91, 67.91, 67.91}; *\/ */
-  /* /\* crossSections["ST_tW_channel"]		=  {34.91, 34.91, 34.91}; *\/ */
-  /* /\* crossSections["ST_tbarW_channel"]		=  {34.97, 34.97, 34.97}; *\/ */
-        
-  /* // // Default */
-  /* /\* crossSections["DYjetsM50"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns *\/ */
-  /* /\* crossSections["DYjetsM50_ext1"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns *\/ */
-  /* /\* crossSections["DYjetsM50_ext2"]		=  {6077.22, 6077.22, 6077.22}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns *\/ */
-  /* /\* crossSections["DYjetsM10to50"]		=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns *\/ */
-  /* /\* crossSections["DYjetsM10to50_ext1"]	=  {18610., 18610., 18610.}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns *\/ */
-
-  /* // Obtained using CMSDAS and CMS_XSDB */
-  /* crossSections["DYjetsM10to50"]	=  {15810.0, 15810.0, 15810.0}; //16290. */
-  /* crossSections["DY1jetsM10to50"]	=  {  565.8,   565.8,   565.8}; //1003.0  */
-  /* crossSections["DY2jetsM10to50"]	=  {  314.7,   314.7,   314.7}; //336.7  */
-  /* crossSections["DY3jetsM10to50"]	=  {  77.15,   77.15,   77.15}; //102.9  */
-  /* crossSections["DY4jetsM10to50"]	=  {  28.47,   28.47,   28.47}; //54.71  */
-    
-  /* crossSections["DYjetsM50"]			=  {5343.0, 5343.0, 5343.0}; // 4957. , 6077.22 (NNLO) so kf = 1.2245 for LO=4963 */
-
-  /* crossSections["DY1jetsM50"]			=  {1012.0, 1012.0, 1012.0}; //1003.0  */
-  /* crossSections["DY2jetsM50"]			=  { 334.7,  334.7,  334.7}; //336.7  */
-  /* crossSections["DY3jetsM50"]			=  { 102.3,  102.3,  102.3}; //102.9  */
-  /* crossSections["DY4jetsM50"]			=  { 54.52,  54.52,  54.52}; //54.71  */
-
-    
-  /* // Unused crossSections["WjetsInclusive"]   = {61526.7, 61526.7, 61526.7}; //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets */
-  /* // // Default */
-  /* /\* crossSections["W1jets"]			=  {11775.9345, 11775.9345, 11775.9345};//9493.0; *\/ */
-  /* /\* crossSections["W2jets"]			=  { 3839.4345,  3839.4345,  3839.4345}; //3120.0; *\/ */
-  /* /\* crossSections["W2jets_ext1"]		=  { 3839.4345,  3839.4345,  3839.4345}; //3120.0; *\/ */
-  /* /\* crossSections["W3jets"]			=  { 1165.8108,  1165.8108,  1165.8108};//942.3; *\/ */
-  /* /\* crossSections["W3jets_ext1"]		=  { 1165.8108,  1165.8108,  1165.8108};//942.3; *\/ */
-  /* /\* crossSections["W4jets"]			=  {  592.9176,   592.9176,   592.9176};//524.2; *\/ */
-  /* /\* crossSections["W4jets_ext1"]		=  {  592.9176,   592.9176,   592.9176};//524.2; *\/ */
-  /* /\* crossSections["W4jets_ext2"]		=  {  592.9176,   592.9176,   592.9176};//524.2; *\/ */
-  /* //MiniAOD */
-  /* crossSections["W1jets"]			=  {9493.0, 9493.0, 9493.0};//9493.0; */
-  /* crossSections["W2jets"]			=  {3120.0, 3120.0, 3120.0}; //3120.0; */
-  /* crossSections["W2jets_ext1"]		=  {3120.0, 3120.0, 3120.0}; //3120.0; */
-  /* crossSections["W3jets"]			=  { 942.3,  942.3,  942.3};//942.3; */
-  /* crossSections["W3jets_ext1"]		=  { 942.3,  942.3,  942.3};//942.3; */
-  /* crossSections["W4jets"]			=  { 524.2,  524.2,  524.2};//524.2; */
-  /* crossSections["W4jets_ext1"]		=  { 524.2,  524.2,  524.2};//524.2; */
-  /* crossSections["W4jets_ext2"]		=  { 524.2,  524.2,  524.2};//524.2; */
-  /* crossSections["Wjets"]			=  {50690., 50690., 50690.};//50380.0; */
-  /* crossSections["Wjets_ext1"]			=  {50690., 50690., 50690.};//524.2; */
-  /* crossSections["Wjets_ext2"]			=  {50690., 50690., 50690.};//524.2; */
-  /* crossSections["WJetsToQQ"]			=  {95.14, 95.14, 95.14};  //Added */
-
-  /* /\* // Obtained using CMSDAS and CMS_XSDB *\/ */
-  /* /\* crossSections["W1jets"]			=  {9625.0, 9625.0, 9625.0}; //9578.0 *\/ */
-  /* /\* crossSections["W2jets"]			=  {3161.0, 3161.0, 3161.0}; //3154.0; *\/ */
-  /* /\* crossSections["W2jets_ext1"]		=  {3161.0, 3161.0, 3161.0};  *\/ */
-  /* /\* crossSections["W3jets"]			=  { 958.0,  958.0,  958.0}; // *\/ */
-  /* /\* crossSections["W3jets_ext1"]		=  { 958.0,  958.0,  958.0};//942.3; *\/ */
-  /* /\* crossSections["W4jets"]			=  { 494.6,  494.6,  494.6};//495.7; *\/ */
-  /* /\* crossSections["W4jets_ext1"]		=  { 494.6,  494.6,  494.6};//524.2; *\/ */
-  /* /\* crossSections["W4jets_ext2"]		=  { 494.6,  494.6,  494.6};//524.2; *\/ */
-  /* /\* crossSections["Wjets"]			=  {50260., 50260., 50260.};//50380.0; *\/ */
-  /* /\* crossSections["Wjets_ext1"]			=  {50260., 50260., 50260.};//524.2; *\/ */
-  /* /\* crossSections["Wjets_ext2"]			=  {50260., 50260., 50260.};//524.2; *\/ */
-  /* /\* crossSections["WJetsToQQ"]			=  {95.14, 95.14, 95.14};  //Added *\/ */
-
-  /* /\* crossSections["DYjetsM10to50"]		= {18610.0, 18610.0, 18610.0};  *\/ */
-  /* /\* crossSections["DYjetsM50"]		= {6077.22, 6077.22, 6077.22}; *\/ */
-
-  /* // // Default */
-  /* /\* crossSections["WW"]				= {75.8 ,75.8 ,75.8 }; *\/ */
-  /* /\* crossSections["WW_ext1"]			= {75.8 ,75.8 ,75.8 }; *\/ */
-  /* /\* crossSections["WZ"]				= {27.6 ,27.6 ,27.6 }; *\/ */
-  /* /\* crossSections["WZ_ext1"]			= {27.6 ,27.6 ,27.6 }; *\/ */
-  /* /\* crossSections["ZZ"]				= {12.14,12.14,12.14}; *\/ */
-  /* /\* crossSections["ZZ_ext1"]			= {12.14,12.14,12.14}; *\/ */
-  /* // MiniAOD */
-  /* crossSections["WW"]				= {118.7, 118.7, 118.7}; */
-  /* crossSections["WW_ext1"]			= {118.7, 118.7, 118.7}; */
-  /* crossSections["WZ"]				= {46.74, 46.74, 46.74}; */
-  /* crossSections["WZ_ext1"]			= {46.74, 46.74, 46.74}; */
-  /* crossSections["ZZ"]				= {17.72, 17.72, 17.72}; */
-  /* crossSections["ZZ_ext1"]			= {17.72, 17.72, 17.72}; */
-  /* // Obtained using CMSDAS and CMS_XSDB */
-  /* /\* crossSections["WW"]				= { 64.3,  64.3,  64.3}; // 64.28 *\/ */
-  /* /\* crossSections["WW_ext1"]			= { 64.3,  64.3,  64.3}; *\/ */
-  /* /\* crossSections["WZ"]				= {23.43, 23.43, 23.43}; // 23.48 *\/ */
-  /* /\* crossSections["WZ_ext1"]			= {23.43, 23.43, 23.43}; *\/ */
-  /* /\* crossSections["ZZ"]				= {10.16, 10.16, 10.16}; *\/ */
-  /* /\* crossSections["ZZ_ext1"]			= {10.16, 10.16, 10.16}; *\/ */
-    
-    
-  /* //Product fo XS and filter eff from table at: */
-  /* //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#QCD */
-  /* crossSections["QCD_Pt15to20_Mu"]		= {3819570.0, 3819570.0, 3819570.0}; */
-  /* crossSections["QCD_Pt20to30_Mu"]		= {2960198.4   , 2960198.4   , 2960198.4   }; */
-  /* crossSections["QCD_Pt30to50_Mu"]		= {1652471.46  , 1652471.46  , 1652471.46  }; */
-  /* crossSections["QCD_Pt50to80_Mu"]		= { 437504.1   ,  437504.1   ,  437504.1   }; */
-  /* crossSections["QCD_Pt80to120_Mu"]		= { 106033.6648,  106033.6648,  106033.6648}; */
-  /* crossSections["QCD_Pt80to120_Mu_ext1"]	= { 106033.6648,  106033.6648,  106033.6648}; */
-  /* crossSections["QCD_Pt120to170_Mu"]		= {  25190.5151,   25190.5151,   25190.5151}; */
-  /* crossSections["QCD_Pt120to170_Mu_ext1"]	= {  25190.5151,   25190.5151,   25190.5151}; */
-  /* crossSections["QCD_Pt170to300_Mu"]		= {   8654.4932,    8654.4932,    8654.4932}; */
-  /* crossSections["QCD_Pt170to300_Mu_ext1"]	= {   8654.4932,    8654.4932,    8654.4932}; */
-  /* crossSections["QCD_Pt300to470_Mu"]		= {    797.3527,     797.3527,     797.3527}; */
-  /* crossSections["QCD_Pt300to470_Mu_ext1"]	= {    797.3527,     797.3527,     797.3527}; */
-  /* crossSections["QCD_Pt300to470_Mu_ext2"]	= {    797.3527,     797.3527,     797.3527}; */
-  /* crossSections["QCD_Pt300to470_Mu_ext3"]	= {    797.3527,     797.3527,     797.3527}; */
-  /* crossSections["QCD_Pt470to600_Mu"]		= {     79.0255,      79.0255,      79.0255}; */
-  /* crossSections["QCD_Pt470to600_Mu_ext1"]	= {     79.0255,      79.0255,      79.0255}; */
-  /* crossSections["QCD_Pt470to600_Mu_ext2"]	= {     79.0255,      79.0255,      79.0255}; */
-  /* crossSections["QCD_Pt600to800_Mu"]		= {     25.0951,      25.0951,      25.0951}; */
-  /* crossSections["QCD_Pt600to800_Mu_ext1"]	= {     25.0951,      25.0951,      25.0951}; */
-  /* crossSections["QCD_Pt800to1000_Mu"]		= {      4.7074,       4.7074,       4.7074}; */
-  /* crossSections["QCD_Pt800to1000_Mu_ext1"]	= {      4.7074,       4.7074,       4.7074}; */
-  /* crossSections["QCD_Pt800to1000_Mu_ext2"]	= {      4.7074,       4.7074,       4.7074}; */
-  /* crossSections["QCD_Pt1000toInf_Mu"]		= {      1.6213,       1.6213,       1.6213}; */
-  /* crossSections["QCD_Pt1000toInf_Mu_ext1"]	= {      1.6213,       1.6213,       1.6213}; */
-
-  /* crossSections["QCD_Pt20to30_Ele"]		= {5352960., 5352960., 5352960.}; */
-  /* crossSections["QCD_Pt30to50_Ele"]		= {9928000., 9928000., 9928000.}; */
-  /* crossSections["QCD_Pt30to50_Ele_ext1"]	= {9928000., 9928000., 9928000.}; */
-  /* crossSections["QCD_Pt50to80_Ele"]		= {2890800., 2890800., 2890800.}; */
-  /* crossSections["QCD_Pt50to80_Ele_ext1"]	= {2890800., 2890800., 2890800.}; */
-  /* crossSections["QCD_Pt80to120_Ele"]		= { 350000.,  350000.,  350000.}; */
-  /* crossSections["QCD_Pt80to120_Ele_ext1"]	= { 350000.,  350000.,  350000.}; */
-  /* crossSections["QCD_Pt120to170_Ele"]		= {  62964.,   62964.,   62964.}; */
-  /* crossSections["QCD_Pt120to170_Ele_ext1"]	= {  62964.,   62964.,   62964.}; */
-  /* crossSections["QCD_Pt170to300_Ele"]		= {  18810.,   18810.,   18810.}; */
-  /* crossSections["QCD_Pt300toInf_Ele"]		= {   1350.,    1350.,    1350.}; */
     
   return;
 }
