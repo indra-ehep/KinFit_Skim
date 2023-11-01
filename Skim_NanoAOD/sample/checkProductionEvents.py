@@ -6,7 +6,7 @@ for year in [2016,2017,2018]:
     splitJobs = {}
     print '--------------------------'
     print  year 
-    print  "Samples\t nEvents"
+    print  "nEvents\t  Samples"
     print '--------------------------'
     line = ""
     sampleListTmp = eval("sampleList_%i"%year)
@@ -15,7 +15,7 @@ for year in [2016,2017,2018]:
         nevents = getNEvents_DAS(sample)
         evt = int(float(nevents))
         totevents += evt
-        print("%40s  %s"%(sample, nevents))
+        print("%s  %s"%(nevents,sample))
     print '=================='
 print("Total events produced : %i"%totevents)
 print '=================='
