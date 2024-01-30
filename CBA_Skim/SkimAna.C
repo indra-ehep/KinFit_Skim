@@ -933,6 +933,406 @@ void SkimAna::SelectSyst()
     fNSyst = 1;
     fSystList.push_back(fSyst);
     
+  } else if (fSyst == "absmpfbup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "absmpfbdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "abssclup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "absscldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "absstatup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "absstatdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "fragup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "fragdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "pudatamcup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "pudatamcdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptbbup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptbbdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptec1up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptec1down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptec2up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptec2down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "pupthfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "pupthfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptrefup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptrefdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relfsrup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relfsrdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "reljerec1up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "reljerec1down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "reljerec2up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "reljerec2down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "reljerhfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "reljerhfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relptbbup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relptbbdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relptec1up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relptec1down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relptec2up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relptec2down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relpthfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relpthfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relbalup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relbaldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relsampleup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relsampledown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relstatecup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relstatecdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relstatfsrup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relstatfsrdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relstathfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relstathfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "singpiecalup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "singpiecaldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "singpihcalup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "singpihcaldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
   } else if (fSyst == "flavorqcdup") {
     
     systType = kJECUp;
@@ -1382,7 +1782,8 @@ void SkimAna::LoadJECJER()
     if (fYear==2017) selector->init_JER( Form("%s/weightUL/JetSF/JER/2017/JRV2/Summer19UL17_JRV2",fBasePath.Data()) );
     if (fYear==2018) selector->init_JER( Form("%s/weightUL/JetSF/JER/2018/JRV2/Summer19UL18_JRV2",fBasePath.Data()) );
 
-    //Total, SubTotalPileUp, SubTotalRelative, SubTotalPt, SubTotalScale, FlavorQCD, TimePtEta 
+    //Total, SubTotalPileUp, SubTotalRelative, SubTotalPt, SubTotalScale, FlavorQCD, TimePtEta
+    //AbsoluteMPFBias, AbsoluteScale, AbsoluteStat, FlavorQCD, Fragmentation, PileUpDataMC, PileUpPtBB, PileUpPtEC1, PileUpPtEC2, PileUpPtHF, PileUpPtRef, RelativeFSR, RelativeJEREC1, RelativeJEREC2, RelativeJERHF, RelativePtBB, RelativePtEC1, RelativePtEC2, RelativePtHF, RelativeBal, RelativeSample, RelativeStatEC, RelativeStatFSR, RelativeStatHF, SinglePionECAL, SinglePionHCAL, TimePtEta
     if (systType == kJECUp or systType == kJECDown) { // if (isMC && jecvar012_g!=1) {
       //		jecvar = new JECvariation("weight/JetSF/Summer16_23Sep2016V4", isMC, "Total");//SubTotalAbsolute");
       //cout << "Applying JEC uncertainty variations : " << JECsystLevel << endl;
@@ -1397,8 +1798,58 @@ void SkimAna::LoadJECJER()
 	JECsystLevel = "SubTotalPt";
       else if (fSyst == "stotscaleup" or fSyst == "stotscaledown")
 	JECsystLevel = "SubTotalScale";
+      else if (fSyst == "absmpfbup" or fSyst == "absmpfbdown")
+	JECsystLevel = "AbsoluteMPFBias";
+      else if (fSyst == "abssclup" or fSyst == "absscldown")
+	JECsystLevel = "AbsoluteScale";
+      else if (fSyst == "absstatup" or fSyst == "absstatdown")
+	JECsystLevel = "AbsoluteStat";
       else if (fSyst == "flavorqcdup" or fSyst == "flavorqcddown")
 	JECsystLevel = "FlavorQCD";
+      else if (fSyst == "fragup" or fSyst == "fragdown")
+	JECsystLevel = "Fragmentation";
+      else if (fSyst == "pudatamcup" or fSyst == "pudatamcdown")
+	JECsystLevel = "PileUpDataMC";
+      else if (fSyst == "puptbbup" or fSyst == "puptbbdown")
+	JECsystLevel = "PileUpPtBB";
+      else if (fSyst == "puptec1up" or fSyst == "puptec1down")
+	JECsystLevel = "PileUpPtEC1";
+      else if (fSyst == "puptec2up" or fSyst == "puptec2down")
+	JECsystLevel = "PileUpPtEC2";
+      else if (fSyst == "pupthfup" or fSyst == "pupthfdown")
+	JECsystLevel = "PileUpPtHF";
+      else if (fSyst == "puptrefup" or fSyst == "puptrefdown")
+	JECsystLevel = "PileUpPtRef";
+      else if (fSyst == "relfsrup" or fSyst == "relfsrdown")
+	JECsystLevel = "RelativeFSR";
+      else if (fSyst == "reljerec1up" or fSyst == "reljerec1down")
+	JECsystLevel = "RelativeJEREC1";
+      else if (fSyst == "reljerec2up" or fSyst == "reljerec2down")
+	JECsystLevel = "RelativeJEREC2";
+      else if (fSyst == "reljerhfup" or fSyst == "reljerhfdown")
+	JECsystLevel = "RelativeJERHF";
+      else if (fSyst == "relptbbup" or fSyst == "relptbbdown")
+	JECsystLevel = "RelativePtBB";
+      else if (fSyst == "relptec1up" or fSyst == "relptec1down")
+	JECsystLevel = "RelativePtEC1";
+      else if (fSyst == "relptec2up" or fSyst == "relptec2down")
+	JECsystLevel = "RelativePtEC2";
+      else if (fSyst == "relpthfup" or fSyst == "relpthfdown")
+	JECsystLevel = "RelativePtHF";
+      else if (fSyst == "relbalup" or fSyst == "relbaldown")
+	JECsystLevel = "RelativeBal";
+      else if (fSyst == "relsampleup" or fSyst == "relsampledown")
+	JECsystLevel = "RelativeSample";
+      else if (fSyst == "relstatecup" or fSyst == "relstatecdown")
+	JECsystLevel = "RelativeStatEC";
+      else if (fSyst == "relstatfsrup" or fSyst == "relstatfsrdown")
+	JECsystLevel = "RelativeStatFSR";
+      else if (fSyst == "relstathfup" or fSyst == "relstathfdown")
+	JECsystLevel = "RelativeStatHF";
+      else if (fSyst == "singpiecalup" or fSyst == "singpiecaldown")
+	JECsystLevel = "SinglePionECAL";
+      else if (fSyst == "singpihcalup" or fSyst == "singpihcaldown")
+	JECsystLevel = "SinglePionHCAL";
       else if (fSyst == "timeptetaup" or fSyst == "timeptetadown")
 	JECsystLevel = "TimePtEta";
       if (std::end(allowedJECUncertainties) == std::find(std::begin(allowedJECUncertainties), std::end(allowedJECUncertainties), JECsystLevel)){
@@ -7561,11 +8012,18 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   // _jetPhi->clear() ;
   // _jetMass->clear() ;
   // _jetDeepB->clear() ;
+  bool isReduceJetEnergy = false; // only 2018
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
     if(selector->JetsPtSmeared.at(ijet)<=jetPtThresh) continue;
     jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
+    if(isReduceJetEnergy){
+      if((jetVector.Phi()>-1.57 and jetVector.Phi()<-0.87) and (jetVector.Eta()>-2.5 and jetVector.Eta()<-1.3))
+	jetVector.SetE(0.80 * jetVector.E());
+      if((jetVector.Phi()>-1.57 and jetVector.Phi()<-0.87) and (jetVector.Eta()>-3.0 and jetVector.Eta()<-2.5))
+	jetVector.SetE(0.65 * jetVector.E());
+    }
     //jetVector.SetPtEtaPhiM(event->jetPt_[jetInd], event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
     jetVectors.push_back(jetVector);
     //double jetRes = selector->jet_resolution.at(ijet);
@@ -8215,7 +8673,7 @@ int main(int argc, char** argv)
   int idx = 0;
   string inputfile = ""; 
   while(getline(fin,s)){
-    //cout << s << endl;
+    cout << s << endl;
     if(idx==index){
       inputfile = s.c_str();
     }
@@ -8226,6 +8684,8 @@ int main(int argc, char** argv)
  
   TString hostname = gSystem->HostName();
   string singleFile = inputfile.substr(inputfile.find_last_of("/")+1,inputfile.size());
+  cout<<"inputfile  : " << inputfile  << endl;
+  cout<<"singleFile  : " << singleFile  << endl;
   string xrdcp_command = "";
   if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") or hostname.BeginsWith("dhep-inlap") )
     //xrdcp_command = "cp " + inputfile + " " + singleFile ;

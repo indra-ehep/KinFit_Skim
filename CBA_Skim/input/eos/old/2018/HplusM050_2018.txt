@@ -1,0 +1,7 @@
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM050_Skim_NanoAOD_1of7.root
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM050_Skim_NanoAOD_2of7.root
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM050_Skim_NanoAOD_3of7.root
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM050_Skim_NanoAOD_4of7.root
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM050_Skim_NanoAOD_5of7.root
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM050_Skim_NanoAOD_6of7.root
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2018/HplusM050_Skim_NanoAOD_7of7.root

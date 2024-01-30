@@ -1647,6 +1647,15 @@ void SkimAna::Init(TTree *tree)
   tree->SetBranchStatus("Flag_BadPFMuonFilter",1);
   tree->SetBranchAddress("Flag_BadPFMuonFilter", &(event->Flag_BadPFMuonFilter_));
 
+  tree->SetBranchStatus("Flag_BadPFMuonDzFilter",1);
+  tree->SetBranchAddress("Flag_BadPFMuonDzFilter",&(event->Flag_BadPFMuonDzFilter_));
+
+  tree->SetBranchStatus("Flag_eeBadScFilter",1);
+  tree->SetBranchAddress("Flag_eeBadScFilter",&(event->Flag_eeBadScFilter_));
+  
+  tree->SetBranchStatus("Flag_hfNoisyHitsFilter",1);
+  tree->SetBranchAddress("Flag_hfNoisyHitsFilter",&(event->Flag_hfNoisyHitsFilter_));
+
   if(fYear ==2017 || fYear == 2018){
     tree->SetBranchStatus("Flag_ecalBadCalibFilter",1);
     tree->SetBranchAddress("Flag_ecalBadCalibFilter", &(event->Flag_ecalBadCalibFilter_));

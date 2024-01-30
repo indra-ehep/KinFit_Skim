@@ -250,7 +250,11 @@ class EventTree{
     Bool_t   Flag_HBHENoiseIsoFilter_ ;
     Bool_t   Flag_EcalDeadCellTriggerPrimitiveFilter_ ;
     Bool_t   Flag_BadPFMuonFilter_ ;
+    Bool_t   Flag_BadPFMuonDzFilter_ ;
+    Bool_t   Flag_eeBadScFilter_ ;
+    Bool_t   Flag_hfNoisyHitsFilter_ ;
     Bool_t   Flag_ecalBadCalibFilter_ ;
+  
     
 
 };
