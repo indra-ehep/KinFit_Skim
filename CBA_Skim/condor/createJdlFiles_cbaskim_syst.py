@@ -6,60 +6,96 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-# samples_2016 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2017 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2018 = ["TTbar", "DataMu", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle", "DataEle",# "HplusM120"]
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
+samples_2017 = ["TTbar", "DataMu", "DataEle",
+                "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
+                "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
+                "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
+                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
+                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
+                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 
-# syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
-# syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
-# syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown"]
+syst_2017 = ["base", "iso20", "metup", "metdown",
+             "absmpfbup", "abssclup", "absstatup",
+             "flavorqcdup", "fragup", "timeptetaup",
+             "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+             "relfsrup", "relbalup", "relsampleup",
+             "reljerec1up", "reljerec2up", "reljerhfup",
+             "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+             "relstatecup", "relstatfsrup", "relstathfup",
+             "singpiecalup", "singpihcalup",
+             "absmpfbdown", "absscldown", "absstatdown",
+             "flavorqcddown", "fragdown", "timeptetadown",
+             "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+             "relfsrdown", "relbaldown", "relsampledown",
+             "reljerec1down", "reljerec2down", "reljerhfdown",
+             "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+             "relstatecdown", "relstatfsrdown", "relstathfdown",
+             "singpiecaldown", "singpihcaldown"]
 
-# syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
-# syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown"]
+syst_long_2017 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+                  "absmpfbup", "abssclup", "absstatup",
+                  "flavorqcdup", "fragup", "timeptetaup",
+                  "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+                  "relfsrup", "relbalup", "relsampleup",
+                  "reljerec1up", "reljerec2up", "reljerhfup",
+                  "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+                  "relstatecup", "relstatfsrup", "relstathfup",
+                  "singpiecalup", "singpihcalup",
+                  "absmpfbdown", "absscldown", "absstatdown",
+                  "flavorqcddown", "fragdown", "timeptetadown",
+                  "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+                  "relfsrdown", "relbaldown", "relsampledown",
+                  "reljerec1down", "reljerec2down", "reljerhfdown",
+                  "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+                  "relstatecdown", "relstatfsrdown", "relstathfdown",
+                  "singpiecaldown", "singpihcaldown"]
 
+samples_2018 = ["TTbar", "DataMu", "DataEle",
+                "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
+                "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
+                "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
+                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
+                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
+                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 
-# samples_2016 = ["TTbar"]
-# samples_2017 = ["TTbar"]
-# samples_2018 = ["TTbar"]
+syst_2018 = ["base", "iso20", "metup", "metdown",
+             "absmpfbup", "abssclup", "absstatup",
+             "flavorqcdup", "fragup", "timeptetaup",
+             "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+             "relfsrup", "relbalup", "relsampleup",
+             "reljerec1up", "reljerec2up", "reljerhfup",
+             "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+             "relstatecup", "relstatfsrup", "relstathfup",
+             "singpiecalup", "singpihcalup",
+             "absmpfbdown", "absscldown", "absstatdown",
+             "flavorqcddown", "fragdown", "timeptetadown",
+             "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+             "relfsrdown", "relbaldown", "relsampledown",
+             "reljerec1down", "reljerec2down", "reljerhfdown",
+             "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+             "relstatecdown", "relstatfsrdown", "relstathfdown",
+             "singpiecaldown", "singpihcaldown"]
 
-# syst_long_2016 = ["mtopup", "mtopdown"]
-# syst_long_2017 = ["mtopup", "mtopdown"]
-# syst_long_2018 = ["mtopup", "mtopdown"]
+syst_long_2018 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+                  "absmpfbup", "abssclup", "absstatup",
+                  "flavorqcdup", "fragup", "timeptetaup",
+                  "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+                  "relfsrup", "relbalup", "relsampleup",
+                  "reljerec1up", "reljerec2up", "reljerhfup",
+                  "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+                  "relstatecup", "relstatfsrup", "relstathfup",
+                  "singpiecalup", "singpihcalup",
+                  "absmpfbdown", "absscldown", "absstatdown",
+                  "flavorqcddown", "fragdown", "timeptetadown",
+                  "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+                  "relfsrdown", "relbaldown", "relsampledown",
+                  "reljerec1down", "reljerec2down", "reljerhfdown",
+                  "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+                  "relstatecdown", "relstatfsrdown", "relstathfdown",
+                  "singpiecaldown", "singpihcaldown"]
 
-# samples_2016 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2017 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-# samples_2018 = ["TTbar", "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "HplusM080", "HplusM090", "HplusM100", "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM080", "HminusM090", "HminusM100", "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160"]
-
-# samples_2016 = ["HplusM040", "HplusM050", "HplusM060", "HplusM070", "HminusM040", "HminusM050", "HminusM060", "HminusM070"]
-# samples_2017 = ["HplusM040", "HplusM050", "HplusM060", "HplusM070", "HminusM040", "HminusM050", "HminusM060", "HminusM070"]
-# samples_2018 = ["HplusM040", "HplusM050", "HplusM060", "HplusM070", "HminusM040", "HminusM050", "HminusM060", "HminusM070"]
-
-
-# samples_2017 = ["TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG", "TTTT", "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ", "VHToEE", "VHToGG", "VHToNonbb", "WWG", "WWW", "WWZ", "WZG", "WZZ", "ZZZ"]
-samples_2017 = ["TTGToLL", "TTGToLNu", "TTGToQQ", "TTbar"]
-
-syst_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
-#syst_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
-syst_2017 = ["base"]
-syst_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
-
-syst_long_2016 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
-#syst_long_2017 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
-syst_long_2017 = ["base"]
-syst_long_2018 = ["base", "jecup", "jecdown", "jerup", "jerdown", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown", "stotpuup", "stotpudown", "stotrelup", "stotreldown", "stotptup", "stotptdown", "stotscaleup", "stotscaledown", "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown"]
 
 tunedict = {
     "cp5up" : "CP5up_TTbar",
@@ -70,14 +106,14 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_genOR'
+jdlDir = 'tmpLog_jecsyst_1718_splitted'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
 tarFile = "%s/CBA_Skim.tar.gz"%jdlDir
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
-os.system("tar -zcvf %s ../../CBA_Skim --exclude condor"%tarFile)
+os.system("tar --exclude='condor/*' -zcvf %s ../../CBA_Skim "%tarFile)
 os.system("cp runCBASkim.sh %s/"%jdlDir)
 common_command = \
 'Universe   = vanilla\n\
@@ -101,28 +137,30 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #Create jdl files
 #----------------------------------------
 subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
-#for year in [2017,2018]:
-#for year in [2018]:
-for year in [2017]:
+samplesubFile = open('%s/condorSampleSubmit.sh'%jdlDir,'w')
+for year in [2017,2018]:
+#for year in [2016]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    #condorOutDir="/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_genOR"
-    #condorOutDir2="/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_genOR"
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_genOR"
-    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_genOR"
-    condorOutDir4="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_genOR"
-    #os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
-    #os.system("xrdfs root://se01.indiacms.res.in mkdir -p %s/%s"%(condorOutDir2, year))
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jecsyst"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
+    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_jecsyst"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir3, year))
+    condorOutDir4="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jecsyst"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir4, year))
     
     jdlFile.write("X=$(step)\n")
     
     for sample in sampleList:
+
+        subjdlName = 'submit_%s_%s.jdl'%(sample,year)
+        subjdlFile = open('%s/%s'%(jdlDir,subjdlName),'w')
+        subjdlFile.write('Executable =  runCBASkim.sh \n')
+        subjdlFile.write(common_command)
+        subjdlFile.write("X=$(step)\n")
         
         if sample.find('Data') >=0:
             systList = ["base", "iso20"]
@@ -139,16 +177,20 @@ for year in [2017]:
             else:
                 fnamestart = sample
 
-            noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')[0]
+            noflines = subprocess.Popen('wc -l ../input/eos/%i/%s_%i.txt | awk \'{print $1}\''%(year,fnamestart,year),shell=True,stdout=subprocess.PIPE).communicate()[0].split(b'\n')[0]
             nJob = int(noflines)
-            print "%s %s %s"%(sample,nJob,syst)
+            print("%s %s %s"%(sample,nJob,syst))
             if nJob==1:
                 run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt 0 %s \nQueue 1\n\n' %(year, sample, year, fnamestart, year, syst)
             else:
                 run_command =  'Arguments  = %s %s input/eos/%i/%s_%i.txt $INT(X) %s \nQueue %i\n\n' %(year, sample, year, fnamestart, year, syst, nJob)
             jdlFile.write(run_command)
+            subjdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile
-
+            
+        samplesubFile.write("condor_submit %s\n"%subjdlName)
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()
+samplesubFile.close()
+
