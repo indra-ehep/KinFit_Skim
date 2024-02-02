@@ -4721,10 +4721,9 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //######################################################
+  selector->filter_mets();
   if(selector->selectMETUnc)
     selector->metWithUncl();
-  else
-    selector->filter_mets();
   //######################################################
   
   METThreshold = 20. ;
