@@ -4516,7 +4516,7 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(IsDebug) Info("Process","Completed selector process : %lld(%lld)",fProcessed, entry);
   
   //Special case of Wjets and DY
-  if(!isData and fSampleType.Contains("Wjets")){
+  if(!isData and fSample.Contains("Wjets")){
     _local_evtWeight = ScaleLumiW(event->nLHEPart_) * luminosity/1000.;
     if(fProcessed%100000==0)
       Info("Process", "Wjets : Updated special event weight : %lf for nLHEPart_ : %d", _local_evtWeight, event->nLHEPart_);
@@ -4560,12 +4560,13 @@ Bool_t SkimAna::Process(Long64_t entry)
     
   //Event level or trigger level conditions will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+  if(IsDebug) Info("Process","Before pass filter : %lld(%lld)",fProcessed, entry);
   if(
      (!(evtPick->passFilter) or !(selector->isPVGood) or !(evtPick->passTrigger_mu)) 
      and 
      (!(evtPick->passFilter) or !(selector->isPVGood) or !(evtPick->passTrigger_ele))
      ) return true;
+  if(IsDebug) Info("Process","After pass filter : %lld(%lld)",fProcessed, entry);
   
   FillEventCutFlow();
   FillEventWt();

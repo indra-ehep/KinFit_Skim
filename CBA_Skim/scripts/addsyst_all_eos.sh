@@ -8,24 +8,13 @@
 # **********************************************************************/
 
 
-# samples_2016="TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
-# samples_2017="TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
-# samples_2018="TTbar singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160  HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160"
 
-# samples_2016="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
-# samples_2017="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
-# samples_2018="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
+#samples_2017="TTbar DataMu DataEle HplusM040 HplusM050 HplusM060 HplusM070 HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM040 HminusM050 HminusM060 HminusM070 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160 singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle TTGToLL TTGToLNu TTGToQQ TTHToNonbb TTHTobb TTHToGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ"
 
-samples_2016="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
-#samples_2017="TTGToLL TTGToLNu TTGToQQ TTHToNonbb TTHTobb TTHToGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ VHToEE VHToGG VHToNonbb WWG WWW WWZ WZG WZZ ZZZ" #TTTT 
-samples_2017="TTbar" 
-samples_2018="HplusM040 HplusM050 HplusM060 HplusM070 HminusM040 HminusM050 HminusM060 HminusM070"
+#samples_2017="TTbar"
+samples_2017="DataMu DataEle HplusM040 HplusM050 HplusM060 HplusM070 HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM040 HminusM050 HminusM060 HminusM070 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160 singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle TTGToLL TTGToLNu TTGToQQ TTHToNonbb TTHTobb TTHToGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ"
 
-syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
-#syst_2017="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
-syst_2017="base"
-syst_2018="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
-
+syst_2017="base iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown absmpfbup abssclup absstatup flavorqcdup fragup timeptetaup pudatamcup puptbbup puptec1up puptec2up pupthfup puptrefup relfsrup relbalup relsampleup reljerec1up reljerec2up reljerhfup relptbbup relptec1up relptec2up relpthfup relstatecup relstatfsrup relstathfup singpiecalup singpihcalup absmpfbdown absscldown absstatdown flavorqcddown fragdown timeptetadown pudatamcdown puptbbdown puptec1down puptec2down pupthfdown puptrefdown relfsrdown relbaldown relsampledown reljerec1down reljerec2down reljerhfdown relptbbdown relptec1down relptec2down relpthfdown relstatecdown relstatfsrdown relstathfdown singpiecaldown singpihcaldown"
 
 declare -A tunedict
 tunedict["cp5up"]="CP5up_TTbar"
@@ -42,6 +31,7 @@ syst_base="base iso20"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_HLTeleEmul"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowmass"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_genOR"
+inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jecsyst"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_trigSF-BJetHist1"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_HLTeleEmul-BJetHist1"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_lowmass-BJetHist1"
@@ -49,7 +39,7 @@ syst_base="base iso20"
 #inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_HLTeleEmul-Hist1"
 #inputdir="/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/CBA_trigSF-Hist1"
 #inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_lowmass-Hist1"
-inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_genOR-Hist1"
+#inputdir="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_genOR-Hist1"
 skimflistdir="/afs/cern.ch/user/i/idas/CMS-Analysis/NanoAOD-Analysis/CBA_Skim/input/eos"
 
 years="2017"
@@ -58,8 +48,8 @@ years="2017"
 basedir=`pwd`
 for year in $years
 do
-    noffiles=`ls $inputdir/$year/*.root  | wc -l`
-    echo total number of files $noffiles
+    # noffiles=`ls $inputdir/$year/*.root  | wc -l`
+    # echo total number of files $noffiles
     samples=samples_$year
     echo year : $year samples : ${!samples}
     echo inputdir : $inputdir
