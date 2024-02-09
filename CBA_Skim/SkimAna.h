@@ -1630,26 +1630,76 @@ void SkimAna::Init(TTree *tree)
 
   //Fliters
   tree->SetBranchStatus("Flag_goodVertices",1);
-  tree->SetBranchAddress("Flag_goodVertices", &(event->Flag_goodVertices_));
+  brAddrStatus = tree->SetBranchAddress("Flag_goodVertices", &(event->Flag_goodVertices_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_goodVertices_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_goodVertices_ =  kTRUE");
+  }
 
   tree->SetBranchStatus("Flag_globalSuperTightHalo2016Filter",1);
-  tree->SetBranchAddress("Flag_globalSuperTightHalo2016Filter", &(event->Flag_globalSuperTightHalo2016Filter_));
+  brAddrStatus = tree->SetBranchAddress("Flag_globalSuperTightHalo2016Filter", &(event->Flag_globalSuperTightHalo2016Filter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_globalSuperTightHalo2016Filter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_globalSuperTightHalo2016Filter_ =  kTRUE");
+  }
 
   tree->SetBranchStatus("Flag_HBHENoiseFilter",1);
-  tree->SetBranchAddress("Flag_HBHENoiseFilter", &(event->Flag_HBHENoiseFilter_));
+  brAddrStatus = tree->SetBranchAddress("Flag_HBHENoiseFilter", &(event->Flag_HBHENoiseFilter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_HBHENoiseFilter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_HBHENoiseFilter_ =  kTRUE");
+  }
 
   tree->SetBranchStatus("Flag_HBHENoiseIsoFilter",1);
-  tree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &(event->Flag_HBHENoiseIsoFilter_));
+  brAddrStatus = tree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &(event->Flag_HBHENoiseIsoFilter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_HBHENoiseIsoFilter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_HBHENoiseIsoFilter_ =  kTRUE");
+  }
 
   tree->SetBranchStatus("Flag_EcalDeadCellTriggerPrimitiveFilter",1);
-  tree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &(event->Flag_EcalDeadCellTriggerPrimitiveFilter_));
+  brAddrStatus = tree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &(event->Flag_EcalDeadCellTriggerPrimitiveFilter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_EcalDeadCellTriggerPrimitiveFilter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_EcalDeadCellTriggerPrimitiveFilter_ =  kTRUE");
+  }
 
   tree->SetBranchStatus("Flag_BadPFMuonFilter",1);
-  tree->SetBranchAddress("Flag_BadPFMuonFilter", &(event->Flag_BadPFMuonFilter_));
+  brAddrStatus = tree->SetBranchAddress("Flag_BadPFMuonFilter", &(event->Flag_BadPFMuonFilter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_BadPFMuonFilter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_BadPFMuonFilter_ =  kTRUE");
+  }
+
+  tree->SetBranchStatus("Flag_BadPFMuonDzFilter",1);
+  brAddrStatus = tree->SetBranchAddress("Flag_BadPFMuonDzFilter",&(event->Flag_BadPFMuonDzFilter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_BadPFMuonDzFilter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_BadPFMuonDzFilter_ =  kTRUE");
+  }
+
+  tree->SetBranchStatus("Flag_eeBadScFilter",1);
+  brAddrStatus = tree->SetBranchAddress("Flag_eeBadScFilter",&(event->Flag_eeBadScFilter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_eeBadScFilter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_eeBadScFilter_ =  kTRUE");
+  }
+
+  tree->SetBranchStatus("Flag_hfNoisyHitsFilter",1);
+  brAddrStatus = tree->SetBranchAddress("Flag_hfNoisyHitsFilter",&(event->Flag_hfNoisyHitsFilter_));
+  if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+    event->Flag_hfNoisyHitsFilter_ =  kTRUE ;
+    Info("Init", "Setting event->Flag_hfNoisyHitsFilter_ =  kTRUE");
+  }
 
   if(fYear ==2017 || fYear == 2018){
     tree->SetBranchStatus("Flag_ecalBadCalibFilter",1);
-    tree->SetBranchAddress("Flag_ecalBadCalibFilter", &(event->Flag_ecalBadCalibFilter_));
+    brAddrStatus = tree->SetBranchAddress("Flag_ecalBadCalibFilter", &(event->Flag_ecalBadCalibFilter_));
+    if(brAddrStatus == TTree::kMissingBranch || brAddrStatus == TTree::kInternalError){
+      event->Flag_ecalBadCalibFilter_ =  kTRUE ;
+      Info("Init", "Setting event->Flag_ecalBadCalibFilter_ =  kTRUE");
+    }
+
   }
 
   //TRIGGERS

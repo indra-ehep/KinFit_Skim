@@ -684,6 +684,406 @@ void KinAna::SelectSyst()
     fNSyst = 1;
     fSystList.push_back(fSyst);
     
+  } else if (fSyst == "absmpfbup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "absmpfbdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "abssclup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "absscldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "absstatup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "absstatdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "fragup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "fragdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "pudatamcup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "pudatamcdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptbbup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptbbdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptec1up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptec1down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptec2up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptec2down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "pupthfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "pupthfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "puptrefup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "puptrefdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relfsrup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relfsrdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "reljerec1up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "reljerec1down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "reljerec2up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "reljerec2down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "reljerhfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "reljerhfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relptbbup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relptbbdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relptec1up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relptec1down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relptec2up") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relptec2down") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relpthfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relpthfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relbalup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relbaldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relsampleup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relsampledown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relstatecup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relstatecdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relstatfsrup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relstatfsrdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "relstathfup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "relstathfdown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "singpiecalup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "singpiecaldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
+  } else if (fSyst == "singpihcalup") {
+    
+    systType = kJECUp;
+    jecvar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "singpihcaldown") {
+    
+    systType = kJECDown;
+    jecvar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+    
   } else if (fSyst == "flavorqcdup") {
     
     systType = kJECUp;
@@ -1128,6 +1528,18 @@ Bool_t KinAna::Process(Long64_t entry)
 	 fProcessed, entry, fChain->GetEntries(), fYear);
   }
   if(IsDebug) Info("Process","Completed process count");
+  
+  ///////////////////////////////////////////////
+  // cjhadAF.SetPtEtaPhiE(jetChadPt, jetChadEta, jetChadPhi, jetChadEn);
+  // sjhadAF.SetPtEtaPhiE(jetShadPt, jetShadEta, jetShadPhi, jetShadEn);  
+  // if(TMath::Abs(cjhadAF.E()-sjhadAF.E())/(cjhadAF+sjhadAF).P() >= 0.6)
+  //   return true;
+  
+  Float_t pt_array[4] = {jetChadPt, jetShadPt, jetBhadPt, jetBlepPt};
+  Float_t minPt = TMath::MinElement(4,pt_array);
+  if(minPt<25.0)
+    return true;
+  //////////////////////////////////////////////
 
   //SetBCWeightToOne();
   FillWtHists();

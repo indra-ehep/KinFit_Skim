@@ -4,12 +4,14 @@
 myArray=( "$@" )
 #Array: Size=$#, an element=$1, all element = $@
 
-export SCRAM_ARCH=slc7_amd64_gcc10
-export CMSVER=CMSSW_12_4_10
+# export SCRAM_ARCH=slc7_amd64_gcc10
+# export CMSVER=CMSSW_12_4_10
+export SCRAM_ARCH=el9_amd64_gcc11
+export CMSVER=CMSSW_13_0_2
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
-printf "Worker node OS " ; lsb_release -d
+#printf "Worker node OS " ; lsb_release -d
 printf "SCRAM :  ${SCRAM_ARCH}\n"
 printf "CMSSW :  ${CMSVER}\n"
 
@@ -50,18 +52,18 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-# #condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_genOR
-# #condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_genOR
-#condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_genOR/pre
-#condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_genOR/pre
+# #condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_jecsyst
+# #condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_jecsyst
+#condorOutDir=/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/CBA_jecsyst/post
+#condorOutDir2=/cms/store/user/idas/Output/cms-hcs-run2/KinTreeUL/CBA_jecsyst/post
 
-condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_genOR
-condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_genOR
-condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_genOR
+condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_jecsyst
+condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_jecsyst
+condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jecsyst
 
-# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_genOR/post
-# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_genOR/post
-# condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_genOR/post
+# condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_jecsyst/pre
+# condorOutDir3=/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_jecsyst/pre
+# condorOutDir4=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jecsyst/pre
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;

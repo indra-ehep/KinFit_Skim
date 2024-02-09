@@ -1,0 +1,2 @@
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HminusM060_postVFP_Skim_NanoAOD_1of2.root
+root://eosuser.cern.ch//eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Skim_NanoAODUL/2016/HminusM060_postVFP_Skim_NanoAOD_2of2.root

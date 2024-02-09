@@ -595,7 +595,8 @@ void Selector::metWithUncl()
 {
 
   TLorentzVector MET;
-  MET.SetPtEtaPhiM(tree->MET_pt_, 0., tree->MET_phi_, 0.);
+  //MET.SetPtEtaPhiM(tree->MET_pt_, 0., tree->MET_phi_, 0.);
+  MET.SetPtEtaPhiM(METPt, 0., METPhi, 0.);
 
   double metX = MET.Px(); 
   double metY = MET.Py();

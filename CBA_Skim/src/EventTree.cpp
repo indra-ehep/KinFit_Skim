@@ -396,6 +396,15 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
   tree->SetBranchStatus("Flag_BadPFMuonFilter",1);
   tree->SetBranchAddress("Flag_BadPFMuonFilter",&Flag_BadPFMuonFilter_);
 
+  tree->SetBranchStatus("Flag_BadPFMuonDzFilter",1);
+  tree->SetBranchAddress("Flag_BadPFMuonDzFilter",&Flag_BadPFMuonDzFilter_);
+
+  tree->SetBranchStatus("Flag_eeBadScFilter",1);
+  tree->SetBranchAddress("Flag_eeBadScFilter",&Flag_eeBadScFilter_);
+  
+  tree->SetBranchStatus("Flag_hfNoisyHitsFilter",1);
+  tree->SetBranchAddress("Flag_hfNoisyHitsFilter",&Flag_hfNoisyHitsFilter_);
+
   if(year =="2017" || year == "2018"){
     tree->SetBranchStatus("Flag_ecalBadCalibFilter",1);
     tree->SetBranchAddress("Flag_ecalBadCalibFilter",&Flag_ecalBadCalibFilter_);
@@ -989,6 +998,15 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
   chain->SetBranchStatus("Flag_BadPFMuonFilter",1);
   chain->SetBranchAddress("Flag_BadPFMuonFilter",&Flag_BadPFMuonFilter_);
 
+  chain->SetBranchStatus("Flag_BadPFMuonDzFilter",1);
+  chain->SetBranchAddress("Flag_BadPFMuonDzFilter",&Flag_BadPFMuonDzFilter_);
+
+  chain->SetBranchStatus("Flag_eeBadScFilter",1);
+  chain->SetBranchAddress("Flag_eeBadScFilter",&Flag_eeBadScFilter_);
+  
+  chain->SetBranchStatus("Flag_hfNoisyHitsFilter",1);
+  chain->SetBranchAddress("Flag_hfNoisyHitsFilter",&Flag_hfNoisyHitsFilter_);
+
   if(year =="2017" || year == "2018"){
     chain->SetBranchStatus("Flag_ecalBadCalibFilter",1);
     chain->SetBranchAddress("Flag_ecalBadCalibFilter",&Flag_ecalBadCalibFilter_);
@@ -1168,8 +1186,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     
   // chain->SetBranchStatus("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",1);
   // chain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",&HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_);
-
-
 
 }
 

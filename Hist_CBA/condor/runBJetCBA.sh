@@ -4,8 +4,8 @@
 myArray=( "$@" )
 #Array: Size=$#, an element=$1, all element = $@
 
-export SCRAM_ARCH=slc7_amd64_gcc10
-export CMSVER=CMSSW_12_3_6
+export SCRAM_ARCH=el9_amd64_gcc11
+export CMSVER=CMSSW_13_0_2
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
@@ -50,13 +50,13 @@ printf "Done Histogramming at ";/bin/date
 # condorOutDir1=/eos/user/i/idas/Output/cms-hcs-run2/CBA_TTbarSLKFEffDRVar
 
 
-outputdir=CBA_jetpt15-BJetHist1
+outputdir=CBA_jecsyst-BJetHist1
 
-# condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir
-# condorOutDir1=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/$outputdir
+condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir
+condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir
 
-condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/pre
-condorOutDir1=/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/$outputdir/pre
+# condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/pre
+# condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir/pre
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
