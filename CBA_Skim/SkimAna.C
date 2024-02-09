@@ -4722,7 +4722,18 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //######################################################
+  TString met_year(selector->year);
+  if(fYear==2016){
+    if(selector->isPreVFP)
+      met_year += "APV";
+    else
+      met_year += "nonAPV";
+  }
   selector->filter_mets();
+  std::pair<double,double> met_xycorr;
+  met_xycorr = selector->METXYCorr_Met_MetPhi(selector->METPt, selector->METPhi, int(event->run_), met_year, !isData, event->nVtx_, true, false);
+  selector->METPt = met_xycorr.first;
+  selector->METPhi = met_xycorr.second;
   if(selector->selectMETUnc)
     selector->metWithUncl();
   //######################################################
@@ -8639,9 +8650,9 @@ bool SkimAna::ExecSerial(const char* infile)
   SlaveBegin(tree);
   tree->GetEntry(0);
   Notify();
-  for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
+  //for(Long64_t ientry = 0 ; ientry < tree->GetEntries() ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 100 ; ientry++){
-  //for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
+  for(Long64_t ientry = 0 ; ientry < 20000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
     //for(Long64_t ientry = 0 ; ientry < 2 ; ientry++){
     //cout<<"Procesing : " << ientry << endl;
