@@ -1,6 +1,6 @@
 #!/bin/sh
 
-waitingtime=300
+waitingtime=120
 allowed_max=28000
 while true
 do

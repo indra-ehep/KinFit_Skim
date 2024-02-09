@@ -15,24 +15,8 @@ import time
 #                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
 #                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 
-# samples_2016 = ["TTbar", "DataMu", "DataEle",
-#                 "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
-#                 "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
-#                 "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
-#                 "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHToGG",
-#                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
-# #samples_2016 = ["TTHTobb"]
+samples_2016 = ["Wjets"]
 
-samples_2016 = ["TTbar", "DataMu", "DataEle",
-                "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
-                "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-                "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
-                "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
-                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToGG",
-                "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 #samples_2016 = ["TTHToNonbb", "TTHTobb", "TTWJetsToLNu"]
 
 
@@ -74,7 +58,7 @@ syst_long_2016 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdam
 
 inputdir="CBA_jecsyst"
 outputdir="CBA_jecsyst-Hist1"
-iosubdir="post"
+iosubdir="pre"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
 #kinpath='/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
@@ -84,8 +68,8 @@ kinpath='/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/%s/%s'%(i
 os.system('ls')
 
 for year in [2016]:
-    os.system("if [ ! -d ../input/%s/post ] ; then mkdir -p ../input/%s/post ; fi"%(year,year))
-    os.system("rm -f ../input/%s/post/*"%year)
+    os.system("if [ ! -d ../input/%s/pre ] ; then mkdir -p ../input/%s/pre ; fi"%(year,year))
+    os.system("rm -f ../input/%s/pre/*"%year)
     sampleList = eval("samples_%i"%year)
     for sample in sampleList:
 
@@ -97,7 +81,7 @@ for year in [2016]:
             systList = eval("syst_%i"%year)
 
         for syst in systList:
-            inputfile = '../input/%s/post/%s_%s.txt'%(year, sample, syst)
+            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
             os.system('for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep \"_%s_\" | grep -v \"*.sys.*\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done '%(kinpath, year, sample, syst, inputfile))
             print("Creating input file %s"%inputfile)
 
@@ -141,7 +125,8 @@ for year in [2016]:
     jdlFile.write(common_command)
     condorOutDir='/eos/user/d/dugad/idas/Output/cms-hcs-run2/%s/%s'%(outputdir,iosubdir)
     os.system("xrdfs root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
-    condorOutDir1='/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/%s/%s'%(outputdir,iosubdir)
+    # condorOutDir1='/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/%s/%s'%(outputdir,iosubdir)
+    condorOutDir1='/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/%s/%s'%(outputdir,iosubdir)
     os.system("xrdfs root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
     
     jdlFile.write("X=$(step)\n")
@@ -166,15 +151,15 @@ for year in [2016]:
 
         for syst in systList:
             
-            inputfile = '../input/%s/post/%s_%s.txt'%(year, sample, syst)
+            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
             noflines = subprocess.Popen('wc -l %s | awk \'{print $1}\''%(inputfile),shell=True,stdout=subprocess.PIPE).communicate()[0].split(b'\n')[0]
             nJob = int(noflines)
             totjobs += nJob
             print("%s %s %s"%(sample,nJob,syst))
             if nJob==1:
-                run_command =  'Arguments  = %s %s input/%s/post/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
+                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
             else:
-                run_command =  'Arguments  = %s %s input/%s/post/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
+                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
             jdlFile.write(run_command)
             subjdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile
@@ -183,4 +168,5 @@ for year in [2016]:
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()
+samplesubFile.close()
 print("Total number of jobs to be submitted is %s"%(totjobs))
