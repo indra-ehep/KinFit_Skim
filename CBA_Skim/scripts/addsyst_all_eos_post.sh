@@ -8,16 +8,11 @@
 # **********************************************************************/
 
 
-#samples_2016="TTbar DataMu DataEle HplusM040 HplusM050 HplusM060 HplusM070 HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM040 HminusM050 HminusM060 HminusM070 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160 singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle TTGToLL TTGToLNu TTGToQQ TTHToNonbb TTHTobb TTHToGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ"
-#samples_2016="DataEle HplusM050 HplusM060 HplusM070 HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM040 HminusM050 HminusM060 HminusM070 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160 singleTop DYjets VBFusion MCQCDMu MCQCDEle"
+samples_2016="TTbar DataMu DataEle HplusM040 HplusM050 HplusM060 HplusM070 HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM040 HminusM050 HminusM060 HminusM070 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160 singleTop Wjets DYjets VBFusion MCQCDMu MCQCDEle TTGToLL TTGToLNu TTGToQQ TTHToNonbb TTHTobb TTHToGG TTWJetsToLNu TTWJetsToQQ TTZToLLNuNu TTZToQQ"
 
-#samples_2016="DataMu TTbar Wjets TTGToLL TTGToLNu TTGToQQ TTHToGG TTWJetsToQQ TTZToLLNuNu TTZToQQ DataEle HplusM040 HplusM050 HplusM060 HplusM070 HplusM080 HplusM090 HplusM100 HplusM110 HplusM120 HplusM130 HplusM140 HplusM150 HplusM155 HplusM160 HminusM040 HminusM050 HminusM060 HminusM070 HminusM080 HminusM090 HminusM100 HminusM110 HminusM120 HminusM130 HminusM140 HminusM150 HminusM155 HminusM160 singleTop DYjets VBFusion MCQCDMu MCQCDEle"
-#samples_2016="TTHToNonbb TTHTobb TTWJetsToLNu"
-samples_2016="Wjets"
+syst_2016="base iso20 jerup jerdown metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown absmpfbup abssclup absstatup flavorqcdup fragup timeptetaup pudatamcup puptbbup puptec1up puptec2up pupthfup puptrefup relfsrup relbalup relsampleup reljerec1up reljerec2up reljerhfup relptbbup relptec1up relptec2up relpthfup relstatecup relstatfsrup relstathfup singpiecalup singpihcalup absmpfbdown absscldown absstatdown flavorqcddown fragdown timeptetadown pudatamcdown puptbbdown puptec1down puptec2down pupthfdown puptrefdown relfsrdown relbaldown relsampledown reljerec1down reljerec2down reljerhfdown relptbbdown relptec1down relptec2down relpthfdown relstatecdown relstatfsrdown relstathfdown singpiecaldown singpihcaldown"
 
-#syst_2016="base jecup jecdown jerup jerdown iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown stotpuup stotpudown stotrelup stotreldown stotptup stotptdown stotscaleup stotscaledown flavorqcdup flavorqcddown timeptetaup timeptetadown"
-syst_2016="base iso20 metup metdown cp5up cp5down hdampup hdampdown mtopup mtopdown absmpfbup abssclup absstatup flavorqcdup fragup timeptetaup pudatamcup puptbbup puptec1up puptec2up pupthfup puptrefup relfsrup relbalup relsampleup reljerec1up reljerec2up reljerhfup relptbbup relptec1up relptec2up relpthfup relstatecup relstatfsrup relstathfup singpiecalup singpihcalup absmpfbdown absscldown absstatdown flavorqcddown fragdown timeptetadown pudatamcdown puptbbdown puptec1down puptec2down pupthfdown puptrefdown relfsrdown relbaldown relsampledown reljerec1down reljerec2down reljerhfdown relptbbdown relptec1down relptec2down relpthfdown relstatecdown relstatfsrdown relstathfdown singpiecaldown singpihcaldown"
-
+#syst_2016="base"
 
 declare -A tunedict
 tunedict["cp5up"]="CP5up_TTbar"
@@ -35,7 +30,8 @@ syst_base="base iso20"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jetpt15/post"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowjetpt-highmet/post"
 #inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_lowmass/post"
-inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jecsyst/post"
+#inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jecsyst/post"
+inputdir="/eos/user/i/idas/Output/cms-hcs-run2/CBA_metxycorr/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso20-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_elereliso30-BJetHist1/post"
 #inputdir="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_mutight-BJetHist1/post"

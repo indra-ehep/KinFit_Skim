@@ -1116,7 +1116,37 @@ void KinAna::SelectSyst()
     fNSyst = 1;
     fSystList.push_back(fSyst);
     
+  } else if (fSyst == "nometa1") {
+
+    systType = kBase ;
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "nometa2") {
+
+    systType = kBase ;
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
   } else if (fSyst == "jerup") {
+
+    systType = kJERUp;
+    jervar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "jereta1up") {
+
+    systType = kJERUp;
+    jervar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "jereta2up") {
 
     systType = kJERUp;
     jervar012_g = 2;      
@@ -1132,6 +1162,22 @@ void KinAna::SelectSyst()
     fNSyst = 1;
     fSystList.push_back(fSyst);
     
+  } else if (fSyst == "jereta1down") {
+
+    systType = kJERDown;
+    jervar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "jereta2down") {
+
+    systType = kJERDown;
+    jervar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
   } else if (fSyst == "iso20") {
     
     systType = kIso20;    
@@ -1549,11 +1595,19 @@ Bool_t KinAna::Process(Long64_t entry)
   bjhadAF.SetPtEtaPhiE(jetBhadPt, jetBhadEta, jetBhadPhi, jetBhadEn);
   bjlepAF.SetPtEtaPhiE(jetBlepPt, jetBlepEta, jetBlepPhi, jetBlepEn);
   leptonAF.SetPtEtaPhiE(lepPt, lepEta, lepPhi, lepEn);
+
   
   
   wt_ratio = 1.0;
   
-  
+
+  if((fSyst == "jereta1up") or (fSyst == "jereta2up") or (fSyst == "jereta1down") or (fSyst == "jereta2down") or (fSyst == "nometa1") or (fSyst == "nometa2")){
+    double resoEta = (cjhadAF+sjhadAF).Eta();
+    if(((fSyst == "jereta1up") or (fSyst == "jereta1down") or (fSyst == "nometa1")) and TMath::Abs(resoEta) >= 1.93)
+      return true;
+    if(((fSyst == "jereta2up") or (fSyst == "jereta2down") or (fSyst == "nometa2")) and TMath::Abs(resoEta) < 1.93)
+      return true;
+  }
   //Processes for KinFit selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   FillKFCFObs();
@@ -1904,11 +1958,16 @@ bool KinAna::FillKFHists(TList *list, string hist_extn, bool isMu, double wt, do
 bool KinAna::GetWtRatio(TString systname, TString DDzone, string hist_extn){
 
   string lep = (singleMu) ? "mu" : "ele";
+  TString systname1(systname);
+  if(systname.Contains("jereta1up") or systname.Contains("jereta2up"))
+    systname1 = "jerup";
+  if(systname.Contains("jereta1down") or systname.Contains("jereta2down"))
+    systname1 = "jerdown";
+  if((systname == "nometa1") or (systname == "nometa2"))
+    systname1 = "base";
   
-  TH1D *hWtBefore = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_before_%s%s",fSample.Data(), systname.Data(), DDzone.Data(), lep.c_str(), hist_extn.c_str()));
-  TH1D *hWtAfter = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_after_%s%s",fSample.Data(), systname.Data(), DDzone.Data(), lep.c_str(), hist_extn.c_str()));
-  // TH1D *hWtBefore = (TH1D *)fRefF->Get(Form("%s/%s/Iso/_wt_before",fSample.Data(),systname.Data()));
-  // TH1D *hWtAfter = (TH1D *)fRefF->Get(Form("%s/%s/Iso/_wt_after",fSample.Data(),systname.Data()));
+  TH1D *hWtBefore = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_before_%s%s",fSample.Data(), systname1.Data(), DDzone.Data(), lep.c_str(), hist_extn.c_str()));
+  TH1D *hWtAfter = (TH1D *)fRefF->Get(Form("%s/%s/%s/_wt_after_%s%s",fSample.Data(), systname1.Data(), DDzone.Data(), lep.c_str(), hist_extn.c_str()));
   
   wt_before = hWtBefore->GetBinContent(nJet+1);
   wt_after = hWtAfter->GetBinContent(nJet+1);
@@ -2424,7 +2483,7 @@ bool KinAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
@@ -2458,7 +2517,7 @@ bool KinAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")	    
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
@@ -2490,7 +2549,7 @@ bool KinAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
@@ -2524,7 +2583,7 @@ bool KinAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")

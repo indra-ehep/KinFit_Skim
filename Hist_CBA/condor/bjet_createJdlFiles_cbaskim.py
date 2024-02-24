@@ -8,21 +8,16 @@ import time
 
 #samples_2016 = ["TTGToLL"]
 
-# samples_2016 = ["TTbar", "DataMu", "DataEle",
-#                 "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
-#                 "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
-#                 "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
-#                 "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
-#                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
+samples_2016 = ["TTbar", "DataMu", "DataEle",
+                "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
+                "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
+                "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
+                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
+                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
+                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 
-samples_2016 = ["Wjets"]
-
-# #samples_2016 = ["TTHToNonbb", "TTHTobb", "TTWJetsToLNu"]
-
-
-syst_2016 = ["base", "iso20", "metup", "metdown",
+syst_2016 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown",
              "absmpfbup", "abssclup", "absstatup",
              "flavorqcdup", "fragup", "timeptetaup",
              "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
@@ -40,7 +35,8 @@ syst_2016 = ["base", "iso20", "metup", "metdown",
              "relstatecdown", "relstatfsrdown", "relstathfdown",
              "singpiecaldown", "singpihcaldown"]
 
-syst_long_2016 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+syst_long_2016 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+                  "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
                   "absmpfbup", "abssclup", "absstatup",
                   "flavorqcdup", "fragup", "timeptetaup",
                   "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
@@ -58,16 +54,17 @@ syst_long_2016 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdam
                   "relstatecdown", "relstatfsrdown", "relstathfdown",
                   "singpiecaldown", "singpihcaldown"]
 
-inputdir="CBA_jecsyst"
-outputdir="CBA_jecsyst-BJetHist1"
-iosubdir="pre"
+inputdir="CBA_metxycorr"
+outputdir="CBA_metxycorr-BJetHist1"
+iosubdir="post"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
+#bjetpath='/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
 bjetpath='/eos/user/d/dugad/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
 
 for year in [2016]:
-    os.system("if [ ! -d ../input/%s/pre ] ; then mkdir -p ../input/%s/pre ; fi"%(year,year))
-    os.system("rm -f ../input/%s/pre/*"%year)
+    os.system("if [ ! -d ../input/%s/post ] ; then mkdir -p ../input/%s/post ; fi"%(year,year))
+    os.system("rm -f ../input/%s/post/*"%year)
     sampleList = eval("samples_%i"%year)
     for sample in sampleList:
 
@@ -79,8 +76,8 @@ for year in [2016]:
             systList = eval("syst_%i"%year)
 
         for syst in systList:
-            inputfile = '../input/%s/pre/%s_%s_bjet.txt'%(year, sample, syst)
-            os.system('for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep \"_%s_\" | grep -v \".sys.v\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done '%(bjetpath, year, sample, syst, inputfile))
+            inputfile = '../input/%s/post/%s_%s_bjet.txt'%(year, sample, syst)
+            os.system('for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep \"_%s_\" | grep -v \"\\.sys\\.\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done '%(bjetpath, year, sample, syst, inputfile))
             print("Creating input file %s"%inputfile)
 
 
@@ -120,7 +117,7 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runBJetCBA.sh \n')
     jdlFile.write(common_command)
-    condorOutDir='/eos/user/d/dugad/idas/Output/cms-hcs-run2/%s/%s'%(outputdir,iosubdir)
+    condorOutDir='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(outputdir,iosubdir)
     os.system("xrdfs root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     #condorOutDir1='/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/%s/%s'%(outputdir,iosubdir)
     condorOutDir1='/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/%s/%s'%(outputdir,iosubdir)
@@ -148,15 +145,15 @@ for year in [2016]:
 
         for syst in systList:
             
-            inputfile = '../input/%s/pre/%s_%s_bjet.txt'%(year, sample, syst)
+            inputfile = '../input/%s/post/%s_%s_bjet.txt'%(year, sample, syst)
             noflines = subprocess.Popen('wc -l %s | awk \'{print $1}\''%(inputfile),shell=True,stdout=subprocess.PIPE).communicate()[0].split(b'\n')[0]
             nJob = int(noflines)
             totjobs += nJob
             print("%s %s %s"%(sample,nJob,syst))
             if nJob==1:
-                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s_bjet.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
+                run_command =  'Arguments  = %s %s input/%s/post/%s_%s_bjet.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
             else:
-                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s_bjet.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
+                run_command =  'Arguments  = %s %s input/%s/post/%s_%s_bjet.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
             jdlFile.write(run_command)
             subjdlFile.write(run_command)
             #print("condor_submit jdl/%s"%jdlFile

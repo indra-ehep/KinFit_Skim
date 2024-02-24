@@ -11,17 +11,17 @@ fi
 echo cat_dir : $cat_dir
 currdir=$PWD
 
-for i in 80 90 100 110 120 130 140 150 155 160 #nanoAOD
+#for i in 40 50 60 70 80 90 100 110 120 130 140 150 155 160 #nanoAOD
 #for i in 90 100 110 120 130 140 150 155 160 #nanoAOD
 #for i in 80 90 100 120 140 150 155 160  #miniAOD
-#for i in 80
+for i in 40
 #for i in 110 120 130 140 150 155 160
 do
 
     echo -e "\nProcessing for mass point : $i\n\n"
     sleep 5
 
-    python2 MyLimitComputer.py --ch ele --cat $category --mass $i  --year "run2"
+    # python2 MyLimitComputer.py --ch ele --cat $category --mass $i  --year "run2"
     # cd local/ele/${cat_dir}/Mass$i 
     # source ../../../../impact_plot.sh t2w_combine_datacard_hcs_13TeV_ele_${cat_dir}_WH$i.root $i 
     # cp nuisImpactPDF.pdf nuisImpactPDF_ele_${i}.pdf
@@ -29,7 +29,7 @@ do
     # #atril nuisImpactPDF_ele_${i}.pdf &
     # cd -  
     
-    python2 MyLimitComputer.py --ch mu --cat $category --mass $i  --year "run2"
+    #python2 MyLimitComputer.py --ch mu --cat $category --mass $i  --year "run2"
     # cd local/mu/${cat_dir}/Mass$i 
     # source ../../../../impact_plot.sh t2w_combine_datacard_hcs_13TeV_mu_${cat_dir}_WH$i.root $i 
     # cp nuisImpactPDF.pdf nuisImpactPDF_mu_${i}.pdf
@@ -44,7 +44,7 @@ do
     # pdfseparate nuisImpactPDF_mu-ele_${i}.pdf nuisImpactPDF_mu-ele_${i}_%d.pdf
     # atril nuisImpactPDF_mu-ele_${i}.pdf &
     # cd -  
-    # ls
+    ls
     
 done 
 #root -l MyLimitPlotterNano.C+ 

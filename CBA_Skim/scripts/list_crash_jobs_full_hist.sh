@@ -1,7 +1,7 @@
-outputfile=/tmp/idas/fl_crash_et_error.txt
-errorfile=/tmp/idas/crash_et_error.txt
-filteredoutputfile=/tmp/idas/fl_crash_et_error_filtered.txt
-resubmitfile=/tmp/idas/resubmit_sec.txt
+outputfile=/tmp/$USER/fl_crash_et_error.txt
+errorfile=/tmp/$USER/crash_et_error.txt
+filteredoutputfile=/tmp/$USER/fl_crash_et_error_filtered.txt
+resubmitfile=/tmp/$USER/resubmit_sec.txt
 resubmitjdl=../resubmit.jdl
 if [ -f $resubmitfile ]; then rm $resubmitfile ; fi
 

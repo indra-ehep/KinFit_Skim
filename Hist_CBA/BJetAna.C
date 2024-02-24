@@ -1046,7 +1046,37 @@ void BJetAna::SelectSyst()
     fNSyst = 1;
     fSystList.push_back(fSyst);
     
+  } else if (fSyst == "nometa1") {
+
+    systType = kBase ;
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "nometa2") {
+
+    systType = kBase ;
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
   } else if (fSyst == "jerup") {
+
+    systType = kJERUp;
+    jervar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "jereta1up") {
+
+    systType = kJERUp;
+    jervar012_g = 2;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "jereta2up") {
 
     systType = kJERUp;
     jervar012_g = 2;      
@@ -1062,6 +1092,22 @@ void BJetAna::SelectSyst()
     fNSyst = 1;
     fSystList.push_back(fSyst);
     
+  } else if (fSyst == "jereta1down") {
+
+    systType = kJERDown;
+    jervar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
+  } else if (fSyst == "jereta2down") {
+
+    systType = kJERDown;
+    jervar012_g = 0;      
+    Info("SelectSyst","Syst : %s", fSyst.Data()); 
+    fNSyst = 1;
+    fSystList.push_back(fSyst);
+
   } else if (fSyst == "iso20") {
     
     systType = kIso20;    
@@ -1692,7 +1738,7 @@ bool BJetAna::FillBTagObs(){
     }else{ //if(systType == kBase
       
       if( (systType == kJECUp) or (systType == kJECDown) 
-	  or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	  or (systType == kJERUp) or (systType == kJERDown)
 	  or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	  or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	  or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
@@ -2562,7 +2608,7 @@ bool BJetAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
@@ -2596,7 +2642,7 @@ bool BJetAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")	    
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
@@ -2628,7 +2674,7 @@ bool BJetAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
@@ -2662,7 +2708,7 @@ bool BJetAna::FillKFCFObs(){
       for(int isyst=0;isyst<fNSyst;isyst++){
 	TString systname = fSystList[isyst];
 	if( (systType == kJECUp) or (systType == kJECDown) 
-	    or (systType == kJERUp and systname == "jerup") or (systType == kJERDown and systname == "jerdown")
+	    or (systType == kJERUp) or (systType == kJERDown)
 	    or (systType == kMETUp and systname == "metup") or (systType == kMETDown and systname == "metdown")
 	    or (systType == kCP5Up and systname == "cp5up") or (systType == kCP5Down and systname == "cp5down")
 	    or (systType == khDampUp and systname == "hdampup") or (systType == khDampDown and systname == "hdampdown")
