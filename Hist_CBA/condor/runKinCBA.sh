@@ -49,12 +49,12 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 
-outputdir=CBA_jecsyst-Hist1
+outputdir=CBA_metxycorr-Hist1
 
-condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir
+condorOutDir=/eos/user/i/idas/Output/cms-hcs-run2/$outputdir
 condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir
 
-# condorOutDir=/eos/user/d/dugad/idas/Output/cms-hcs-run2/$outputdir/pre
+# condorOutDir=/eos/user/i/idas/Output/cms-hcs-run2/$outputdir/pre
 # condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir/pre
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then

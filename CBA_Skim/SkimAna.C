@@ -4688,9 +4688,21 @@ Bool_t SkimAna::Process(Long64_t entry)
     if(TMath::Abs(event->jetEta_[jetInd]) > selector->jet_Eta_cut) isForwardJetEta = true;
   }
   //######################################################
+  //Skip data for 2018 HEM issue
+  //######################################################
+  bool isHEM = false;
+  if(fYear==2018 and isData and event->run_>=319077 and event->run_<=325175){
+    for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+      int jetInd = selector->Jets.at(ijet);
+      if((event->jetPhi_[jetInd]>-1.57 and event->jetPhi_[jetInd]<-0.87) and (event->jetEta_[jetInd]>-3.0 and event->jetEta_[jetInd]<-1.3))
+	isHEM = true;
+    }
+  }
+  //######################################################
   
   //////=====================================================
-  if(selector->Jets.size() < 4) return true; //original condn
+  if(selector->Jets.size() < 4 or isHEM) return true; //with HEM
+  //if(selector->Jets.size() < 4) return true; //original condn
   //////=====================================================
   
   if(IsDebug) Info("Process","Completed Njet >=4 : %lld(%lld)",fProcessed, entry);
@@ -4722,11 +4734,22 @@ Bool_t SkimAna::Process(Long64_t entry)
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //######################################################
+  TString met_year(selector->year);
+  if(fYear==2016){
+    if(selector->isPreVFP)
+      met_year += "APV";
+    else
+      met_year += "nonAPV";
+  }
   selector->filter_mets();
+  std::pair<double,double> met_xycorr;
+  met_xycorr = selector->METXYCorr_Met_MetPhi(selector->METPt, selector->METPhi, int(event->run_), met_year, !isData, event->nVtx_, true, false);
+  selector->METPt = met_xycorr.first;
+  selector->METPhi = met_xycorr.second;
   if(selector->selectMETUnc)
     selector->metWithUncl();
   //######################################################
-  
+
   METThreshold = 20. ;
   //////=====================================================
   if(selector->METPt < METThreshold ) isLowMET = true;
@@ -8012,13 +8035,12 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   // _jetPhi->clear() ;
   // _jetMass->clear() ;
   // _jetDeepB->clear() ;
-  bool isReduceJetEnergy = false; // only 2018
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
     if(selector->JetsPtSmeared.at(ijet)<=jetPtThresh) continue;
     jetVector.SetPtEtaPhiM(selector->JetsPtSmeared.at(ijet), event->jetEta_[jetInd] , event->jetPhi_[jetInd] , event->jetMass_[jetInd] );
-    if(isReduceJetEnergy){
+    if(fYear==2018){
       if((jetVector.Phi()>-1.57 and jetVector.Phi()<-0.87) and (jetVector.Eta()>-2.5 and jetVector.Eta()<-1.3))
 	jetVector.SetE(0.80 * jetVector.E());
       if((jetVector.Phi()>-1.57 and jetVector.Phi()<-0.87) and (jetVector.Eta()>-3.0 and jetVector.Eta()<-2.5))
@@ -8687,7 +8709,7 @@ int main(int argc, char** argv)
   cout<<"inputfile  : " << inputfile  << endl;
   cout<<"singleFile  : " << singleFile  << endl;
   string xrdcp_command = "";
-  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") or hostname.BeginsWith("dhep-inlap") )
+  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx") or hostname.BeginsWith("dhep-inlap") )
     //xrdcp_command = "cp " + inputfile + " " + singleFile ;
     xrdcp_command = "ln -s " + inputfile + " " + singleFile ;
   else

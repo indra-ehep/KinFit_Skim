@@ -6,116 +6,18 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-# samples_2017 = ["TTbar", #"DataMu", "DataEle",
-#                 "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
-#                 "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
-#                 "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
-#                 "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
-#                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
-
-# samples_2016 = ["Wjets"]
-
-# syst_2017 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown",
-#              "absmpfbup", "abssclup", "absstatup",
-#              "flavorqcdup", "fragup", "timeptetaup",
-#              "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
-#              "relfsrup", "relbalup", "relsampleup",
-#              "reljerec1up", "reljerec2up", "reljerhfup",
-#              "relptbbup", "relptec1up", "relptec2up", "relpthfup",
-#              "relstatecup", "relstatfsrup", "relstathfup",
-#              "singpiecalup", "singpihcalup",
-#              "absmpfbdown", "absscldown", "absstatdown",
-#              "flavorqcddown", "fragdown", "timeptetadown",
-#              "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
-#              "relfsrdown", "relbaldown", "relsampledown",
-#              "reljerec1down", "reljerec2down", "reljerhfdown",
-#              "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
-#              "relstatecdown", "relstatfsrdown", "relstathfdown",
-#              "singpiecaldown", "singpihcaldown"]
-
-# syst_long_2017 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
-#                   "absmpfbup", "abssclup", "absstatup",
-#                   "flavorqcdup", "fragup", "timeptetaup",
-#                   "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
-#                   "relfsrup", "relbalup", "relsampleup",
-#                   "reljerec1up", "reljerec2up", "reljerhfup",
-#                   "relptbbup", "relptec1up", "relptec2up", "relpthfup",
-#                   "relstatecup", "relstatfsrup", "relstathfup",
-#                   "singpiecalup", "singpihcalup",
-#                   "absmpfbdown", "absscldown", "absstatdown",
-#                   "flavorqcddown", "fragdown", "timeptetadown",
-#                   "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
-#                   "relfsrdown", "relbaldown", "relsampledown",
-#                   "reljerec1down", "reljerec2down", "reljerhfdown",
-#                   "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
-#                   "relstatecdown", "relstatfsrdown", "relstathfdown",
-#                   "singpiecaldown", "singpihcaldown"]
-
-# syst_2017 = ["jerup", "jerdown"]
-# syst_long_2017 = ["jerup", "jerdown"]
-
-# samples_2018 = ["TTbar", "DataMu", "DataEle",
-#                 "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
-#                 "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
-#                 "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
-#                 "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
-#                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
-
-#samples_2016 = ["Wjets"]
-
-# syst_2018 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown",
-#              "absmpfbup", "abssclup", "absstatup",
-#              "flavorqcdup", "fragup", "timeptetaup",
-#              "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
-#              "relfsrup", "relbalup", "relsampleup",
-#              "reljerec1up", "reljerec2up", "reljerhfup",
-#              "relptbbup", "relptec1up", "relptec2up", "relpthfup",
-#              "relstatecup", "relstatfsrup", "relstathfup",
-#              "singpiecalup", "singpihcalup",
-#              "absmpfbdown", "absscldown", "absstatdown",
-#              "flavorqcddown", "fragdown", "timeptetadown",
-#              "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
-#              "relfsrdown", "relbaldown", "relsampledown",
-#              "reljerec1down", "reljerec2down", "reljerhfdown",
-#              "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
-#              "relstatecdown", "relstatfsrdown", "relstathfdown",
-#              "singpiecaldown", "singpihcaldown"]
-
-# syst_long_2018 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
-#                   "absmpfbup", "abssclup", "absstatup",
-#                   "flavorqcdup", "fragup", "timeptetaup",
-#                   "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
-#                   "relfsrup", "relbalup", "relsampleup",
-#                   "reljerec1up", "reljerec2up", "reljerhfup",
-#                   "relptbbup", "relptec1up", "relptec2up", "relpthfup",
-#                   "relstatecup", "relstatfsrup", "relstathfup",
-#                   "singpiecalup", "singpihcalup",
-#                   "absmpfbdown", "absscldown", "absstatdown",
-#                   "flavorqcddown", "fragdown", "timeptetadown",
-#                   "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
-#                   "relfsrdown", "relbaldown", "relsampledown",
-#                   "reljerec1down", "reljerec2down", "reljerhfdown",
-#                   "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
-#                   "relstatecdown", "relstatfsrdown", "relstathfdown",
-#                   "singpiecaldown", "singpihcaldown"]
-
-# syst_2018 = ["base"]
-# syst_long_2018 = ["base"]
-
-samples_2018 = ["TTbar", #"DataMu", "DataEle",
+samples_2017 = ["TTbar", "DataMu", "DataEle",
+                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
+                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ",
                 "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
                 "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
                 "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
                 "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
-                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
-                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
+                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
 
-syst_2018 = ["jerup", "jerdown", "metup", "metdown", #"base", "iso20", 
+# samples_2016 = ["Wjets"]
+
+syst_2017 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown",
              "absmpfbup", "abssclup", "absstatup",
              "flavorqcdup", "fragup", "timeptetaup",
              "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
@@ -133,7 +35,7 @@ syst_2018 = ["jerup", "jerdown", "metup", "metdown", #"base", "iso20",
              "relstatecdown", "relstatfsrdown", "relstathfdown",
              "singpiecaldown", "singpihcaldown"]
 
-syst_long_2018 = ["jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown", #"base", "iso20", 
+syst_long_2017 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
                   "absmpfbup", "abssclup", "absstatup",
                   "flavorqcdup", "fragup", "timeptetaup",
                   "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
@@ -151,6 +53,55 @@ syst_long_2018 = ["jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "h
                   "relstatecdown", "relstatfsrdown", "relstathfdown",
                   "singpiecaldown", "singpihcaldown"]
 
+# syst_2017 = ["jerup", "jerdown"]
+# syst_long_2017 = ["jerup", "jerdown"]
+
+samples_2018 = ["TTbar", "DataMu", "DataEle",
+                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
+                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ",
+                "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
+                "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
+                "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
+                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle"]
+
+syst_2018 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown",
+             "absmpfbup", "abssclup", "absstatup",
+             "flavorqcdup", "fragup", "timeptetaup",
+             "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+             "relfsrup", "relbalup", "relsampleup",
+             "reljerec1up", "reljerec2up", "reljerhfup",
+             "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+             "relstatecup", "relstatfsrup", "relstathfup",
+             "singpiecalup", "singpihcalup",
+             "absmpfbdown", "absscldown", "absstatdown",
+             "flavorqcddown", "fragdown", "timeptetadown",
+             "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+             "relfsrdown", "relbaldown", "relsampledown",
+             "reljerec1down", "reljerec2down", "reljerhfdown",
+             "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+             "relstatecdown", "relstatfsrdown", "relstathfdown",
+             "singpiecaldown", "singpihcaldown"]
+
+syst_long_2018 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+                  "absmpfbup", "abssclup", "absstatup",
+                  "flavorqcdup", "fragup", "timeptetaup",
+                  "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+                  "relfsrup", "relbalup", "relsampleup",
+                  "reljerec1up", "reljerec2up", "reljerhfup",
+                  "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+                  "relstatecup", "relstatfsrup", "relstathfup",
+                  "singpiecalup", "singpihcalup",
+                  "absmpfbdown", "absscldown", "absstatdown",
+                  "flavorqcddown", "fragdown", "timeptetadown",
+                  "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+                  "relfsrdown", "relbaldown", "relsampledown",
+                  "reljerec1down", "reljerec2down", "reljerhfdown",
+                  "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+                  "relstatecdown", "relstatfsrdown", "relstathfdown",
+                  "singpiecaldown", "singpihcaldown"]
+
+
 tunedict = {
     "cp5up" : "CP5up_TTbar",
     "cp5down" : "CP5down_TTbar",
@@ -160,7 +111,7 @@ tunedict = {
     "mtopdown" : "mtopdown_TTbar"
 }
 
-jdlDir = 'tmpLog_jecsyst_18_syst'
+jdlDir = 'tmpLog_metxycorr_18'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -178,12 +129,10 @@ x509userproxy = $ENV(X509_USER_PROXY)\n\
 use_x509userproxy = true\n\
 +BenchmarkJob = True\n\
 #+JobFlavour = "testmatch"\n\
-+MaxRuntime = 86400\n\
-#+MaxRuntime = 604800\n\
++MaxRuntime = 172800\n\
 notification = never\n\
 max_transfer_input_mb = 4096\n\
 max_transfer_output_mb = 4096\n\
-#MAX_TRANSFER_INPUT_MB = 4096\n\
 request_disk = 4000000\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
@@ -201,11 +150,11 @@ for year in [2018]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runCBASkim.sh \n')
     jdlFile.write(common_command)
-    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_jecsyst"
+    condorOutDir1="/eos/user/i/idas/Output/cms-hcs-run2/CBA_metxycorr"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir1, year))
-    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_jecsyst"
+    condorOutDir3="/eos/user/d/dugad/idas/Output/cms-hcs-run2/CBA_metxycorr"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir3, year))
-    condorOutDir4="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_jecsyst"
+    condorOutDir4="/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_metxycorr"
     os.system("eos root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir4, year))
     
     jdlFile.write("X=$(step)\n")

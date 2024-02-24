@@ -191,15 +191,27 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_elemva90-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_trigSF-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_JECSplit-CombHist"
-    path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-CombHist"
-    
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_lowjetpt-highmet-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-chi2lt2-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-chi2gt2-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-nj4nbj2-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-njn4nbjn2-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-lowptheta-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-highptheta-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-ptcut20-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-ptcut25-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_lowmass-CombHist"
+    #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
+    path_file_dir="../root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
+        
     muon_file_dir=path_file_dir+""
     ele_file_dir=path_file_dir+""
     
     hist_array_Inc = []
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
     # hist_array_Inc.append(["", "_kb_mjj_"])
-    # hist_array_Inc.append(["", "_ct_Exc0_mjj_"])
+    #hist_array_Inc.append(["", "_ct_Exc0_mjj_"])
     hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
     hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
     hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
@@ -218,11 +230,11 @@ if __name__=="__main__":
     
     #mass_array = [90, 100]
     #mass_array = [80, 90, 100, 120, 140, 150, 155, 160]
-    mass_array = [80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
+    mass_array = [40, 80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
     
     year_array = ["2016"]
-    # year_array.append("2017")
-    # year_array.append("2018")
+    year_array.append("2017")
+    year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")

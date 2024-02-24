@@ -186,7 +186,9 @@ void CompareLimits(){
 
   //02
   ReadLimitMiniAOD(lexclMini, "hig-18-021/PublishedPRD/ForANv12/mu_ele/Cat3_cTagEx");
-  ReadLimitNanoAOD(lexclMEqv16lnN, "TIFRAPAR-2023-01-15/01_yearend22-MiniAODEqv/2016/Comb", "mu_ele");
+  ReadLimitMiniAOD(lexclMiniInc, "hig-18-021/PublishedPRD/ForANv12/mu/Cat1_Inc");
+  // ReadLimitNanoAOD(lexclMEqv16lnN, "TIFRAPAR-2023-01-15/01_yearend22-MiniAODEqv/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclMEqv16shape, "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2016/Incl", "mu");
   // ReadLimitNanoAOD(lexclMEqv16shape, "TIFRAPAR-2023-01-15/11_elereliso-NanoAOD_logN/2016/Comb", "mu_ele");
   
   //03
@@ -296,20 +298,32 @@ void CompareLimits(){
   //ReadLimitNanoAOD(linclNanoUN_Rank1t8_17_21_24, "TIFRAPAR-2023-01-15/15_RankCheck_unNormalized/29_elereliso-NanoAOD_lnN_unNormalized_bctagging_Shape/2016/Incl", "mu");
 
 
+  //// The following two inputs are defined above.
+  // ReadLimitMiniAOD(lexclMini, "hig-18-021/PublishedPRD/ForANv12/mu_ele/Cat3_cTagEx");
+  // ReadLimitMiniAOD(lexclMiniInc, "hig-18-021/PublishedPRD/ForANv12/mu/Cat1_Inc");
+  // ReadLimitNanoAOD(lexclMEqv16lnN, "TIFRAPAR-2023-01-15/01_yearend22-MiniAODEqv/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclMEqv16shape, "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2016/Incl", "mu");
 
-  //ReadLimitMiniAOD(lexclMini, "hig-18-021/PublishedPRD/ForANv12/mu/Cat3_cTagEx");
-  ReadLimitMiniAOD(lexclMiniInc, "hig-18-021/PublishedPRD/ForANv12/mu/Cat1_Inc");
-
-
-  ReadLimitNanoAOD(lexclMEqv16shape, "TIFRAPAR-2023-01-15/09_elereliso-NanoAOD_Shapes/2016/Incl", "mu");
-  ReadLimitNanoAOD(lexclNano16, "TIFRAPAR-2023-01-15/22_elereliso_bld_unNorm_cmdMiniAOD_7Shapes_RD/2016/Comb", "mu");
+  
   //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/28_elereliso_bld_7Shapes_bcStat_lnN/Default_lnN/2016/Comb", "mu");
   //ReadLimitNanoAOD(lexclMEqv16lnN, "TIFRAPAR-2023-01-15/28_elereliso_bld_7Shapes_bcStat_lnN/bcStat_15prcnt/2016/Comb", "mu");
   //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/44_trigSF_impacts_bld_excLMT/Run2/Comb", "mu_ele");
   //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/65_JECSplit_bld_all_uncorr_7Shapes_HighQCDSyst/2016/Comb", "mu_ele");
   //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/66_jetpt15_bld_all_uncorr_7Shapes/2016/Comb", "mu_ele");
   //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/67_JECSplit_bld_all_uncorr_all_lnN_HighQCDSyst/2016/Comb", "mu_ele");
-  ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/68_jetpt15_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  //ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/68_jetpt15_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+
+  ReadLimitNanoAOD(lexclMEqv16lnN, "TIFRAPAR-2023-01-15/57_JECSplit_bld_all_uncorr_7Shapes/2016/Comb", "mu_ele");
+  //ReadLimitNanoAOD(lexclMEqv16shape, "TIFRAPAR-2023-01-15/68_jetpt15_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclNano16, "TIFRAPAR-2023-01-15/70_jetpt15-chi2lt2_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/71_jetpt15-chi2gt2_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclNano16, "TIFRAPAR-2023-01-15/72_jetpt15-nj4nbj2_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/73_jetpt15-njn4nbjn2_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclNano16, "TIFRAPAR-2023-01-15/74_jetpt15-lowptheta_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  // ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/75_jetpt15-highptheta_bld_all_uncorr_all_lnN/2016/Comb", "mu_ele");
+  ReadLimitNanoAOD(lexclMEqv16shape, "TIFRAPAR-2023-01-15/66_jetpt15_bld_all_uncorr_7Shapes/2016/Comb", "mu_ele");
+  ReadLimitNanoAOD(lexclNano16, "TIFRAPAR-2023-01-15/76_jetpt15-ptcut20_bld_all_uncorr_7Shapes/2016/Comb", "mu_ele");
+  ReadLimitNanoAOD(lexclNano, "TIFRAPAR-2023-01-15/77_jetpt15-ptcut25_bld_all_uncorr_7Shapes/2016/Comb", "mu_ele");
   
   //MiniAOD graphs
   TGraph *grlexclMini = new TGraph(int(lexclMini.size()));
@@ -378,7 +392,8 @@ void CompareLimits(){
   SetStyle(grlexclNano, 2,kBlack, kFullCross,2.1);
 
   SetStyle(grMiniByNano, 3, kRed, kFullSquare,1.2);
-  
+
+
   //TLegend* leg = new TLegend(0.12,0.79,0.73,0.86,NULL,"brNDC"); //Upper part
   TLegend* leg = new TLegend(0.12,0.16,0.73,0.28,NULL,"brNDC"); //lower part
   leg->SetBorderSize(0);
@@ -387,18 +402,18 @@ void CompareLimits(){
   leg->SetTextSize(0.019);
   leg->AddEntry(grlexclMini,"Published l+jets, lnN, 2016","LP");
   // leg->AddEntry(grlexclMiniInc,"Published:Unblinded:InclKF:MiniAOD #mu+jets, lnN, 2016","LP");
-  // leg->AddEntry(grlexclMEqv16lnN, "Current:Blinded:InclKF:Nano #mu+jets, lnN, 2016","LP"); //01
-  // leg->AddEntry(grlexclMEqv16shape, "Current:Blinded:InclKF:Nano #mu+jets, shape, 2016","LP");
-  
-  //leg->AddEntry(grlexclMEqv16lnN, "Current:Blinded:InclKF:NanoAOD #mu+jets, lnN, 2016","LP"); //01
-  //leg->AddEntry(grlexclMEqv16shape, "Current:Blinded:InclKF:NanoAOD #mu+jets, shape, 2016","LP");
+  leg->AddEntry(grlexclMEqv16lnN, "Current: JECSplit l+jets, lnN+shape, 2016","LP"); //01
+  //leg->AddEntry(grlexclMEqv16shape, "Current: jetpt15 l+jets, lnN, 2016","LP");
+  // leg->AddEntry(grlexclNano16, "Current: jetpt15+chi2lt2 l+jets, lnN, 2016","LP");
+  // leg->AddEntry(grlexclNano, "Current: jetpt15+chi2gt2 l+jets, lnN, 2016","LP");
+  // leg->AddEntry(grlexclNano16, "Current: jetpt15+nj4nbj2 l+jets, lnN, 2016","LP");
+  // leg->AddEntry(grlexclNano, "Current: jetpt15+njn4nbjn2 l+jets, lnN, 2016","LP");
+  // leg->AddEntry(grlexclNano16, "Current: jetpt15+low-p_{#theta} l+jets, lnN, 2016","LP");
+  // leg->AddEntry(grlexclNano, "Current: jetpt15+high-p_{#theta} l+jets, lnN, 2016","LP");
+  leg->AddEntry(grlexclMEqv16shape, "Current: jetpt15 l+jets, lnN+shapes, 2016","LP");
+  leg->AddEntry(grlexclNano16, "Current: jetpt15+ptcut20 l+jets, lnN+shapes, 2016","LP");
+  leg->AddEntry(grlexclNano, "Current: jetpt15+ptcut25 l+jets, lnN+shapes, 2016","LP");
 
-  //leg->AddEntry(grlexclMEqv16lnN, "Current(UL):Blinded l+jets, lnN, 2016","LP");
-  // leg->AddEntry(grlexclMEqv16shape, "Current:Blinded:Excl:NanoAOD l+jets, shape, 2017","LP");
-  // leg->AddEntry(grlexclNano16, "Current:Blinded:Excl:NanoAOD l+jets, shape, 2018","LP");
-  //leg->AddEntry(grlexclNano16, "NanoAOD : bcstat shape, 2016 (#mu+jets)","LP");
-  leg->AddEntry(grlexclNano, "Current l+jets, lnN+shape, Run2","LP");
-  //leg->AddEntry(grlexclMEqv16lnN, "NanoAOD : bcstat lnN, 2016 (#mu+jets) : 15%","LP");
 
   grlexclMini->SetMaximum(10.0);
   grlexclMini->SetMinimum(5.0e-2);
@@ -408,47 +423,27 @@ void CompareLimits(){
   grlexclMini->GetYaxis()->SetTitle("BR(t#rightarrow H^{#pm}b) (%)");
   grlexclMini->SetTitle("Comparison of expected values of median");
 
-  // TCanvas *c1 = new TCanvas("c1","c1", 800,800);
-  // c1->SetLogy();
-  // c1->SetTickx();
-  // c1->SetTicky();
-  // grlexclMini->Draw("ALP");
-  // // grlexclMiniInc->Draw("LP");
-  // //grlexclMEqv16lnN->Draw("LP");
-  // // grlexclMEqv16shape->Draw("LP");
-  // //grlexclNano16->Draw("LP");
-  // grlexclNano->Draw("LP");
-  // //grlexclMEqv16lnN->Draw("LP");
+  TCanvas *c1 = new TCanvas("c1","c1", 800,800);
+  c1->SetLogy();
+  c1->SetTickx();
+  c1->SetTicky();
+  grlexclMini->Draw("ALP");
+  // grlexclMiniInc->Draw("LP");
+  grlexclMEqv16lnN->Draw("LP");
+  grlexclMEqv16shape->Draw("LP");
+  grlexclNano16->Draw("LP");
+  grlexclNano->Draw("LP");
 
-  // leg->Draw();
+  leg->Draw();
 
-  // TLegend* leg2 = new TLegend(0.12,0.16,0.73,0.28,NULL,"brNDC"); //lower part
-  // leg2->SetBorderSize(0);
-  // leg2->SetTextSize(0.05);
-  // leg2->SetFillColor(0);
-  // leg2->SetTextSize(0.019);
-  // leg2->AddEntry(grMiniByNano,"Published/Current(UL) l+jets, lnN, 2016","LP");
-
-  // grMiniByNano->SetMaximum(3.2);
-  // grMiniByNano->SetMinimum(0.0);
-  // grMiniByNano->GetXaxis()->SetTitleOffset(1.2);
-  // grMiniByNano->GetYaxis()->SetTitleOffset(1.2);
-  grMiniByNano->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
-  // grMiniByNano->GetYaxis()->SetTitle("Ratio of BR(t#rightarrow H^{#pm}b) (%)");
-  // grMiniByNano->SetTitle("Ratio of expected values of median");
-  // TCanvas *c2 = new TCanvas("c2","c2", 800,800);
-  // c2->SetTickx();
-  // c2->SetTicky();
-  // grMiniByNano->Draw("ALP");
-  // leg2->Draw();
-
-  PlotRatio(grlexclMini, grlexclNano, grMiniByNano, leg, "c3");
+  //grMiniByNano->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
+  //PlotRatio(grlexclMini, grlexclNano, grMiniByNano, leg, "c3");
   
-  // lexclMini.clear();
-  // lexclMEqv16lnN.clear();
-  // lexclMEqv16shape.clear();
-  // lexclNano16.clear();
-  // lexclNano.clear();
+  lexclMini.clear();
+  lexclMEqv16lnN.clear();
+  lexclMEqv16shape.clear();
+  lexclNano16.clear();
+  lexclNano.clear();
 
 
 }
@@ -515,7 +510,7 @@ int PlotRatio(TGraph *gr1, TGraph *gr2, TGraph *grRatio, TLegend *leg, const cha
 
     
     grRatio->SetMinimum(0.0);  // Define Y ..
-    grRatio->SetMaximum(2.0); // .. range
+    grRatio->SetMaximum(1.2); // .. range
     
     grRatio->Draw("ALP");       // Draw the ratio plot
     

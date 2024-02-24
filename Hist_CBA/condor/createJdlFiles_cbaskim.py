@@ -6,21 +6,20 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-# samples_2016 = ["TTbar", "DataMu", "DataEle",
-#                 "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
-#                 "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
-#                 "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
-#                 "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
-#                 "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
-#                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
-#                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
+samples_2016 = ["TTbar", "DataMu", "DataEle",
+                "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
+                "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
+                "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
+                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
+                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
+                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 
-samples_2016 = ["Wjets"]
-
-#samples_2016 = ["TTHToNonbb", "TTHTobb", "TTWJetsToLNu"]
+# samples_2016 = ["TTbar", "DataMu"]
 
 
 syst_2016 = ["base", "iso20", "metup", "metdown",
+             "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
              "absmpfbup", "abssclup", "absstatup",
              "flavorqcdup", "fragup", "timeptetaup",
              "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
@@ -39,6 +38,7 @@ syst_2016 = ["base", "iso20", "metup", "metdown",
              "singpiecaldown", "singpihcaldown"]
 
 syst_long_2016 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+                  "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
                   "absmpfbup", "abssclup", "absstatup",
                   "flavorqcdup", "fragup", "timeptetaup",
                   "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
@@ -56,8 +56,11 @@ syst_long_2016 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdam
                   "relstatecdown", "relstatfsrdown", "relstathfdown",
                   "singpiecaldown", "singpihcaldown"]
 
-inputdir="CBA_jecsyst"
-outputdir="CBA_jecsyst-Hist1"
+# syst_2016 = ["base", "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down"]
+# syst_long_2016 = ["base", "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down"]
+
+inputdir="CBA_metxycorr"
+outputdir="CBA_metxycorr-Hist1"
 iosubdir="pre"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(inputdir,iosubdir)
@@ -82,7 +85,7 @@ for year in [2016]:
 
         for syst in systList:
             inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
-            os.system('for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep \"_%s_\" | grep -v \"*.sys.*\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done '%(kinpath, year, sample, syst, inputfile))
+            os.system('for i in `xrdfs root://eosuser.cern.ch ls %s/%s | grep %s | grep \"_%s_\" | grep -v \"\\.sys\\.\"` ; do echo root://eosuser.cern.ch/$i >> %s ; done '%(kinpath, year, sample, syst, inputfile))
             print("Creating input file %s"%inputfile)
 
 
@@ -104,7 +107,6 @@ Transfer_Input_Files = Hist_CBA.tar.gz, runKinCBA.sh\n\
 x509userproxy = $ENV(X509_USER_PROXY)\n\
 use_x509userproxy = true\n\
 +BenchmarkJob = True\n\
-#+MaxRuntime = 41220\n\
 +MaxRuntime = 7200\n\
 notification = never\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
@@ -123,7 +125,7 @@ for year in [2016]:
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
     jdlFile.write('Executable =  runKinCBA.sh \n')
     jdlFile.write(common_command)
-    condorOutDir='/eos/user/d/dugad/idas/Output/cms-hcs-run2/%s/%s'%(outputdir,iosubdir)
+    condorOutDir='/eos/user/i/idas/Output/cms-hcs-run2/%s/%s'%(outputdir,iosubdir)
     os.system("xrdfs root://eosuser.cern.ch mkdir -p %s/%s"%(condorOutDir, year))
     # condorOutDir1='/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/%s/%s'%(outputdir,iosubdir)
     condorOutDir1='/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/%s/%s'%(outputdir,iosubdir)
@@ -143,23 +145,31 @@ for year in [2016]:
         print("Reffile %s"%reffile)
         
         if sample.find('Data') >=0:
-            systList = ["base", "iso20"]
+            systList = ["base", "nometa1", "nometa2", "iso20"]
         elif sample.find('TTbar') >=0:
             systList = eval("syst_long_%i"%year)
         else:    
             systList = eval("syst_%i"%year)
 
         for syst in systList:
+
+            systOrg = syst
+            if syst.find('nometa1') >=0 or syst.find('nometa2') >=0:
+                systOrg = "base"
+            elif syst.find('jereta1up') >=0 or syst.find('jereta2up') >=0:
+                systOrg = "jerup"
+            elif syst.find('jereta1down') >=0 or syst.find('jereta2down') >=0:
+                systOrg = "jerdown"
             
-            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, syst)
+            inputfile = '../input/%s/pre/%s_%s.txt'%(year, sample, systOrg)
             noflines = subprocess.Popen('wc -l %s | awk \'{print $1}\''%(inputfile),shell=True,stdout=subprocess.PIPE).communicate()[0].split(b'\n')[0]
             nJob = int(noflines)
             totjobs += nJob
             print("%s %s %s"%(sample,nJob,syst))
             if nJob==1:
-                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, syst, syst, reffile)
+                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt 0 %s %s\nQueue 1\n\n' %(year, sample, year, sample, systOrg, syst, reffile)
             else:
-                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, syst, syst, reffile, nJob)
+                run_command =  'Arguments  = %s %s input/%s/pre/%s_%s.txt $INT(X) %s %s\nQueue %i\n\n' %(year, sample, year, sample, systOrg, syst, reffile, nJob)
             jdlFile.write(run_command)
             subjdlFile.write(run_command)
             #print "condor_submit jdl/%s"%jdlFile

@@ -27,7 +27,7 @@
 
 using namespace std;
 
-int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 40){
+int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 2){
   
   int PlotRatio(TH1D *h1, TH1D *h2, TH1D *h3, const char *cname);
   
@@ -39,89 +39,98 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 40){
   
   const int nShapes = 0;
   const char* listShapes[] = {""};
-  // const int nShapes = 3;
-  // const char* listShapes[] = {"bcstat", "mtop", "hdamp"};
   
-  // const int nShapes = 17;
-  // const char* listShapes[] = {"pdf", "q2", "isr", "fsr", //4
-  // 			      "bclhemuf", "bclhemur", "btagb", "btagl",//8
-  // 			      "bctag1", "bctag2", "bctag3", "toppt",//12
-  // 			      "hdamp", "mtop", "cp5", "jec",
-  //                             "jer"}; //15
-
-
-
-  // const char *syst_2016[] = {"base", 
-  // 			     "pdfup", "pdfdown", "q2fup", "q2down",                        //2,4
-  // 			     "isrup", "isrdown", "fsrup", "fsrdown",                       //6,8
-  // 			     "puup", "pudown", "prefireup", "prefiredown",                 //10,12
-  // 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",             //14,16
-  // 			     "pujetidup", "pujetiddown", "metup", "metdown",               //18,20
-  // 			     "jecup", "jecdown", "jerup", "jerdown",                       //22,24
-  // 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",   //26,28
-  // 			     "btagbup", "btagbdown", "btaglup", "btagldown",               //30,32
-  // 			     "bctag1up", "bctag1down", "bctag2up", "bctag2down",           //34,36
-  // 			     "bctag3up", "bctag3down", "topptup", "topptdown"};            //38,40
-  
-  const char *syst_2016[] = {"base", 
+    const char *syst_2016[] = {"base", 
 			     "pdfup", "pdfdown", "q2up", "q2down",                             //2,4    
 			     "isrup", "isrdown", "fsrup", "fsrdown",                           //6,8
 			     "puup", "pudown", "prefireup", "prefiredown",                     //10,12
 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",                 //14,16
 			     "pujetidup", "pujetiddown", "metup", "metdown",                   //18,20
-			     "jecup", "jecdown", "jerup", "jerdown",                           //22,24
-			     "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
-			     "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
-			     "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
+			     //"jerup", "jerdown",
+			     "absmpfbup", "absmpfbdown", "abssclup", "absscldown",             //22,24
+			     "absstatup", "absstatdown", "flavorqcdup", "flavorqcddown",       //26,28
+			     "fragup", "fragdown", "timeptetaup", "timeptetadown",             //30,32
+			     "pudatamcup", "pudatamcdown", "puptbbup", "puptbbdown",           //34,36 
+			     "puptec1up", "puptec1down", "puptec2up", "puptec2down",           //38,40 
+			     "pupthfup", "pupthfdown", "puptrefup", "puptrefdown",             //42,44 
+			     "relfsrup", "relfsrdown", "relbalup", "relbaldown",               //46,48 
+			     "relsampleup", "relsampledown", "reljerec1up", "reljerec1down",   //50,52 
+			     "reljerec2up", "reljerec2down", "reljerhfup", "reljerhfdown",     //54,56 
+			     "relptbbup", "relptbbdown", "relptec1up", "relptec1down",         //58,60 
+			     "relptec2up", "relptec2down", "relpthfup", "relpthfdown",         //62,64 
+			     "relstatecup", "relstatecdown", "relstatfsrup","relstatfsrdown",  //66,68 
+			     "relstathfup", "relstathfdown",                                   //70
+			     "singpiecalup", "singpiecaldown", "singpihcalup", "singpihcaldown", //72,74 
 			     // CShapeCalib UL
-			     "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",                 //38,40   
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //40,42
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //44,46
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //48,50
-			     "bcxwjcup", "bcxwjcdown",                                         //52
-			     "topptup", "topptdown",                                           //54
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,62
+			     "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",                 //76,78   
+			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //80,82
+			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //84,86
+			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //88,90
+			     "bcxwjcup", "bcxwjcdown",                                         //92
+			     "topptup", "topptdown",                                           //96
+			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //96,98,100
 			     //"jecup", "jecdown"
   };
+    
+  // const char *syst_2016[] = {"base", 
+  // 			     "pdfup", "pdfdown", "q2up", "q2down",                             //2,4    
+  // 			     "isrup", "isrdown", "fsrup", "fsrdown",                           //6,8
+  // 			     "puup", "pudown", "prefireup", "prefiredown",                     //10,12
+  // 			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",                 //14,16
+  // 			     "pujetidup", "pujetiddown", "metup", "metdown",                   //18,20
+  // 			     "jecup", "jecdown", "jerup", "jerdown",                           //22,24
+  // 			     "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
+  // 			     "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
+  // 			     "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
+  // 			     // CShapeCalib UL
+  // 			     "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",                 //38,40   
+  // 			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //40,42
+  // 			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //44,46
+  // 			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //48,50
+  // 			     "bcxwjcup", "bcxwjcdown",                                         //52
+  // 			     "topptup", "topptdown",                                           //54
+  // 			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,62
+  // 			     //"jecup", "jecdown"
+  // };
   
   const char *syst_2017[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",                             //2,4    
-			     "isrup", "isrdown", "fsrup", "fsrdown",                           //6,8
-			     "puup", "pudown", "prefireup", "prefiredown",                     //10,12
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",                 //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",                   //18,20
-			     "jecup", "jecdown", "jerup", "jerdown",                           //22,24
-			     "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
-			     "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
-			     "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
-			     // CShapeCalib UL
-			     "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",               //38,   
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //40,42
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //44,46
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //48,50
-			     "bcxwjcup", "bcxwjcdown",                                         //52
-			     "topptup", "topptdown",                                           //54
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,60
+  			     "pdfup", "pdfdown", "q2up", "q2down",                             //2,4    
+  			     "isrup", "isrdown", "fsrup", "fsrdown",                           //6,8
+  			     "puup", "pudown", "prefireup", "prefiredown",                     //10,12
+  			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",                 //14,16
+  			     "pujetidup", "pujetiddown", "metup", "metdown",                   //18,20
+  			     "jecup", "jecdown", "jerup", "jerdown",                           //22,24
+  			     "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
+  			     "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
+  			     "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
+  			     // CShapeCalib UL
+  			     "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",               //38,   
+  			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //40,42
+  			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //44,46
+  			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //48,50
+  			     "bcxwjcup", "bcxwjcdown",                                         //52
+  			     "topptup", "topptdown",                                           //54
+  			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,60
   };  
 
   const char *syst_2018[] = {"base", 
-			     "pdfup", "pdfdown", "q2up", "q2down",                             //2,4    
-			     "isrup", "isrdown", "fsrup", "fsrdown",                           //6,8
-			     "puup", "pudown", "prefireup", "prefiredown",                     //10,12
-			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",                 //14,16
-			     "pujetidup", "pujetiddown", "metup", "metdown",                   //18,20
-			     "jecup", "jecdown", "jerup", "jerdown",                           //22,24
-			     "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
-			     "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
-			     "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
-			     // CShapeCalib UL
-			     "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",               //38,   
-			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //40,42
-			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //44,46
-			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //48,50
-			     "bcxwjcup", "bcxwjcdown",                                         //52
-			     "topptup", "topptdown",                                           //54
-			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,60
+  			     "pdfup", "pdfdown", "q2up", "q2down",                             //2,4    
+  			     "isrup", "isrdown", "fsrup", "fsrdown",                           //6,8
+  			     "puup", "pudown", "prefireup", "prefiredown",                     //10,12
+  			     "mueffup", "mueffdown", "eleeffup", "eleeffdown",                 //14,16
+  			     "pujetidup", "pujetiddown", "metup", "metdown",                   //18,20
+  			     "jecup", "jecdown", "jerup", "jerdown",                           //22,24
+  			     "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
+  			     "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
+  			     "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
+  			     // CShapeCalib UL
+  			     "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",               //38,   
+  			     "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",               //40,42
+  			     "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",       //44,46
+  			     "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",               //48,50
+  			     "bcxwjcup", "bcxwjcdown",                                         //52
+  			     "topptup", "topptdown",                                           //54
+  			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"   //56,58,60
   };  
 
   // const char *syst_2018[] = {"base", 
@@ -139,8 +148,6 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 40){
   // 			     "bcxwjcup", "bcxwjcdown", "topptup", "topptdown",//40,42
   // 			     "cp5up", "cp5down","mtopup", "mtopdown", "hdampup", "hdampdown"//44,46,48
   // };
-
-
 
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v28_Syst/CBA_Skim_Syst" ;
   //const char *inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v30_Syst/CBA_Skim_Syst_MDPt" ;
@@ -164,7 +171,8 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 40){
   //const char* inputdir = "grid_v40_Syst/CBA_kfwidth-CombHist";
   //const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_trigSF-CombHist";
   //const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_JECSplit-CombHist";
-  const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-CombHist";
+  //const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-CombHist";
+  const char* inputdir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jecsyst-CombHist";
   
   int isample = 11; isample--; //11 for TTbar,  8  for HplusM120
   //int isample = 8; isample--; //11 for TTbar,  8  for HplusM120
@@ -287,17 +295,24 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 40){
   PlotRatio(hSysUp, hBase, hRelErrUp, "c1");
   PlotRatio(hSysDown, hBase, hRelErrDown, "c1");
   leg->Draw();
+
   
   TCanvas *c1 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c1");
   if(year==2016){
-    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),syst_2016[isysup],year));
-    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),syst_2016[isysup],year));
+    string s = syst_2016[isysdown];
+    string systname = s.substr(0,s.find("down"));
+    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),systname.c_str(),year));
+    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),systname.c_str(),year));
   }else if(year==2017){
-    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),syst_2017[isysup],year));
-    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),syst_2017[isysup],year));
+    string s = syst_2017[isysdown];
+    string systname = s.substr(0,s.find("down"));
+    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),systname.c_str(),year));
+    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),systname.c_str(),year));
   }else if(year==2018){
-    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),syst_2018[isysup],year));
-    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),syst_2018[isysup],year));
+    string s = syst_2018[isysdown];
+    string systname = s.substr(0,s.find("down"));
+    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),systname.c_str(),year));
+    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),systname.c_str(),year));
   }
   
   c1->SaveAs("output.pdf");

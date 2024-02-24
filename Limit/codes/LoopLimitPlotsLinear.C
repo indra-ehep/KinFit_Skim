@@ -32,10 +32,11 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   {
   gStyle->SetFrameLineWidth(0);
   TCanvas *c1 = new TCanvas();
-  c1->SetCanvasSize(775,775);
+  // c1->SetCanvasSize(775,775);
+  //c1->SetCanvasSize(775,775);
   c1->SetWindowSize(800,800);
   c1->Update();
-  gPad->SetLogy();
+  //gPad->SetLogy();
   c1->SetGrid(0,0);
   c1->SetFillStyle(4000);
   c1->SetFillColor(10);
@@ -85,10 +86,6 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   const int nMassPoints = 14;
   TString ch_hist = CHANNEL+"_"+CAT;
   TString massFiles [nMassPoints] = {
-  "Mass40/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH40.root",
-  "Mass50/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH50.root",
-  "Mass60/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH60.root",
-  "Mass70/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH70.root",
   "Mass80/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH80.root",
   "Mass90/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH90.root",
   "Mass100/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH100.root",
@@ -133,7 +130,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
     //TFile f("local/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
     TFile f("local/"+year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
     if(f.IsZombie()){
-      cout << "Cannot open file "<< f.GetName() <<" for " << string(CHANNEL.Data()) << " and mass " << X[i] << endl;
+      cout << "Cannot open file for " << string(CHANNEL.Data()) << " and mass " << X[i] << endl;
       continue;
     }
     Double_t r;
@@ -202,13 +199,16 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   if(CHANNEL=="ele") ch_name = "e";
   if(CHANNEL=="mu_ele") ch_name = "lep";
   //mg->SetMaximum(1.02*maxY);
-  mg->SetMaximum(50.);
-  mg->SetMinimum(0.06);
+  // mg->SetMaximum(50.);
+  // mg->SetMinimum(0.06);
+  mg->SetMaximum(1.2);
+  mg->SetMinimum(0.0);
   
   TGraphAsymmErrors* expected = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL ,expX1sL , expX1sL, expX1sL);
   TGraphAsymmErrors* oneSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL, expX1sL,  expY1sL, expY1sH);
   TGraphAsymmErrors* twoSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX2sL, expX2sL,  expY2sL, expY2sH);
   TGraphAsymmErrors* observed = new TGraphAsymmErrors(nMassPoints, X, obsY, expX1sL ,expX1sL , expX1sL, expX1sL);
+
  
   //oneSigma->SetMarkerColor(kBlack);
   //oneSigma->SetMarkerStyle(kFullCircle);
@@ -240,19 +240,19 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   mg->Draw("ALP3");
   if(obs) mg->Add(observed);
 
-  gPad->Modified();
-  gPad->SetBottomMargin(0.18);
-  gPad->SetLeftMargin(0.18);
+  //gPad->Modified();
+  gPad->SetBottomMargin(0.12);
+  //gPad->SetLeftMargin(0.18);
   //gPad->SetGridy();
-  gPad->SetRightMargin(0.05);
+  //gPad->SetRightMargin(0.05);
   gStyle->SetFrameLineWidth(3);
-  mg->GetXaxis()->SetLimits(35,165);
-  mg->GetYaxis()->SetTitleOffset(1.40);
-  mg->GetYaxis()->SetMoreLogLabels();
-  mg->GetYaxis()->SetNdivisions(6);
+  mg->GetXaxis()->SetLimits(75,165);
+  mg->GetYaxis()->SetTitleOffset(1.20);
+  //mg->GetYaxis()->SetMoreLogLabels();
+  //mg->GetYaxis()->SetNdivisions(6);
   mg->GetXaxis()->SetTitleOffset(1.00);
-  mg->SetMinimum(0.04);
-  mg->SetMaximum(10.0);
+  //mg->SetMinimum(0.);
+  //mg->SetMaximum(yMax);
   mg->GetXaxis()->SetTitle("m_{H^{#pm}} (GeV)");
   mg->GetYaxis()->SetTitle("B(t #rightarrow H^{#pm}b) (%)"); 
   mg->GetYaxis()->SetTitleSize(0.04);   
@@ -343,10 +343,10 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   //TString outDir = "local/"+CHANNEL+"/"+CAT;
   //TString outDir = year_dir+CHANNEL+"/"+CAT;
   TString outDir = year_dir;
-  gPad->SaveAs(outDir+"/"+outFile+".pdf");
+  gPad->SaveAs(outDir+"/"+outFile+"_linear.pdf");
   //gPad->SaveAs("result.pdf");
   if(isOut){
-    TFile *fout = new TFile(outDir+"/"+outFile+".root", "RECREATE");
+    TFile *fout = new TFile(outDir+"/"+outFile+"_linear.root", "RECREATE");
     //TFile *fout = new TFile("result.root", "RECREATE");
     expected->Write("expected");
     observed->Write("observed");
@@ -356,7 +356,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   }
 }
 
-void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/87_jecsyst_bld/Run2/Comb/"){
+void LoopLimitPlotsLinear(TString year_dir = "TIFRAPAR-2023-01-15/86_lowmass_bld/Run2/Comb/"){
   
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {40, 50, 60, 70, 80, 90, 100,110, 120, 130, 140, 150, 155, 160};

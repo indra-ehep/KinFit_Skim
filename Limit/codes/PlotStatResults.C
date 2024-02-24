@@ -28,6 +28,7 @@
 #include "TGraphPainter.h"
 #include "TMultiGraph.h"
 #include "TTree.h"
+#include "TF1.h"
 #include "TPaveText.h"
 #include "TStyle.h"
 
@@ -49,8 +50,18 @@ int PlotStatResults(int mass = 80)
   //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_short/Cat1_Inc/Mass%d/",mass);
   //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/32_elereliso_unbld_exc0_stat/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
   //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/33_elereliso_bld_excLMT_stat/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
-  string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/34_elereliso_bld_excLMT_stat/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
-  
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/34_elereliso_bld_excLMT_stat/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t1K_test/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t100_test_ten-sigma/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t100_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/83_mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/83_mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/82_mu_ele_Run2_x200_t500_test_unbound_qcdrate/mu_ele_Run2_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/82_mu_ele_Run2_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t10_test_unbound_qcdrate-r/Cat1_Inc/Mass%d/",mass);
+  string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t500_test_unbound_qcdrate-r/Cat1_Inc/Mass%d/",mass);
   
   // //////////////////// Pull test ////////////////////////////////////////////////
   // TFile *fPull = TFile::Open((indir+"pull_result.root").c_str());
@@ -488,7 +499,7 @@ int PlotStatResults(int mass = 80)
   hDiffBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
   hDiffSigBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
   
-  for(int ih = 0; ih < (brval.size()+2) ; ih++){
+  for(int ih = 0; ih < (int(brval.size())+2) ; ih++){
   //for(int ih = 1; ih < 2 ; ih++){
     string BrName, fname_extn ;
     Double_t BRInj;
@@ -512,10 +523,10 @@ int PlotStatResults(int mass = 80)
     }
     cout << "ih " << ih << ", fname_extn : " << fname_extn << ", BrName : " << BrName << endl;
     
-    // hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit} - BR_{inj}): %s",BrName.c_str()),50,-0.1,0.1);
-    // hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit} - BR_{inj})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
-    hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit}): %s",BrName.c_str()),50,-0.1,0.1);
-    hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
+    hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit} - BR_{inj}): %s",BrName.c_str()),50,-0.1,0.1);
+    hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit} - BR_{inj})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
+    // hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit}): %s",BrName.c_str()),50,-0.1,0.1);
+    // hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
     TFile *fBT = TFile::Open((indir+Form("fitDiagnosticsBR_%s.root",fname_extn.c_str())).c_str());
     
     TTree *trbias = (TTree *)fBT->Get("tree_fit_sb");
@@ -528,7 +539,7 @@ int PlotStatResults(int mass = 80)
     trbias->SetBranchAddress("BRHiErr", &BRHiErr);
 
     ///////// Dangerous ////////////
-    BRInj = 0.0;
+    //BRInj = 0.0;
     ///////// Dangerous ////////////
 
     int nofconv = 0;
@@ -565,7 +576,8 @@ int PlotStatResults(int mass = 80)
   
   TCanvas *cBias = new TCanvas("cBias","cBias",1200,800);
   cBias->Divide(2,2);
-  for(int ih = 0; ih < (brval.size()+1) ; ih++){
+  for(int ih = 0; ih < (int(brval.size())+1) ; ih++){
+  //for(int ih = 0; ih < 1 ; ih++){
     string BrName, fname_extn ;
     Double_t BRInj;
     if(ih==0){
@@ -591,8 +603,8 @@ int PlotStatResults(int mass = 80)
     cDiff->cd(ih+1)->SetTickx();
     cDiff->cd(ih+1)->SetTicky();
     hDiffBr[ih]->Draw();
-    //hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})");
-    hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit})");
+    hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})");
+    //hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit})");
     hDiffBr[ih]->GetYaxis()->SetTitle("Entries/bin");
     hDiffBr[ih]->GetXaxis()->SetTitleOffset(1.2);
     hDiffBr[ih]->GetYaxis()->SetTitleOffset(1.4);
@@ -623,8 +635,8 @@ int PlotStatResults(int mass = 80)
     fn->SetRange(hDiffSigBr[ih]->GetMean()-5*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+5*hDiffSigBr[ih]->GetRMS());
     //hDiffSigBr[ih]->Draw("hist sames");
     fn->DrawClone("same");
-    //hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})/Br_{err}");
-    hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit})/Br_{err}");
+    hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})/Br_{err}");
+    //hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit})/Br_{err}");
     hDiffSigBr[ih]->GetYaxis()->SetTitle("Entries/bin");
     hDiffSigBr[ih]->GetXaxis()->SetTitleOffset(1.2);
     hDiffSigBr[ih]->GetYaxis()->SetTitleOffset(1.4);
@@ -638,16 +650,22 @@ int PlotStatResults(int mass = 80)
     legBias->AddEntry(hDiffSigBr[ih], Form("nToys : %d",int(hDiffSigBr[ih]->GetEntries())),"");
     legBias->AddEntry(hDiffSigBr[ih], Form("%s",BrName.c_str()),"L");
     legBias->AddEntry(fn, fn->GetTitle(),"L");
-    legBias->AddEntry(fn, Form("mean : %3.2f",fn->GetParameter(1)),"L");
-    legBias->AddEntry(fn, Form("#sigma : %3.2f",fn->GetParameter(2)),"L");
+    legBias->AddEntry(fn, Form("mean : %4.3f",fn->GetParameter(1)),"L");
+    legBias->AddEntry(fn, Form("#sigma : %4.3f",fn->GetParameter(2)),"L");
     legBias->DrawClone();
 
   }
-  cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.png",indir.c_str(),mass));
-  cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.pdf",indir.c_str(),mass));
+  // cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.png",indir.c_str(),mass));
+  // cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.pdf",indir.c_str(),mass));
 
-  cBias->SaveAs(Form("%sbias_no-subtraction_m%d.png",indir.c_str(),mass));
-  cBias->SaveAs(Form("%sbias_no-subtraction_m%d.pdf",indir.c_str(),mass));
+  // cBias->SaveAs(Form("%sbias_no-subtraction_m%d.png",indir.c_str(),mass));
+  // cBias->SaveAs(Form("%sbias_no-subtraction_m%d.pdf",indir.c_str(),mass));
+
+  cDiff->SaveAs(Form("%sdiff_m%d.png",indir.c_str(),mass));
+  cDiff->SaveAs(Form("%sdiff_m%d.pdf",indir.c_str(),mass));
+
+  cBias->SaveAs(Form("%sbias_m%d.png",indir.c_str(),mass));
+  cBias->SaveAs(Form("%sbias_m%d.pdf",indir.c_str(),mass));
   
   lsig.clear();
   brval.clear();

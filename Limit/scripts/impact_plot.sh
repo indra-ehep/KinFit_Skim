@@ -17,9 +17,14 @@ mass=$2
 # combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=0.0,1.0  -t -1 | tee doInitialFit.log 
 # combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=0.0,1.0 --parallel 16 -t -1 | tee doFit.log
 
-#test1 no parameter range
-combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-1.0,1.0 -t -1 | tee doInitialFit.log 
-combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-1.0,1.0 --parallel 7 -t -1 | tee doFit.log
+# #Blinded
+combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 -t -1 | tee doInitialFit.log 
+combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --parallel 10 -t -1 | tee doFit.log
+
+#Unblinded
+# combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1 --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --cminDefaultMinimizerStrategy 0 | tee doInitialFit.log 
+# combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1 --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --cminDefaultMinimizerStrategy 0  --parallel 10 | tee doFit.log
+
 
 combineTool.py -M Impacts -d $t2wDataCard -m $mass -o nuisImpactJSON 
 plotImpacts.py --cms-label "Internal" -i nuisImpactJSON -o nuisImpactPDF
