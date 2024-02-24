@@ -35,35 +35,74 @@ int QCDDDSyst(int year = 2016)
 			       {64.,23.}, //2018 : ele, mu
   };
   //const char* dir = "grid_v40_Syst/CBA_trigSF-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
-
+  //const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_jecsyst-CombHist";
+  
   const char *systbase[] = {"base", 
-			    "pdfup", "pdfdown",// "q2up", "q2down",
-			    "isrup", "isrdown", "fsrup", "fsrdown",
-			    "puup", "pudown", "prefireup", "prefiredown",
-			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-			    "pujetidup", "pujetiddown", //"metup", "metdown",
-			    // "jecup", "jecdown",
+    			    "pdfup", "pdfdown", "q2up", "q2down",
+    			    "isrup", "isrdown", "fsrup", "fsrdown",
+    			    "puup", "pudown", "prefireup", "prefiredown",
+    			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+    			    "pujetidup", "pujetiddown", "metup", "metdown",
+    			    // "jecup", "jecdown", "jerup", "jerdown",
+			    // "stotpuup", "stotpudown", "stotrelup", "stotreldown", 
+			    // "stotptup", "stotptdown", "stotscaleup", "stotscaledown", 
+			    // "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",
 			    "jerup", "jerdown",
-			    "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
-			    "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
-			    "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
-			    "iso20",  //26
-			    // CShapeCalib UL
+			    "absmpfbup", "abssclup", "absstatup",
+			    "flavorqcdup", "fragup", "timeptetaup",
+			    "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+			    "relfsrup", "relbalup", "relsampleup",
+			    "reljerec1up", "reljerec2up", "reljerhfup",
+			    "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+			    "relstatecup", "relstatfsrup", "relstathfup",
+			    "singpiecalup", "singpihcalup",
+			    "absmpfbdown", "absscldown", "absstatdown",
+			    "flavorqcddown", "fragdown", "timeptetadown",
+			    "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+			    "relfsrdown", "relbaldown", "relsampledown",
+			    "reljerec1down", "reljerec2down", "reljerhfdown",
+                            "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+                            "relstatecdown", "relstatfsrdown", "relstathfdown",
+                            "singpiecaldown", "singpihcaldown",
+			    "iso20",  //78,76
+    			    // CShapeCalib UL
 			    "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",
-			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+    			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+    			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+    			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
 			    "bcxwjcup", "bcxwjcdown",//16
 			    "topptup", "topptdown" //18
   };
+
+  // const char *systbase[] = {"base", 
+  // 			    "pdfup", "pdfdown",// "q2up", "q2down",
+  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
+  // 			    "puup", "pudown", "prefireup", "prefiredown",
+  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+  // 			    "pujetidup", "pujetiddown", //"metup", "metdown",
+  // 			    // "jecup", "jecdown",
+  // 			    "jerup", "jerdown",
+  // 			    "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
+  // 			    "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
+  // 			    "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
+  // 			    "iso20",  //26
+  // 			    // CShapeCalib UL
+  // 			    "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",
+  // 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+  // 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+  // 			    "bcxwjcup", "bcxwjcdown",//16
+  // 			    "topptup", "topptdown" //18
+  // };
 
   TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
 
   //int maxsyst = (year==2018) ? 40 : 42 ;
-  const int maxsyst = 50 ;
+  //const int maxsyst = 50 ;
+  const int maxsyst = 96 ;
   const int maxch = 2 ;
   const int maxhype_kb = 33 ;
   const int maxhype_lb = 11 ;
@@ -92,7 +131,7 @@ int QCDDDSyst(int year = 2016)
     }
     d3->Write();
   }
-
+  
   TDirectory *d2 = d1->mkdir("syst");
   d2->cd();
   TDirectory *d3 = d2->mkdir("Iso");
