@@ -1,1 +1,1 @@
-DataCard_Templates/MyTemplateDataCard_NanoAOD_36_jecsyst.txt
+DataCard_Templates/MyTemplateDataCard_NanoAOD_36_jecsyst_all_lnN.txt

@@ -19,6 +19,8 @@ class MyHPlusDataCardMaker{
   //TH1F* readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite, double min_thres, bool isNeffThreshold);
   TH1F* readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite, bool isNorm, TH1F *hBase);
   double getBTagUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown);
+  double getConservativeUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown);
+  pair<float,float> getConservativeUncPair(TH1F *hCentral, TH1F* hUp, TH1F* hDown);
   double getStatUnc(TH1F* hCentral, double sError);
   double getUncExL(TH1F* yLyMyT, TH1F* yLyMnT, TH1F* yLnMyT, TH1F* yLnMnT);
   double getUncExM(TH1F* yMyT, TH1F* yMnT);
@@ -172,6 +174,44 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
 //get normalised uncertainity
 double MyHPlusDataCardMaker::getBTagUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown){
   return 1 + max(fabs(hUp->Integral() - hCentral->Integral()), fabs(hCentral->Integral() - hDown->Integral()))/hCentral->Integral();
+}
+
+double MyHPlusDataCardMaker::getConservativeUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown){
+  double maxUp = -1.;
+  double maxDown = -1.;
+  for(int ibin=1;ibin<=hCentral->GetNbinsX();ibin++){
+    double upBin = TMath::Abs(hUp->GetBinContent(ibin));
+    double downBin = TMath::Abs(hDown->GetBinContent(ibin));
+    double baseBin = TMath::Abs(hCentral->GetBinContent(ibin));
+    if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5)) continue;
+    double ratioUp = (baseBin>upBin) ?  upBin/baseBin : baseBin/upBin;
+    double ratioDown = (baseBin>downBin) ?  downBin/baseBin : baseBin/downBin;
+    double fracUp = 1.0 - ratioUp;
+    double fracDown = 1.0 - ratioDown;
+    maxUp = max(fracUp,maxUp);
+    maxDown = max(fracDown,maxDown);
+  }
+  return 1 + max(maxUp, maxDown);
+}
+
+pair<float,float> MyHPlusDataCardMaker::getConservativeUncPair(TH1F *hCentral, TH1F* hUp, TH1F* hDown){
+  double maxUp = -1.;
+  double maxDown = -1.;
+  for(int ibin=1;ibin<=hCentral->GetNbinsX();ibin++){
+    double upBin = TMath::Abs(hUp->GetBinContent(ibin));
+    double downBin = TMath::Abs(hDown->GetBinContent(ibin));
+    double baseBin = TMath::Abs(hCentral->GetBinContent(ibin));
+    if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5)) continue;
+    double ratioUp = (baseBin>upBin) ?  upBin/baseBin : baseBin/upBin;
+    double ratioDown = (baseBin>downBin) ?  downBin/baseBin : baseBin/downBin;
+    double fracUp = 1.0 - ratioUp;
+    double fracDown = 1.0 - ratioDown;
+    maxUp = max(fracUp,maxUp);
+    maxDown = max(fracDown,maxDown);
+  }
+  maxUp /= 1.0;
+  maxDown /= 1.0;
+  return std::make_pair(1 + maxUp, 1 + maxDown);
 }
 
 //get statistical uncertainity

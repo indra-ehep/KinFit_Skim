@@ -2304,34 +2304,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-  	float leptonUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_LeptonUp, wh_LeptonDown) : 1.00;
+  	float leptonUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_LeptonUp, wh_LeptonDown) : 1.00;
   	line.replace( line.find("HHHH") , 4 , string(Form("%.3f", sf_lep*leptonUnc_wh)) );
         
-  	float leptonUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_LeptonUp, ttbar_LeptonDown) : 1.00; 
+  	float leptonUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_LeptonUp, ttbar_LeptonDown) : 1.00; 
   	line.replace( line.find("TTTT") , 4 , string(Form("%.3f", sf_lep*leptonUnc_ttbar)) ); 
 
-	float leptonUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_LeptonUp, ttg_LeptonDown) : 1.00; 
+	float leptonUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_LeptonUp, ttg_LeptonDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", sf_lep*leptonUnc_ttg)) ); 
 
-	float leptonUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_LeptonUp, tth_LeptonDown) : 1.00; 
+	float leptonUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_LeptonUp, tth_LeptonDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", sf_lep*leptonUnc_tth)) ); 
 
-	float leptonUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_LeptonUp, ttz_LeptonDown) : 1.00; 
+	float leptonUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_LeptonUp, ttz_LeptonDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", sf_lep*leptonUnc_ttz)) ); 
 
-	float leptonUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_LeptonUp, ttw_LeptonDown) : 1.00; 
+	float leptonUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_LeptonUp, ttw_LeptonDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", sf_lep*leptonUnc_ttw)) ); 
 
-  	float leptonUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_LeptonUp, wjet_LeptonDown) : 1.00;
+  	float leptonUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_LeptonUp, wjet_LeptonDown) : 1.00;
   	line.replace( line.find("WWWW") , 4 , string(Form("%.3f", sf_lep*leptonUnc_wjet)) ); 
 	
-  	float leptonUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_LeptonUp, zjet_LeptonDown) : 1.00;
+  	float leptonUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_LeptonUp, zjet_LeptonDown) : 1.00;
   	line.replace( line.find("DDDD") , 4 , string(Form("%.3f", sf_lep*leptonUnc_zjet)) ); 
 	
-  	float leptonUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_LeptonUp, stop_LeptonDown) : 1.00; 
+  	float leptonUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_LeptonUp, stop_LeptonDown) : 1.00; 
   	line.replace( line.find("SSSS") , 4 , string(Form("%.3f", sf_lep*leptonUnc_stop)) ); 
 
-  	float leptonUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_LeptonUp, vv_LeptonDown) : 1.00;
+  	float leptonUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_LeptonUp, vv_LeptonDown) : 1.00;
   	line.replace( line.find("VVVV") , 4 , string(Form("%.3f", sf_lep*leptonUnc_vv)) ); 
 	
         out << line << endl;	
@@ -2339,34 +2339,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       }  
       else if(line.find("CMS_prefire ")!=string::npos){
 
-        float prefireUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_PrefireUp, wh_PrefireDown) : 1.00;
+        float prefireUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_PrefireUp, wh_PrefireDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", prefireUnc_wh)) );
         
-        float prefireUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_PrefireUp, ttbar_PrefireDown) : 1.00; 
+        float prefireUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_PrefireUp, ttbar_PrefireDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", prefireUnc_ttbar)) ); 
         
-	float prefireUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_PrefireUp, ttg_PrefireDown) : 1.00; 
+	float prefireUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_PrefireUp, ttg_PrefireDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", prefireUnc_ttg)) ); 
 
-	float prefireUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_PrefireUp, tth_PrefireDown) : 1.00; 
+	float prefireUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_PrefireUp, tth_PrefireDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", prefireUnc_tth)) ); 
 
-	float prefireUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_PrefireUp, ttz_PrefireDown) : 1.00; 
+	float prefireUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_PrefireUp, ttz_PrefireDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", prefireUnc_ttz)) ); 
 
-	float prefireUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_PrefireUp, ttw_PrefireDown) : 1.00; 
+	float prefireUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_PrefireUp, ttw_PrefireDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", prefireUnc_ttw)) ); 
 
-        float prefireUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_PrefireUp, wjet_PrefireDown) : 1.00;
+        float prefireUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_PrefireUp, wjet_PrefireDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", prefireUnc_wjet)) ); 
 	
-        float prefireUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_PrefireUp, zjet_PrefireDown) : 1.00;
+        float prefireUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_PrefireUp, zjet_PrefireDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", prefireUnc_zjet)) ); 
 	
-        float prefireUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_PrefireUp, stop_PrefireDown) : 1.00; 
+        float prefireUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_PrefireUp, stop_PrefireDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", prefireUnc_stop)) ); 
 
-        float prefireUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_PrefireUp, vv_PrefireDown) : 1.00;
+        float prefireUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_PrefireUp, vv_PrefireDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", prefireUnc_vv)) ); 
         out << line << endl;
 
@@ -2376,34 +2376,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float pujetidUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_PUJetIDUp, wh_PUJetIDDown) : 1.00;
+        float pujetidUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_PUJetIDUp, wh_PUJetIDDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", pujetidUnc_wh)) );
         
-        float pujetidUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_PUJetIDUp, ttbar_PUJetIDDown) : 1.00; 
+        float pujetidUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_PUJetIDUp, ttbar_PUJetIDDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", pujetidUnc_ttbar)) ); 
                 
-	float pujetidUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_PUJetIDUp, ttg_PUJetIDDown) : 1.00; 
+	float pujetidUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_PUJetIDUp, ttg_PUJetIDDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", pujetidUnc_ttg)) ); 
 
-	float pujetidUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_PUJetIDUp, tth_PUJetIDDown) : 1.00; 
+	float pujetidUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_PUJetIDUp, tth_PUJetIDDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", pujetidUnc_tth)) ); 
 
-	float pujetidUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_PUJetIDUp, ttz_PUJetIDDown) : 1.00; 
+	float pujetidUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_PUJetIDUp, ttz_PUJetIDDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", pujetidUnc_ttz)) ); 
 
-	float pujetidUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_PUJetIDUp, ttw_PUJetIDDown) : 1.00; 
+	float pujetidUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_PUJetIDUp, ttw_PUJetIDDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", pujetidUnc_ttw)) ); 
 
-        float pujetidUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_PUJetIDUp, wjet_PUJetIDDown) : 1.00;
+        float pujetidUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_PUJetIDUp, wjet_PUJetIDDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", pujetidUnc_wjet)) ); 
 	
-        float pujetidUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_PUJetIDUp, zjet_PUJetIDDown) : 1.00;
+        float pujetidUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_PUJetIDUp, zjet_PUJetIDDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", pujetidUnc_zjet)) ); 
 	
-        float pujetidUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_PUJetIDUp, stop_PUJetIDDown) : 1.00; 
+        float pujetidUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_PUJetIDUp, stop_PUJetIDDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", pujetidUnc_stop)) ); 
 	
-        float pujetidUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_PUJetIDUp, vv_PUJetIDDown) : 1.00;
+        float pujetidUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_PUJetIDUp, vv_PUJetIDDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", pujetidUnc_vv)) );
 	
         out << line << endl;
@@ -2414,84 +2414,129 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float PileupUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_PileupUp, wh_PileupDown) : 1.00;
+        float PileupUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_PileupUp, wh_PileupDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", PileupUnc_wh)) );
         
-        float PileupUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_PileupUp, ttbar_PileupDown) : 1.00; 
+        float PileupUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_PileupUp, ttbar_PileupDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", PileupUnc_ttbar)) ); 
         
-	float PileupUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_PileupUp, ttg_PileupDown) : 1.00; 
+	float PileupUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_PileupUp, ttg_PileupDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", PileupUnc_ttg)) ); 
 
-	float PileupUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_PileupUp, tth_PileupDown) : 1.00; 
+	float PileupUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_PileupUp, tth_PileupDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", PileupUnc_tth)) ); 
 
-	float PileupUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_PileupUp, ttz_PileupDown) : 1.00; 
+	float PileupUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_PileupUp, ttz_PileupDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", PileupUnc_ttz)) ); 
 
-	float PileupUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_PileupUp, ttw_PileupDown) : 1.00; 
+	float PileupUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_PileupUp, ttw_PileupDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", PileupUnc_ttw)) ); 
 
-        float PileupUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_PileupUp, wjet_PileupDown) : 1.00;
+        float PileupUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_PileupUp, wjet_PileupDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", PileupUnc_wjet)) ); 
        
-        float PileupUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_PileupUp, zjet_PileupDown) : 1.00;
+        float PileupUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_PileupUp, zjet_PileupDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", PileupUnc_zjet)) ); 
         
-        float PileupUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_PileupUp, stop_PileupDown) : 1.00; 
+        float PileupUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_PileupUp, stop_PileupDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", PileupUnc_stop)) ); 
 
-        float PileupUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_PileupUp, vv_PileupDown) : 1.00;
+        float PileupUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_PileupUp, vv_PileupDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", PileupUnc_vv)) ); 
         out << line << endl;	
 	
       }
       // else if(line.find("CMS_scale_j ")!=string::npos){
-      //   float JESUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JESUp, wh_JESDown) : 1.00;
+      //   float JESUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_JESUp, wh_JESDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JESUnc_wh)) );
         
-      //   float JESUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JESUp, ttbar_JESDown) : 1.00; 
+      //   float JESUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_JESUp, ttbar_JESDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JESUnc_ttbar)) ); 
         
-      //   float JESUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JESUp, wjet_JESDown) : 1.00;
+      //   float JESUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_JESUp, wjet_JESDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JESUnc_wjet)) ); 
        
-      //   float JESUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JESUp, zjet_JESDown) : 1.00;
+      //   float JESUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_JESUp, zjet_JESDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JESUnc_zjet)) ); 
         
-      //   float JESUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JESUp, stop_JESDown) : 1.00; 
+      //   float JESUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_JESUp, stop_JESDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JESUnc_stop)) ); 
 
-      //   float JESUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JESUp, vv_JESDown) : 1.00;
+      //   float JESUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_JESUp, vv_JESDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JESUnc_vv)) ); 
       //   out << line << endl;
 	
       // }
-      // else if(line.find("CMS_JER ")!=string::npos){
+      else if(line.find("CMS_JER ")!=string::npos){
 
-      // 	stringstream ss(line); string systname; ss >> systname;
-      // 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
+      	stringstream ss(line); string systname; ss >> systname;
+      	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-      //   float JERUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_JERUp, wh_JERDown) : 1.00;
-      //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JERUnc_wh)) );
+        float JERUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_JERUp, wh_JERDown) : 1.00;
+        line.replace( line.find("HHHH") , 4 , string(Form("%.3f", JERUnc_wh)) );
         
-      //   float JERUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_JERUp, ttbar_JERDown) : 1.00; 
-      //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JERUnc_ttbar)) ); 
+        float JERUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_JERUp, ttbar_JERDown) : 1.00; 
+        line.replace( line.find("TTTT") , 4 , string(Form("%.3f", JERUnc_ttbar)) ); 
         
-      //   float JERUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_JERUp, wjet_JERDown) : 1.00;
-      //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
+	float JERUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_JERUp, ttg_JERDown) : 1.00; 
+  	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", JERUnc_ttg)) ); 
+
+	float JERUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_JERUp, tth_JERDown) : 1.00; 
+  	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", JERUnc_tth)) ); 
+
+	float JERUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_JERUp, ttz_JERDown) : 1.00; 
+  	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", JERUnc_ttz)) ); 
+
+	float JERUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_JERUp, ttw_JERDown) : 1.00; 
+  	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", JERUnc_ttw)) ); 
+
+        float JERUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_JERUp, wjet_JERDown) : 1.00;
+        line.replace( line.find("WWWW") , 4 , string(Form("%.3f", JERUnc_wjet)) ); 
        
-      //   float JERUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_JERUp, zjet_JERDown) : 1.00;
-      //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
+        float JERUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_JERUp, zjet_JERDown) : 1.00;
+        line.replace( line.find("DDDD") , 4 , string(Form("%.3f", JERUnc_zjet)) ); 
         
-      //   float JERUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_JERUp, stop_JERDown) : 1.00; 
-      //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
+        float JERUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_JERUp, stop_JERDown) : 1.00; 
+        line.replace( line.find("SSSS") , 4 , string(Form("%.3f", JERUnc_stop)) ); 
 
-      //   float JERUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_JERUp, vv_JERDown) : 1.00;
-      //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
-      //   out << line << endl;
+        float JERUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_JERUp, vv_JERDown) : 1.00;
+        line.replace( line.find("VVVV") , 4 , string(Form("%.3f", JERUnc_vv)) ); 
+        out << line << endl;
+
+	// pair<float,float> defNum = std::make_pair(1.0, 1.0);
+
+        // auto JERUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUncPair(wh, wh_JERUp, wh_JERDown) : defNum;
+        // line.replace( line.find("HHHH") , 4 , string(Form("%.4f/%.4f", JERUnc_wh.first, JERUnc_wh.second)) );
+        
+        // auto JERUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUncPair(ttbar, ttbar_JERUp, ttbar_JERDown) : defNum; 
+        // line.replace( line.find("TTTT") , 4 , string(Form("%.4f/%.4f", JERUnc_ttbar.first, JERUnc_ttbar.second)) ); 
+        
+	// auto JERUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUncPair(ttg, ttg_JERUp, ttg_JERDown) : defNum; 
+  	// line.replace( line.find("TTGT") , 4 , string(Form("%.4f/%.4f", JERUnc_ttg.first, JERUnc_ttg.second)) ); 
+
+	// auto JERUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUncPair(tth, tth_JERUp, tth_JERDown) : defNum; 
+  	// line.replace( line.find("TTHT") , 4 , string(Form("%.4f/%.4f", JERUnc_tth.first, JERUnc_tth.second)) ); 
+
+	// auto JERUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUncPair(ttz, ttz_JERUp, ttz_JERDown) : defNum; 
+  	// line.replace( line.find("TTZT") , 4 , string(Form("%.4f/%.4f", JERUnc_ttz.first, JERUnc_ttz.second)) ); 
+
+	// auto JERUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUncPair(ttw, ttw_JERUp, ttw_JERDown) : defNum; 
+  	// line.replace( line.find("TTWT") , 4 , string(Form("%.4f/%.4f", JERUnc_ttw.first, JERUnc_ttw.second)) ); 
+
+        // auto JERUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUncPair(wjet, wjet_JERUp, wjet_JERDown) : defNum;
+        // line.replace( line.find("WWWW") , 4 , string(Form("%.4f/%.4f", JERUnc_wjet.first, JERUnc_wjet.second)) ); 
+       
+        // auto JERUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUncPair(zjet, zjet_JERUp, zjet_JERDown) : defNum;
+        // line.replace( line.find("DDDD") , 4 , string(Form("%.4f/%.4f", JERUnc_zjet.first, JERUnc_zjet.second)) ); 
+        
+        // auto JERUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUncPair(stop, stop_JERUp, stop_JERDown) : defNum; 
+        // line.replace( line.find("SSSS") , 4 , string(Form("%.4f/%.4f", JERUnc_stop.first, JERUnc_stop.second)) ); 
+
+        // auto JERUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUncPair(vv, vv_JERUp, vv_JERDown) : defNum;
+        // line.replace( line.find("VVVV") , 4 , string(Form("%.4f/%.4f", JERUnc_vv.first, JERUnc_vv.second)) ); 
+        // out << line << endl;
 	
-      // }
+      }
       else if(line.find("CMS_norm_qcd ")!=string::npos){  
 
 	stringstream ss(line); string systname; ss >> systname;
@@ -2504,21 +2549,21 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	
       }
       // else if(line.find("CMS_topPtReweight ")!=string::npos){
-      //   float topPtUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_topPtUp, wh_topPtDown) : 1.00;
+      //   float topPtUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_topPtUp, wh_topPtDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", topPtUnc_wh)) );
         
-      //   float topPtUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_topPtUp, ttbar_topPtDown) : 1.00; 
+      //   float topPtUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_topPtUp, ttbar_topPtDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", topPtUnc_ttbar)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("CMS_muF_tt ")!=string::npos){
-      //   float muf_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemufUp, ttbar_bclhemufDown) : 1.00; 
+      //   float muf_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bclhemufUp, ttbar_bclhemufDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", muf_ttbar)) ); 
       //   out << line << endl;
 	
       // }
       // else if(line.find("CMS_muR_tt ")!=string::npos){
-      //   float mur_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemurUp, ttbar_bclhemurDown) : 1.00; 
+      //   float mur_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bclhemurUp, ttbar_bclhemurDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", mur_ttbar)) ); 
       //   out << line << endl;
 	
@@ -2528,7 +2573,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float matchUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_matchingUp, ttbar_matchingDown) : 1.00; 
+        float matchUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_matchingUp, ttbar_matchingDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", matchUnc_ttbar)) ); 
         out << line << endl;
 	
@@ -2538,7 +2583,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-  	float mtopUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_mtop1735, ttbar_mtop1715) : 1.00; 
+  	float mtopUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_mtop1735, ttbar_mtop1715) : 1.00; 
   	line.replace( line.find("TTTT") , 4 , string(Form("%.3f", mtopUnc_ttbar)) ); 
   	out << line << endl;
       }
@@ -2547,7 +2592,7 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-  	float scaleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_cp5Up, ttbar_cp5Down) : 1.00; 
+  	float scaleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_cp5Up, ttbar_cp5Down) : 1.00; 
   	line.replace( line.find("TTTT") , 4 , string(Form("%.3f", scaleUnc_ttbar)) ); 
   	out << line << endl;
 	
@@ -2557,34 +2602,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float pdfUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_pdfUp, wh_pdfDown) : 1.00;
+        float pdfUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_pdfUp, wh_pdfDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", pdfUnc_wh)) );
         
-        float pdfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_pdfUp, ttbar_pdfDown) : 1.00; 
+        float pdfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_pdfUp, ttbar_pdfDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", pdfUnc_ttbar)) ); 
         
-	float pdfUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_pdfUp, ttg_pdfDown) : 1.00; 
+	float pdfUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_pdfUp, ttg_pdfDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", pdfUnc_ttg)) ); 
 
-	float pdfUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_pdfUp, tth_pdfDown) : 1.00; 
+	float pdfUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_pdfUp, tth_pdfDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", pdfUnc_tth)) ); 
 
-	float pdfUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_pdfUp, ttz_pdfDown) : 1.00; 
+	float pdfUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_pdfUp, ttz_pdfDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", pdfUnc_ttz)) ); 
 
-	float pdfUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_pdfUp, ttw_pdfDown) : 1.00; 
+	float pdfUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_pdfUp, ttw_pdfDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", pdfUnc_ttw)) ); 
 
-        float pdfUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_pdfUp, wjet_pdfDown) : 1.00;
+        float pdfUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_pdfUp, wjet_pdfDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", pdfUnc_wjet)) ); 
        
-        float pdfUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_pdfUp, zjet_pdfDown) : 1.00;
+        float pdfUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_pdfUp, zjet_pdfDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", pdfUnc_zjet)) ); 
         
-        float pdfUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_pdfUp, stop_pdfDown) : 1.00; 
+        float pdfUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_pdfUp, stop_pdfDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", pdfUnc_stop)) ); 
 
-        float pdfUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_pdfUp, vv_pdfDown) : 1.00;
+        float pdfUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_pdfUp, vv_pdfDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", pdfUnc_vv)) ); 
         out << line << endl;
       }
@@ -2593,34 +2638,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float isrUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_isrUp, wh_isrDown) : 1.00;
+        float isrUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_isrUp, wh_isrDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", isrUnc_wh)) );
         
-        float isrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_isrUp, ttbar_isrDown) : 1.00; 
+        float isrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_isrUp, ttbar_isrDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", isrUnc_ttbar)) ); 
         
-	float isrUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_isrUp, ttg_isrDown) : 1.00; 
+	float isrUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_isrUp, ttg_isrDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", isrUnc_ttg)) ); 
 
-	float isrUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_isrUp, tth_isrDown) : 1.00; 
+	float isrUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_isrUp, tth_isrDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", isrUnc_tth)) ); 
 
-	float isrUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_isrUp, ttz_isrDown) : 1.00; 
+	float isrUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_isrUp, ttz_isrDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", isrUnc_ttz)) ); 
 
-	float isrUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_isrUp, ttw_isrDown) : 1.00; 
+	float isrUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_isrUp, ttw_isrDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", isrUnc_ttw)) ); 
 
-        float isrUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_isrUp, wjet_isrDown) : 1.00;
+        float isrUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_isrUp, wjet_isrDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", isrUnc_wjet)) ); 
        
-        float isrUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_isrUp, zjet_isrDown) : 1.00;
+        float isrUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_isrUp, zjet_isrDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", isrUnc_zjet)) ); 
         
-        float isrUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_isrUp, stop_isrDown) : 1.00; 
+        float isrUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_isrUp, stop_isrDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", isrUnc_stop)) ); 
 
-        float isrUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_isrUp, vv_isrDown) : 1.00;
+        float isrUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_isrUp, vv_isrDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", isrUnc_vv)) ); 
         out << line << endl;
       }
@@ -2629,134 +2674,134 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float fsrUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_fsrUp, wh_fsrDown) : 1.00;
+        float fsrUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_fsrUp, wh_fsrDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", fsrUnc_wh)) );
         
-        float fsrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_fsrUp, ttbar_fsrDown) : 1.00; 
+        float fsrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_fsrUp, ttbar_fsrDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", fsrUnc_ttbar)) ); 
         
-	float fsrUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_fsrUp, ttg_fsrDown) : 1.00; 
+	float fsrUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_fsrUp, ttg_fsrDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", fsrUnc_ttg)) ); 
 
-	float fsrUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_fsrUp, tth_fsrDown) : 1.00; 
+	float fsrUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_fsrUp, tth_fsrDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", fsrUnc_tth)) ); 
 
-	float fsrUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_fsrUp, ttz_fsrDown) : 1.00; 
+	float fsrUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_fsrUp, ttz_fsrDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", fsrUnc_ttz)) ); 
 
-	float fsrUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_fsrUp, ttw_fsrDown) : 1.00; 
+	float fsrUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_fsrUp, ttw_fsrDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", fsrUnc_ttw)) ); 
 
-        float fsrUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_fsrUp, wjet_fsrDown) : 1.00;
+        float fsrUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_fsrUp, wjet_fsrDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", fsrUnc_wjet)) ); 
        
-        float fsrUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_fsrUp, zjet_fsrDown) : 1.00;
+        float fsrUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_fsrUp, zjet_fsrDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", fsrUnc_zjet)) ); 
         
-        float fsrUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_fsrUp, stop_fsrDown) : 1.00; 
+        float fsrUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_fsrUp, stop_fsrDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", fsrUnc_stop)) ); 
 
-        float fsrUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_fsrUp, vv_fsrDown) : 1.00;
+        float fsrUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_fsrUp, vv_fsrDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", fsrUnc_vv)) ); 
         out << line << endl;
       }
       // else if(line.find("CMS_eff_bcInc1 ")!=string::npos){
-      //   float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag1Up, wh_bcTag1Down) : 1.00;
+      //   float bTagUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcTag1Up, wh_bcTag1Down) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
         
-      //   float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag1Up, ttbar_bcTag1Down) : 1.00; 
+      //   float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcTag1Up, ttbar_bcTag1Down) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
         
-      //   float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag1Up, wjet_bcTag1Down) : 1.00;
+      //   float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcTag1Up, wjet_bcTag1Down) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
        
-      //   float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag1Up, zjet_bcTag1Down) : 1.00;
+      //   float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcTag1Up, zjet_bcTag1Down) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
 
-      //   float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag1Up, stop_bcTag1Down) : 1.00; 
+      //   float bTagUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcTag1Up, stop_bcTag1Down) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
 
-      //   float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag1Up, vv_bcTag1Down) : 1.00;
+      //   float bTagUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcTag1Up, vv_bcTag1Down) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("CMS_eff_bcInc2 ")!=string::npos){
-      //   float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag2Up, wh_bcTag2Down) : 1.00;
+      //   float cTagUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcTag2Up, wh_bcTag2Down) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
         
-      //   float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag2Up, ttbar_bcTag2Down) : 1.00; 
+      //   float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcTag2Up, ttbar_bcTag2Down) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
         
-      //   float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag2Up, wjet_bcTag2Down) : 1.00;
+      //   float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcTag2Up, wjet_bcTag2Down) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
        
-      //   float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag2Up, zjet_bcTag2Down) : 1.00;
+      //   float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcTag2Up, zjet_bcTag2Down) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
         
-      //   float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag2Up, stop_bcTag2Down) : 1.00; 
+      //   float cTagUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcTag2Up, stop_bcTag2Down) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
 
-      //   float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag2Up, vv_bcTag2Down) : 1.00;
+      //   float cTagUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcTag2Up, vv_bcTag2Down) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("CMS_eff_bcInc3 ")!=string::npos){
-      //   float cTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcTag3Up, wh_bcTag3Down) : 1.00;
+      //   float cTagUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcTag3Up, wh_bcTag3Down) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", cTagUnc_wh)) );
         
-      //   float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcTag3Up, ttbar_bcTag3Down) : 1.00; 
+      //   float cTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcTag3Up, ttbar_bcTag3Down) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", cTagUnc_ttbar)) ); 
         
-      //   float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcTag3Up, wjet_bcTag3Down) : 1.00;
+      //   float cTagUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcTag3Up, wjet_bcTag3Down) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", cTagUnc_wjet)) ); 
        
-      //   float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcTag3Up, zjet_bcTag3Down) : 1.00;
+      //   float cTagUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcTag3Up, zjet_bcTag3Down) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", cTagUnc_zjet)) ); 
         
-      //   float cTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcTag3Up, stop_bcTag3Down) : 1.00; 
+      //   float cTagUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcTag3Up, stop_bcTag3Down) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", cTagUnc_stop)) ); 
 
-      //   float cTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcTag3Up, vv_bcTag3Down) : 1.00;
+      //   float cTagUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcTag3Up, vv_bcTag3Down) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", cTagUnc_vv)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("CMS_eff_bTagbc ")!=string::npos){
-      //   float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bTagbcUp, wh_bTagbcDown) : 1.00;
+      //   float bTagUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bTagbcUp, wh_bTagbcDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
         
-      //   float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bTagbcUp, ttbar_bTagbcDown) : 1.00; 
+      //   float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bTagbcUp, ttbar_bTagbcDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
         
-      //   float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bTagbcUp, wjet_bTagbcDown) : 1.00;
+      //   float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bTagbcUp, wjet_bTagbcDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
        
-      //   float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bTagbcUp, zjet_bTagbcDown) : 1.00;
+      //   float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bTagbcUp, zjet_bTagbcDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
 
-      //   float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bTagbcUp, stop_bTagbcDown) : 1.00; 
+      //   float bTagUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bTagbcUp, stop_bTagbcDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
 
-      //   float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bTagbcUp, vv_bTagbcDown) : 1.00;
+      //   float bTagUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bTagbcUp, vv_bTagbcDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
       //   out << line << endl;
       // }
       // else if(line.find("CMS_eff_bTagl ")!=string::npos){
-      //   float bTagUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bTaglUp, wh_bTaglDown) : 1.00;
+      //   float bTagUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bTaglUp, wh_bTaglDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bTagUnc_wh)) );
         
-      //   float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bTaglUp, ttbar_bTaglDown) : 1.00; 
+      //   float bTagUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bTaglUp, ttbar_bTaglDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bTagUnc_ttbar)) ); 
         
-      //   float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bTaglUp, wjet_bTaglDown) : 1.00;
+      //   float bTagUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bTaglUp, wjet_bTaglDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bTagUnc_wjet)) ); 
        
-      //   float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bTaglUp, zjet_bTaglDown) : 1.00;
+      //   float bTagUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bTaglUp, zjet_bTaglDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bTagUnc_zjet)) ); 
 
-      //   float bTagUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bTaglUp, stop_bTaglDown) : 1.00; 
+      //   float bTagUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bTaglUp, stop_bTaglDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bTagUnc_stop)) ); 
 
-      //   float bTagUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bTaglUp, vv_bTaglDown) : 1.00;
+      //   float bTagUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bTaglUp, vv_bTaglDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bTagUnc_vv)) ); 
       //   out << line << endl;
       // }
@@ -2765,54 +2810,54 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bcstatUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcstatUp, wh_bcstatDown) : 1.00;
+        float bcstatUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcstatUp, wh_bcstatDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcstatUnc_wh)) );
         
-        float bcstatUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcstatUp, ttbar_bcstatDown) : 1.00; 
+        float bcstatUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcstatUp, ttbar_bcstatDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcstatUnc_ttbar)) ); 
         
-	float bcstatUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bcstatUp, ttg_bcstatDown) : 1.00; 
+	float bcstatUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bcstatUp, ttg_bcstatDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bcstatUnc_ttg)) ); 
 
-	float bcstatUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bcstatUp, tth_bcstatDown) : 1.00; 
+	float bcstatUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bcstatUp, tth_bcstatDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bcstatUnc_tth)) ); 
 
-	float bcstatUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bcstatUp, ttz_bcstatDown) : 1.00; 
+	float bcstatUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bcstatUp, ttz_bcstatDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bcstatUnc_ttz)) ); 
 
-	float bcstatUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bcstatUp, ttw_bcstatDown) : 1.00; 
+	float bcstatUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bcstatUp, ttw_bcstatDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bcstatUnc_ttw)) ); 
 
-        float bcstatUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcstatUp, wjet_bcstatDown) : 1.00;
+        float bcstatUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcstatUp, wjet_bcstatDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcstatUnc_wjet)) ); 
 	
-        float bcstatUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcstatUp, zjet_bcstatDown) : 1.00;
+        float bcstatUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcstatUp, zjet_bcstatDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcstatUnc_zjet)) ); 
         
-        float bcstatUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcstatUp, stop_bcstatDown) : 1.00; 
+        float bcstatUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcstatUp, stop_bcstatDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcstatUnc_stop)) ); 
 	
-        float bcstatUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcstatUp, vv_bcstatDown) : 1.00;
+        float bcstatUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcstatUp, vv_bcstatDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcstatUnc_vv)) ); 
         out << line << endl;
 	
 	// float globbcstatUnc = 1.15;
-        // float bcstatUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcstatUp, wh_bcstatDown) : 1.00;
+        // float bcstatUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcstatUp, wh_bcstatDown) : 1.00;
         // line.replace( line.find("HHHH") , 4 , string(Form("%.3f", globbcstatUnc)) );
         
-        // float bcstatUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcstatUp, ttbar_bcstatDown) : 1.00; 
+        // float bcstatUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcstatUp, ttbar_bcstatDown) : 1.00; 
         // line.replace( line.find("TTTT") , 4 , string(Form("%.3f", globbcstatUnc)) ); 
         
-        // float bcstatUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcstatUp, wjet_bcstatDown) : 1.00;
+        // float bcstatUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcstatUp, wjet_bcstatDown) : 1.00;
         // line.replace( line.find("WWWW") , 4 , string(Form("%.3f", globbcstatUnc)) ); 
        
-        // float bcstatUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcstatUp, zjet_bcstatDown) : 1.00;
+        // float bcstatUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcstatUp, zjet_bcstatDown) : 1.00;
         // line.replace( line.find("DDDD") , 4 , string(Form("%.3f", globbcstatUnc)) ); 
         
-        // float bcstatUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcstatUp, stop_bcstatDown) : 1.00; 
+        // float bcstatUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcstatUp, stop_bcstatDown) : 1.00; 
         // line.replace( line.find("SSSS") , 4 , string(Form("%.3f", globbcstatUnc)) ); 
 
-        // float bcstatUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcstatUp, vv_bcstatDown) : 1.00;
+        // float bcstatUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcstatUp, vv_bcstatDown) : 1.00;
         // line.replace( line.find("VVVV") , 4 , string(Form("%.3f", globbcstatUnc)) ); 
         // out << line << endl;
       }
@@ -2821,34 +2866,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bclhemufUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemufUp, wh_bclhemufDown) : 1.00;
+        float bclhemufUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bclhemufUp, wh_bclhemufDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemufUnc_wh)) );
         
-        float bclhemufUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemufUp, ttbar_bclhemufDown) : 1.00; 
+        float bclhemufUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bclhemufUp, ttbar_bclhemufDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bclhemufUnc_ttbar)) ); 
         
-	float bclhemufUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bclhemufUp, ttg_bclhemufDown) : 1.00; 
+	float bclhemufUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bclhemufUp, ttg_bclhemufDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bclhemufUnc_ttg)) ); 
 
-	float bclhemufUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bclhemufUp, tth_bclhemufDown) : 1.00; 
+	float bclhemufUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bclhemufUp, tth_bclhemufDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bclhemufUnc_tth)) ); 
 
-	float bclhemufUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bclhemufUp, ttz_bclhemufDown) : 1.00; 
+	float bclhemufUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bclhemufUp, ttz_bclhemufDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bclhemufUnc_ttz)) ); 
 
-	float bclhemufUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bclhemufUp, ttw_bclhemufDown) : 1.00; 
+	float bclhemufUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bclhemufUp, ttw_bclhemufDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bclhemufUnc_ttw)) ); 
 
-        float bclhemufUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemufUp, wjet_bclhemufDown) : 1.00;
+        float bclhemufUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bclhemufUp, wjet_bclhemufDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemufUnc_wjet)) ); 
        
-        float bclhemufUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemufUp, zjet_bclhemufDown) : 1.00;
+        float bclhemufUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bclhemufUp, zjet_bclhemufDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemufUnc_zjet)) ); 
         
-        float bclhemufUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemufUp, stop_bclhemufDown) : 1.00; 
+        float bclhemufUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bclhemufUp, stop_bclhemufDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemufUnc_stop)) ); 
 
-        float bclhemufUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemufUp, vv_bclhemufDown) : 1.00;
+        float bclhemufUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bclhemufUp, vv_bclhemufDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemufUnc_vv)) ); 
         out << line << endl;
       }
@@ -2857,34 +2902,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bclhemurUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bclhemurUp, wh_bclhemurDown) : 1.00;
+        float bclhemurUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bclhemurUp, wh_bclhemurDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bclhemurUnc_wh)) );
         
-        float bclhemurUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bclhemurUp, ttbar_bclhemurDown) : 1.00; 
+        float bclhemurUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bclhemurUp, ttbar_bclhemurDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bclhemurUnc_ttbar)) ); 
         
-	float bclhemurUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bclhemurUp, ttg_bclhemurDown) : 1.00; 
+	float bclhemurUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bclhemurUp, ttg_bclhemurDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bclhemurUnc_ttg)) ); 
 
-	float bclhemurUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bclhemurUp, tth_bclhemurDown) : 1.00; 
+	float bclhemurUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bclhemurUp, tth_bclhemurDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bclhemurUnc_tth)) ); 
 
-	float bclhemurUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bclhemurUp, ttz_bclhemurDown) : 1.00; 
+	float bclhemurUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bclhemurUp, ttz_bclhemurDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bclhemurUnc_ttz)) ); 
 
-	float bclhemurUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bclhemurUp, ttw_bclhemurDown) : 1.00; 
+	float bclhemurUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bclhemurUp, ttw_bclhemurDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bclhemurUnc_ttw)) ); 
 
-        float bclhemurUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bclhemurUp, wjet_bclhemurDown) : 1.00;
+        float bclhemurUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bclhemurUp, wjet_bclhemurDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bclhemurUnc_wjet)) ); 
        
-        float bclhemurUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bclhemurUp, zjet_bclhemurDown) : 1.00;
+        float bclhemurUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bclhemurUp, zjet_bclhemurDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bclhemurUnc_zjet)) ); 
         
-        float bclhemurUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bclhemurUp, stop_bclhemurDown) : 1.00; 
+        float bclhemurUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bclhemurUp, stop_bclhemurDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bclhemurUnc_stop)) ); 
 
-        float bclhemurUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bclhemurUp, vv_bclhemurDown) : 1.00;
+        float bclhemurUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bclhemurUp, vv_bclhemurDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bclhemurUnc_vv)) ); 
         out << line << endl;
       }
@@ -2893,34 +2938,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bcxdybUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxdybUp, wh_bcxdybDown) : 1.00;
+        float bcxdybUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcxdybUp, wh_bcxdybDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxdybUnc_wh)) );
         
-        float bcxdybUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxdybUp, ttbar_bcxdybDown) : 1.00; 
+        float bcxdybUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcxdybUp, ttbar_bcxdybDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxdybUnc_ttbar)) ); 
         
-	float bcxdybUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bcxdybUp, ttg_bcxdybDown) : 1.00; 
+	float bcxdybUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bcxdybUp, ttg_bcxdybDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bcxdybUnc_ttg)) ); 
 
-	float bcxdybUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bcxdybUp, tth_bcxdybDown) : 1.00; 
+	float bcxdybUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bcxdybUp, tth_bcxdybDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bcxdybUnc_tth)) ); 
 
-	float bcxdybUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bcxdybUp, ttz_bcxdybDown) : 1.00; 
+	float bcxdybUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bcxdybUp, ttz_bcxdybDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bcxdybUnc_ttz)) ); 
 
-	float bcxdybUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bcxdybUp, ttw_bcxdybDown) : 1.00; 
+	float bcxdybUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bcxdybUp, ttw_bcxdybDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bcxdybUnc_ttw)) ); 
 
-        float bcxdybUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxdybUp, wjet_bcxdybDown) : 1.00;
+        float bcxdybUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcxdybUp, wjet_bcxdybDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxdybUnc_wjet)) ); 
        
-        float bcxdybUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxdybUp, zjet_bcxdybDown) : 1.00;
+        float bcxdybUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcxdybUp, zjet_bcxdybDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxdybUnc_zjet)) ); 
         
-        float bcxdybUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxdybUp, stop_bcxdybDown) : 1.00; 
+        float bcxdybUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcxdybUp, stop_bcxdybDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxdybUnc_stop)) ); 
 
-        float bcxdybUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxdybUp, vv_bcxdybDown) : 1.00;
+        float bcxdybUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcxdybUp, vv_bcxdybDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxdybUnc_vv)) ); 
         out << line << endl;
       }
@@ -2929,34 +2974,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bcxdycUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxdycUp, wh_bcxdycDown) : 1.00;
+        float bcxdycUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcxdycUp, wh_bcxdycDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxdycUnc_wh)) );
         
-        float bcxdycUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxdycUp, ttbar_bcxdycDown) : 1.00; 
+        float bcxdycUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcxdycUp, ttbar_bcxdycDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxdycUnc_ttbar)) ); 
         
-	float bcxdycUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bcxdycUp, ttg_bcxdycDown) : 1.00; 
+	float bcxdycUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bcxdycUp, ttg_bcxdycDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bcxdycUnc_ttg)) ); 
 
-	float bcxdycUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bcxdycUp, tth_bcxdycDown) : 1.00; 
+	float bcxdycUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bcxdycUp, tth_bcxdycDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bcxdycUnc_tth)) ); 
 
-	float bcxdycUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bcxdycUp, ttz_bcxdycDown) : 1.00; 
+	float bcxdycUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bcxdycUp, ttz_bcxdycDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bcxdycUnc_ttz)) ); 
 
-	float bcxdycUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bcxdycUp, ttw_bcxdycDown) : 1.00; 
+	float bcxdycUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bcxdycUp, ttw_bcxdycDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bcxdycUnc_ttw)) ); 
 
-        float bcxdycUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxdycUp, wjet_bcxdycDown) : 1.00;
+        float bcxdycUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcxdycUp, wjet_bcxdycDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxdycUnc_wjet)) ); 
        
-        float bcxdycUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxdycUp, zjet_bcxdycDown) : 1.00;
+        float bcxdycUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcxdycUp, zjet_bcxdycDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxdycUnc_zjet)) ); 
         
-        float bcxdycUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxdycUp, stop_bcxdycDown) : 1.00; 
+        float bcxdycUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcxdycUp, stop_bcxdycDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxdycUnc_stop)) ); 
 
-        float bcxdycUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxdycUp, vv_bcxdycDown) : 1.00;
+        float bcxdycUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcxdycUp, vv_bcxdycDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxdycUnc_vv)) ); 
         out << line << endl;
       }
@@ -2965,34 +3010,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bcxwjcUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcxwjcUp, wh_bcxwjcDown) : 1.00;
+        float bcxwjcUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcxwjcUp, wh_bcxwjcDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcxwjcUnc_wh)) );
         
-        float bcxwjcUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcxwjcUp, ttbar_bcxwjcDown) : 1.00; 
+        float bcxwjcUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcxwjcUp, ttbar_bcxwjcDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcxwjcUnc_ttbar)) ); 
         
-	float bcxwjcUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bcxwjcUp, ttg_bcxwjcDown) : 1.00; 
+	float bcxwjcUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bcxwjcUp, ttg_bcxwjcDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bcxwjcUnc_ttg)) ); 
 
-	float bcxwjcUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bcxwjcUp, tth_bcxwjcDown) : 1.00; 
+	float bcxwjcUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bcxwjcUp, tth_bcxwjcDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bcxwjcUnc_tth)) ); 
 
-	float bcxwjcUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bcxwjcUp, ttz_bcxwjcDown) : 1.00; 
+	float bcxwjcUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bcxwjcUp, ttz_bcxwjcDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bcxwjcUnc_ttz)) ); 
 
-	float bcxwjcUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bcxwjcUp, ttw_bcxwjcDown) : 1.00; 
+	float bcxwjcUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bcxwjcUp, ttw_bcxwjcDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bcxwjcUnc_ttw)) ); 
 
-        float bcxwjcUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcxwjcUp, wjet_bcxwjcDown) : 1.00;
+        float bcxwjcUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcxwjcUp, wjet_bcxwjcDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcxwjcUnc_wjet)) ); 
        
-        float bcxwjcUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcxwjcUp, zjet_bcxwjcDown) : 1.00;
+        float bcxwjcUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcxwjcUp, zjet_bcxwjcDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcxwjcUnc_zjet)) ); 
         
-        float bcxwjcUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcxwjcUp, stop_bcxwjcDown) : 1.00; 
+        float bcxwjcUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcxwjcUp, stop_bcxwjcDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcxwjcUnc_stop)) ); 
 
-        float bcxwjcUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcxwjcUp, vv_bcxwjcDown) : 1.00;
+        float bcxwjcUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcxwjcUp, vv_bcxwjcDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcxwjcUnc_vv)) ); 
         out << line << endl;
       }
@@ -3001,34 +3046,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bcintpUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcintpUp, wh_bcintpDown) : 1.00;
+        float bcintpUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcintpUp, wh_bcintpDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", bcintpUnc_wh)) );
         
-        float bcintpUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcintpUp, ttbar_bcintpDown) : 1.00; 
+        float bcintpUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcintpUp, ttbar_bcintpDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", bcintpUnc_ttbar)) ); 
         
-	float bcintpUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bcintpUp, ttg_bcintpDown) : 1.00; 
+	float bcintpUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bcintpUp, ttg_bcintpDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bcintpUnc_ttg)) ); 
 
-	float bcintpUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bcintpUp, tth_bcintpDown) : 1.00; 
+	float bcintpUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bcintpUp, tth_bcintpDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bcintpUnc_tth)) ); 
 
-	float bcintpUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bcintpUp, ttz_bcintpDown) : 1.00; 
+	float bcintpUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bcintpUp, ttz_bcintpDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bcintpUnc_ttz)) ); 
 
-	float bcintpUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bcintpUp, ttw_bcintpDown) : 1.00; 
+	float bcintpUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bcintpUp, ttw_bcintpDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bcintpUnc_ttw)) ); 
 
-        float bcintpUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcintpUp, wjet_bcintpDown) : 1.00;
+        float bcintpUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcintpUp, wjet_bcintpDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", bcintpUnc_wjet)) ); 
        
-        float bcintpUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcintpUp, zjet_bcintpDown) : 1.00;
+        float bcintpUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcintpUp, zjet_bcintpDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", bcintpUnc_zjet)) ); 
         
-        float bcintpUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcintpUp, stop_bcintpDown) : 1.00; 
+        float bcintpUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcintpUp, stop_bcintpDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", bcintpUnc_stop)) ); 
 
-        float bcintpUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcintpUp, vv_bcintpDown) : 1.00;
+        float bcintpUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcintpUp, vv_bcintpDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", bcintpUnc_vv)) ); 
         out << line << endl;
       }
@@ -3039,34 +3084,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float bcextpUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_bcextpUp, wh_bcextpDown) : 1.00;
+        float bcextpUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_bcextpUp, wh_bcextpDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", sf_bcextp*bcextpUnc_wh)) );
         
-        float bcextpUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_bcextpUp, ttbar_bcextpDown) : 1.00; 
+        float bcextpUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_bcextpUp, ttbar_bcextpDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", sf_bcextp*bcextpUnc_ttbar)) ); 
         
-	float bcextpUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_bcextpUp, ttg_bcextpDown) : 1.00; 
+	float bcextpUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_bcextpUp, ttg_bcextpDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", bcextpUnc_ttg)) ); 
 
-	float bcextpUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_bcextpUp, tth_bcextpDown) : 1.00; 
+	float bcextpUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_bcextpUp, tth_bcextpDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", bcextpUnc_tth)) ); 
 
-	float bcextpUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_bcextpUp, ttz_bcextpDown) : 1.00; 
+	float bcextpUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_bcextpUp, ttz_bcextpDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", bcextpUnc_ttz)) ); 
 
-	float bcextpUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_bcextpUp, ttw_bcextpDown) : 1.00; 
+	float bcextpUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_bcextpUp, ttw_bcextpDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", bcextpUnc_ttw)) ); 
 
-        float bcextpUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_bcextpUp, wjet_bcextpDown) : 1.00;
+        float bcextpUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_bcextpUp, wjet_bcextpDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", sf_bcextp*bcextpUnc_wjet)) ); 
        
-        float bcextpUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_bcextpUp, zjet_bcextpDown) : 1.00;
+        float bcextpUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_bcextpUp, zjet_bcextpDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", sf_bcextp*bcextpUnc_zjet)) ); 
         
-        float bcextpUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_bcextpUp, stop_bcextpDown) : 1.00; 
+        float bcextpUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_bcextpUp, stop_bcextpDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", sf_bcextp*bcextpUnc_stop)) ); 
 
-        float bcextpUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_bcextpUp, vv_bcextpDown) : 1.00;
+        float bcextpUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_bcextpUp, vv_bcextpDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", sf_bcextp*bcextpUnc_vv)) ); 
         out << line << endl;
       }
@@ -3075,10 +3120,10 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 
-        float topPtUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_topPtUp, wh_topPtDown) : 1.00;
+        float topPtUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_topPtUp, wh_topPtDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", topPtUnc_wh)) );
         
-        float topPtUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_topPtUp, ttbar_topPtDown) : 1.00; 
+        float topPtUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_topPtUp, ttbar_topPtDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", topPtUnc_ttbar)) ); 
         out << line << endl;
 	
@@ -3088,22 +3133,22 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       // 	stringstream ss(line); string systname; ss >> systname;
       // 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-      //   float stotpuUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_stotpuUp, wh_stotpuDown) : 1.00;
+      //   float stotpuUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_stotpuUp, wh_stotpuDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", stotpuUnc_wh)) );
         
-      //   float stotpuUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_stotpuUp, ttbar_stotpuDown) : 1.00; 
+      //   float stotpuUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_stotpuUp, ttbar_stotpuDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", stotpuUnc_ttbar)) ); 
         
-      //   float stotpuUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_stotpuUp, wjet_stotpuDown) : 1.00;
+      //   float stotpuUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_stotpuUp, wjet_stotpuDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", stotpuUnc_wjet)) ); 
        
-      //   float stotpuUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_stotpuUp, zjet_stotpuDown) : 1.00;
+      //   float stotpuUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_stotpuUp, zjet_stotpuDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", stotpuUnc_zjet)) ); 
         
-      //   float stotpuUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_stotpuUp, stop_stotpuDown) : 1.00; 
+      //   float stotpuUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_stotpuUp, stop_stotpuDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", stotpuUnc_stop)) ); 
 
-      //   float stotpuUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_stotpuUp, vv_stotpuDown) : 1.00;
+      //   float stotpuUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_stotpuUp, vv_stotpuDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", stotpuUnc_vv)) ); 
       //   out << line << endl;
       // }
@@ -3112,22 +3157,22 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       // 	stringstream ss(line); string systname; ss >> systname;
       // 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-      //   float stotrelUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_stotrelUp, wh_stotrelDown) : 1.00;
+      //   float stotrelUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_stotrelUp, wh_stotrelDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", stotrelUnc_wh)) );
         
-      //   float stotrelUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_stotrelUp, ttbar_stotrelDown) : 1.00; 
+      //   float stotrelUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_stotrelUp, ttbar_stotrelDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", stotrelUnc_ttbar)) ); 
         
-      //   float stotrelUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_stotrelUp, wjet_stotrelDown) : 1.00;
+      //   float stotrelUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_stotrelUp, wjet_stotrelDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", stotrelUnc_wjet)) ); 
        
-      //   float stotrelUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_stotrelUp, zjet_stotrelDown) : 1.00;
+      //   float stotrelUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_stotrelUp, zjet_stotrelDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", stotrelUnc_zjet)) ); 
         
-      //   float stotrelUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_stotrelUp, stop_stotrelDown) : 1.00; 
+      //   float stotrelUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_stotrelUp, stop_stotrelDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", stotrelUnc_stop)) ); 
 
-      //   float stotrelUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_stotrelUp, vv_stotrelDown) : 1.00;
+      //   float stotrelUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_stotrelUp, vv_stotrelDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", stotrelUnc_vv)) ); 
       //   out << line << endl;
       // }
@@ -3136,34 +3181,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float flavorqcdUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_flavorqcdUp, wh_flavorqcdDown) : 1.00;
+        float flavorqcdUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_flavorqcdUp, wh_flavorqcdDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", flavorqcdUnc_wh)) );
         
-        float flavorqcdUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_flavorqcdUp, ttbar_flavorqcdDown) : 1.00; 
+        float flavorqcdUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_flavorqcdUp, ttbar_flavorqcdDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", flavorqcdUnc_ttbar)) ); 
         
-	float flavorqcdUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_flavorqcdUp, ttg_flavorqcdDown) : 1.00; 
+	float flavorqcdUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_flavorqcdUp, ttg_flavorqcdDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", flavorqcdUnc_ttg)) ); 
 
-	float flavorqcdUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_flavorqcdUp, tth_flavorqcdDown) : 1.00; 
+	float flavorqcdUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_flavorqcdUp, tth_flavorqcdDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", flavorqcdUnc_tth)) ); 
 
-	float flavorqcdUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_flavorqcdUp, ttz_flavorqcdDown) : 1.00; 
+	float flavorqcdUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_flavorqcdUp, ttz_flavorqcdDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", flavorqcdUnc_ttz)) ); 
 
-	float flavorqcdUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_flavorqcdUp, ttw_flavorqcdDown) : 1.00; 
+	float flavorqcdUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_flavorqcdUp, ttw_flavorqcdDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", flavorqcdUnc_ttw)) ); 
 
-        float flavorqcdUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_flavorqcdUp, wjet_flavorqcdDown) : 1.00;
+        float flavorqcdUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_flavorqcdUp, wjet_flavorqcdDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", flavorqcdUnc_wjet)) ); 
        
-        float flavorqcdUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_flavorqcdUp, zjet_flavorqcdDown) : 1.00;
+        float flavorqcdUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_flavorqcdUp, zjet_flavorqcdDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", flavorqcdUnc_zjet)) ); 
         
-        float flavorqcdUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_flavorqcdUp, stop_flavorqcdDown) : 1.00; 
+        float flavorqcdUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_flavorqcdUp, stop_flavorqcdDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", flavorqcdUnc_stop)) ); 
 
-        float flavorqcdUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_flavorqcdUp, vv_flavorqcdDown) : 1.00;
+        float flavorqcdUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_flavorqcdUp, vv_flavorqcdDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", flavorqcdUnc_vv)) ); 
         out << line << endl;
       }
@@ -3172,22 +3217,22 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       // 	stringstream ss(line); string systname; ss >> systname;
       // 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-      //   float stotptUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_stotptUp, wh_stotptDown) : 1.00;
+      //   float stotptUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_stotptUp, wh_stotptDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", stotptUnc_wh)) );
         
-      //   float stotptUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_stotptUp, ttbar_stotptDown) : 1.00; 
+      //   float stotptUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_stotptUp, ttbar_stotptDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", stotptUnc_ttbar)) ); 
         
-      //   float stotptUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_stotptUp, wjet_stotptDown) : 1.00;
+      //   float stotptUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_stotptUp, wjet_stotptDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", stotptUnc_wjet)) ); 
        
-      //   float stotptUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_stotptUp, zjet_stotptDown) : 1.00;
+      //   float stotptUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_stotptUp, zjet_stotptDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", stotptUnc_zjet)) ); 
         
-      //   float stotptUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_stotptUp, stop_stotptDown) : 1.00; 
+      //   float stotptUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_stotptUp, stop_stotptDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", stotptUnc_stop)) ); 
 
-      //   float stotptUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_stotptUp, vv_stotptDown) : 1.00;
+      //   float stotptUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_stotptUp, vv_stotptDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", stotptUnc_vv)) ); 
       //   out << line << endl;
       // }
@@ -3196,22 +3241,22 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       // 	stringstream ss(line); string systname; ss >> systname;
       // 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-      //   float stotptUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_stotptUp, wh_stotptDown) : 1.00;
+      //   float stotptUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_stotptUp, wh_stotptDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", stotptUnc_wh)) );
         
-      //   float stotptUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_stotptUp, ttbar_stotptDown) : 1.00; 
+      //   float stotptUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_stotptUp, ttbar_stotptDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", stotptUnc_ttbar)) ); 
         
-      //   float stotptUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_stotptUp, wjet_stotptDown) : 1.00;
+      //   float stotptUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_stotptUp, wjet_stotptDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", stotptUnc_wjet)) ); 
        
-      //   float stotptUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_stotptUp, zjet_stotptDown) : 1.00;
+      //   float stotptUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_stotptUp, zjet_stotptDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", stotptUnc_zjet)) ); 
         
-      //   float stotptUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_stotptUp, stop_stotptDown) : 1.00; 
+      //   float stotptUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_stotptUp, stop_stotptDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", stotptUnc_stop)) ); 
 
-      //   float stotptUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_stotptUp, vv_stotptDown) : 1.00;
+      //   float stotptUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_stotptUp, vv_stotptDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", stotptUnc_vv)) ); 
       //   out << line << endl;
       // }
@@ -3220,22 +3265,22 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       // 	stringstream ss(line); string systname; ss >> systname;
       // 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-      //   float stotscaleUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_stotscaleUp, wh_stotscaleDown) : 1.00;
+      //   float stotscaleUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_stotscaleUp, wh_stotscaleDown) : 1.00;
       //   line.replace( line.find("HHHH") , 4 , string(Form("%.3f", stotscaleUnc_wh)) );
         
-      //   float stotscaleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_stotscaleUp, ttbar_stotscaleDown) : 1.00; 
+      //   float stotscaleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_stotscaleUp, ttbar_stotscaleDown) : 1.00; 
       //   line.replace( line.find("TTTT") , 4 , string(Form("%.3f", stotscaleUnc_ttbar)) ); 
         
-      //   float stotscaleUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_stotscaleUp, wjet_stotscaleDown) : 1.00;
+      //   float stotscaleUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_stotscaleUp, wjet_stotscaleDown) : 1.00;
       //   line.replace( line.find("WWWW") , 4 , string(Form("%.3f", stotscaleUnc_wjet)) ); 
        
-      //   float stotscaleUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_stotscaleUp, zjet_stotscaleDown) : 1.00;
+      //   float stotscaleUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_stotscaleUp, zjet_stotscaleDown) : 1.00;
       //   line.replace( line.find("DDDD") , 4 , string(Form("%.3f", stotscaleUnc_zjet)) ); 
         
-      //   float stotscaleUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_stotscaleUp, stop_stotscaleDown) : 1.00; 
+      //   float stotscaleUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_stotscaleUp, stop_stotscaleDown) : 1.00; 
       //   line.replace( line.find("SSSS") , 4 , string(Form("%.3f", stotscaleUnc_stop)) ); 
 
-      //   float stotscaleUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_stotscaleUp, vv_stotscaleDown) : 1.00;
+      //   float stotscaleUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_stotscaleUp, vv_stotscaleDown) : 1.00;
       //   line.replace( line.find("VVVV") , 4 , string(Form("%.3f", stotscaleUnc_vv)) ); 
       //   out << line << endl;
       // }
@@ -3244,34 +3289,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float absmpfbUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_absmpfbUp, wh_absmpfbDown) : 1.00;
+        float absmpfbUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_absmpfbUp, wh_absmpfbDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", absmpfbUnc_wh)) );
         
-        float absmpfbUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_absmpfbUp, ttbar_absmpfbDown) : 1.00; 
+        float absmpfbUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_absmpfbUp, ttbar_absmpfbDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", absmpfbUnc_ttbar)) ); 
         
-	float absmpfbUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_absmpfbUp, ttg_absmpfbDown) : 1.00; 
+	float absmpfbUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_absmpfbUp, ttg_absmpfbDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", absmpfbUnc_ttg)) ); 
 
-	float absmpfbUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_absmpfbUp, tth_absmpfbDown) : 1.00; 
+	float absmpfbUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_absmpfbUp, tth_absmpfbDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", absmpfbUnc_tth)) ); 
 
-	float absmpfbUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_absmpfbUp, ttz_absmpfbDown) : 1.00; 
+	float absmpfbUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_absmpfbUp, ttz_absmpfbDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", absmpfbUnc_ttz)) ); 
 
-	float absmpfbUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_absmpfbUp, ttw_absmpfbDown) : 1.00; 
+	float absmpfbUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_absmpfbUp, ttw_absmpfbDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", absmpfbUnc_ttw)) ); 
 
-        float absmpfbUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_absmpfbUp, wjet_absmpfbDown) : 1.00;
+        float absmpfbUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_absmpfbUp, wjet_absmpfbDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", absmpfbUnc_wjet)) ); 
        
-        float absmpfbUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_absmpfbUp, zjet_absmpfbDown) : 1.00;
+        float absmpfbUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_absmpfbUp, zjet_absmpfbDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", absmpfbUnc_zjet)) ); 
         
-        float absmpfbUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_absmpfbUp, stop_absmpfbDown) : 1.00; 
+        float absmpfbUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_absmpfbUp, stop_absmpfbDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", absmpfbUnc_stop)) ); 
 
-        float absmpfbUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_absmpfbUp, vv_absmpfbDown) : 1.00;
+        float absmpfbUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_absmpfbUp, vv_absmpfbDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", absmpfbUnc_vv)) ); 
         out << line << endl;
       }
@@ -3280,34 +3325,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float abssclUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_abssclUp, wh_abssclDown) : 1.00;
+        float abssclUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_abssclUp, wh_abssclDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", abssclUnc_wh)) );
         
-        float abssclUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_abssclUp, ttbar_abssclDown) : 1.00; 
+        float abssclUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_abssclUp, ttbar_abssclDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", abssclUnc_ttbar)) ); 
         
-	float abssclUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_abssclUp, ttg_abssclDown) : 1.00; 
+	float abssclUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_abssclUp, ttg_abssclDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", abssclUnc_ttg)) ); 
 
-	float abssclUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_abssclUp, tth_abssclDown) : 1.00; 
+	float abssclUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_abssclUp, tth_abssclDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", abssclUnc_tth)) ); 
 
-	float abssclUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_abssclUp, ttz_abssclDown) : 1.00; 
+	float abssclUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_abssclUp, ttz_abssclDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", abssclUnc_ttz)) ); 
 
-	float abssclUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_abssclUp, ttw_abssclDown) : 1.00; 
+	float abssclUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_abssclUp, ttw_abssclDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", abssclUnc_ttw)) ); 
 
-        float abssclUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_abssclUp, wjet_abssclDown) : 1.00;
+        float abssclUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_abssclUp, wjet_abssclDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", abssclUnc_wjet)) ); 
        
-        float abssclUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_abssclUp, zjet_abssclDown) : 1.00;
+        float abssclUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_abssclUp, zjet_abssclDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", abssclUnc_zjet)) ); 
         
-        float abssclUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_abssclUp, stop_abssclDown) : 1.00; 
+        float abssclUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_abssclUp, stop_abssclDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", abssclUnc_stop)) ); 
 
-        float abssclUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_abssclUp, vv_abssclDown) : 1.00;
+        float abssclUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_abssclUp, vv_abssclDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", abssclUnc_vv)) ); 
         out << line << endl;
       }
@@ -3316,34 +3361,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float absstatUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_absstatUp, wh_absstatDown) : 1.00;
+        float absstatUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_absstatUp, wh_absstatDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", absstatUnc_wh)) );
         
-        float absstatUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_absstatUp, ttbar_absstatDown) : 1.00; 
+        float absstatUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_absstatUp, ttbar_absstatDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", absstatUnc_ttbar)) ); 
         
-	float absstatUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_absstatUp, ttg_absstatDown) : 1.00; 
+	float absstatUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_absstatUp, ttg_absstatDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", absstatUnc_ttg)) ); 
 
-	float absstatUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_absstatUp, tth_absstatDown) : 1.00; 
+	float absstatUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_absstatUp, tth_absstatDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", absstatUnc_tth)) ); 
 
-	float absstatUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_absstatUp, ttz_absstatDown) : 1.00; 
+	float absstatUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_absstatUp, ttz_absstatDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", absstatUnc_ttz)) ); 
 
-	float absstatUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_absstatUp, ttw_absstatDown) : 1.00; 
+	float absstatUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_absstatUp, ttw_absstatDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", absstatUnc_ttw)) ); 
 
-        float absstatUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_absstatUp, wjet_absstatDown) : 1.00;
+        float absstatUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_absstatUp, wjet_absstatDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", absstatUnc_wjet)) ); 
        
-        float absstatUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_absstatUp, zjet_absstatDown) : 1.00;
+        float absstatUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_absstatUp, zjet_absstatDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", absstatUnc_zjet)) ); 
         
-        float absstatUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_absstatUp, stop_absstatDown) : 1.00; 
+        float absstatUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_absstatUp, stop_absstatDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", absstatUnc_stop)) ); 
 
-        float absstatUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_absstatUp, vv_absstatDown) : 1.00;
+        float absstatUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_absstatUp, vv_absstatDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", absstatUnc_vv)) ); 
         out << line << endl;
       }
@@ -3352,34 +3397,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float fragUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_fragUp, wh_fragDown) : 1.00;
+        float fragUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_fragUp, wh_fragDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", fragUnc_wh)) );
         
-        float fragUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_fragUp, ttbar_fragDown) : 1.00; 
+        float fragUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_fragUp, ttbar_fragDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", fragUnc_ttbar)) ); 
         
-	float fragUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_fragUp, ttg_fragDown) : 1.00; 
+	float fragUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_fragUp, ttg_fragDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", fragUnc_ttg)) ); 
 
-	float fragUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_fragUp, tth_fragDown) : 1.00; 
+	float fragUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_fragUp, tth_fragDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", fragUnc_tth)) ); 
 
-	float fragUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_fragUp, ttz_fragDown) : 1.00; 
+	float fragUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_fragUp, ttz_fragDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", fragUnc_ttz)) ); 
 
-	float fragUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_fragUp, ttw_fragDown) : 1.00; 
+	float fragUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_fragUp, ttw_fragDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", fragUnc_ttw)) ); 
 
-        float fragUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_fragUp, wjet_fragDown) : 1.00;
+        float fragUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_fragUp, wjet_fragDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", fragUnc_wjet)) ); 
        
-        float fragUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_fragUp, zjet_fragDown) : 1.00;
+        float fragUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_fragUp, zjet_fragDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", fragUnc_zjet)) ); 
         
-        float fragUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_fragUp, stop_fragDown) : 1.00; 
+        float fragUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_fragUp, stop_fragDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", fragUnc_stop)) ); 
 
-        float fragUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_fragUp, vv_fragDown) : 1.00;
+        float fragUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_fragUp, vv_fragDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", fragUnc_vv)) ); 
         out << line << endl;
       }
@@ -3388,34 +3433,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float pudatamcUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_pudatamcUp, wh_pudatamcDown) : 1.00;
+        float pudatamcUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_pudatamcUp, wh_pudatamcDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", pudatamcUnc_wh)) );
         
-        float pudatamcUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_pudatamcUp, ttbar_pudatamcDown) : 1.00; 
+        float pudatamcUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_pudatamcUp, ttbar_pudatamcDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", pudatamcUnc_ttbar)) ); 
         
-	float pudatamcUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_pudatamcUp, ttg_pudatamcDown) : 1.00; 
+	float pudatamcUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_pudatamcUp, ttg_pudatamcDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", pudatamcUnc_ttg)) ); 
 
-	float pudatamcUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_pudatamcUp, tth_pudatamcDown) : 1.00; 
+	float pudatamcUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_pudatamcUp, tth_pudatamcDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", pudatamcUnc_tth)) ); 
 
-	float pudatamcUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_pudatamcUp, ttz_pudatamcDown) : 1.00; 
+	float pudatamcUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_pudatamcUp, ttz_pudatamcDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", pudatamcUnc_ttz)) ); 
 
-	float pudatamcUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_pudatamcUp, ttw_pudatamcDown) : 1.00; 
+	float pudatamcUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_pudatamcUp, ttw_pudatamcDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", pudatamcUnc_ttw)) ); 
 
-        float pudatamcUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_pudatamcUp, wjet_pudatamcDown) : 1.00;
+        float pudatamcUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_pudatamcUp, wjet_pudatamcDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", pudatamcUnc_wjet)) ); 
        
-        float pudatamcUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_pudatamcUp, zjet_pudatamcDown) : 1.00;
+        float pudatamcUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_pudatamcUp, zjet_pudatamcDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", pudatamcUnc_zjet)) ); 
         
-        float pudatamcUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_pudatamcUp, stop_pudatamcDown) : 1.00; 
+        float pudatamcUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_pudatamcUp, stop_pudatamcDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", pudatamcUnc_stop)) ); 
 
-        float pudatamcUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_pudatamcUp, vv_pudatamcDown) : 1.00;
+        float pudatamcUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_pudatamcUp, vv_pudatamcDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", pudatamcUnc_vv)) ); 
         out << line << endl;
       }
@@ -3424,34 +3469,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float puptbbUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_puptbbUp, wh_puptbbDown) : 1.00;
+        float puptbbUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_puptbbUp, wh_puptbbDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", puptbbUnc_wh)) );
         
-        float puptbbUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_puptbbUp, ttbar_puptbbDown) : 1.00; 
+        float puptbbUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_puptbbUp, ttbar_puptbbDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", puptbbUnc_ttbar)) ); 
         
-	float puptbbUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_puptbbUp, ttg_puptbbDown) : 1.00; 
+	float puptbbUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_puptbbUp, ttg_puptbbDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", puptbbUnc_ttg)) ); 
 
-	float puptbbUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_puptbbUp, tth_puptbbDown) : 1.00; 
+	float puptbbUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_puptbbUp, tth_puptbbDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", puptbbUnc_tth)) ); 
 
-	float puptbbUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_puptbbUp, ttz_puptbbDown) : 1.00; 
+	float puptbbUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_puptbbUp, ttz_puptbbDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", puptbbUnc_ttz)) ); 
 
-	float puptbbUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_puptbbUp, ttw_puptbbDown) : 1.00; 
+	float puptbbUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_puptbbUp, ttw_puptbbDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", puptbbUnc_ttw)) ); 
 
-        float puptbbUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_puptbbUp, wjet_puptbbDown) : 1.00;
+        float puptbbUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_puptbbUp, wjet_puptbbDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", puptbbUnc_wjet)) ); 
        
-        float puptbbUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_puptbbUp, zjet_puptbbDown) : 1.00;
+        float puptbbUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_puptbbUp, zjet_puptbbDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", puptbbUnc_zjet)) ); 
         
-        float puptbbUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_puptbbUp, stop_puptbbDown) : 1.00; 
+        float puptbbUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_puptbbUp, stop_puptbbDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", puptbbUnc_stop)) ); 
 
-        float puptbbUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_puptbbUp, vv_puptbbDown) : 1.00;
+        float puptbbUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_puptbbUp, vv_puptbbDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", puptbbUnc_vv)) ); 
         out << line << endl;
       }
@@ -3460,34 +3505,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float puptec1Unc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_puptec1Up, wh_puptec1Down) : 1.00;
+        float puptec1Unc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_puptec1Up, wh_puptec1Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", puptec1Unc_wh)) );
         
-        float puptec1Unc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_puptec1Up, ttbar_puptec1Down) : 1.00; 
+        float puptec1Unc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_puptec1Up, ttbar_puptec1Down) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", puptec1Unc_ttbar)) ); 
         
-	float puptec1Unc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_puptec1Up, ttg_puptec1Down) : 1.00; 
+	float puptec1Unc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_puptec1Up, ttg_puptec1Down) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", puptec1Unc_ttg)) ); 
 
-	float puptec1Unc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_puptec1Up, tth_puptec1Down) : 1.00; 
+	float puptec1Unc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_puptec1Up, tth_puptec1Down) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", puptec1Unc_tth)) ); 
 
-	float puptec1Unc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_puptec1Up, ttz_puptec1Down) : 1.00; 
+	float puptec1Unc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_puptec1Up, ttz_puptec1Down) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", puptec1Unc_ttz)) ); 
 
-	float puptec1Unc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_puptec1Up, ttw_puptec1Down) : 1.00; 
+	float puptec1Unc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_puptec1Up, ttw_puptec1Down) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", puptec1Unc_ttw)) ); 
 
-        float puptec1Unc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_puptec1Up, wjet_puptec1Down) : 1.00;
+        float puptec1Unc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_puptec1Up, wjet_puptec1Down) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", puptec1Unc_wjet)) ); 
        
-        float puptec1Unc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_puptec1Up, zjet_puptec1Down) : 1.00;
+        float puptec1Unc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_puptec1Up, zjet_puptec1Down) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", puptec1Unc_zjet)) ); 
         
-        float puptec1Unc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_puptec1Up, stop_puptec1Down) : 1.00; 
+        float puptec1Unc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_puptec1Up, stop_puptec1Down) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", puptec1Unc_stop)) ); 
 
-        float puptec1Unc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_puptec1Up, vv_puptec1Down) : 1.00;
+        float puptec1Unc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_puptec1Up, vv_puptec1Down) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", puptec1Unc_vv)) ); 
         out << line << endl;
       }
@@ -3496,34 +3541,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float puptec2Unc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_puptec2Up, wh_puptec2Down) : 1.00;
+        float puptec2Unc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_puptec2Up, wh_puptec2Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", puptec2Unc_wh)) );
         
-        float puptec2Unc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_puptec2Up, ttbar_puptec2Down) : 1.00; 
+        float puptec2Unc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_puptec2Up, ttbar_puptec2Down) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", puptec2Unc_ttbar)) ); 
         
-	float puptec2Unc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_puptec2Up, ttg_puptec2Down) : 1.00; 
+	float puptec2Unc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_puptec2Up, ttg_puptec2Down) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", puptec2Unc_ttg)) ); 
 
-	float puptec2Unc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_puptec2Up, tth_puptec2Down) : 1.00; 
+	float puptec2Unc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_puptec2Up, tth_puptec2Down) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", puptec2Unc_tth)) ); 
 
-	float puptec2Unc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_puptec2Up, ttz_puptec2Down) : 1.00; 
+	float puptec2Unc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_puptec2Up, ttz_puptec2Down) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", puptec2Unc_ttz)) ); 
 
-	float puptec2Unc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_puptec2Up, ttw_puptec2Down) : 1.00; 
+	float puptec2Unc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_puptec2Up, ttw_puptec2Down) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", puptec2Unc_ttw)) ); 
 
-        float puptec2Unc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_puptec2Up, wjet_puptec2Down) : 1.00;
+        float puptec2Unc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_puptec2Up, wjet_puptec2Down) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", puptec2Unc_wjet)) ); 
        
-        float puptec2Unc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_puptec2Up, zjet_puptec2Down) : 1.00;
+        float puptec2Unc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_puptec2Up, zjet_puptec2Down) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", puptec2Unc_zjet)) ); 
         
-        float puptec2Unc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_puptec2Up, stop_puptec2Down) : 1.00; 
+        float puptec2Unc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_puptec2Up, stop_puptec2Down) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", puptec2Unc_stop)) ); 
 
-        float puptec2Unc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_puptec2Up, vv_puptec2Down) : 1.00;
+        float puptec2Unc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_puptec2Up, vv_puptec2Down) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", puptec2Unc_vv)) ); 
         out << line << endl;
       }
@@ -3532,34 +3577,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float pupthfUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_pupthfUp, wh_pupthfDown) : 1.00;
+        float pupthfUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_pupthfUp, wh_pupthfDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", pupthfUnc_wh)) );
         
-        float pupthfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_pupthfUp, ttbar_pupthfDown) : 1.00; 
+        float pupthfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_pupthfUp, ttbar_pupthfDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", pupthfUnc_ttbar)) ); 
         
-	float pupthfUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_pupthfUp, ttg_pupthfDown) : 1.00; 
+	float pupthfUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_pupthfUp, ttg_pupthfDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", pupthfUnc_ttg)) ); 
 
-	float pupthfUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_pupthfUp, tth_pupthfDown) : 1.00; 
+	float pupthfUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_pupthfUp, tth_pupthfDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", pupthfUnc_tth)) ); 
 
-	float pupthfUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_pupthfUp, ttz_pupthfDown) : 1.00; 
+	float pupthfUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_pupthfUp, ttz_pupthfDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", pupthfUnc_ttz)) ); 
 
-	float pupthfUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_pupthfUp, ttw_pupthfDown) : 1.00; 
+	float pupthfUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_pupthfUp, ttw_pupthfDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", pupthfUnc_ttw)) ); 
 
-        float pupthfUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_pupthfUp, wjet_pupthfDown) : 1.00;
+        float pupthfUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_pupthfUp, wjet_pupthfDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", pupthfUnc_wjet)) ); 
        
-        float pupthfUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_pupthfUp, zjet_pupthfDown) : 1.00;
+        float pupthfUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_pupthfUp, zjet_pupthfDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", pupthfUnc_zjet)) ); 
         
-        float pupthfUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_pupthfUp, stop_pupthfDown) : 1.00; 
+        float pupthfUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_pupthfUp, stop_pupthfDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", pupthfUnc_stop)) ); 
 
-        float pupthfUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_pupthfUp, vv_pupthfDown) : 1.00;
+        float pupthfUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_pupthfUp, vv_pupthfDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", pupthfUnc_vv)) ); 
         out << line << endl;
       }
@@ -3568,34 +3613,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float puptrefUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_puptrefUp, wh_puptrefDown) : 1.00;
+        float puptrefUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_puptrefUp, wh_puptrefDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", puptrefUnc_wh)) );
         
-        float puptrefUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_puptrefUp, ttbar_puptrefDown) : 1.00; 
+        float puptrefUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_puptrefUp, ttbar_puptrefDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", puptrefUnc_ttbar)) ); 
         
-	float puptrefUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_puptrefUp, ttg_puptrefDown) : 1.00; 
+	float puptrefUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_puptrefUp, ttg_puptrefDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", puptrefUnc_ttg)) ); 
 
-	float puptrefUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_puptrefUp, tth_puptrefDown) : 1.00; 
+	float puptrefUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_puptrefUp, tth_puptrefDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", puptrefUnc_tth)) ); 
 
-	float puptrefUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_puptrefUp, ttz_puptrefDown) : 1.00; 
+	float puptrefUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_puptrefUp, ttz_puptrefDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", puptrefUnc_ttz)) ); 
 
-	float puptrefUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_puptrefUp, ttw_puptrefDown) : 1.00; 
+	float puptrefUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_puptrefUp, ttw_puptrefDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", puptrefUnc_ttw)) ); 
 
-        float puptrefUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_puptrefUp, wjet_puptrefDown) : 1.00;
+        float puptrefUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_puptrefUp, wjet_puptrefDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", puptrefUnc_wjet)) ); 
        
-        float puptrefUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_puptrefUp, zjet_puptrefDown) : 1.00;
+        float puptrefUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_puptrefUp, zjet_puptrefDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", puptrefUnc_zjet)) ); 
         
-        float puptrefUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_puptrefUp, stop_puptrefDown) : 1.00; 
+        float puptrefUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_puptrefUp, stop_puptrefDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", puptrefUnc_stop)) ); 
 
-        float puptrefUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_puptrefUp, vv_puptrefDown) : 1.00;
+        float puptrefUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_puptrefUp, vv_puptrefDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", puptrefUnc_vv)) ); 
         out << line << endl;
       }
@@ -3604,34 +3649,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float relfsrUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relfsrUp, wh_relfsrDown) : 1.00;
+        float relfsrUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relfsrUp, wh_relfsrDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relfsrUnc_wh)) );
         
-        float relfsrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relfsrUp, ttbar_relfsrDown) : 1.00; 
+        float relfsrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relfsrUp, ttbar_relfsrDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relfsrUnc_ttbar)) ); 
         
-	float relfsrUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relfsrUp, ttg_relfsrDown) : 1.00; 
+	float relfsrUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relfsrUp, ttg_relfsrDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relfsrUnc_ttg)) ); 
 
-	float relfsrUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relfsrUp, tth_relfsrDown) : 1.00; 
+	float relfsrUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relfsrUp, tth_relfsrDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relfsrUnc_tth)) ); 
 
-	float relfsrUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relfsrUp, ttz_relfsrDown) : 1.00; 
+	float relfsrUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relfsrUp, ttz_relfsrDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relfsrUnc_ttz)) ); 
 
-	float relfsrUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relfsrUp, ttw_relfsrDown) : 1.00; 
+	float relfsrUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relfsrUp, ttw_relfsrDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relfsrUnc_ttw)) ); 
 
-        float relfsrUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relfsrUp, wjet_relfsrDown) : 1.00;
+        float relfsrUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relfsrUp, wjet_relfsrDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relfsrUnc_wjet)) ); 
        
-        float relfsrUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relfsrUp, zjet_relfsrDown) : 1.00;
+        float relfsrUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relfsrUp, zjet_relfsrDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relfsrUnc_zjet)) ); 
         
-        float relfsrUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relfsrUp, stop_relfsrDown) : 1.00; 
+        float relfsrUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relfsrUp, stop_relfsrDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relfsrUnc_stop)) ); 
 
-        float relfsrUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relfsrUp, vv_relfsrDown) : 1.00;
+        float relfsrUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relfsrUp, vv_relfsrDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relfsrUnc_vv)) ); 
         out << line << endl;
       }
@@ -3640,34 +3685,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float relbalUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relbalUp, wh_relbalDown) : 1.00;
+        float relbalUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relbalUp, wh_relbalDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relbalUnc_wh)) );
         
-        float relbalUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relbalUp, ttbar_relbalDown) : 1.00; 
+        float relbalUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relbalUp, ttbar_relbalDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relbalUnc_ttbar)) ); 
         
-	float relbalUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relbalUp, ttg_relbalDown) : 1.00; 
+	float relbalUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relbalUp, ttg_relbalDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relbalUnc_ttg)) ); 
 
-	float relbalUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relbalUp, tth_relbalDown) : 1.00; 
+	float relbalUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relbalUp, tth_relbalDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relbalUnc_tth)) ); 
 
-	float relbalUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relbalUp, ttz_relbalDown) : 1.00; 
+	float relbalUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relbalUp, ttz_relbalDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relbalUnc_ttz)) ); 
 
-	float relbalUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relbalUp, ttw_relbalDown) : 1.00; 
+	float relbalUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relbalUp, ttw_relbalDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relbalUnc_ttw)) ); 
 
-        float relbalUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relbalUp, wjet_relbalDown) : 1.00;
+        float relbalUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relbalUp, wjet_relbalDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relbalUnc_wjet)) ); 
        
-        float relbalUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relbalUp, zjet_relbalDown) : 1.00;
+        float relbalUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relbalUp, zjet_relbalDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relbalUnc_zjet)) ); 
         
-        float relbalUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relbalUp, stop_relbalDown) : 1.00; 
+        float relbalUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relbalUp, stop_relbalDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relbalUnc_stop)) ); 
 
-        float relbalUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relbalUp, vv_relbalDown) : 1.00;
+        float relbalUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relbalUp, vv_relbalDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relbalUnc_vv)) ); 
         out << line << endl;
       }
@@ -3676,34 +3721,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float relsampleUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relsampleUp, wh_relsampleDown) : 1.00;
+        float relsampleUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relsampleUp, wh_relsampleDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relsampleUnc_wh)) );
         
-        float relsampleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relsampleUp, ttbar_relsampleDown) : 1.00; 
+        float relsampleUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relsampleUp, ttbar_relsampleDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relsampleUnc_ttbar)) ); 
         
-	float relsampleUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relsampleUp, ttg_relsampleDown) : 1.00; 
+	float relsampleUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relsampleUp, ttg_relsampleDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relsampleUnc_ttg)) ); 
 
-	float relsampleUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relsampleUp, tth_relsampleDown) : 1.00; 
+	float relsampleUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relsampleUp, tth_relsampleDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relsampleUnc_tth)) ); 
 
-	float relsampleUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relsampleUp, ttz_relsampleDown) : 1.00; 
+	float relsampleUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relsampleUp, ttz_relsampleDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relsampleUnc_ttz)) ); 
 
-	float relsampleUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relsampleUp, ttw_relsampleDown) : 1.00; 
+	float relsampleUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relsampleUp, ttw_relsampleDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relsampleUnc_ttw)) ); 
 
-        float relsampleUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relsampleUp, wjet_relsampleDown) : 1.00;
+        float relsampleUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relsampleUp, wjet_relsampleDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relsampleUnc_wjet)) ); 
        
-        float relsampleUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relsampleUp, zjet_relsampleDown) : 1.00;
+        float relsampleUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relsampleUp, zjet_relsampleDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relsampleUnc_zjet)) ); 
         
-        float relsampleUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relsampleUp, stop_relsampleDown) : 1.00; 
+        float relsampleUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relsampleUp, stop_relsampleDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relsampleUnc_stop)) ); 
 
-        float relsampleUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relsampleUp, vv_relsampleDown) : 1.00;
+        float relsampleUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relsampleUp, vv_relsampleDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relsampleUnc_vv)) ); 
         out << line << endl;
       }
@@ -3712,34 +3757,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float reljerec1Unc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_reljerec1Up, wh_reljerec1Down) : 1.00;
+        float reljerec1Unc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_reljerec1Up, wh_reljerec1Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", reljerec1Unc_wh)) );
         
-        float reljerec1Unc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_reljerec1Up, ttbar_reljerec1Down) : 1.00; 
+        float reljerec1Unc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_reljerec1Up, ttbar_reljerec1Down) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", reljerec1Unc_ttbar)) ); 
         
-	float reljerec1Unc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_reljerec1Up, ttg_reljerec1Down) : 1.00; 
+	float reljerec1Unc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_reljerec1Up, ttg_reljerec1Down) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", reljerec1Unc_ttg)) ); 
 
-	float reljerec1Unc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_reljerec1Up, tth_reljerec1Down) : 1.00; 
+	float reljerec1Unc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_reljerec1Up, tth_reljerec1Down) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", reljerec1Unc_tth)) ); 
 
-	float reljerec1Unc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_reljerec1Up, ttz_reljerec1Down) : 1.00; 
+	float reljerec1Unc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_reljerec1Up, ttz_reljerec1Down) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", reljerec1Unc_ttz)) ); 
 
-	float reljerec1Unc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_reljerec1Up, ttw_reljerec1Down) : 1.00; 
+	float reljerec1Unc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_reljerec1Up, ttw_reljerec1Down) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", reljerec1Unc_ttw)) ); 
 
-        float reljerec1Unc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_reljerec1Up, wjet_reljerec1Down) : 1.00;
+        float reljerec1Unc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_reljerec1Up, wjet_reljerec1Down) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", reljerec1Unc_wjet)) ); 
        
-        float reljerec1Unc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_reljerec1Up, zjet_reljerec1Down) : 1.00;
+        float reljerec1Unc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_reljerec1Up, zjet_reljerec1Down) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", reljerec1Unc_zjet)) ); 
         
-        float reljerec1Unc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_reljerec1Up, stop_reljerec1Down) : 1.00; 
+        float reljerec1Unc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_reljerec1Up, stop_reljerec1Down) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", reljerec1Unc_stop)) ); 
 
-        float reljerec1Unc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_reljerec1Up, vv_reljerec1Down) : 1.00;
+        float reljerec1Unc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_reljerec1Up, vv_reljerec1Down) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", reljerec1Unc_vv)) ); 
         out << line << endl;
       }
@@ -3748,34 +3793,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float reljerec2Unc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_reljerec2Up, wh_reljerec2Down) : 1.00;
+        float reljerec2Unc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_reljerec2Up, wh_reljerec2Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", reljerec2Unc_wh)) );
         
-        float reljerec2Unc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_reljerec2Up, ttbar_reljerec2Down) : 1.00; 
+        float reljerec2Unc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_reljerec2Up, ttbar_reljerec2Down) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", reljerec2Unc_ttbar)) ); 
         
-	float reljerec2Unc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_reljerec2Up, ttg_reljerec2Down) : 1.00; 
+	float reljerec2Unc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_reljerec2Up, ttg_reljerec2Down) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", reljerec2Unc_ttg)) ); 
 
-	float reljerec2Unc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_reljerec2Up, tth_reljerec2Down) : 1.00; 
+	float reljerec2Unc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_reljerec2Up, tth_reljerec2Down) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", reljerec2Unc_tth)) ); 
 
-	float reljerec2Unc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_reljerec2Up, ttz_reljerec2Down) : 1.00; 
+	float reljerec2Unc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_reljerec2Up, ttz_reljerec2Down) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", reljerec2Unc_ttz)) ); 
 
-	float reljerec2Unc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_reljerec2Up, ttw_reljerec2Down) : 1.00; 
+	float reljerec2Unc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_reljerec2Up, ttw_reljerec2Down) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", reljerec2Unc_ttw)) ); 
 
-        float reljerec2Unc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_reljerec2Up, wjet_reljerec2Down) : 1.00;
+        float reljerec2Unc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_reljerec2Up, wjet_reljerec2Down) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", reljerec2Unc_wjet)) ); 
        
-        float reljerec2Unc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_reljerec2Up, zjet_reljerec2Down) : 1.00;
+        float reljerec2Unc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_reljerec2Up, zjet_reljerec2Down) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", reljerec2Unc_zjet)) ); 
         
-        float reljerec2Unc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_reljerec2Up, stop_reljerec2Down) : 1.00; 
+        float reljerec2Unc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_reljerec2Up, stop_reljerec2Down) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", reljerec2Unc_stop)) ); 
 
-        float reljerec2Unc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_reljerec2Up, vv_reljerec2Down) : 1.00;
+        float reljerec2Unc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_reljerec2Up, vv_reljerec2Down) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", reljerec2Unc_vv)) ); 
         out << line << endl;
       }
@@ -3784,34 +3829,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float reljerhfUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_reljerhfUp, wh_reljerhfDown) : 1.00;
+        float reljerhfUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_reljerhfUp, wh_reljerhfDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", reljerhfUnc_wh)) );
         
-        float reljerhfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_reljerhfUp, ttbar_reljerhfDown) : 1.00; 
+        float reljerhfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_reljerhfUp, ttbar_reljerhfDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", reljerhfUnc_ttbar)) ); 
         
-	float reljerhfUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_reljerhfUp, ttg_reljerhfDown) : 1.00; 
+	float reljerhfUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_reljerhfUp, ttg_reljerhfDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", reljerhfUnc_ttg)) ); 
 
-	float reljerhfUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_reljerhfUp, tth_reljerhfDown) : 1.00; 
+	float reljerhfUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_reljerhfUp, tth_reljerhfDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", reljerhfUnc_tth)) ); 
 
-	float reljerhfUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_reljerhfUp, ttz_reljerhfDown) : 1.00; 
+	float reljerhfUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_reljerhfUp, ttz_reljerhfDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", reljerhfUnc_ttz)) ); 
 
-	float reljerhfUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_reljerhfUp, ttw_reljerhfDown) : 1.00; 
+	float reljerhfUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_reljerhfUp, ttw_reljerhfDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", reljerhfUnc_ttw)) ); 
 
-        float reljerhfUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_reljerhfUp, wjet_reljerhfDown) : 1.00;
+        float reljerhfUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_reljerhfUp, wjet_reljerhfDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", reljerhfUnc_wjet)) ); 
        
-        float reljerhfUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_reljerhfUp, zjet_reljerhfDown) : 1.00;
+        float reljerhfUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_reljerhfUp, zjet_reljerhfDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", reljerhfUnc_zjet)) ); 
         
-        float reljerhfUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_reljerhfUp, stop_reljerhfDown) : 1.00; 
+        float reljerhfUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_reljerhfUp, stop_reljerhfDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", reljerhfUnc_stop)) ); 
 
-        float reljerhfUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_reljerhfUp, vv_reljerhfDown) : 1.00;
+        float reljerhfUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_reljerhfUp, vv_reljerhfDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", reljerhfUnc_vv)) ); 
         out << line << endl;
       }
@@ -3820,34 +3865,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float relptbbUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relptbbUp, wh_relptbbDown) : 1.00;
+        float relptbbUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relptbbUp, wh_relptbbDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relptbbUnc_wh)) );
         
-        float relptbbUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relptbbUp, ttbar_relptbbDown) : 1.00; 
+        float relptbbUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relptbbUp, ttbar_relptbbDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relptbbUnc_ttbar)) ); 
         
-	float relptbbUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relptbbUp, ttg_relptbbDown) : 1.00; 
+	float relptbbUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relptbbUp, ttg_relptbbDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relptbbUnc_ttg)) ); 
 
-	float relptbbUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relptbbUp, tth_relptbbDown) : 1.00; 
+	float relptbbUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relptbbUp, tth_relptbbDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relptbbUnc_tth)) ); 
 
-	float relptbbUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relptbbUp, ttz_relptbbDown) : 1.00; 
+	float relptbbUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relptbbUp, ttz_relptbbDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relptbbUnc_ttz)) ); 
 
-	float relptbbUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relptbbUp, ttw_relptbbDown) : 1.00; 
+	float relptbbUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relptbbUp, ttw_relptbbDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relptbbUnc_ttw)) ); 
 
-        float relptbbUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relptbbUp, wjet_relptbbDown) : 1.00;
+        float relptbbUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relptbbUp, wjet_relptbbDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relptbbUnc_wjet)) ); 
        
-        float relptbbUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relptbbUp, zjet_relptbbDown) : 1.00;
+        float relptbbUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relptbbUp, zjet_relptbbDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relptbbUnc_zjet)) ); 
         
-        float relptbbUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relptbbUp, stop_relptbbDown) : 1.00; 
+        float relptbbUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relptbbUp, stop_relptbbDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relptbbUnc_stop)) ); 
 
-        float relptbbUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relptbbUp, vv_relptbbDown) : 1.00;
+        float relptbbUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relptbbUp, vv_relptbbDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relptbbUnc_vv)) ); 
         out << line << endl;
       }
@@ -3856,34 +3901,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float relptec1Unc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relptec1Up, wh_relptec1Down) : 1.00;
+        float relptec1Unc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relptec1Up, wh_relptec1Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relptec1Unc_wh)) );
         
-        float relptec1Unc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relptec1Up, ttbar_relptec1Down) : 1.00; 
+        float relptec1Unc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relptec1Up, ttbar_relptec1Down) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relptec1Unc_ttbar)) ); 
         
-	float relptec1Unc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relptec1Up, ttg_relptec1Down) : 1.00; 
+	float relptec1Unc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relptec1Up, ttg_relptec1Down) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relptec1Unc_ttg)) ); 
 
-	float relptec1Unc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relptec1Up, tth_relptec1Down) : 1.00; 
+	float relptec1Unc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relptec1Up, tth_relptec1Down) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relptec1Unc_tth)) ); 
 
-	float relptec1Unc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relptec1Up, ttz_relptec1Down) : 1.00; 
+	float relptec1Unc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relptec1Up, ttz_relptec1Down) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relptec1Unc_ttz)) ); 
 
-	float relptec1Unc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relptec1Up, ttw_relptec1Down) : 1.00; 
+	float relptec1Unc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relptec1Up, ttw_relptec1Down) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relptec1Unc_ttw)) ); 
 
-        float relptec1Unc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relptec1Up, wjet_relptec1Down) : 1.00;
+        float relptec1Unc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relptec1Up, wjet_relptec1Down) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relptec1Unc_wjet)) ); 
        
-        float relptec1Unc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relptec1Up, zjet_relptec1Down) : 1.00;
+        float relptec1Unc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relptec1Up, zjet_relptec1Down) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relptec1Unc_zjet)) ); 
         
-        float relptec1Unc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relptec1Up, stop_relptec1Down) : 1.00; 
+        float relptec1Unc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relptec1Up, stop_relptec1Down) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relptec1Unc_stop)) ); 
 
-        float relptec1Unc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relptec1Up, vv_relptec1Down) : 1.00;
+        float relptec1Unc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relptec1Up, vv_relptec1Down) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relptec1Unc_vv)) ); 
         out << line << endl;
       }
@@ -3892,34 +3937,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float relptec2Unc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relptec2Up, wh_relptec2Down) : 1.00;
+        float relptec2Unc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relptec2Up, wh_relptec2Down) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relptec2Unc_wh)) );
         
-        float relptec2Unc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relptec2Up, ttbar_relptec2Down) : 1.00; 
+        float relptec2Unc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relptec2Up, ttbar_relptec2Down) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relptec2Unc_ttbar)) ); 
         
-	float relptec2Unc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relptec2Up, ttg_relptec2Down) : 1.00; 
+	float relptec2Unc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relptec2Up, ttg_relptec2Down) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relptec2Unc_ttg)) ); 
 
-	float relptec2Unc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relptec2Up, tth_relptec2Down) : 1.00; 
+	float relptec2Unc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relptec2Up, tth_relptec2Down) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relptec2Unc_tth)) ); 
 
-	float relptec2Unc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relptec2Up, ttz_relptec2Down) : 1.00; 
+	float relptec2Unc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relptec2Up, ttz_relptec2Down) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relptec2Unc_ttz)) ); 
 
-	float relptec2Unc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relptec2Up, ttw_relptec2Down) : 1.00; 
+	float relptec2Unc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relptec2Up, ttw_relptec2Down) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relptec2Unc_ttw)) ); 
 
-        float relptec2Unc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relptec2Up, wjet_relptec2Down) : 1.00;
+        float relptec2Unc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relptec2Up, wjet_relptec2Down) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relptec2Unc_wjet)) ); 
        
-        float relptec2Unc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relptec2Up, zjet_relptec2Down) : 1.00;
+        float relptec2Unc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relptec2Up, zjet_relptec2Down) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relptec2Unc_zjet)) ); 
         
-        float relptec2Unc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relptec2Up, stop_relptec2Down) : 1.00; 
+        float relptec2Unc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relptec2Up, stop_relptec2Down) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relptec2Unc_stop)) ); 
 
-        float relptec2Unc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relptec2Up, vv_relptec2Down) : 1.00;
+        float relptec2Unc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relptec2Up, vv_relptec2Down) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relptec2Unc_vv)) ); 
         out << line << endl;
       }
@@ -3928,34 +3973,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float relpthfUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relpthfUp, wh_relpthfDown) : 1.00;
+        float relpthfUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relpthfUp, wh_relpthfDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relpthfUnc_wh)) );
         
-        float relpthfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relpthfUp, ttbar_relpthfDown) : 1.00; 
+        float relpthfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relpthfUp, ttbar_relpthfDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relpthfUnc_ttbar)) ); 
         
-	float relpthfUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relpthfUp, ttg_relpthfDown) : 1.00; 
+	float relpthfUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relpthfUp, ttg_relpthfDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relpthfUnc_ttg)) ); 
 
-	float relpthfUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relpthfUp, tth_relpthfDown) : 1.00; 
+	float relpthfUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relpthfUp, tth_relpthfDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relpthfUnc_tth)) ); 
 
-	float relpthfUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relpthfUp, ttz_relpthfDown) : 1.00; 
+	float relpthfUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relpthfUp, ttz_relpthfDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relpthfUnc_ttz)) ); 
 
-	float relpthfUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relpthfUp, ttw_relpthfDown) : 1.00; 
+	float relpthfUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relpthfUp, ttw_relpthfDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relpthfUnc_ttw)) ); 
 
-        float relpthfUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relpthfUp, wjet_relpthfDown) : 1.00;
+        float relpthfUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relpthfUp, wjet_relpthfDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relpthfUnc_wjet)) ); 
        
-        float relpthfUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relpthfUp, zjet_relpthfDown) : 1.00;
+        float relpthfUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relpthfUp, zjet_relpthfDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relpthfUnc_zjet)) ); 
         
-        float relpthfUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relpthfUp, stop_relpthfDown) : 1.00; 
+        float relpthfUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relpthfUp, stop_relpthfDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relpthfUnc_stop)) ); 
 
-        float relpthfUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relpthfUp, vv_relpthfDown) : 1.00;
+        float relpthfUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relpthfUp, vv_relpthfDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relpthfUnc_vv)) ); 
         out << line << endl;
       }
@@ -3964,34 +4009,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float relstatecUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relstatecUp, wh_relstatecDown) : 1.00;
+        float relstatecUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relstatecUp, wh_relstatecDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relstatecUnc_wh)) );
         
-        float relstatecUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relstatecUp, ttbar_relstatecDown) : 1.00; 
+        float relstatecUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relstatecUp, ttbar_relstatecDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relstatecUnc_ttbar)) ); 
         
-	float relstatecUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relstatecUp, ttg_relstatecDown) : 1.00; 
+	float relstatecUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relstatecUp, ttg_relstatecDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relstatecUnc_ttg)) ); 
 
-	float relstatecUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relstatecUp, tth_relstatecDown) : 1.00; 
+	float relstatecUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relstatecUp, tth_relstatecDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relstatecUnc_tth)) ); 
 
-	float relstatecUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relstatecUp, ttz_relstatecDown) : 1.00; 
+	float relstatecUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relstatecUp, ttz_relstatecDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relstatecUnc_ttz)) ); 
 
-	float relstatecUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relstatecUp, ttw_relstatecDown) : 1.00; 
+	float relstatecUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relstatecUp, ttw_relstatecDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relstatecUnc_ttw)) ); 
 
-        float relstatecUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relstatecUp, wjet_relstatecDown) : 1.00;
+        float relstatecUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relstatecUp, wjet_relstatecDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relstatecUnc_wjet)) ); 
        
-        float relstatecUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relstatecUp, zjet_relstatecDown) : 1.00;
+        float relstatecUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relstatecUp, zjet_relstatecDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relstatecUnc_zjet)) ); 
         
-        float relstatecUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relstatecUp, stop_relstatecDown) : 1.00; 
+        float relstatecUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relstatecUp, stop_relstatecDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relstatecUnc_stop)) ); 
 
-        float relstatecUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relstatecUp, vv_relstatecDown) : 1.00;
+        float relstatecUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relstatecUp, vv_relstatecDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relstatecUnc_vv)) ); 
         out << line << endl;
       }
@@ -4000,34 +4045,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float relstatfsrUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relstatfsrUp, wh_relstatfsrDown) : 1.00;
+        float relstatfsrUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relstatfsrUp, wh_relstatfsrDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relstatfsrUnc_wh)) );
         
-        float relstatfsrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relstatfsrUp, ttbar_relstatfsrDown) : 1.00; 
+        float relstatfsrUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relstatfsrUp, ttbar_relstatfsrDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relstatfsrUnc_ttbar)) ); 
         
-	float relstatfsrUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relstatfsrUp, ttg_relstatfsrDown) : 1.00; 
+	float relstatfsrUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relstatfsrUp, ttg_relstatfsrDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relstatfsrUnc_ttg)) ); 
 
-	float relstatfsrUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relstatfsrUp, tth_relstatfsrDown) : 1.00; 
+	float relstatfsrUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relstatfsrUp, tth_relstatfsrDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relstatfsrUnc_tth)) ); 
 
-	float relstatfsrUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relstatfsrUp, ttz_relstatfsrDown) : 1.00; 
+	float relstatfsrUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relstatfsrUp, ttz_relstatfsrDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relstatfsrUnc_ttz)) ); 
 
-	float relstatfsrUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relstatfsrUp, ttw_relstatfsrDown) : 1.00; 
+	float relstatfsrUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relstatfsrUp, ttw_relstatfsrDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relstatfsrUnc_ttw)) ); 
 
-        float relstatfsrUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relstatfsrUp, wjet_relstatfsrDown) : 1.00;
+        float relstatfsrUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relstatfsrUp, wjet_relstatfsrDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relstatfsrUnc_wjet)) ); 
        
-        float relstatfsrUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relstatfsrUp, zjet_relstatfsrDown) : 1.00;
+        float relstatfsrUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relstatfsrUp, zjet_relstatfsrDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relstatfsrUnc_zjet)) ); 
         
-        float relstatfsrUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relstatfsrUp, stop_relstatfsrDown) : 1.00; 
+        float relstatfsrUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relstatfsrUp, stop_relstatfsrDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relstatfsrUnc_stop)) ); 
 
-        float relstatfsrUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relstatfsrUp, vv_relstatfsrDown) : 1.00;
+        float relstatfsrUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relstatfsrUp, vv_relstatfsrDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relstatfsrUnc_vv)) ); 
         out << line << endl;
       }
@@ -4036,34 +4081,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float relstathfUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_relstathfUp, wh_relstathfDown) : 1.00;
+        float relstathfUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_relstathfUp, wh_relstathfDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", relstathfUnc_wh)) );
         
-        float relstathfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_relstathfUp, ttbar_relstathfDown) : 1.00; 
+        float relstathfUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_relstathfUp, ttbar_relstathfDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", relstathfUnc_ttbar)) ); 
         
-	float relstathfUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_relstathfUp, ttg_relstathfDown) : 1.00; 
+	float relstathfUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_relstathfUp, ttg_relstathfDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", relstathfUnc_ttg)) ); 
 
-	float relstathfUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_relstathfUp, tth_relstathfDown) : 1.00; 
+	float relstathfUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_relstathfUp, tth_relstathfDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", relstathfUnc_tth)) ); 
 
-	float relstathfUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_relstathfUp, ttz_relstathfDown) : 1.00; 
+	float relstathfUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_relstathfUp, ttz_relstathfDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", relstathfUnc_ttz)) ); 
 
-	float relstathfUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_relstathfUp, ttw_relstathfDown) : 1.00; 
+	float relstathfUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_relstathfUp, ttw_relstathfDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", relstathfUnc_ttw)) ); 
 
-        float relstathfUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_relstathfUp, wjet_relstathfDown) : 1.00;
+        float relstathfUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_relstathfUp, wjet_relstathfDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", relstathfUnc_wjet)) ); 
        
-        float relstathfUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_relstathfUp, zjet_relstathfDown) : 1.00;
+        float relstathfUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_relstathfUp, zjet_relstathfDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", relstathfUnc_zjet)) ); 
         
-        float relstathfUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_relstathfUp, stop_relstathfDown) : 1.00; 
+        float relstathfUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_relstathfUp, stop_relstathfDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", relstathfUnc_stop)) ); 
 
-        float relstathfUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_relstathfUp, vv_relstathfDown) : 1.00;
+        float relstathfUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_relstathfUp, vv_relstathfDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", relstathfUnc_vv)) ); 
         out << line << endl;
       }
@@ -4072,34 +4117,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float singpiecalUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_singpiecalUp, wh_singpiecalDown) : 1.00;
+        float singpiecalUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_singpiecalUp, wh_singpiecalDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", singpiecalUnc_wh)) );
         
-        float singpiecalUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_singpiecalUp, ttbar_singpiecalDown) : 1.00; 
+        float singpiecalUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_singpiecalUp, ttbar_singpiecalDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", singpiecalUnc_ttbar)) ); 
         
-	float singpiecalUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_singpiecalUp, ttg_singpiecalDown) : 1.00; 
+	float singpiecalUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_singpiecalUp, ttg_singpiecalDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", singpiecalUnc_ttg)) ); 
 
-	float singpiecalUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_singpiecalUp, tth_singpiecalDown) : 1.00; 
+	float singpiecalUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_singpiecalUp, tth_singpiecalDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", singpiecalUnc_tth)) ); 
 
-	float singpiecalUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_singpiecalUp, ttz_singpiecalDown) : 1.00; 
+	float singpiecalUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_singpiecalUp, ttz_singpiecalDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", singpiecalUnc_ttz)) ); 
 
-	float singpiecalUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_singpiecalUp, ttw_singpiecalDown) : 1.00; 
+	float singpiecalUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_singpiecalUp, ttw_singpiecalDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", singpiecalUnc_ttw)) ); 
 
-        float singpiecalUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_singpiecalUp, wjet_singpiecalDown) : 1.00;
+        float singpiecalUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_singpiecalUp, wjet_singpiecalDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", singpiecalUnc_wjet)) ); 
        
-        float singpiecalUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_singpiecalUp, zjet_singpiecalDown) : 1.00;
+        float singpiecalUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_singpiecalUp, zjet_singpiecalDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", singpiecalUnc_zjet)) ); 
         
-        float singpiecalUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_singpiecalUp, stop_singpiecalDown) : 1.00; 
+        float singpiecalUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_singpiecalUp, stop_singpiecalDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", singpiecalUnc_stop)) ); 
 
-        float singpiecalUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_singpiecalUp, vv_singpiecalDown) : 1.00;
+        float singpiecalUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_singpiecalUp, vv_singpiecalDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", singpiecalUnc_vv)) ); 
         out << line << endl;
       }
@@ -4108,34 +4153,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
       	stringstream ss(line); string systname; ss >> systname;
       	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+hist_extn);
 	
-        float singpihcalUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_singpihcalUp, wh_singpihcalDown) : 1.00;
+        float singpihcalUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_singpihcalUp, wh_singpihcalDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", singpihcalUnc_wh)) );
         
-        float singpihcalUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_singpihcalUp, ttbar_singpihcalDown) : 1.00; 
+        float singpihcalUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_singpihcalUp, ttbar_singpihcalDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", singpihcalUnc_ttbar)) ); 
         
-	float singpihcalUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_singpihcalUp, ttg_singpihcalDown) : 1.00; 
+	float singpihcalUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_singpihcalUp, ttg_singpihcalDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", singpihcalUnc_ttg)) ); 
 
-	float singpihcalUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_singpihcalUp, tth_singpihcalDown) : 1.00; 
+	float singpihcalUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_singpihcalUp, tth_singpihcalDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", singpihcalUnc_tth)) ); 
 
-	float singpihcalUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_singpihcalUp, ttz_singpihcalDown) : 1.00; 
+	float singpihcalUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_singpihcalUp, ttz_singpihcalDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", singpihcalUnc_ttz)) ); 
 
-	float singpihcalUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_singpihcalUp, ttw_singpihcalDown) : 1.00; 
+	float singpihcalUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_singpihcalUp, ttw_singpihcalDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", singpihcalUnc_ttw)) ); 
 
-        float singpihcalUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_singpihcalUp, wjet_singpihcalDown) : 1.00;
+        float singpihcalUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_singpihcalUp, wjet_singpihcalDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", singpihcalUnc_wjet)) ); 
        
-        float singpihcalUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_singpihcalUp, zjet_singpihcalDown) : 1.00;
+        float singpihcalUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_singpihcalUp, zjet_singpihcalDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", singpihcalUnc_zjet)) ); 
         
-        float singpihcalUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_singpihcalUp, stop_singpihcalDown) : 1.00; 
+        float singpihcalUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_singpihcalUp, stop_singpihcalDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", singpihcalUnc_stop)) ); 
 
-        float singpihcalUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_singpihcalUp, vv_singpihcalDown) : 1.00;
+        float singpihcalUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_singpihcalUp, vv_singpihcalDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", singpihcalUnc_vv)) ); 
         out << line << endl;
       }
@@ -4144,34 +4189,34 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
 	stringstream ss(line); string systname; ss >> systname;
 	if(isUncorrYearLn)  line.replace( line.find(systname) , systname.size() , systname+"_"+uncorr_extn);
 	
-        float timeptetaUnc_wh = (wh->Integral() > 0) ? DC.getBTagUnc(wh, wh_timeptetaUp, wh_timeptetaDown) : 1.00;
+        float timeptetaUnc_wh = (wh->Integral() > 0) ? DC.getConservativeUnc(wh, wh_timeptetaUp, wh_timeptetaDown) : 1.00;
         line.replace( line.find("HHHH") , 4 , string(Form("%.3f", timeptetaUnc_wh)) );
         
-        float timeptetaUnc_ttbar = (ttbar->Integral() > 0) ? DC.getBTagUnc(ttbar, ttbar_timeptetaUp, ttbar_timeptetaDown) : 1.00; 
+        float timeptetaUnc_ttbar = (ttbar->Integral() > 0) ? DC.getConservativeUnc(ttbar, ttbar_timeptetaUp, ttbar_timeptetaDown) : 1.00; 
         line.replace( line.find("TTTT") , 4 , string(Form("%.3f", timeptetaUnc_ttbar)) ); 
         
-	float timeptetaUnc_ttg = (ttg->Integral() > 0) ? DC.getBTagUnc(ttg, ttg_timeptetaUp, ttg_timeptetaDown) : 1.00; 
+	float timeptetaUnc_ttg = (ttg->Integral() > 0) ? DC.getConservativeUnc(ttg, ttg_timeptetaUp, ttg_timeptetaDown) : 1.00; 
   	line.replace( line.find("TTGT") , 4 , string(Form("%.3f", timeptetaUnc_ttg)) ); 
 
-	float timeptetaUnc_tth = (tth->Integral() > 0) ? DC.getBTagUnc(tth, tth_timeptetaUp, tth_timeptetaDown) : 1.00; 
+	float timeptetaUnc_tth = (tth->Integral() > 0) ? DC.getConservativeUnc(tth, tth_timeptetaUp, tth_timeptetaDown) : 1.00; 
   	line.replace( line.find("TTHT") , 4 , string(Form("%.3f", timeptetaUnc_tth)) ); 
 
-	float timeptetaUnc_ttz = (ttz->Integral() > 0) ? DC.getBTagUnc(ttz, ttz_timeptetaUp, ttz_timeptetaDown) : 1.00; 
+	float timeptetaUnc_ttz = (ttz->Integral() > 0) ? DC.getConservativeUnc(ttz, ttz_timeptetaUp, ttz_timeptetaDown) : 1.00; 
   	line.replace( line.find("TTZT") , 4 , string(Form("%.3f", timeptetaUnc_ttz)) ); 
 
-	float timeptetaUnc_ttw = (ttw->Integral() > 0) ? DC.getBTagUnc(ttw, ttw_timeptetaUp, ttw_timeptetaDown) : 1.00; 
+	float timeptetaUnc_ttw = (ttw->Integral() > 0) ? DC.getConservativeUnc(ttw, ttw_timeptetaUp, ttw_timeptetaDown) : 1.00; 
   	line.replace( line.find("TTWT") , 4 , string(Form("%.3f", timeptetaUnc_ttw)) ); 
 
-        float timeptetaUnc_wjet = (wjet->Integral() > 0) ? DC.getBTagUnc(wjet, wjet_timeptetaUp, wjet_timeptetaDown) : 1.00;
+        float timeptetaUnc_wjet = (wjet->Integral() > 0) ? DC.getConservativeUnc(wjet, wjet_timeptetaUp, wjet_timeptetaDown) : 1.00;
         line.replace( line.find("WWWW") , 4 , string(Form("%.3f", timeptetaUnc_wjet)) ); 
        
-        float timeptetaUnc_zjet = (zjet->Integral() > 0) ? DC.getBTagUnc(zjet, zjet_timeptetaUp, zjet_timeptetaDown) : 1.00;
+        float timeptetaUnc_zjet = (zjet->Integral() > 0) ? DC.getConservativeUnc(zjet, zjet_timeptetaUp, zjet_timeptetaDown) : 1.00;
         line.replace( line.find("DDDD") , 4 , string(Form("%.3f", timeptetaUnc_zjet)) ); 
         
-        float timeptetaUnc_stop = (stop->Integral() > 0) ? DC.getBTagUnc(stop, stop_timeptetaUp, stop_timeptetaDown) : 1.00; 
+        float timeptetaUnc_stop = (stop->Integral() > 0) ? DC.getConservativeUnc(stop, stop_timeptetaUp, stop_timeptetaDown) : 1.00; 
         line.replace( line.find("SSSS") , 4 , string(Form("%.3f", timeptetaUnc_stop)) ); 
 
-        float timeptetaUnc_vv = (vv->Integral() > 0) ? DC.getBTagUnc(vv, vv_timeptetaUp, vv_timeptetaDown) : 1.00;
+        float timeptetaUnc_vv = (vv->Integral() > 0) ? DC.getConservativeUnc(vv, vv_timeptetaUp, vv_timeptetaDown) : 1.00;
         line.replace( line.find("VVVV") , 4 , string(Form("%.3f", timeptetaUnc_vv)) ); 
         out << line << endl;
       }
