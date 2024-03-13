@@ -19,7 +19,7 @@ mass=$2
 
 # #Blinded
 combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 -t -1 | tee doInitialFit.log 
-combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --parallel 10 -t -1 | tee doFit.log
+combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1  --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --parallel 18 -t -1 | tee doFit.log
 
 #Unblinded
 # combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1 --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0 --cminDefaultMinimizerStrategy 0 | tee doInitialFit.log 

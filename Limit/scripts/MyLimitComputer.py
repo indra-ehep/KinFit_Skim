@@ -203,7 +203,8 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-ptcut25-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_lowmass-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
-    path_file_dir="../root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
+    #path_file_dir="../root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
+    path_file_dir="../root_files/grid_v40_Syst/CBA_metxycorr-CombHist"
         
     muon_file_dir=path_file_dir+""
     ele_file_dir=path_file_dir+""
@@ -232,9 +233,9 @@ if __name__=="__main__":
     #mass_array = [80, 90, 100, 120, 140, 150, 155, 160]
     mass_array = [40, 80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
     
-    year_array = ["2016"]
-    year_array.append("2017")
-    year_array.append("2018")
+    year_array = ["2018"]
+    # year_array.append("2017")
+    # year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")

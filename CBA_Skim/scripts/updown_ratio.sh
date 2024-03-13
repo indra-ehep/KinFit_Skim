@@ -1,4 +1,5 @@
-num=46
+num=4
+num=102
 echo -n "Number : $num"
 echo ""
 echo -n "Year (2016/2017/2018): "

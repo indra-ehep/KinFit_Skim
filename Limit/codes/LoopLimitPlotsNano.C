@@ -234,10 +234,11 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   observed->SetLineStyle(1);
   observed->SetLineWidth(4);
 
-  mg->Add(twoSigma);
-  mg->Add(oneSigma);
+  mg->Add(twoSigma,"3");
+  mg->Add(oneSigma,"3");
   mg->Add(expected);
-  mg->Draw("ALP3");
+  mg->Draw("AL");
+
   if(obs) mg->Add(observed);
 
   gPad->Modified();
@@ -252,7 +253,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   mg->GetYaxis()->SetNdivisions(6);
   mg->GetXaxis()->SetTitleOffset(1.00);
   mg->SetMinimum(0.04);
-  mg->SetMaximum(10.0);
+  mg->SetMaximum(30.0);
   mg->GetXaxis()->SetTitle("m_{H^{#pm}} (GeV)");
   mg->GetYaxis()->SetTitle("B(t #rightarrow H^{#pm}b) (%)"); 
   mg->GetYaxis()->SetTitleSize(0.04);   
@@ -356,7 +357,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   }
 }
 
-void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/87_jecsyst_bld/Run2/Comb/"){
+void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/91_no-dijet-edge-effect_bld/Run2/Comb/"){
   
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {40, 50, 60, 70, 80, 90, 100,110, 120, 130, 140, 150, 155, 160};

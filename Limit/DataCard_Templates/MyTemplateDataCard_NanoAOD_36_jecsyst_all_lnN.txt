@@ -17,7 +17,7 @@ process                 0           1           2           3           4       
 rate                    
 ---------------------------------------------------------------------------------------------------------
 CMS_lumi_13TeV  lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      Luminosity unc.
-CMS_eff_lep     lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      Lepton selection unc.
+CMS_eff_lep     lnN     1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.00      Lepton selection unc.
 CMS_prefire     lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      Prefire unc.
 CMS_pujetid     lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      PUJetID unc.
 CMS_pileup      lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      Pileup unc.

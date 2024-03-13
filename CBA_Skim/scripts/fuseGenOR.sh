@@ -7,9 +7,9 @@ basedir=$PWD
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_genOR-Hist
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_genOR-CombHist
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_jecsyst
-inputdir=$basedir/root_files/grid_v40_Syst/CBA_jecsyst-CombHist
+#inputdir=$basedir/root_files/grid_v40_Syst/CBA_jecsyst-CombHist
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_metxycorr
-#inputdir=$basedir/root_files/grid_v40_Syst/CBA_metxycorr-CombHist
+inputdir=$basedir/root_files/grid_v40_Syst/CBA_metxycorr-CombHist
 
 
 #years="2016 2017 2018"
@@ -19,42 +19,6 @@ years="2018"
 for year in $years
 do
     fname=/tmp/fl_$(date +%Y-%m-%d__%H%M%S).txt
-
-    # #triboson
-    # if [ -f $fname ] ; then 
-    # 	rm $fname
-    # fi
-    # for sample in WWG WWW WWZ WZG WZZ ZZZ
-    # do
-    # 	echo Processing for sample : $sample
-    # 	root -l -q -b codes/ModifyTopDirName.C\(\""$inputdir/$year/all_${sample}.root"\",\""${sample}"\",\""${sample}_1.root"\",\""triboson"\"\) > /tmp/out.log 2>&1
-    # 	echo $PWD/${sample}_1.root >> $fname
-    # done
-    # source ~/scripts/addhisto_file.sh $fname
-    # for sample in WWG WWW WWZ WZG WZZ ZZZ
-    # do
-    # 	rm ${sample}_1.root 
-    # done
-    # mv histo_merged.root $inputdir/$year/all_triboson.root
-    # cat $fname
-
-    # #VH
-    # if [ -f $fname ] ; then 
-    # 	rm $fname
-    # fi
-    # for sample in VHToEE VHToGG VHToNonbb
-    # do
-    # 	echo Processing for sample : $sample
-    # 	root -l -q -b codes/ModifyTopDirName.C\(\""$inputdir/$year/all_${sample}.root"\",\""${sample}"\",\""${sample}_1.root"\",\""VH"\"\) > /tmp/out.log 2>&1
-    # 	echo $PWD/${sample}_1.root >> $fname
-    # done
-    # source ~/scripts/addhisto_file.sh $fname
-    # for sample in VHToEE VHToGG VHToNonbb
-    # do
-    # 	rm ${sample}_1.root 
-    # done
-    # mv histo_merged.root $inputdir/$year/all_VH.root
-    # cat $fname
 
     #TTG
     if [ -f $fname ] ; then 

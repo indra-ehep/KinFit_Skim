@@ -7,12 +7,16 @@
 #include <stdio.h>
 #include <time.h>
 #include <algorithm>
+#include <TH1F.h>
+#include <TFile.h>
+#include <TMath.h>
 
 
 using namespace std;
 double sysSF = 1.0;
 
 class MyHPlusDataCardMaker{
+  
   public:
 
   TH1F* getHisto(TFile *inRootFile, TString histPath, TString histName, TFile* fTT, double sf);
@@ -183,7 +187,8 @@ double MyHPlusDataCardMaker::getConservativeUnc(TH1F *hCentral, TH1F* hUp, TH1F*
     double upBin = TMath::Abs(hUp->GetBinContent(ibin));
     double downBin = TMath::Abs(hDown->GetBinContent(ibin));
     double baseBin = TMath::Abs(hCentral->GetBinContent(ibin));
-    if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5)) continue;
+    double fracBase = baseBin/hCentral->Integral(); //to avoid edge bins that contains less than 1% of total yield
+    if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5) or fracBase<0.01) continue;
     double ratioUp = (baseBin>upBin) ?  upBin/baseBin : baseBin/upBin;
     double ratioDown = (baseBin>downBin) ?  downBin/baseBin : baseBin/downBin;
     double fracUp = 1.0 - ratioUp;
