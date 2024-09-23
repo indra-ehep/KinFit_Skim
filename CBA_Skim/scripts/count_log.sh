@@ -1,6 +1,6 @@
 #!/bin/sh
 
-waitingtime=120
+waitingtime=30
 allowed_max=28000
 while true
 do
@@ -11,7 +11,7 @@ do
     echo nof log_full folders : ${nof_full}
     next_full_index=$[$nof_full+1]
     if [ -d log ] ; then
-	nof_log_files=`ls log/*.* | wc -l`
+	nof_log_files=`ls log/ | wc -l`
 	echo next_full_index : ${next_full_index}, nof_log_files : ${nof_log_files}
 	if [ ${nof_log_files} -gt ${allowed_max} ] ; then
 	    echo mv log log_full_${next_full_index}

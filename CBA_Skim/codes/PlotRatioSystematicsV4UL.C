@@ -36,7 +36,7 @@ double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from system
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 int rebin = 50;
 
-int PlotRatioSystematicsV4UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 7){
+int PlotRatioSystematicsV4UL(int year = 2016, bool isBtag = 0, bool isMu = 1, int htype = 18){
 
   // Setters
   int SetGlobalStyle(void);
@@ -149,7 +149,7 @@ int PlotRatioSystematicsV4UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
 
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2024-02-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2023-06-24/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //string outputpdf = Form("figs/Week_Work_Report/2023-01-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v31_Syst/CBA_Skim_Syst_MedID";
   //const char* dir = "grid_v32_Syst/CBA_Skim_Syst_jet_tightID";
@@ -197,9 +197,7 @@ int PlotRatioSystematicsV4UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   //const char* dir = "grid_v40_Syst/CBA_kfoffset-CombHist-toppt";
   //const char* dir = "grid_v40_Syst/CBA_kfwidth-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_trigSF-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_jecsyst-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_metxycorr-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -275,17 +273,11 @@ int PlotRatioSystematicsV4UL(int year = 2016, bool isBtag = 0, bool isMu = 1, in
   //"mueffup", "mueffdown", "eleeffup", "eleeffdown",
   //const char *syst[] = {"pu", "jec", "jer", "btagb", "btagl", "prefire", "met"};
   //const char *syst[] = {"pu", "jec", "jer", "bcstat", "bclhemuf", "prefire", "met"};
-  // const int nSyst = 24; //19+5
-  // const char *syst[] = {   "mueff", "eleeff", "pu", "prefire",
-  // 			   //"jec",
-  // 			   "stotpu", "stotrel", "stotpt", "stotscale", "flavorqcd", "timepteta",
-  // 			   "jer", "pdf", "bclhemur", //"q2"
-  // 			   "bclhemuf", "isr", "fsr", "pujetid",
-  // 			   "bcintp", "bcextp", "bcxdyb", "bcxdyc",        
-  // 			   "bcxwjc", "bcstat", "toppt"};
-  const int nSyst = 17; //19+5
+  const int nSyst = 24; //19+5
   const char *syst[] = {   "mueff", "eleeff", "pu", "prefire",
-			   "pdf", "bclhemur", //"q2"
+			   //"jec",
+			   "stotpu", "stotrel", "stotpt", "stotscale", "flavorqcd", "timepteta",
+			   "jer", "pdf", "bclhemur", //"q2"
   			   "bclhemuf", "isr", "fsr", "pujetid",
   			   "bcintp", "bcextp", "bcxdyb", "bcxdyc",        
   			   "bcxwjc", "bcstat", "toppt"};

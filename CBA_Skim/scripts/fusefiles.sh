@@ -8,22 +8,16 @@ basedir=$PWD
 #inputdir=/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_ctagv2pulwp-CombHist
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_yearend22
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_notoppt
-#inputdir=$basedir/root_files/grid_v40_Syst/CBA_elereliso30-CombHist
-#inputdir=$basedir/root_files/grid_v40_Syst/CBA_mutight-CombHist
-#inputdir=$basedir/root_files/grid_v40_Syst/CBA_elemva90-CombHist
-#inputdir=$basedir/root_files/grid_v40_Syst/CBA_trigSF-CombHist
-#inputdir=$basedir/root_files/grid_v40_Syst/CBA_lowmass-CombHist
-#inputdir=$basedir/root_files/grid_v40_Syst/CBA_jecsyst-CombHist
-inputdir=$basedir/root_files/grid_v40_Syst/CBA_metxycorr-CombHist
+inputdir=$basedir/root_files/grid_v40_Syst/CBA_elereliso30-CombHist
 
 
-#years="2016 2017"
-years="2018"
+years="2016 2017 2018"
+#years="2018"
 
 for year in $years
 do
-    for mass in 040 050 060 070 080 090 100 110 120 130 140 150 155 160 
-    #for mass in 040 050 060 070 
+    for mass in 080 090 100 110 120 130 140 150 155 160 
+    #for mass in 120 130 140 150 155 160 
     do
 	echo Processing for year $year and mass $mass
 	root -l -q -b codes/ModifyTopDirName.C\(\""$inputdir/$year/all_HplusM${mass}.root"\",\""HplusM${mass}"\",\""HplmiM${mass}_1.root"\",\""HplmiM${mass}"\"\) > /tmp/out.log 2>&1
@@ -31,34 +25,6 @@ do
 	hadd HplmiM${mass}.root HplmiM${mass}_1.root HplmiM${mass}_2.root >> /tmp/out.log 2>&1
 	rm HplmiM${mass}_1.root HplmiM${mass}_2.root
 	mv HplmiM${mass}.root $inputdir/$year/all_HplmiM${mass}.root
-	if [ "${mass}" = "040" ] ; then
-	    cd $inputdir/$year
-	    ln -s all_HplusM${mass}.root all_HplusM40.root
-	    ln -s all_HminusM${mass}.root all_HminusM40.root
-	    ln -s all_HplmiM${mass}.root all_HplmiM40.root
-	    cd $basedir
-	fi
-	if [ "${mass}" = "050" ] ; then
-	    cd $inputdir/$year
-	    ln -s all_HplusM${mass}.root all_HplusM50.root
-	    ln -s all_HminusM${mass}.root all_HminusM50.root
-	    ln -s all_HplmiM${mass}.root all_HplmiM50.root
-	    cd $basedir
-	fi
-	if [ "${mass}" = "060" ] ; then
-	    cd $inputdir/$year
-	    ln -s all_HplusM${mass}.root all_HplusM60.root
-	    ln -s all_HminusM${mass}.root all_HminusM60.root
-	    ln -s all_HplmiM${mass}.root all_HplmiM60.root
-	    cd $basedir
-	fi
-	if [ "${mass}" = "070" ] ; then
-	    cd $inputdir/$year
-	    ln -s all_HplusM${mass}.root all_HplusM70.root
-	    ln -s all_HminusM${mass}.root all_HminusM70.root
-	    ln -s all_HplmiM${mass}.root all_HplmiM70.root
-	    cd $basedir
-	fi
 	if [ "${mass}" = "080" ] ; then
 	    cd $inputdir/$year
 	    ln -s all_HplusM${mass}.root all_HplusM80.root

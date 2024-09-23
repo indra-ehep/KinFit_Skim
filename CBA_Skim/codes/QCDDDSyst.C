@@ -35,75 +35,35 @@ int QCDDDSyst(int year = 2016)
 			       {64.,23.}, //2018 : ele, mu
   };
   //const char* dir = "grid_v40_Syst/CBA_trigSF-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_jecsyst-CombHist";
-  const char* dir = "grid_v40_Syst/CBA_metxycorr-CombHist";
-  
+  const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
+
   const char *systbase[] = {"base", 
-    			    "pdfup", "pdfdown", "q2up", "q2down",
-    			    "isrup", "isrdown", "fsrup", "fsrdown",
-    			    "puup", "pudown", "prefireup", "prefiredown",
-    			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-    			    "pujetidup", "pujetiddown", "metup", "metdown",
-    			    // "jecup", "jecdown", "jerup", "jerdown",
-			    // "stotpuup", "stotpudown", "stotrelup", "stotreldown", 
-			    // "stotptup", "stotptdown", "stotscaleup", "stotscaledown", 
-			    // "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",
+			    "pdfup", "pdfdown",// "q2up", "q2down",
+			    "isrup", "isrdown", "fsrup", "fsrdown",
+			    "puup", "pudown", "prefireup", "prefiredown",
+			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+			    "pujetidup", "pujetiddown", //"metup", "metdown",
+			    // "jecup", "jecdown",
 			    "jerup", "jerdown",
-			    "absmpfbup", "abssclup", "absstatup",
-			    "flavorqcdup", "fragup", "timeptetaup",
-			    "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
-			    "relfsrup", "relbalup", "relsampleup",
-			    "reljerec1up", "reljerec2up", "reljerhfup",
-			    "relptbbup", "relptec1up", "relptec2up", "relpthfup",
-			    "relstatecup", "relstatfsrup", "relstathfup",
-			    "singpiecalup", "singpihcalup",
-			    "absmpfbdown", "absscldown", "absstatdown",
-			    "flavorqcddown", "fragdown", "timeptetadown",
-			    "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
-			    "relfsrdown", "relbaldown", "relsampledown",
-			    "reljerec1down", "reljerec2down", "reljerhfdown",
-                            "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
-                            "relstatecdown", "relstatfsrdown", "relstathfdown",
-                            "singpiecaldown", "singpihcaldown",
-			    "iso20",  //78,76
-    			    // CShapeCalib UL
+			    "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
+			    "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
+			    "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
+			    "iso20",  //26
+			    // CShapeCalib UL
 			    "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",
-    			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-    			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-    			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
+			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
 			    "bcxwjcup", "bcxwjcdown",//16
 			    "topptup", "topptdown" //18
   };
-
-  // const char *systbase[] = {"base", 
-  // 			    "pdfup", "pdfdown",// "q2up", "q2down",
-  // 			    "isrup", "isrdown", "fsrup", "fsrdown",
-  // 			    "puup", "pudown", "prefireup", "prefiredown",
-  // 			    "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
-  // 			    "pujetidup", "pujetiddown", //"metup", "metdown",
-  // 			    // "jecup", "jecdown",
-  // 			    "jerup", "jerdown",
-  // 			    "stotpuup", "stotpudown", "stotrelup", "stotreldown",             //26,28
-  // 			    "stotptup", "stotptdown", "stotscaleup", "stotscaledown",         //30,32
-  // 			    "flavorqcdup", "flavorqcddown", "timeptetaup", "timeptetadown",   //34,36   
-  // 			    "iso20",  //26
-  // 			    // CShapeCalib UL
-  // 			    "bcstatup", "bcstatdown", //"bcjesup", "bcjesdown",
-  // 			    "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
-  // 			    "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
-  // 			    "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown",
-  // 			    "bcxwjcup", "bcxwjcdown",//16
-  // 			    "topptup", "topptdown" //18
-  // };
 
   TFile *fout = new TFile("all_QCDdd.root","recreate");
   TDirectory *d1 = fout->mkdir("QCDdd");
   d1->cd();
 
   //int maxsyst = (year==2018) ? 40 : 42 ;
-  //const int maxsyst = 50 ;
-  const int maxsyst = 96 ;
+  const int maxsyst = 50 ;
   const int maxch = 2 ;
   const int maxhype_kb = 33 ;
   const int maxhype_lb = 11 ;
@@ -132,7 +92,7 @@ int QCDDDSyst(int year = 2016)
     }
     d3->Write();
   }
-  
+
   TDirectory *d2 = d1->mkdir("syst");
   d2->cd();
   TDirectory *d3 = d2->mkdir("Iso");
@@ -219,10 +179,6 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/all_Wjets.root",dir,year));
   TFile *fin_nano_dyjets = TFile::Open(Form("root_files/%s/%d/all_DYjets.root",dir,year));
   TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/all_VBFusion.root",dir,year));
-  TFile *fin_nano_ttw	= TFile::Open(Form("root_files/%s/%d/all_TTW.root",dir,year));
-  TFile *fin_nano_ttz	= TFile::Open(Form("root_files/%s/%d/all_TTZ.root",dir,year));
-  TFile *fin_nano_ttg	= TFile::Open(Form("root_files/%s/%d/all_TTG.root",dir,year));
-  TFile *fin_nano_tth	= TFile::Open(Form("root_files/%s/%d/all_TTH.root",dir,year));
   //TFile *fin_nano_qcd	= TFile::Open(qcdfile);
   
   ///////////////////////////////////////// Get  the histograms from files //////////////////////////////// 
@@ -238,11 +194,6 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   TH1D *hcf_RegA_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/Iso/%s",systType,histname_RegA.c_str()));
   TH1D *hcf_RegA_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/Iso/%s",systType,histname_RegA.c_str()));
   TH1D *hcf_RegA_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/Iso/%s",systType,histname_RegA.c_str()));
-  TH1D *hcf_RegA_ttg	= (TH1D *)fin_nano_ttg->Get(Form("TTG/%s/Iso/%s",systType,histname_RegA.c_str()));
-  TH1D *hcf_RegA_tth	= (TH1D *)fin_nano_tth->Get(Form("TTH/%s/Iso/%s",systType,histname_RegA.c_str()));
-  TH1D *hcf_RegA_ttw	= (TH1D *)fin_nano_ttw->Get(Form("TTW/%s/Iso/%s",systType,histname_RegA.c_str()));
-  TH1D *hcf_RegA_ttz	= (TH1D *)fin_nano_ttz->Get(Form("TTZ/%s/Iso/%s",systType,histname_RegA.c_str()));
-  
   //TH1D *hcf_RegA_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/Iso/%s",systType,histname_RegA.c_str()) : Form("MCQCDEle/%s/Iso/%s",systType,histname_RegA.c_str())));  
   
   // cout << "systType : " << systType
@@ -270,10 +221,6 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   TH1D *hcf_RegB_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/NonIso/%s",systType,histname_RegB.c_str()));
   TH1D *hcf_RegB_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/NonIso/%s",systType,histname_RegB.c_str()));
   TH1D *hcf_RegB_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/NonIso/%s",systType,histname_RegB.c_str()));
-  TH1D *hcf_RegB_ttg	= (TH1D *)fin_nano_ttg->Get(Form("TTG/%s/NonIso/%s",systType,histname_RegB.c_str()));
-  TH1D *hcf_RegB_tth	= (TH1D *)fin_nano_tth->Get(Form("TTH/%s/NonIso/%s",systType,histname_RegB.c_str()));
-  TH1D *hcf_RegB_ttw	= (TH1D *)fin_nano_ttw->Get(Form("TTW/%s/NonIso/%s",systType,histname_RegB.c_str()));
-  TH1D *hcf_RegB_ttz	= (TH1D *)fin_nano_ttz->Get(Form("TTZ/%s/NonIso/%s",systType,histname_RegB.c_str()));
   //TH1D *hcf_RegB_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/NonIso/%s",systType,histname_RegB.c_str()) : Form("MCQCDEle/%s/NonIso/%s",systType,histname_RegB.c_str())));  
   
   TH1D *hcf_RegC_data	= 0x0;
@@ -288,11 +235,6 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   TH1D *hcf_RegC_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
   TH1D *hcf_RegC_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
   TH1D *hcf_RegC_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
-  TH1D *hcf_RegC_ttg	= (TH1D *)fin_nano_ttg->Get(Form("TTG/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
-  TH1D *hcf_RegC_tth	= (TH1D *)fin_nano_tth->Get(Form("TTH/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
-  TH1D *hcf_RegC_ttw	= (TH1D *)fin_nano_ttw->Get(Form("TTW/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
-  TH1D *hcf_RegC_ttz	= (TH1D *)fin_nano_ttz->Get(Form("TTZ/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()));
-
   //TH1D *hcf_RegC_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()) : Form("MCQCDEle/%s/NonIsoLowMET/%s",systType,histname_RegC.c_str()))); 
   //cout <<"hcf_RegC_ttbar :: Name : "<< hcf_RegC_ttbar->GetName()<<", bins : " << hcf_RegC_ttbar->GetNbinsX() << ", Integral : " << hcf_RegC_ttbar->Integral() << endl;
   
@@ -308,10 +250,6 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   TH1D *hcf_RegD_wjets	= (TH1D *)fin_nano_wjets->Get(Form("Wjets/%s/LowMET/%s",systType,histname_RegD.c_str()));
   TH1D *hcf_RegD_dyjets	= (TH1D *)fin_nano_dyjets->Get(Form("DYjets/%s/LowMET/%s",systType,histname_RegD.c_str()));
   TH1D *hcf_RegD_vbf	= (TH1D *)fin_nano_vbf->Get(Form("VBFusion/%s/LowMET/%s",systType,histname_RegD.c_str()));
-  TH1D *hcf_RegD_ttg	= (TH1D *)fin_nano_ttg->Get(Form("TTG/%s/LowMET/%s",systType,histname_RegD.c_str()));
-  TH1D *hcf_RegD_tth	= (TH1D *)fin_nano_tth->Get(Form("TTH/%s/LowMET/%s",systType,histname_RegD.c_str()));
-  TH1D *hcf_RegD_ttw	= (TH1D *)fin_nano_ttw->Get(Form("TTW/%s/LowMET/%s",systType,histname_RegD.c_str()));
-  TH1D *hcf_RegD_ttz	= (TH1D *)fin_nano_ttz->Get(Form("TTZ/%s/LowMET/%s",systType,histname_RegD.c_str()));
   //TH1D *hcf_RegD_qcd	= (TH1D *)fin_nano_qcd->Get(((isMu) ? Form("MCQCDMu/%s/LowMET/%s",systType,histname_RegD.c_str()) : Form("MCQCDEle/%s/LowMET/%s",systType,histname_RegD.c_str()))); 
   ////////////////////////////////End of getting the histograms from files //////////////////////////////// 
   
@@ -322,41 +260,24 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   hcf_RegA_bkg->Add(hcf_RegA_wjets);
   hcf_RegA_bkg->Add(hcf_RegA_dyjets);
   hcf_RegA_bkg->Add(hcf_RegA_vbf);
-  hcf_RegA_bkg->Add(hcf_RegA_ttg);
-  hcf_RegA_bkg->Add(hcf_RegA_tth);
-  hcf_RegA_bkg->Add(hcf_RegA_ttw);
-  hcf_RegA_bkg->Add(hcf_RegA_ttz);
-  
+
   TH1D *hcf_RegB_bkg = (TH1D *)hcf_RegB_ttbar->Clone("RegB_bkg");
   hcf_RegB_bkg->Add(hcf_RegB_stop);
   hcf_RegB_bkg->Add(hcf_RegB_wjets);
   hcf_RegB_bkg->Add(hcf_RegB_dyjets);
   hcf_RegB_bkg->Add(hcf_RegB_vbf);
-  hcf_RegB_bkg->Add(hcf_RegB_ttg);
-  hcf_RegB_bkg->Add(hcf_RegB_tth);
-  hcf_RegB_bkg->Add(hcf_RegB_ttw);
-  hcf_RegB_bkg->Add(hcf_RegB_ttz);
 
   TH1D *hcf_RegC_bkg = (TH1D *)hcf_RegC_ttbar->Clone("RegC_bkg");
   hcf_RegC_bkg->Add(hcf_RegC_stop);
   hcf_RegC_bkg->Add(hcf_RegC_wjets);
   hcf_RegC_bkg->Add(hcf_RegC_dyjets);
   hcf_RegC_bkg->Add(hcf_RegC_vbf);
-  hcf_RegC_bkg->Add(hcf_RegC_ttg);
-  hcf_RegC_bkg->Add(hcf_RegC_tth);
-  hcf_RegC_bkg->Add(hcf_RegC_ttw);
-  hcf_RegC_bkg->Add(hcf_RegC_ttz);
-
+  
   TH1D *hcf_RegD_bkg = (TH1D *)hcf_RegD_ttbar->Clone("RegD_bkg");
   hcf_RegD_bkg->Add(hcf_RegD_stop);
   hcf_RegD_bkg->Add(hcf_RegD_wjets);
   hcf_RegD_bkg->Add(hcf_RegD_dyjets);
   hcf_RegD_bkg->Add(hcf_RegD_vbf);
-  hcf_RegD_bkg->Add(hcf_RegD_ttg);
-  hcf_RegD_bkg->Add(hcf_RegD_tth);
-  hcf_RegD_bkg->Add(hcf_RegD_ttw);
-  hcf_RegD_bkg->Add(hcf_RegD_ttz);
-
   // printf("systType : %10s, hist : %20s, Data(A,B,C,D) : (%5.4lf, %5.4lf, %5.4lf, %5.4lf), MC(A,B,C,D) : (%5.4lf, %5.4lf, %5.4lf, %5.4lf)\n",
   // 	 systType, histname.c_str(), hcf_RegA_data->Integral(),hcf_RegB_data->Integral(),hcf_RegB_data->Integral(),hcf_RegD_data->Integral(), 
   // 	 hcf_RegA_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegB_bkg->Integral(),hcf_RegD_bkg->Integral());
@@ -455,11 +376,9 @@ double QCDDDAll(bool isBtag, bool isMu, int htype, int year, TDirectory *d3, con
   
   fin_nano_data->Close() ;   fin_nano_sig->Close() ;   fin_nano_ttbar->Close();   fin_nano_stop->Close();   
   fin_nano_wjets->Close();   fin_nano_dyjets->Close() ; fin_nano_vbf->Close();   //fin_nano_qcd->Close();   
-  fin_nano_ttg->Close();     fin_nano_tth->Close();     fin_nano_ttw->Close();    fin_nano_ttz->Close();
-  
+
   delete fin_nano_data ;   delete fin_nano_sig ;   delete fin_nano_ttbar;   delete fin_nano_stop;   
-  delete fin_nano_wjets;   delete fin_nano_dyjets ; delete fin_nano_vbf;   //delete fin_nano_qcd;
-  delete fin_nano_ttg;   delete fin_nano_tth;   delete fin_nano_ttw;  delete fin_nano_ttz;
+  delete fin_nano_wjets;   delete fin_nano_dyjets ; delete fin_nano_vbf;   //delete fin_nano_qcd;   
   
   return integral;
 }

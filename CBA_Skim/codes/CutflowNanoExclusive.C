@@ -70,17 +70,14 @@ int CutflowNanoExclusive(int year = 2016, bool isMu = 1)
   // const char* dir = "grid_v40_Syst/CBA_elemva90";
   // const char* dir1 = "grid_v40_Syst/CBA_elemva90-CombHist";
 
-  // const char* dir = "grid_v40_Syst/CBA_trigSF";
-  // const char* dir1 = "grid_v40_Syst/CBA_trigSF-CombHist";
+  const char* dir = "grid_v40_Syst/CBA_trigSF";
+  const char* dir1 = "grid_v40_Syst/CBA_trigSF-CombHist";
 
   // const char* dir = "grid_v40_Syst/CBA_trigSF-32HLTTrigObj";
   // const char* dir1 = "grid_v40_Syst/CBA_trigSF-32HLTTrigObj-CombHist";
 
   // const char* dir = "grid_v40_Syst/CBA_trigSF-TrigObj";
   // const char* dir1 = "grid_v40_Syst/CBA_trigSF-TrigObj-CombHist";
-
-  const char* dir = "grid_v40_Syst/CBA_lowmass";
-  const char* dir1 = "grid_v40_Syst/CBA_lowmass-CombHist";
 
   double totLumi = 36.31; //2016
   float lumiUnc = 1.012;//2.5% for 2016 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
