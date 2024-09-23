@@ -9,7 +9,7 @@ export CMSVER=CMSSW_13_0_2
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
-printf "Worker node OS " ; lsb_release -d
+#printf "Worker node OS " ; lsb_release -d
 printf "SCRAM :  ${SCRAM_ARCH}\n"
 printf "CMSSW :  ${CMSVER}\n"
 
@@ -51,11 +51,11 @@ printf "Done Histogramming at ";/bin/date
 
 outputdir=CBA_metxycorr-BJetHist1
 
-# condorOutDir=/eos/user/i/idas/Output/cms-hcs-run2/$outputdir
-# condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir
+condorOutDir=/eos/user/i/idas/Output/cms-hcs-run2/$outputdir
+condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir
 
-condorOutDir=/eos/user/i/idas/Output/cms-hcs-run2/$outputdir/pre
-condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir/pre
+# condorOutDir=/eos/user/i/idas/Output/cms-hcs-run2/$outputdir/post
+# condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir/post
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;

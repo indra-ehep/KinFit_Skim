@@ -176,7 +176,8 @@ for year in [2016]:
             
         samplesubFile.write("condor_submit %s\n"%subjdlName)
     subFile.write("condor_submit %s\n"%jdlName)
-    jdlFile.close() 
+    jdlFile.close()
+subFile.write("condor_qedit -constraint '(JobStatus == 1)' JobNotification=0\n")
 subFile.close()
 samplesubFile.close()
 print("Total number of jobs to be submitted is %s"%(totjobs))

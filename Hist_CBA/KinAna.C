@@ -1432,6 +1432,9 @@ void KinAna::Clean(){
   isKFValid = false;
   isCTagged = false;
   
+  isHEMVeto_loweta = false;
+  isHEMVeto_higheta = false;
+  
   chi2 = -100.0;
   jetChadPt = -100.0;
   jetChadEta = -100.0;
@@ -1595,11 +1598,51 @@ Bool_t KinAna::Process(Long64_t entry)
   bjhadAF.SetPtEtaPhiE(jetBhadPt, jetBhadEta, jetBhadPhi, jetBhadEn);
   bjlepAF.SetPtEtaPhiE(jetBlepPt, jetBlepEta, jetBlepPhi, jetBlepEn);
   leptonAF.SetPtEtaPhiE(lepPt, lepEta, lepPhi, lepEn);
-
   
   
   wt_ratio = 1.0;
-  
+
+  //  if((jetChadPhi>-1.57 and jetChadPhi<-0.87) and (jetChadEta>-3.0 and jetChadEta<-1.3))
+  if(fYear==2018 and  !isData and 
+     (
+      (jetChadPhi>-1.57 and jetChadPhi<-0.87)
+      or
+      (jetShadPhi>-1.57 and jetShadPhi<-0.87)
+      or
+      (jetBhadPhi>-1.57 and jetBhadPhi<-0.87)
+      or
+      (jetBlepPhi>-1.57 and jetBlepPhi<-0.87)
+      )
+     )
+    {
+      if(
+	 (jetChadEta>-3.0 and jetChadEta<-1.3)
+	 or
+	 (jetShadEta>-3.0 and jetShadEta<-1.3)
+	 or
+	 (jetBhadEta>-3.0 and jetBhadEta<-1.3)
+	 or
+	 (jetBlepEta>-3.0 and jetBlepEta<-1.3)
+	 )
+	{
+	  if(
+	     (jetChadEta>-3.0 and jetChadEta<-2.5)
+	     or
+	     (jetShadEta>-3.0 and jetShadEta<-2.5)
+	     or
+	     (jetBhadEta>-3.0 and jetBhadEta<-2.5)
+	     or
+	     (jetBlepEta>-3.0 and jetBlepEta<-2.5)
+	     )
+	    {
+	      isHEMVeto_higheta = true;
+	    }else
+	    {
+	      isHEMVeto_loweta = true;
+	    }//high or low eta 
+	}//jeteta is within the the HEM range
+    }//jetphi is within the the HEM range
+
 
   if((fSyst == "jereta1up") or (fSyst == "jereta2up") or (fSyst == "jereta1down") or (fSyst == "jereta2down") or (fSyst == "nometa1") or (fSyst == "nometa2")){
     double resoEta = (cjhadAF+sjhadAF).Eta();
@@ -2043,6 +2086,15 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   double murwt = 1.0 ; if(systname == "bclhemurup") murwt = _muRweight_Up ; if(systname == "bclhemurdown") murwt = _muRweight_Do ; 
   double isrwt = 1.0 ; if(systname == "isrup") isrwt = _ISRweight_Up ; if(systname == "isrdown") isrwt = _ISRweight_Do ;
   double fsrwt = 1.0 ; if(systname == "fsrup") fsrwt = _FSRweight_Up ; if(systname == "fsrdown") fsrwt = _FSRweight_Do ;
+  
+  double hemwt = 1.0;
+  if(isHEMVeto_higheta or isHEMVeto_loweta) hemwt = 0.65;
+  // else if(isHEMVeto_higheta and !isHEMVeto_loweta)
+  //   hemwt = 0.65;
+  // else if(!isHEMVeto_higheta and isHEMVeto_loweta)
+  //   hemwt = 0.8;
+  // else
+  //   hemwt = 1.0;
 
   //w/o top pt reweight
   // combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * wt_ratio;
@@ -2051,10 +2103,10 @@ bool KinAna::GetCombinedWt(TString systname, double& combined_muwt, double& comb
   // combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * wt_ratio;
 
   // //with top pt rewight
-  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
-  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * wt_ratio;
-  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * wt_ratio;
-  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * wt_ratio;
+  combined_muwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * hemwt * wt_ratio;
+  combined_muwt_nobtagwt = _sampleWeight * prefirewt * puwt * muwt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * hemwt * wt_ratio;
+  combined_elewt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * btagwt * topptwt * hemwt * wt_ratio;
+  combined_elewt_nobtagwt = _sampleWeight * prefirewt * puwt * elewt * pujetidwt * pdfwt * q2wt * mufwt * murwt * isrwt * fsrwt * topptwt * hemwt * wt_ratio;
 
   return true;
 }
