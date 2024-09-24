@@ -80,7 +80,7 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
   Double_t muEffWeight;
   Double_t eleEffWeight;
   Double_t puJetIDWeight;
-  Double_t bTagWeight;
+  Double_t bcTagWeight;
   Double_t cTagLWeight;
   Double_t cTagMWeight;
   Double_t cTagTWeight;
@@ -99,12 +99,10 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
   Int_t count_cJetsIncM;
   Int_t count_cJetsIncT;
   
-  Double_t weight, mjjKF;
-  
   //string inpath_tree = Form("/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/CBA_metxycorr/%d",year);
   string treelist = "/tmp/idas/fl_tree_list.txt";
   string command = Form("find %s -name \"%s_tree_base_*.root\" > %s",inpath_tree.data(),signal.data(),treelist.data());
-  system(command.c_str());
+  int ret = system(command.c_str());
   
   cout<<"filepath : " << inpath_tree.data() << endl;
   string flist;
@@ -177,13 +175,20 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
   tr->SetBranchAddress("metPy"		, &metPy);
   tr->SetBranchAddress("metPz"		, &metPz);
 
-  // tr->SetBranchAddress("sampleWeight"	, &sampleWeight);
-  // tr->SetBranchAddress("prefireWeight"	, &prefireWeight);
-  // tr->SetBranchAddress("PUWeight"	, &PUWeight);
-  // tr->SetBranchAddress("muEffWeight"	, &muEffWeight);
-  // tr->SetBranchAddress("eleEffWeight"	, &eleEffWeight);
-  // tr->SetBranchAddress("puJetIDWeight"	, &puJetIDWeight);
-  // // tr->SetBranchAddress("bTagWeight"	, &bTagWeight);
+  tr->SetBranchStatus("sampleWeight"	, 1);
+  tr->SetBranchStatus("prefireWeight"	, 1);
+  tr->SetBranchStatus("PUWeight"	, 1);
+  tr->SetBranchStatus("muEffWeight"	, 1);
+  tr->SetBranchStatus("eleEffWeight"	, 1);
+  tr->SetBranchStatus("puJetIDWeight"	, 1);
+  tr->SetBranchStatus("bcTagWeight"	, 1);
+  tr->SetBranchAddress("sampleWeight"	, &sampleWeight);
+  tr->SetBranchAddress("prefireWeight"	, &prefireWeight);
+  tr->SetBranchAddress("PUWeight"	, &PUWeight);
+  tr->SetBranchAddress("muEffWeight"	, &muEffWeight);
+  tr->SetBranchAddress("eleEffWeight"	, &eleEffWeight);
+  tr->SetBranchAddress("puJetIDWeight"	, &puJetIDWeight);
+  tr->SetBranchAddress("bcTagWeight"	, &bcTagWeight);
   // // tr->SetBranchAddress("cTagLWeight"	, &cTagLWeight);
   // // tr->SetBranchAddress("cTagMWeight"	, &cTagMWeight);
   // // tr->SetBranchAddress("cTagTWeight"	, &cTagTWeight);
@@ -195,7 +200,6 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
   tr->SetBranchStatus("isLowMET"	, 1);
   tr->SetBranchStatus("muonpfRelIso"	, 1);
   tr->SetBranchStatus("elepfRelIso"	, 1);
-
   tr->SetBranchAddress("singleMu"	, &singleMu);
   tr->SetBranchAddress("singleEle"	, &singleEle);
   tr->SetBranchAddress("muonIsoCut"	, &muonIsoCut);
@@ -212,6 +216,8 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
 
   TLorentzVector chad, shad, bjhad;
   TLorentzVector met, lep, bjlep;
+  double weight_ele, weight_mu;
+  double mjjKF;
   
   TH1F *Isomu_AB = new TH1F("Isomu_AB",Form("Isomu AB vs CD (muon, %s)",signal.c_str()),50,0.0,0.3);
   TH1F *Isomu_CD = new TH1F("Isomu_CD",Form("Isomu AB vs CD (muon, %s)",signal.c_str()),50,0.0,0.3);
@@ -222,10 +228,64 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
   TH1F *METmu_BC = new TH1F("METmu_BC",Form("MET AD vs BC (muon, %s)",signal.c_str()),50,0.0,500.);
   TH1F *METele_AD = new TH1F("METele_AD",Form("MET AD vs BC (ele, %s)",signal.c_str()),50,0.0,500.);
   TH1F *METele_BC = new TH1F("METele_BC",Form("MET AD vs BC (ele, %s)",signal.c_str()),50,0.0,500.);
+
+  TH1F *mjj_mu_RegA = new TH1F("mjj_mu_RegA","Muon mjj", 250, 0., 250.);
+  TH1F *mjj_mu_RegA_met_down = new TH1F("mjj_mu_RegA_met_down","Muon mjj MET down", 250, 0., 250.);
+  TH1F *mjj_mu_RegA_met_up = new TH1F("mjj_mu_RegA_met_up","Muon mjj MET up", 250, 0., 250.);
+  TH1F *mjj_mu_RegA_iso_down = new TH1F("mjj_mu_RegA_iso_down","Muon mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_mu_RegA_iso_up = new TH1F("mjj_mu_RegA_iso_up","Muon mjj ISO up", 250, 0., 250.);
+
+  TH1F *mjj_mu_RegB = new TH1F("mjj_mu_RegB","Muon mjj", 250, 0., 250.);
+  TH1F *mjj_mu_RegB_met_down = new TH1F("mjj_mu_RegB_met_down","Muon mjj MET down", 250, 0., 250.);
+  TH1F *mjj_mu_RegB_met_up = new TH1F("mjj_mu_RegB_met_up","Muon mjj MET up", 250, 0., 250.);
+  TH1F *mjj_mu_RegB_iso_down = new TH1F("mjj_mu_RegB_iso_down","Muon mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_mu_RegB_iso_up = new TH1F("mjj_mu_RegB_iso_up","Muon mjj ISO up", 250, 0., 250.);
+
+  TH1F *mjj_mu_RegC = new TH1F("mjj_mu_RegC","Muon mjj", 250, 0., 250.);
+  TH1F *mjj_mu_RegC_met_down = new TH1F("mjj_mu_RegC_met_down","Muon mjj MET down", 250, 0., 250.);
+  TH1F *mjj_mu_RegC_met_up = new TH1F("mjj_mu_RegC_met_up","Muon mjj MET up", 250, 0., 250.);
+  TH1F *mjj_mu_RegC_iso_down = new TH1F("mjj_mu_RegC_iso_down","Muon mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_mu_RegC_iso_up = new TH1F("mjj_mu_RegC_iso_up","Muon mjj ISO up", 250, 0., 250.);
   
+  TH1F *mjj_mu_RegD = new TH1F("mjj_mu_RegD","Muon mjj", 250, 0., 250.);
+  TH1F *mjj_mu_RegD_met_down = new TH1F("mjj_mu_RegD_met_down","Muon mjj MET down", 250, 0., 250.);
+  TH1F *mjj_mu_RegD_met_up = new TH1F("mjj_mu_RegD_met_up","Muon mjj MET up", 250, 0., 250.);
+  TH1F *mjj_mu_RegD_iso_down = new TH1F("mjj_mu_RegD_iso_down","Muon mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_mu_RegD_iso_up = new TH1F("mjj_mu_RegD_iso_up","Muon mjj ISO up", 250, 0., 250.);
+
+  TH1F *mjj_ele_RegA = new TH1F("mjj_ele_RegA","Electron mjj", 250, 0., 250.);
+  TH1F *mjj_ele_RegA_met_down = new TH1F("mjj_ele_RegA_met_down","Electron mjj MET down", 250, 0., 250.);
+  TH1F *mjj_ele_RegA_met_up = new TH1F("mjj_ele_RegA_met_up","Electron mjj MET up", 250, 0., 250.);
+  TH1F *mjj_ele_RegA_iso_down = new TH1F("mjj_ele_RegA_iso_down","Electron mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_ele_RegA_iso_up = new TH1F("mjj_ele_RegA_iso_up","Electron mjj ISO up", 250, 0., 250.);
+
+  TH1F *mjj_ele_RegB = new TH1F("mjj_ele_RegB","Electron mjj", 250, 0., 250.);
+  TH1F *mjj_ele_RegB_met_down = new TH1F("mjj_ele_RegB_met_down","Electron mjj MET down", 250, 0., 250.);
+  TH1F *mjj_ele_RegB_met_up = new TH1F("mjj_ele_RegB_met_up","Electron mjj MET up", 250, 0., 250.);
+  TH1F *mjj_ele_RegB_iso_down = new TH1F("mjj_ele_RegB_iso_down","Electron mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_ele_RegB_iso_up = new TH1F("mjj_ele_RegB_iso_up","Electron mjj ISO up", 250, 0., 250.);
+
+  TH1F *mjj_ele_RegC = new TH1F("mjj_ele_RegC","Electron mjj", 250, 0., 250.);
+  TH1F *mjj_ele_RegC_met_down = new TH1F("mjj_ele_RegC_met_down","Electron mjj MET down", 250, 0., 250.);
+  TH1F *mjj_ele_RegC_met_up = new TH1F("mjj_ele_RegC_met_up","Electron mjj MET up", 250, 0., 250.);
+  TH1F *mjj_ele_RegC_iso_down = new TH1F("mjj_ele_RegC_iso_down","Electron mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_ele_RegC_iso_up = new TH1F("mjj_ele_RegC_iso_up","Electron mjj ISO up", 250, 0., 250.);
+  
+  TH1F *mjj_ele_RegD = new TH1F("mjj_ele_RegD","Electron mjj", 250, 0., 250.);
+  TH1F *mjj_ele_RegD_met_down = new TH1F("mjj_ele_RegD_met_down","Electron mjj MET down", 250, 0., 250.);
+  TH1F *mjj_ele_RegD_met_up = new TH1F("mjj_ele_RegD_met_up","Electron mjj MET up", 250, 0., 250.);
+  TH1F *mjj_ele_RegD_iso_down = new TH1F("mjj_ele_RegD_iso_down","Electron mjj ISO down", 250, 0., 250.);
+  TH1F *mjj_ele_RegD_iso_up = new TH1F("mjj_ele_RegD_iso_up","Electron mjj ISO up", 250, 0., 250.);
+
   float Min_pt = 25.0;
   float Max_eta = 2.4;
 
+  float ele_rel_cut_EB = 0.0821;
+  float ele_rel_cut_EE = 0.0695;
+  float mu_rel_cut = 0.15;
+
+  float met_cut = 20.0;
+  
   bool isControl_mu = false;
   bool isControl_ele = false;
   for (Long64_t ievent = 0 ; ievent < tr->GetEntries() ; ievent++ ) {    
@@ -242,15 +302,78 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
     lep.SetPtEtaPhiE(lepPt, lepEta, lepPhi, lepEn);
     met.SetXYZM(metPx, metPy, metPz, 0.0);
     
-    //weight = sampleWeight*prefireWeight*PUWeight*muEffWeight*puJetIDWeight*bTagWeight;
-    //weight = sampleWeight*prefireWeight*PUWeight*muEffWeight*puJetIDWeight;
+    weight_mu = sampleWeight*prefireWeight*PUWeight*muEffWeight*bcTagWeight;
+    weight_ele = sampleWeight*prefireWeight*PUWeight*eleEffWeight*bcTagWeight;
+    mjjKF = (chad+shad).M();
+
+    bool isPtCut = (jetShadPt > Min_pt and jetChadPt > Min_pt and jetBhadPt > Min_pt and jetBlepPt > Min_pt);
+    bool isEtaCut = (abs(jetShadEta) < Max_eta and abs(jetChadEta) < Max_eta and abs(jetBhadEta) < Max_eta and abs(jetBlepEta) < Max_eta);
+    bool passRelIso_ele = ((lepEta < 1.479 && elepfRelIso < ele_rel_cut_EB) || (lepEta > 1.479 && elepfRelIso < ele_rel_cut_EE));  //gap has been taken care before KF
+    bool passRelIso_ele_down = ((lepEta < 1.479 && elepfRelIso < 0.5*ele_rel_cut_EB) || (lepEta > 1.479 && elepfRelIso < 0.5*ele_rel_cut_EE));  //gap has been taken care before KF
+    bool passRelIso_ele_up = ((lepEta < 1.479 && elepfRelIso < 1.5*ele_rel_cut_EB) || (lepEta > 1.479 && elepfRelIso < 1.5*ele_rel_cut_EE));  //gap has been taken care before KF
+    bool passRelIso_mu = (muonpfRelIso<mu_rel_cut);
+    bool passRelIso_mu_down = (muonpfRelIso<0.5*mu_rel_cut);
+    bool passRelIso_mu_up = (muonpfRelIso<1.5*mu_rel_cut);
+    bool passMET = (met.Pt()>met_cut);
+    bool passMET_down = (met.Pt()> 0.5*met_cut);
+    bool passMET_up = (met.Pt()> 1.5*met_cut);
     
-    //mjjKF = (chad+shad).M();
-    //bool etaCut = abs(jetShadEta) < 2.4 and 
-    //bool isPtCut = (jetShadPt > Min_pt and jetChadPt > Min_pt and jetBhadPt > Min_pt and jetBlepPt > Min_pt);
-    //bool isEtaCut = (abs(jetShadEta) < Max_eta and abs(jetChadEta) < Max_eta and abs(jetBhadEta) < Max_eta and abs(jetBlepEta) < Max_eta);
-    //if(singleMu and !singleEle and muonIsoCut and !isLowMET and isPtCut and isEtaCut){
+    if(isPtCut and isEtaCut and singleMu and !singleEle){
+      if(passRelIso_mu and passMET) mjj_mu_RegA->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu and passMET) mjj_mu_RegB->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu and !passMET) mjj_mu_RegC->Fill(mjjKF,weight_mu);
+      if(passRelIso_mu and !passMET) mjj_mu_RegD->Fill(mjjKF,weight_mu);
       
+      if(passRelIso_mu and passMET_down) mjj_mu_RegA_met_down->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu and passMET_down) mjj_mu_RegB_met_down->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu and !passMET_down) mjj_mu_RegC_met_down->Fill(mjjKF,weight_mu);
+      if(passRelIso_mu and !passMET_down) mjj_mu_RegD_met_down->Fill(mjjKF,weight_mu);
+      
+      if(passRelIso_mu and passMET_up) mjj_mu_RegA_met_up->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu and passMET_up) mjj_mu_RegB_met_up->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu and !passMET_up) mjj_mu_RegC_met_up->Fill(mjjKF,weight_mu);
+      if(passRelIso_mu and !passMET_up) mjj_mu_RegD_met_up->Fill(mjjKF,weight_mu);
+
+      if(passRelIso_mu_down and passMET) mjj_mu_RegA_iso_down->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu_down and passMET) mjj_mu_RegB_iso_down->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu_down and !passMET) mjj_mu_RegC_iso_down->Fill(mjjKF,weight_mu);
+      if(passRelIso_mu_down and !passMET) mjj_mu_RegD_iso_down->Fill(mjjKF,weight_mu);
+      
+      if(passRelIso_mu_up and passMET) mjj_mu_RegA_iso_up->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu_up and passMET) mjj_mu_RegB_iso_up->Fill(mjjKF,weight_mu);
+      if(!passRelIso_mu_up and !passMET) mjj_mu_RegC_iso_up->Fill(mjjKF,weight_mu);
+      if(passRelIso_mu_up and !passMET) mjj_mu_RegD_iso_up->Fill(mjjKF,weight_mu);
+    }
+    
+    if(isPtCut and isEtaCut and !singleMu and singleEle){
+      if(passRelIso_ele and passMET) mjj_ele_RegA->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele and passMET) mjj_ele_RegB->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele and !passMET) mjj_ele_RegC->Fill(mjjKF,weight_ele);
+      if(passRelIso_ele and !passMET) mjj_ele_RegD->Fill(mjjKF,weight_ele);
+      
+      if(passRelIso_ele and passMET_down) mjj_ele_RegA_met_down->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele and passMET_down) mjj_ele_RegB_met_down->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele and !passMET_down) mjj_ele_RegC_met_down->Fill(mjjKF,weight_ele);
+      if(passRelIso_ele and !passMET_down) mjj_ele_RegD_met_down->Fill(mjjKF,weight_ele);
+      
+      if(passRelIso_ele and passMET_up) mjj_ele_RegA_met_up->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele and passMET_up) mjj_ele_RegB_met_up->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele and !passMET_up) mjj_ele_RegC_met_up->Fill(mjjKF,weight_ele);
+      if(passRelIso_ele and !passMET_up) mjj_ele_RegD_met_up->Fill(mjjKF,weight_ele);
+      
+      if(passRelIso_ele_down and passMET) mjj_ele_RegA_iso_down->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele_down and passMET) mjj_ele_RegB_iso_down->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele_down and !passMET) mjj_ele_RegC_iso_down->Fill(mjjKF,weight_ele);
+      if(passRelIso_ele_down and !passMET) mjj_ele_RegD_iso_down->Fill(mjjKF,weight_ele);
+      
+      if(passRelIso_ele_up and passMET) mjj_ele_RegA_iso_up->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele_up and passMET) mjj_ele_RegB_iso_up->Fill(mjjKF,weight_ele);
+      if(!passRelIso_ele_up and !passMET) mjj_ele_RegC_iso_up->Fill(mjjKF,weight_ele);
+      if(passRelIso_ele_up and !passMET) mjj_ele_RegD_iso_up->Fill(mjjKF,weight_ele);
+    }
+
+    //if(singleMu and !singleEle and muonIsoCut and !isLowMET and isPtCut and isEtaCut){
+    
     // topHM->Fill( (chad+shad+bjhad).M() );
     // topLM->Fill( (lep+met+bjlep).M() );
     // wLM->Fill( (lep+met).M() );
@@ -309,7 +432,47 @@ int KFQCDRBI(string signal = "DataMu", int year = 2018, string inpath_tree = "/e
   METmu_AD->Write();
   METmu_BC->Write();
   METele_AD->Write(); 
-  METele_BC->Write(); 
+  METele_BC->Write();
+  mjj_mu_RegA->Write();
+  mjj_mu_RegB->Write();
+  mjj_mu_RegC->Write();
+  mjj_mu_RegD->Write();
+  mjj_mu_RegA_met_down->Write();
+  mjj_mu_RegB_met_down->Write();
+  mjj_mu_RegC_met_down->Write();
+  mjj_mu_RegD_met_down->Write();
+  mjj_mu_RegA_met_up->Write();
+  mjj_mu_RegB_met_up->Write();
+  mjj_mu_RegC_met_up->Write();
+  mjj_mu_RegD_met_up->Write();
+  mjj_mu_RegA_iso_down->Write();
+  mjj_mu_RegB_iso_down->Write();
+  mjj_mu_RegC_iso_down->Write();
+  mjj_mu_RegD_iso_down->Write();
+  mjj_mu_RegA_iso_up->Write();
+  mjj_mu_RegB_iso_up->Write();
+  mjj_mu_RegC_iso_up->Write();
+  mjj_mu_RegD_iso_up->Write();
+  mjj_ele_RegA->Write();
+  mjj_ele_RegB->Write();
+  mjj_ele_RegC->Write();
+  mjj_ele_RegD->Write();
+  mjj_ele_RegA_met_down->Write();
+  mjj_ele_RegB_met_down->Write();
+  mjj_ele_RegC_met_down->Write();
+  mjj_ele_RegD_met_down->Write();
+  mjj_ele_RegA_met_up->Write();
+  mjj_ele_RegB_met_up->Write();
+  mjj_ele_RegC_met_up->Write();
+  mjj_ele_RegD_met_up->Write();
+  mjj_ele_RegA_iso_down->Write();
+  mjj_ele_RegB_iso_down->Write();
+  mjj_ele_RegC_iso_down->Write();
+  mjj_ele_RegD_iso_down->Write();
+  mjj_ele_RegA_iso_up->Write();
+  mjj_ele_RegB_iso_up->Write();
+  mjj_ele_RegC_iso_up->Write();
+  mjj_ele_RegD_iso_up->Write();
   fout->Close();
   delete fout;
   
