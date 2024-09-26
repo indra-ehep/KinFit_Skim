@@ -25,25 +25,31 @@
 
 using namespace std;
 
-int KFDDPlot(int year = 2016, bool isMu = 1)
+int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
 {  
-
+  
+  string exclDeg = "";
+  
+  if(excllevel==1) exclDeg = "_excL";
+  if(excllevel==2) exclDeg = "_excM";
+  if(excllevel==3) exclDeg = "_excT";
+  
   const char* channel = (isMu) ? "mu" : "ele";
-  const char* mjj_RegB = (isMu) ? "mjj_mu_RegB" : "mjj_ele_RegB";
-  const char* mjj_RegB_met_up = (isMu) ? "mjj_mu_RegB_met_up" : "mjj_ele_RegB_met_up";
-  const char* mjj_RegB_met_down = (isMu) ? "mjj_mu_RegB_met_down" : "mjj_ele_RegB_met_down";
+  string mjj_RegB = (isMu) ? Form("mjj%s_mu_RegB",exclDeg.c_str()) : Form("mjj%s_ele_RegB",exclDeg.c_str());
+  string mjj_RegB_met_up = (isMu) ? Form("mjj%s_mu_RegB_met_up",exclDeg.c_str()) : Form("mjj%s_ele_RegB_met_up",exclDeg.c_str());
+  string mjj_RegB_met_down = (isMu) ? Form("mjj%s_mu_RegB_met_down",exclDeg.c_str()) : Form("mjj%s_ele_RegB_met_down",exclDeg.c_str());
 
-  const char* mjj_RegA = (isMu) ? "mjj_mu_RegA" : "mjj_ele_RegA";
-  const char* mjj_RegA_met_up = (isMu) ? "mjj_mu_RegA_met_up" : "mjj_ele_RegA_met_up";
-  const char* mjj_RegA_met_down = (isMu) ? "mjj_mu_RegA_met_down" : "mjj_ele_RegA_met_down";
+  string mjj_RegA = (isMu) ? Form("mjj%s_mu_RegA",exclDeg.c_str()) : Form("mjj%s_ele_RegA",exclDeg.c_str());
+  string mjj_RegA_met_up = (isMu) ? Form("mjj%s_mu_RegA_met_up",exclDeg.c_str()) : Form("mjj%s_ele_RegA_met_up",exclDeg.c_str());
+  string mjj_RegA_met_down = (isMu) ? Form("mjj%s_mu_RegA_met_down",exclDeg.c_str()) : Form("mjj%s_ele_RegA_met_down",exclDeg.c_str());
 
-  const char* mjj_RegB_iso_up = (isMu) ? "mjj_mu_RegB_iso_up" : "mjj_ele_RegB_iso_up";
-  const char* mjj_RegB_iso_down = (isMu) ? "mjj_mu_RegB_iso_down" : "mjj_ele_RegB_iso_down";
+  string mjj_RegB_iso_up = (isMu) ? Form("mjj%s_mu_RegB_iso_up",exclDeg.c_str()) : Form("mjj%s_ele_RegB_iso_up",exclDeg.c_str());
+  string mjj_RegB_iso_down = (isMu) ? Form("mjj%s_mu_RegB_iso_down",exclDeg.c_str()) : Form("mjj%s_ele_RegB_iso_down",exclDeg.c_str());
 
-  const char* mjj_RegA_iso_up = (isMu) ? "mjj_mu_RegA_iso_up" : "mjj_ele_RegA_iso_up";
-  const char* mjj_RegA_iso_down = (isMu) ? "mjj_mu_RegA_iso_down" : "mjj_ele_RegA_iso_down";
+  string mjj_RegA_iso_up = (isMu) ? Form("mjj%s_mu_RegA_iso_up",exclDeg.c_str()) : Form("mjj%s_ele_RegA_iso_up",exclDeg.c_str());
+  string mjj_RegA_iso_down = (isMu) ? Form("mjj%s_mu_RegA_iso_down",exclDeg.c_str()) : Form("mjj%s_ele_RegA_iso_down",exclDeg.c_str());
 
-  const char* dir = "QCDRBI";
+  string dir = "QCDRBI";
 
   double totLumi = 36.31; //2016
   float lumiUnc = 1.012;//2.5% for 2016 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
@@ -56,146 +62,147 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
     lumiUnc = 1.025; //
   }
 
+   
   void makeHistoPositive(TH1D *, bool);
   int PlotRatio(TH1D *h1, TH1D *h2, TH1D *h3, const char *cname);
   
   //////////////////////////////// Open files ////////////////////////////////////////////////
-  const char* datafile = (isMu) ? Form("root_files/%s/%d/IsoMET_QCD_DataMu_%d.root",dir,year,year) : Form("root_files/%s/%d/IsoMET_QCD_DataEle_%d.root",dir,year,year) ;
-  const char* qcdfile = (isMu) ? Form("root_files/%s/%d/IsoMET_QCD_MCQCDMu_%d.root",dir,year,year) : Form("root_files/%s/%d/IsoMET_QCD_MCQCDEle_%d.root",dir,year,year) ;
-  TFile *fin_nano_data	= TFile::Open(datafile);
-  TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTbar_%d.root",dir,year,year));
-  TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_singleTop_%d.root",dir,year,year));
-  TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_Wjets_%d.root",dir,year,year));
-  TFile *fin_nano_dyjets = TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_DYjets_%d.root",dir,year,year));
-  TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_VBFusion_%d.root",dir,year,year));
-  TFile *fin_nano_ttw	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTW_%d.root",dir,year,year));
-  TFile *fin_nano_ttz	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTZ_%d.root",dir,year,year));
-  TFile *fin_nano_ttg	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTG_%d.root",dir,year,year));
-  TFile *fin_nano_tth	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTH_%d.root",dir,year,year));
-  TFile *fin_nano_qcd	= TFile::Open(qcdfile);
+  string datafile = (isMu) ? Form("root_files/%s/%d/IsoMET_QCD_DataMu_%d.root",dir.data(),year,year) : Form("root_files/%s/%d/IsoMET_QCD_DataEle_%d.root",dir.data(),year,year) ;
+  string qcdfile = (isMu) ? Form("root_files/%s/%d/IsoMET_QCD_MCQCDMu_%d.root",dir.data(),year,year) : Form("root_files/%s/%d/IsoMET_QCD_MCQCDEle_%d.root",dir.data(),year,year) ;
+  TFile *fin_nano_data	= TFile::Open(datafile.data());
+  TFile *fin_nano_ttbar = TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTbar_%d.root",dir.data(),year,year));
+  TFile *fin_nano_stop	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_singleTop_%d.root",dir.data(),year,year));
+  TFile *fin_nano_wjets	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_Wjets_%d.root",dir.data(),year,year));
+  TFile *fin_nano_dyjets = TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_DYjets_%d.root",dir.data(),year,year));
+  TFile *fin_nano_vbf	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_VBFusion_%d.root",dir.data(),year,year));
+  TFile *fin_nano_ttw	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTW_%d.root",dir.data(),year,year));
+  TFile *fin_nano_ttz	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTZ_%d.root",dir.data(),year,year));
+  TFile *fin_nano_ttg	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTG_%d.root",dir.data(),year,year));
+  TFile *fin_nano_tth	= TFile::Open(Form("root_files/%s/%d/IsoMET_QCD_TTH_%d.root",dir.data(),year,year));
+  TFile *fin_nano_qcd	= TFile::Open(qcdfile.data());
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+   
   //////////////////////////////// Get the histograms ////////////////////////////////////////////////
-  TH1F *hmjj_RegB_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegB) : Form("%s",mjj_RegB)));
-  TH1F *hmjj_RegB_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegB)); 
-  TH1F *hmjj_RegB_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegB));
-  TH1F *hmjj_RegB_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegB) : Form("%s",mjj_RegB)));
-
-  TH1F *hmjj_RegB_met_up_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegB_met_up) : Form("%s",mjj_RegB_met_up)));
-  TH1F *hmjj_RegB_met_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegB_met_up)); 
-  TH1F *hmjj_RegB_met_up_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegB_met_up));
-  TH1F *hmjj_RegB_met_up_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegB_met_up) : Form("%s",mjj_RegB_met_up)));
-
-  TH1F *hmjj_RegB_met_down_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegB_met_down) : Form("%s",mjj_RegB_met_down)));
-  TH1F *hmjj_RegB_met_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegB_met_down)); 
-  TH1F *hmjj_RegB_met_down_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegB_met_down));
-  TH1F *hmjj_RegB_met_down_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegB_met_down) : Form("%s",mjj_RegB_met_down)));
-
-  TH1F *hmjj_RegA_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegA) : Form("%s",mjj_RegA)));
-  TH1F *hmjj_RegA_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegA)); 
-  TH1F *hmjj_RegA_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegA));
-  TH1F *hmjj_RegA_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegA) : Form("%s",mjj_RegA)));
-
-  TH1F *hmjj_RegA_met_up_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegA_met_up) : Form("%s",mjj_RegA_met_up)));
-  TH1F *hmjj_RegA_met_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegA_met_up)); 
-  TH1F *hmjj_RegA_met_up_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegA_met_up));
-  TH1F *hmjj_RegA_met_up_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegA_met_up) : Form("%s",mjj_RegA_met_up)));
-
-  TH1F *hmjj_RegA_met_down_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegA_met_down) : Form("%s",mjj_RegA_met_down)));
-  TH1F *hmjj_RegA_met_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegA_met_down)); 
-  TH1F *hmjj_RegA_met_down_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegA_met_down));
-  TH1F *hmjj_RegA_met_down_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegA_met_down) : Form("%s",mjj_RegA_met_down)));
-
-  TH1F *hmjj_RegB_iso_up_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegB_iso_up) : Form("%s",mjj_RegB_iso_up)));
-  TH1F *hmjj_RegB_iso_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegB_iso_up)); 
-  TH1F *hmjj_RegB_iso_up_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegB_iso_up));
-  TH1F *hmjj_RegB_iso_up_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegB_iso_up) : Form("%s",mjj_RegB_iso_up)));
-
-  TH1F *hmjj_RegB_iso_down_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegB_iso_down) : Form("%s",mjj_RegB_iso_down)));
-  TH1F *hmjj_RegB_iso_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegB_iso_down)); 
-  TH1F *hmjj_RegB_iso_down_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegB_iso_down));
-  TH1F *hmjj_RegB_iso_down_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegB_iso_down) : Form("%s",mjj_RegB_iso_down)));
-
-  TH1F *hmjj_RegA_iso_up_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegA_iso_up) : Form("%s",mjj_RegA_iso_up)));
-  TH1F *hmjj_RegA_iso_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegA_iso_up)); 
-  TH1F *hmjj_RegA_iso_up_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegA_iso_up));
-  TH1F *hmjj_RegA_iso_up_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegA_iso_up) : Form("%s",mjj_RegA_iso_up)));
-
-  TH1F *hmjj_RegA_iso_down_data	= (TH1F *)fin_nano_data->Get(((isMu) ? Form("%s",mjj_RegA_iso_down) : Form("%s",mjj_RegA_iso_down)));
-  TH1F *hmjj_RegA_iso_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegA_iso_down)); 
-  TH1F *hmjj_RegA_iso_down_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegA_iso_down));
-  TH1F *hmjj_RegA_iso_down_qcd	= (TH1F *)fin_nano_qcd->Get(((isMu) ? Form("%s",mjj_RegA_iso_down) : Form("%s",mjj_RegA_iso_down)));
-
+  TH1F *hmjj_RegB_data	= (TH1F *)fin_nano_data->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegB.data()); 
+  TH1F *hmjj_RegB_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegB.data());
+  TH1F *hmjj_RegB_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegB.data());
+   
+  TH1F *hmjj_RegB_met_up_data	= (TH1F *)fin_nano_data->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegB_met_up.data()); 
+  TH1F *hmjj_RegB_met_up_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegB_met_up.data());
+  TH1F *hmjj_RegB_met_up_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegB_met_up.data());
+   
+  TH1F *hmjj_RegB_met_down_data	= (TH1F *)fin_nano_data->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegB_met_down.data()); 
+  TH1F *hmjj_RegB_met_down_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegB_met_down.data());
+  TH1F *hmjj_RegB_met_down_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegB_met_down.data());
+   
+  TH1F *hmjj_RegA_data	= (TH1F *)fin_nano_data->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegA.data()); 
+  TH1F *hmjj_RegA_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegA.data());
+  TH1F *hmjj_RegA_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegA.data());
+   
+  TH1F *hmjj_RegA_met_up_data	= (TH1F *)fin_nano_data->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegA_met_up.data()); 
+  TH1F *hmjj_RegA_met_up_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegA_met_up.data());
+  TH1F *hmjj_RegA_met_up_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegA_met_up.data());
+   
+  TH1F *hmjj_RegA_met_down_data	= (TH1F *)fin_nano_data->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegA_met_down.data()); 
+  TH1F *hmjj_RegA_met_down_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegA_met_down.data());
+  TH1F *hmjj_RegA_met_down_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegA_met_down.data());
+   
+  TH1F *hmjj_RegB_iso_up_data	= (TH1F *)fin_nano_data->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegB_iso_up.data()); 
+  TH1F *hmjj_RegB_iso_up_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegB_iso_up.data());
+  TH1F *hmjj_RegB_iso_up_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegB_iso_up.data());
+  
+  TH1F *hmjj_RegB_iso_down_data	= (TH1F *)fin_nano_data->Get(mjj_RegB_iso_down.data());
+  TH1F *hmjj_RegB_iso_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegB_iso_down.data());
+  TH1F *hmjj_RegB_iso_down_stop	= (TH1F *)fin_nano_stop->Get(Form("%s",mjj_RegB_iso_down.data())); 
+  TH1F *hmjj_RegB_iso_down_wjets	= (TH1F *)fin_nano_wjets->Get(Form("%s",mjj_RegB_iso_down.data()));
+  TH1F *hmjj_RegB_iso_down_dyjets = (TH1F *)fin_nano_dyjets->Get(Form("%s",mjj_RegB_iso_down.data()));
+  TH1F *hmjj_RegB_iso_down_vbf	= (TH1F *)fin_nano_vbf->Get(Form("%s",mjj_RegB_iso_down.data()));
+  TH1F *hmjj_RegB_iso_down_ttw	= (TH1F *)fin_nano_ttw->Get(Form("%s",mjj_RegB_iso_down.data()));
+  TH1F *hmjj_RegB_iso_down_ttz	= (TH1F *)fin_nano_ttz->Get(Form("%s",mjj_RegB_iso_down.data()));
+  TH1F *hmjj_RegB_iso_down_ttg	= (TH1F *)fin_nano_ttg->Get(Form("%s",mjj_RegB_iso_down.data()));
+  TH1F *hmjj_RegB_iso_down_tth	= (TH1F *)fin_nano_tth->Get(Form("%s",mjj_RegB_iso_down.data()));
+  TH1F *hmjj_RegB_iso_down_qcd	= (TH1F *)fin_nano_qcd->Get(Form("%s",mjj_RegB_iso_down.data()));
+   
+  TH1F *hmjj_RegA_iso_up_data	= (TH1F *)fin_nano_data->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegA_iso_up.data()); 
+  TH1F *hmjj_RegA_iso_up_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegA_iso_up.data());
+  TH1F *hmjj_RegA_iso_up_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegA_iso_up.data());
+   
+  TH1F *hmjj_RegA_iso_down_data	= (TH1F *)fin_nano_data->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_ttbar	= (TH1F *)fin_nano_ttbar->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_stop	= (TH1F *)fin_nano_stop->Get(mjj_RegA_iso_down.data()); 
+  TH1F *hmjj_RegA_iso_down_wjets	= (TH1F *)fin_nano_wjets->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_dyjets = (TH1F *)fin_nano_dyjets->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_vbf	= (TH1F *)fin_nano_vbf->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_ttw	= (TH1F *)fin_nano_ttw->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_ttz	= (TH1F *)fin_nano_ttz->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_ttg	= (TH1F *)fin_nano_ttg->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_tth	= (TH1F *)fin_nano_tth->Get(mjj_RegA_iso_down.data());
+  TH1F *hmjj_RegA_iso_down_qcd	= (TH1F *)fin_nano_qcd->Get(mjj_RegA_iso_down.data());
+   
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -212,7 +219,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegB_dyjets->Rebin(rebin);
   hmjj_RegB_vbf->Rebin(rebin);
   hmjj_RegB_qcd->Rebin(rebin);
-
+   
   hmjj_RegB_met_up_data->Rebin(rebin);
   hmjj_RegB_met_up_ttbar->Rebin(rebin);
   hmjj_RegB_met_up_ttg->Rebin(rebin);
@@ -224,7 +231,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegB_met_up_dyjets->Rebin(rebin);
   hmjj_RegB_met_up_vbf->Rebin(rebin);
   hmjj_RegB_met_up_qcd->Rebin(rebin);
-
+   
   hmjj_RegB_met_down_data->Rebin(rebin);
   hmjj_RegB_met_down_ttbar->Rebin(rebin);
   hmjj_RegB_met_down_ttg->Rebin(rebin);
@@ -236,7 +243,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegB_met_down_dyjets->Rebin(rebin);
   hmjj_RegB_met_down_vbf->Rebin(rebin);
   hmjj_RegB_met_down_qcd->Rebin(rebin);
-  
+   
   hmjj_RegA_data->Rebin(rebin);
   hmjj_RegA_ttbar->Rebin(rebin);
   hmjj_RegA_ttg->Rebin(rebin);
@@ -248,7 +255,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegA_dyjets->Rebin(rebin);
   hmjj_RegA_vbf->Rebin(rebin);
   hmjj_RegA_qcd->Rebin(rebin);
-
+   
   hmjj_RegA_met_up_data->Rebin(rebin);
   hmjj_RegA_met_up_ttbar->Rebin(rebin);
   hmjj_RegA_met_up_ttg->Rebin(rebin);
@@ -260,7 +267,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegA_met_up_dyjets->Rebin(rebin);
   hmjj_RegA_met_up_vbf->Rebin(rebin);
   hmjj_RegA_met_up_qcd->Rebin(rebin);
-
+   
   hmjj_RegA_met_down_data->Rebin(rebin);
   hmjj_RegA_met_down_ttbar->Rebin(rebin);
   hmjj_RegA_met_down_ttg->Rebin(rebin);
@@ -272,7 +279,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegA_met_down_dyjets->Rebin(rebin);
   hmjj_RegA_met_down_vbf->Rebin(rebin);
   hmjj_RegA_met_down_qcd->Rebin(rebin);
-
+   
   hmjj_RegB_iso_up_data->Rebin(rebin);
   hmjj_RegB_iso_up_ttbar->Rebin(rebin);
   hmjj_RegB_iso_up_ttg->Rebin(rebin);
@@ -284,19 +291,19 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegB_iso_up_dyjets->Rebin(rebin);
   hmjj_RegB_iso_up_vbf->Rebin(rebin);
   hmjj_RegB_iso_up_qcd->Rebin(rebin);
-
-  hmjj_RegB_iso_down_data->Rebin(rebin);
-  hmjj_RegB_iso_down_ttbar->Rebin(rebin);
-  hmjj_RegB_iso_down_ttg->Rebin(rebin);
-  hmjj_RegB_iso_down_tth->Rebin(rebin);
-  hmjj_RegB_iso_down_ttw->Rebin(rebin);
-  hmjj_RegB_iso_down_ttz->Rebin(rebin);
-  hmjj_RegB_iso_down_stop->Rebin(rebin);
-  hmjj_RegB_iso_down_wjets->Rebin(rebin);
-  hmjj_RegB_iso_down_dyjets->Rebin(rebin);
-  hmjj_RegB_iso_down_vbf->Rebin(rebin);
-  hmjj_RegB_iso_down_qcd->Rebin(rebin);
-
+  
+  hmjj_RegB_iso_down_data->Rebin(rebin);      
+  hmjj_RegB_iso_down_ttbar->Rebin(rebin);      
+  hmjj_RegB_iso_down_ttg->Rebin(rebin);        
+  hmjj_RegB_iso_down_tth->Rebin(rebin);        
+  hmjj_RegB_iso_down_ttw->Rebin(rebin);        
+  hmjj_RegB_iso_down_ttz->Rebin(rebin);        
+  hmjj_RegB_iso_down_stop->Rebin(rebin);       
+  hmjj_RegB_iso_down_wjets->Rebin(rebin);      
+  hmjj_RegB_iso_down_dyjets->Rebin(rebin);     
+  hmjj_RegB_iso_down_vbf->Rebin(rebin);        
+  hmjj_RegB_iso_down_qcd->Rebin(rebin);        
+   
   hmjj_RegA_iso_up_data->Rebin(rebin);
   hmjj_RegA_iso_up_ttbar->Rebin(rebin);
   hmjj_RegA_iso_up_ttg->Rebin(rebin);
@@ -308,7 +315,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegA_iso_up_dyjets->Rebin(rebin);
   hmjj_RegA_iso_up_vbf->Rebin(rebin);
   hmjj_RegA_iso_up_qcd->Rebin(rebin);
-
+   
   hmjj_RegA_iso_down_data->Rebin(rebin);
   hmjj_RegA_iso_down_ttbar->Rebin(rebin);
   hmjj_RegA_iso_down_ttg->Rebin(rebin);
@@ -320,8 +327,8 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegA_iso_down_dyjets->Rebin(rebin);
   hmjj_RegA_iso_down_vbf->Rebin(rebin);
   hmjj_RegA_iso_down_qcd->Rebin(rebin);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
   //////////////////////////////// Add Backgrounds ////////////////////////////////////////////////
   TH1D *hmjj_RegB_bkg = (TH1D *)hmjj_RegB_ttbar->Clone("hmjj_RegB_bkg");
   hmjj_RegB_bkg->Add(hmjj_RegB_stop);
@@ -426,50 +433,50 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   hmjj_RegA_iso_down_bkg->Add(hmjj_RegA_iso_down_ttg);
   hmjj_RegA_iso_down_bkg->Add(hmjj_RegA_iso_down_tth);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+   
   //////////////////////////////// Get the QCD for regions ////////////////////////////////////////////////
-  TH1D *hmjj_RegB_QCD = (TH1D *)hmjj_RegB_data->Clone("hmjj_RegB_QCD");
+  TH1D *hmjj_RegB_QCD = (TH1D *)hmjj_RegB_data->Clone(Form("hmjj%s_RegB_QCD",exclDeg.c_str()));
   hmjj_RegB_QCD->Add(hmjj_RegB_bkg, -1);
   makeHistoPositive(hmjj_RegB_QCD, false) ;
 
-  TH1D *hmjj_RegB_met_up_QCD = (TH1D *)hmjj_RegB_met_up_data->Clone("hmjj_RegB_met_up_QCD");
+  TH1D *hmjj_RegB_met_up_QCD = (TH1D *)hmjj_RegB_met_up_data->Clone(Form("hmjj%s_RegB_met_up_QCD",exclDeg.c_str()));
   hmjj_RegB_met_up_QCD->Add(hmjj_RegB_met_up_bkg, -1);
   makeHistoPositive(hmjj_RegB_met_up_QCD, false) ;
 
-  TH1D *hmjj_RegB_met_down_QCD = (TH1D *)hmjj_RegB_met_down_data->Clone("hmjj_RegB_met_down_QCD");
+  TH1D *hmjj_RegB_met_down_QCD = (TH1D *)hmjj_RegB_met_down_data->Clone(Form("hmjj%s_RegB_met_down_QCD",exclDeg.c_str()));
   hmjj_RegB_met_down_QCD->Add(hmjj_RegB_met_down_bkg, -1);
   makeHistoPositive(hmjj_RegB_met_down_QCD, false) ;
 
-  TH1D *hmjj_RegA_QCD = (TH1D *)hmjj_RegA_data->Clone("hmjj_RegA_QCD");
+  TH1D *hmjj_RegA_QCD = (TH1D *)hmjj_RegA_data->Clone(Form("hmjj%s_RegA_QCD",exclDeg.c_str()));
   hmjj_RegA_QCD->Add(hmjj_RegA_bkg, -1);
   makeHistoPositive(hmjj_RegA_QCD, false) ;
 
-  TH1D *hmjj_RegA_met_up_QCD = (TH1D *)hmjj_RegA_met_up_data->Clone("hmjj_RegA_met_up_QCD");
+  TH1D *hmjj_RegA_met_up_QCD = (TH1D *)hmjj_RegA_met_up_data->Clone(Form("hmjj%s_RegA_met_up_QCD",exclDeg.c_str()));
   hmjj_RegA_met_up_QCD->Add(hmjj_RegA_met_up_bkg, -1);
   makeHistoPositive(hmjj_RegA_met_up_QCD, false) ;
 
-  TH1D *hmjj_RegA_met_down_QCD = (TH1D *)hmjj_RegA_met_down_data->Clone("hmjj_RegA_met_down_QCD");
+  TH1D *hmjj_RegA_met_down_QCD = (TH1D *)hmjj_RegA_met_down_data->Clone(Form("hmjj%s_RegA_met_down_QCD",exclDeg.c_str()));
   hmjj_RegA_met_down_QCD->Add(hmjj_RegA_met_down_bkg, -1);
   makeHistoPositive(hmjj_RegA_met_down_QCD, false) ;
 
   //////// iso ////////
-  TH1D *hmjj_RegB_iso_up_QCD = (TH1D *)hmjj_RegB_iso_up_data->Clone("hmjj_RegB_iso_up_QCD");
+  TH1D *hmjj_RegB_iso_up_QCD = (TH1D *)hmjj_RegB_iso_up_data->Clone(Form("hmjj%s_RegB_iso_up_QCD",exclDeg.c_str()));
   hmjj_RegB_iso_up_QCD->Add(hmjj_RegB_iso_up_bkg, -1);
   makeHistoPositive(hmjj_RegB_iso_up_QCD, false) ;
 
-  TH1D *hmjj_RegB_iso_down_QCD = (TH1D *)hmjj_RegB_iso_down_data->Clone("hmjj_RegB_iso_down_QCD");
+  TH1D *hmjj_RegB_iso_down_QCD = (TH1D *)hmjj_RegB_iso_down_data->Clone(Form("hmjj%s_RegB_iso_down_QCD",exclDeg.c_str()));
   hmjj_RegB_iso_down_QCD->Add(hmjj_RegB_iso_down_bkg, -1);
   makeHistoPositive(hmjj_RegB_iso_down_QCD, false) ;
 
-  TH1D *hmjj_RegA_iso_up_QCD = (TH1D *)hmjj_RegA_iso_up_data->Clone("hmjj_RegA_iso_up_QCD");
+  TH1D *hmjj_RegA_iso_up_QCD = (TH1D *)hmjj_RegA_iso_up_data->Clone(Form("hmjj%s_RegA_iso_up_QCD",exclDeg.c_str()));
   hmjj_RegA_iso_up_QCD->Add(hmjj_RegA_iso_up_bkg, -1);
   makeHistoPositive(hmjj_RegA_iso_up_QCD, false) ;
 
-  TH1D *hmjj_RegA_iso_down_QCD = (TH1D *)hmjj_RegA_iso_down_data->Clone("hmjj_RegA_iso_down_QCD");
+  TH1D *hmjj_RegA_iso_down_QCD = (TH1D *)hmjj_RegA_iso_down_data->Clone(Form("hmjj%s_RegA_iso_down_QCD",exclDeg.c_str()));
   hmjj_RegA_iso_down_QCD->Add(hmjj_RegA_iso_down_bkg, -1);
   makeHistoPositive(hmjj_RegA_iso_down_QCD, false) ;
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+   
   
   //////////////////////////////// Stack plot for checking ////////////////////////////////////////////////
   hmjj_RegA_data->SetMarkerStyle(kFullCircle);
@@ -516,13 +523,12 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   leg1->AddEntry(hmjj_RegA_vbf, Form("VV") ,"f");
   leg1->AddEntry(hmjj_RegA_qcd, Form("QCD") ,"f");
   
-  
   hmjj_RegA_data->SetMinimum(1.0e-1);
   hmjj_RegA_data->SetMaximum(1.0e6);
   //hmjj_RegA_data->SetMaximum(1.0e12);
   //hmjj_RegA_data->SetMaximum(1.0e9);
   
-  string outname = (isMu) ? Form("figs/temp/mjj_%d_mu.pdf",year) : Form("figs/temp/mjj_%d_ele.pdf",year) ;
+  string outname = (isMu) ? Form("figs/temp/mjj%s_%d_mu.pdf",exclDeg.c_str(),year) : Form("figs/temp/mjj%s_%d_ele.pdf",exclDeg.c_str(),year) ;
   TCanvas *c1 = new TCanvas("c1","c1");
   gStyle->SetOptStat(0);
   //gStyle->SetOptTitle(0);
@@ -536,7 +542,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   c1->Update();
   c1->SaveAs(outname.c_str());
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+   
   //////////////////////////////// Plot up/down ratio MET RegB ////////////////////////////////////////////////
   bool isShape = true;
   if(isShape){
@@ -544,7 +550,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
     hmjj_RegB_met_down_QCD->Scale(hmjj_RegB_QCD->Integral()/hmjj_RegB_met_down_QCD->Integral());
     std::cout << "Using shape comparison " << std::endl;
   }
-
+  
   Double_t error_frac_RegB = max(fabs(hmjj_RegB_met_up_QCD->Integral() - hmjj_RegB_QCD->Integral()), fabs(hmjj_RegB_QCD->Integral() - hmjj_RegB_met_down_QCD->Integral()))/hmjj_RegB_QCD->Integral();
   TH1D *hRelErr_RegB_met_up = (TH1D *)hmjj_RegB_QCD->Clone("hRelErr_RegB_met_up");
   TH1D *hRelErr_RegB_met_down = (TH1D *)hmjj_RegB_QCD->Clone("hRelErr_RegB_met_down");
@@ -576,7 +582,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   leg2->AddEntry(hmjj_RegB_QCD, Form("%s",hmjj_RegB_QCD->GetName()) ,"lfp");
   leg2->AddEntry(hmjj_RegB_met_down_QCD, Form("%s",hmjj_RegB_met_down_QCD->GetName()) ,"lfp");
 
-  hmjj_RegB_met_up_QCD->SetMaximum(2.0*hmjj_RegB_met_up_QCD->GetBinContent(hmjj_RegB_met_up_QCD->FindBin(80.0)));
+  hmjj_RegB_met_up_QCD->SetMaximum(2.0*hmjj_RegB_met_up_QCD->GetBinContent(hmjj_RegB_met_up_QCD->GetMaximumBin()));
   hmjj_RegB_met_up_QCD->SetTitle("");
   hmjj_RegB_met_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
   PlotRatio(hmjj_RegB_met_up_QCD, hmjj_RegB_QCD, hRelErr_RegB_met_up, "c2");
@@ -630,7 +636,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   leg3->AddEntry(hmjj_RegA_QCD, Form("%s",hmjj_RegA_QCD->GetName()) ,"lfp");
   leg3->AddEntry(hmjj_RegA_met_down_QCD, Form("%s",hmjj_RegA_met_down_QCD->GetName()) ,"lfp");
 
-  //hmjj_RegA_met_up_QCD->SetMaximum(2.0*hmjj_RegA_met_up_QCD->GetBinContent(hmjj_RegA_met_up_QCD->FindBin(80.0)));
+  hmjj_RegA_met_up_QCD->SetMaximum(2.0*hmjj_RegA_met_up_QCD->GetBinContent(hmjj_RegA_met_up_QCD->GetMaximumBin()));
   hmjj_RegA_met_up_QCD->SetMinimum(0.0);
   hmjj_RegA_met_up_QCD->SetTitle("");
   hmjj_RegA_met_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
@@ -685,7 +691,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   leg4->AddEntry(hmjj_RegB_QCD, Form("%s",hmjj_RegB_QCD->GetName()) ,"lfp");
   leg4->AddEntry(hmjj_RegB_iso_down_QCD, Form("%s",hmjj_RegB_iso_down_QCD->GetName()) ,"lfp");
 
-  hmjj_RegB_iso_up_QCD->SetMaximum(2.0*hmjj_RegB_iso_up_QCD->GetBinContent(hmjj_RegB_iso_up_QCD->FindBin(80.0)));
+  hmjj_RegB_iso_up_QCD->SetMaximum(2.0*hmjj_RegB_iso_up_QCD->GetBinContent(hmjj_RegB_iso_up_QCD->GetMaximumBin()));
   hmjj_RegB_iso_up_QCD->SetTitle("");
   hmjj_RegB_iso_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
   PlotRatio(hmjj_RegB_iso_up_QCD, hmjj_RegB_QCD, hRelErr_RegB_iso_up, "c4");
@@ -739,7 +745,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1)
   leg5->AddEntry(hmjj_RegA_QCD, Form("%s",hmjj_RegA_QCD->GetName()) ,"lfp");
   leg5->AddEntry(hmjj_RegA_iso_down_QCD, Form("%s",hmjj_RegA_iso_down_QCD->GetName()) ,"lfp");
 
-  //hmjj_RegA_iso_up_QCD->SetMaximum(2.0*hmjj_RegA_iso_up_QCD->GetBinContent(hmjj_RegA_iso_up_QCD->FindBin(80.0)));
+  hmjj_RegA_iso_up_QCD->SetMaximum(2.0*hmjj_RegA_iso_up_QCD->GetBinContent(hmjj_RegA_iso_up_QCD->GetMaximumBin()));
   hmjj_RegA_iso_up_QCD->SetMinimum(0.0);
   hmjj_RegA_iso_up_QCD->SetTitle("");
   hmjj_RegA_iso_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
@@ -827,40 +833,11 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     h3->SetStats(0);      // No statistics on lower plot
     h3->Divide(h2);
     
-    h3->SetMinimum(0.5);  // Define Y ..
-    h3->SetMaximum(1.5); // .. range
-    
-    // cout << "h3->GetBinContent(h3->FindBin(80.0))" << h3->GetBinContent(h3->FindBin(80.0)) << endl;
-    // h3->SetMaximum(1+2*(h3->GetBinContent(h3->FindBin(80.0))-1.));
-    // h3->SetMinimum(1-2*(h3->GetBinContent(h3->FindBin(80.0))-1.));
+    // h3->SetMinimum(0.5);  // Define Y ..
+    // h3->SetMaximum(1.5); // .. range
 
-    // float minX = 20.;
-    // float maxX = 165.;
-    // int minbinX = h3->FindBin(minX);
-    // int maxbinX = h3->FindBin(maxX);
-    // double integral = h3->Integral(minbinX,maxbinX);
-    // //double avgBinContent = integral/double(maxbinX-minbinX);
-    // //double avgBinContent = integral/double(maxX-minX);
-    // //cout << "integral : " << integral << ", (Avg bin - 1) :  " << TMath::Abs(avgBinContent-1) << endl;
-    // // double maxZoom = TMath::Abs(avgBinContent-1)<0.08 ? TMath::Abs(avgBinContent-1) : 0.2/1.2 ;
-    // // cout << "maxZoom " << maxZoom << endl;
-    // // cout << "Max:Min " << (1+1.2*maxZoom) << " : " << (1-1.2*maxZoom) << endl;
-    // // h3->SetMaximum(1+1.2*maxZoom);
-    // // h3->SetMinimum(1-1.2*maxZoom);
-
-    // int maxBin = 0;
-    // double maxDiff = -1.;
-    // cout<<" h3->GetNbinsX() : " << h3->GetNbinsX() << endl;
-    // for (Int_t i=int(minX); i<=int(maxX); ++i) {
-    //   int bin = h3->FindBin(i);
-    //   if (TMath::Abs(h3->GetBinContent(bin)-1)>=maxDiff) {
-    // 	maxDiff = TMath::Abs(h3->GetBinContent(bin)-1);
-    // 	maxBin  = bin;
-    //   }
-    // }
-    // cout << "h3->GetBinContent(maxBin) : " << h3->GetBinContent(maxBin) << ", maxDiff : " << maxDiff << ", bincenter : " << h3->GetXaxis()->GetBinCenter(maxBin) << endl;
-    // h3->SetMaximum(1+1.2*maxDiff);
-    // h3->SetMinimum(1-1.2*maxDiff);
+    h3->SetMinimum(0.0);  // Define Y ..
+    h3->SetMaximum(2.0); // .. range
     
     //h3->SetMarkerStyle(21);
     h3->Draw("ep");       // Draw the ratio plot
