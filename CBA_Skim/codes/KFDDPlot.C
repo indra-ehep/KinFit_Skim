@@ -64,7 +64,10 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
 
    
   void makeHistoPositive(TH1D *, bool);
-  int PlotRatio(TH1D *h1, TH1D *h2, TH1D *h3, const char *cname);
+  int PlotRatio(TH1 *h1, TH1 *h2, TH1 *h3, const char *cname);
+  double GetRatioRMS(TH1F *h3);
+  double GetRatioRMS(TH1F *h3, TH1F *h4);
+  int ModifyUpDownHisto(TH1F*& hnom, TH1F*& hup, TH1F*& hdown, TH1F *hupbynom, TH1F *hdownbynom);
   
   //////////////////////////////// Open files ////////////////////////////////////////////////
   string datafile = (isMu) ? Form("root_files/%s/%d/IsoMET_QCD_DataMu_%d.root",dir.data(),year,year) : Form("root_files/%s/%d/IsoMET_QCD_DataEle_%d.root",dir.data(),year,year) ;
@@ -360,7 +363,6 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   hmjj_RegB_met_down_bkg->Add(hmjj_RegB_met_down_ttz);
   hmjj_RegB_met_down_bkg->Add(hmjj_RegB_met_down_ttg);
   hmjj_RegB_met_down_bkg->Add(hmjj_RegB_met_down_tth);
-
   
   TH1D *hmjj_RegA_bkg = (TH1D *)hmjj_RegA_ttbar->Clone("hmjj_RegA_bkg");
   hmjj_RegA_bkg->Add(hmjj_RegA_stop);
@@ -479,6 +481,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
    
   
   //////////////////////////////// Stack plot for checking ////////////////////////////////////////////////
+  gStyle->SetOptStat("");
   hmjj_RegA_data->SetMarkerStyle(kFullCircle);
   hmjj_RegA_data->SetMarkerColor(kBlack);
   hmjj_RegA_data->SetMarkerSize(1.2);
@@ -544,6 +547,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
    
   //////////////////////////////// Plot up/down ratio MET RegB ////////////////////////////////////////////////
+  cout << "Before : Integrals " << hmjj_RegB_met_up_QCD->Integral()  << ", " << hmjj_RegB_met_down_QCD->Integral() << ", " << hmjj_RegB_QCD->Integral() << endl;
   bool isShape = true;
   if(isShape){
     hmjj_RegB_met_up_QCD->Scale(hmjj_RegB_QCD->Integral()/hmjj_RegB_met_up_QCD->Integral());
@@ -552,6 +556,8 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   }
   
   Double_t error_frac_RegB = max(fabs(hmjj_RegB_met_up_QCD->Integral() - hmjj_RegB_QCD->Integral()), fabs(hmjj_RegB_QCD->Integral() - hmjj_RegB_met_down_QCD->Integral()))/hmjj_RegB_QCD->Integral();
+  cout << "error_frac_RegB : " << error_frac_RegB << endl;
+  cout << "After : Integrals " << hmjj_RegB_met_up_QCD->Integral()  << ", " << hmjj_RegB_met_down_QCD->Integral() << ", " << hmjj_RegB_QCD->Integral() << endl;
   TH1D *hRelErr_RegB_met_up = (TH1D *)hmjj_RegB_QCD->Clone("hRelErr_RegB_met_up");
   TH1D *hRelErr_RegB_met_down = (TH1D *)hmjj_RegB_QCD->Clone("hRelErr_RegB_met_down");
   for(int ibin=1; ibin<hRelErr_RegB_met_up->GetNbinsX(); ibin++){
@@ -584,7 +590,9 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
 
   hmjj_RegB_met_up_QCD->SetMaximum(2.0*hmjj_RegB_met_up_QCD->GetBinContent(hmjj_RegB_met_up_QCD->GetMaximumBin()));
   hmjj_RegB_met_up_QCD->SetTitle("");
-  hmjj_RegB_met_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
+  double xmin =   hmjj_RegB_met_up_QCD->GetXaxis()->GetXmin();
+  double xmax =   hmjj_RegB_met_up_QCD->GetXaxis()->GetXmax();
+  hmjj_RegB_met_up_QCD->GetXaxis()->SetRangeUser(0.,180.);
   PlotRatio(hmjj_RegB_met_up_QCD, hmjj_RegB_QCD, hRelErr_RegB_met_up, "c2");
   PlotRatio(hmjj_RegB_met_down_QCD, hmjj_RegB_QCD, hRelErr_RegB_met_down, "c2");
   leg2->Draw();
@@ -595,6 +603,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   c2->SaveAs(Form("figs/temp/%s%s_%d.pdf",systname.c_str(),channel,year));
 
   c2->SaveAs("output.pdf");
+  hmjj_RegB_met_up_QCD->GetXaxis()->SetRangeUser(xmin,xmax);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////// Plot up/down ratio MET RegA ////////////////////////////////////////////////
@@ -639,17 +648,20 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   hmjj_RegA_met_up_QCD->SetMaximum(2.0*hmjj_RegA_met_up_QCD->GetBinContent(hmjj_RegA_met_up_QCD->GetMaximumBin()));
   hmjj_RegA_met_up_QCD->SetMinimum(0.0);
   hmjj_RegA_met_up_QCD->SetTitle("");
-  hmjj_RegA_met_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
+  xmin =   hmjj_RegA_met_up_QCD->GetXaxis()->GetXmin();
+  xmax =   hmjj_RegA_met_up_QCD->GetXaxis()->GetXmax();
+  hmjj_RegA_met_up_QCD->GetXaxis()->SetRangeUser(0.,180.);
   PlotRatio(hmjj_RegA_met_up_QCD, hmjj_RegA_QCD, hRelErr_RegA_met_up, "c3");
   PlotRatio(hmjj_RegA_met_down_QCD, hmjj_RegA_QCD, hRelErr_RegA_met_down, "c3");
   leg3->Draw();
 
-  TCanvas *c3 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c3");
-  s = hmjj_RegA_met_down_QCD->GetName();
-  systname = s.substr(0,s.find("down"));
-  c3->SaveAs(Form("figs/temp/%s%s_%d.pdf",systname.c_str(),channel,year));
+  // TCanvas *c3 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c3");
+  // s = hmjj_RegA_met_down_QCD->GetName();
+  // systname = s.substr(0,s.find("down"));
+  // c3->SaveAs(Form("figs/temp/%s%s_%d.pdf",systname.c_str(),channel,year));
 
-  c3->SaveAs("output.pdf");
+  // c3->SaveAs("output.pdf");
+  hmjj_RegA_met_up_QCD->GetXaxis()->SetRangeUser(xmin, xmax);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////// Plot up/down ratio Iso RegB ////////////////////////////////////////////////
@@ -693,7 +705,9 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
 
   hmjj_RegB_iso_up_QCD->SetMaximum(2.0*hmjj_RegB_iso_up_QCD->GetBinContent(hmjj_RegB_iso_up_QCD->GetMaximumBin()));
   hmjj_RegB_iso_up_QCD->SetTitle("");
-  hmjj_RegB_iso_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
+  xmin =   hmjj_RegB_iso_up_QCD->GetXaxis()->GetXmin();
+  xmax =   hmjj_RegB_iso_up_QCD->GetXaxis()->GetXmax();
+  hmjj_RegB_iso_up_QCD->GetXaxis()->SetRangeUser(0.,180.);
   PlotRatio(hmjj_RegB_iso_up_QCD, hmjj_RegB_QCD, hRelErr_RegB_iso_up, "c4");
   PlotRatio(hmjj_RegB_iso_down_QCD, hmjj_RegB_QCD, hRelErr_RegB_iso_down, "c4");
   leg4->Draw();
@@ -704,6 +718,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   c4->SaveAs(Form("figs/temp/%s%s_%d.pdf",systname.c_str(),channel,year));
 
   c4->SaveAs("output.pdf");
+  hmjj_RegB_iso_up_QCD->GetXaxis()->SetRangeUser(xmin, xmax);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////// Plot up/down ratio Iso RegA ////////////////////////////////////////////////
@@ -748,19 +763,97 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   hmjj_RegA_iso_up_QCD->SetMaximum(2.0*hmjj_RegA_iso_up_QCD->GetBinContent(hmjj_RegA_iso_up_QCD->GetMaximumBin()));
   hmjj_RegA_iso_up_QCD->SetMinimum(0.0);
   hmjj_RegA_iso_up_QCD->SetTitle("");
-  hmjj_RegA_iso_up_QCD->GetXaxis()->SetRangeUser(0.,170.);
+  xmin =   hmjj_RegA_iso_up_QCD->GetXaxis()->GetXmin();
+  xmax =   hmjj_RegA_iso_up_QCD->GetXaxis()->GetXmax();
+  hmjj_RegA_iso_up_QCD->GetXaxis()->SetRangeUser(0.,180.);
   PlotRatio(hmjj_RegA_iso_up_QCD, hmjj_RegA_QCD, hRelErr_RegA_iso_up, "c5");
   PlotRatio(hmjj_RegA_iso_down_QCD, hmjj_RegA_QCD, hRelErr_RegA_iso_down, "c5");
   leg5->Draw();
 
-  TCanvas *c5 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c5");
-  s = hmjj_RegA_iso_down_QCD->GetName();
-  systname = s.substr(0,s.find("down"));
-  c5->SaveAs(Form("figs/temp/%s%s_%d.pdf",systname.c_str(),channel,year));
+  // TCanvas *c5 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c5");
+  // s = hmjj_RegA_iso_down_QCD->GetName();
+  // systname = s.substr(0,s.find("down"));
+  // c5->SaveAs(Form("figs/temp/%s%s_%d.pdf",systname.c_str(),channel,year));
 
-  c5->SaveAs("output.pdf");
+  // c5->SaveAs("output.pdf");
+  hmjj_RegA_iso_up_QCD->GetXaxis()->SetRangeUser(xmin, xmax);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  /////////////////////////////Select the QCD up/down histo and modify the ratio//////////////////////////////////////////////////
+  gStyle->SetOptStat("ksourmen");
+  string ddhist_exclabel = "kb";
+  if(excllevel==1) ddhist_exclabel = "ct_ExcL";
+  if(excllevel==2) ddhist_exclabel = "ct_ExcM";
+  if(excllevel==3) ddhist_exclabel = "ct_ExcT";
+  string ddhist_up_name = (isMu) ? Form("_%s_mjj_mu_up",ddhist_exclabel.c_str()) : Form("_%s_mjj_ele_up",ddhist_exclabel.c_str());
+  string ddhist_down_name = (isMu) ? Form("_%s_mjj_mu_down",ddhist_exclabel.c_str()) : Form("_%s_mjj_ele_down",ddhist_exclabel.c_str());
+  string ddhist_nom_name = (isMu) ? Form("_%s_mjj_mu",ddhist_exclabel.c_str()) : Form("_%s_mjj_ele",ddhist_exclabel.c_str());
+
+  TH1F *hUp, *hNom, *hDown;
+  TH1F *hmjj_met_ratio_up = (TH1F *)gDirectory->FindObject(Form("h3_%s",hmjj_RegB_met_up_QCD->GetName()));
+  TH1F *hmjj_met_ratio_down = (TH1F *)gDirectory->FindObject(Form("h3_%s",hmjj_RegB_met_down_QCD->GetName()));
+  TH1F *hmjj_iso_ratio_up = (TH1F *)gDirectory->FindObject(Form("h3_%s",hmjj_RegB_iso_up_QCD->GetName()));
+  TH1F *hmjj_iso_ratio_down = (TH1F *)gDirectory->FindObject(Form("h3_%s",hmjj_RegB_iso_down_QCD->GetName()));
+  
+  double metrms = GetRatioRMS(hmjj_met_ratio_up);
+  metrms += GetRatioRMS(hmjj_met_ratio_down);
+  double isorms = GetRatioRMS(hmjj_iso_ratio_up);
+  isorms += GetRatioRMS(hmjj_iso_ratio_down);
+  cout << "MET Diff RMS " << metrms  << endl;
+  cout << "Iso Diff RMS " << isorms << endl;
+  
+  //if(GetRatioRMS(hmjj_met_ratio_up, hmjj_met_ratio_down) > GetRatioRMS(hmjj_iso_ratio_up, hmjj_iso_ratio_down)){
+  if( metrms > isorms ){
+    hUp = (TH1F *)hmjj_RegB_met_up_QCD->Clone(ddhist_up_name.data());
+    hNom = (TH1F *)hmjj_RegB_QCD->Clone(ddhist_nom_name.data());
+    hDown = (TH1F *)hmjj_RegB_met_down_QCD->Clone(ddhist_down_name.data());
+    ModifyUpDownHisto(hNom, hUp, hDown, hmjj_met_ratio_up, hmjj_met_ratio_down);
+  }else{
+    hUp = (TH1F *)hmjj_RegB_iso_up_QCD->Clone(ddhist_up_name.data());
+    hNom = (TH1F *)hmjj_RegB_QCD->Clone(ddhist_nom_name.data());
+    hDown = (TH1F *)hmjj_RegB_iso_down_QCD->Clone(ddhist_down_name.data());
+    ModifyUpDownHisto(hNom, hUp, hDown, hmjj_iso_ratio_up, hmjj_iso_ratio_down);
+  }
+
+  TLegend *leg6 = new TLegend(0.6729323,0.803838,0.9974937,0.9957356);
+  leg6->SetFillColor(10);
+  leg6->SetHeader(Form("Data-knownMC : %s (%d)",hNom->GetName(),year));
+  leg6->AddEntry(hUp, Form("%s",hUp->GetName()) ,"lfp");
+  leg6->AddEntry(hNom, Form("%s",hNom->GetName()) ,"lfp");
+  leg6->AddEntry(hDown, Form("%s",hDown->GetName()) ,"lfp");
+
+  xmin =  hUp->GetXaxis()->GetXmin();
+  xmax =  hUp->GetXaxis()->GetXmax();
+  hUp->GetXaxis()->SetRangeUser(0.,180.);
+  gStyle->SetOptStat("");
+  PlotRatio(hUp, hNom, 0x0, "c6");
+  PlotRatio(hDown, hNom, 0x0, "c6");
+  leg6->Draw();
+
+  TCanvas *c6 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c6");
+  s = hDown->GetName();
+  systname = s.substr(0,s.find("down"));
+  c6->SaveAs(Form("figs/temp/%s%d.pdf",systname.c_str(),year));
+
+  c6->SaveAs("output.pdf");
+  hUp->GetYaxis()->SetTitle("");
+  hUp->GetXaxis()->SetRangeUser(xmin,xmax);
+  
+  TFile *fout = new TFile(Form("all_QCDdd_%d_%s_%d.root",year,channel,excllevel),"recreate");
+  TDirectory *d1 = fout->mkdir("QCDdd");
+  d1->cd();
+  TDirectory *d2 = d1->mkdir("base");
+  d2->cd();
+  TDirectory *d3 = d2->mkdir("Iso");
+  d3->cd();
+
+  hUp->Write();
+  hNom->Write();
+  hDown->Write();
+  fout->Close();
+  delete fout;
+  
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
   return true;
 }
 
@@ -769,17 +862,18 @@ void makeHistoPositive(TH1D *hist, bool setErrorZero = false){
   for(int ibin=1; ibin<hist->GetNbinsX(); ibin++){
     double binCont = hist->GetBinContent(ibin);
     if(binCont<0){
-      hist->SetBinContent(ibin, 0);
-      if(setErrorZero) hist->SetBinError(ibin, 0);
+      hist->SetBinContent(ibin, 0.0000001);
+      if(setErrorZero) hist->SetBinError(ibin, 0.0000001);
     }
   }
 }
 
 
-int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
+int PlotRatio(TH1 *h1, TH1 *h2, TH1* hAvgErr, const char *cname)
 {
   //cout<<"h1 name : "<<h1->GetName() <<", Directory : " << h1->GetDirectory()->GetMotherDir()->GetName() << endl;
-
+  double GetRatioRMS(TH1F *);
+  
   TCanvas *canvas = (TCanvas *)gROOT->GetListOfCanvases()->FindObject(cname);
   
   if(!canvas){
@@ -793,7 +887,7 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     pad1->cd();               // pad1 becomes the current pad
     pad1->SetTickx();
     pad1->SetTicky();
-    h1->SetStats(0);          // No statistics on upper plot
+    //h1->SetStats(0);          // No statistics on upper plot
     h1->Draw("hist");               // Draw h1
     h2->Draw("hist same");         // Draw h2 on top of h1
  
@@ -826,7 +920,7 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     pad2->SetTicky();
  
     // Define the ratio plot
-    TH1F *h3 = (TH1F*)h1->Clone("h3");
+    TH1F *h3 = (TH1F*)h1->Clone(Form("h3_%s",h1->GetName()));
     h3->SetLineColor(h1->GetLineColor());
 
     h3->Sumw2();
@@ -880,7 +974,9 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     pad1->cd();
 
     cout<<" nof canvas primitives " << c->GetListOfPrimitives()->GetEntries() << endl ;
-    
+
+    double totdiff = GetRatioRMS(h3);
+    cout << h3->GetName() << ", Totdiff : " << totdiff << endl;
   }else {
 
     TPad *pad1 = (TPad *)canvas->GetListOfPrimitives()->FindObject("pad1") ;
@@ -892,8 +988,8 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     TPad *pad2 = (TPad *)canvas->GetListOfPrimitives()->FindObject("pad2") ;
     pad2->cd();
     
-
-    TH1F *h3 = (TH1F*)h1->Clone("h3");
+    //TH1F *h3 = (TH1F*)h1->Clone("h3");
+    TH1F *h3 = (TH1F*)h1->Clone(Form("h3_%s",h1->GetName()));
     h3->SetLineColor(h1->GetLineColor());
     h3->Sumw2();
     h3->SetStats(0);      // No statistics on lower plot
@@ -904,4 +1000,70 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
   }
 
   return true;
+}
+
+
+double GetRatioRMS(TH1F *h3)
+{
+  double totdiff = 0;
+  for(int ibin=1; ibin<h3->GetNbinsX(); ibin++)
+    totdiff += (h3->GetBinContent(ibin) - 1.0)*(h3->GetBinContent(ibin) - 1.0) ; 
+  return TMath::Sqrt(totdiff);
+}
+
+double GetRatioRMS(TH1F *h3, TH1F *h4)
+{
+  double totdiff = 0;
+  for(int ibin=1; ibin<h3->GetNbinsX(); ibin++){
+    // cout << h3->GetName() << ", bin: " << ibin << ", content : " << h3->GetBinContent(ibin) << ", error: " << h3->GetBinError(ibin) << endl;
+    // cout << h4->GetName() << ", bin: " << ibin << ", content : " << h4->GetBinContent(ibin) << ", error: " << h4->GetBinError(ibin) << endl;
+    totdiff += (h3->GetBinContent(ibin) - h4->GetBinContent(ibin))*(h3->GetBinContent(ibin) - h4->GetBinContent(ibin)) ;
+  }
+  return TMath::Sqrt(totdiff);
+}
+
+int ModifyUpDownHisto(TH1F*& hnom, TH1F*& hup, TH1F*& hdown, TH1F *hupbynom, TH1F *hdownbynom)
+{
+  
+  for(int ibin=1; ibin<hupbynom->GetNbinsX(); ibin++){
+    double bindiff = TMath::Abs(hupbynom->GetBinContent(ibin) - hdownbynom->GetBinContent(ibin));
+    double binerror = hupbynom->GetBinError(ibin) + hdownbynom->GetBinError(ibin);
+    double bindiff_up = TMath::Abs(hupbynom->GetBinContent(ibin) - 1.0);
+    double bindiff_down = TMath::Abs(hdownbynom->GetBinContent(ibin) - 1.0);
+    if(binerror>bindiff or TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
+    //if(TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
+      //cout << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff: " << bindiff << " and binerror: " << binerror << endl ;
+      hup->SetBinContent(ibin, hnom->GetBinContent(ibin));
+      hup->SetBinError(ibin, hnom->GetBinError(ibin));
+      hdown->SetBinContent(ibin, hnom->GetBinContent(ibin));
+      hdown->SetBinError(ibin, hnom->GetBinError(ibin));
+    }else{
+      double up_content =  hup->GetBinContent(ibin);
+      double down_content =  hdown->GetBinContent(ibin);
+      cout << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_up: " << bindiff_up << " has content: " << hupbynom->GetBinContent(ibin) << endl;
+      cout << hdownbynom->GetName() << " at bin : " << ibin << ", at x = " << hdownbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_down: " << bindiff_down << " has content: " << hdownbynom->GetBinContent(ibin) << endl;
+      cout << hnom->GetName() << " at bin : " << ibin << ", at x = " << hnom->GetXaxis()->GetBinCenter(ibin) << " has content: " << hnom->GetBinContent(ibin) << endl; 
+      if(bindiff_up>bindiff_down){
+	if(hupbynom->GetBinContent(ibin)>1.0){
+	  hdown->SetBinContent(ibin, (1.0-bindiff_up)*hnom->GetBinContent(ibin));
+	  hdown->SetBinError(ibin, hnom->GetBinError(ibin));
+	}else{
+	  hdown->SetBinContent(ibin, (1+(1.0-hupbynom->GetBinContent(ibin)))*hnom->GetBinContent(ibin));
+	  hdown->SetBinError(ibin, hnom->GetBinError(ibin));
+	}
+      }else{
+	if(hdownbynom->GetBinContent(ibin)>1.0){
+	  cout << "Before: " << hup->GetName() << " at bin : " << ibin << ", at x = " << hup->GetXaxis()->GetBinCenter(ibin) << " up has content: " << hup->GetBinContent(ibin) << ", nom content: " << hnom->GetBinContent(ibin) << endl; 
+	  hup->SetBinContent(ibin, (1.0-bindiff_down)*hnom->GetBinContent(ibin));
+	  cout << "After: " << hup->GetName() << " at bin : " << ibin << ", at x = " << hup->GetXaxis()->GetBinCenter(ibin) << " has content: " << hup->GetBinContent(ibin) << endl; 
+	  hup->SetBinError(ibin, hnom->GetBinError(ibin));
+	}else{
+	  hup->SetBinContent(ibin, (1+(1.0-hdownbynom->GetBinContent(ibin)))*hnom->GetBinContent(ibin));
+	  hup->SetBinError(ibin, hnom->GetBinError(ibin));
+	}
+      }//content symmetric condition
+    }//binerror condn
+  }
+  return true;
+  
 }

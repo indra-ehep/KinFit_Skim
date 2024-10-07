@@ -36,7 +36,7 @@ double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from system
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 int rebin = 50;
 
-int PlotRatioSystematicsV5UL(int year = 2016, bool isBtag = 0, bool isMu = 0, int htype = 2){
+int PlotRatioSystematicsV5UL(int year = 2018, bool isBtag = 0, bool isMu = 1, int htype = 6){
 
   // Setters
   int SetGlobalStyle(void);
@@ -149,12 +149,17 @@ int PlotRatioSystematicsV5UL(int year = 2016, bool isBtag = 0, bool isMu = 0, in
 
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2024-03-03/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
-  string outputpng = Form("figs/Week_Work_Report/2024-03-03/ctrl_plt/%d/hist%s.png",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2024-09-12/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpng = Form("figs/Week_Work_Report/2024-09-12/ctrl_plt/%d/hist%s.png",year,histname.c_str());
   //string outputpdf = Form("figs/Week_Work_Report/2023-01-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
   //const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_jecsyst-CombHist";
   const char* dir = "grid_v40_Syst/CBA_metxycorr-CombHist";
+  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale1";
+  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale2";
+  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale3";
+  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale4";
+  
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
   const char* datafile = (isMu) ? Form("root_files/%s/%d/all_DataMu.root",dir,year) : Form("root_files/%s/%d/all_DataEle.root",dir,year) ;
@@ -208,9 +213,9 @@ int PlotRatioSystematicsV5UL(int year = 2016, bool isBtag = 0, bool isMu = 0, in
   double Norm = hcf_nano_qcd->IntegralAndError(1,hcf_nano_qcd->GetNbinsX(),stat_Error); 
   cout<<"Norm : "<<Norm<<", stat_Error : "<<stat_Error<<endl;
   double stat_Error_iso20 = 0.0;
-  double Norm_iso20 = hcf_nano_qcd_iso20->IntegralAndError(1,hcf_nano_qcd_iso20->GetNbinsX(),stat_Error_iso20); 
-  //qcd_frac = TMath::Abs((Norm-Norm_iso20)/Norm);
-  qcd_frac = hcf_nano_qcd_sys->GetBinError(1)/100.;
+  double Norm_iso20 = hcf_nano_qcd_iso20->IntegralAndError(1,hcf_nano_qcd_iso20->GetNbinsX(),stat_Error_iso20);
+  qcd_frac = TMath::Abs((Norm-Norm_iso20)/Norm);
+  //qcd_frac = hcf_nano_qcd_sys->GetBinError(1)/100.;
   cout << "Iso Syst (in %) : " << qcd_frac*100.0 << endl;
   
   if(histname.find("_mjj_")!=string::npos){
@@ -230,6 +235,22 @@ int PlotRatioSystematicsV5UL(int year = 2016, bool isBtag = 0, bool isMu = 0, in
   }
   hcf_nano_sig->Scale(0.1211); //Scaledown to not display the original value
   
+
+    // const char *systbase_2017[] = {"base", 
+    // 				 "pdfup", "pdfdown", "q2up", "q2down",
+    // 				 "isrup", "isrdown", "fsrup", "fsrdown",
+    // 				 "puup", "pudown", "prefireup", "prefiredown",
+    // 				 "mueffup", "mueffdown", "eleeffup", "eleeffdown", 
+    // 				 "pujetidup", "pujetiddown", 
+    // 				 "iso20",  //20
+    // 				 //CShapeCalib EOY
+    // 				 "bcstatup", "bcstatdown", "bcjesup", "bcjesdown",
+    // 				 "bcintpup", "bcintpdown", "bcextpup", "bcextpdown",
+    // 				 "bclhemufup", "bclhemufdown", "bclhemurup", "bclhemurdown",
+    // 				 "bcxdybup", "bcxdybdown", "bcxdycup", "bcxdycdown", 
+    // 				 "bcxwjcup", "bcxwjcdown",
+    // 				 "topptup", "topptdown" //40
+    //                         };
 
   const int nSyst = 44; //19+5
   const char *syst[] = {    "pdf", "isr", /*"fsr",*/ "pu",
@@ -254,6 +275,7 @@ int PlotRatioSystematicsV5UL(int year = 2016, bool isBtag = 0, bool isMu = 0, in
     hLeptonUp = GetUpDownHistDD(files_avdd,"eleeff","up",histname);;
     hLeptonDown = GetUpDownHistDD(files_avdd,"eleeff","down",histname);;
   }
+
   vector<TH1D *> vSystUp, vSystDown, vSystNominal;
   vSystUp.push_back(hLeptonUp); vSystDown.push_back(hLeptonDown);
   
@@ -265,7 +287,8 @@ int PlotRatioSystematicsV5UL(int year = 2016, bool isBtag = 0, bool isMu = 0, in
     hSystDown[isyst-2] = GetUpDownHistDD(files_avdd,syst[isyst],"down",histname);
     vSystUp.push_back(hSystUp[isyst-2]); vSystDown.push_back(hSystDown[isyst-2]);
   }
-  
+
+
   TH1D *hcf_nano_bkg = (TH1D *)hcf_nano_ttbar->Clone("Bkg");
   hcf_nano_bkg->Add(hcf_nano_ttg);
   hcf_nano_bkg->Add(hcf_nano_tth);
@@ -303,6 +326,9 @@ int PlotRatioSystematicsV5UL(int year = 2016, bool isBtag = 0, bool isMu = 0, in
   TGraphAsymmErrors *grSystFull = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, true, false);
   TGraphAsymmErrors *grSystRatio = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, false, true);
 
+  //grSystFull->Print();
+  //grSystRatio->Print();
+  
   hcf_nano_data->SetMarkerStyle(kFullCircle);
   hcf_nano_data->SetMarkerColor(kBlack);
   hcf_nano_data->SetMarkerSize(1.2);
@@ -1153,13 +1179,11 @@ double errBandUp(int iBin, int year, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *>
   double errUp = 0.0;
   for(unsigned int isys = 0 ; isys < vSystUp.size() ; isys++){
     TH1D *hSyst = vSystUp.at(isys);
-    errUp += pow(fabs(hSyst->GetBinContent(iBin+1) - hCentral->GetBinContent(iBin+1)),2) ;
-    // if(iBin==41)
-    //   cout<<"hSyst : "<<hSyst->GetName()<<", bin value : "<<errUp <<", systTot : "<<hSyst->GetBinContent(iBin+1)<<", centralTot : "<<hCentral->GetBinContent(iBin+1)<<endl;
+    double up = 100.*fabs(hSyst->GetBinContent(iBin+1) - hCentral->GetBinContent(iBin+1))/hCentral->GetBinContent(iBin+1) ;
+    //cout<<"Up " << up << endl;
+    if(up<90.0)
+      errUp += pow(fabs(hSyst->GetBinContent(iBin+1) - hCentral->GetBinContent(iBin+1)),2) ;
   }
-  // if(iBin==41)
-  //   cout<<"step1 : errU value : "<<errUp<<endl;
-
   if(TMath::Finite(hCentral->GetBinError(iBin+1))!=0)
     errUp += pow(hCentral->GetBinError(iBin+1),2);
   //errUp += pow(hQCD->GetBinError(iBin+1),2);
@@ -1188,18 +1212,9 @@ double errBandUp(int iBin, int year, TH1D *hCentral,  TH1D *hQCD, vector<TH1D *>
       errUp += pow(hNom->GetBinContent(iBin+1)*0.04/2,2);
     if(hNom->GetBinContent(iBin+1)>0.0 and hname.Contains("QCD"))
       errUp += pow(hNom->GetBinContent(iBin+1)*qcd_frac/2,2);
-    // if(iBin==41)
-    //   cout<<"hname : "<<hname<<", hNom : "<<hNom->GetName()<<", bin value : "<<errUp<<endl;
   }
   
-  // if(iBin==41)
-  //   cout<<"before : errU value : "<<errUp<<endl;
-
   errUp = sqrt(errUp) + 0.5*lumi_unc[year%2016]*hCentral->GetBinContent(iBin+1); //lumi unc added linearly since correlated
-
-  // if(iBin==41)
-  //   cout<<"after : errU value : "<<errUp<<endl<<endl;;
-
   return errUp;
 }
 
@@ -1207,7 +1222,10 @@ double errBandDown(int iBin, int year, TH1D *hCentral,  TH1D *hQCD, vector<TH1D 
   double errDown = 0.0;
   for(unsigned int isys = 0 ; isys < vSystDown.size() ; isys++){
     TH1D *hSyst = vSystDown.at(isys);
-    errDown += pow(fabs(hCentral->GetBinContent(iBin+1) - hSyst->GetBinContent(iBin+1)),2) ;
+    double down = 100.*fabs(hCentral->GetBinContent(iBin+1) - hSyst->GetBinContent(iBin+1))/hCentral->GetBinContent(iBin+1) ;
+    //cout<<"Down " << down << endl;
+    if(down<90.0)
+      errDown += pow(fabs(hCentral->GetBinContent(iBin+1) - hSyst->GetBinContent(iBin+1)),2) ;
   }
   if(TMath::Finite(hCentral->GetBinError(iBin+1))!=0)
     errDown += pow(hCentral->GetBinError(iBin+1),2);
@@ -1250,7 +1268,7 @@ TGraphAsymmErrors *SystGraph(int year, string histname, TH1D *hCentral,  TH1D *h
   TGraphAsymmErrors *gr;
   int n1 = hCentral->GetNbinsX(); 
   double *Yval, *errorU, *errorD, *XerrorU, *XerrorD, *Xval ;
-  
+  double maxerror;
   Yval = new double[n1]; errorU = new double[n1]; errorD = new double[n1];
   XerrorU=new double[n1]; XerrorD=new double[n1]; Xval=new double[n1];
   
@@ -1271,6 +1289,9 @@ TGraphAsymmErrors *SystGraph(int year, string histname, TH1D *hCentral,  TH1D *h
       Yval[i]   = hCentral->GetBinContent(i+1);
       errorU[i] = errBandUp(i, year, hCentral, hQCD, vSystNom, vSystUp); 
       errorD[i] = errBandDown(i, year, hCentral, hQCD, vSystNom, vSystDown); 
+      maxerror = (errorU[i]>errorD[i]) ? errorU[i] : errorD[i] ;
+      errorU[i] = maxerror;
+      errorD[i] = maxerror;
       if(hCentral->GetBinContent(i+1)>0.0) nmax = i+1 ;
       // if(abs(errorD[i]) > 1.0e3)
       // 	cout<<i<<", "<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<errorD[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
@@ -1280,8 +1301,11 @@ TGraphAsymmErrors *SystGraph(int year, string histname, TH1D *hCentral,  TH1D *h
       Yval[i]   = 1;
       errorU[i] = errBandUp(i, year, hCentral, hQCD, vSystNom, vSystUp); 
       errorD[i] = errBandDown(i, year, hCentral, hQCD, vSystNom, vSystDown);
-      //cout<<"bin = "<<i<<endl;
-      //cout<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
+      maxerror = (errorU[i]>errorD[i]) ? errorU[i] : errorD[i] ;
+      errorU[i] = maxerror;
+      errorD[i] = maxerror;
+      // cout<<"bin = "<<i<<endl;
+      // cout<<Yval[i]<<"\t"<<errorU[i]<<"\t"<<errorD[i]<<"\t"<<hCentral->GetBinContent(i+1)<<endl;
       if(hCentral->GetBinContent(i+1)>0.0){ 
 	errorU[i] = errorU[i]/hCentral->GetBinContent(i+1) ;
 	errorD[i] = errorD[i]/hCentral->GetBinContent(i+1) ;
