@@ -25,7 +25,7 @@
 
 using namespace std;
 
-int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
+int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 4)
 {  
   
   string exclDeg = "";
@@ -33,6 +33,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   if(excllevel==1) exclDeg = "_excL";
   if(excllevel==2) exclDeg = "_excM";
   if(excllevel==3) exclDeg = "_excT";
+  if(excllevel==4) exclDeg = "_exc0";
   
   const char* channel = (isMu) ? "mu" : "ele";
   string mjj_RegB = (isMu) ? Form("mjj%s_mu_RegB",exclDeg.c_str()) : Form("mjj%s_ele_RegB",exclDeg.c_str());
@@ -61,7 +62,6 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
     totLumi = 59.83; //2018
     lumiUnc = 1.025; //
   }
-
    
   void makeHistoPositive(TH1D *, bool);
   int PlotRatio(TH1 *h1, TH1 *h2, TH1 *h3, const char *cname);
@@ -654,7 +654,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   PlotRatio(hmjj_RegA_met_up_QCD, hmjj_RegA_QCD, hRelErr_RegA_met_up, "c3");
   PlotRatio(hmjj_RegA_met_down_QCD, hmjj_RegA_QCD, hRelErr_RegA_met_down, "c3");
   leg3->Draw();
-
+  
   // TCanvas *c3 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c3");
   // s = hmjj_RegA_met_down_QCD->GetName();
   // systname = s.substr(0,s.find("down"));
@@ -663,7 +663,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   // c3->SaveAs("output.pdf");
   hmjj_RegA_met_up_QCD->GetXaxis()->SetRangeUser(xmin, xmax);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
   //////////////////////////////// Plot up/down ratio Iso RegB ////////////////////////////////////////////////
   //isShape = true;
   if(isShape){
@@ -785,6 +785,7 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   if(excllevel==1) ddhist_exclabel = "ct_ExcL";
   if(excllevel==2) ddhist_exclabel = "ct_ExcM";
   if(excllevel==3) ddhist_exclabel = "ct_ExcT";
+  if(excllevel==4) ddhist_exclabel = "ct_Exc0";
   string ddhist_up_name = (isMu) ? Form("_%s_mjj_mu_up",ddhist_exclabel.c_str()) : Form("_%s_mjj_ele_up",ddhist_exclabel.c_str());
   string ddhist_down_name = (isMu) ? Form("_%s_mjj_mu_down",ddhist_exclabel.c_str()) : Form("_%s_mjj_ele_down",ddhist_exclabel.c_str());
   string ddhist_nom_name = (isMu) ? Form("_%s_mjj_mu",ddhist_exclabel.c_str()) : Form("_%s_mjj_ele",ddhist_exclabel.c_str());
@@ -829,12 +830,12 @@ int KFDDPlot(int year = 2016, bool isMu = 1, int excllevel = 0)
   PlotRatio(hUp, hNom, 0x0, "c6");
   PlotRatio(hDown, hNom, 0x0, "c6");
   leg6->Draw();
-
+  
   TCanvas *c6 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c6");
   s = hDown->GetName();
   systname = s.substr(0,s.find("down"));
   c6->SaveAs(Form("figs/temp/%s%d.pdf",systname.c_str(),year));
-
+  
   c6->SaveAs("output.pdf");
   hUp->GetYaxis()->SetTitle("");
   hUp->GetXaxis()->SetRangeUser(xmin,xmax);
@@ -1030,38 +1031,21 @@ int ModifyUpDownHisto(TH1F*& hnom, TH1F*& hup, TH1F*& hdown, TH1F *hupbynom, TH1
     double binerror = hupbynom->GetBinError(ibin) + hdownbynom->GetBinError(ibin);
     double bindiff_up = TMath::Abs(hupbynom->GetBinContent(ibin) - 1.0);
     double bindiff_down = TMath::Abs(hdownbynom->GetBinContent(ibin) - 1.0);
-    if(binerror>bindiff or TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
-    //if(TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
-      //cout << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff: " << bindiff << " and binerror: " << binerror << endl ;
+    cout << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_up: " << bindiff_up << " has content: " << hupbynom->GetBinContent(ibin) << endl;
+    cout << hdownbynom->GetName() << " at bin : " << ibin << ", at x = " << hdownbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_down: " << bindiff_down << " has content: " << hdownbynom->GetBinContent(ibin) << endl;
+    cout << hnom->GetName() << " at bin : " << ibin << ", at x = " << hnom->GetXaxis()->GetBinCenter(ibin) << " has content: " << hnom->GetBinContent(ibin) << endl;
+    if(TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
+      //cout << "ZERO for " << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff: " << bindiff << " and binerror: " << binerror << endl ;
       hup->SetBinContent(ibin, hnom->GetBinContent(ibin));
       hup->SetBinError(ibin, hnom->GetBinError(ibin));
       hdown->SetBinContent(ibin, hnom->GetBinContent(ibin));
       hdown->SetBinError(ibin, hnom->GetBinError(ibin));
     }else{
-      double up_content =  hup->GetBinContent(ibin);
-      double down_content =  hdown->GetBinContent(ibin);
-      cout << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_up: " << bindiff_up << " has content: " << hupbynom->GetBinContent(ibin) << endl;
-      cout << hdownbynom->GetName() << " at bin : " << ibin << ", at x = " << hdownbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_down: " << bindiff_down << " has content: " << hdownbynom->GetBinContent(ibin) << endl;
-      cout << hnom->GetName() << " at bin : " << ibin << ", at x = " << hnom->GetXaxis()->GetBinCenter(ibin) << " has content: " << hnom->GetBinContent(ibin) << endl; 
       if(bindiff_up>bindiff_down){
-	if(hupbynom->GetBinContent(ibin)>1.0){
-	  hdown->SetBinContent(ibin, (1.0-bindiff_up)*hnom->GetBinContent(ibin));
-	  hdown->SetBinError(ibin, hnom->GetBinError(ibin));
-	}else{
-	  hdown->SetBinContent(ibin, (1+(1.0-hupbynom->GetBinContent(ibin)))*hnom->GetBinContent(ibin));
-	  hdown->SetBinError(ibin, hnom->GetBinError(ibin));
-	}
+        hdown->SetBinContent(ibin, (2.0-hupbynom->GetBinContent(ibin))*hnom->GetBinContent(ibin));
       }else{
-	if(hdownbynom->GetBinContent(ibin)>1.0){
-	  cout << "Before: " << hup->GetName() << " at bin : " << ibin << ", at x = " << hup->GetXaxis()->GetBinCenter(ibin) << " up has content: " << hup->GetBinContent(ibin) << ", nom content: " << hnom->GetBinContent(ibin) << endl; 
-	  hup->SetBinContent(ibin, (1.0-bindiff_down)*hnom->GetBinContent(ibin));
-	  cout << "After: " << hup->GetName() << " at bin : " << ibin << ", at x = " << hup->GetXaxis()->GetBinCenter(ibin) << " has content: " << hup->GetBinContent(ibin) << endl; 
-	  hup->SetBinError(ibin, hnom->GetBinError(ibin));
-	}else{
-	  hup->SetBinContent(ibin, (1+(1.0-hdownbynom->GetBinContent(ibin)))*hnom->GetBinContent(ibin));
-	  hup->SetBinError(ibin, hnom->GetBinError(ibin));
-	}
-      }//content symmetric condition
+        hup->SetBinContent(ibin, (2.0-hdownbynom->GetBinContent(ibin))*hnom->GetBinContent(ibin));
+      }//content symmetric condition   
     }//binerror condn
   }
   return true;
