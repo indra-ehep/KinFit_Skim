@@ -27,12 +27,16 @@ channel=$3
 injpoint=$4
 rundir=${_CONDOR_SCRATCH_DIR}
 random=${RANDOM}
+clusproc=$5
 
-source gofmc_injp.sh  $mass $year $channel $injpoint $rundir $random
+source gofmc_injp.sh  $mass $year $channel $injpoint $rundir $random $clusproc
 
 printf "Done job at: ";/bin/date
 
 condorOutDir1=/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-mc/local/
 
 rsync -avP  $rundir/* $condorOutDir1
+rsync -avP --include="*/" --include="*.GoodnessOfFit.*.root" --exclude="*"  $rundir/* $condorOutDir1
+rsync -avP --include="*/" --include="limit*" --exclude="*"  $rundir/* $condorOutDir1
+
 printf "Done transfer: ";/bin/date
