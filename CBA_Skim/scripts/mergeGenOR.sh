@@ -15,8 +15,8 @@ basedir=$PWD
 inputdir=$basedir/root_files/QCDRBI
 
 #years="2016 2017 2018"
-years="2018"
-#years="2016 2017"
+#years="2018"
+years="2016 2017 2018"
 
 for year in $years
 do
@@ -29,15 +29,15 @@ do
     for sample in TTGToLL TTGToLNu TTGToQQ
     do
     	echo Processing for sample : $sample
-    	root -l -q -b codes/ModifyTopDirName.C\(\""$inputdir/$year/all_${sample}.root"\",\""${sample}"\",\""${sample}_1.root"\",\""TTG"\"\) > /tmp/out.log 2>&1
-    	echo $PWD/${sample}_1.root >> $fname
+	find $inputdir/$year/ -name "*${sample}*.root" >> $fname
     done
     source ~/scripts/addhisto_file.sh $fname
-    for sample in TTGToLL TTGToLNu TTGToQQ
+    mv histo_merged.root $inputdir/$year/IsoMET_QCD_TTG_${year}.root
+    while read filename
     do
-    	rm ${sample}_1.root 
-    done
-    mv histo_merged.root $inputdir/$year/all_TTG.root
+	echo filename : $filename
+	rm $filename
+    done < $fname
     cat $fname
     
     #TTH
@@ -47,15 +47,15 @@ do
     for sample in TTHToGG TTHToNonbb TTHTobb
     do
     	echo Processing for sample : $sample
-    	root -l -q -b codes/ModifyTopDirName.C\(\""$inputdir/$year/all_${sample}.root"\",\""${sample}"\",\""${sample}_1.root"\",\""TTH"\"\) > /tmp/out.log 2>&1
-    	echo $PWD/${sample}_1.root >> $fname
+	find $inputdir/$year/ -name "*${sample}*.root" >> $fname
     done
     source ~/scripts/addhisto_file.sh $fname
-    for sample in TTHToGG TTHToNonbb TTHTobb
+    mv histo_merged.root $inputdir/$year/IsoMET_QCD_TTH_${year}.root
+    while read filename
     do
-    	rm ${sample}_1.root 
-    done
-    mv histo_merged.root $inputdir/$year/all_TTH.root
+	echo filename : $filename
+	rm $filename
+    done < $fname
     cat $fname
 
 
@@ -66,15 +66,15 @@ do
     for sample in TTWJetsToLNu TTWJetsToQQ
     do
     	echo Processing for sample : $sample
-    	root -l -q -b codes/ModifyTopDirName.C\(\""$inputdir/$year/all_${sample}.root"\",\""${sample}"\",\""${sample}_1.root"\",\""TTW"\"\) > /tmp/out.log 2>&1
-    	echo $PWD/${sample}_1.root >> $fname
+	find $inputdir/$year/ -name "*${sample}*.root" >> $fname
     done
     source ~/scripts/addhisto_file.sh $fname
-    for sample in TTWJetsToLNu TTWJetsToQQ
+    mv histo_merged.root $inputdir/$year/IsoMET_QCD_TTW_${year}.root
+    while read filename
     do
-    	rm ${sample}_1.root 
-    done
-    mv histo_merged.root $inputdir/$year/all_TTW.root
+	echo filename : $filename
+	rm $filename
+    done < $fname
     cat $fname
     
 
@@ -85,15 +85,15 @@ do
     for sample in TTZToLLNuNu TTZToQQ
     do
     	echo Processing for sample : $sample
-    	root -l -q -b codes/ModifyTopDirName.C\(\""$inputdir/$year/all_${sample}.root"\",\""${sample}"\",\""${sample}_1.root"\",\""TTZ"\"\) > /tmp/out.log 2>&1
-    	echo $PWD/${sample}_1.root >> $fname
+	find $inputdir/$year/ -name "*${sample}*.root" >> $fname
     done
     source ~/scripts/addhisto_file.sh $fname
-    for sample in TTZToLLNuNu TTZToQQ
+    mv histo_merged.root $inputdir/$year/IsoMET_QCD_TTZ_${year}.root
+    while read filename
     do
-    	rm ${sample}_1.root 
-    done
-    mv histo_merged.root $inputdir/$year/all_TTZ.root
+	echo filename : $filename
+	rm $filename
+    done < $fname
     cat $fname
 
     rm $fname

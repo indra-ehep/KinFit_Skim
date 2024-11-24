@@ -27,9 +27,10 @@
 
 using namespace std;
 
-int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 2){
+int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 96){
   
-  int PlotRatio(TH1D *h1, TH1D *h2, TH1D *h3, const char *cname);
+  int PlotRatio(TH1D *h1, TH1D *h2, float maxmin, const char *cname);
+  int ModifyUpDownHisto(TH1D*& hnom, TH1D*& hup, TH1D*& hdown, TH1D *hupbynom, TH1D *hdownbynom);
   
   const char *samples[] = {"HplusM080", "HplusM090", "HplusM100", "HplusM140", 
 			   "HplusM150", "HplusM155", "HplusM160", "HplusM120", 
@@ -281,6 +282,37 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 2){
     hRelErrDown->SetBinError(ibin, 0.1*error_frac);
   }
   hRelErrUp->SetTitle(Form("Max. Unc. %5.3lf",(1+error_frac)));
+
+  TH1D *hupbynom = (TH1D *)hSysUp->Clone("hupbynom");
+  hupbynom->Divide(hBase);
+  TH1D *hdownbynom = (TH1D *)hSysDown->Clone("hdownbynom");
+  hdownbynom->Divide(hBase);
+  ModifyUpDownHisto(hBase, hSysUp, hSysDown, hupbynom, hdownbynom);
+  
+  double maxUp = 0.;
+  double maxDown = 0.;
+  double maxvalbin = 0.0;
+  for(int ibin=1;ibin<=hBase->GetNbinsX();ibin++){
+    if(hBase->GetXaxis()->GetBinCenter(ibin)<15.0 or hBase->GetXaxis()->GetBinCenter(ibin)>165.0) continue;
+    double upBin = TMath::Abs(hSysUp->GetBinContent(ibin));
+    double downBin = TMath::Abs(hSysDown->GetBinContent(ibin));
+    double baseBin = TMath::Abs(hBase->GetBinContent(ibin));
+    double fracBase = baseBin/hBase->Integral(); //to avoid edge bins that contains less than 1% of total yield
+    //if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5) or fracBase<0.03) continue;
+    //if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5)) continue;
+    double ratioUp = (baseBin>upBin) ?  upBin/baseBin : baseBin/upBin;
+    double ratioDown = (baseBin>downBin) ?  downBin/baseBin : baseBin/downBin;
+    //cout << "binX : " << hBase->GetXaxis()->GetBinCenter(ibin) << ", ratioUp : " << ratioUp << ", ratioDown: " << ratioDown << endl;
+    double fracUp = 1.0 - ratioUp;
+    double fracDown = 1.0 - ratioDown;
+    maxvalbin = (fracUp>fracDown)?fracUp:fracDown;
+    // maxUp = (fracUp>maxUp)?fracUp:maxUp;
+    // maxDown = (fracDown>maxDown)?fracDown:maxDown;
+    maxUp = (maxvalbin>maxUp)?maxvalbin:maxUp;
+  }
+  double maxupdown = (maxUp>maxDown)?maxUp:maxDown;
+  double errorP = 1.1*maxupdown;
+  cout << "maxupdown: " << errorP << endl;
     
   hBase->SetLineColor(kRed);
   hSysUp->SetLineColor(kBlue);
@@ -294,7 +326,7 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 2){
   hRelErrUp->SetLineWidth(2);
   hRelErrDown->SetLineWidth(2);
 
-  TLegend *leg = new TLegend(0.6729323,0.803838,0.9974937,0.9957356);
+  TLegend *leg = new TLegend(0.6729323,0.753838,0.9974937,0.9957356);
   leg->SetFillColor(10);
   //leg->SetHeader("m_{H^{+}} = 120 GeV, #mu + jets (2016)");
   //leg->SetHeader("m_{H^{+}} = 120 GeV, #it{e} + jets (2016)");
@@ -313,14 +345,17 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 2){
     leg->AddEntry(hSysDown, Form("%s",syst_2018[isysdown]) ,"lfp");
   }
   //leg->AddEntry(hRelErrUp, Form("total uncertainty band") ,"lfp");
-  if(isample==7)
-    hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(120.0)));
-  else
-    hSysUp->SetMaximum(1.2*hSysUp->GetBinContent(hSysUp->FindBin(80.0)));
+  leg->AddEntry((TObject*)0, Form("max. unc. : %4.2lf",100.*maxupdown),"");
+
+  double masspoint = (isample==7)?120.:85.0;
+  double upbincontent = hSysUp->GetBinContent(hSysUp->FindBin(masspoint));
+  double downbincontent = hSysDown->GetBinContent(hSysDown->FindBin(masspoint));
+  double maxbincontent = (upbincontent>downbincontent)?upbincontent:downbincontent;
+  hSysUp->SetMaximum(1.2*maxbincontent);
   hSysUp->SetTitle("");
-  hSysUp->GetXaxis()->SetRangeUser(0.,170.);
-  PlotRatio(hSysUp, hBase, hRelErrUp, "c1");
-  PlotRatio(hSysDown, hBase, hRelErrDown, "c1");
+  hSysUp->GetXaxis()->SetRangeUser(15.,165.);
+  PlotRatio(hSysUp, hBase, errorP, "c1");
+  PlotRatio(hSysDown, hBase, errorP, "c1");
   leg->Draw();
 
   
@@ -328,18 +363,18 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 2){
   if(year==2016){
     string s = syst_2016[isysdown];
     string systname = s.substr(0,s.find("down"));
-    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),systname.c_str(),year));
-    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),systname.c_str(),year));
+    c1->SaveAs(Form("%s_%s%s_sys_%d.pdf",lep.c_str(),systname.c_str(),histname,year));
+    c1->SaveAs(Form("%s_%s%s_sys_%d.png",lep.c_str(),systname.c_str(),histname,year));
   }else if(year==2017){
     string s = syst_2017[isysdown];
     string systname = s.substr(0,s.find("down"));
-    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),systname.c_str(),year));
-    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),systname.c_str(),year));
+    c1->SaveAs(Form("%s_%s%s_sys_%d.pdf",lep.c_str(),systname.c_str(),histname,year));
+    c1->SaveAs(Form("%s_%s%s_sys_%d.png",lep.c_str(),systname.c_str(),histname,year));
   }else if(year==2018){
     string s = syst_2018[isysdown];
     string systname = s.substr(0,s.find("down"));
-    c1->SaveAs(Form("%s_%s_sys_%d.pdf",lep.c_str(),systname.c_str(),year));
-    c1->SaveAs(Form("%s_%s_sys_%d.png",lep.c_str(),systname.c_str(),year));
+    c1->SaveAs(Form("%s_%s%s_sys_%d.pdf",lep.c_str(),systname.c_str(),histname,year));
+    c1->SaveAs(Form("%s_%s%s_sys_%d.png",lep.c_str(),systname.c_str(),histname,year));
   }
   
   c1->SaveAs("output.pdf");
@@ -347,7 +382,7 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 2){
   return true;
 }
 
-int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
+int PlotRatio(TH1D *h1, TH1D *h2, float maxmin, const char *cname)
 {
   //cout<<"h1 name : "<<h1->GetName() <<", Directory : " << h1->GetDirectory()->GetMotherDir()->GetName() << endl;
 
@@ -367,7 +402,10 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     h1->SetStats(0);          // No statistics on upper plot
     h1->Draw("hist");               // Draw h1
     h2->Draw("hist same");         // Draw h2 on top of h1
- 
+
+    // Define the ratio plot
+    TH1D *h3 = (TH1D*)h1->Clone("h3");
+
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6,8,0)
     // Avoid the first label (0) to be clipped.
     TAxis *axis = h1->GetYaxis();
@@ -396,8 +434,6 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     pad2->SetTickx();
     pad2->SetTicky();
  
-    // Define the ratio plot
-    TH1F *h3 = (TH1F*)h1->Clone("h3");
     h3->SetLineColor(h1->GetLineColor());
 
     h3->Sumw2();
@@ -407,8 +443,11 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     // h3->SetMinimum(0.8);  // Define Y ..
     // h3->SetMaximum(1.2); // .. range
 
-    h3->SetMinimum(0.5);  // Define Y ..
-    h3->SetMaximum(1.5); // .. range
+    // h3->SetMinimum(0.5);  // Define Y ..
+    // h3->SetMaximum(1.5); // .. range
+
+    h3->SetMinimum(1-maxmin);  // Define Y ..
+    h3->SetMaximum(1+maxmin); // .. range
 
     // cout << "h3->GetBinContent(h3->FindBin(80.0))" << h3->GetBinContent(h3->FindBin(80.0)) << endl;
     // h3->SetMaximum(1+2*(h3->GetBinContent(h3->FindBin(80.0))-1.));
@@ -444,7 +483,7 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     
     //h3->SetMarkerStyle(21);
     h3->Draw("ep");       // Draw the ratio plot
-    //hAvgErr->Draw("ep same");
+
     
     // h1 settings
     //h1->SetLineColor(kBlue+1);
@@ -465,18 +504,19 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
  
     // Y axis ratio plot settings
     h3->GetYaxis()->SetTitle("#frac{unc}{nominal}");
-    h3->GetYaxis()->SetNdivisions(505);
+    h3->GetYaxis()->SetNdivisions(6,5,0);
     h3->GetYaxis()->SetTitleSize(20);
     h3->GetYaxis()->SetTitleFont(43);
     h3->GetYaxis()->SetTitleOffset(1.55);
     h3->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     h3->GetYaxis()->SetLabelSize(15);
- 
+    h3->GetYaxis()->CenterTitle();
+    
     // X axis ratio plot settings
     h3->GetXaxis()->SetTitle("m_{jj} (GeV)");
     h3->GetXaxis()->SetTitleSize(20);
     h3->GetXaxis()->SetTitleFont(43);
-    h3->GetXaxis()->SetTitleOffset(3.2);
+    h3->GetXaxis()->SetTitleOffset(0.8);
     h3->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     h3->GetXaxis()->SetLabelSize(15);
     
@@ -496,15 +536,44 @@ int PlotRatio(TH1D *h1, TH1D *h2, TH1D *hAvgErr, const char *cname)
     pad2->cd();
     
 
-    TH1F *h3 = (TH1F*)h1->Clone("h3");
+    TH1D *h3 = (TH1D*)h1->Clone("h3");
     h3->SetLineColor(h1->GetLineColor());
     h3->Sumw2();
     h3->SetStats(0);      // No statistics on lower plot
     h3->Divide(h2);
     h3->Draw("ep same");       // Draw the ratio plot
-    //hAvgErr->Draw("ep same");
     pad1->cd();
   }
 
   return true;
+}
+
+
+int ModifyUpDownHisto(TH1D*& hnom, TH1D*& hup, TH1D*& hdown, TH1D *hupbynom, TH1D *hdownbynom)
+{
+  
+  for(int ibin=1; ibin<hupbynom->GetNbinsX(); ibin++){
+    double bindiff = TMath::Abs(hupbynom->GetBinContent(ibin) - hdownbynom->GetBinContent(ibin));
+    double binerror = hupbynom->GetBinError(ibin) + hdownbynom->GetBinError(ibin);
+    double bindiff_up = TMath::Abs(hupbynom->GetBinContent(ibin) - 1.0);
+    double bindiff_down = TMath::Abs(hdownbynom->GetBinContent(ibin) - 1.0);
+    // cout << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_up: " << bindiff_up << " has content: " << hupbynom->GetBinContent(ibin) << endl;
+    // cout << hdownbynom->GetName() << " at bin : " << ibin << ", at x = " << hdownbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_down: " << bindiff_down << " has content: " << hdownbynom->GetBinContent(ibin) << endl;
+    // cout << hnom->GetName() << " at bin : " << ibin << ", at x = " << hnom->GetXaxis()->GetBinCenter(ibin) << " has content: " << hnom->GetBinContent(ibin) << endl;
+    if(TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
+      //cout << "ZERO for " << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff: " << bindiff << " and binerror: " << binerror << endl ;
+      hup->SetBinContent(ibin, hnom->GetBinContent(ibin));
+      hup->SetBinError(ibin, hnom->GetBinError(ibin));
+      hdown->SetBinContent(ibin, hnom->GetBinContent(ibin));
+      hdown->SetBinError(ibin, hnom->GetBinError(ibin));
+    }else{
+      if(bindiff_up>bindiff_down){
+        hdown->SetBinContent(ibin, (2.0-hupbynom->GetBinContent(ibin))*hnom->GetBinContent(ibin));
+      }else{
+        hup->SetBinContent(ibin, (2.0-hdownbynom->GetBinContent(ibin))*hnom->GetBinContent(ibin));
+      }//content symmetric condition   
+    }//binerror condn
+  }
+  return true;
+  
 }

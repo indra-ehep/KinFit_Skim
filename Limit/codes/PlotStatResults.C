@@ -31,6 +31,7 @@
 #include "TF1.h"
 #include "TPaveText.h"
 #include "TStyle.h"
+#include "TArrow.h"
 
 using namespace std;
 
@@ -47,25 +48,12 @@ TPaveText * paveText(double minX, double minY, double maxX, double maxY, int lin
 int PlotStatResults(int mass = 80)
 {
   //int mass = 100;
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_short/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/32_elereliso_unbld_exc0_stat/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/33_elereliso_bld_excLMT_stat/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/34_elereliso_bld_excLMT_stat/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t1K_test/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t100_test_ten-sigma/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t100_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/83_mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/83_mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/mu_ele_Run2_x200_t500_test_unbound_qcdrate_ss-r/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/82_mu_ele_Run2_x200_t500_test_unbound_qcdrate/mu_ele_Run2_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/TIFRAPAR-2023-01-15/82_mu_ele_Run2_x200_t500_test_unbound_qcdrate/Cat1_Inc/Mass%d/",mass);
-  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t10_test_unbound_qcdrate-r/Cat1_Inc/Mass%d/",mass);
-  string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele_Run2_x200_t500_test_unbound_qcdrate-r/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele/Cat1_Inc/Mass%d/",mass);
+  string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/Imperial-PA-2024-10-08/14_CR-Stat_09_exc0_unblinded_with-qcdrate-bound/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
   
-  // //////////////////// Pull test ////////////////////////////////////////////////
-  // TFile *fPull = TFile::Open((indir+"pull_result.root").c_str());
-  // TCanvas *postfit_dist = (TCanvas *)fPull->Get("asdf");
+  //////////////////// Pull test ////////////////////////////////////////////////
+  TFile *fPull = TFile::Open((indir+"pull_result.root").c_str());
+  TCanvas *postfit_dist = (TCanvas *)fPull->Get("asdf");
   // TCanvas *nuisances_dist = (TCanvas *)fPull->Get("nuisances");
   // TCanvas *postfiterr_dist = (TCanvas *)fPull->Get("post_fit_errs");
   
@@ -74,23 +62,30 @@ int PlotStatResults(int mass = 80)
   // TH1F *hist_prefit = (TH1F *)fPull->Get("prefit_nuisancs");
   // TH1F *hist_err_b = (TH1F *)fPull->Get("errors_b");
   // TH1F *hist_err_s = (TH1F *)fPull->Get("errors_s");
+
   // double minX = hist_prefit->GetXaxis()->GetBinCenter(1);
   // double maxX = hist_prefit->GetXaxis()->GetBinCenter(hist_prefit->GetNbinsX());
   
   // const int nofBinsPerCanvas = 50;
   // int nofCanvases = TMath::Floor(grfit_b_g->GetN()/nofBinsPerCanvas) + 1;
-  
-  // postfit_dist->Draw();
-  // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.pdf",indir.c_str(),mass));
-  // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.png",indir.c_str(),mass));
+
+  // // postfit_dist->Draw();
+  // // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.pdf",indir.c_str(),mass));
+  // // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.png",indir.c_str(),mass));
+
+
   // //nuisances_dist->Draw();
   // // postfit_dist->Draw();
   // //postfiterr_dist->Draw();
-  
-  // cout << "N " << grfit_b_g->GetN() << endl;  
+
+  // cout << "grfit_b_g " << grfit_b_g << endl;
+  // cout << "grfit_b_s " << grfit_b_s << endl;
+  // cout << "N " << grfit_b_g->GetN() << endl;
+
   // cout << "nofCanvases : " << nofCanvases << "," << maxX << endl;
   // gStyle->SetOptStat(0);
-  
+
+
   // TLegend* leg = new TLegend(0.81,0.84,0.99,0.99,NULL,"brNDC");
   // leg->SetTextSize(0.04);
   // leg->SetFillColor(0);
@@ -145,9 +140,25 @@ int PlotStatResults(int mass = 80)
 
     
   // }
-  
 
-  // ///////////////////////////////////////////////////////////////////
+  
+  TObject *obj;
+  TIter next(postfit_dist->GetListOfPrimitives());
+  while ((obj=next())) {
+    //cout << "0:Reading: " << obj->GetName() <<" of type "<<obj->ClassName()<< endl;
+    if(!strcmp(obj->GetName(),"pulls")){
+        TH1 *h1 = (TH1*)obj;
+	string title(h1->GetTitle());
+	title += Form(" (m_{H^{#pm}} = %d GeV)",mass);
+	h1->SetTitle(title.c_str());
+        TCanvas *ch = new TCanvas("ch","ch");
+        h1->Draw("e1");
+	ch->SaveAs(Form("%spostfit-dist_m%d.pdf",indir.c_str(),mass));
+	ch->SaveAs(Form("%spostfit-dist_m%d.png",indir.c_str(),mass));
+    }
+  }//obj loop
+
+  ///////////////////////////////////////////////////////////////////
   // ////////////////// Parameter Scan ///////////////////////////////////
   // ifstream ftext((indir+"pararray.txt").c_str());
   // string nuisance;
@@ -226,7 +237,6 @@ int PlotStatResults(int mass = 80)
 
   // // ///////////////////////////////////////////////////////////////////
   // /////////////////////////// GoF ///////////////////////////////////
-
   // TH1F *histData = new TH1F("histData", "histData", 50, 0., 300.);
   // TH1F *histToy = new TH1F("histToy", "histToy", 50, 0., 300.);
   // histData->SetLineColor(kRed);
@@ -268,7 +278,8 @@ int PlotStatResults(int mass = 80)
   // legGoF->SetTextSize(0.04);
   // legGoF->SetFillColor(0);
   // TString meanToy = TString(Form("%3.1f #pm %3.1f",histToy->GetMean(),histToy->GetStdDev()));
-  // TString legToy = "#splitline{Expected from 1000 Toys}{(Mean ="+meanToy+")}";
+  // TString histcount = to_string(int(histToy->GetEntries()));
+  // TString legToy = "#splitline{Expected from "+histcount+" Toys}{(Mean ="+meanToy+")}";
   // legGoF->AddEntry(histToy, legToy,"L");
   // TString legData = Form("#splitline{Observed}{(%3.1f)}",histData->GetMean());
   // legGoF->AddEntry(histData,legData,"L");
@@ -313,9 +324,9 @@ int PlotStatResults(int mass = 80)
   // c1->SaveAs(Form("%sgof_m%d.png",indir.c_str(),mass));
   // c1->SaveAs(Form("%sgof_m%d.pdf",indir.c_str(),mass));
 
-  // // cout <<"Mean : " << histData->GetMean() << endl;;
-  // // cout <<"Total Integral : " << fgaus->Integral(0,1000.) << endl;;
-  // // cout <<"Integral : " << fgaus->Integral(histData->GetMean(),1000.)/fgaus->Integral(0,1000.) << endl;;
+  // cout <<"Mean : " << histData->GetMean() << endl;;
+  // cout <<"Total Integral : " << fgaus->Integral(0,1000.) << endl;;
+  // cout <<"Integral : " << fgaus->Integral(histData->GetMean(),1000.)/fgaus->Integral(0,1000.) << endl;;
   // /////////////////////////////////////////////////////////////////////
 
   // /////////////////////////// GoF MC ///////////////////////////////////
@@ -330,8 +341,12 @@ int PlotStatResults(int mass = 80)
   //   id++;
   // }
   // flimit.close();
-  
-  // TH1F *histToy_0 = new TH1F("histToy_0", "histToy_0", 80, 0., 800.);
+
+  // float minRangeX = 350., maxRangeX = 700. ;
+  // int nBinsX = 35;
+  // //TH1F *histToy_0 = new TH1F("histToy_0", "histToy_0", 80, 0., 800.);
+  // //TH1F *histToy_0 = new TH1F("histToy_0", "histToy_0", 140, 800., 2200.);
+  // TH1F *histToy_0 = new TH1F("histToy_0", "histToy_0", nBinsX, minRangeX,maxRangeX);
   // histToy_0->SetLineColor(kRed);  
   // //histToy_0->SetLineWidth(2);  
   // histToy_0->SetTitle("");
@@ -347,6 +362,8 @@ int PlotStatResults(int mass = 80)
   // histToy_0->SetLineColor(kBlack);
 
   // TFile *fgof_toy_M = TFile::Open((indir+Form("higgsCombine_SRMR_M.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
+  // // TFile *fgof_toy_0 = TFile::Open((indir+Form("higgsCombine_SRMR_M.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
+  // // TFile *fgof_toy_1 = TFile::Open((indir+Form("higgsCombine_SRMR_M.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
   // TFile *fgof_toy_0 = TFile::Open((indir+Form("higgsCombine_SRMR_0.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
   // TFile *fgof_toy_1 = TFile::Open((indir+Form("higgsCombine_SRMR_1.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
   // TTree *limit = (TTree *)fgof_toy_M->Get("limit");
@@ -410,13 +427,13 @@ int PlotStatResults(int mass = 80)
   // legToy = Form("#splitline{Expected from %d Toys}{(Mean = %s)}",int(histToy_1->GetEntries()),meanToy.Data());
   // legGoF_1->AddEntry(histToy_1, legToy,"L");
   
-  // TF1 *fgaus_0 = new TF1("fgaus_0","gaus",0,1000);
+  // TF1 *fgaus_0 = new TF1("fgaus_0","gaus",minRangeX,maxRangeX);
   // fgaus_0->SetLineColor(kGreen+2);
   // fgaus_0->SetNpx(1000);
-  // TF1 *fgaus_M = new TF1("fgaus_M","gaus",0,1000);
+  // TF1 *fgaus_M = new TF1("fgaus_M","gaus",minRangeX,maxRangeX);
   // fgaus_M->SetLineColor(kGreen+2);
   // fgaus_M->SetNpx(1000);
-  // TF1 *fgaus_1 = new TF1("fgaus_1","gaus",0,1000);
+  // TF1 *fgaus_1 = new TF1("fgaus_1","gaus",minRangeX,maxRangeX);
   // fgaus_1->SetLineColor(kGreen+2);
   // fgaus_1->SetNpx(1000);
 
@@ -442,6 +459,10 @@ int PlotStatResults(int mass = 80)
   // TCanvas *cGoF_MC = new TCanvas("cGoF_MC","cGoF_MC",1800,600);
   // cGoF_MC->Divide(3,1);
 
+  // histToy_0->SetMaximum(2.0*histToy_0->GetBinContent(histToy_0->GetMaximumBin()));
+  // histToy_M->SetMaximum(2.0*histToy_M->GetBinContent(histToy_M->GetMaximumBin()));
+  // histToy_1->SetMaximum(2.0*histToy_1->GetBinContent(histToy_1->GetMaximumBin()));
+  
   // cGoF_MC->cd(1)->SetTickx();
   // cGoF_MC->cd(1)->SetTicky();
   // histToy_0->Draw();
@@ -470,205 +491,229 @@ int PlotStatResults(int mass = 80)
   // cGoF_MC->SaveAs(Form("%sgof_m%d.pdf",indir.c_str(),mass));
   // /////////////////////////////////////////////////////////////////////
 
-  /////////////////////////// Bias Test ///////////////////////////////////
+  // /////////////////////////// Bias Test ///////////////////////////////////
   
-  ifstream flimit((indir+"limit.txt").c_str());
-  string sline;
-  vector<string> lsig;
-  vector<double> brval;
-  float br[3]; char lname[3][10];
-  int id = 0;
-  while(getline(flimit,sline)){
-    stringstream s(sline);
-    s >> lname[id] >> br[id] ;
-    id++;
-  }
+  // ifstream flimit((indir+"limit.txt").c_str());
+  // string sline;
+  // vector<string> lsig;
+  // vector<double> brval;
+  // float br[3]; char lname[3][10];
+  // int id = 0;
+  // while(getline(flimit,sline)){
+  //   stringstream s(sline);
+  //   s >> lname[id] >> br[id] ;
+  //   id++;
+  // }
   
-  lsig.push_back(lname[0]);
-  brval.push_back(br[0]);
-  lsig.push_back(lname[2]);
-  brval.push_back(br[2]);
-  lsig.push_back(lname[1]);
-  brval.push_back(br[1]);
+  // lsig.push_back(lname[0]);
+  // brval.push_back(br[0]);
+  // lsig.push_back(lname[2]);
+  // brval.push_back(br[2]);
+  // lsig.push_back(lname[1]);
+  // brval.push_back(br[1]);
   
-  for(int ival = 0; ival < 3 ; ival++){
-    cout <<"lname "<<lsig[ival] <<", Br : " << brval[ival] << endl;
-  }
+  // for(int ival = 0; ival < 3 ; ival++){
+  //   cout <<"lname "<<lsig[ival] <<", Br : " << brval[ival] << endl;
+  // }
   
-  TH1F **hDiffBr, **hDiffSigBr;
-  hDiffBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
-  hDiffSigBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
+  // TH1F **hDiffBr, **hDiffSigBr;
+  // hDiffBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
+  // hDiffSigBr = new TH1F*[brval.size()+2]; //+2 for Br = 0 and Br =1
   
-  for(int ih = 0; ih < (int(brval.size())+2) ; ih++){
-  //for(int ih = 1; ih < 2 ; ih++){
-    string BrName, fname_extn ;
-    Double_t BRInj;
-    if(ih==0){
-      fname_extn = "0";
-      BrName = "BR_{inj} = 0";
-      BRInj = 0.0;
-    }else if(ih==int(brval.size()+1)){
-      fname_extn = "1"; //actually 1
-      BrName = "BR_{inj} = 1" ;
-      BRInj = 1.0; //ideally 1
-    }else{
-      fname_extn = lsig[ih-1]; //actually 1
-      if(fname_extn=="1sL")
-  	BrName = "BR_{inj} = -1#sigmaCL_{s}";
-      else if (fname_extn=="1sH")
-  	BrName = "BR_{inj} = +1#sigmaCL_{s}";
-      else if (fname_extn=="M")
-  	BrName = "BR_{inj} = Median";
-      BRInj = brval[ih-1];
-    }
-    cout << "ih " << ih << ", fname_extn : " << fname_extn << ", BrName : " << BrName << endl;
+  // for(int ih = 0; ih < (int(brval.size())+2) ; ih++){
+  // //for(int ih = 1; ih < 2 ; ih++){
+  //   string BrName, fname_extn ;
+  //   Double_t BRInj;
+  //   if(ih==0){
+  //     fname_extn = "0";
+  //     BrName = "BR_{inj} = 0";
+  //     BRInj = 0.0;
+  //   }else if(ih==int(brval.size()+1)){
+  //     fname_extn = "1"; //actually 1
+  //     BrName = "BR_{inj} = 1" ;
+  //     BRInj = 1.0; //ideally 1
+  //   }else{
+  //     fname_extn = lsig[ih-1]; //actually 1
+  //     if(fname_extn=="1sL")
+  // 	BrName = "BR_{inj} = -1#sigmaCL_{s}";
+  //     else if (fname_extn=="1sH")
+  // 	BrName = "BR_{inj} = +1#sigmaCL_{s}";
+  //     else if (fname_extn=="M")
+  // 	BrName = "BR_{inj} = Median";
+  //     BRInj = brval[ih-1];
+  //   }
+  //   cout << "ih " << ih << ", fname_extn : " << fname_extn << ", BrName : " << BrName << ", BRInj : " << BRInj << ", brval.size() : " << brval.size() << endl;
     
-    hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit} - BR_{inj}): %s",BrName.c_str()),50,-0.1,0.1);
-    hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit} - BR_{inj})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
-    // hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit}): %s",BrName.c_str()),50,-0.1,0.1);
-    // hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
-    TFile *fBT = TFile::Open((indir+Form("fitDiagnosticsBR_%s.root",fname_extn.c_str())).c_str());
+  //   hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit} - BR_{inj}): %s",BrName.c_str()),50,-0.1,0.1);
+  //   hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit} - BR_{inj})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
+  //   // hDiffBr[ih] = new TH1F(Form("hDiffBr_%d",ih),Form("(BR_{fit}): %s",BrName.c_str()),50,-0.1,0.1);
+  //   // hDiffSigBr[ih] = new TH1F(Form("hDiffSigBr_%d",ih),Form("(BR_{fit})/Br_{err}: %s",BrName.c_str()),50,-10.,10.);
+  //   TFile *fBT = TFile::Open((indir+Form("fitDiagnosticsBR_%s.root",fname_extn.c_str())).c_str());
     
-    TTree *trbias = (TTree *)fBT->Get("tree_fit_sb");
-    Int_t fit_status;
-    Double_t BR,BRErr,BRLoErr,BRHiErr;
-    trbias->SetBranchAddress("fit_status", &fit_status);
-    trbias->SetBranchAddress("BR", &BR);
-    trbias->SetBranchAddress("BRErr", &BRErr);
-    trbias->SetBranchAddress("BRLoErr", &BRLoErr);
-    trbias->SetBranchAddress("BRHiErr", &BRHiErr);
+  //   TTree *trbias = (TTree *)fBT->Get("tree_fit_sb");
+  //   Int_t fit_status;
+  //   Double_t BR,BRErr,BRLoErr,BRHiErr;
+  //   trbias->SetBranchAddress("fit_status", &fit_status);
+  //   trbias->SetBranchAddress("BR", &BR);
+  //   trbias->SetBranchAddress("BRErr", &BRErr);
+  //   trbias->SetBranchAddress("BRLoErr", &BRLoErr);
+  //   trbias->SetBranchAddress("BRHiErr", &BRHiErr);
 
-    ///////// Dangerous ////////////
-    //BRInj = 0.0;
-    ///////// Dangerous ////////////
+  //   ///////// Dangerous ////////////
+  //   //BRInj = 0.0;
+  //   ///////// Dangerous ////////////
 
-    int nofconv = 0;
-    // cout << "Nof Events : " << trbias->GetEntries() << endl;
-    for(int ie=0;ie<trbias->GetEntries();ie++){
-      trbias->GetEntry(ie);
-      // cout << "ie : " << ie << ", fit_status : " << fit_status << endl;
-      if(fit_status==0){
-    	hDiffBr[ih]->Fill(BR-BRInj);
-    	double err = BRHiErr*(BR-BRInj<0)+BRLoErr*(BR-BRInj>0);
-	double fillVal = (BR-BRInj)/err;
-    	// cout <<"BR :" << BR << ", BRInj : " << BRInj << ", (BR-BRInj>0) : " << (BR-BRInj>0) << ", (BR-BRInj<0) " << (BR-BRInj<0) 
-	//      <<", (LErr,HErr) : (" << BRLoErr <<", " << BRHiErr << ") " 
-	//      <<", err : " << err << ", fillVal : " << fillVal
-	//      << endl;
-    	if(!TMath::AreEqualAbs(err,0.0,1.e-5))
-    	  hDiffSigBr[ih]->Fill(fillVal);
-    	nofconv++;
-      }
-    }
-    delete fBT;
-  }
+  //   int nofconv = 0;
+  //   // cout << "Nof Events : " << trbias->GetEntries() << endl;
+  //   for(int ie=0;ie<trbias->GetEntries();ie++){
+  //     trbias->GetEntry(ie);
+  //     // cout << "ie : " << ie << ", fit_status : " << fit_status << endl;
+  //     //if(fit_status==0){
+  //     hDiffBr[ih]->Fill(BR-BRInj);
+  //     double err = BRHiErr*(BR-BRInj<0)+BRLoErr*(BR-BRInj>0);
+  //     double fillVal = (BR-BRInj)/err;
+  //     // cout <<"BR :" << BR << ", BRInj : " << BRInj << ", (BR-BRInj>0) : " << (BR-BRInj>0) << ", (BR-BRInj<0) " << (BR-BRInj<0) 
+  //     //      <<", (LErr,HErr) : (" << BRLoErr <<", " << BRHiErr << ") " 
+  //     //      <<", err : " << err << ", fillVal : " << fillVal
+  //     //      << endl;
+  //     if(!TMath::AreEqualAbs(err,0.0,1.e-5))
+  // 	hDiffSigBr[ih]->Fill(fillVal);
+  //     nofconv++;
+  //     //}
+  //   }
+  //   delete fBT;
+  // }
 
-  TF1 *fn = new TF1("fn","gaus",hDiffSigBr[0]->GetMean()-2*hDiffSigBr[0]->GetRMS(),hDiffSigBr[0]->GetMean()+2*hDiffSigBr[0]->GetRMS());
-  fn->SetParameter(1,hDiffSigBr[0]->GetMean());
-  fn->SetParameter(2,hDiffSigBr[0]->GetRMS());
-  fn->SetNpx(1000);
+  // TF1 *fn = new TF1("fn","gaus",hDiffSigBr[0]->GetMean()-2*hDiffSigBr[0]->GetRMS(),hDiffSigBr[0]->GetMean()+2*hDiffSigBr[0]->GetRMS());
+  // fn->SetParameter(1,hDiffSigBr[0]->GetMean());
+  // fn->SetParameter(2,hDiffSigBr[0]->GetRMS());
+  // fn->SetNpx(1000);
   
-  gStyle->SetOptStat(0); 
-  gStyle->SetOptFit(0);
+  // gStyle->SetOptStat(0); 
+  // gStyle->SetOptFit(0);
 
-  TCanvas *cDiff = new TCanvas("cDiff","cDiff",1200,800);
-  cDiff->Divide(2,2);
+  // TCanvas *cDiff = new TCanvas("cDiff","cDiff",1200,800);
+  // cDiff->Divide(2,2);
+  // for(int ih = 0; ih < (int(brval.size())+2) ; ih++){
+  // //for(int ih = 0; ih < 1 ; ih++){
+  //   string BrName, fname_extn ;
+  //   Double_t BRInj;
+  //   if(ih==0){
+  //     // fname_extn = "0";
+  //     BrName = "BR_{inj} = 0";
+  //     // BRInj = 0.0;
+  //   }else if(ih==int(brval.size()+1)){
+  //     // fname_extn = "1"; //actually 1
+  //     BrName = "BR_{inj} = 1" ;
+  //     // BRInj = 1.0; //ideally 1
+  //   }else{
+  //     // fname_extn = lsig[ih-1]; //actually 1
+  //     if(fname_extn=="1sL")
+  // 	BrName = "BR_{inj} = -1#sigmaCL_{s}";
+  //     else if (fname_extn=="1sH")
+  // 	BrName = "BR_{inj} = +1#sigmaCL_{s}";
+  //     else if (fname_extn=="M")
+  // 	BrName = "BR_{inj} = Median";
+  //     // BRInj = brval[ih-1];
+  //   }
+    
+  //   cDiff->cd(ih+1);
+  //   cDiff->cd(ih+1)->SetTickx();
+  //   cDiff->cd(ih+1)->SetTicky();
+  //   hDiffBr[ih]->Draw();
+  //   hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})");
+  //   //hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit})");
+  //   hDiffBr[ih]->GetYaxis()->SetTitle("Entries/bin");
+  //   hDiffBr[ih]->GetXaxis()->SetTitleOffset(1.2);
+  //   hDiffBr[ih]->GetYaxis()->SetTitleOffset(1.4);
+  //   hDiffBr[ih]->SetMaximum(1.2*hDiffBr[ih]->GetBinContent(hDiffBr[ih]->GetMaximumBin()));
+    
+  //   TLegend* legDiff = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
+  //   legDiff->SetBorderSize(0);
+  //   legDiff->SetTextSize(0.04);
+  //   legDiff->SetFillColor(0);
+  //   legDiff->AddEntry(hDiffBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
+  //   legDiff->AddEntry(hDiffBr[ih], Form("nToys : %d",int(hDiffBr[ih]->GetEntries())),"");
+  //   legDiff->AddEntry(hDiffBr[ih], Form("%s",BrName.c_str()),"L");
+  //   legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("Mean : %3.2e",hDiffBr[ih]->GetMean())),"L");
+  //   legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("RMS : %3.2e",hDiffBr[ih]->GetRMS())),"L");
+  //   legDiff->DrawClone();
+
+  // }
   
-  TCanvas *cBias = new TCanvas("cBias","cBias",1200,800);
-  cBias->Divide(2,2);
-  for(int ih = 0; ih < (int(brval.size())+1) ; ih++){
-  //for(int ih = 0; ih < 1 ; ih++){
-    string BrName, fname_extn ;
-    Double_t BRInj;
-    if(ih==0){
-      fname_extn = "0";
-      BrName = "BR_{inj} = 0";
-      BRInj = 0.0;
-    }else if(ih==int(brval.size()+1)){
-      fname_extn = "1"; //actually 1
-      BrName = "BR_{inj} = 1" ;
-      BRInj = 1.0; //ideally 1
-    }else{
-      fname_extn = lsig[ih-1]; //actually 1
-      if(fname_extn=="1sL")
-  	BrName = "BR_{inj} = -1#sigmaCL_{s}";
-      else if (fname_extn=="1sH")
-  	BrName = "BR_{inj} = +1#sigmaCL_{s}";
-      else if (fname_extn=="M")
-  	BrName = "BR_{inj} = Median";
-      BRInj = brval[ih-1];
-    }
+  // TCanvas *cBias = new TCanvas("cBias","cBias",1200,800);
+  // cBias->Divide(2,2);
+  // for(int ih = 0; ih < (int(brval.size())+1) ; ih++){
+  // //for(int ih = 0; ih < 1 ; ih++){
+  //   string BrName, fname_extn ;
+  //   Double_t BRInj;
+  //   if(ih==0){
+  //     // fname_extn = "0";
+  //     BrName = "BR_{inj} = 0";
+  //     // BRInj = 0.0;
+  //   }else if(ih==int(brval.size()+1)){
+  //     // fname_extn = "1"; //actually 1
+  //     BrName = "BR_{inj} = 1" ;
+  //     // BRInj = 1.0; //ideally 1
+  //   }else{
+  //     // fname_extn = lsig[ih-1]; //actually 1
+  //     if(fname_extn=="1sL")
+  // 	BrName = "BR_{inj} = -1#sigmaCL_{s}";
+  //     else if (fname_extn=="1sH")
+  // 	BrName = "BR_{inj} = +1#sigmaCL_{s}";
+  //     else if (fname_extn=="M")
+  // 	BrName = "BR_{inj} = Median";
+  //     // BRInj = brval[ih-1];
+  //   }
     
-    cDiff->cd(ih+1);
-    cDiff->cd(ih+1)->SetTickx();
-    cDiff->cd(ih+1)->SetTicky();
-    hDiffBr[ih]->Draw();
-    hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})");
-    //hDiffBr[ih]->GetXaxis()->SetTitle("(BR_{fit})");
-    hDiffBr[ih]->GetYaxis()->SetTitle("Entries/bin");
-    hDiffBr[ih]->GetXaxis()->SetTitleOffset(1.2);
-    hDiffBr[ih]->GetYaxis()->SetTitleOffset(1.4);
-    hDiffBr[ih]->SetMaximum(1.2*hDiffBr[ih]->GetBinContent(hDiffBr[ih]->GetMaximumBin()));
     
-    TLegend* legDiff = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
-    legDiff->SetBorderSize(0);
-    legDiff->SetTextSize(0.04);
-    legDiff->SetFillColor(0);
-    legDiff->AddEntry(hDiffBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
-    legDiff->AddEntry(hDiffBr[ih], Form("nToys : %d",int(hDiffBr[ih]->GetEntries())),"");
-    legDiff->AddEntry(hDiffBr[ih], Form("%s",BrName.c_str()),"L");
-    legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("Mean : %3.2e",hDiffBr[ih]->GetMean())),"L");
-    legDiff->AddEntry(hDiffBr[ih], Form("%s",Form("RMS : %3.2e",hDiffBr[ih]->GetRMS())),"L");
-    legDiff->DrawClone();
-
+  //   //cout <<"ih " << ih << ", hist " << hDiffSigBr[ih] <<endl;
+  //   cBias->cd(ih+1);
+  //   cBias->cd(ih+1)->SetTickx();
+  //   cBias->cd(ih+1)->SetTicky();
+  //   hDiffSigBr[ih]->Draw();
+  //   fn->SetParameter(1,hDiffSigBr[ih]->GetMean());
+  //   fn->SetParameter(2,hDiffSigBr[ih]->GetRMS());
+  //   fn->SetRange(hDiffSigBr[ih]->GetMean()-2*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+2*hDiffSigBr[ih]->GetRMS());
+  //   hDiffSigBr[ih]->Fit(fn,"NQLR");
+  //   //cout <<" Mean " << fn->GetParameter(1)  << ", width : " <<fn->GetParameter(2) << endl;
+  //   fn->SetRange(hDiffSigBr[ih]->GetMean()-5*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+5*hDiffSigBr[ih]->GetRMS());
+  //   //hDiffSigBr[ih]->Draw("hist sames");
+  //   fn->DrawClone("same");
+  //   hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})/Br_{err}");
+  //   //hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit})/Br_{err}");
+  //   hDiffSigBr[ih]->GetYaxis()->SetTitle("Entries/bin");
+  //   hDiffSigBr[ih]->GetXaxis()->SetTitleOffset(1.2);
+  //   hDiffSigBr[ih]->GetYaxis()->SetTitleOffset(1.4);
+  //   hDiffSigBr[ih]->SetMaximum(1.5*hDiffSigBr[ih]->GetBinContent(hDiffSigBr[ih]->GetMaximumBin()));
     
-    //cout <<"ih " << ih << ", hist " << hDiffSigBr[ih] <<endl;
-    cBias->cd(ih+1);
-    cBias->cd(ih+1)->SetTickx();
-    cBias->cd(ih+1)->SetTicky();
-    hDiffSigBr[ih]->Draw();
-    fn->SetParameter(1,hDiffSigBr[ih]->GetMean());
-    fn->SetParameter(2,hDiffSigBr[ih]->GetRMS());
-    fn->SetRange(hDiffSigBr[ih]->GetMean()-2*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+2*hDiffSigBr[ih]->GetRMS());
-    hDiffSigBr[ih]->Fit(fn,"NQLR");
-    //cout <<" Mean " << fn->GetParameter(1)  << ", width : " <<fn->GetParameter(2) << endl;
-    fn->SetRange(hDiffSigBr[ih]->GetMean()-5*hDiffSigBr[ih]->GetRMS(),hDiffSigBr[ih]->GetMean()+5*hDiffSigBr[ih]->GetRMS());
-    //hDiffSigBr[ih]->Draw("hist sames");
-    fn->DrawClone("same");
-    hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit} - BR_{inj})/Br_{err}");
-    //hDiffSigBr[ih]->GetXaxis()->SetTitle("(BR_{fit})/Br_{err}");
-    hDiffSigBr[ih]->GetYaxis()->SetTitle("Entries/bin");
-    hDiffSigBr[ih]->GetXaxis()->SetTitleOffset(1.2);
-    hDiffSigBr[ih]->GetYaxis()->SetTitleOffset(1.4);
-    hDiffSigBr[ih]->SetMaximum(1.2*hDiffSigBr[ih]->GetBinContent(hDiffSigBr[ih]->GetMaximumBin()));
-    
-    TLegend* legBias = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
-    legBias->SetBorderSize(0);
-    legBias->SetTextSize(0.04);
-    legBias->SetFillColor(0);
-    legBias->AddEntry(hDiffSigBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
-    legBias->AddEntry(hDiffSigBr[ih], Form("nToys : %d",int(hDiffSigBr[ih]->GetEntries())),"");
-    legBias->AddEntry(hDiffSigBr[ih], Form("%s",BrName.c_str()),"L");
-    legBias->AddEntry(fn, fn->GetTitle(),"L");
-    legBias->AddEntry(fn, Form("mean : %4.3f",fn->GetParameter(1)),"L");
-    legBias->AddEntry(fn, Form("#sigma : %4.3f",fn->GetParameter(2)),"L");
-    legBias->DrawClone();
+  //   TLegend* legBias = new TLegend(0.15,0.50,0.30,0.85,NULL,"brNDC");
+  //   legBias->SetBorderSize(0);
+  //   legBias->SetTextSize(0.04);
+  //   legBias->SetFillColor(0);
+  //   legBias->AddEntry(hDiffSigBr[ih], Form("m_{H^{#pm}} = %d GeV",mass),"");
+  //   legBias->AddEntry(hDiffSigBr[ih], Form("nToys : %d",int(hDiffSigBr[ih]->GetEntries())),"");
+  //   legBias->AddEntry(hDiffSigBr[ih], Form("%s",BrName.c_str()),"L");
+  //   legBias->AddEntry(fn, fn->GetTitle(),"L");
+  //   legBias->AddEntry(fn, Form("mean : %4.3f",fn->GetParameter(1)),"L");
+  //   legBias->AddEntry(fn, Form("#sigma : %4.3f",fn->GetParameter(2)),"L");
+  //   legBias->DrawClone();
 
-  }
-  // cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.png",indir.c_str(),mass));
-  // cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.pdf",indir.c_str(),mass));
+  // }
+  // // cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.png",indir.c_str(),mass));
+  // // cDiff->SaveAs(Form("%sdiff_no-subtraction_m%d.pdf",indir.c_str(),mass));
 
-  // cBias->SaveAs(Form("%sbias_no-subtraction_m%d.png",indir.c_str(),mass));
-  // cBias->SaveAs(Form("%sbias_no-subtraction_m%d.pdf",indir.c_str(),mass));
+  // // cBias->SaveAs(Form("%sbias_no-subtraction_m%d.png",indir.c_str(),mass));
+  // // cBias->SaveAs(Form("%sbias_no-subtraction_m%d.pdf",indir.c_str(),mass));
 
-  cDiff->SaveAs(Form("%sdiff_m%d.png",indir.c_str(),mass));
-  cDiff->SaveAs(Form("%sdiff_m%d.pdf",indir.c_str(),mass));
+  // cDiff->SaveAs(Form("%sdiff_m%d.png",indir.c_str(),mass));
+  // cDiff->SaveAs(Form("%sdiff_m%d.pdf",indir.c_str(),mass));
 
-  cBias->SaveAs(Form("%sbias_m%d.png",indir.c_str(),mass));
-  cBias->SaveAs(Form("%sbias_m%d.pdf",indir.c_str(),mass));
+  // cBias->SaveAs(Form("%sbias_m%d.png",indir.c_str(),mass));
+  // cBias->SaveAs(Form("%sbias_m%d.pdf",indir.c_str(),mass));
   
-  lsig.clear();
-  brval.clear();
+  // lsig.clear();
+  // brval.clear();
  
   return true;
 }

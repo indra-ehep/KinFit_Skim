@@ -19,7 +19,7 @@ indir_SR_base=$PWD/Imperial-PA-2024-10-08/10_mixed_MVA_lnNfixed/${year}/Comb/${c
 #indir_MR_base=$PWD/TIFRAPAR-2023-01-15/97_no-dijet-edge-effect_unbld_exc0x50_unbound_qcdrate/${year}/Comb/${ch}/Cat1_Inc/Mass$mass
 indir_MR_base=$PWD/Imperial-PA-2024-10-08/11_mixed_MVA_lnNfixed_exc0x50/${year}/Comb/${ch}/Cat1_Inc/Mass$mass
 
-testdir=$PWD/local/${ch}_${year}_x50_t${ntoys}_test/Cat1_Inc/Mass$mass
+testdir=$PWD/local/${ch}_${year}_x50_t${ntoys}_gof_mc/Cat1_Inc/Mass$mass
 
 if [ ! -d $testdir ] ; then
     mkdir -p $testdir
@@ -59,6 +59,8 @@ combine --run blind --rAbsAcc 0.000001 datacard_SR_WH${mass}.root -M AsymptoticL
 outfile=limit.txt
 root -l -b -q $basedir/codes/ReadLimit.C\(\""$outfile"\",$mass\)
 cat $outfile
+meanval=`tail -n 1 $outfile | awk '{print $2}'`
+echo meanval : $meanval
 echo "==== END OF AsymptoticLimits results ========"
 
 #script snippet to construct the string for masking signa channels
@@ -75,16 +77,12 @@ echo "==== END OF STEP1 ========"
 
 # Step 2 "Generate Toys"
 python3 $basedir/importPars.py $testdir/datacard_SR_WH${mass}.txt $testdir/fitDiagnostics_SRMR.root
-combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=0.0 -n _SRMR_0
+combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=0.0 --freezeParameters BR -n _SRMR_0
 echo "==== END OF STEP2 BRinj=0.0 ========"
 
-# Step 3 "Input the toys" + "Signal injection tests"
-combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_0.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5  --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_0
+# Step 3 MC GoF for BR==0
+combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_0.GenerateOnly.mH${mass}.123456.root --toysFrequentist -t $ntoys -n _SRMR_0 --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5 --setParameters BR=0.0
 echo "==== END OF STEP3 BRinj=0.0 ========"
-# cp fitDiagnosticsBR_0.root fitDiagnosticsBR_1sL.root
-# cp fitDiagnosticsBR_0.root fitDiagnosticsBR_1sH.root
-# cp fitDiagnosticsBR_0.root fitDiagnosticsBR_M.root
-# cp fitDiagnosticsBR_0.root fitDiagnosticsBR_1.root
 
 # Now repeat step2+3 other BR values from AsymptoticLimits
 echo "==== BEGIN Loop ========"
@@ -92,24 +90,23 @@ while read sigma brval
 do
     echo $brval  and $sigma
     echo "==== BEGIN for BRinj=$brval  ========"
-    combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=$brval  -n _SRMR_${sigma}
+    combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=$brval  --freezeParameters BR -n _SRMR_${sigma}
     echo "==== END OF STEP2 BRinj=$brval ========"
-    combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_${sigma}.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5  --cminDefaultMinimizerStrategy 0 --robustFit 1 -n BR_${sigma}
-    echo "==== END OF STEP3 BRinj=$brval ========"
 done < $outfile
 echo "==== END Loop ========"
 
-#The following line is a shortcut as we do not produce plot for BR==1
-cp fitDiagnosticsBR_0.root fitDiagnosticsBR_1.root
+# Step 3 MC GoF for BR==$meanval
+echo Meanvalue : $meanval
+combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_M.GenerateOnly.mH${mass}.123456.root --toysFrequentist -t $ntoys -n _SRMR_M --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5 --setParameters BR=$meanval
+echo "==== END OF STEP3 BRinj=$meanval ========"
 
-# # Step 2 "Generate Toys"
-# combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=1.0 -n _SRMR_1
-# echo "==== END OF STEP2 BRinj=1.0 ========"
+# Step 2 "Generate Toys"
+combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=1.0 --freezeParameters BR -n _SRMR_1
+echo "==== END OF STEP2 BRinj=1.0 ========"
 
-# # Step 3 "Input the toys" + "Signal injection tests"
-# combine morphedWorkspace.root -M FitDiagnostics  --toysFile higgsCombine_SRMR_1.GenerateOnly.mH${mass}.123456.root -t $ntoys --toysFrequentist -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0  --cminDefaultMinimizerStrategy 0 --robustFit 1 --stepSize=0.0001 --minos none -n BR_1
-# echo "==== END OF STEP3 BRinj=1.0 ========"
-
+# Step 3 MC GoF for BR==1
+combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_1.GenerateOnly.mH${mass}.123456.root --toysFrequentist -t $ntoys -n _SRMR_1 --redefineSignalPOIs BR --setParameterRanges BR=-1.0,2.0 --setParameters BR=1.0
+echo "==== END OF STEP3 BRinj=1.0 ========"
 
 ls -ltr
 cd $basedir

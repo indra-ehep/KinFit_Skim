@@ -27,9 +27,10 @@
 using namespace std;
 
 vector<string> dummy;
-void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANNEL="mu", TString CAT= "Cat1_Inc",
+int LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANNEL="mu", TString CAT= "Cat1_Inc",
 		  bool obs= false, bool isOut= true)
-  {
+{
+
   gStyle->SetFrameLineWidth(0);
   TCanvas *c1 = new TCanvas();
   c1->SetCanvasSize(775,775);
@@ -47,23 +48,6 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   leg->SetBorderSize(0);
   leg->SetTextSize(0.026);
   leg->SetFillColor(0);
-
-  // float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
-  // float obsY[]     = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY[]     = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-		      
-  // float expX1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expX1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sL_[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sH_[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-
-		      
-  // float expX2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expX2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
 
   float X[]        = {40, 50, 60, 70, 80, 90, 100,110, 120, 130, 140, 150, 155, 160};
   float obsY[]     = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
@@ -85,57 +69,46 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   const int nMassPoints = 14;
   TString ch_hist = CHANNEL+"_"+CAT;
   TString massFiles [nMassPoints] = {
-  "Mass40/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH40.root",
-  "Mass50/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH50.root",
-  "Mass60/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH60.root",
-  "Mass70/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH70.root",
-  "Mass80/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH80.root",
-  "Mass90/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH90.root",
-  "Mass100/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH100.root",
-  "Mass110/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH110.root",
-  "Mass120/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH120.root",
-  "Mass130/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH130.root",
-  "Mass140/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH140.root",
-  "Mass150/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH150.root",
-  "Mass155/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH155.root",
-  "Mass160/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH160.root"};
+    "Mass40/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH40.12543.root",
+    "Mass50/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH50.12543.root",
+    "Mass60/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH60.12543.root",
+    "Mass70/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH70.12543.root",
+    "Mass80/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH80.12543.root",
+    "Mass90/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH90.12543.root",
+    "Mass100/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH100.12543.root",
+    "Mass110/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH110.12543.root",
+    "Mass120/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH120.12543.root",
+    "Mass130/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH130.12543.root",
+    "Mass140/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH140.12543.root",
+    "Mass150/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH150.12543.root",
+    "Mass155/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH155.12543.root",
+    "Mass160/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH160.12543.root"};
+  //   "higgsCombineTest.AsymptoticLimits.mH40.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH50.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH60.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH70.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH80.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH90.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH100.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH110.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH120.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH130.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH140.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH150.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH155.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH160.root"
+  // };
   
-  //higgsCombine_hcs_13TeV_mu_Cat1_Inc.AsymptoticLimits.mH80.root
-  
-  double maxY = 1.0;
-  //TString year_dir = "";
-  //TString year_dir = "MC-GenPOG/Nom1_5GeV_allFSRsyst_trimhisto/";
-  //TString year_dir = "MC-GenPOG/Nom1_5GeV_allexceptFSRsyst_trimhisto/";
-  //TString year_dir = "MC-GenPOG/Nom1FSRDo_5GeV_allexceptFSRsyst_trimhisto/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR_logN/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/2018/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_logNShapeMixed/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_pujetidprefireLogN/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_RBIPAGAug4FB/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FB/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FBLn-noBCStat/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FB-Ln/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_singles_nobcstat/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_conservative/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_optimum/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_miniaodEqv/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2p5GeV/Run2_miniaodEqv/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_AllShapeAbsolute/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/PAG/2018/ExcT/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/PAG/Run2/";
-  //TString year_dir = "B2G-Reso-2022-11-25/03_elereliso-CombHist/2016/Comb/";
-  //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2017/Comb/";
-  ;
-  
+  double maxY = 1.0;  
   for(int i = 0 ; i < nMassPoints; i++){
-    //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
-    //TFile f("local/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
-    TFile f("local/"+year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
+    TFile f("local/"+year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ");
+    //TFile f(year_dir+CHANNEL+"/"+massFiles[i],"READ");
+    //TFile f(year_dir+"/"+massFiles[i],"READ"); 
     if(f.IsZombie()){
       cout << "Cannot open file "<< f.GetName() <<" for " << string(CHANNEL.Data()) << " and mass " << X[i] << endl;
       continue;
     }
+    //cout << "Opened file : " << f.GetName() << endl;
     Double_t r;
     TTree* limit = (TTree*)f.Get("limit");
     limit->SetBranchAddress("limit",&r);
@@ -161,6 +134,8 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
     //if(massFiles[i].Contains("80")) maxY = expY2sH[i];
     if(massFiles[i].Contains("80")) maxY = 0.38;
   }
+
+  
   // for(int i = 0 ; i < nMassPoints; i++){
   //   cout << "obsY[i] " << obsY[i] << endl;
   // }
@@ -198,9 +173,9 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   TMultiGraph *mg = new TMultiGraph();
   TString ch_name = "ch";
   //cout<<CHANNEL<<endl;
-  if(CHANNEL=="mu") ch_name = "#mu";
+  if(CHANNEL=="mu" or CHANNEL=="muon") ch_name = "#mu";
   if(CHANNEL=="ele") ch_name = "e";
-  if(CHANNEL=="mu_ele") ch_name = "lep";
+  if(CHANNEL=="mu_ele" or CHANNEL=="lep") ch_name = "lep";
   //mg->SetMaximum(1.02*maxY);
   mg->SetMaximum(50.);
   mg->SetMinimum(0.06);
@@ -252,7 +227,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   mg->GetYaxis()->SetMoreLogLabels();
   mg->GetYaxis()->SetNdivisions(6);
   mg->GetXaxis()->SetTitleOffset(1.00);
-  mg->SetMinimum(0.04);
+  mg->SetMinimum(0.02);
   mg->SetMaximum(30.0);
   mg->GetXaxis()->SetTitle("m_{H^{#pm}} (GeV)");
   mg->GetYaxis()->SetTitle("B(t #rightarrow H^{#pm}b) (%)"); 
@@ -271,7 +246,7 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   leg->AddEntry(oneSigma, "68% expected","F");
   leg->AddEntry(twoSigma, "95% expected","F");
   leg->Draw();
-
+  
   TPaveText *pl2 = new TPaveText(0.22,0.79,0.57,0.87, "brNDC");
   pl2->SetTextSize(0.026);
   pl2->SetFillColor(0);
@@ -323,9 +298,9 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   ch->SetLineColor(0);
   ch->SetTextSize(0.026);
   ch->SetBorderSize(0);
-  if(CHANNEL=="mu")ch->AddText("#mu + jets");
+  if(CHANNEL=="mu"  or CHANNEL=="muon")ch->AddText("#mu + jets");
   if(CHANNEL=="ele") ch->AddText("#it{e} + jets");
-  if(CHANNEL=="mu_ele") ch->AddText("#it{l} + jets");
+  if(CHANNEL=="mu_ele" or CHANNEL=="lep") ch->AddText("#it{l} + jets");
   pl2->Draw("SAME");
   pt->Draw("SAME");
   pt1->Draw("SAME");
@@ -355,17 +330,24 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
     twoSigma->Write("twoSigma");
     fout->Close();
   }
+  return true;
 }
 
-void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/91_no-dijet-edge-effect_bld/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/01_alllogN_wtqcddd_edge-effect/Run2/Comb/"){
+int LoopLimitPlotsNano(TString year_dir = "savarghe/HplusDatacardsNew/FullRun2/"){
   
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {40, 50, 60, 70, 80, 90, 100,110, 120, 130, 140, 150, 155, 160};
-    
+
+  //CBA
   LimitPlotter(year_dir, muVal, "mu", "Cat1_Inc", false, true );
   LimitPlotter(year_dir, eleVal, "ele", "Cat1_Inc", false, true );
   LimitPlotter(year_dir, mueleVal, "mu_ele", "Cat1_Inc", false, true );
-
+  // //for MVA
+  // LimitPlotter(year_dir, muVal, "muon", "", false, true );
+  // LimitPlotter(year_dir, eleVal, "ele", "", false, true );
+  // LimitPlotter(year_dir, mueleVal, "lep", "", false, true );
+  
   string table_name = "";
   if(year_dir.Contains("Exc")){
     if(year_dir.Contains("ExcL"))
@@ -397,4 +379,6 @@ void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/91_no-dijet-edge
   }
   fout<<"\\end{tabular}"<<endl;
   fout.close();
+
+  return true;
 }

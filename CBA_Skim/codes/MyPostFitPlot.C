@@ -9,14 +9,14 @@ int iPeriod = 4;
 int iPosX = 10;
 double xMin = 1;
 double xMax = 30;
-double yMin = 0.5;
-double yMax = 1.5;
+double yMin = 0.4;
+double yMax = 1.6;
 
 
 //--------------------------------------------//
 //stack histos
 //--------------------------------------------//
-void example_stack(TString chName, TString chLable, TString charmCat){
+void example_stack(int year, TString chName, TString chLable, TString charmCat){
   //Pad
   setTDRStyle();
   TCanvas *c1 = myCanvas(chName, iPeriod, 1, isData);
@@ -42,6 +42,14 @@ void example_stack(TString chName, TString chLable, TString charmCat){
   TH1F* hTT = getHisto(fitDiagOut, chName, "ttbar");
   TH1F* hWjet  = getHisto(fitDiagOut, chName, "wjet");
   TH1F* hDY  = getHisto(fitDiagOut, chName, "zjet");
+  TH1F* hTTG  = getHisto(fitDiagOut, chName, "ttg");
+  TH1F* hTTH  = getHisto(fitDiagOut, chName, "tth");
+  TH1F* hTTZ  = getHisto(fitDiagOut, chName, "ttz");
+  TH1F* hTTW  = getHisto(fitDiagOut, chName, "ttw");
+  stackHisto(hTTG , hStack, hMC, kBlue);
+  stackHisto(hTTH , hStack, hMC, kRed-1);
+  stackHisto(hTTZ , hStack, hMC, kMagenta);
+  stackHisto(hTTW , hStack, hMC, kCyan+3);
   stackHisto(hDY , hStack, hMC, kOrange +1);
   stackHisto(hWjet , hStack, hMC, kYellow +1);
   stackHisto(hQCD  , hStack, hMC, kRed +1);
@@ -89,7 +97,7 @@ void example_stack(TString chName, TString chLable, TString charmCat){
   //  Draw Pave Text
   //-------------------------------------///
   //channel
-  TPaveText *ch = paveText(0.20,0.5061504,0.35,0.60, 0, 19, 1, 0, 132);
+  TPaveText *ch = paveText(0.25,0.5061504,0.4,0.60, 0, 19, 1, 0, 132);
   ch->SetTextSize(0.05);
   if(chName.Contains("ch1_ch1") || chName.Contains("ch2_ch1") ||chName.Contains("ch3_ch1") ) ch->AddText("#splitline{#mu + jets}{"+charmCat+"}");
   if(chName.Contains("ch1_ch2") || chName.Contains("ch2_ch2") ||chName.Contains("ch3_ch2") ) ch->AddText("#splitline{e + jets}{"+charmCat+"}");
@@ -100,7 +108,7 @@ void example_stack(TString chName, TString chLable, TString charmCat){
   //-------------------------------
   //Legends
   //-------------------------------
-  TLegend* leg = new TLegend(0.6818792,0.3061504,0.8512081,0.908861,NULL,"brNDC");
+  TLegend* leg = new TLegend(0.6818792,0.5061504,0.8512081,0.908861,NULL,"brNDC");
   leg->SetFillStyle(0);
   leg->SetBorderSize(0);
   leg->SetFillColor(kBlack);
@@ -108,19 +116,38 @@ void example_stack(TString chName, TString chLable, TString charmCat){
   leg->SetTextAngle(0);
   leg->SetTextSize(0.04);
   leg->SetTextAlign(12);
-  if(isData)leg->AddEntry(hData,"Data","PE");
-  leg->AddEntry(hTT,"t#bar{t} + jets","F");
   leg->AddEntry(hST,"Single t","F");
   leg->AddEntry(hQCD,"QCD","F");
   leg->AddEntry(hWjet,"W + jets","F");
   leg->AddEntry(hDY,"Z/#gamma + jets","F");
   leg->AddEntry(hVV,"VV","F");
   leg->AddEntry(UncBand, "Post-fit unc.","F");
-  leg->AddEntry(hSig, "m_{H^{+}} = 100 GeV","L");
-  leg->AddEntry((TObject*)0, "B(t #rightarrow H^{+} b) = 0.065","");
+  //leg->AddEntry(hSig, "m_{H^{+}} = 100 GeV","L");
+  //leg->AddEntry((TObject*)0, "B(t #rightarrow H^{+} b) = 0.065","");
+
+
+  
+  TLegend* leg1 = new TLegend(0.4818792,0.5061504,0.6512081,0.908861,NULL,"brNDC");
+  leg1->SetFillStyle(0);
+  leg1->SetBorderSize(0);
+  leg1->SetFillColor(kBlack);
+  leg1->SetTextFont(42);
+  leg1->SetTextAngle(0);
+  leg1->SetTextSize(0.04);
+  leg1->SetTextAlign(12);
+  if(isData)leg1->AddEntry(hData,"Data","PE");
+  leg1->AddEntry(hTT,"t#bar{t} + jets","F");
+  leg1->AddEntry(hTTG,"t#bar{t}g + jets","F");
+  leg1->AddEntry(hTTH,"t#bar{t}h + jets","F");
+  leg1->AddEntry(hTTZ,"t#bar{t}Z + jets","F");
+  leg1->AddEntry(hTTW,"t#bar{t}W + jets","F");
+  
+
+  
   c1->Update();
   ch->Draw();
   leg->Draw();
+  leg1->Draw();
 
   //-------------------------------------///
   // Ratio = DATA/Bkg
@@ -134,6 +161,8 @@ void example_stack(TString chName, TString chLable, TString charmCat){
   gPad->SetRightMargin(0.03);
   gPad->SetTickx(0);
   gPad->SetPad(xpad[0],ypad[0],xpad[1],ypad[2]);
+  //gPad->SetGridx();
+  gPad->SetGridy();
   TH1F *hRatio = (TH1F*)hData->Clone("hRatio");
   hRatio->Reset();
   hRatio->Add(hData);
@@ -156,7 +185,8 @@ void example_stack(TString chName, TString chLable, TString charmCat){
   hRatio->GetYaxis()->SetLabelFont(42);
   hRatio->GetYaxis()->SetAxisColor(1);
   hRatio->GetYaxis()->SetTickLength(0.03);
-  hRatio->GetYaxis()->SetNdivisions(6,5,0);
+  //hRatio->GetYaxis()->SetNdivisions(6,5,0);
+  hRatio->GetYaxis()->SetNdivisions(505);
   hRatio->GetYaxis()->SetTitleOffset(0.5);
   hRatio->GetYaxis()->SetLabelOffset(0.01);
   hRatio->GetYaxis()->CenterTitle();
@@ -182,23 +212,25 @@ void example_stack(TString chName, TString chLable, TString charmCat){
   TF1 *baseLine = new TF1("baseLine","1", -100, 2000); 
   baseLine->SetLineColor(kBlack);
   baseLine->Draw("SAME");
-  CMS_lumi(c1, iPeriod, iPosX);
+  CMS_lumi(c1, iPeriod, iPosX, year);
   c1->Update();
   if(isSaveHisto){
     TString outFile("$PWD/mjj_postfit_"+chName+".pdf");
+    TString outFile1("$PWD/mjj_postfit_"+chName+".png");
     c1->SaveAs(outFile);
+    c1->SaveAs(outFile1);
     c1->Close();
   }
 }
 
 
 void MyPostFitPlot(){
-  // example_stack("ch1_ch1", "#mu + jets", "No Charm, 2016");
-  // example_stack("ch1_ch2", "#it{e} + jets", "No Charm, 2016");
-  // example_stack("ch2_ch1", "#mu + jets", "No Charm, 2017");
-  // example_stack("ch2_ch2", "#it{e} + jets", "No Charm, 2017");
-  example_stack("ch3_ch1", "#mu + jets", "No Charm, 2018");
-  example_stack("ch3_ch2", "#it{e} + jets", "No Charm, 2018");
+  example_stack(2016, "ch1_ch1", "#mu + jets", "No Charm, 2016");
+  example_stack(2016, "ch1_ch2", "#it{e} + jets", "No Charm, 2016");
+  example_stack(2017, "ch2_ch1", "#mu + jets", "No Charm, 2017");
+  example_stack(2017, "ch2_ch2", "#it{e} + jets", "No Charm, 2017");
+  example_stack(2018, "ch3_ch1", "#mu + jets", "No Charm, 2018");
+  example_stack(2018, "ch3_ch2", "#it{e} + jets", "No Charm, 2018");
   // example_stack("ch3", "#mu + jets", "Tight");
   // example_stack("ch4", "e + jets", "Loose");
   // example_stack("ch5", "e + jets", "Medium");

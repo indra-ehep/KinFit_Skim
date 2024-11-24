@@ -36,7 +36,7 @@ double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from system
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
 int rebin = 50;
 
-int PlotRatioSystematicsV5UL(int year = 2018, bool isBtag = 0, bool isMu = 1, int htype = 6){
+int PlotRatioSystematicsV6UL(int year = 2018, bool isBtag = 0, bool isMu = 1, int htype = 6){
 
   // Setters
   int SetGlobalStyle(void);
@@ -149,16 +149,12 @@ int PlotRatioSystematicsV5UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
 
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("tfigs/Week_Work_Report/2024-09-12/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
-  string outputpng = Form("tfigs/Week_Work_Report/2024-09-12/ctrl_plt/%d/hist%s.png",year,histname.c_str());
-  //string outputpdf = Form("figs/Week_Work_Report/2023-01-16/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2024-11-19/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpng = Form("figs/Week_Work_Report/2024-11-19/ctrl_plt/%d/hist%s.png",year,histname.c_str());
+
   //const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_jecsyst-CombHist";
   const char* dir = "grid_v40_Syst/CBA_metxycorr-CombHist";
-  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale1";
-  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale2";
-  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale3";
-  //const char* dir = "grid_v40_Syst/CBA_metxycorr-MCScale4";
   
   
   const char *basedir = "/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna";  
@@ -311,6 +307,7 @@ int PlotRatioSystematicsV5UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
   hcf_nano_dyjets->SetName(Form("%s_DYjets",hcf_nano_dyjets->GetName()));
   hcf_nano_vbf->SetName(Form("%s_VBF",hcf_nano_vbf->GetName()));
   hcf_nano_qcd->SetName(Form("%s_QCD",hcf_nano_qcd->GetName()));
+  hcf_nano_qcd_mc->SetName(Form("%s_MCQCD",hcf_nano_qcd->GetName()));
   
   vSystNominal.push_back(hcf_nano_ttbar);
   vSystNominal.push_back(hcf_nano_ttg);
@@ -322,10 +319,14 @@ int PlotRatioSystematicsV5UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
   vSystNominal.push_back(hcf_nano_dyjets);
   vSystNominal.push_back(hcf_nano_vbf);
   vSystNominal.push_back(hcf_nano_qcd);
+  //vSystNominal.push_back(hcf_nano_qcd_mc);
   
   TGraphAsymmErrors *grSystFull = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, true, false);
   TGraphAsymmErrors *grSystRatio = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd, vSystNominal, vSystUp, vSystDown, false, true);
-
+  
+  // TGraphAsymmErrors *grSystFull = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd_mc, vSystNominal, vSystUp, vSystDown, true, false);
+  // TGraphAsymmErrors *grSystRatio = SystGraph(year, histname, hcf_nano_bkg,  hcf_nano_qcd_mc, vSystNominal, vSystUp, vSystDown, false, true);
+  
   //grSystFull->Print();
   //grSystRatio->Print();
   
@@ -391,11 +392,12 @@ int PlotRatioSystematicsV5UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
   hs->Add(hcf_nano_ttg);
   hs->Add(hcf_nano_wjets);
   hs->Add(hcf_nano_qcd);
+  //hs->Add(hcf_nano_qcd_mc);
   hs->Add(hcf_nano_stop);
   hs->Add(hcf_nano_ttbar);
   
   
-
+  
   TH1D *hData = (TH1D*)hcf_nano_data->Clone("hData"); 
   hData->SetTitle("");
   TH1D *hMC = (TH1D*)hcf_nano_bkg->Clone("hMC"); 
@@ -566,7 +568,8 @@ int PlotRatioSystematicsV5UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
   leg1->AddEntry(hMC, Form("%s",hist_den_title) ,"lp");
   leg1->AddEntry(hcf_nano_ttbar, Form("#it{t}#bar{#it{t}}") ,"f");
   leg1->AddEntry(hcf_nano_stop, Form("Single #it{t}") ,"f");
-  leg1->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");  
+  leg1->AddEntry(hcf_nano_qcd, Form("QCD") ,"f");
+  //leg1->AddEntry(hcf_nano_qcd_mc, Form("MCQCD") ,"f");  
 
   TLegend *leg2 = p->BuildLegend();
   for(int i = 0 ; i < 15 ; i++)
@@ -725,7 +728,10 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     h1->Draw("e1p same");               // Draw h1
     hsig->Draw("hist sames");               // Draw hsig
     
-    
+    // Define the ratio plot
+    //Note the cloning to be done before the ChangeLabel to clip zeros at the edges
+    TH1F *h3 = (TH1F*)h1->Clone("h3");
+
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6,8,0)
     // Avoid the first label (0) to be clipped.
     TAxis *axis = h1->GetYaxis();
@@ -767,23 +773,23 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     //pad2->SetFrameBorderMode(0);
 
  
-    // Define the ratio plot
-    TH1F *h3 = (TH1F*)h1->Clone("h3");
     h3->SetLineColor(h1->GetLineColor());
+    // h3->SetMinimum(-0.1);  // Define Y ..
+    // h3->SetMaximum(2.1); // .. range
     // h3->SetMinimum(0.2);  // Define Y ..
     // h3->SetMaximum(1.8); // .. range
     // h3->SetMinimum(0.9);  // Define Y ..
     // h3->SetMaximum(1.1); // .. range
     // h3->SetMinimum(0.85);  // Define Y ..
     // h3->SetMaximum(1.12); // .. range
-    // h3->SetMinimum(0.4);  // Define Y ..
-    // h3->SetMaximum(1.6); // .. range
-    // h3->SetMinimum(0.8);  // Define Y ..
-    // h3->SetMaximum(1.2); // .. range
     h3->SetMinimum(0.4);  // Define Y ..
     h3->SetMaximum(1.6); // .. range
-    //h3->SetMinimum(0.6);  // Define Y ..
-    //h3->SetMaximum(1.4); // .. range
+    // h3->SetMinimum(0.8);  // Define Y ..
+    // h3->SetMaximum(1.2); // .. range
+    // h3->SetMinimum(0.4);  // Define Y ..
+    // h3->SetMaximum(1.6); // .. range
+    // h3->SetMinimum(0.6);  // Define Y ..
+    // h3->SetMaximum(1.4); // .. range
     h3->Sumw2();
     h3->SetStats(0);      // No statistics on lower plot
     h3->Divide(h2);
@@ -828,12 +834,13 @@ TPad* PlotRatio(THStack *hs, TH1D *hsig, TH1D *h1, TH1D *h2,TGraphAsymmErrors *s
     h3->GetYaxis()->SetTitleOffset(1.3);
     h3->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     h3->GetYaxis()->SetLabelSize(25);
- 
+    h3->GetYaxis()->CenterTitle();
+    
     // X axis ratio plot settings
     h3->GetXaxis()->SetTitle(h1->GetXaxis()->GetTitle());
     h3->GetXaxis()->SetTitleSize(25);
     h3->GetXaxis()->SetTitleFont(43);
-    h3->GetXaxis()->SetTitleOffset(3.6);
+    h3->GetXaxis()->SetTitleOffset(1.0);
     h3->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     h3->GetXaxis()->SetLabelSize(25);
     
