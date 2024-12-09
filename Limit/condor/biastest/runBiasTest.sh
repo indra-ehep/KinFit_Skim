@@ -28,15 +28,15 @@ injpoint=$4
 rundir=${_CONDOR_SCRATCH_DIR}
 random=${RANDOM}
 clusproc=$5
+condorOutDir1=/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/
 
-source biastest_injp.sh  $mass $year $channel $injpoint $rundir $random $clusproc
+source biastest_injp.sh  $mass $year $channel $injpoint $rundir $random $clusproc $condorOutDir1
 
 printf "Done job at: ";/bin/date
-
-condorOutDir1=/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/
 
 #rsync -avP  $rundir/* $condorOutDir1
 rsync -avP --include="*/" --include="fitDiagnosticsBR_*.root" --exclude="*"  $rundir/* $condorOutDir1
 rsync -avP --include="*/" --include="limit*" --exclude="*"  $rundir/* $condorOutDir1
+rsync -avP --include="*/" --include="*.txt" --exclude="*"  $rundir/* $condorOutDir1
 
 printf "Done transfer: ";/bin/date

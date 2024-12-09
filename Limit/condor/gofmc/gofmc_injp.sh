@@ -10,13 +10,14 @@ clusproc=$7
 
 echo "List arguements: "$@
 
-ntoys=100
+ntoys=40
+fnnui=10
 
 basedir=/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit
 indir_SR_base=$basedir/Imperial-PA-2024-10-08/10_mixed_MVA_lnNfixed/${year}/Comb/${ch}/Cat1_Inc/Mass$mass
 indir_MR_base=$basedir/Imperial-PA-2024-10-08/11_mixed_MVA_lnNfixed_exc0x50/${year}/Comb/${ch}/Cat1_Inc/Mass$mass
 currdir=$PWD
-testdir=$rundir/${ch}_${year}_x50_t${ntoys}_test_gofmc/Cat1_Inc/Mass$mass
+testdir=$rundir/${ch}_${year}_x50_t${ntoys}_gofmc_reduce${fnnui}/Cat1_Inc/Mass$mass
 
 if [ ! -d $testdir ] ; then
     mkdir -p $testdir
@@ -35,6 +36,30 @@ sed 's:\[0.0,6.0\]::g' $testdir/datacard_SR1_WH${mass}.txt > /tmp/datacard_SR1_W
 sed 's:\[0.0,6.0\]::g' $testdir/datacard_MR1_WH${mass}.txt > /tmp/datacard_MR1_WH${mass}.txt
 
 mv  /tmp/datacard_SR1_WH${mass}.txt $testdir/datacard_SR1_WH${mass}.txt
+mv  /tmp/datacard_MR1_WH${mass}.txt $testdir/datacard_MR1_WH${mass}.txt
+
+${currdir}/listReducedNui.exe ${indir_SR_base} ${fnnui} > $testdir/highimnui.txt
+cat $testdir/highimnui.txt
+
+while read syst 
+do
+    sed "s:^${syst}:\#${syst}:g" $testdir/datacard_SR1_WH${mass}.txt > /tmp/datacard_SR1_WH${mass}.txt
+    mv  /tmp/datacard_SR1_WH${mass}.txt $testdir/datacard_SR1_WH${mass}.txt
+    
+    sed "s:^${syst}:\#${syst}:g" $testdir/datacard_MR1_WH${mass}.txt > /tmp/datacard_MR1_WH${mass}.txt
+    mv  /tmp/datacard_MR1_WH${mass}.txt $testdir/datacard_MR1_WH${mass}.txt
+done < $testdir/highimnui.txt
+
+exclnui=`grep "^#" $testdir/datacard_SR1_WH${mass}.txt | wc -l`
+nofnui=`grep kmax ${testdir}/datacard_SR1_WH${mass}.txt | awk '{print $2}'`
+modnui=$[$nofnui-$exclnui]
+sed "s:kmax ${nofnui}:kmax ${modnui}:g" ${testdir}/datacard_SR1_WH${mass}.txt >  /tmp/datacard_SR1_WH${mass}.txt
+mv  /tmp/datacard_SR1_WH${mass}.txt $testdir/datacard_SR1_WH${mass}.txt
+
+exclnui=`grep "^#" $testdir/datacard_MR1_WH${mass}.txt | wc -l`
+nofnui=`grep kmax ${testdir}/datacard_MR1_WH${mass}.txt | awk '{print $2}'`
+modnui=$[$nofnui-$exclnui]
+sed "s:kmax ${nofnui}:kmax ${modnui}:g" ${testdir}/datacard_MR1_WH${mass}.txt >  /tmp/datacard_MR1_WH${mass}.txt
 mv  /tmp/datacard_MR1_WH${mass}.txt $testdir/datacard_MR1_WH${mass}.txt
 
 cd $testdir
@@ -69,7 +94,8 @@ echo $app
 
 # First perform FitDiagnostics SR+MR with mask for SR
 # Step 1 "Measure the Nuisance Parameters in the MR" (https://twiki.cern.ch/twiki/bin/viewauth/CMS/B2GStatisticsRecommendations#B2G_Requested_Statistical_Tests)
-combine datacard_SR_MR_WH${mass}.root -M FitDiagnostics -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5  --setParameters $app  --cminDefaultMinimizerStrategy 0 --robustFit 1  -n _SRMR --robustHesse 1
+combine datacard_SR_MR_WH${mass}.root -M FitDiagnostics -m $mass --redefineSignalPOIs BR --setParameterRanges BR=-2.0,2.0  --setParameters $app  --cminDefaultMinimizerStrategy 0 --robustFit 1  -n _SRMR 
+
 echo "==== END OF STEP1 ========"
 python3 $currdir/importPars.py $testdir/datacard_SR_WH${mass}.txt $testdir/fitDiagnostics_SRMR.root
 echo "==== END OF STEP2 ========"
@@ -77,17 +103,17 @@ echo "==== END OF STEP2 ========"
 if [ $injpoint = '0' ] ; then
     echo "==== BEGIN for BRinj=0  ========"
     combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=0.0 -n _SRMR_0 -s ${random}
-    combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_0.GenerateOnly.mH${mass}.${random}.root --toysFrequentist -t $ntoys -n _SRMR_0.${clusproc}.${random} --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5 --setParameters BR=0.0
+    combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_0.GenerateOnly.mH${mass}.${random}.root --toysFrequentist -t $ntoys -n _SRMR_0.${clusproc}.${random} --redefineSignalPOIs BR --freezeParameters BR   --setParameters BR=0.0
     echo "==== END OF STEP3 BRinj=0.0 ========"
 elif [ $injpoint = 'M' ] ; then
     echo "==== BEGIN for BRinj=${meanval}  ========"
     combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=${meanval} -n _SRMR_${injpoint} -s ${random}
-    combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_${injpoint}.GenerateOnly.mH${mass}.${random}.root --toysFrequentist -t $ntoys -n _SRMR_${injpoint}.${clusproc}.${random} --redefineSignalPOIs BR --setParameterRanges BR=-0.5,0.5 --setParameters BR=${meanval}
+    combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_${injpoint}.GenerateOnly.mH${mass}.${random}.root --toysFrequentist -t $ntoys -n _SRMR_${injpoint}.${clusproc}.${random} --redefineSignalPOIs BR --freezeParameters BR --setParameters BR=${meanval}
     echo "==== END OF STEP3 BRinj=${meanval} ========"
 else
     echo "==== BEGIN for BRinj=1  ========"
     combine morphedWorkspace.root -M GenerateOnly --toysFrequentist --bypassFrequentistFit -t $ntoys --saveToys -m $mass --redefineSignalPOIs BR --setParameters BR=1.0 -n _SRMR_1 -s ${random}
-    combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_1.GenerateOnly.mH${mass}.${random}.root --toysFrequentist -t $ntoys -n _SRMR_1.${clusproc}.${random} --redefineSignalPOIs BR --setParameterRanges BR=-1.0,2.0 --setParameters BR=1.0
+    combine datacard_SR_WH${mass}.root -M GoodnessOfFit -m $mass --algo saturated  --toysFile higgsCombine_SRMR_1.GenerateOnly.mH${mass}.${random}.root --toysFrequentist -t $ntoys -n _SRMR_1.${clusproc}.${random} --redefineSignalPOIs BR --freezeParameters BR --setParameters BR=1.0
     echo "==== END OF STEP3 BRinj=0.0 ========"    
 fi
 # # echo "==== END OF STEP3 BRinj=1.0 ========"

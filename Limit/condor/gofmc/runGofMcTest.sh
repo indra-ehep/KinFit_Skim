@@ -38,5 +38,6 @@ condorOutDir1=/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-mc/l
 rsync -avP  $rundir/* $condorOutDir1
 rsync -avP --include="*/" --include="*.GoodnessOfFit.*.root" --exclude="*"  $rundir/* $condorOutDir1
 rsync -avP --include="*/" --include="limit*" --exclude="*"  $rundir/* $condorOutDir1
+rsync -avP --include="*/" --include="*.txt" --exclude="*"  $rundir/* $condorOutDir1
 
 printf "Done transfer: ";/bin/date

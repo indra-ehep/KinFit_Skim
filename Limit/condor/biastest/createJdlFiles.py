@@ -6,14 +6,15 @@ import time
 
 #IMPORT MODULES FROM OTHER DIR
 
-injpoints = ["0", "L", "H", "M"]
-jdlDir = 'tmpLog_biastest_random_0'
+injpoints = ["0", "L", "H", "M", "1"]
+jdlDir = 'tmpLog_biastest_x50_excldsyst_reduced20'
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
 os.system("cp runBiasTest.sh %s/"%jdlDir)
 os.system("cp biastest_injp.sh %s/"%jdlDir)
 os.system("cp importPars.py %s/"%jdlDir)
+os.system("cp listReducedNui.exe %s/"%jdlDir) ## created using "g++ listReducedNui.C -L${HOME}/Software/yaml-cpp/lib64 -I${HOME}/Software/yaml-cpp/include  -l yaml-cpp -o listReducedNui.exe"
 common_command = \
 'executable = runBiasTest.sh\n\
 +MaxRuntime = 10799\n\
@@ -26,7 +27,8 @@ log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
 for mass in [40,50,60,70,80,90,100,110,120,130,140,150,155,160]:
-#for mass in [40]:
+#for mass in [150,155,160]:
+#for mass in [40,80,120,160]:
     injpointList = eval("injpoints")
     jdlName = 'submitJobs_%s.jdl'%(mass)
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
