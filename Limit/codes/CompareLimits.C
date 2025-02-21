@@ -284,6 +284,41 @@ void ReadLimitNanoAOD14MPN(vector<LimitPoints>& Val, TString indir = "", TString
   
 }
 
+void ReadATLAS13TeVResult(vector<LimitPoints>& Val, TGraph*& grATLASExp, TString indir = "")
+{
+  //ReadATLAS13TeVResult(lATLAS13TeV, "ATLAS13TeV/");
+  TFile *finatlas = TFile::Open(Form("%s/HEPData-ins2808022-v1-Limits.root",indir.Data()));
+  TGraphAsymmErrors *grObs = (TGraphAsymmErrors *)finatlas->Get("Limits/Graph1D_y1");
+  TGraphAsymmErrors *grExp = (TGraphAsymmErrors *)finatlas->Get("Limits/Graph1D_y2");
+  TGraphAsymmErrors *grExp2sL = (TGraphAsymmErrors *)finatlas->Get("Limits/Graph1D_y3");
+  TGraphAsymmErrors *grExp1sL = (TGraphAsymmErrors *)finatlas->Get("Limits/Graph1D_y4");
+  TGraphAsymmErrors *grExp1sH = (TGraphAsymmErrors *)finatlas->Get("Limits/Graph1D_y5");
+  TGraphAsymmErrors *grExp2sH = (TGraphAsymmErrors *)finatlas->Get("Limits/Graph1D_y6");
+
+  // grObs->Print(); cout << endl ;
+  // grExp->Print(); cout << endl ;
+  // grExp2sL->Print(); cout << endl ;
+  // grExp1sL->Print(); cout << endl ;
+  // grExp1sH->Print(); cout << endl ;
+  // grExp2sH->Print(); cout << endl ;
+  
+  grATLASExp = new TGraph(grExp->GetN());
+
+  
+  for(int ip = 0 ; ip < grExp->GetN() ; ip++){
+    LimitPoints LP;
+    LP.mX = grExp->GetPointX(ip);
+    LP.expY = 100.*grExp->GetPointY(ip);
+    LP.obsY = 100.*grObs->GetPointY(ip);
+    LP.expY2sL = 100.*grExp2sL->GetPointY(ip);
+    LP.expY1sL = 100.*grExp1sL->GetPointY(ip);
+    LP.expY2sH = 100.*grExp2sH->GetPointY(ip);
+    LP.expY1sH = 100.*grExp1sH->GetPointY(ip);
+    grATLASExp->SetPoint(ip, LP.mX, LP.expY);
+    Val.push_back(LP);
+  }
+  
+}
 void ReadLimitNanoAOD14MPMVA(vector<LimitPoints>& Val, TString indir = "", TString ch = "mu_ele")
 {
 
@@ -366,8 +401,8 @@ int CompareLimits(){
   void ReadLimitNanoAOD14MP(vector<LimitPoints>&, TString, TString);
   void ReadLimitNanoAOD14MPMVA(vector<LimitPoints>&, TString, TString);
   void ReadLimitNanoAOD14MPN(vector<LimitPoints>&, TString, TString);
-  int PlotRatio(TGraph *, TGraph *, TGraph *, TLegend *, const char *);
-  int PlotRatio(TGraph *, TGraph *, TGraph *, TGraph *, TGraph *, TGraph *, TGraph *, TLegend *, const char *);
+  int PlotRatio(TGraph *, TGraph *, TGraph *, TLegend *, const char *, bool);
+  int PlotRatio(TGraph *, TGraph *, TGraph *, TGraph *, TGraph *, TGraph *, TGraph *, TLegend *, const char *, bool);
   
   vector<LimitPoints> lexclMini;
   vector<LimitPoints> lexclMiniInc;
@@ -376,8 +411,13 @@ int CompareLimits(){
   vector<LimitPoints> lexclNano16;
   vector<LimitPoints> lexclNano;
   vector<LimitPoints> lexclNanoMVA;
+  vector<LimitPoints> lexclNanoMVA_mu;
+  vector<LimitPoints> lexclNanoMVA_ele;
   vector<LimitPoints> lexclNanoShape;
+  vector<LimitPoints> lexclNanoShape_mu;
+  vector<LimitPoints> lexclNanoShape_ele;
   vector<LimitPoints> lexclNanolnN;
+  vector<LimitPoints> lATLAS13TeV;
   
   
   //01
@@ -528,8 +568,21 @@ int CompareLimits(){
   
   ReadLimitNanoAOD14MP(lexclNano, "TIFRAPAR-2023-01-15/91_no-dijet-edge-effect_bld/Run2/Comb", "mu_ele");
   ReadLimitNanoAOD14MPN(lexclNanoShape, "Imperial-PA-2024-10-08/10_mixed_MVA_lnNfixed/Run2/Comb", "mu_ele");
+  ReadLimitNanoAOD14MPN(lexclNanoShape_mu, "Imperial-PA-2024-10-08/10_mixed_MVA_lnNfixed/Run2/Comb", "mu");
+  ReadLimitNanoAOD14MPN(lexclNanoShape_ele, "Imperial-PA-2024-10-08/10_mixed_MVA_lnNfixed/Run2/Comb", "ele");
+  
   //ReadLimitNanoAOD14MPMVA(lexclNanoMVA, "savarghe/HplusDatacardsNew/FullRun2/", "lep");
-  ReadLimitNanoAOD14MPMVA(lexclNanoMVA, "savarghe/HplusDatacards/FullRun2/", "lep");
+  ReadLimitNanoAOD14MPMVA(lexclNanoMVA, "savarghe/HplusDatacards/2024-12-07/FullRun2/", "lep");
+  ReadLimitNanoAOD14MPMVA(lexclNanoMVA_mu, "savarghe/HplusDatacards/2024-12-07/FullRun2/", "muon");
+  ReadLimitNanoAOD14MPMVA(lexclNanoMVA_ele, "savarghe/HplusDatacards/2024-12-07/FullRun2/", "ele");
+
+  //////////// ATLAS //////////////////
+  TGraph *grATLASExp;
+  ReadATLAS13TeVResult(lATLAS13TeV, grATLASExp, "ATLAS13TeV/");
+  grATLASExp->Print();
+  cout << "ATLAS nof mass points : " << lATLAS13TeV.size() << endl;
+  cout << "ATLAS nof mass points1 : " << grATLASExp->GetN() << endl;
+  ///////////////////////////////////
   
   //MiniAOD graphs
   TGraph *grlexclMini = new TGraph(int(lexclMini.size()));
@@ -551,8 +604,16 @@ int CompareLimits(){
   TGraph *grlexclNanoShape2sL = new TGraph(int(lexclNanoShape.size()));
   TGraph *grlexclNanoShape1sH = new TGraph(int(lexclNanoShape.size()));
   TGraph *grlexclNanoShape2sH = new TGraph(int(lexclNanoShape.size()));
+  TGraph *grlexclNanoShape_mu = new TGraph(int(lexclNanoShape_mu.size()));
+  TGraph *grlexclNanoShape_ele = new TGraph(int(lexclNanoShape_ele.size()));
   TGraph *grlexclNano = new TGraph(int(lexclNano.size()));
   TGraph *grlexclNanoMVA = new TGraph(int(lexclNanoMVA.size()));
+  TGraph *grlexclNanoMVA1sL = new TGraph(int(lexclNanoMVA.size()));
+  TGraph *grlexclNanoMVA2sL = new TGraph(int(lexclNanoMVA.size()));
+  TGraph *grlexclNanoMVA1sH = new TGraph(int(lexclNanoMVA.size()));
+  TGraph *grlexclNanoMVA2sH = new TGraph(int(lexclNanoMVA.size()));
+  TGraph *grlexclNanoMVA_mu = new TGraph(int(lexclNanoMVA_mu.size()));
+  TGraph *grlexclNanoMVA_ele = new TGraph(int(lexclNanoMVA_ele.size()));
 
 
   // cout << "lexclMEqv16lnN.size : " << lexclMEqv16lnN.size() << endl;
@@ -566,7 +627,6 @@ int CompareLimits(){
   //   grlexclNano16->SetPoint(i,lexclNano16[i].mX, lexclNano16[i].expY);
   //   grlexclNano->SetPoint(i,lexclNano[i].mX, lexclNano[i].expY);    
   // }
-
   
   
   cout << "lexclNano16.size : " << lexclNanoShape.size() << endl;
@@ -577,8 +637,16 @@ int CompareLimits(){
     grlexclNanoShape2sL->SetPoint(i,lexclNanoShape[i].mX, lexclNanoShape[i].expY2sL);
     grlexclNanoShape1sH->SetPoint(i,lexclNanoShape[i].mX, lexclNanoShape[i].expY1sH);
     grlexclNanoShape2sH->SetPoint(i,lexclNanoShape[i].mX, lexclNanoShape[i].expY2sH);
+    grlexclNanoShape_mu->SetPoint(i,lexclNanoShape[i].mX, lexclNanoShape_mu[i].expY);
+    grlexclNanoShape_ele->SetPoint(i,lexclNanoShape[i].mX, lexclNanoShape_ele[i].expY);
     grlexclNano->SetPoint(i,lexclNano[i].mX, lexclNano[i].expY);
     grlexclNanoMVA->SetPoint(i,lexclNano[i].mX, lexclNanoMVA[i].expY);
+    grlexclNanoMVA1sL->SetPoint(i,lexclNanoMVA[i].mX, lexclNanoMVA[i].expY1sL);
+    grlexclNanoMVA2sL->SetPoint(i,lexclNanoMVA[i].mX, lexclNanoMVA[i].expY2sL);
+    grlexclNanoMVA1sH->SetPoint(i,lexclNanoMVA[i].mX, lexclNanoMVA[i].expY1sH);
+    grlexclNanoMVA2sH->SetPoint(i,lexclNanoMVA[i].mX, lexclNanoMVA[i].expY2sH);
+    grlexclNanoMVA_mu->SetPoint(i,lexclNanoMVA[i].mX, lexclNanoMVA_mu[i].expY);
+    grlexclNanoMVA_ele->SetPoint(i,lexclNanoMVA[i].mX, lexclNanoMVA_ele[i].expY);
   }
   
   TGraph *grMiniByNano = new TGraph(int(lexclMini.size()));
@@ -615,8 +683,36 @@ int CompareLimits(){
       }
     }
   }
-
-
+  std::cout << std::endl;
+  
+  TGraph *grMVAByATLAS = new TGraph(int(lexclNanoMVA.size()));
+  int isize = 0;
+  for(int i = 0; i < int(lATLAS13TeV.size()) ; i++){
+    for(int j = 0; j < int(lexclNanoMVA.size()) ; j++){
+      if(lexclNanoMVA[j].mX==lATLAS13TeV[i].mX){
+	grMVAByATLAS->SetPoint(i,lexclNanoMVA[j].mX, (lexclNanoMVA[j].expY/lATLAS13TeV[i].expY));
+	printf("MVA/ATLAS: %3.0f & %5.2f\\\% & %5.2f\\\% & %5.2f \\\\\n",lexclNanoMVA[j].mX,lexclNanoMVA[j].expY,lATLAS13TeV[i].expY,(lexclNanoMVA[j].expY/lATLAS13TeV[i].expY));
+	isize++;
+      }
+    }
+  }
+  grMVAByATLAS->Set(isize);
+  std::cout << std::endl;
+  
+  TGraph *grCBAByATLAS = new TGraph(int(lexclNanoShape.size()));
+  isize = 0;
+  for(int i = 0; i < int(lATLAS13TeV.size()) ; i++){
+    for(int j = 0; j < int(lexclNanoShape.size()) ; j++){
+      if(lexclNanoShape[j].mX==lATLAS13TeV[i].mX){
+	grCBAByATLAS->SetPoint(i,lexclNanoShape[j].mX, (lexclNanoShape[j].expY/lATLAS13TeV[i].expY));
+	printf("CBA/ATLAS: %3.0f & %5.2f\\\% & %5.2f\\\% & %5.2f \\\\\n",lexclNanoShape[j].mX,lexclNanoShape[j].expY,lATLAS13TeV[i].expY,(lexclNanoShape[j].expY/lATLAS13TeV[i].expY));
+	isize++;
+      }
+    }
+  }
+  grCBAByATLAS->Set(isize);
+  std::cout << std::endl;
+  
   SetStyle(grlexclMini, 3, kOrange+2, kFullCircle,1.2);
   // SetStyle(grlexclMiniInc, 3,kRed, kOpenCircle,1.2);
   // SetStyle(grlexclMEqv16lnN, 3,kMagenta, kFullSquare,1.2);
@@ -644,11 +740,18 @@ int CompareLimits(){
 
   SetStyle(grMiniByNano, 3, kRed, kFullSquare,1.2);
   SetStyle(grlexclNanoShape, 3,kBlue, kFullCircle,1.2);
+  SetStyle(grlexclNanoShape_mu, 3,kGreen+2, kFullSquare,1.2);
+  SetStyle(grlexclNanoShape_ele, 3,kYellow+2, kFullCross,2.1);
   SetStyle(grlexclNano, 2,kBlack, kFullCross,2.1);
   SetStyle(grlexclNanoMVA, 2,kRed, kFullStar,2.1);
+  SetStyle(grlexclNanoMVA_mu, 3,kGreen+2, kFullSquare,1.2);
+  SetStyle(grlexclNanoMVA_ele, 3,kYellow+2, kFullCross,2.1);
+  SetStyle(grATLASExp, 3,kMagenta, kFullCircle,1.2);
   
   SetStyle(grV10ByCurrentCBA, 3,kOrange+2, kFullCrossX,2.1);
   SetStyle(grMVAByCBA, 3, kRed, kFullSquare,1.2);
+  SetStyle(grMVAByATLAS, 3, kBlack, kFullSquare,1.2);
+  SetStyle(grCBAByATLAS, 3, kBlue, kFullSquare,1.2);
   
   TLegend* legmn = new TLegend(0.12,0.16,0.73,0.28,NULL,"brNDC"); //lower part
   legmn->SetBorderSize(0);
@@ -663,8 +766,8 @@ int CompareLimits(){
   leg0->SetTextSize(0.05);
   leg0->SetFillColor(0);
   leg0->SetTextSize(0.019);
-  leg0->AddEntry(grlexclNanoMVA,"Current: MVA l+jets, shape, Run2","LP");
-  leg0->AddEntry(grlexclNanoShape, "Current: CBA l+jets, shape, Run2","LP");
+  leg0->AddEntry(grlexclNanoMVA," MVA l+jets, shape, Run2","LP");
+  leg0->AddEntry(grlexclNanoShape, " CBA l+jets, shape, Run2","LP");
 
   TLegend* leg1 = new TLegend(0.12,0.16,0.73,0.28,NULL,"brNDC"); //lower part
   leg1->SetBorderSize(0);
@@ -696,7 +799,7 @@ int CompareLimits(){
   grlexclMini->GetYaxis()->SetTitle("BR(t#rightarrow H^{#pm}b) (%)");
   grlexclMini->SetTitle("Comparison of expected values of median");
   grMiniByNano->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
-  PlotRatio(grlexclMini, grlexclNanoShape, grMiniByNano, legmn, "c2");
+  PlotRatio(grlexclMini, grlexclNanoShape, grMiniByNano, legmn, "c2", 1);
   
   grlexclNanoShape->SetMaximum(30.0);
   grlexclNanoShape->SetMinimum(0.02);
@@ -705,12 +808,12 @@ int CompareLimits(){
   grlexclNanoShape->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
   grlexclNanoShape->GetYaxis()->SetTitle("BR(t#rightarrow H^{#pm}b) (%)");
   grlexclNanoShape->SetTitle("Comparison of expected values of median");
-  grMVAByCBA->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
-  PlotRatio(grlexclNanoShape, grlexclNanoMVA, grMVAByCBA, leg0, "c3");
+  // grMVAByCBA->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
+  // PlotRatio(grlexclNanoShape, grlexclNanoMVA, grMVAByCBA, leg0, "c3", 1);
 
-  grV10ByCurrentCBA->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
-  PlotRatio(grlexclNanoShape, grlexclNano, grV10ByCurrentCBA, leg1, "c4");
-
+  // grV10ByCurrentCBA->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
+  // PlotRatio(grlexclNanoShape, grlexclNano, grV10ByCurrentCBA, leg1, "c4", 1);
+  
   grlexclNanoShape1sL->SetLineWidth(2.0);
   grlexclNanoShape1sL->SetLineColor(kBlue);
   grlexclNanoShape1sL->SetLineStyle(2);
@@ -726,19 +829,97 @@ int CompareLimits(){
   grlexclNanoShape2sH->SetLineStyle(10);
   
   TLegend* leg2 = (TLegend *)leg0->Clone("leg2");
-  leg2->AddEntry(grlexclNanoShape1sL, "Current: CBA l+jets, shape, Run2 (68% expected)","L");
-  leg2->AddEntry(grlexclNanoShape2sL, "Current: CBA l+jets, shape, Run2 (95% expected)","L");
-  PlotRatio(grlexclNanoShape, grlexclNanoShape1sL, grlexclNanoShape1sH, grlexclNanoShape2sL, grlexclNanoShape2sH, grlexclNanoMVA, grMVAByCBA, leg2, "c5");
+  leg2->AddEntry(grlexclNanoShape1sL, " CBA l+jets, shape, Run2 (68% expected)","L");
+  leg2->AddEntry(grlexclNanoShape2sL, " CBA l+jets, shape, Run2 (95% expected)","L");
+  PlotRatio(grlexclNanoShape, grlexclNanoShape1sL, grlexclNanoShape1sH, grlexclNanoShape2sL, grlexclNanoShape2sH, grlexclNanoMVA, grMVAByCBA, leg2, "c5", 1);
+
+  // grlexclNanoMVA1sL->SetLineWidth(2.0);
+  // grlexclNanoMVA1sL->SetLineColor(kRed);
+  // grlexclNanoMVA1sL->SetLineStyle(2);
+  // grlexclNanoMVA1sH->SetLineWidth(2.0);
+  // grlexclNanoMVA1sH->SetLineColor(kRed);
+  // grlexclNanoMVA1sH->SetLineStyle(2);
+
+  // grlexclNanoMVA2sL->SetLineWidth(2.0);
+  // grlexclNanoMVA2sL->SetLineColor(kRed);
+  // grlexclNanoMVA2sL->SetLineStyle(10);
+  // grlexclNanoMVA2sH->SetLineWidth(2.0);
+  // grlexclNanoMVA2sH->SetLineColor(kRed);
+  // grlexclNanoMVA2sH->SetLineStyle(10);
+
+  TLegend* leg3 = new TLegend(0.12,0.16,0.73,0.28,NULL,"brNDC"); //lower part
+  leg3->SetBorderSize(0);
+  leg3->SetTextSize(0.05);
+  leg3->SetFillColor(0);
+  leg3->SetTextSize(0.019);
+  leg3->AddEntry(grlexclNanoMVA, "MVA l+jets, shape, Run2","L");
+  leg3->AddEntry(grlexclNanoMVA1sL, "MVA l+jets, shape, Run2 (68% expected)","L");
+  leg3->AddEntry(grlexclNanoMVA2sL, "MVA l+jets, shape, Run2 (95% expected)","L");
+  leg3->AddEntry(grATLASExp, "ATLAS Run2 results","L");
+  grlexclNanoMVA->SetMaximum(30.0);
+  grlexclNanoMVA->SetMinimum(0.02);
+  grlexclNanoMVA->GetXaxis()->SetTitleOffset(1.2);
+  grlexclNanoMVA->GetYaxis()->SetTitleOffset(1.2);
+  grlexclNanoMVA->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
+  grlexclNanoMVA->GetYaxis()->SetTitle("BR(t#rightarrow H^{#pm}b) (%)");
+  grlexclNanoMVA->SetTitle("Comparison of expected values of median");
+  grMVAByATLAS->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
+  PlotRatio(grlexclNanoMVA, grlexclNanoMVA1sL, grlexclNanoMVA1sH, grlexclNanoMVA2sL, grlexclNanoMVA2sH, grATLASExp, grMVAByATLAS, leg3, "c6", 1);
   
+  // //PlotRatio(grlexclNanoShape, grATLASExp, grCBAByATLAS, leg0, "c7", 1);
+
+  TLegend* leg4 = new TLegend(0.12,0.16,0.73,0.28,NULL,"brNDC"); //lower part
+  leg4->SetBorderSize(0);
+  leg4->SetTextSize(0.05);
+  leg4->SetFillColor(0);
+  leg4->SetTextSize(0.019);
+  leg4->AddEntry(grlexclNanoShape, "CBA l+jets, shape, Run2","LP");
+  leg4->AddEntry(grlexclNanoShape_mu, "CBA #mu+jets, shape, Run2","LP");
+  leg4->AddEntry(grlexclNanoShape_ele, "CBA #it{e}+jets, shape, Run2","LP");
+  TCanvas *c8 = new TCanvas("c8","c8");
+  grlexclNanoShape->Draw("ALP");
+  grlexclNanoShape_mu->Draw("LP");
+  grlexclNanoShape_ele->Draw("LP");
+  leg4->Draw();
+
+  grlexclNanoMVA->SetMaximum(30.0);
+  grlexclNanoMVA->SetMinimum(0.02);
+  grlexclNanoMVA->GetXaxis()->SetTitleOffset(1.2);
+  grlexclNanoMVA->GetYaxis()->SetTitleOffset(1.2);
+  grlexclNanoMVA->GetXaxis()->SetTitle("M_{H^{#pm}} (GeV)");
+  grlexclNanoMVA->GetYaxis()->SetTitle("BR(t#rightarrow H^{#pm}b) (%)");
+  grlexclNanoMVA->SetTitle("Comparison of expected values of median");
+  TLegend* leg5 = new TLegend(0.12,0.16,0.73,0.28,NULL,"brNDC"); //lower part
+  leg5->SetBorderSize(0);
+  leg5->SetTextSize(0.05);
+  leg5->SetFillColor(0);
+  leg5->SetTextSize(0.019);
+  leg5->AddEntry(grlexclNanoMVA, "MVA l+jets, shape, Run2","LP");
+  leg5->AddEntry(grlexclNanoMVA_mu, "MVA #mu+jets, shape, Run2","LP");
+  leg5->AddEntry(grlexclNanoMVA_ele, "MVA #it{e}+jets, shape, Run2","LP");
+  TCanvas *c9 = new TCanvas("c9","c9");
+  grlexclNanoMVA->Draw("ALP");
+  grlexclNanoMVA_mu->Draw("LP");
+  grlexclNanoMVA_ele->Draw("LP");
+  leg5->Draw();
+
   TFile *fout = new TFile("RatioPlot.root","recreate");
-  TCanvas *c2 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c2");
-  TCanvas *c3 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c3");
-  TCanvas *c4 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c4");
-  TCanvas *c5 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c5");
-  c2->Write();
-  c3->Write();
-  c4->Write();
-  c5->Write();
+  // TCanvas *c2 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c2");
+  // TCanvas *c3 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c3");
+  // TCanvas *c4 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c4");
+  // TCanvas *c5 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c5");
+  TCanvas *c6 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c6");
+  // //TCanvas *c7 = (TCanvas *)gROOT->GetListOfCanvases()->FindObject("c7");
+  
+  // c2->Write();
+  // c3->Write();
+  // c4->Write();
+  // c5->Write();
+  // c6->Write();
+  // //c7->Write();
+  c8->Write();
+  c9->Write();
+  
   fout->Close();
 
   delete fout;
@@ -752,7 +933,7 @@ int CompareLimits(){
 
 }
 
-int PlotRatio(TGraph *gr1, TGraph *gr2, TGraph *grRatio, TLegend *leg, const char *cname)
+int PlotRatio(TGraph *gr1, TGraph *gr2, TGraph *grRatio, TLegend *leg, const char *cname, bool isnumer=true)
 {
   cout<<"gr1 name : "<<gr1->GetName()
       <<", gr2 : " << gr2->GetName()
@@ -843,6 +1024,10 @@ int PlotRatio(TGraph *gr1, TGraph *gr2, TGraph *grRatio, TLegend *leg, const cha
     grRatio->GetXaxis()->SetTitleOffset(1.02);
     grRatio->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     grRatio->GetXaxis()->SetLabelSize(20);
+    if(isnumer)
+      grRatio->GetXaxis()->SetLimits(gr1->GetXaxis()->GetXmin(),gr1->GetXaxis()->GetXmax());
+    else
+      grRatio->GetXaxis()->SetLimits(gr2->GetXaxis()->GetXmin(),gr2->GetXaxis()->GetXmax());
     
     pad1->cd();
 
@@ -854,7 +1039,7 @@ int PlotRatio(TGraph *gr1, TGraph *gr2, TGraph *grRatio, TLegend *leg, const cha
 }
 
 
-int PlotRatio(TGraph *gr1, TGraph *gr1_1sL, TGraph *gr1_1sH, TGraph *gr1_2sL, TGraph *gr1_2sH, TGraph *gr2, TGraph *grRatio, TLegend *leg, const char *cname)
+int PlotRatio(TGraph *gr1, TGraph *gr1_1sL, TGraph *gr1_1sH, TGraph *gr1_2sL, TGraph *gr1_2sH, TGraph *gr2, TGraph *grRatio, TLegend *leg, const char *cname, bool isnumer=true)
 {
   cout<<"gr1 name : "<<gr1->GetName()
       <<", gr2 : " << gr2->GetName()
@@ -949,6 +1134,10 @@ int PlotRatio(TGraph *gr1, TGraph *gr1_1sL, TGraph *gr1_1sH, TGraph *gr1_2sL, TG
     grRatio->GetXaxis()->SetTitleOffset(1.06);
     grRatio->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     grRatio->GetXaxis()->SetLabelSize(20);
+    if(isnumer)
+      grRatio->GetXaxis()->SetLimits(gr1->GetXaxis()->GetXmin(),gr1->GetXaxis()->GetXmax());
+    else
+      grRatio->GetXaxis()->SetLimits(gr2->GetXaxis()->GetXmin(),gr2->GetXaxis()->GetXmax());
     
     pad1->cd();
 

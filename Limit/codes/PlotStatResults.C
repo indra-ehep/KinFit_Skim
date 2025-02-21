@@ -45,15 +45,32 @@ TPaveText * paveText(double minX, double minY, double maxX, double maxY, int lin
   return pt;
 }
 
-int PlotStatResults(int mass = 80)
+int PlotStatResults(int mass = 40)
 {
+  
   //int mass = 100;
   //string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/local/mu_ele/Cat1_Inc/Mass%d/",mass);
-  string indir = Form("/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit/Imperial-PA-2024-10-08/14_CR-Stat_09_exc0_unblinded_with-qcdrate-bound/Run2/Comb/mu_ele/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/mu_ele_Run2_x50_t500_test/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter3_randon/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter8_histcorr/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter10_histcorr_reduced30/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter11_histcorr_fluc20/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter13_qcdrange/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter15_noqcddd/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter19_nosymm_maxqcdrate40/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter23_nosymm_qcdval4.0/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_2016_t40_gofdata_iter61_uncorrqcd_bc/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter67_uncorrqcd_nosymm_10GeV/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter118_uncorrqcd_symm_10GeV/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter125_qcddd6_bc3_symm_10GeV/Cat1_Inc/Mass%d/",mass);
+  string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_Run2_t40_gofdata_iter225_qcddd6_bc3_symm_5GeV/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_2018_t40_gofdata_iter200_qcddd6_bc3_symm_5GeV/Cat1_Inc/Mass%d/",mass);
+  //string indir = Form("/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_gof-data/local/mu_ele_2018_t40_gofdata_iter100_qcddd6_bc3_symm_10GeV/Cat1_Inc/Mass%d/",mass);  
   
-  //////////////////// Pull test ////////////////////////////////////////////////
-  TFile *fPull = TFile::Open((indir+"pull_result.root").c_str());
-  TCanvas *postfit_dist = (TCanvas *)fPull->Get("asdf");
+  // //////////////////// Pull test ////////////////////////////////////////////////
+  // TFile *fPull = TFile::Open((indir+"pull_result.root").c_str());
+  // TCanvas *postfit_dist = (TCanvas *)fPull->Get("asdf");
   // TCanvas *nuisances_dist = (TCanvas *)fPull->Get("nuisances");
   // TCanvas *postfiterr_dist = (TCanvas *)fPull->Get("post_fit_errs");
   
@@ -62,30 +79,23 @@ int PlotStatResults(int mass = 80)
   // TH1F *hist_prefit = (TH1F *)fPull->Get("prefit_nuisancs");
   // TH1F *hist_err_b = (TH1F *)fPull->Get("errors_b");
   // TH1F *hist_err_s = (TH1F *)fPull->Get("errors_s");
-
   // double minX = hist_prefit->GetXaxis()->GetBinCenter(1);
   // double maxX = hist_prefit->GetXaxis()->GetBinCenter(hist_prefit->GetNbinsX());
   
   // const int nofBinsPerCanvas = 50;
   // int nofCanvases = TMath::Floor(grfit_b_g->GetN()/nofBinsPerCanvas) + 1;
-
-  // // postfit_dist->Draw();
-  // // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.pdf",indir.c_str(),mass));
-  // // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.png",indir.c_str(),mass));
-
-
+  
+  // postfit_dist->Draw();
+  // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.pdf",indir.c_str(),mass));
+  // postfit_dist->SaveAs(Form("%spostfit-dist_m%d.png",indir.c_str(),mass));
   // //nuisances_dist->Draw();
   // // postfit_dist->Draw();
   // //postfiterr_dist->Draw();
-
-  // cout << "grfit_b_g " << grfit_b_g << endl;
-  // cout << "grfit_b_s " << grfit_b_s << endl;
-  // cout << "N " << grfit_b_g->GetN() << endl;
-
+  
+  // cout << "N " << grfit_b_g->GetN() << endl;  
   // cout << "nofCanvases : " << nofCanvases << "," << maxX << endl;
   // gStyle->SetOptStat(0);
-
-
+  
   // TLegend* leg = new TLegend(0.81,0.84,0.99,0.99,NULL,"brNDC");
   // leg->SetTextSize(0.04);
   // leg->SetFillColor(0);
@@ -140,25 +150,8 @@ int PlotStatResults(int mass = 80)
 
     
   // }
-
   
-  TObject *obj;
-  TIter next(postfit_dist->GetListOfPrimitives());
-  while ((obj=next())) {
-    //cout << "0:Reading: " << obj->GetName() <<" of type "<<obj->ClassName()<< endl;
-    if(!strcmp(obj->GetName(),"pulls")){
-        TH1 *h1 = (TH1*)obj;
-	string title(h1->GetTitle());
-	title += Form(" (m_{H^{#pm}} = %d GeV)",mass);
-	h1->SetTitle(title.c_str());
-        TCanvas *ch = new TCanvas("ch","ch");
-        h1->Draw("e1");
-	ch->SaveAs(Form("%spostfit-dist_m%d.pdf",indir.c_str(),mass));
-	ch->SaveAs(Form("%spostfit-dist_m%d.png",indir.c_str(),mass));
-    }
-  }//obj loop
-
-  ///////////////////////////////////////////////////////////////////
+  // ///////////////////////////////////////////////////////////////////
   // ////////////////// Parameter Scan ///////////////////////////////////
   // ifstream ftext((indir+"pararray.txt").c_str());
   // string nuisance;
@@ -236,98 +229,120 @@ int PlotStatResults(int mass = 80)
 
 
   // // ///////////////////////////////////////////////////////////////////
-  // /////////////////////////// GoF ///////////////////////////////////
-  // TH1F *histData = new TH1F("histData", "histData", 50, 0., 300.);
-  // TH1F *histToy = new TH1F("histToy", "histToy", 50, 0., 300.);
-  // histData->SetLineColor(kRed);
-  // histToy->SetLineColor(kBlue);
-  // histData->SetLineWidth(2);
-  // histToy->SetTitle("");
-  // histToy->GetYaxis()->SetTitle("Number of Toys");
-  // histToy->GetXaxis()->SetTitle("q_{GoF,saturated}");
-  // histToy->GetYaxis()->SetTitleSize(0.04);
-  // histToy->GetXaxis()->SetTitleSize(0.04);
+  /////////////////////////// GoF ///////////////////////////////////
 
-  // TFile *fgof_data = TFile::Open((indir+Form("higgsCombineTest.GoodnessOfFit.mH%d.root",mass)).c_str());
-  // TFile *fgof_toy = TFile::Open((indir+Form("higgsCombineTest.GoodnessOfFit.mH%d.1234.root",mass)).c_str());
-  // TTree *limitD = (TTree *)fgof_data->Get("limit");
-  // Double_t limit_data;
-  // limitD->SetBranchAddress("limit", &limit_data);
-  // for(int ie=0;ie<limitD->GetEntries();ie++){
-  //   limitD->GetEntry(ie);
-  //   histData->Fill(limit_data);
-  // }
-  // TTree *limitT = (TTree *)fgof_toy->Get("limit");
-  // Double_t limit_toy;
-  // limitT->SetBranchAddress("limit", &limit_toy);
-  // for(int ie=0;ie<limitT->GetEntries();ie++){
-  //   limitT->GetEntry(ie);
-  //   histToy->Fill(limit_toy);
-  // }
-  // delete fgof_data;
-  // delete fgof_toy;
+  // TH1F *histData = new TH1F("histData", "histData", 100, 0., 1000.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 100, 0., 1000.);
+  // TH1F *histData = new TH1F("histData", "histData", 30, 0., 70.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 30, 0., 70.);
+  // TH1F *histData = new TH1F("histData", "histData", 25, 0., 100.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 25, 0., 100.);
+  // TH1F *histData = new TH1F("histData", "histData", 35, 0., 140.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 35, 0., 140.);
+  // TH1F *histData = new TH1F("histData", "histData", 50, 0., 200.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 50, 0., 200.);
+  // TH1F *histData = new TH1F("histData", "histData", 75, 0., 300.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 75, 0., 300.);
+  // TH1F *histData = new TH1F("histData", "histData", 100, 0., 400.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 100, 0., 400.);
+  TH1F *histData = new TH1F("histData", "histData", 200, 0., 800.);
+  TH1F *histToy = new TH1F("histToy", "histToy", 200, 0., 800.);
+  // TH1F *histData = new TH1F("histData", "histData", 60, 0., 150.);
+  // TH1F *histToy = new TH1F("histToy", "histToy", 60, 0., 150.);
+  histData->SetLineColor(kRed);
+  histToy->SetLineColor(kBlue);
+  histData->SetLineWidth(2);
+  histToy->SetTitle("");
+  histToy->GetYaxis()->SetTitle("Number of Toys");
+  histToy->GetXaxis()->SetTitle("q_{GoF,saturated}");
+  histToy->GetYaxis()->SetTitleSize(0.04);
+  histToy->GetXaxis()->SetTitleSize(0.04);
   
-  // TArrow *ar = new TArrow(histData->GetMean(),3.0,histData->GetMean(),30,0.02,"<|");
-  // //TArrow *ar = new TArrow(histData->GetBinCenter(histData->GetMaximumBin()),3.0,histData->GetBinCenter(histData->GetMaximumBin()),30,0.02,"<|");
-  // ar->SetLineWidth(2);
-  // ar->SetLineColor(kBlack);
-  // ar->SetFillColor(kOrange +7);
-
-  // TLegend* legGoF = new TLegend(0.15,0.40,0.30,0.75,NULL,"brNDC");
-  // legGoF->SetBorderSize(0);
-  // legGoF->SetTextSize(0.04);
-  // legGoF->SetFillColor(0);
-  // TString meanToy = TString(Form("%3.1f #pm %3.1f",histToy->GetMean(),histToy->GetStdDev()));
-  // TString histcount = to_string(int(histToy->GetEntries()));
-  // TString legToy = "#splitline{Expected from "+histcount+" Toys}{(Mean ="+meanToy+")}";
-  // legGoF->AddEntry(histToy, legToy,"L");
-  // TString legData = Form("#splitline{Observed}{(%3.1f)}",histData->GetMean());
-  // legGoF->AddEntry(histData,legData,"L");
+  TFile *fgof_data = TFile::Open((indir+Form("higgsCombineTest.GoodnessOfFit.mH%d.root",mass)).c_str());
+  TFile *fgof_toy = TFile::Open((indir+Form("higgsCombineTest.GoodnessOfFit.mH%d.1234.root",mass)).c_str());
+  //TFile *fgof_toy = TFile::Open((indir+Form("higgsCombine_SRMR_1.905591_0.840.GoodnessOfFit.mH%d.123456.root",mass)).c_str());
+  TTree *limitD = (TTree *)fgof_data->Get("limit");
+  Double_t limit_data;
+  limitD->SetBranchAddress("limit", &limit_data);
+  for(int ie=0;ie<limitD->GetEntries();ie++){
+    limitD->GetEntry(ie);
+    histData->Fill(limit_data);
+  }
+  TTree *limitT = (TTree *)fgof_toy->Get("limit");
+  Double_t limit_toy;
+  limitT->SetBranchAddress("limit", &limit_toy);
+  for(int ie=0;ie<limitT->GetEntries();ie++){
+    limitT->GetEntry(ie);
+    histToy->Fill(limit_toy);
+  }
+  delete fgof_data;
+  delete fgof_toy;
   
-  // TPaveText *pt = paveText(0.50,0.9254,0.82,0.9562, 0, 19, 1, 0, 132);
-  // pt->SetTextSize(0.06);
-  // TText *text = pt->AddText("l + jets         137.6 fb^{-1} (13 TeV) ");
+  TArrow *ar = new TArrow(histData->GetMean(),3.0,histData->GetMean(),30,0.02,"<|");
+  //TArrow *ar = new TArrow(histData->GetBinCenter(histData->GetMaximumBin()),3.0,histData->GetBinCenter(histData->GetMaximumBin()),30,0.02,"<|");
+  ar->SetLineWidth(2);
+  ar->SetLineColor(kBlack);
+  ar->SetFillColor(kOrange +7);
 
-  // TPaveText *cct = paveText(0.20,0.85,0.30,0.85, 0, 19, 1, 0, 132);
-  // cct->SetTextSize(0.05);
-  // cct->AddText(Form("m_{H^{#pm}} = %d GeV",mass));
+  TLegend* legGoF = new TLegend(0.15,0.40,0.30,0.75,NULL,"brNDC");
+  legGoF->SetBorderSize(0);
+  legGoF->SetTextSize(0.04);
+  legGoF->SetFillColor(0);
+  TString meanToy = TString(Form("%3.1f #pm %3.1f",histToy->GetMean(),histToy->GetStdDev()));
+  TString histcount = to_string(int(histToy->GetEntries()));
+  TString legToy = "#splitline{Expected from "+histcount+" Toys}{(Mean ="+meanToy+")}";
+  legGoF->AddEntry(histToy, legToy,"L");
+  TString legData = Form("#splitline{Observed}{(%3.1f)}",histData->GetMean());
+  legGoF->AddEntry(histData,legData,"L");
+  
+  TPaveText *pt = paveText(0.50,0.9254,0.82,0.9562, 0, 19, 1, 0, 132);
+  pt->SetTextSize(0.06);
+  TText *text = pt->AddText("#it{l} + jets         138 fb^{-1} (13 TeV) ");
+  //TText *text = pt->AddText("#it{l} + jets         36 fb^{-1} (13 TeV) ");
+  //TText *text = pt->AddText("#it{l} + jets         42 fb^{-1} (13 TeV) ");
+  //TText *text = pt->AddText("#it{l} + jets         70 fb^{-1} (13 TeV) ");
+
+  TPaveText *cct = paveText(0.20,0.85,0.30,0.85, 0, 19, 1, 0, 132);
+  cct->SetTextSize(0.05);
+  cct->AddText(Form("m_{H^{#pm}} = %d GeV",mass));
 
   
   
-  // // TF1 *fgaus = new TF1("fgaus","[0]*ROOT::Math::chisquared_pdf(x,[1])",0,1000);
-  // // fgaus->SetParameters(histToy->GetEntries()*histToy->GetBinWidth(1), histToy->GetMean());
-  // TF1 *fgaus = new TF1("fgaus","gaus",0,1000);
-  // fgaus->SetParameter(1,histToy->GetMean());
-  // fgaus->SetParameter(2,histToy->GetRMS());
-  // fgaus->SetNpx(1000);
-  // fgaus->SetLineColor(kGreen+2);
-  // histToy->Fit(fgaus,"NQLR");
-  // TString legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus->GetParameter(1),fgaus->GetParameter(2));
-  // legGoF->AddEntry(fgaus,legchi,"L");
-
-  // //double pvalue = histToy->Integral(histToy->FindBin(histData->GetMean()),histToy->FindBin(1000.))/histToy->Integral();
-  // double pvalue = fgaus->Integral(histData->GetMean(),1000.)/fgaus->Integral(0.,1000.);
-  // //double pvalue = fgaus->Integral(histData->GetBinCenter(histData->GetMaximumBin()),2000.)/fgaus->Integral(0.,2000.);
-  // legGoF->AddEntry(fgaus,Form("p-value : %4.3f",pvalue),"");
+  // TF1 *fgaus = new TF1("fgaus","[0]*ROOT::Math::chisquared_pdf(x,[1])",0,1000);
+  // fgaus->SetParameters(histToy->GetEntries()*histToy->GetBinWidth(1), histToy->GetMean());
+  TF1 *fgaus = new TF1("fgaus","gaus",0,1000);
+  //TF1 *fgaus = new TF1("fgaus","gaus",100,220);
+  fgaus->SetParameter(1,histToy->GetMean());
+  fgaus->SetParameter(2,histToy->GetRMS());
+  fgaus->SetNpx(1000);
+  fgaus->SetLineColor(kGreen+2);
+  histToy->Fit(fgaus,"NQLR");
+  TString legchi = Form("#splitline{Gaussian pdf}{(Mean : %3.1f #pm %3.1f)}",fgaus->GetParameter(1),fgaus->GetParameter(2));
+  legGoF->AddEntry(fgaus,legchi,"L");
   
-  // gStyle->SetOptStat(0);
-  // TCanvas *c1 = new TCanvas("cGoF","cGoF");
-  // c1->SetTickx();
-  // c1->SetTicky();
-  // histToy->Draw();
-  // histData->Draw("sames");
-  // fgaus->Draw("same");
-  // ar->Draw();
-  // pt->Draw();
-  // cct->Draw();
-  // legGoF->Draw();
-  // c1->SaveAs(Form("%sgof_m%d.png",indir.c_str(),mass));
-  // c1->SaveAs(Form("%sgof_m%d.pdf",indir.c_str(),mass));
+  //double pvalue = histToy->Integral(histToy->FindBin(histData->GetMean()),histToy->FindBin(1000.))/histToy->Integral();
+  double pvalue = fgaus->Integral(histData->GetMean(),1000.)/fgaus->Integral(0.,1000.);
+  //double pvalue = fgaus->Integral(histData->GetBinCenter(histData->GetMaximumBin()),2000.)/fgaus->Integral(0.,2000.);
+  legGoF->AddEntry(fgaus,Form("p-value : %6.5f",pvalue),"");
+  
+  gStyle->SetOptStat(0);
+  TCanvas *c1 = new TCanvas("cGoF","cGoF");
+  c1->SetTickx();
+  c1->SetTicky();
+  histToy->Draw();
+  histData->Draw("sames");
+  fgaus->Draw("same");
+  ar->Draw();
+  pt->Draw();
+  cct->Draw();
+  legGoF->Draw();
+  c1->SaveAs(Form("%sgof_m%d.png",indir.c_str(),mass));
+  c1->SaveAs(Form("%sgof_m%d.pdf",indir.c_str(),mass));
 
-  // cout <<"Mean : " << histData->GetMean() << endl;;
-  // cout <<"Total Integral : " << fgaus->Integral(0,1000.) << endl;;
-  // cout <<"Integral : " << fgaus->Integral(histData->GetMean(),1000.)/fgaus->Integral(0,1000.) << endl;;
-  // /////////////////////////////////////////////////////////////////////
+  cout <<"Mean : " << histData->GetMean() << endl;;
+  cout <<"Total Integral : " << fgaus->Integral(0,1000.) << endl;;
+  cout <<"Integral : " << fgaus->Integral(histData->GetMean(),1000.)/fgaus->Integral(0,1000.) << endl;;
+  /////////////////////////////////////////////////////////////////////
 
   // /////////////////////////// GoF MC ///////////////////////////////////
   // ifstream flimit((indir+"limit.txt").c_str());

@@ -16,8 +16,13 @@ def execme(command):
 #---------------------------------------------
 #function to prepare data cards
 #---------------------------------------------
+
+callcard = 1
 def makeDataCards(IN_FILE_DIR, HIST_DIR, HIST_NAME, CHANNEL_NAME, SIG_MASS, SIG_LABEL, SIG_FILE, YEAR):
-    execme('root -l -q -b \"MyHPlusDataCardMaker.C(\\\"'+IN_FILE_DIR+'\\\",\\\"'+YEAR+'\\\", \\\"'+HIST_DIR+'\\\",\\\"'+HIST_NAME+'\\\",\\\"'+CHANNEL_NAME+'\\\",'+str(SIG_MASS)+', \\\"'+SIG_LABEL+'\\\", \\\"'+SIG_FILE+'\\\")\"')
+    callcard = globals()['callcard']
+    execme('root -l -q -b \"MyHPlusDataCardMaker.C(\\\"'+IN_FILE_DIR+'\\\",\\\"'+YEAR+'\\\", \\\"'+HIST_DIR+'\\\",\\\"'+HIST_NAME+'\\\",\\\"'+CHANNEL_NAME+'\\\",'+str(SIG_MASS)+', \\\"'+SIG_LABEL+'\\\", \\\"'+SIG_FILE+'\\\",\\\"'+str(callcard)+'\\\")\"')
+    callcard += 1
+    globals()['callcard'] = callcard
 
 def moveDataCards(CHANNEL_NAME, HIST_ARRAY, MASS, CAT_DIR, LIMIT_DIR):
     execme('mkdir -p '+LIMIT_DIR)
@@ -40,8 +45,8 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     #command2 = 'combine --rAbsAcc 0.000001 -s 12543 --setParameterRanges BR=-2.0,2.0 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     command2 = 'combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     
-    # print("command2 : %s"%command2)
-    # execme(command2)
+    print("command2 : %s"%command2)
+    #execme(command2)
 
     #Using Asimov
     #command2 = 'combine --run blind --rAbsAcc 0.000001 --expectSignal 1 --setParameterRanges BR=0.0,1.0  -t -1 -d '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
@@ -212,10 +217,10 @@ if __name__=="__main__":
     hist_array_Inc = []
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
     # hist_array_Inc.append(["", "_kb_mjj_"])
-    hist_array_Inc.append(["", "_ct_Exc0_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
+    # hist_array_Inc.append(["", "_ct_Exc0_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagL = []
     hist_array_CTagL.append(["KinFit", "mjj_kfit_CTagIncL"])

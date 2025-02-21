@@ -106,6 +106,11 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
   if(hist->GetNbinsX()==2400)
     hist->Rebin(50);
   TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
+  // if(hist->GetNbinsX()==50)
+  //   hist->Rebin(2);
+  // if(hist->GetNbinsX()==2400)
+  //   hist->Rebin(100);
+  // TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 10., 20., 170.);
   if(outHistName.Contains("CMS_stat_")){
     string hname = outHistName.Data();
     string binnum  = "";
@@ -761,6 +766,28 @@ int MyHPlusDataCardMaker::ModifyUpDownHisto(TH1F* hnom, TH1F*& hup, TH1F*& hdown
     hup->Scale(hnom->Integral()/hup->Integral());
   }
   
+  TH1F *hup_temp = (TH1F *)hup->Clone("hUpTemp");
+  TH1F *hdown_temp = (TH1F *)hdown->Clone("hDownTemp");
+
+  //if "ICES" is specified, resets only Integral, Contents, Errors and Statistics
+  //See https://root.cern.ch/doc/master/classTH1.html#a537509270db4e59efb39619b94c3a9a4
+  hup->Reset("ICES"); 
+  hdown->Reset("ICES");
+  for(int ibin=1;ibin<=hup_temp->GetNbinsX();ibin++) {
+    double binVal = hup_temp->GetBinContent(ibin);
+    double binErr = hup_temp->GetBinError(ibin);
+    hup->SetBinContent(ibin, binVal);
+    hup->SetBinError(ibin, binErr);
+  }
+  for(int ibin=1;ibin<=hdown_temp->GetNbinsX();ibin++) {
+    double binVal = hdown_temp->GetBinContent(ibin);
+    double binErr = hdown_temp->GetBinError(ibin);
+    hdown->SetBinContent(ibin, binVal);
+    hdown->SetBinError(ibin, binErr);
+  }
+  
+  delete hup_temp;
+  delete hdown_temp;
   delete hupbynom;
   delete hdownbynom;
   

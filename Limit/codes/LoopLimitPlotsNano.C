@@ -101,7 +101,8 @@ int LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANN
   
   double maxY = 1.0;  
   for(int i = 0 ; i < nMassPoints; i++){
-    TFile f("local/"+year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ");
+    //TFile f("local/"+year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ");
+    TFile f(year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ");
     //TFile f(year_dir+CHANNEL+"/"+massFiles[i],"READ");
     //TFile f(year_dir+"/"+massFiles[i],"READ"); 
     if(f.IsZombie()){
@@ -333,8 +334,10 @@ int LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANN
   return true;
 }
 
-//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/01_alllogN_wtqcddd_edge-effect/Run2/Comb/"){
-int LoopLimitPlotsNano(TString year_dir = "savarghe/HplusDatacardsNew/FullRun2/"){
+int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_impact-data/local/mu_ele_Run2_impact_qcdrange50_qcddd6_bc3_uncorr_brpm2_x0p02_5GeV_iter130/local/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_impact-data/local/mu_ele_Run2_impact_qcdrange50_qcddd6_bc3_uncorr_brpm2_x0p02_10GeV_iter128/local/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/38_unblinded_MVA_lnNfixed_qcdddfulluncorr_symm_10GeVbin/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "savarghe/HplusDatacardsNew/FullRun2/"){
   
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {40, 50, 60, 70, 80, 90, 100,110, 120, 130, 140, 150, 155, 160};
