@@ -1,9 +1,9 @@
 t2wDataCard=$1
 mass=$2
-setbr=0.0
-minbr=-2.0
-maxbr=2.0
-
+setbr=0.0044
+minbr=0.0
+maxbr=0.1
+fextn=br0to0p1
 ######################################## Impacts ############################################
 #combineTool.py -M Impacts -d $t2wDataCard -m $mass --doInitialFit --robustFit 1 -t -1 --redefineSignalPOIs BR --setParameterRanges BR=0,0.1 | tee doInitialFit.log 
 #combineTool.py -M Impacts -d $t2wDataCard -m $mass --doFit --robustFit 1 -t -1 --redefineSignalPOIs BR --setParameterRanges BR=0,0.1 --parallel 3 | tee doFit.log
@@ -39,11 +39,16 @@ maxbr=2.0
 # # Blinded
 # combine $t2wDataCard -m $mass -M FitDiagnostics --redefineSignalPOIs BR  -t -1 --setParameters BR=-0.000001 --setParameterRanges BR=-2.0,2.0 --plots --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --robustFit 1 --stepSize=0.0001 --robustHesse 1 --minos none --ignoreCovWarning -s 12543
 
-# # Unblinded #"--saveShapes --saveWithUncertainties --saveNormalizations" to mjj plots
-# combine $t2wDataCard -m $mass -M FitDiagnostics --redefineSignalPOIs BR --setParameters BR=$setbr --setParameterRanges BR=$minbr,$maxbr  --cminDefaultMinimizerStrategy 0 --robustFit 1  --saveShapes --saveWithUncertainties --saveNormalizations --stepSize=0.0001 --robustHesse 1  
+# Unblinded #"--saveShapes --saveWithUncertainties --saveNormalizations" to mjj plots
+combine $t2wDataCard -m $mass -M FitDiagnostics --redefineSignalPOIs BR --setParameters BR=$setbr --setParameterRanges BR=$minbr,$maxbr  --cminDefaultMinimizerStrategy 0 --cminPreScan --cminPreFit 1 --robustFit 1  --saveShapes --saveWithUncertainties --saveNormalizations  --stepSize=0.0001  --robustHesse 1  #--cminDefaultMinimizerTolerance 0.0001 #--setCrossingTolerance 0.04
+#combine $t2wDataCard -m $mass -M FitDiagnostics --redefineSignalPOIs BR --setParameters BR=$setbr --freezeParameters BR  --setParameterRanges BR=$minbr,$maxbr --cminDefaultMinimizerStrategy 0 --robustFit 1  --saveShapes --saveWithUncertainties --saveNormalizations --stepSize=0.0001 --robustHesse 1
 
-# #If needed edit the diffNuisances.py python file below to save the histogram and graphs to the output file
-# python3 $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py -a fitDiagnosticsTest.root --poi=BR -g pull_result.root
+#If needed edit the diffNuisances.py python file below to save the histogram and graphs to the output file
+python3 $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py -a fitDiagnosticsTest.root --poi=BR -g pull_result.root
+
+cp fitDiagnosticsTest.root fitDiagnosticsTest_${fextn}.root
+cp pull_result.root pull_result_${fextn}.root
+cp higgsCombineTest.FitDiagnostics.mH${mass}.root higgsCombineTest_${fextn}.FitDiagnostics.mH${mass}.root
 ######################################## Scan parameters ############################################
 
 # fname=pararray.txt 

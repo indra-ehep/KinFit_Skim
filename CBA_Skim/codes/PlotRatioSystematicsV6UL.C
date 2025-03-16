@@ -34,7 +34,7 @@ double lumi_unc[3] = {0.012, 0.023, 0.025} ;
 double qcd_frac = 0.0779 ; //One needs to check the QCD contribution from systematics
 // //2016 ele
 //double qcd_frac = 0.2486 ; //One needs to check the QCD contribution from systematics
-int rebin = 50;
+int rebin = 100;
 
 int PlotRatioSystematicsV6UL(int year = 2018, bool isBtag = 0, bool isMu = 1, int htype = 6){
 
@@ -149,8 +149,10 @@ int PlotRatioSystematicsV6UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
 
   cout << "Histname : " << histname << endl;
   
-  string outputpdf = Form("figs/Week_Work_Report/2024-11-19/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
-  string outputpng = Form("figs/Week_Work_Report/2024-11-19/ctrl_plt/%d/hist%s.png",year,histname.c_str());
+  // string outputpdf = Form("figs/Week_Work_Report/2024-11-19/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  // string outputpng = Form("figs/Week_Work_Report/2024-11-19/ctrl_plt/%d/hist%s.png",year,histname.c_str());
+  string outputpdf = Form("figs/Week_Work_Report/2025-03-05/ctrl_plt/%d/hist%s.pdf",year,histname.c_str());
+  string outputpng = Form("figs/Week_Work_Report/2025-03-05/ctrl_plt/%d/hist%s.png",year,histname.c_str());
 
   //const char* dir = "grid_v40_Syst/CBA_JECSplit-CombHist";
   //const char* dir = "grid_v40_Syst/CBA_jecsyst-CombHist";
@@ -471,7 +473,7 @@ int PlotRatioSystematicsV6UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
     lower_pad_yaxis_title = "#frac{Data}{Bkg}"; lower_pad_xaxis_title = "#phi^{jets}"; // lower pad axis titles
   }
 
-  float upper_minY = 1.0e-1; float upper_maxY = 8.e7;  //y-axis range of upper pad
+  float upper_minY = 1.0e-1; float upper_maxY = 5.e9;  //y-axis range of upper pad
   //float upper_minY = 1.0e-1; float upper_maxY = 5.e12;  //y-axis range of upper pad
   float lower_minY = 0.0; float lower_maxY = 2.0;     //y-axis range of lower pad
   
@@ -492,7 +494,7 @@ int PlotRatioSystematicsV6UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
     if(isBtag){
       upper_minX = 0.0; upper_maxX = 450.0;   //x-axis range
     }else{
-      upper_minX = 0.0; upper_maxX = 200.0;   //x-axis range
+      upper_minX = 20.0; upper_maxX = 170.0;   //x-axis range
     }
   }else if((htype>=18 and htype<=20) or (htype>=27 and htype<=29)){
     upper_minX = 0.0; upper_maxX = 500.0;  //x-axis range
@@ -538,8 +540,8 @@ int PlotRatioSystematicsV6UL(int year = 2018, bool isBtag = 0, bool isMu = 1, in
   int canvas_height = TMath::Nint(canvas_scale*800) ;
   
   // Search and replace != with == of  --histname.find("_mjj_")!=string::npos-- for all following occurances to plot unblinded Mjj
-  bool mass_plot = (histname.find("_mjj_")!=string::npos);
-  //bool mass_plot = (histname.find("_mjj_")==string::npos);
+  //bool mass_plot = (histname.find("_mjj_")!=string::npos);
+  bool mass_plot = (histname.find("_mjj_")==string::npos);
   bool isBlinded = (mass_plot) ; 
   TPad *p = 0x0;
   if(isBlinded){

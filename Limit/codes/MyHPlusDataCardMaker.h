@@ -101,16 +101,16 @@ TH1F*  MyHPlusDataCardMaker:: getHisto(TFile *inRootFile, TString histPath, TStr
 TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite = false, bool isNorm = false, TH1F *hBase = 0x0){
   TH1F* hist = (TH1F*) getHisto(inFile, histPath, inHistName, fTT)->Clone(outHistName);
   hist->Scale(sf);
-  if(hist->GetNbinsX()==50)
-    hist->Rebin(1);
-  if(hist->GetNbinsX()==2400)
-    hist->Rebin(50);
-  TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
   // if(hist->GetNbinsX()==50)
-  //   hist->Rebin(2);
+  //   hist->Rebin(1);
   // if(hist->GetNbinsX()==2400)
-  //   hist->Rebin(100);
-  // TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 10., 20., 170.);
+  //   hist->Rebin(50);
+  // TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
+  if(hist->GetNbinsX()==50)
+    hist->Rebin(2);
+  if(hist->GetNbinsX()==2400)
+    hist->Rebin(100);
+  TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 10., 20., 170.);
   if(outHistName.Contains("CMS_stat_")){
     string hname = outHistName.Data();
     string binnum  = "";
@@ -271,7 +271,7 @@ TH1F* MyHPlusDataCardMaker::trimHistoNano(TH1F* hist, TString histName, float bi
     TH1F* newHisto = new TH1F(histName, histName, nBin, xMin, xMax);
     int initX = TMath::Nint(xMin/binWidth);
     int lastX = TMath::Nint(xMax/binWidth);
-    for(int i = initX; i<lastX; i++){
+    for(int i = initX; i<=lastX+1; i++){
       double binVal = hist->GetBinContent(i);
       double binErr = hist->GetBinError(i);
       int i_new = i - initX;
@@ -708,6 +708,7 @@ int MyHPlusDataCardMaker::SymmetrizeErrors(string signal, TFile* outFile)
       string sname = "";
       if(((kname.find("Up") != string::npos) or (kname.find("Down") != string::npos)) and kname.find(signal)!=string::npos){
 	if(signal=="qcd" and (kname.find("flavorqcd") != string::npos)) continue;
+	//if( (kname.find("bcstat") != string::npos) or (kname.find("bclhemuf") != string::npos) or (kname.find("bclhemur") != string::npos) or (kname.find("bcxdyb") != string::npos) or (kname.find("bcxdyc") != string::npos) or (kname.find("bcxwjc") != string::npos) or (kname.find("bcintp") != string::npos) or (kname.find("bcextp") != string::npos) ) continue;
   	sname = (kname.find("Up") != string::npos) ? kname.substr(kname.find("_")+1,kname.find_last_of("U")-kname.find("_")-1) : kname.substr(kname.find("_")+1,kname.find_last_of("D")-kname.find("_")-1) ;
   	if(std::find(systnames.begin(), systnames.end(), sname) == systnames.end()) systnames.push_back(sname);
       }

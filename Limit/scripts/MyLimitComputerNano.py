@@ -107,7 +107,7 @@ def sortCardsForCombine(COMB_CARD_CHANNEL_HIST_MASS_ARRAY, CHANNEL_ARRAY, HIST_A
 #---------------------------------------------------
 #function to calculate combined limits
 #---------------------------------------------------
-def calcCombinedLimit(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, CAT_DIR, MASS_ARRAY, isCondSub, isGOF, YEAR_ARRAY):
+def calcCombinedLimit(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, cat_combdir, CAT_DIR, MASS_ARRAY, isCondSub, isGOF, YEAR_ARRAY):
     COMB_CHANNEL_NAME = '_'.join(CHANNEL_ARRAY)
     HIST_ARRAY_ = []
     for HIST in range(len(HIST_ARRAY)):
@@ -119,7 +119,7 @@ def calcCombinedLimit(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, CAT_DIR, MAS
     for MASS in range(len(MASS_ARRAY)):
         for YEAR in range(len(YEAR_ARRAY)):
             print ("Year : %s"%(YEAR_ARRAY[YEAR]))
-            LIMIT_DIR = "local/"+COMB_CHANNEL_NAME+"/"+CAT_DIR+"/"+"Mass"+str(MASS_ARRAY[MASS])
+            LIMIT_DIR = "local/"+YEAR_ARRAY[YEAR]+"/"+cat_combdir+"/"+COMB_CHANNEL_NAME+"/"+CAT_DIR+"/"+"Mass"+str(MASS_ARRAY[MASS])
             print ("Mass : %d, %s"%(MASS, LIMIT_DIR))
             if not isCondSub: execme('mkdir -p '+LIMIT_DIR)
             getCardsToBeCombined_ = getCardsToBeCombined(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, MASS_ARRAY[MASS],YEAR_ARRAY[YEAR])
@@ -218,16 +218,16 @@ if __name__=="__main__":
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
     # hist_array_Inc.append(["", "_kb_mjj_"])
     # hist_array_Inc.append(["", "_ct_Exc0_mjj_"])
-    #hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
-    # hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
+    hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
     hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagL = []
-    hist_array_CTagL.append(["KinFit", "mjj_kfit_CTagIncL"])
+    hist_array_CTagL.append(["", "_ct_ExcL_mjj_"])
     hist_array_CTagM = []
-    hist_array_CTagM.append(["KinFit", "mjj_kfit_CTagIncM"])
+    hist_array_CTagM.append(["", "_ct_ExcM_mjj_"])
     hist_array_CTagT = []
-    hist_array_CTagT.append(["KinFit", "mjj_kfit_CTagIncT"])
+    hist_array_CTagT.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagCat = []
     hist_array_CTagCat.append(["", "_ct_ExcL_mjj_"])
@@ -237,16 +237,19 @@ if __name__=="__main__":
     #mass_array = [90, 100]
     #mass_array = [80, 90, 100, 120, 140, 150, 155, 160]
     mass_array = [40, 80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
-    
-    year_array = ["2018"]
-    # year_array.append("2017")
-    # year_array.append("2018")
+
+    year_2016 = ["2016"]
+    year_2017 = ["2017"]
+    year_2018 = ["2018"]
+    year_array = ["2016"]
+    year_array.append("2017")
+    year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")
     parser.add_argument("--year", default="2016", help="name of the mjj histogram")
     parser.add_argument("--hist", default="_kb_mjj_mu", help="name of the mjj histogram")
-    parser.add_argument("--cat", default=1, help="Type of event category")
+    parser.add_argument("--cat", default=0, help="Type of event category")
     parser.add_argument("--mass", default=120, help="Mass of the charged Higgs")
     parser.add_argument("--allMass", default=False, help="Mass of the charged Higgs")
     parser.add_argument("--batch", default=False, help="Want to submit condor jobs")
@@ -263,23 +266,40 @@ if __name__=="__main__":
         in_channel= ["mu", "ele"]
         in_file = [muon_file_dir, ele_file_dir]
     
-    if(int(args.cat)==1):
+    if(int(args.cat)==0):
         in_hist = hist_array_Inc
         cat_dir = "Cat1_Inc"
-    if(int(args.cat)==2):
+        cat_combdir = "Comb"
+    if(int(args.cat)==1):
         in_hist = hist_array_CTagL
-        cat_dir = "Cat2_cTagInc"
+        cat_dir = "Cat1_Inc"
+        cat_combdir = "ExcL"
+    if(int(args.cat)==2):
+        in_hist = hist_array_CTagM
+        cat_dir = "Cat1_Inc"
+        cat_combdir = "ExcM"
     if(int(args.cat)==3):
+        in_hist = hist_array_CTagT
+        cat_dir = "Cat1_Inc"
+        cat_combdir = "ExcT"
+    if(int(args.cat)==5):
         in_hist = hist_array_CTagCat
         cat_dir = "Cat3_cTagEx"
+        cat_combdir = "ExcLMT"
 
     if(args.allMass): in_mass = mass_array
     else: in_mass = [args.mass]
 
     if(args.year=="run2"):
         in_year = year_array        
+    elif(args.year=="2016"):
+        in_year = year_2016
+    elif(args.year=="2017"):
+        in_year = year_2017     
+    elif(args.year=="2018"):
+        in_year = year_2018     
     else:
         in_year = args.year
         
-    calcCombinedLimit(in_channel, in_file, in_hist, cat_dir, in_mass, args.batch, args.isGOF, in_year)
+    calcCombinedLimit(in_channel, in_file, in_hist, cat_combdir, cat_dir, in_mass, args.batch, args.isGOF, in_year)
 

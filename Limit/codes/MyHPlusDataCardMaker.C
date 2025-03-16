@@ -633,20 +633,20 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   
   string uncorr_extn = syear.Data();
   
-  // string uncorr_bcextn = "";//channelName.Data();
-  // if(isExcL) uncorr_bcextn += "ExcL" ;
-  // else if(isExcM) uncorr_bcextn += "ExcM";
-  // else if(isExcT) uncorr_bcextn += "ExcT";
-  // uncorr_bcextn += syear.Data();
+  string uncorr_bcextn = "";//channelName.Data();
+  if(isExcL) uncorr_bcextn += "ExcL" ;
+  else if(isExcM) uncorr_bcextn += "ExcM";
+  else if(isExcT) uncorr_bcextn += "ExcT";
+  uncorr_bcextn += syear.Data();
   
-  // string uncorr_qcdextn = channelName.Data();
-  // if(isExcL) uncorr_qcdextn += "ExcL" ;
-  // else if(isExcM) uncorr_qcdextn += "ExcM";
-  // else if(isExcT) uncorr_qcdextn += "ExcT";
-  // uncorr_qcdextn += syear.Data();
-
-  string uncorr_bcextn = "";
-  string uncorr_qcdextn = "";
+  string uncorr_qcdextn = channelName.Data();
+  if(isExcL) uncorr_qcdextn += "ExcL" ;
+  else if(isExcM) uncorr_qcdextn += "ExcM";
+  else if(isExcT) uncorr_qcdextn += "ExcT";
+  uncorr_qcdextn += syear.Data();
+  
+  // string uncorr_bcextn = "";
+  // string uncorr_qcdextn = "";
   
   bool isSymError = true; //Symmetic error in data card
   
@@ -3026,18 +3026,154 @@ void MyHPlusDataCardMakerNano(TString inFileDir="stack_20180418_Mu_Sys_PreAppCom
   if(!isBinStat)
     out<<"* autoMCStats 0 1"<<endl;
 
+  //=============================
+  //Based on 5 Gev binning
+  // 2016 ExcL ele 1.92071
+  // 2016 ExcM ele 9.20988
+  // 2016 ExcT ele 3.15887
+  // 2016 ExcL mu 4.06409
+  // 2016 ExcM mu 2.92414
+  // 2016 ExcT mu 2.28858
+  
+  // 2017 ExcL ele 1.76712
+  // 2017 ExcM ele 6.38222
+  // 2017 ExcT ele 14.1871 //from 10GeV, it was 26 from 5 GeV
+  // 2017 ExcL mu 3.28106
+  // 2017 ExcM mu 4.03698
+  // 2017 ExcT mu 2.55202
+  
+  // 2018 ExcL ele 7.5064
+  // 2018 ExcM ele 6.21421
+  // 2018 ExcT ele 6.58536
+  // 2018 ExcL mu 4.42895
+  // 2018 ExcM mu 4.41388
+  // 2018 ExcT mu 5.97882
+  //=============================
+
   float qcdrate = 1.0 ; //default
-  // float qcdrate = 1.3 ; //average
-  // if(year==2016 and isMuChannel) qcdrate = 1.33;
-  // if(year==2016 and !isMuChannel) qcdrate = 2.04;
-  // if(year==2017 and isMuChannel) qcdrate = 0.95;
-  // if(year==2017 and !isMuChannel) qcdrate = 1.46;
-  // if(year==2018 and isMuChannel) qcdrate = 1.01;
-  // if(year==2018 and !isMuChannel) qcdrate = 1.05;
+  // if(year==2016 and !isMuChannel and isExcL) qcdrate = 1.92071;
+  // if(year==2016 and !isMuChannel and isExcM) qcdrate = 9.20988;
+  // if(year==2016 and !isMuChannel and isExcT) qcdrate = 3.15887;
+  // if(year==2016 and isMuChannel and isExcL) qcdrate = 4.06409;
+  // if(year==2016 and isMuChannel and isExcM) qcdrate = 2.92414;
+  // if(year==2016 and isMuChannel and isExcT) qcdrate = 2.28858;
+
+  // if(year==2017 and !isMuChannel and isExcL) qcdrate = 1.76712;
+  // if(year==2017 and !isMuChannel and isExcM) qcdrate = 6.38222;
+  // if(year==2017 and !isMuChannel and isExcT) qcdrate = 14.1871;
+  // if(year==2017 and isMuChannel and isExcL) qcdrate = 3.28106;
+  // if(year==2017 and isMuChannel and isExcM) qcdrate = 4.03698;
+  // if(year==2017 and isMuChannel and isExcT) qcdrate = 2.55202;
+
+  // if(year==2018 and !isMuChannel and isExcL) qcdrate = 7.5064;
+  // if(year==2018 and !isMuChannel and isExcM) qcdrate = 6.21421;
+  // if(year==2018 and !isMuChannel and isExcT) qcdrate = 6.58536;
+  // if(year==2018 and isMuChannel and isExcL) qcdrate = 4.42895;
+  // if(year==2018 and isMuChannel and isExcM) qcdrate = 4.41388;
+  // if(year==2018 and isMuChannel and isExcT) qcdrate = 5.97882;
+
+  //=============================
+  //Based on 10 GeV binning
+  // 2016 ExcL ele 9.63015
+  // 2016 ExcM ele 9.4783
+  // 2016 ExcT ele 4.68911
+  // 2016 ExcL mu 3.81858
+  // 2016 ExcM mu 2.35057
+  // 2016 ExcT mu 2.6255
+  
+  // 2017 ExcL ele 1.49703
+  // 2017 ExcM ele 6.01828
+  // 2017 ExcT ele 14.1871
+  // 2017 ExcL mu 3.51897
+  // 2017 ExcM mu 3.23178
+  // 2017 ExcT mu 1.05509
+  
+  // 2018 ExcL ele 10.2497
+  // 2018 ExcM ele 4.82696
+  // 2018 ExcT ele 8.56561
+  // 2018 ExcL mu 3.91293
+  // 2018 ExcM mu 4.53163
+  // 2018 ExcT mu 7.40448
+  //============================
+
+  if(year==2016 and !isMuChannel and isExcL) qcdrate = 9.63015;
+  if(year==2016 and !isMuChannel and isExcM) qcdrate = 9.4783;
+  if(year==2016 and !isMuChannel and isExcT) qcdrate = 4.68911;
+  if(year==2016 and isMuChannel and isExcL) qcdrate = 3.81858;
+  if(year==2016 and isMuChannel and isExcM) qcdrate = 2.35057;
+  if(year==2016 and isMuChannel and isExcT) qcdrate = 2.6255;
+
+  if(year==2017 and !isMuChannel and isExcL) qcdrate = 1.49703;
+  if(year==2017 and !isMuChannel and isExcM) qcdrate = 6.01828;
+  if(year==2017 and !isMuChannel and isExcT) qcdrate = 14.1871;
+  if(year==2017 and isMuChannel and isExcL) qcdrate = 3.51897;
+  if(year==2017 and isMuChannel and isExcM) qcdrate = 3.23178;
+  if(year==2017 and isMuChannel and isExcT) qcdrate = 1.05509;
+
+  if(year==2018 and !isMuChannel and isExcL) qcdrate = 10.2497;
+  if(year==2018 and !isMuChannel and isExcM) qcdrate = 4.82696;
+  if(year==2018 and !isMuChannel and isExcT) qcdrate = 8.56561;
+  if(year==2018 and isMuChannel and isExcL) qcdrate = 3.91293;
+  if(year==2018 and isMuChannel and isExcM) qcdrate = 4.53163;
+  if(year==2018 and isMuChannel and isExcT) qcdrate = 7.40448;
+
+  //========= Last bin correction ===========
+  // 2016 ExcL ele 0.993847
+  // 2016 ExcM ele 0.943293
+  // 2016 ExcT ele 1.00924
+  // 2016 ExcL mu 1.03007
+  // 2016 ExcM mu 0.997204
+  // 2016 ExcT mu 1.06672
+
+  // 2017 ExcL ele 0.997264
+  // 2017 ExcM ele 1.09241
+  // 2017 ExcT ele 1.39868
+  // 2017 ExcL mu 1.00119
+  // 2017 ExcM mu 0.526631
+  // 2017 ExcT mu 0.989709
+
+  // 2018 ExcL ele 1.01379
+  // 2018 ExcM ele 0.991625
+  // 2018 ExcT ele 1.0368
+  // 2018 ExcL mu 1.00472
+  // 2018 ExcM mu 0.970786
+  // 2018 ExcT mu 0.916914
+  //=============================
+  
+  // if(year==2016 and !isMuChannel and isExcL) qcdrate = 0.993847;
+  // if(year==2016 and !isMuChannel and isExcM) qcdrate = 0.943293;
+  // if(year==2016 and !isMuChannel and isExcT) qcdrate = 1.00924;
+  // if(year==2016 and isMuChannel and isExcL) qcdrate = 1.03007;
+  // if(year==2016 and isMuChannel and isExcM) qcdrate = 0.997204;
+  // if(year==2016 and isMuChannel and isExcT) qcdrate = 1.06672;
+  
+  // if(year==2017 and !isMuChannel and isExcL) qcdrate = 0.997264;
+  // if(year==2017 and !isMuChannel and isExcM) qcdrate = 1.09241;
+  // if(year==2017 and !isMuChannel and isExcT) qcdrate = 1.39868;
+  // if(year==2017 and isMuChannel and isExcL) qcdrate = 1.00119;
+  // if(year==2017 and isMuChannel and isExcM) qcdrate = 0.526631;
+  // if(year==2017 and isMuChannel and isExcT) qcdrate = 0.989709;
+  
+  // if(year==2018 and !isMuChannel and isExcL) qcdrate = 1.01379;
+  // if(year==2018 and !isMuChannel and isExcM) qcdrate = 0.991625;
+  // if(year==2018 and !isMuChannel and isExcT) qcdrate = 1.0368;
+  // if(year==2018 and isMuChannel and isExcL) qcdrate = 1.00472;
+  // if(year==2018 and isMuChannel and isExcM) qcdrate = 0.970786;
+  // if(year==2018 and isMuChannel and isExcT) qcdrate = 0.916914;
+  
   //out<<"qcdrate rateParam * qcd "<<qcdrate<<" [0.0,6.0]"<<endl;
   //out<<"qcdrate"<< icall.Data() <<" rateParam * qcd "<<qcdrate<<" [0.0,6.0]"<<endl;
-  out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" [0.0,10.0]"<<endl;
+  //out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" [0.0,10.0]"<<endl;
+  //out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" [-100.0,100.0]"<<endl;
+  //out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" [0.0,50.0]"<<endl;
+  //out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" [0.0,100.0]"<<endl;
   //out<<"qcdrate rateParam * qcd 1.0 "<<endl;
+  out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" ["<<qcdrate<<","<<qcdrate<<"]"<<endl;
+  // float ratew = 5.0 ;
+  // float ratemin = ((qcdrate-ratew)>0)?(qcdrate-ratew):0;
+  // float ratemax = (qcdrate+ratew);
+  //out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" ["<<ratemin<<","<<ratemax<<"]"<<endl;
+  //out<<"qcdrate"<< uncorr_qcdextn <<" rateParam * qcd "<<qcdrate<<" [0.0,10.0]"<<endl;
   out.close();
   in.close();
   fout->Close();

@@ -27,7 +27,7 @@
 
 using namespace std;
 
-int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 96){
+int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 98){
   
   int PlotRatio(TH1D *h1, TH1D *h2, float maxmin, const char *cname);
   int ModifyUpDownHisto(TH1D*& hnom, TH1D*& hup, TH1D*& hdown, TH1D *hupbynom, TH1D *hdownbynom);
@@ -209,10 +209,10 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 96){
   int isysdown = isysup ;
   //int isysup = 2; 
   isysup--;
-
+  
   string lep = (isMu==1) ? "mu" : "ele" ;
-  const char *histname = Form("_kb_mjj_%s",lep.c_str());
-  //const char *histname = Form("_ct_ExcT_mjj_%s",lep.c_str());
+  //const char *histname = Form("_kb_mjj_%s",lep.c_str());
+  const char *histname = Form("_ct_ExcT_mjj_%s",lep.c_str());
   
   // const char *histnameup = (isysup<=16) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysup]) ;
   // const char *histnamedown = (isysdown<=17) ? Form("%s",histname) :  Form("%s_%s",histname,syst_2016[isysdown]) ;
@@ -253,7 +253,7 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 96){
   // hSysUp->Sumw2();
   // hSysDown->Sumw2();
 
-  int rebin = 50;
+  int rebin = 100;
   hBase->Rebin(rebin);
   hSysUp->Rebin(rebin);
   hSysDown->Rebin(rebin);
@@ -313,7 +313,7 @@ int UpDownBaseCompare(int isMu = 1, int year = 2016, int isysup = 96){
   double maxupdown = (maxUp>maxDown)?maxUp:maxDown;
   double errorP = 1.1*maxupdown;
   cout << "maxupdown: " << errorP << endl;
-    
+  
   hBase->SetLineColor(kRed);
   hSysUp->SetLineColor(kBlue);
   hSysDown->SetLineColor(kGreen+1);
@@ -443,11 +443,14 @@ int PlotRatio(TH1D *h1, TH1D *h2, float maxmin, const char *cname)
     // h3->SetMinimum(0.8);  // Define Y ..
     // h3->SetMaximum(1.2); // .. range
 
+    h3->SetMinimum(0.88);  // Define Y ..
+    h3->SetMaximum(1.12); // .. range
+
     // h3->SetMinimum(0.5);  // Define Y ..
     // h3->SetMaximum(1.5); // .. range
 
-    h3->SetMinimum(1-maxmin);  // Define Y ..
-    h3->SetMaximum(1+maxmin); // .. range
+    // h3->SetMinimum(1-maxmin);  // Define Y ..
+    // h3->SetMaximum(1+maxmin); // .. range
 
     // cout << "h3->GetBinContent(h3->FindBin(80.0))" << h3->GetBinContent(h3->FindBin(80.0)) << endl;
     // h3->SetMaximum(1+2*(h3->GetBinContent(h3->FindBin(80.0))-1.));
