@@ -186,13 +186,14 @@ int LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANN
   }
   FILE *fout = fopen(Form("/tmp/nano_def_%s.txt",CHANNEL.Data()),"w");
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
-    expY1sH_[i1] = TMath::Abs(expY1sH_[i1]-expY[i1]);
-    expY1sL_[i1] = TMath::Abs(expY1sL_[i1]-expY[i1]);
+    // expY1sH_[i1] = TMath::Abs(expY1sH_[i1]-expY[i1]);
+    // expY1sL_[i1] = TMath::Abs(expY1sL_[i1]-expY[i1]);
     // cout<<"$"<<std::setprecision(2)<<100*expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
     //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$\n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
     if(obs){
       //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
-      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      //fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      fprintf(fout,"%7.5f | %7.5f : %7.5f : %7.5f | %7.5f | %7.5f : %7.5f : %7.5f | %7.5f\n",X[i1], expY3sL_[i1], expY2sL_[i1], expY1sL_[i1], expY[i1], expY1sH_[i1] , expY2sH_[i1] , expY3sH_[i1] , obsY[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       Val.push_back(res);
     }else{

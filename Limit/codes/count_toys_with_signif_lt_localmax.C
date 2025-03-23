@@ -1,3 +1,12 @@
+#include <iostream>
+#include <cstring>
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TGraph.h"
+#include "TROOT.h"
+#include "Math/ProbFunc.h"
+
 void count_toys_with_signif_lt_localmax(const char* year, int mass, const char* bkgfile, const char* datafile){
   // std::string bfitfname = "higgsCombine_bfit_data_1.MultiDimFit.mH80.root";
   // std::string datafname = "higgsCombine_data_1.MultiDimFit.mH80.root";
@@ -37,17 +46,21 @@ void count_toys_with_signif_lt_localmax(const char* year, int mass, const char* 
   nentries = t->GetEntries();
   TGraph hsignif(nentries);
   int ivalid = 0;
-  double sig_max = -1, BR_max;
+  double sig_max = -1, BR_max = 0;
   for (Int_t i = 0; i<nentries; i++) {
     t->GetEntry(i);
+    ///The following line is only used for global-p for Mass 60 to skip BR values beyond the 3 sigma bound
+    if(BR<0.0018 or BR>0.0105) continue; /// Only applicable for Run2 mu_ele Mass 60
+    /////////////////////////////////
     double rel_nll = nll+nll0+deltaNLL - nll_bfit;
     if(rel_nll>0) rel_nll=0;
+    double sig = sqrt(2*fabs(rel_nll));
     //double sig = sqrt(2*fabs(nll+nll0+deltaNLL));
-    double sig = sqrt(2*fabs(deltaNLL));
+    //double sig = sqrt(2*fabs(deltaNLL));
     //if(sig>5) continue;
     hsignif.Set(i+1);
     hsignif.SetPoint(i, BR, sig);
-    std::cout << "i : " << i << ", (nll+nll0+deltaNLL): " << (nll+nll0+deltaNLL) << ", nll_bfit: " << nll_bfit << ", rel_nll: " << rel_nll << ", BR : " << BR << ",  sig: " << sig << std::endl;
+    //std::cout << "i : " << i << ", (nll+nll0+deltaNLL): " << (nll+nll0+deltaNLL) << ", nll_bfit: " << nll_bfit << ", rel_nll: " << rel_nll << ", BR : " << BR << ",  sig: " << sig << std::endl;
     ivalid++;
   }
   hsignif.Set(ivalid);
