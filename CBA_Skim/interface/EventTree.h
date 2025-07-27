@@ -14,7 +14,7 @@ class EventTree{
  public:
     EventTree(int nFiles, bool xRootDAccess, string year, bool isData, char** fileNames);
     EventTree(TTree *tr, string year, bool isData);
-    EventTree(){tree = 0x0; chain = 0x0;}
+    EventTree(){tree = 0x0; chain = 0x0;   for(int ijet=0;ijet<200;ijet++) jetPartFlvr_[ijet] = -10000;}
     ~EventTree();
     
     void SetTree(TTree *tr){tree = tr;}

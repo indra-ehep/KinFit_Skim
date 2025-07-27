@@ -25,10 +25,10 @@
 
 using namespace std;
 
-int EventCountsOneFile(const char *infile = "")
+int EventCountsOneFile(const char *infile = "", bool isMu = 1)
 {
   
-  bool isMu = 1;
+  //bool isMu = 1;
   int ftype = 0;// 0 for total, 1 for 5of12, 2 for 6of12
   
   // const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
@@ -39,8 +39,12 @@ int EventCountsOneFile(const char *infile = "")
 
   TFile *fin_nano_data	= 0x0;//TFile::Open(infile);
   fin_nano_data	= TFile::Open(infile);
-
-  TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(Form("TTbar/base/Iso/%s",cutflow));
+  if(!fin_nano_data){
+    printf("Failed to open file\n");
+    return false;
+  }
+  //TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(Form("TTbar/base/Iso/%s",cutflow));
+  TH1D *hcf_nano_data	= (TH1D *)fin_nano_data->Get(Form("HplusM120/base/Iso/%s",cutflow));
   cout<<"Processing : " << fin_nano_data->GetName() << endl;
 
   printf("%s & ",hcf_nano_data->GetName());

@@ -174,7 +174,8 @@ class KinFit{
 	jets.clear();
 	jetsRes.clear();
 	btag.clear();
-
+	ctag.clear();
+	expCcat = -10000;
 
 	leptonAF.clear();        neutrinoAF.clear(); 	      bjlepAF.clear();
 	leptonUM.clear();        neutrinoUM.clear();        bjlepUM.clear(); 
@@ -197,6 +198,8 @@ class KinFit{
     void SetJetVector(std::vector<TLorentzVector> jets_){ jets	= jets_;}
     void SetJetResVector(std::vector<double> jetres_){ jetsRes	= jetres_;}
     void SetBtagVector(std::vector<double> jetsTag_){ btag	= jetsTag_;}
+    void SetCtagVector(std::vector<int> cTag_){ ctag	= cTag_;}
+    void SetExplCcat(int c_cat){ expCcat = c_cat;}
     void SetLepton(TLorentzVector lepton_){ lepton		= lepton_;}
     void SetLeptonType(LeptonType ltype_){ leptonType		= ltype_;} 
     void SetMET(double px_, double py_, double pz_, double pz_other_) {  
@@ -318,6 +321,8 @@ class KinFit{
     std::vector<TLorentzVector> jets;
     std::vector<double>		jetsRes;
     std::vector<double>		btag;
+    std::vector<int>            ctag;
+    int                         expCcat;
     double			_nu_px, _nu_py, _nu_pz, _nu_pz_other, _nu_pt, _nu_phi; 
     TLorentzVector		lepton;
     LeptonType			leptonType;
@@ -655,7 +660,10 @@ class SkimAna : public TSelector {
   double  _bjlepBdisc = -20., _bjhadBdisc = -20., _cjhadBdisc = -20., _sjhadBdisc = -20.;
   double  _bjlepCvsLdisc = -20., _bjhadCvsLdisc = -20., _cjhadCvsLdisc = -20., _sjhadCvsLdisc = -20.;
   double  _bjlepCvsBdisc = -20., _bjhadCvsBdisc = -20., _cjhadCvsBdisc = -20., _sjhadCvsBdisc = -20.;
-
+  
+  int _cjhad_ctag, _sjhad_ctag;
+  int _bjlep_pflav, _bjhad_pflav, _cjhad_pflav, _sjhad_pflav;
+  
   double		 _M3 = 0 ;
   double		 _HT = 0 ;
   bool			 _passPresel_Ele = 0 ;
@@ -1010,6 +1018,8 @@ class SkimAna : public TSelector {
    std::vector<TLorentzVector> jetVectors;
    std::vector<double> jetResVectors;
    std::vector<double> jetBtagVectors;
+   std::vector<int> jetCtagVectors;
+   std::vector<int> jetGenjetPartonFlav;
    std::vector<double> jetCvsLtagVectors;
    std::vector<double> jetCvsBtagVectors;
    TLorentzVector jetVector;
@@ -1081,7 +1091,9 @@ class SkimAna : public TSelector {
    float   topPtReweight();
    void    TheoWeights();
    bool    ProcessKinFit(bool, bool);
-   
+
+   bool     IsCTagged();
+  
    /// Fill CutFlow histograms, Note that the cutflow for BTag and KinFit are filled in the object histogram functiuons below
    bool    FillEventCutFlow();
    bool    FillLeptonCutFlow();
@@ -2143,13 +2155,13 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("bjhadCvsBdisc"		, &_bjhadCvsBdisc		);
     outputTree->Branch("cjhadCvsBdisc"		, &_cjhadCvsBdisc		);
     outputTree->Branch("sjhadCvsBdisc"		, &_sjhadCvsBdisc		);
-
+    
     outputTree->Branch("kFType"	        	, &_kFType      		);
     outputTree->Branch("found_GJ1_lhe"		, &_found_GJ1_lhe		);
     outputTree->Branch("found_GJ2_lhe"		, &_found_GJ2_lhe		);
     outputTree->Branch("found_cjhad_lhe"	, &_found_cjhad_lhe		);
     outputTree->Branch("found_sjhad_lhe"	, &_found_sjhad_lhe		);
-
+    
     outputTree->Branch("lhe1Pt"			, &_lhe1Pt			);
     outputTree->Branch("lhe1Eta"		, &_lhe1Eta			);
     outputTree->Branch("lhe1Phi"		, &_lhe1Phi			);
@@ -2167,6 +2179,14 @@ void SkimAna::InitOutBranches(){
     outputTree->Branch("shadPDG"		, &_shadPDG			);
     outputTree->Branch("lhe1dR"			, &_lhe1dR			);
     outputTree->Branch("lhe2dR"			, &_lhe2dR			);
+
+    outputTree->Branch("cjhad_ctag"		, &_cjhad_ctag			);
+    outputTree->Branch("sjhad_ctag"		, &_sjhad_ctag			);
+
+    outputTree->Branch("bjlep_pflav"		, &_bjlep_pflav			);
+    outputTree->Branch("bjhad_pflav"		, &_bjhad_pflav			);
+    outputTree->Branch("cjhad_pflav"		, &_cjhad_pflav			);
+    outputTree->Branch("sjhad_pflav"		, &_sjhad_pflav			);
 
 }
 
@@ -3794,18 +3814,20 @@ bool KinFit::Fit(){
   ljetlist.clear();
 
   int ib = 0, il = 0;
+  int nofExpCCat = 0;
   for (unsigned int i = 0 ; i < jets.size() ; i++){
     if (btag[i] > btagThresh){ 
       bjetlist.push_back(make_pair(i,jets.at(i)));
       ib++;
     }
     //else{
+    if(ctag[i]==expCcat) nofExpCCat++;
     ljetlist.push_back(make_pair(i,jets.at(i)));
     il++;
       //}
   }
   
-  if(bjetlist.size() < 2 or ljetlist.size() < 4){
+  if(bjetlist.size() < 2 or ljetlist.size() < 4 or nofExpCCat==0){
     
     bjetlist.clear();
     ljetlist.clear();
@@ -3824,9 +3846,18 @@ bool KinFit::Fit(){
       if(bj1.first == bj2.first) continue;
       for (auto lj1 : ljetlist){	
 	if(lj1.first == bj1.first || lj1.first == bj2.first) continue;
+	//if(ctag[lj1.first]!=expCcat) continue; //c-jet condition
+	//if(ctag[lj1.first]!=3) continue; //c-jet condition
 	for (auto lj2 : ljetlist){
 	  //if(lj1.first == lj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
 	  if(lj1.first == lj2.first || lj2.first == bj1.first || lj2.first == bj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
+	  //if(ctag[lj2.first]==3) continue; //c-jet condition
+	  
+	  // if(ctag[lj2.first]==0 and ctag[lj1.first]==0) continue; //excn0 c-jet condition
+	  // if((ctag[lj2.first]==1 and ctag[lj1.first]==0) or (ctag[lj2.first]==0 and ctag[lj1.first]==1) or (ctag[lj2.first]==1 and ctag[lj1.first]==1)) continue; //excnL c-jet condition
+	  // if((ctag[lj2.first]==1 and ctag[lj1.first]==2) or (ctag[lj2.first]==0 and ctag[lj1.first]==2) or (ctag[lj2.first]==2 and ctag[lj1.first]==1) or (ctag[lj2.first]==2 and ctag[lj1.first]==0) or (ctag[lj2.first]==2 and ctag[lj1.first]==2) ) continue; //excnM c-jet condition
+	  
+	  if(ctag[lj2.first]!=expCcat and ctag[lj1.first]!=expCcat) continue; //excn0 c-jet condition
 	  
   	  max_nu = 1;
   	  for(unsigned int inu_root = 0 ; inu_root < max_nu ; inu_root++){
@@ -4045,15 +4076,18 @@ bool KinFit::Fit(){
   	    //leptoniccally decayed top constrain
   	    //TFitConstraintM *ltop = new TFitConstraintM( "ltop", "leptonic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
   	    TFitConstraintMGaus *ltop = new TFitConstraintMGaus( "ltop", "leptonic top", 0, 0 , mTop, 6.9); // Values set from PDG 2021 mTop = 172.76
+	    //TFitConstraintMGaus *ltop = new TFitConstraintMGaus( "ltop", "leptonic top", 0, 0 , mTop, 1.42); // Values set from PDG 2021 mTop = 172.76
   	    ltop->addParticles1( lep, neu, bl );
 
   	    //hadronically decayed top constrain
   	    //TFitConstraintM *htop = new TFitConstraintM( "htop", "hadronic top", 0, 0 , mTop); // Values set from PDG 2021 mTop = 172.76
   	    TFitConstraintMGaus *htop = new TFitConstraintMGaus( "htop", "hadronic top", 0, 0 , mTop, 6.9); // Values set from PDG 2021 mTop = 172.76
+	    //TFitConstraintMGaus *htop = new TFitConstraintMGaus( "htop", "hadronic top", 0, 0 , mTop, 1.42); // Values set from PDG 2021 mTop = 172.76
   	    htop->addParticles1( bh, cj, sj );
 	    
   	    //TFitConstraintM *lW = new TFitConstraintM( "lW", "W mass", 0, 0 , 80.379); // Values set from PDG 2021 mW = 80.379
   	    TFitConstraintMGaus *lW = new TFitConstraintMGaus( "lW", "W mass", 0, 0 , 80.379, 6.4); // Values set from PDG 2021 mW = 80.379
+	    //TFitConstraintMGaus *lW = new TFitConstraintMGaus( "lW", "W mass", 0, 0 , 80.379, 2.085); // Values set from PDG 2021 mW = 80.379
   	    lW->addParticles1( lep, neu);
 	    
   	    // TFitConstraintEp *sumPxConstr_  = new TFitConstraintEp("SumPx",        "SumPx", nullptr, TFitConstraintEp::pX, 0.);
@@ -4101,7 +4135,7 @@ bool KinFit::Fit(){
   	    fitter->setMaxDeltaS( 5e-05 );
   	    fitter->setMaxF( 0.0001 );
   	    fitter->setVerbosity(0);
-
+	    
   	    fitter_tlep->setMaxNbIter( 500 );   fitter_tlep->setMaxDeltaS( 5e-05 );
   	    fitter_tlep->setMaxF( 0.0001 );	fitter_tlep->setVerbosity(0);
 	    
