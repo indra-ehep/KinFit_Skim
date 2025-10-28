@@ -40,6 +40,14 @@ int PartonCorrelation(const char* infile)
   Float_t   metPx;
   Float_t   metPy;
   Float_t   metPz;
+  Float_t   jetChadPt;
+  Float_t   jetChadEta;
+  Float_t   jetChadPhi;
+  Float_t   jetChadEn;
+  Float_t   jetShadPt;
+  Float_t   jetShadEta;
+  Float_t   jetShadPhi;
+  Float_t   jetShadEn;
   
   Bool_t singleMu;
   Bool_t singleEle;
@@ -63,13 +71,29 @@ int PartonCorrelation(const char* infile)
   tr->SetBranchAddress("bjlep_pflav"	, &bjlep_pflav);
   tr->SetBranchAddress("cjhad_pflav"	, &cjhad_pflav);
   tr->SetBranchAddress("sjhad_pflav"	, &sjhad_pflav);
+  
+  tr->SetBranchAddress("jetChadPt"	, &jetChadPt);
+  tr->SetBranchAddress("jetChadEta"	, &jetChadEta);
+  tr->SetBranchAddress("jetChadPhi"	, &jetChadPhi);
+  tr->SetBranchAddress("jetChadEnergy"	, &jetChadEn);
+  tr->SetBranchAddress("jetShadPt"	, &jetShadPt);
+  tr->SetBranchAddress("jetShadEta"	, &jetShadEta);
+  tr->SetBranchAddress("jetShadPhi"	, &jetShadPhi);
+  tr->SetBranchAddress("jetShadEnergy"	, &jetShadEn);
 
   TLorentzVector met;
+  TLorentzVector chad, shad;
   TH2I *hCombCorr = new TH2I("hCombCorr","Parton correlation (Combined)",12,-5.5,6.5,12,-5.5,6.5); 
   TH2I *hExcLCorr = new TH2I("hExcLCorr","Parton correlation (Exclusive loose)",12,-5.5,6.5,12,-5.5,6.5);
   TH2I *hExcMCorr = new TH2I("hExcMCorr","Parton correlation (Exclusive medium)",12,-5.5,6.5,12,-5.5,6.5);
   TH2I *hExcTCorr = new TH2I("hExcTCorr","Parton correlation (Exclusive tight)",12,-5.5,6.5,12,-5.5,6.5);
-  TH2I *hExc0Corr = new TH2I("hExc0Corr","Parton correlation (non-exclusive)",12,-5.5,6.5,12,-5.5,6.5); 
+  TH2I *hExc0Corr = new TH2I("hExc0Corr","Parton correlation (non-exclusive)",12,-5.5,6.5,12,-5.5,6.5);
+
+  TH1F *hmjj_incl = new TH1F("hmjj_incl","mjj (Inclusive)", 250, 0., 250.);
+  TH1F *hmjj_ct_loose = new TH1F("hmjj_ct_loose","mjj (Excl loose)", 250, 0., 250.);
+  TH1F *hmjj_ct_medium = new TH1F("hmjj_ct_medium","mjj (Excl medium)", 250, 0., 250.);
+  TH1F *hmjj_ct_tight = new TH1F("hmjj_ct_tight","mjj (Excl tight)", 250, 0., 250.);
+
   cout << "Total Entries : " << tr->GetEntries() << endl;
   for (Long64_t ievent = 0 ; ievent < tr->GetEntries() ; ievent++ ) {        
     tr->GetEntry(ievent) ;
@@ -80,18 +104,26 @@ int PartonCorrelation(const char* infile)
     if(sjhad_pflav==21) sjhad_pflav = 6;
     //if(singleMu and !singleEle and muonIsoCut and !isLowMET){
     if(singleMu and !singleEle and muonIsoCut and met.Pt()>20.0){
+      chad.SetPtEtaPhiE(jetChadPt, jetChadEta, jetChadPhi, jetChadEn);
+      shad.SetPtEtaPhiE(jetShadPt, jetShadEta, jetShadPhi, jetShadEn);
       nofKF++;
       if(cjhad_ctag==3 or sjhad_ctag==3){
 	hExcTCorr->Fill(cjhad_pflav,sjhad_pflav);
 	hCombCorr->Fill(cjhad_pflav,sjhad_pflav);
+	hmjj_ct_tight->Fill((chad+shad).M());
+	hmjj_incl->Fill((chad+shad).M());
 	nofExcT++;
       }else if(cjhad_ctag==2 or sjhad_ctag==2){
 	hExcMCorr->Fill(cjhad_pflav,sjhad_pflav);
 	hCombCorr->Fill(cjhad_pflav,sjhad_pflav);
+	hmjj_ct_medium->Fill((chad+shad).M());
+	hmjj_incl->Fill((chad+shad).M());
 	nofExcM++;
       }else if(cjhad_ctag==1 or sjhad_ctag==1){
 	hExcLCorr->Fill(cjhad_pflav,sjhad_pflav);
 	hCombCorr->Fill(cjhad_pflav,sjhad_pflav);
+	hmjj_ct_loose->Fill((chad+shad).M());
+	hmjj_incl->Fill((chad+shad).M());
 	nofExcL++;
       }else{
 	hExc0Corr->Fill(cjhad_pflav,sjhad_pflav);
@@ -110,8 +142,8 @@ int PartonCorrelation(const char* infile)
   HistLabel(hExcMCorr);
   HistLabel(hExcLCorr);
   HistLabel(hExc0Corr);
-    
-  gStyle->SetOptStat(0);
+  
+  //gStyle->SetOptStat(0);
   TCanvas *c1 = new TCanvas("c1","c1",800,800);
   c1->SetTickx();
   c1->SetTicky();
@@ -134,6 +166,17 @@ int PartonCorrelation(const char* infile)
   c3->SetTicky();
   hExc0Corr->Draw("box text");
 
+  TCanvas *c4 = new TCanvas("c4","c4",800,800);
+  hmjj_ct_tight->Draw();
+
+  TFile *fout = new TFile("output_hplusM120.root","recreate");
+  hmjj_incl->Write();
+  hmjj_ct_loose->Write();
+  hmjj_ct_medium->Write();
+  hmjj_ct_tight->Write();
+  fout->Close();
+  delete fout;
+  
   return true;
 }
 

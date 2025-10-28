@@ -3827,6 +3827,7 @@ bool KinFit::Fit(){
       //}
   }
   
+  //if(bjetlist.size() < 2 or ljetlist.size() < 4){
   if(bjetlist.size() < 2 or ljetlist.size() < 4 or nofExpCCat==0){
     
     bjetlist.clear();
@@ -3846,18 +3847,10 @@ bool KinFit::Fit(){
       if(bj1.first == bj2.first) continue;
       for (auto lj1 : ljetlist){	
 	if(lj1.first == bj1.first || lj1.first == bj2.first) continue;
-	//if(ctag[lj1.first]!=expCcat) continue; //c-jet condition
-	//if(ctag[lj1.first]!=3) continue; //c-jet condition
 	for (auto lj2 : ljetlist){
-	  //if(lj1.first == lj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
 	  if(lj1.first == lj2.first || lj2.first == bj1.first || lj2.first == bj2.first || lj1.second.Pt() < lj2.second.Pt()) continue;
-	  //if(ctag[lj2.first]==3) continue; //c-jet condition
 	  
-	  // if(ctag[lj2.first]==0 and ctag[lj1.first]==0) continue; //excn0 c-jet condition
-	  // if((ctag[lj2.first]==1 and ctag[lj1.first]==0) or (ctag[lj2.first]==0 and ctag[lj1.first]==1) or (ctag[lj2.first]==1 and ctag[lj1.first]==1)) continue; //excnL c-jet condition
-	  // if((ctag[lj2.first]==1 and ctag[lj1.first]==2) or (ctag[lj2.first]==0 and ctag[lj1.first]==2) or (ctag[lj2.first]==2 and ctag[lj1.first]==1) or (ctag[lj2.first]==2 and ctag[lj1.first]==0) or (ctag[lj2.first]==2 and ctag[lj1.first]==2) ) continue; //excnM c-jet condition
-	  
-	  if(ctag[lj2.first]!=expCcat and ctag[lj1.first]!=expCcat) continue; //excn0 c-jet condition
+	  if(ctag[lj2.first]!=expCcat and ctag[lj1.first]!=expCcat) continue; //c-jet condition
 	  
   	  max_nu = 1;
   	  for(unsigned int inu_root = 0 ; inu_root < max_nu ; inu_root++){

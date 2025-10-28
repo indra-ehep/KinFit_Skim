@@ -25,15 +25,17 @@
 
 using namespace std;
 
-int EventCountsMixedSource(const char *infile_hist = "", const char *infile_tree = "", bool isMu = 1)
+int EventCountsMixedSource(const char *infile_hist = "", const char *infile_tree = "", const char *infile_hist1 = "", bool isMu = 1)
 {
   
   const char* cutflow = (isMu) ? "_cutflow_mu" : "_cutflow_ele";
   const char* cutflowUS = (isMu) ? "_cutflowUS_mu" : "_cutflowUS_ele";
+  const char* lch = (isMu) ? "mu" : "ele";
   
   TFile *fin_hist = 0x0, *fin_tree = 0x0;
   fin_hist = TFile::Open(infile_hist);
   fin_tree = TFile::Open(infile_tree);
+  TFile *fin_hist1 = TFile::Open(infile_hist1);
   
   if(!fin_hist){
     printf("Failed to open file %s\n",infile_hist);
@@ -46,9 +48,28 @@ int EventCountsMixedSource(const char *infile_hist = "", const char *infile_tree
     delete fin_hist;
     return false;
   }
+
+  if(!fin_hist1){
+    printf("Failed to open file %s\n",infile_hist1);
+    fin_hist->Close();
+    fin_tree->Close();
+    delete fin_hist;
+    delete fin_tree;
+    return false;
+  }
+
+  //TH1D *hcf_nano_data	= (TH1D *)fin_hist->Get(Form("TTbar/base/Iso/%s",cutflowUS));
+  const char *sample = "TTbar";
+  //const char *sample = "HplusM120";
+  TH1D *hcf_nano_data	= (TH1D *)fin_hist->Get(Form("%s/base/Iso/%s",sample,cutflowUS));
+  TH1D *hcf_nano_wt	= (TH1D *)fin_hist->Get(Form("%s/base/Iso/%s",sample,cutflow));
+  TH1D *hbjet_mjj	= (TH1D *)fin_hist1->Get(Form("%s/base/Iso/_lb_mjj_%s",sample,lch));
+  TH1D *hkf_mjj	        = (TH1D *)fin_hist1->Get(Form("%s/base/Iso/_kb_mjj_%s",sample,lch));
+  TH1D *hkf_mjj_excL	= (TH1D *)fin_hist1->Get(Form("%s/base/Iso/_ct_ExcL_mjj_%s",sample,lch));
+  TH1D *hkf_mjj_excM	= (TH1D *)fin_hist1->Get(Form("%s/base/Iso/_ct_ExcM_mjj_%s",sample,lch));
+  TH1D *hkf_mjj_excT	= (TH1D *)fin_hist1->Get(Form("%s/base/Iso/_ct_ExcT_mjj_%s",sample,lch));
+  TH1D *hkf_mjj_exc0	= (TH1D *)fin_hist1->Get(Form("%s/base/Iso/_ct_Exc0_mjj_%s",sample,lch));
   
-  TH1D *hcf_nano_data	= (TH1D *)fin_hist->Get(Form("TTbar/base/Iso/%s",cutflowUS));
-  //TH1D *hcf_nano_data	= (TH1D *)fin_hist->Get(Form("HplusM120/base/Iso/%s",cutflowUS));
   cout<<"Processing : " << fin_hist->GetName() << endl;
   
   double nofKF = 0, nofExcT = 0, nofExcM = 0, nofExcL = 0, nofExc0 = 0;
@@ -58,12 +79,13 @@ int EventCountsMixedSource(const char *infile_hist = "", const char *infile_tree
   double totExcl = nofExcT + nofExcM + nofExcL + nofExc0 ;
   cout << "NofKF : " << nofKF << ", nofExcL: " << nofExcL << ", nofExcM: " << nofExcM
        << ", nofExcT: " << nofExcT << ", nofExc0: " << nofExc0 << ", totExcl: " << totExcl << endl;
-  double array[5];
+  double array[6];
   array[0] = nofKF;
   array[1] = nofExcL;
   array[2] = nofExcM;
   array[3] = nofExcT;
   array[4] = nofExcM;
+  array[4] = nofExc0;
   
   printf("%s & ",hcf_nano_data->GetName());
   for (int ibin=2;ibin<hcf_nano_data->GetNbinsX();ibin++){
@@ -80,7 +102,7 @@ int EventCountsMixedSource(const char *infile_hist = "", const char *infile_tree
   printf("\n\n");
   
   printf("Result & ");
-  for (int ibin=1;ibin<10;ibin++){
+  for (int ibin=1;ibin<=10;ibin++){
     double result = (ibin<6)? hcf_nano_data->GetBinContent(ibin+1) : array[ibin-6] ;
     if(result>1e6)
       printf("%.4e & ",result); 
@@ -88,7 +110,44 @@ int EventCountsMixedSource(const char *infile_hist = "", const char *infile_tree
       printf("%.1f & ",result);    
   }
   printf("\\\\\\hline ");
+  printf("\n\n");
+
+  printf("Normalized Result & ");
+  for (int ibin=1;ibin<=10;ibin++){
+  double result = 0;
+  if(ibin<6)
+    result = hcf_nano_wt->GetBinContent(ibin+1);
+  else if(ibin==5){
+    result =  hbjet_mjj->Integral();
+  }else if(ibin==6){
+    result =  hkf_mjj->Integral();
+    nofKF = hkf_mjj->Integral();
+  }else if(ibin==7){
+    result =  hkf_mjj_excL->Integral();
+    nofExcL = hkf_mjj_excL->Integral();
+  }else if(ibin==8){
+    result =  hkf_mjj_excM->Integral();
+    nofExcM = hkf_mjj_excM->Integral();
+  }else if(ibin==9){
+    result =  hkf_mjj_excT->Integral();
+    nofExcT = hkf_mjj_excT->Integral();
+  }else if(ibin==10){
+    result =  hkf_mjj_exc0->Integral();
+    nofExc0 = hkf_mjj_exc0->Integral();
+  }
+  //Dangerous condition
+  if(strcmp(sample,"TTbar")==0) result = 2.0*result;
+  
+  if(result>1e6)
+    printf("%.4e & ",result); 
+  else
+    printf("%.1f & ",result);    
+  }
+  printf("\\\\\\hline ");
   printf("\n");
+  totExcl = nofExcT + nofExcM + nofExcL ;//+ nofExc0 ;
+  cout << "NofKF : " << nofKF << ", nofExcL: " << nofExcL << ", nofExcM: " << nofExcM
+       << ", nofExcT: " << nofExcT << ", nofExc0: " << nofExc0 << ", totExcl: " << totExcl << endl;
 
   fin_hist->Close();
   delete fin_hist;

@@ -8228,6 +8228,7 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   kinFit.SetLeptonType(ltype);
   kinFit.SetMETPtPhi(selector->METPt, selector->METPhi);
   
+  //for(int icat=3;icat>=3;icat--){
   for(int icat=3;icat>=0;icat--){
     //std::cout << "icat : " << icat << std::endl;
     kinFit.SetExplCcat(icat);
