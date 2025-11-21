@@ -8330,21 +8330,20 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	dRcjsjBF	= x.cjhadBF.DeltaR(x.sjhadBF);     dRcjsjAF  = x.cjhadAF.DeltaR(x.sjhadAF);
 	dRLepNuBF	= x.leptonBF.DeltaR(x.neutrinoBF); dRLepNuAF = x.leptonAF.DeltaR(x.neutrinoAF);
       
-	//      
-	if(iloop == 0 && x.chi2 >= 0.0 ){ // Only 1st min chi2
-	  //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 20.){ // Only 1st min chi2
-	  //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 8.){ // Only 1st min chi2, tight cut
-	  if(
-	     x.leptonAF.Pt() > lepPtThresh //and x.neutrinoAF.Pt() > METThreshold 
-	     and 
-	     x.bjhadAF.Pt()  > jetPtThresh and x.bjlepAF.Pt() > jetPtThresh and x.cjhadAF.Pt() > jetPtThresh and x.sjhadAF.Pt() > jetPtThresh 
-	     and
-	     TMath::Abs(x.leptonAF.Eta()) < lepEtaThresh 
-	     and
-	     TMath::Abs(x.bjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.bjlepAF.Eta()) < jetEtaThresh and TMath::Abs(x.cjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.sjhadAF.Eta()) < jetEtaThresh
-	     and
-	     Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2
-	     ){
+      if(iloop == 0 && x.chi2 >= 0.0 ){ // Only 1st min chi2
+      //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 20.){ // Only 1st min chi2
+      //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 8.){ // Only 1st min chi2, tight cut
+    	if(
+	   x.leptonAF.Pt() > lepPtThresh //and x.neutrinoAF.Pt() > METThreshold 
+	   and 
+	   x.bjhadAF.Pt()  > jetPtThresh and x.bjlepAF.Pt() > jetPtThresh and x.cjhadAF.Pt() > jetPtThresh and x.sjhadAF.Pt() > jetPtThresh 
+	   and
+	   TMath::Abs(x.leptonAF.Eta()) < lepEtaThresh 
+	   and
+	   TMath::Abs(x.bjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.bjlepAF.Eta()) < jetEtaThresh and TMath::Abs(x.cjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.sjhadAF.Eta()) < jetEtaThresh
+    	   // and
+	   // Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2
+	   ){
 	  
 	    //hMjjkFsc->Fill(x.mass);
 	  
