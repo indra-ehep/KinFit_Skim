@@ -8219,8 +8219,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	   TMath::Abs(x.leptonAF.Eta()) < lepEtaThresh 
 	   and
 	   TMath::Abs(x.bjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.bjlepAF.Eta()) < jetEtaThresh and TMath::Abs(x.cjhadAF.Eta()) < jetEtaThresh and TMath::Abs(x.sjhadAF.Eta()) < jetEtaThresh
-    	   and
-	   Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2
+    	   // and
+	   // Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2
 	   ){
 	  
     	  //hMjjkFsc->Fill(x.mass);
