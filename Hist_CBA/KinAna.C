@@ -2155,6 +2155,11 @@ bool KinAna::FillCTagObs(){
       isIncT = true;
       count_cJetsIncT++;	
     }
+    // cout<<"  jet_CvsL: "<< jet_CvsL << ", jet_CvsB: " << jet_CvsB
+    // 	<< ", ctagTh_CvsL_L: " << ctagTh_CvsL_L << ", ctagTh_CvsB_L: " <<ctagTh_CvsB_L
+    // 	<< ", ctagTh_CvsL_M: " << ctagTh_CvsL_M << ", ctagTh_CvsB_M: " <<ctagTh_CvsB_M
+    // 	<< ", ctagTh_CvsL_T: " << ctagTh_CvsL_T << ", ctagTh_CvsB_T: " <<ctagTh_CvsB_T
+    // 	<<endl;
   }//jet loop
   //cout<<"count_cJetsIncL : " << count_cJetsIncL <<", count_cJetsIncM : " << count_cJetsIncM <<", count_cJetsIncT : " << count_cJetsIncT << endl;
   
@@ -3357,7 +3362,7 @@ bool KinAna::ExecSerial(const char* infile)
   //for(Long64_t ientry = 0 ; ientry < 100000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 500000 ; ientry++){
   //for(Long64_t ientry = 0 ; ientry < 10 ; ientry++){
-  //cout<<"Procesing : " << ientry << endl;
+    //cout<<"Procesing Event : " << ientry << endl;
     Process(ientry);
   }
   SlaveTerminate();
@@ -3414,10 +3419,13 @@ int main(int argc, char** argv)
   TString hostname = gSystem->HostName();
   string singleFile = inputfile.substr(inputfile.find_last_of("/")+1,inputfile.size());
   string refFile = input_hist_file.substr(input_hist_file.find_last_of("/")+1,input_hist_file.size());
+
+  std::cout << "==== refFile : " << refFile << " ========= " << std::endl;
+  std::cout << "==== input_hist_file : " << input_hist_file << " ========= " << std::endl;
   
   string xrdcp_command = "";
   string xrdcp_command2 = "";
-  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") ){
+  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") or hostname.BeginsWith("dhep-inlap") ){
     //xrdcp_command = "cp " + inputfile + " " + singleFile ;
     xrdcp_command = "ln -s " + inputfile + " " + singleFile ;
     xrdcp_command2 = "ln -s " + input_hist_file + " " + refFile ;

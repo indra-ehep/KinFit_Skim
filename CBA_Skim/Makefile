@@ -1,6 +1,7 @@
 #CPPFLAGS=  -Wall -g -O -fPIC
 CPPFLAGS= -fPIC -g 
 EXTRA_INCLUDE := $(shell echo $(ROOT_INCLUDE_PATH) | cut -d ':' -f 79)
+BOOST=/cvmfs/cms.cern.ch/el9_amd64_gcc12/external/boost/1.80.0-87b5de10acd2f2c8a325345ad058b814
 UNAME := $(shell uname -m)
 
 all: bin
@@ -14,14 +15,14 @@ SkimAna: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/Eve
 ifeq ($(HOSTNAME), dhep-inlap)
 	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -I$(EXTRA_INCLUDE) -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE -D MCONLY src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
 else
-	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE -D MCONLY src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
+	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE -D MCONLY src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof -I$(BOOST)/include -L$(BOOST)/lib -lboost_iostreams 
 endif
 
 SkimAnaData: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
 ifeq ($(HOSTNAME), dhep-inlap)
 	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -I$(EXTRA_INCLUDE) -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE  src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
 else
-	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE  src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof
+	g++ $(CPPFLAGS) -o $@ `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -I${CMSSW_RELEASE_BASE}/src -L${CMSSW_RELEASE_BASE}/lib/${SCRAM_ARCH} -std=c++17 -D STANDALONE  src/EventTree.o src/EventPick.o src/Selector.o  src/PUReweight.o src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/RoccoR.o src/JetResolution.cc src/JetResolutionObject.cc SkimAna.C -lPhysicsToolsKinFitter -lEG -lProof -I$(BOOST)/include -L$(BOOST)/lib -lboost_iostreams 
 endif
 
 libweight.so: src/PUReweight.o src/Selector.o src/EventPick.o src/EventTree.o src/EventJetAna.C interface/EventJetAna.h src/PUReweight.cpp interface/PUReweight.h src/BTagCalibrationStandalone.o interface/ScaleFactorFunction.h src/JECvariation.o src/TopEventCombinatorics.cpp src/RoccoR.o src/KinFit.cpp interface/muSF_reader.h interface/eleSF_reader.h SkimAna.C SkimAna.h
@@ -73,14 +74,14 @@ src/EventPick.o: src/Selector.o src/EventPick.cpp interface/EventPick.h
 ifeq ($(HOSTNAME), dhep-inlap)
 	g++ $(CPPFLAGS) -c -I`root-config --incdir` -I$(EXTRA_INCLUDE) -std=c++17 -D STANDALONE src/EventPick.cpp -o src/EventPick.o
 else
-	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventPick.cpp -o src/EventPick.o
+	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventPick.cpp -o src/EventPick.o -I$(BOOST)/include -L$(BOOST)/lib -lboost_iostreams 
 endif
 
 src/Selector.o: src/EventTree.o src/Selector.cpp interface/Selector.h
 ifeq ($(HOSTNAME), dhep-inlap)
 	g++ $(CPPFLAGS) -c -I`root-config --incdir` -I$(EXTRA_INCLUDE) -std=c++17 -D STANDALONE src/Selector.cpp -o src/Selector.o
 else
-	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/Selector.cpp -o src/Selector.o
+	g++ $(CPPFLAGS) -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/Selector.cpp -o src/Selector.o -I$(BOOST)/include -L$(BOOST)/lib -lboost_iostreams 
 endif
 #	g++ $(CPPFLAGS) -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/Utils.cc src/JetResolution.cc src/JetResolutionObject.cc  src/Selector.cpp
 
@@ -101,7 +102,7 @@ src/RoccoR.o: src/RoccoR.cc interface/RoccoR.h
 ifeq ($(HOSTNAME), dhep-inlap)
 	g++ $(CPPFLAGS) -c `root-config --libs` -I`root-config --incdir` -I$(EXTRA_INCLUDE) -std=c++17 -D STANDALONE src/RoccoR.cc -o src/RoccoR.o
 else
-	g++ $(CPPFLAGS) -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/RoccoR.cc -o src/RoccoR.o
+	g++ $(CPPFLAGS) -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/RoccoR.cc -o src/RoccoR.o -I$(BOOST)/include -L$(BOOST)/lib -lboost_iostreams 
 endif
 ######################## RCorr library ###############################################
 

@@ -615,8 +615,9 @@ Int_t SkimAna::CreateHistoArrays()
       // hControl[iscl*fNBSelColHists + hidx++] = new TH1D("kfProb","kfProb",200, -0.5, 1.5);
       // hControl[iscl*fNBSelColHists + 61] = new TH1D("kfProbUS","kfProbUS",200, -0.5, 1.5);
       hControl[iscl*fNBSelColHists + 0] = new TH1D("kfProbUS","kfProbUS",200, -0.5, 1.5);
-
-      hidx = 0;
+      
+      // hidx = 0;
+      // //std::cout << "iscl*fNBSelColProfiles: " << (iscl*fNBSelColProfiles) << ", hidx: " << hidx << std::endl;
       // pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_s","ctagL_s",100, 0., 1000., 0., 4.);
       // pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_s_p","ctagL_s_p",100, 0., 1000., 0., 4.);
       // pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("ctagL_s_f","ctagL_s_f",100, 0., 1000., 0., 4.);
@@ -627,7 +628,7 @@ Int_t SkimAna::CreateHistoArrays()
       // pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probDelRRecKF","probDelRRecKF",200, -0.5, 1.5, 0., 0.6);
       // pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probDelRRecKFUS","probDelRRecKFUS",200, -0.5, 1.5, 0., 0.6);
       // pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMatch","probMatch",200, -0.5, 1.5, 0., 5.);
-      pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMjj","probMjj",200, -0.5, 1.5, 0., 200.);
+      //pControl[iscl*fNBSelColProfiles + hidx++] = new TProfile("probMjj","probMjj",200, -0.5, 1.5, 0., 200.);
     }
   }//fSyst==base
 
@@ -3846,6 +3847,9 @@ void SkimAna::Clean(){
   _lhe1PDG = -4000; _lhe2PDG = -4000;
   _chadPDG = -4000; _shadPDG = -4000;
   _lhe1dR = -10.0; _lhe2dR = -10.0;
+  
+  _cjhad_ctag = -1; _sjhad_ctag = -1;
+  _bjlep_pflav = -10000; _bjhad_pflav = -10000; _cjhad_pflav = -10000; _sjhad_pflav = -10000;
 
   wt_before = 1.0 ; wt_after = 1.0;
 }    
@@ -4427,7 +4431,10 @@ Bool_t SkimAna::GetBCTagWt(void)
 Bool_t SkimAna::Process(Long64_t entry)
 {
   // entry is the entry number in the current Tree
-  
+
+  // if(fProcessed>200) return true;
+  // std::cout << "Processing event: " << fProcessed << std::endl;
+    
   Clean();
   // to read complete event, call fChain->GetTree()->GetEntry(entry)  
   fChain->GetTree()->GetEntry(entry);  
@@ -4866,14 +4873,36 @@ Bool_t SkimAna::Process(Long64_t entry)
   if(IsDebug) Info("Process","Completed b-jet processing : %lld(%lld)",fProcessed, entry);
   _topPtReWeight = topPtReweight();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
+  // if(!SkimAna::IsCTagged()) return kTRUE;
+  
+  // bool isExcL_T = false;
+  // bool isExcL_M = false;
+  // bool isExcL_L = false;
+  
+  // if(count_cJetsIncT> 0){
+  //   isExcL_T = true;
+  // }else if(count_cJetsIncM> 0){
+  //   isExcL_M = true;
+  // }else if(count_cJetsIncL> 0){    
+  //   isExcL_L = true;
+  // }
+  
+  // if(!isExcL_L) return kTRUE;
+  
+  // TList *list = (TList *)fFileDir[0]->GetList();
+  // ((TH1D *) list->FindObject("_cutflow_data"))->Fill(11);
+  // if(singleMu) ((TH1D *) list->FindObject("_cutflowUS_mu"))->Fill(11);
+  // if(singleEle) ((TH1D *) list->FindObject("_cutflowUS_ele"))->Fill(11);
+   
   //Processes for KinFit selection will be placed in block below
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   FillKFCFObs();
   if(systType == kBase) FillKinFitControlHists();
   if(IsDebug) Info("Process","Completed KinFit processing : %lld(%lld)",fProcessed, entry);
   if(!isKFValid) return kTRUE;
-  if(_kFType == 13) FillMCInfo();
+  //if(_kFType == 13)
+  FillMCInfo();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -4896,6 +4925,49 @@ Bool_t SkimAna::Process(Long64_t entry)
 
 }
 
+//_____________________________________________________________________________
+bool SkimAna::IsCTagged(){
+  
+  count_cJetsIncL   = 0;
+  count_cJetsIncM   = 0;
+  count_cJetsIncT   = 0;
+  isCTagged = false;
+  
+  bool isIncL = false;
+  bool isIncM = false;
+  bool isIncT = false;
+  
+  double ctagTh_CvsL_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_L_cut  ;
+  double ctagTh_CvsB_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_L_cut  ;
+  double ctagTh_CvsL_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_M_cut  ;
+  double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_M_cut  ;
+  double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_T_cut  ;
+  double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_T_cut  ;
+  
+  for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
+    //if(ijet != _cjhad_id and ijet != _sjhad_id) continue ; 
+    int jetInd = selector->Jets.at(ijet);
+    double jet_CvsL = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
+    double jet_CvsB = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
+    if(jet_CvsL > ctagTh_CvsL_L and jet_CvsB > ctagTh_CvsB_L) {
+      isIncL = true;
+      count_cJetsIncL++;
+    }
+    if(jet_CvsL > ctagTh_CvsL_M and jet_CvsB > ctagTh_CvsB_M){
+      isIncM = true;
+      count_cJetsIncM++;
+    }
+    if(jet_CvsL > ctagTh_CvsL_T and jet_CvsB > ctagTh_CvsB_T){
+      isIncT = true;
+      count_cJetsIncT++;	
+    }
+  }//jet loop
+  
+  if(isIncL or isIncM or isIncT) isCTagged = true;
+  
+  return isCTagged;
+}
+//_____________________________________________________________________________
 //_____________________________________________________________________________
 bool SkimAna::SelectTTbarChannel(){
 
@@ -5393,7 +5465,7 @@ bool SkimAna::FillCTHists(TList *list, string hist_extn, bool isMu, double wt,
     ((TH1D *) list->FindObject(Form("_ctagWeight_IncT%s",hist_extn.c_str())))->Fill(ctagTwt);  
   }
 
-
+  
   //Exclusive categorization
   if(count_cJetsIncT> 0){
     ((TH1D *) list->FindObject(Form("_ct_ExcT_mjj_%s%s",lep.c_str(),hist_extn.c_str())))->Fill((cjhadAF+sjhadAF).M(), ctagTwt*wt);
@@ -7846,29 +7918,48 @@ bool SkimAna::FillCTagControlHists()
   // //ctagLSystType  = "central" ;
   // if(!isData){    
     
-  //   // if(count_cJetsIncL > 0){
-  //   //   GetCLtagSF_1a(); 
-  //   //   if(_cTagLWeight < 0.) return kTRUE;
-  //   //   // Info("FillCTagControlHists","_cTagLWeight_L %5.2f", _cTagLWeight);
-  //   //   if(found[0] and !found[1]){
-  //   // 	((TProfile *) listL->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
-  //   // 	if(match[0])
-  //   // 	  ((TProfile *) listL->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
-  //   // 	else
-  //   // 	  ((TProfile *) listL->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
-  //   //   }
-  //   //   if(found[0] and found[1]){
-  //   // 	((TProfile *) listL->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-  //   // 	if(match[0] and match[1])
-  //   // 	  ((TProfile *) listL->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-  //   // 	if(match[0] and !match[1])
-  //   // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
-  //   // 	if(!match[0] and match[1])
-  //   // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
-  //   // 	if(!match[0] and !match[1])
-  //   // 	  ((TProfile *) listL->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
-  //   //   }
-  //   // }
+  //   if(count_cJetsIncL > 0){
+  //     //GetCLtagSF_1a(); 
+  //     //if(_cTagLWeight < 0.) return kTRUE;
+  //     // Info("FillCTagControlHists","_cTagLWeight_L %5.2f", _cTagLWeight);
+  //     // if(found[0] and !found[1]){
+  //     // 	((TProfile *) listL->FindObject("ctagL_s"))->Fill(ljet_pt[0], _cTagLWeight);
+  //     // 	if(match[0])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_s_p"))->Fill(ljet_pt[0], _cTagLWeight);
+  //     // 	else
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_s_f"))->Fill(ljet_pt[0], _cTagLWeight);
+  //     // }
+  //     // if(found[0] and found[1]){
+  //     // 	((TProfile *) listL->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+  //     // 	if(match[0] and match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+  //     // 	if(match[0] and !match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
+  //     // 	if(!match[0] and match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
+  //     // 	if(!match[0] and !match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0, _cTagLWeight);
+  //     // }
+  //     if(found[0] and !found[1]){
+  //     	((TProfile *) listL->FindObject("ctagL_s"))->Fill(ljet_pt[0],1);
+  //     	if(match[0])
+  //     	  ((TProfile *) listL->FindObject("ctagL_s_p"))->Fill(ljet_pt[0],1);
+  //     	else
+  //     	  ((TProfile *) listL->FindObject("ctagL_s_f"))->Fill(ljet_pt[0],1);
+  //     }
+  //     // if(found[0] and found[1]){
+  //     // 	((TProfile *) listL->FindObject("ctagL_d"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0);
+  //     // 	if(match[0] and match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_pp"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0);
+  //     // 	if(match[0] and !match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[0], _cTagLWeight);
+  //     // 	if(!match[0] and match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_pf"))->Fill(ljet_pt[1], _cTagLWeight);
+  //     // 	if(!match[0] and !match[1])
+  //     // 	  ((TProfile *) listL->FindObject("ctagL_d_ff"))->Fill((ljet_pt[0]+ljet_pt[1])/2.0);
+  //     // }
+      
+  //   }
   //   // if(count_cJetsIncM > 0){
   //   //   GetCMtagSF_1a(); 
   //   //   if(_cTagMWeight < 0.) return kTRUE;
@@ -8014,6 +8105,8 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   jetVectors.clear();
   jetResVectors.clear();
   jetBtagVectors.clear();
+  jetCtagVectors.clear();
+  jetGenjetPartonFlav.clear();
   jetCvsLtagVectors.clear();
   jetCvsBtagVectors.clear();
 
@@ -8035,6 +8128,14 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   // _jetPhi->clear() ;
   // _jetMass->clear() ;
   // _jetDeepB->clear() ;
+
+  double ctagTh_CvsL_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_L_cut  ;
+  double ctagTh_CvsB_L = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_L_cut  ;
+  double ctagTh_CvsL_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_M_cut  ;
+  double ctagTh_CvsB_M = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_M_cut  ;
+  double ctagTh_CvsL_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsL_T_cut  ;
+  double ctagTh_CvsB_T = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->ctag_CvsB_T_cut  ;
+
   double btagThreshold = (selector->useDeepCSVbTag) ? selector->btag_cut_DeepCSV  : selector->btag_cut  ;
   for (unsigned int ijet = 0; ijet < selector->Jets.size(); ijet++){
     int jetInd = selector->Jets.at(ijet);
@@ -8054,7 +8155,24 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
     double jetBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepB_[jetInd] : event->jetBtagDeepFlavB_[jetInd] ;
     double jetCvsLtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvL_[jetInd] : event->jetBtagDeepFlavCvL_[jetInd] ;
     double jetCvsBtag = (selector->useDeepCSVbTag) ? event->jetBtagDeepCvB_[jetInd] : event->jetBtagDeepFlavCvB_[jetInd] ;
+    int ctagS = 0 ; //nontag
+    if(jetCvsLtag > ctagTh_CvsL_T and jetCvsBtag > ctagTh_CvsB_T){
+      ctagS = 3 ;
+    }else if(jetCvsLtag > ctagTh_CvsL_M and jetCvsBtag > ctagTh_CvsB_M){
+      ctagS = 2 ;
+    }else if(jetCvsLtag > ctagTh_CvsL_L and jetCvsBtag > ctagTh_CvsB_L){
+      ctagS = 1 ;
+    }
+    
+    int partonFlav = event->jetPartFlvr_[jetInd];
+    //int genIdx = int(event->jetGenJetIdx_[jetInd]);
+    // if ( (genIdx>-1) && (genIdx < int(event->nGenJet_))) {
+    //   partonFlav = event->GenJet_partonFlavour_[genIdx] ;
+    // }
+    
     jetBtagVectors.push_back( jetBtag );
+    jetCtagVectors.push_back( ctagS );
+    jetGenjetPartonFlav.push_back(partonFlav);
     jetCvsLtagVectors.push_back( jetCvsLtag );
     jetCvsBtagVectors.push_back( jetCvsBtag );
     // _jetPt->push_back(selector->JetsPtSmeared.at(ijet));
@@ -8103,110 +8221,114 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
   kinFit.SetJetVector(jetVectors);
   kinFit.SetJetResVector(jetResVectors);
   kinFit.SetBtagVector(jetBtagVectors);
+  kinFit.SetCtagVector(jetCtagVectors);
   kinFit.SetBtagThresh(btagThreshold);
   kinFit.SetLepton(lepVector);
   KinFit::LeptonType ltype = (isEle)?(KinFit::kElectron):(KinFit::kMuon); 
   kinFit.SetLeptonType(ltype);
   kinFit.SetMETPtPhi(selector->METPt, selector->METPhi);
   
-  if ( kinFit.Fit() ){
+  //for(int icat=3;icat>=3;icat--){
+  for(int icat=3;icat>=0;icat--){
+    //std::cout << "icat : " << icat << std::endl;
+    kinFit.SetExplCcat(icat);
+    if ( kinFit.Fit() ){
 
-    Chi2Array	     Chi2ToMass;
-    vector<Chi2Array> Chi2ToMass_arr;    	    
-    //Chi2ToMass_arr.clear();    
+      Chi2Array	     Chi2ToMass;
+      vector<Chi2Array> Chi2ToMass_arr;    	    
+      //Chi2ToMass_arr.clear();    
     
-    for (unsigned int i = 0 ; i < kinFit.GetNCombinations() ; i++ ){
+      for (unsigned int i = 0 ; i < kinFit.GetNCombinations() ; i++ ){
       
-      leptonAF		= kinFit.GetLepton(i);
-      neutrinoAF	= kinFit.GetNeutrino(i);
-      bjlepAF		= kinFit.GetBLepton(i);
-      bjhadAF		= kinFit.GetBHadron(i);
-      cjhadAF		= kinFit.GetCHadron(i);
-      sjhadAF		= kinFit.GetSHadron(i);
+	leptonAF		= kinFit.GetLepton(i);
+	neutrinoAF	= kinFit.GetNeutrino(i);
+	bjlepAF		= kinFit.GetBLepton(i);
+	bjhadAF		= kinFit.GetBHadron(i);
+	cjhadAF		= kinFit.GetCHadron(i);
+	sjhadAF		= kinFit.GetSHadron(i);
       
-      leptonBF		= kinFit.GetLeptonUM(i);
-      neutrinoBF        = kinFit.GetNeutrinoUM(i);
-      bjlepBF		= kinFit.GetBLeptonUM(i);
-      bjhadBF		= kinFit.GetBHadronUM(i);
-      cjhadBF		= kinFit.GetCHadronUM(i);
-      sjhadBF		= kinFit.GetSHadronUM(i);
+	leptonBF		= kinFit.GetLeptonUM(i);
+	neutrinoBF        = kinFit.GetNeutrinoUM(i);
+	bjlepBF		= kinFit.GetBLeptonUM(i);
+	bjhadBF		= kinFit.GetBHadronUM(i);
+	cjhadBF		= kinFit.GetCHadronUM(i);
+	sjhadBF		= kinFit.GetSHadronUM(i);
       
-      if(leptonAF.E()<0.0 or neutrinoAF.E()<0.0 or bjlepAF.E()<0.0 or bjhadAF.E()<0.0 or cjhadAF.E()<0.0 or sjhadAF.E()<0.0) continue;
+	if(leptonAF.E()<0.0 or neutrinoAF.E()<0.0 or bjlepAF.E()<0.0 or bjhadAF.E()<0.0 or cjhadAF.E()<0.0 or sjhadAF.E()<0.0) continue;
 
-      lepTopAF = (leptonAF + neutrinoAF + bjlepAF) ;
-      hadTopAF = (bjhadAF + cjhadAF + sjhadAF);
+	lepTopAF = (leptonAF + neutrinoAF + bjlepAF) ;
+	hadTopAF = (bjhadAF + cjhadAF + sjhadAF);
       
-      double mjj	= (cjhadBF + sjhadBF).M(); 
-      double mjjkF	= (cjhadAF + sjhadAF).M(); 
+	double mjj	= (cjhadBF + sjhadBF).M(); 
+	double mjjkF	= (cjhadAF + sjhadAF).M(); 
       
-      Chi2ToMass.chi2			= kinFit.GetChi2(i);
-      Chi2ToMass.mass			= mjjkF;
-      Chi2ToMass.mW			= (leptonAF + neutrinoAF).M();
-      Chi2ToMass.A			= 1.;
-      Chi2ToMass.B			= 1.;
-      Chi2ToMass.ndf			= kinFit.GetNDF(i);
-      //cout<<"chi2 : "<< kinFit.GetChi2(i) << ", NDF : " << kinFit.GetNDF(i) << ", prob : " << TMath::Prob(kinFit.GetChi2(i),kinFit.GetNDF(i)) << endl;
-      Chi2ToMass.nb_iter		= kinFit.GetNumberOfIter(i);
-      Chi2ToMass.chi2_thad		= kinFit.GetChi2_thad(i);
-      Chi2ToMass.chi2_tlep		= kinFit.GetChi2_tlep(i);
-      Chi2ToMass.leptonAF		= leptonAF;
-      Chi2ToMass.neutrinoAF		= neutrinoAF;
-      Chi2ToMass.bjlepAF		= bjlepAF; 
-      Chi2ToMass.bjhadAF		= bjhadAF;
-      Chi2ToMass.cjhadAF		= cjhadAF;
-      Chi2ToMass.sjhadAF		= sjhadAF;
-      Chi2ToMass.leptonBF		= leptonBF;
-      Chi2ToMass.neutrinoBF		= neutrinoBF;
-      Chi2ToMass.bjlepBF		= bjlepBF; 
-      Chi2ToMass.bjhadBF		= bjhadBF;
-      Chi2ToMass.cjhadBF		= cjhadBF;
-      Chi2ToMass.sjhadBF		= sjhadBF;
-      Chi2ToMass.bjhadAF_thad		= kinFit.GetBHadron_thad(i);
-      Chi2ToMass.cjhadAF_thad		= kinFit.GetCHadron_thad(i);    
-      Chi2ToMass.sjhadAF_thad		= kinFit.GetSHadron_thad(i);
-      Chi2ToMass.leptonAF_tlep		= kinFit.GetLepton_tlep(i);
-      Chi2ToMass.neutrinoAF_tlep	= kinFit.GetNeutrino_tlep(i);
-      Chi2ToMass.bjlepAF_tlep		= kinFit.GetBLepton_tlep(i);
+	Chi2ToMass.chi2			= kinFit.GetChi2(i);
+	Chi2ToMass.mass			= mjjkF;
+	Chi2ToMass.mW			= (leptonAF + neutrinoAF).M();
+	Chi2ToMass.A			= 1.;
+	Chi2ToMass.B			= 1.;
+	Chi2ToMass.ndf			= kinFit.GetNDF(i);
+	//cout<<"chi2 : "<< kinFit.GetChi2(i) << ", NDF : " << kinFit.GetNDF(i) << ", prob : " << TMath::Prob(kinFit.GetChi2(i),kinFit.GetNDF(i)) << endl;
+	Chi2ToMass.nb_iter		= kinFit.GetNumberOfIter(i);
+	Chi2ToMass.chi2_thad		= kinFit.GetChi2_thad(i);
+	Chi2ToMass.chi2_tlep		= kinFit.GetChi2_tlep(i);
+	Chi2ToMass.leptonAF		= leptonAF;
+	Chi2ToMass.neutrinoAF		= neutrinoAF;
+	Chi2ToMass.bjlepAF		= bjlepAF; 
+	Chi2ToMass.bjhadAF		= bjhadAF;
+	Chi2ToMass.cjhadAF		= cjhadAF;
+	Chi2ToMass.sjhadAF		= sjhadAF;
+	Chi2ToMass.leptonBF		= leptonBF;
+	Chi2ToMass.neutrinoBF		= neutrinoBF;
+	Chi2ToMass.bjlepBF		= bjlepBF; 
+	Chi2ToMass.bjhadBF		= bjhadBF;
+	Chi2ToMass.cjhadBF		= cjhadBF;
+	Chi2ToMass.sjhadBF		= sjhadBF;
+	Chi2ToMass.bjhadAF_thad		= kinFit.GetBHadron_thad(i);
+	Chi2ToMass.cjhadAF_thad		= kinFit.GetCHadron_thad(i);    
+	Chi2ToMass.sjhadAF_thad		= kinFit.GetSHadron_thad(i);
+	Chi2ToMass.leptonAF_tlep		= kinFit.GetLepton_tlep(i);
+	Chi2ToMass.neutrinoAF_tlep	= kinFit.GetNeutrino_tlep(i);
+	Chi2ToMass.bjlepAF_tlep		= kinFit.GetBLepton_tlep(i);
       
-      Chi2ToMass.reslepEta		= kinFit.GetResLepEta(i);
-      Chi2ToMass.reslepPhi		= kinFit.GetResLepPhi(i);
-      Chi2ToMass.resneuEta		= kinFit.GetResNeuEta(i);
-      Chi2ToMass.resneuPhi		= kinFit.GetResNeuPhi(i);
-      Chi2ToMass.resbjlepEta		= kinFit.GetResBjLepEta(i);
-      Chi2ToMass.resbjlepPhi		= kinFit.GetResBjLepPhi(i);
-      Chi2ToMass.resbjhadEta		= kinFit.GetResBjHadEta(i);
-      Chi2ToMass.resbjhadPhi		= kinFit.GetResBjHadPhi(i);
-      Chi2ToMass.rescjhadEta		= kinFit.GetResCjHadEta(i);
-      Chi2ToMass.rescjhadPhi		= kinFit.GetResCjHadPhi(i);
-      Chi2ToMass.ressjhadEta		= kinFit.GetResSjHadEta(i);
-      Chi2ToMass.ressjhadPhi		= kinFit.GetResSjHadPhi(i);
+	Chi2ToMass.reslepEta		= kinFit.GetResLepEta(i);
+	Chi2ToMass.reslepPhi		= kinFit.GetResLepPhi(i);
+	Chi2ToMass.resneuEta		= kinFit.GetResNeuEta(i);
+	Chi2ToMass.resneuPhi		= kinFit.GetResNeuPhi(i);
+	Chi2ToMass.resbjlepEta		= kinFit.GetResBjLepEta(i);
+	Chi2ToMass.resbjlepPhi		= kinFit.GetResBjLepPhi(i);
+	Chi2ToMass.resbjhadEta		= kinFit.GetResBjHadEta(i);
+	Chi2ToMass.resbjhadPhi		= kinFit.GetResBjHadPhi(i);
+	Chi2ToMass.rescjhadEta		= kinFit.GetResCjHadEta(i);
+	Chi2ToMass.rescjhadPhi		= kinFit.GetResCjHadPhi(i);
+	Chi2ToMass.ressjhadEta		= kinFit.GetResSjHadEta(i);
+	Chi2ToMass.ressjhadPhi		= kinFit.GetResSjHadPhi(i);
       
-      Chi2ToMass.bjlep_id		= kinFit.GetJetID_BLep(i); 
-      Chi2ToMass.bjhad_id		= kinFit.GetJetID_BHad(i); 
-      Chi2ToMass.cjhad_id		= kinFit.GetJetID_CHad(i);
-      Chi2ToMass.sjhad_id		= kinFit.GetJetID_SHad(i);
+	Chi2ToMass.bjlep_id		= kinFit.GetJetID_BLep(i); 
+	Chi2ToMass.bjhad_id		= kinFit.GetJetID_BHad(i); 
+	Chi2ToMass.cjhad_id		= kinFit.GetJetID_CHad(i);
+	Chi2ToMass.sjhad_id		= kinFit.GetJetID_SHad(i);
       
-      Chi2ToMass_arr.push_back(Chi2ToMass);      
+	Chi2ToMass_arr.push_back(Chi2ToMass);      
       
-    }// for loop over all kinfit combinations
+      }// for loop over all kinfit combinations
     
-    std::sort(Chi2ToMass_arr.begin(), Chi2ToMass_arr.end(), compareChi2Array);
-    //
-    int iloop = 0;
-    for (auto x : Chi2ToMass_arr){
-      //cout << "[" << x.chi2 << ", " << x.mass << "] ";
-      
-      //new
-      double Rdifflep	= x.leptonBF.DeltaR(x.leptonAF); 
-      double Rdiffbjlep	= x.bjlepBF.DeltaR(x.bjlepAF);  
-      double Rdiffbjhad	= x.bjhadBF.DeltaR(x.bjhadAF); 
-      double Rdiffcjhad	= x.cjhadBF.DeltaR(x.cjhadAF); 
-      double Rdiffsjhad	= x.sjhadBF.DeltaR(x.sjhadAF); 
-      
-      double dRcjsjBF,	dRcjsjAF,  dRLepNuBF,	dRLepNuAF;
-      dRcjsjBF	= x.cjhadBF.DeltaR(x.sjhadBF);     dRcjsjAF  = x.cjhadAF.DeltaR(x.sjhadAF);
-      dRLepNuBF	= x.leptonBF.DeltaR(x.neutrinoBF); dRLepNuAF = x.leptonAF.DeltaR(x.neutrinoAF);
+      std::sort(Chi2ToMass_arr.begin(), Chi2ToMass_arr.end(), compareChi2Array);
       //
+      int iloop = 0;
+      for (auto x : Chi2ToMass_arr){
+	//cout << "[" << x.chi2 << ", " << x.mass << "] ";
+      
+	//new
+	double Rdifflep	= x.leptonBF.DeltaR(x.leptonAF); 
+	double Rdiffbjlep	= x.bjlepBF.DeltaR(x.bjlepAF);  
+	double Rdiffbjhad	= x.bjhadBF.DeltaR(x.bjhadAF); 
+	double Rdiffcjhad	= x.cjhadBF.DeltaR(x.cjhadAF); 
+	double Rdiffsjhad	= x.sjhadBF.DeltaR(x.sjhadAF); 
+      
+	double dRcjsjBF,	dRcjsjAF,  dRLepNuBF,	dRLepNuAF;
+	dRcjsjBF	= x.cjhadBF.DeltaR(x.sjhadBF);     dRcjsjAF  = x.cjhadAF.DeltaR(x.sjhadAF);
+	dRLepNuBF	= x.leptonBF.DeltaR(x.neutrinoBF); dRLepNuAF = x.leptonAF.DeltaR(x.neutrinoAF);
       
       if(iloop == 0 && x.chi2 >= 0.0 ){ // Only 1st min chi2
       //if(iloop == 0 && x.chi2 >= 0.0 && x.chi2 < 20.){ // Only 1st min chi2
@@ -8223,122 +8345,135 @@ bool SkimAna::ProcessKinFit(bool isMuon, bool isEle)
 	   // Rdifflep < 0.2 and Rdiffbjlep < 0.2 and Rdiffbjhad < 0.2 and Rdiffcjhad < 0.2 and Rdiffsjhad < 0.2
 	   ){
 	  
-    	  //hMjjkFsc->Fill(x.mass);
+	    //hMjjkFsc->Fill(x.mass);
 	  
-	  kinFitMinChi2		= x.chi2;
-	  _NDF                  = x.ndf;
-	  _prob                 = TMath::Prob(x.chi2,x.ndf);
+	    kinFitMinChi2		= x.chi2;
+	    _NDF                  = x.ndf;
+	    _prob                 = TMath::Prob(x.chi2,x.ndf);
 	  
-	  _Rdiffbjlep		= Rdiffbjlep ;
-	  _Rdiffbjhad		= Rdiffbjhad ;
-	  _Rdiffcjhad		= Rdiffcjhad ;
-	  _Rdiffsjhad		= Rdiffsjhad ;
+	    _Rdiffbjlep		= Rdiffbjlep ;
+	    _Rdiffbjhad		= Rdiffbjhad ;
+	    _Rdiffcjhad		= Rdiffcjhad ;
+	    _Rdiffsjhad		= Rdiffsjhad ;
 	  
-	  leptonAF		= x.leptonAF;
-	  neutrinoAF		= x.neutrinoAF;
+	    leptonAF		= x.leptonAF;
+	    neutrinoAF		= x.neutrinoAF;
 	  
-	  bjlepAF		= x.bjlepAF;
-	  bjhadAF		= x.bjhadAF;
+	    bjlepAF		= x.bjlepAF;
+	    bjhadAF		= x.bjhadAF;
 	  
-	  cjhadAF		= x.cjhadAF;
-	  sjhadAF		= x.sjhadAF;
+	    cjhadAF		= x.cjhadAF;
+	    sjhadAF		= x.sjhadAF;
 	  
-	  cjhadBF		= x.cjhadBF;
-	  sjhadBF		= x.sjhadBF;
+	    cjhadBF		= x.cjhadBF;
+	    sjhadBF		= x.sjhadBF;
 	  
-	  isKFValid		= true;
-	  isLowMET		= (x.neutrinoAF.Pt()<20) ? true : false ;
+	    isKFValid		= true;
+	    isLowMET		= (x.neutrinoAF.Pt()<20) ? true : false ;
 
-	  //To fill the Tree for DNN other MVA	  
-	  _lepPt		= x.leptonAF.Pt() ;
-	  _lepEta		= x.leptonAF.Eta() ;
-	  _lepPhi		= x.leptonAF.Phi() ;
-	  _lepEnergy		= x.leptonAF.E() ;
-
-	  _metPx		= x.neutrinoAF.Px() ;
-	  _metPy		= x.neutrinoAF.Py() ;
-	  _metPz		= x.neutrinoAF.Pz() ;
-
-	  _jetBlepPt		= x.bjlepAF.Pt() ;
-	  _jetBlepEta		= x.bjlepAF.Eta() ;
-	  _jetBlepPhi		= x.bjlepAF.Phi() ;
-	  _jetBlepEnergy	= x.bjlepAF.E() ;
-
-	  _jetBhadPt		= x.bjhadAF.Pt() ;
-	  _jetBhadEta		= x.bjhadAF.Eta() ;
-	  _jetBhadPhi		= x.bjhadAF.Phi() ;
-	  _jetBhadEnergy	= x.bjhadAF.E() ;
-
-	  _jetChadPt		= x.cjhadAF.Pt() ;
-	  _jetChadEta		= x.cjhadAF.Eta() ;
-	  _jetChadPhi		= x.cjhadAF.Phi() ;
-	  _jetChadEnergy	= x.cjhadAF.E() ;
-
-	  _jetShadPt		= x.sjhadAF.Pt() ;
-	  _jetShadEta		= x.sjhadAF.Eta()  ;
-	  _jetShadPhi		= x.sjhadAF.Phi()  ;
-	  _jetShadEnergy	= x.sjhadAF.E()  ;
-
-	  _bjlep_id		= x.bjlep_id ; 
-	  _bjhad_id		= x.bjhad_id ; 
-	  _cjhad_id		= x.cjhad_id ; 
-	  _sjhad_id		= x.sjhad_id ;	  
+	    //To fill the Tree for DNN other MVA	  
+	    _lepPt		= x.leptonAF.Pt() ;
+	    _lepEta		= x.leptonAF.Eta() ;
+	    _lepPhi		= x.leptonAF.Phi() ;
+	    _lepEnergy		= x.leptonAF.E() ;
 	  
-	  _bjlepBdisc		= jetBtagVectors[x.bjlep_id] ;
-	  _bjhadBdisc		= jetBtagVectors[x.bjhad_id] ; 
-	  _cjhadBdisc		= jetBtagVectors[x.cjhad_id] ;  
-	  _sjhadBdisc		= jetBtagVectors[x.sjhad_id] ;
+	    _metPx		= x.neutrinoAF.Px() ;
+	    _metPy		= x.neutrinoAF.Py() ;
+	    _metPz		= x.neutrinoAF.Pz() ;
 
-	  _bjlepCvsLdisc	= jetCvsLtagVectors[x.bjlep_id] ;
-	  _bjhadCvsLdisc	= jetCvsLtagVectors[x.bjhad_id] ; 
-	  _cjhadCvsLdisc	= jetCvsLtagVectors[x.cjhad_id] ;  
-	  _sjhadCvsLdisc	= jetCvsLtagVectors[x.sjhad_id] ;
+	    _jetBlepPt		= x.bjlepAF.Pt() ;
+	    _jetBlepEta		= x.bjlepAF.Eta() ;
+	    _jetBlepPhi		= x.bjlepAF.Phi() ;
+	    _jetBlepEnergy	= x.bjlepAF.E() ;
 
-	  _bjlepCvsBdisc	= jetCvsBtagVectors[x.bjlep_id] ;
-	  _bjhadCvsBdisc	= jetCvsBtagVectors[x.bjhad_id] ; 
-	  _cjhadCvsBdisc	= jetCvsBtagVectors[x.cjhad_id] ;  
-	  _sjhadCvsBdisc	= jetCvsBtagVectors[x.sjhad_id] ;
+	    _jetBhadPt		= x.bjhadAF.Pt() ;
+	    _jetBhadEta		= x.bjhadAF.Eta() ;
+	    _jetBhadPhi		= x.bjhadAF.Phi() ;
+	    _jetBhadEnergy	= x.bjhadAF.E() ;
 
-	  //Fill for non-negative chi2
-	  // if(doTreeSave)
-	  //   outputTree->Fill();
-	}//DeltaR and pt cuts
-      }//iloop == 0 condition      
-      iloop++;
-    }// for loop over chi2 arrays
+	    _jetChadPt		= x.cjhadAF.Pt() ;
+	    _jetChadEta		= x.cjhadAF.Eta() ;
+	    _jetChadPhi		= x.cjhadAF.Phi() ;
+	    _jetChadEnergy	= x.cjhadAF.E() ;
 
-    if(isMuon){
-      if(Chi2ToMass_arr.size()>=1 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	hMinChi2_mu->Fill(Chi2ToMass_arr.at(0).chi2);
-      if(Chi2ToMass_arr.size()>=2 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h2MinChi2_mu->Fill(Chi2ToMass_arr.at(1).chi2);
-      if(Chi2ToMass_arr.size()>=3 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h3MinChi2_mu->Fill(Chi2ToMass_arr.at(2).chi2);
-      if(Chi2ToMass_arr.size()>=4 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h4MinChi2_mu->Fill(Chi2ToMass_arr.at(3).chi2);
-      if(Chi2ToMass_arr.size()>=5 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h5MinChi2_mu->Fill(Chi2ToMass_arr.at(4).chi2);
-    }else{
-      if(Chi2ToMass_arr.size()>=1 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	hMinChi2_ele->Fill(Chi2ToMass_arr.at(0).chi2);
-      if(Chi2ToMass_arr.size()>=2 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h2MinChi2_ele->Fill(Chi2ToMass_arr.at(1).chi2);
-      if(Chi2ToMass_arr.size()>=3 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h3MinChi2_ele->Fill(Chi2ToMass_arr.at(2).chi2);
-      if(Chi2ToMass_arr.size()>=4 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h4MinChi2_ele->Fill(Chi2ToMass_arr.at(3).chi2);
-      if(Chi2ToMass_arr.size()>=5 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
-	h5MinChi2_ele->Fill(Chi2ToMass_arr.at(4).chi2);
-    }
+	    _jetShadPt		= x.sjhadAF.Pt() ;
+	    _jetShadEta		= x.sjhadAF.Eta()  ;
+	    _jetShadPhi		= x.sjhadAF.Phi()  ;
+	    _jetShadEnergy	= x.sjhadAF.E()  ;
 
-    Chi2ToMass_arr.clear();
-    
-  }//if fit converges
+	    _bjlep_id		= x.bjlep_id ; 
+	    _bjhad_id		= x.bjhad_id ; 
+	    _cjhad_id		= x.cjhad_id ; 
+	    _sjhad_id		= x.sjhad_id ;	  
+	  
+	    _bjlepBdisc		= jetBtagVectors[x.bjlep_id] ;
+	    _bjhadBdisc		= jetBtagVectors[x.bjhad_id] ; 
+	    _cjhadBdisc		= jetBtagVectors[x.cjhad_id] ;  
+	    _sjhadBdisc		= jetBtagVectors[x.sjhad_id] ;
+
+	    _bjlepCvsLdisc	= jetCvsLtagVectors[x.bjlep_id] ;
+	    _bjhadCvsLdisc	= jetCvsLtagVectors[x.bjhad_id] ; 
+	    _cjhadCvsLdisc	= jetCvsLtagVectors[x.cjhad_id] ;  
+	    _sjhadCvsLdisc	= jetCvsLtagVectors[x.sjhad_id] ;
+
+	    _bjlepCvsBdisc	= jetCvsBtagVectors[x.bjlep_id] ;
+	    _bjhadCvsBdisc	= jetCvsBtagVectors[x.bjhad_id] ; 
+	    _cjhadCvsBdisc	= jetCvsBtagVectors[x.cjhad_id] ;  
+	    _sjhadCvsBdisc	= jetCvsBtagVectors[x.sjhad_id] ;
+	  
+	    _cjhad_ctag		= jetCtagVectors[x.cjhad_id] ;  
+	    _sjhad_ctag		= jetCtagVectors[x.sjhad_id] ;
+	  
+	    _bjlep_pflav		= jetGenjetPartonFlav[x.bjlep_id] ;
+	    _bjhad_pflav		= jetGenjetPartonFlav[x.bjhad_id] ; 
+	    _cjhad_pflav		= jetGenjetPartonFlav[x.cjhad_id] ;  
+	    _sjhad_pflav		= jetGenjetPartonFlav[x.sjhad_id] ;
+	  
+	    //Fill for non-negative chi2
+	    // if(doTreeSave)
+	    //   outputTree->Fill();
+	  }//DeltaR and pt cuts
+	}//iloop == 0 condition      
+	iloop++;
+      }// for loop over chi2 arrays
+
+      if(isMuon){
+	if(Chi2ToMass_arr.size()>=1 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  hMinChi2_mu->Fill(Chi2ToMass_arr.at(0).chi2);
+	if(Chi2ToMass_arr.size()>=2 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h2MinChi2_mu->Fill(Chi2ToMass_arr.at(1).chi2);
+	if(Chi2ToMass_arr.size()>=3 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h3MinChi2_mu->Fill(Chi2ToMass_arr.at(2).chi2);
+	if(Chi2ToMass_arr.size()>=4 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h4MinChi2_mu->Fill(Chi2ToMass_arr.at(3).chi2);
+	if(Chi2ToMass_arr.size()>=5 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h5MinChi2_mu->Fill(Chi2ToMass_arr.at(4).chi2);
+      }else{
+	if(Chi2ToMass_arr.size()>=1 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  hMinChi2_ele->Fill(Chi2ToMass_arr.at(0).chi2);
+	if(Chi2ToMass_arr.size()>=2 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h2MinChi2_ele->Fill(Chi2ToMass_arr.at(1).chi2);
+	if(Chi2ToMass_arr.size()>=3 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h3MinChi2_ele->Fill(Chi2ToMass_arr.at(2).chi2);
+	if(Chi2ToMass_arr.size()>=4 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h4MinChi2_ele->Fill(Chi2ToMass_arr.at(3).chi2);
+	if(Chi2ToMass_arr.size()>=5 and Chi2ToMass_arr.at(0).leptonAF.Pt() > 0.0)
+	  h5MinChi2_ele->Fill(Chi2ToMass_arr.at(4).chi2);
+      }
+
+      Chi2ToMass_arr.clear();
+
+      //std::cout << "Found convergence for " << icat << std::endl; 
+      break;
+    }//if fit converges
+  }
   
   kinFit.Clear();
   jetVectors.clear();
   jetResVectors.clear();
   jetBtagVectors.clear();
+  jetCtagVectors.clear();
+  jetGenjetPartonFlav.clear();
   jetCvsLtagVectors.clear();
   jetCvsBtagVectors.clear();
   // _jetPt->clear() ;
