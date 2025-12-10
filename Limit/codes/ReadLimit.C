@@ -4,7 +4,7 @@
  Author     : Indranil Das, Visiting Fellow
  Email      : indranil.das@cern.ch | indra.ehep@gmail.com
 **********************************************************************/
-int ReadLimit(const char *outfile = "limit.txt", int mass = 80)
+int ReadLimit(int mass, const char *outfile = "limit.txt")
 {
   Double_t r;
   float obsY;
@@ -20,8 +20,9 @@ int ReadLimit(const char *outfile = "limit.txt", int mass = 80)
   float expY2sL;
   float expY2sH;
 
-  TFile *fin = TFile::Open(Form("higgsCombineTest.AsymptoticLimits.mH%d.root",mass));
+  //TFile *fin = TFile::Open(Form("higgsCombineTest.AsymptoticLimits.mH%d.root",mass));
   //TFile *fin = TFile::Open(Form("higgsCombine_hcs_13TeV_ele_Cat1_Inc.AsymptoticLimits.mH%d.root",mass));
+  TFile *fin = TFile::Open(Form("higgsCombine_hcs_13TeV_mu_ele_Cat1_Inc.AsymptoticLimits.mH%d.12544.root",mass));
   TTree* limit = (TTree*)fin->Get("limit");
   limit->SetBranchAddress("limit",&r);
   for(int k = 0 ; k< limit->GetEntries() ; k++){

@@ -36,7 +36,6 @@ syst_2016 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown",
              "singpiecaldown", "singpihcaldown"]
 
 syst_long_2016 = ["base", "iso20", "jerup", "jerdown", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
-                  "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
                   "absmpfbup", "abssclup", "absstatup",
                   "flavorqcdup", "fragup", "timeptetaup",
                   "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
@@ -160,6 +159,7 @@ for year in [2016]:
             
         samplesubFile.write("condor_submit %s\n"%subjdlName)
     subFile.write("condor_submit %s\n"%jdlName)
-    jdlFile.close() 
+    jdlFile.close()
+subFile.write("condor_qedit -constraint '(JobStatus == 1)' JobNotification=0\n")
 subFile.close()
 print("Total number of jobs to be submitted is %s"%(totjobs))

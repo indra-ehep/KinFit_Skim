@@ -1,0 +1,77 @@
+Date: XXX
+Description: H+, CCC +jets, mass YYY GeV, lumi=ZZZ fb-1
+---------------------------------------------------------------------------------------------------------
+imax   1  number of channels
+jmax   *  number of backgrounds
+kmax   *  number of nuisance parameters
+---------------------------------------------------------------------------------------------------------
+shapes * * XXX.root $PROCESS $PROCESS_$SYSTEMATIC
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+Observation    XXX
+---------------------------------------------------------------------------------------------------------
+bin                     hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV   hcs_13TeV  hcs_13TeV hcs_13TeV
+process                 WHYYY       ttbar       ttg         tth         ttz         ttw         wjet        zjet        stop        vv       qcd
+process                 0           1           2           3           4           5           6           7           8           9        10
+---------------------------------------------------------------------------------------------------------
+rate                    
+---------------------------------------------------------------------------------------------------------
+CMS_lumi_13TeV  lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      Luminosity unc.
+CMS_eff_lep     lnN     1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.01    1.00      Lepton selection unc.
+CMS_prefire     lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      Prefire unc.
+CMS_pujetid     lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      PUJetID unc.
+CMS_pileup      lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      Pileup unc.
+CMS_absmpfb     lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_absscl      lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_absstat     lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_flavorqcd   lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_frag        lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_timepteta   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_pudatamc    lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_puptbb      lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_puptec1     lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_puptec2     lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_pupthf      lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_puptref     lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relfsr      lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relbal      lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relsample   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_reljerec1   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_reljerec2   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_reljerhf    lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relptbb     lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relptec1    lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relptec2    lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relpthf     lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relstatfsr  lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relstathf   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_relstatec   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_singpiecal   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_singpihcal   lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_JER         lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      unc.
+CMS_norm_sig    lnN     1.061   1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
+CMS_norm_tt     lnN     1.00    1.061   1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
+CMS_norm_ttg    lnN     1.00    1.00    1.061   1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
+CMS_norm_tth    lnN     1.00    1.00    1.00    1.061   1.00    1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
+CMS_norm_ttz    lnN     1.00    1.00    1.00    1.00    1.061   1.00    1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
+CMS_norm_ttw    lnN     1.00    1.00    1.00    1.00    1.00    1.061   1.00    1.00    1.00    1.00    1.00      TTbar xss unc.
+CMS_norm_stop   lnN     1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.07    1.00    1.00      Single top xss unc.
+CMS_norm_wjet   lnN     1.00    1.00    1.00    1.00    1.00    1.00    1.045   1.00    1.00    1.00    1.00      W+jets xss unc.
+CMS_norm_zjet   lnN     1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.05    1.00    1.00    1.00      Z+jets xss unc.
+CMS_qcddd       lnN      -       -       -       -       -       -       -       -       -       -      QCDD      QCD data-driven unc.
+CMS_norm_vv     lnN     1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.00    1.04    1.00      Diboson xss unc.
+CMS_CP5_tt      lnN     -       TTTT    -       -       -       -       -       -       -       -       -         CP5
+CMS_hDamp_tt    lnN     -       TTTT  -       -       -       -       -       -       -       -       -         Parton shower matching Up/Down 
+CMS_topMass_tt   lnN     -       TTTT     -       -       -       -       -       -       -       -       -         Top mass Up/Down 
+CMS_pdf         lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      pdf unc.
+CMS_isr         lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         isr unc.
+CMS_fsr         lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         fsr unc.
+CMS_bcstat      lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00      bcstat
+CMS_bclhemuf  	lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         bclhemuf
+CMS_bclhemur    lnN     HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         bclhemur
+CMS_bcxdyb  	lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         bcxdyb 
+CMS_bcxdyc  	lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         bcxdyc 
+CMS_bcxwjc  	lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         bcxwjc 
+CMS_bcintp  	lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         bcintp 
+CMS_bcextp  	lnN	HHHH	TTTT	TTGT	TTHT	TTZT	TTWT	WWWW	DDDD	SSSS	VVVV    1.00         bcextp 
+CMS_topPt       lnN     HHHH    TTTT    -       -       -       -       -       -       -       -       -         Top Pt reweighting unc.

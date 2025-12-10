@@ -15,9 +15,6 @@ samples_2017 = ["TTbar", "DataMu", "DataEle",
                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 
-# samples_2017 = ["TTbar", "DataMu"]
-
-
 syst_2017 = ["base", "iso20", "metup", "metdown",
              "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
              "absmpfbup", "abssclup", "absstatup",
@@ -56,15 +53,103 @@ syst_long_2017 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdam
                   "relstatecdown", "relstatfsrdown", "relstathfdown",
                   "singpiecaldown", "singpihcaldown"]
 
+samples_2018 = ["TTbar", "DataMu", "DataEle",
+                "HplusM040", "HplusM050", "HplusM060", "HplusM070", "HplusM080", "HplusM090", "HplusM100",
+                "HplusM110", "HplusM120", "HplusM130", "HplusM140", "HplusM150", "HplusM155", "HplusM160",
+                "HminusM040", "HminusM050", "HminusM060", "HminusM070", "HminusM080", "HminusM090", "HminusM100",
+                "HminusM110", "HminusM120", "HminusM130", "HminusM140", "HminusM150", "HminusM155", "HminusM160",
+                "singleTop", "Wjets", "DYjets", "VBFusion", "MCQCDMu", "MCQCDEle",
+                "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
+                "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
+
+syst_2018 = ["base", "iso20", "metup", "metdown",
+             "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
+             "absmpfbup", "abssclup", "absstatup",
+             "flavorqcdup", "fragup", "timeptetaup",
+             "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+             "relfsrup", "relbalup", "relsampleup",
+             "reljerec1up", "reljerec2up", "reljerhfup",
+             "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+             "relstatecup", "relstatfsrup", "relstathfup",
+             "singpiecalup", "singpihcalup",
+             "absmpfbdown", "absscldown", "absstatdown",
+             "flavorqcddown", "fragdown", "timeptetadown",
+             "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+             "relfsrdown", "relbaldown", "relsampledown",
+             "reljerec1down", "reljerec2down", "reljerhfdown",
+             "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+             "relstatecdown", "relstatfsrdown", "relstathfdown",
+             "singpiecaldown", "singpihcaldown"]
+
+syst_long_2018 = ["base", "iso20", "metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+                  "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
+                  "absmpfbup", "abssclup", "absstatup",
+                  "flavorqcdup", "fragup", "timeptetaup",
+                  "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+                  "relfsrup", "relbalup", "relsampleup",
+                  "reljerec1up", "reljerec2up", "reljerhfup",
+                  "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+                  "relstatecup", "relstatfsrup", "relstathfup",
+                  "singpiecalup", "singpihcalup",
+                  "absmpfbdown", "absscldown", "absstatdown",
+                  "flavorqcddown", "fragdown", "timeptetadown",
+                  "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+                  "relfsrdown", "relbaldown", "relsampledown",
+                  "reljerec1down", "reljerec2down", "reljerhfdown",
+                  "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+                  "relstatecdown", "relstatfsrdown", "relstathfdown",
+                  "singpiecaldown", "singpihcaldown"]
+
+# syst_2018 = ["base", "iso20"]
+# syst_long_2018 = ["base", "iso20"]
+
+# syst_2018 = ["metup", "metdown",
+#              "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
+#              "absmpfbup", "abssclup", "absstatup",
+#              "flavorqcdup", "fragup", "timeptetaup",
+#              "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+#              "relfsrup", "relbalup", "relsampleup",
+#              "reljerec1up", "reljerec2up", "reljerhfup",
+#              "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+#              "relstatecup", "relstatfsrup", "relstathfup",
+#              "singpiecalup", "singpihcalup",
+#              "absmpfbdown", "absscldown", "absstatdown",
+#              "flavorqcddown", "fragdown", "timeptetadown",
+#              "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+#              "relfsrdown", "relbaldown", "relsampledown",
+#              "reljerec1down", "reljerec2down", "reljerhfdown",
+#              "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+#              "relstatecdown", "relstatfsrdown", "relstathfdown",
+#              "singpiecaldown", "singpihcaldown"]
+
+# syst_long_2018 = ["metup", "metdown", "cp5up", "cp5down", "hdampup", "hdampdown", "mtopup", "mtopdown",
+#                   "nometa1", "nometa2", "jerup", "jerdown", "jereta1up", "jereta1down", "jereta2up", "jereta2down",
+#                   "absmpfbup", "abssclup", "absstatup",
+#                   "flavorqcdup", "fragup", "timeptetaup",
+#                   "pudatamcup", "puptbbup", "puptec1up", "puptec2up", "pupthfup", "puptrefup",
+#                   "relfsrup", "relbalup", "relsampleup",
+#                   "reljerec1up", "reljerec2up", "reljerhfup",
+#                   "relptbbup", "relptec1up", "relptec2up", "relpthfup",
+#                   "relstatecup", "relstatfsrup", "relstathfup",
+#                   "singpiecalup", "singpihcalup",
+#                   "absmpfbdown", "absscldown", "absstatdown",
+#                   "flavorqcddown", "fragdown", "timeptetadown",
+#                   "pudatamcdown", "puptbbdown", "puptec1down", "puptec2down", "pupthfdown", "puptrefdown",
+#                   "relfsrdown", "relbaldown", "relsampledown",
+#                   "reljerec1down", "reljerec2down", "reljerhfdown",
+#                   "relptbbdown", "relptec1down", "relptec2down", "relpthfdown",
+#                   "relstatecdown", "relstatfsrdown", "relstathfdown",
+#                   "singpiecaldown", "singpihcaldown"]
+
 inputdir="CBA_metxycorr"
-outputdir="CBA_metxycorr-Hist1"
+outputdir="CBA_metxycorr-MCScale4"
 
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s'%(inputdir)
 #kinpath='/eos/user/s/savarghe/Indra_Da/Output/cms-hcs-run2/%s'%(inputdir)
 #kinpath='/eos/user/a/anayak/HplusAnalysisRun2/idas/Output/cms-hcs-run2/%s'%(inputdir)
 kinpath='/eos/cms/store/group/phys_b2g/idas/Output/cms-hcs-run2/Result/%s'%(inputdir)
 
-for year in [2017]:
+for year in [2018]:
 #for year in [2017,2018]:
     os.system("if [ ! -d ../input/%s ] ; then mkdir -p ../input/%s ; fi"%(year,year))
     os.system("rm -f ../input/%s/*"%year)
@@ -84,7 +169,7 @@ for year in [2017]:
             print ("Creating input file %s"%inputfile)
 
 
-jdlDir = 'tmpLog_%s_17'%(outputdir)
+jdlDir = 'tmpLog_%s_18'%(outputdir)
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -116,7 +201,7 @@ totjobs = 0
 subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
 samplesubFile = open('%s/condorSampleSubmit.sh'%jdlDir,'w')
 #for year in [2017,2018]:
-for year in [2017]:
+for year in [2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
@@ -169,7 +254,8 @@ for year in [2017]:
             subjdlFile.write(run_command)
         samplesubFile.write("condor_submit %s\n"%subjdlName)
     subFile.write("condor_submit %s\n"%jdlName)
-    jdlFile.close() 
+    jdlFile.close()
+subFile.write("condor_qedit -constraint '(JobStatus == 1)' JobNotification=0\n")
 subFile.close()
 samplesubFile.close()
 print ("Total number of jobs to be submitted is %s"%(totjobs) )

@@ -9,7 +9,7 @@ export CMSVER=CMSSW_13_0_2
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
-printf "Worker node OS " ; lsb_release -d
+#printf "Worker node OS " ; lsb_release -d
 printf "SCRAM :  ${SCRAM_ARCH}\n"
 printf "CMSSW :  ${CMSVER}\n"
 

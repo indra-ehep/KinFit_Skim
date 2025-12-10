@@ -11,7 +11,7 @@ export CMSVER=CMSSW_13_0_2
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
-printf "Worker node OS " ; lsb_release -d
+#printf "Worker node OS " ; lsb_release -d
 printf "SCRAM :  ${SCRAM_ARCH}\n"
 printf "CMSSW :  ${CMSVER}\n"
 
@@ -49,7 +49,7 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 
-outputdir=CBA_metxycorr-Hist1
+outputdir=CBA_metxycorr-MCScale4
 
 condorOutDir=/eos/user/i/idas/Output/cms-hcs-run2/$outputdir
 condorOutDir1=/eos/user/i/imirza/idas/Output/cms-hcs-run2/Result/$outputdir

@@ -16,8 +16,13 @@ def execme(command):
 #---------------------------------------------
 #function to prepare data cards
 #---------------------------------------------
+
+callcard = 1
 def makeDataCards(IN_FILE_DIR, HIST_DIR, HIST_NAME, CHANNEL_NAME, SIG_MASS, SIG_LABEL, SIG_FILE, YEAR):
-    execme('root -l -q -b \"MyHPlusDataCardMaker.C(\\\"'+IN_FILE_DIR+'\\\",\\\"'+YEAR+'\\\", \\\"'+HIST_DIR+'\\\",\\\"'+HIST_NAME+'\\\",\\\"'+CHANNEL_NAME+'\\\",'+str(SIG_MASS)+', \\\"'+SIG_LABEL+'\\\", \\\"'+SIG_FILE+'\\\")\"')
+    callcard = globals()['callcard']
+    execme('root -l -q -b \"MyHPlusDataCardMaker.C(\\\"'+IN_FILE_DIR+'\\\",\\\"'+YEAR+'\\\", \\\"'+HIST_DIR+'\\\",\\\"'+HIST_NAME+'\\\",\\\"'+CHANNEL_NAME+'\\\",'+str(SIG_MASS)+', \\\"'+SIG_LABEL+'\\\", \\\"'+SIG_FILE+'\\\",\\\"'+str(callcard)+'\\\")\"')
+    callcard += 1
+    globals()['callcard'] = callcard
 
 def moveDataCards(CHANNEL_NAME, HIST_ARRAY, MASS, CAT_DIR, LIMIT_DIR):
     execme('mkdir -p '+LIMIT_DIR)
@@ -37,11 +42,11 @@ def calcLimits(CHANNEL_NAME, COMB_DATACARD_NAME, CAT_DIR, MASS, isGOF):
     #Original #execme('combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR)
     #command2 = 'combine  --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     #Closest to PAG
-    command2 = 'combine --rAbsAcc 0.000001 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
-    #command2 = 'combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    #command2 = 'combine --rAbsAcc 0.000001 -s 12543 --setParameterRanges BR=-2.0,2.0 --run blind '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
+    command2 = 'combine --rAbsAcc 0.000001 '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
     
     print("command2 : %s"%command2)
-    execme(command2)
+    #execme(command2)
 
     #Using Asimov
     #command2 = 'combine --run blind --rAbsAcc 0.000001 --expectSignal 1 --setParameterRanges BR=0.0,1.0  -t -1 -d '+t2wDataCardName+' -M AsymptoticLimits --mass '+str(MASS)+' --name _hcs_13TeV_'+CHANNEL_NAME+'_'+CAT_DIR
@@ -72,8 +77,8 @@ def getCardsToBeCombined(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, MASS, YEA
             #SIG_FILE = "all_Hplus"+str(MASS)+".root"
             #SIG_FILE = "all_HplusM"+str(MASS)+".root"
             SIG_FILE = "all_HplmiM"+str(MASS)+".root"
-            print "getCardsToBeCombined :: CH: %s, HIST: %s"%(CH,HIST)
-            print "getCardsToBeCombined :: IN_FILE_DIR_ARRAY[CH]: %s, HIST_ARRAY[HIST][0]: %s, HIST_ARRAY[HIST][1]: %s, CHANNEL_ARRAY[CH]: %s"%(IN_FILE_DIR_ARRAY[CH],HIST_ARRAY[HIST][0],HIST_ARRAY[HIST][1],CHANNEL_ARRAY[CH]) 
+            print ("getCardsToBeCombined :: CH: %s, HIST: %s"%(CH,HIST))
+            print ("getCardsToBeCombined :: IN_FILE_DIR_ARRAY[CH]: %s, HIST_ARRAY[HIST][0]: %s, HIST_ARRAY[HIST][1]: %s, CHANNEL_ARRAY[CH]: %s"%(IN_FILE_DIR_ARRAY[CH],HIST_ARRAY[HIST][0],HIST_ARRAY[HIST][1],CHANNEL_ARRAY[CH])) 
             makeDataCards(IN_FILE_DIR_ARRAY[CH], HIST_ARRAY[HIST][0],HIST_ARRAY[HIST][1], CHANNEL_ARRAY[CH], MASS, SIG_LABEL, SIG_FILE, YEAR)
     #store separate cards in an array
     COMB_CARD_CHANNEL_HIST_MASS = []
@@ -108,19 +113,19 @@ def calcCombinedLimit(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, CAT_DIR, MAS
     for HIST in range(len(HIST_ARRAY)):
         HIST_ARRAY_.append(HIST_ARRAY[HIST][1])
     COMB_HIST_NAME = '_'.join(HIST_ARRAY_)
-    print "COMB_HIST_NAME %s"%(COMB_HIST_NAME)
+    print ("COMB_HIST_NAME %s"%(COMB_HIST_NAME))
     card_names = []
     CARD_NAMES = ""
     for MASS in range(len(MASS_ARRAY)):
         for YEAR in range(len(YEAR_ARRAY)):
-            print "Year : %s"%(YEAR_ARRAY[YEAR])
+            print ("Year : %s"%(YEAR_ARRAY[YEAR]))
             LIMIT_DIR = "local/"+COMB_CHANNEL_NAME+"/"+CAT_DIR+"/"+"Mass"+str(MASS_ARRAY[MASS])
-            print "Mass : %d, %s"%(MASS, LIMIT_DIR)
+            print ("Mass : %d, %s"%(MASS, LIMIT_DIR))
             if not isCondSub: execme('mkdir -p '+LIMIT_DIR)
             getCardsToBeCombined_ = getCardsToBeCombined(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, MASS_ARRAY[MASS],YEAR_ARRAY[YEAR])
-            print "getCardsToBeCombined_ : %s"%(getCardsToBeCombined_)
+            print ("getCardsToBeCombined_ : %s"%(getCardsToBeCombined_))
             sortCardsForCombine_ = sortCardsForCombine(getCardsToBeCombined_, CHANNEL_ARRAY, HIST_ARRAY, MASS)
-            print "sortCardsForCombine_ : %s"%(sortCardsForCombine_)
+            print ("sortCardsForCombine_ : %s"%(sortCardsForCombine_))
             COMB_DATACARD_NAME = 'combine_datacard_hcs_13TeV_'+COMB_CHANNEL_NAME+"_"+CAT_DIR+"_WH"+str(MASS_ARRAY[MASS])+"_"+YEAR_ARRAY[YEAR]+".txt"
             if len(CHANNEL_ARRAY)>1 or len(HIST_ARRAY)>1:
                 execme('combineCards.py '+sortCardsForCombine_+' > '+COMB_DATACARD_NAME)
@@ -129,7 +134,7 @@ def calcCombinedLimit(CHANNEL_ARRAY, IN_FILE_DIR_ARRAY, HIST_ARRAY, CAT_DIR, MAS
             else: execme('cp '+sortCardsForCombine_+' '+COMB_DATACARD_NAME)
             CARD_NAMES += COMB_DATACARD_NAME + " " 
             card_names.append(COMB_DATACARD_NAME)
-            print "Card names %s, master %s"%(card_names[YEAR],CARD_NAMES)
+            print ("Card names %s, master %s"%(card_names[YEAR],CARD_NAMES))
         MASTERCOMB_DATACARD_NAME = 'combine_datacard_hcs_13TeV_'+COMB_CHANNEL_NAME+"_"+CAT_DIR+"_WH"+str(MASS_ARRAY[MASS])+".txt"
         command01 = 'combineCards.py '+CARD_NAMES+' > '+MASTERCOMB_DATACARD_NAME
         print("command01 : %s"%command01)
@@ -203,7 +208,8 @@ if __name__=="__main__":
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jetpt15-ptcut25-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_lowmass-CombHist"
     #path_file_dir="/Data/CMS-Analysis/NanoAOD-Analysis/SkimAna/root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
-    path_file_dir="../root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
+    #path_file_dir="../root_files/grid_v40_Syst/CBA_jecsyst-CombHist"
+    path_file_dir="../root_files/grid_v40_Syst/CBA_metxycorr-CombHist"
         
     muon_file_dir=path_file_dir+""
     ele_file_dir=path_file_dir+""
@@ -211,9 +217,9 @@ if __name__=="__main__":
     hist_array_Inc = []
     #hist_array_Inc.append(["KinFit", "mjj_kfit"])
     # hist_array_Inc.append(["", "_kb_mjj_"])
-    #hist_array_Inc.append(["", "_ct_Exc0_mjj_"])
-    hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
-    hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
+    # hist_array_Inc.append(["", "_ct_Exc0_mjj_"])
+    #hist_array_Inc.append(["", "_ct_ExcL_mjj_"])
+    # hist_array_Inc.append(["", "_ct_ExcM_mjj_"])
     hist_array_Inc.append(["", "_ct_ExcT_mjj_"])
     
     hist_array_CTagL = []
@@ -232,9 +238,9 @@ if __name__=="__main__":
     #mass_array = [80, 90, 100, 120, 140, 150, 155, 160]
     mass_array = [40, 80, 90, 100, 110, 120, 130, 140, 150, 155, 160]
     
-    year_array = ["2016"]
-    year_array.append("2017")
-    year_array.append("2018")
+    year_array = ["2018"]
+    # year_array.append("2017")
+    # year_array.append("2018")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--ch", default="mu", help="The channel name e.g. mu or ele or mu_ele")

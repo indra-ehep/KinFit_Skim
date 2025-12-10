@@ -15,8 +15,6 @@ samples_2017 = ["TTbar", "DataMu", "DataEle",
                 "TTGToLL", "TTGToLNu", "TTGToQQ", "TTHToNonbb", "TTHTobb", "TTHToGG",
                 "TTWJetsToLNu", "TTWJetsToQQ", "TTZToLLNuNu", "TTZToQQ"]
 
-# samples_2017 = ["TTbar", "DataMu"]
-
 
 syst_2017 = ["base", "iso20", "metup", "metdown",
              "jerup", "jerdown", 
@@ -107,7 +105,7 @@ outputdir="CBA_metxycorr-BJetHist1"
 refpath='/eos/user/i/idas/Output/cms-hcs-run2/%s'%(inputdir)
 bjetpath='/eos/user/d/dugad/idas/Output/cms-hcs-run2/%s'%(inputdir)
 
-for year in [2017]:
+for year in [2018]:
 #for year in [2017,2018]:
     os.system("if [ ! -d ../input/%s ] ; then mkdir -p ../input/%s ; fi"%(year,year))
     os.system("rm -f ../input/%s/*"%year)
@@ -127,7 +125,7 @@ for year in [2017]:
             print ("Creating input file %s"%inputfile)
 
 
-jdlDir = 'btag2_tmpLog_%s_17'%(outputdir)
+jdlDir = 'btag2_tmpLog_%s_18'%(outputdir)
 if not os.path.exists("%s/log"%jdlDir):
     os.makedirs("%s/log"%jdlDir)
 condorLogDir = "log"
@@ -160,7 +158,7 @@ totjobs = 0
 subFile = open('%s/condorSubmit.sh'%jdlDir,'w')
 samplesubFile = open('%s/condorSampleSubmit.sh'%jdlDir,'w')
 #for year in [2017,2018]:
-for year in [2017]:
+for year in [2018]:
     sampleList = eval("samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('%s/%s'%(jdlDir,jdlName),'w')
@@ -207,7 +205,8 @@ for year in [2017]:
             subjdlFile.write(run_command)
         samplesubFile.write("condor_submit %s\n"%subjdlName)
     subFile.write("condor_submit %s\n"%jdlName)
-    jdlFile.close() 
+    jdlFile.close()
+subFile.write("condor_qedit -constraint '(JobStatus == 1)' JobNotification=0\n")
 subFile.close()
 samplesubFile.close()
 print ("Total number of jobs to be submitted is %s"%(totjobs) )

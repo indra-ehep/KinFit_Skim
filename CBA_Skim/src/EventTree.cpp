@@ -8,6 +8,8 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
 {
   
   chain = 0x0;
+  for(int ijet=0;ijet<200;ijet++) jetPartFlvr_[ijet] = -10000;
+  
   tree = tr;
   isData_ = isData;
   
@@ -590,7 +592,10 @@ EventTree::EventTree(TTree *tr, string year, bool isData)
 }
 
 EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, char** fileNames){
+
   tree = 0x0;
+  for(int ijet=0;ijet<200;ijet++) jetPartFlvr_[ijet] = -10000;
+  
   chain = new TChain("Events");
 
   isData_ = isData;

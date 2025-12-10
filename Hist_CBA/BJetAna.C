@@ -3490,7 +3490,7 @@ int main(int argc, char** argv)
   
   string xrdcp_command = "";
   string xrdcp_command2 = "";
-  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") ){
+  if( hostname.BeginsWith("Indra-Rjn") or hostname.BeginsWith("lnx3") or hostname.BeginsWith("dhep-inlap")){
     //xrdcp_command = "cp " + inputfile + " " + singleFile ;
     xrdcp_command = "ln -s " + inputfile + " " + singleFile ;
     xrdcp_command2 = "ln -s " + input_hist_file + " " + refFile ;

@@ -13,10 +13,12 @@ basedir=$PWD
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_elemva90-CombHist
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_trigSF-CombHist
 #inputdir=$basedir/root_files/grid_v40_Syst/CBA_lowmass-CombHist
-inputdir=$basedir/root_files/grid_v40_Syst/CBA_jecsyst-CombHist
+#inputdir=$basedir/root_files/grid_v40_Syst/CBA_jecsyst-CombHist
+inputdir=$basedir/root_files/grid_v40_Syst/CBA_metxycorr-CombHist
+#inputdir=$basedir/root_files/grid_v40_Syst/CBA_metxycorr-MCScale2
 
 
-#years="2016 2017 2018"
+#years="2016 2017"
 years="2018"
 
 for year in $years

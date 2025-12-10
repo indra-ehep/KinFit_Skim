@@ -1,3 +1,6 @@
+#ifndef MyHPlusDataCardMaker_h
+#define MyHPlusDataCardMaker_h
+
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
@@ -7,18 +10,25 @@
 #include <stdio.h>
 #include <time.h>
 #include <algorithm>
-
+#include <TH1F.h>
+#include <TFile.h>
+#include <TMath.h>
+#include <TKey.h>
 
 using namespace std;
 double sysSF = 1.0;
 
 class MyHPlusDataCardMaker{
+  
   public:
 
   TH1F* getHisto(TFile *inRootFile, TString histPath, TString histName, TFile* fTT, double sf);
   //TH1F* readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite, double min_thres, bool isNeffThreshold);
   TH1F* readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite, bool isNorm, TH1F *hBase);
   double getBTagUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown);
+  double getConservativeUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown);
+  double getConservativeUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown, TFile* fTT);
+  pair<float,float> getConservativeUncPair(TH1F *hCentral, TH1F* hUp, TH1F* hDown);
   double getStatUnc(TH1F* hCentral, double sError);
   double getUncExL(TH1F* yLyMyT, TH1F* yLyMnT, TH1F* yLnMyT, TH1F* yLnMnT);
   double getUncExM(TH1F* yMyT, TH1F* yMnT);
@@ -32,8 +42,10 @@ class MyHPlusDataCardMaker{
   double getQcdSFNano(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName);
   double getQcdDDNano(bool isMu, TString baseDir, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, double qcd_sf);
   double getSysUncQcdNano(bool isMu, TFile* fData, TFile* fTT, TFile* fST, TFile* fWJ, TFile* fDY, TFile* fVV, TString histDir, TString histName, bool isUncSF);
+  int SymmetrizeErrors(string signal, TFile* fTT);
+  int ModifyUpDownHisto(TH1F* hnom, TH1F*& hup, TH1F*& hdown, bool isnorm);
 
-  private:
+private:
   double dont_use;
 };
 
@@ -67,7 +79,6 @@ class MyHPlusDataCardMaker{
 TH1F*  MyHPlusDataCardMaker:: getHisto(TFile *inRootFile, TString histPath, TString histName, TFile *fTT, double sf=1.0){
   TH1F* hist;
   TString fullPath = histPath+histName;
-  //cout<<"\n inRootFile : " << inRootFile->GetName() << "\n histPath : " << histPath << ", histName : " << histName  <<"\n fullPath : " << fullPath << endl;
   string exception_msg (inRootFile->GetName()+TString("/")+fullPath+", does not exist");
   try{
     if(!(inRootFile->Get(fullPath)))
@@ -75,57 +86,39 @@ TH1F*  MyHPlusDataCardMaker:: getHisto(TFile *inRootFile, TString histPath, TStr
   }catch (const char *e){
     cout<<"WARNING:"<<e<<endl;
   }
-  /* try{ */
-  /*   if(!(fTT->Get(fullPath))) */
-  /*      throw  exception_msg.c_str(); */
-  /* }catch (const char *e){ */
-  /*   cout<<"\033[01;31mERROR: \033[0m"<<e<< endl; */
-  /*   exit(0); */
-  /* } */
   if(!(inRootFile->Get(fullPath))){
     hist = (TH1F*)(fTT->Get(fullPath))->Clone(histName);
     hist->Reset();
-    //cout << "Reading hist from " << fTT->GetName() << endl;
-    //hist = (TH1F*)(inRootFile->Get(fullPath))->Clone(histName);
   }else {
     hist = (TH1F*)(inRootFile->Get(fullPath))->Clone(histName);
-    //cout << "Reading hist from " << inRootFile->GetName() << endl;
   }
-  //printf("MyHPlusDataCardMaker:: getHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
-  //if(hist->GetEntries()<300){
-  /* TString filename = inRootFile->GetName(); */
-  /* if(filename.Contains("all_QCDdd.root")){ */
-  /*   cout<<"WARNING : Hist " << hist->GetName() <<" of file : " << inRootFile->GetName() << " has low statistics" << endl; */
-  /*   hist->Reset(); */
-  /* } */
-  
   hist->Scale(sf);
   return hist;
 }
 
 //Read histos from input file. Write to another file.
-//TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite = false, double min_thres = 0, bool isNeffThreshold = false){
+
 TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TString inHistName, double sf, TFile *outFile, TFile *fTT, TString outHistName,  bool isWrite = false, bool isNorm = false, TH1F *hBase = 0x0){
   TH1F* hist = (TH1F*) getHisto(inFile, histPath, inHistName, fTT)->Clone(outHistName);
-  //printf("MyHPlusDataCardMaker::readWriteHisto Name %s, Entries : %lf, Integral : %lf\n",hist->GetName(),hist->GetEntries(), hist->Integral());
   hist->Scale(sf);
+  // if(hist->GetNbinsX()==50)
+  //   hist->Rebin(1);
+  // if(hist->GetNbinsX()==2400)
+  //   hist->Rebin(50);
+  // TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
+  if(hist->GetNbinsX()==50)
+    hist->Rebin(2);
   if(hist->GetNbinsX()==2400)
-    hist->Rebin(50);
-  //TH1F* trimmedHist = trimHisto(hist, outHistName+"_1", 5, 20, 170);
-  TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 5., 20., 170.);
-  //hist->SetAxisRange(20.,170.,"X");
-  //TH1F* trimmedHist = hist;
-
+    hist->Rebin(100);
+  TH1F* trimmedHist = trimHistoNano(hist, outHistName+"_1", 10., 20., 170.);
   if(outHistName.Contains("CMS_stat_")){
     string hname = outHistName.Data();
     string binnum  = "";
     if(hname.find("Up")!=string::npos){
       binnum = hname.substr( hname.find_last_of("_")+1, hname.find_last_of("Up") - hname.find_last_of("_") - 1 - 1);
-      //cout << "BIN NUMBER : " << binnum << endl;
     }
     if(hname.find("Down")!=string::npos){
       binnum = hname.substr( hname.find_last_of("_")+1, hname.find_last_of("Do") - hname.find_last_of("_") - 1 - 1);
-      //cout << "BIN NUMBER : " << binnum << endl;
     }
     int ibin = atoi(binnum.c_str());
     TH1F* trimmedHist_Temp = (TH1F *)trimmedHist->Clone("temp");
@@ -134,7 +127,6 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
       float up_val = trimmedHist->GetBinContent(ibin) + error;
       trimmedHist_Temp->SetBinContent(ibin, up_val);
       trimmedHist_Temp->SetBinError(ibin, error);
-      //cout <<"binContent1 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin)  << ", error " << trimmedHist->GetBinError(ibin) << endl;
     }
     if(hname.find("Down")!=string::npos and trimmedHist->GetBinContent(ibin) > 0.0){
       float error = trimmedHist->GetBinError(ibin);
@@ -143,11 +135,8 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
       error = (down_val>0.0) ? error : 0.0;
       trimmedHist_Temp->SetBinContent(ibin, down_val);
       trimmedHist_Temp->SetBinError(ibin, error);
-      //cout <<"binContent1 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin) << ", error " << trimmedHist->GetBinError(ibin)<< endl;
     }
-    //trimmedHist->Delete();
     trimmedHist = (TH1F *)trimmedHist_Temp->Clone(outHistName);
-    //cout <<"binContent2 : old " << trimmedHist->GetBinContent(ibin) <<", new " << trimmedHist_Temp->GetBinContent(ibin) << endl;
     delete trimmedHist_Temp ; 
   }
   if(isNorm){
@@ -172,6 +161,87 @@ TH1F* MyHPlusDataCardMaker::readWriteHisto(TFile *inFile, TString histPath, TStr
 //get normalised uncertainity
 double MyHPlusDataCardMaker::getBTagUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown){
   return 1 + max(fabs(hUp->Integral() - hCentral->Integral()), fabs(hCentral->Integral() - hDown->Integral()))/hCentral->Integral();
+}
+
+double MyHPlusDataCardMaker::getConservativeUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown){
+  double maxUp = -1.;
+  double maxDown = -1.;
+  for(int ibin=1;ibin<=hCentral->GetNbinsX();ibin++){
+    double upBin = TMath::Abs(hUp->GetBinContent(ibin));
+    double downBin = TMath::Abs(hDown->GetBinContent(ibin));
+    double baseBin = TMath::Abs(hCentral->GetBinContent(ibin));
+    double fracBase = baseBin/hCentral->Integral(); //to avoid edge bins that contains less than 1% of total yield
+    //if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5) or fracBase<0.03) continue;
+    if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5)) continue;
+    double ratioUp = (baseBin>upBin) ?  upBin/baseBin : baseBin/upBin;
+    double ratioDown = (baseBin>downBin) ?  downBin/baseBin : baseBin/downBin;
+    double fracUp = 1.0 - ratioUp;
+    double fracDown = 1.0 - ratioDown;
+    maxUp = max(fracUp,maxUp);
+    maxDown = max(fracDown,maxDown);
+  }
+  return 1 + max(maxUp, maxDown);
+}
+
+double MyHPlusDataCardMaker::getConservativeUnc(TH1F *hCentral, TH1F* hUp, TH1F* hDown, TFile* outFile){
+  
+  // double maxUp = 0.;
+  // double maxDown = 0.;
+  string basename = hCentral->GetName(); 
+  string upsystname = hUp->GetName(); 
+  string downsystname = hDown->GetName(); 
+  
+  if(basename.find("_1") == string::npos) basename += "_1";
+  if(upsystname.find("_1") == string::npos) upsystname += "_1";
+  if(downsystname.find("_1") == string::npos) downsystname += "_1";
+  
+  TH1F *hBase = (TH1F *)outFile->Get(basename.data());
+  TH1F *hSysUp = (TH1F *)outFile->Get(upsystname.data());
+  TH1F *hSysDown = (TH1F *)outFile->Get(downsystname.data());
+  // cout <<"MyHPlusDataCardMaker::getConservativeUnc: hBase : " << hBase << ", hBase name: "<<basename
+  //      <<", Up: " << hSysUp << ", hUp name: " << upsystname
+  //      << ", Down: " <<  hSysDown << ", hDown name: " << downsystname
+  //      << endl;
+  ModifyUpDownHisto(hBase, hSysUp, hSysDown, false);
+  
+  // for(int ibin=1;ibin<=hCentral->GetNbinsX();ibin++){
+  //   double upBin = TMath::Abs(hSysUp->GetBinContent(ibin));
+  //   double downBin = TMath::Abs(hSysDown->GetBinContent(ibin));
+  //   double baseBin = TMath::Abs(hBase->GetBinContent(ibin));
+  //   double fracBase = baseBin/hBase->Integral(); //to avoid edge bins that contains less than 1% of total yield
+  //   //if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5) or fracBase<0.03) continue;
+  //   if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5)) continue;
+  //   double ratioUp = (baseBin>upBin) ?  upBin/baseBin : baseBin/upBin;
+  //   double ratioDown = (baseBin>downBin) ?  downBin/baseBin : baseBin/downBin;
+  //   double fracUp = 1.0 - ratioUp;
+  //   double fracDown = 1.0 - ratioDown;
+  //   maxUp = max(fracUp,maxUp);
+  //   maxDown = max(fracDown,maxDown);
+  // }
+  //return 1 + max(maxUp, maxDown);
+  
+  return 1 + max(fabs(hSysUp->Integral() - hBase->Integral()), fabs(hBase->Integral() - hSysDown->Integral()))/hBase->Integral();
+
+}
+
+pair<float,float> MyHPlusDataCardMaker::getConservativeUncPair(TH1F *hCentral, TH1F* hUp, TH1F* hDown){
+  double maxUp = -1.;
+  double maxDown = -1.;
+  for(int ibin=1;ibin<=hCentral->GetNbinsX();ibin++){
+    double upBin = TMath::Abs(hUp->GetBinContent(ibin));
+    double downBin = TMath::Abs(hDown->GetBinContent(ibin));
+    double baseBin = TMath::Abs(hCentral->GetBinContent(ibin));
+    if(TMath::AreEqualAbs(upBin,0.0,1.e-5) or TMath::AreEqualAbs(downBin,0.0,1.e-5) or TMath::AreEqualAbs(baseBin,0.0,1.e-5)) continue;
+    double ratioUp = (baseBin>upBin) ?  upBin/baseBin : baseBin/upBin;
+    double ratioDown = (baseBin>downBin) ?  downBin/baseBin : baseBin/downBin;
+    double fracUp = 1.0 - ratioUp;
+    double fracDown = 1.0 - ratioDown;
+    maxUp = max(fracUp,maxUp);
+    maxDown = max(fracDown,maxDown);
+  }
+  maxUp /= 1.0;
+  maxDown /= 1.0;
+  return std::make_pair(1 + maxUp, 1 + maxDown);
 }
 
 //get statistical uncertainity
@@ -201,7 +271,7 @@ TH1F* MyHPlusDataCardMaker::trimHistoNano(TH1F* hist, TString histName, float bi
     TH1F* newHisto = new TH1F(histName, histName, nBin, xMin, xMax);
     int initX = TMath::Nint(xMin/binWidth);
     int lastX = TMath::Nint(xMax/binWidth);
-    for(int i = initX; i<lastX; i++){
+    for(int i = initX; i<=lastX+1; i++){
       double binVal = hist->GetBinContent(i);
       double binErr = hist->GetBinError(i);
       int i_new = i - initX;
@@ -623,3 +693,107 @@ double MyHPlusDataCardMaker::getSysUncQcdNano(bool isMu, TFile* fData, TFile* fT
   else unc = qcd_unc;
   return 1+unc;
 }
+
+int MyHPlusDataCardMaker::SymmetrizeErrors(string signal, TFile* outFile)
+{
+  outFile->cd();
+  vector<string> systnames;
+  TIter nextkey(outFile->GetListOfKeys());
+  TKey *key;
+  while ((key = ((TKey*)nextkey())) ) {
+    TObject *obj = key->ReadObj();
+    if ( obj->IsA()->InheritsFrom( "TH1" ) ) {
+      TH1 *h1 = (TH1*)obj;
+      string kname =  key->GetName();
+      string sname = "";
+      if(((kname.find("Up") != string::npos) or (kname.find("Down") != string::npos)) and kname.find(signal)!=string::npos){
+	if(signal=="qcd" and (kname.find("flavorqcd") != string::npos)) continue;
+	//if( (kname.find("bcstat") != string::npos) or (kname.find("bclhemuf") != string::npos) or (kname.find("bclhemur") != string::npos) or (kname.find("bcxdyb") != string::npos) or (kname.find("bcxdyc") != string::npos) or (kname.find("bcxwjc") != string::npos) or (kname.find("bcintp") != string::npos) or (kname.find("bcextp") != string::npos) ) continue;
+  	sname = (kname.find("Up") != string::npos) ? kname.substr(kname.find("_")+1,kname.find_last_of("U")-kname.find("_")-1) : kname.substr(kname.find("_")+1,kname.find_last_of("D")-kname.find("_")-1) ;
+  	if(std::find(systnames.begin(), systnames.end(), sname) == systnames.end()) systnames.push_back(sname);
+      }
+    }
+  }
+  TH1F *hBase = (TH1F *)outFile->Get((signal+"_1").data());
+  for(const auto sname : systnames) {
+    TH1F *hSysUp = (TH1F *)outFile->Get((signal+"_"+sname+"Up_1").data());
+    TH1F *hSysDown = (TH1F *)outFile->Get((signal+"_"+sname+"Down_1").data());
+    // if((sname.find("fsr") != string::npos) or (sname.find("bcstat") != string::npos) or (sname.find("isr") != string::npos))
+    //ModifyUpDownHisto(hBase, hSysUp, hSysDown, true);
+    // else
+    //if(sname.find("qcddd") == string::npos){
+    ModifyUpDownHisto(hBase, hSysUp, hSysDown, false);
+    hSysUp->Write((signal+"_"+sname+"Up").data(),TObject::kWriteDelete);
+    hSysDown->Write((signal+"_"+sname+"Down").data(),TObject::kWriteDelete);
+  }
+
+  return true;
+}
+
+int MyHPlusDataCardMaker::ModifyUpDownHisto(TH1F* hnom, TH1F*& hup, TH1F*& hdown, bool isnorm)
+{
+
+  TH1F *hupbynom = (TH1F *)hup->Clone("hRelErrUp");
+  hupbynom->Divide(hnom);
+  TH1F *hdownbynom = (TH1F *)hdown->Clone("hRelErrDown");
+  hdownbynom->Divide(hnom);
+
+  for(int ibin=1; ibin<hupbynom->GetNbinsX(); ibin++){
+    double bindiff = TMath::Abs(hupbynom->GetBinContent(ibin) - hdownbynom->GetBinContent(ibin));
+    double binerror = hupbynom->GetBinError(ibin) + hdownbynom->GetBinError(ibin);
+    double bindiff_up = TMath::Abs(hupbynom->GetBinContent(ibin) - 1.0);
+    double bindiff_down = TMath::Abs(hdownbynom->GetBinContent(ibin) - 1.0);
+    // cout << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_up: " << bindiff_up << " has content: " << hupbynom->GetBinContent(ibin) << endl;
+    // cout << hdownbynom->GetName() << " at bin : " << ibin << ", at x = " << hdownbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff_down: " << bindiff_down << " has content: " << hdownbynom->GetBinContent(ibin) << endl;
+    // cout << hnom->GetName() << " at bin : " << ibin << ", at x = " << hnom->GetXaxis()->GetBinCenter(ibin) << " has content: " << hnom->GetBinContent(ibin) << endl; 
+    //if(binerror>bindiff or TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
+    if(TMath::AreEqualAbs(hup->GetBinContent(ibin),0.0,1e-5)  or TMath::AreEqualAbs(hdown->GetBinContent(ibin),0.0,1e-5) or bindiff_down>1.0 or bindiff_up>1.0){
+      //cout << "ZERO for " << hupbynom->GetName() << " at bin : " << ibin << ", at x = " << hupbynom->GetXaxis()->GetBinCenter(ibin) << " has bindiff: " << bindiff << " and binerror: " << binerror << endl ;
+      hup->SetBinContent(ibin, hnom->GetBinContent(ibin));
+      hup->SetBinError(ibin, hnom->GetBinError(ibin));
+      hdown->SetBinContent(ibin, hnom->GetBinContent(ibin));
+      hdown->SetBinError(ibin, hnom->GetBinError(ibin));
+    }else{
+      if(bindiff_up>bindiff_down){
+	hdown->SetBinContent(ibin, (2.0-hupbynom->GetBinContent(ibin))*hnom->GetBinContent(ibin));
+      }else{
+	hup->SetBinContent(ibin, (2.0-hdownbynom->GetBinContent(ibin))*hnom->GetBinContent(ibin));
+      }//content symmetric condition
+    }//binerror condn
+  }
+  
+  if(isnorm){
+    hdown->Scale(hnom->Integral()/hdown->Integral());
+    hup->Scale(hnom->Integral()/hup->Integral());
+  }
+  
+  TH1F *hup_temp = (TH1F *)hup->Clone("hUpTemp");
+  TH1F *hdown_temp = (TH1F *)hdown->Clone("hDownTemp");
+
+  //if "ICES" is specified, resets only Integral, Contents, Errors and Statistics
+  //See https://root.cern.ch/doc/master/classTH1.html#a537509270db4e59efb39619b94c3a9a4
+  hup->Reset("ICES"); 
+  hdown->Reset("ICES");
+  for(int ibin=1;ibin<=hup_temp->GetNbinsX();ibin++) {
+    double binVal = hup_temp->GetBinContent(ibin);
+    double binErr = hup_temp->GetBinError(ibin);
+    hup->SetBinContent(ibin, binVal);
+    hup->SetBinError(ibin, binErr);
+  }
+  for(int ibin=1;ibin<=hdown_temp->GetNbinsX();ibin++) {
+    double binVal = hdown_temp->GetBinContent(ibin);
+    double binErr = hdown_temp->GetBinError(ibin);
+    hdown->SetBinContent(ibin, binVal);
+    hdown->SetBinError(ibin, binErr);
+  }
+  
+  delete hup_temp;
+  delete hdown_temp;
+  delete hupbynom;
+  delete hdownbynom;
+  
+  return true;
+  
+}
+
+#endif

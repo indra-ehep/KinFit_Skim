@@ -27,9 +27,10 @@
 using namespace std;
 
 vector<string> dummy;
-void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANNEL="mu", TString CAT= "Cat1_Inc",
+int LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHANNEL="mu", TString CAT= "Cat1_Inc",
 		  bool obs= false, bool isOut= true)
-  {
+{
+
   gStyle->SetFrameLineWidth(0);
   TCanvas *c1 = new TCanvas();
   c1->SetCanvasSize(775,775);
@@ -41,29 +42,13 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   c1->SetFillColor(10);
   c1->SetTickx();
   c1->SetTicky();
+  //c1->GetYaxis()->SetTitleOffset(2.0);
   c1->SetObjectStat(0);
 
   TLegend* leg = new TLegend(0.65,0.68,0.93,0.88,NULL,"brNDC");
   leg->SetBorderSize(0);
   leg->SetTextSize(0.026);
   leg->SetFillColor(0);
-
-  // float X[]        = {80, 90, 100,110, 120, 130, 140, 150, 155, 160};
-  // float obsY[]     = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY[]     = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-		      
-  // float expX1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expX1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sL[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sH[]   = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sL_[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY1sH_[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-
-		      
-  // float expX2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expX2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY2sL[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-  // float expY2sH[]  = {0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
 
   float X[]        = {40, 50, 60, 70, 80, 90, 100,110, 120, 130, 140, 150, 155, 160};
   float obsY[]     = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
@@ -75,67 +60,68 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   float expY1sH[]   = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
   float expY1sL_[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
   float expY1sH_[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
-
+  float expY2sL_[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY2sH_[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY3sL_[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY3sH_[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
 		      
   float expX2sL[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
   float expX2sH[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
   float expY2sL[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
   float expY2sH[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
 
+  float expX3sL[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expX3sH[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY3sL[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+  float expY3sH[]  = {0., 0.,0.,0, 0., 0.,0.,0, 0, 0, 0, 0, 0, 0, 0};
+
+  //TString random_index = "12543"; //default
+  TString random_index = "12544";
+  std::cout << "Random index: " << random_index << std::endl;
   const int nMassPoints = 14;
   TString ch_hist = CHANNEL+"_"+CAT;
   TString massFiles [nMassPoints] = {
-  "Mass40/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH40.root",
-  "Mass50/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH50.root",
-  "Mass60/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH60.root",
-  "Mass70/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH70.root",
-  "Mass80/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH80.root",
-  "Mass90/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH90.root",
-  "Mass100/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH100.root",
-  "Mass110/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH110.root",
-  "Mass120/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH120.root",
-  "Mass130/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH130.root",
-  "Mass140/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH140.root",
-  "Mass150/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH150.root",
-  "Mass155/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH155.root",
-  "Mass160/higgsCombine_hcs_13TeV_"+ch_hist+".AsymptoticLimits.mH160.root"};
+    "Mass40/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH40."+random_index+".root",
+    "Mass50/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH50."+random_index+".root",
+    "Mass60/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH60."+random_index+".root",
+    "Mass70/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH70."+random_index+".root",
+    "Mass80/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH80."+random_index+".root",
+    "Mass90/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH90."+random_index+".root",
+    "Mass100/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH100."+random_index+".root",
+    "Mass110/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH110."+random_index+".root",
+    "Mass120/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH120."+random_index+".root",
+    "Mass130/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH130."+random_index+".root",
+    "Mass140/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH140."+random_index+".root",
+    "Mass150/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH150."+random_index+".root",
+    "Mass155/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH155."+random_index+".root",
+    "Mass160/higgsCombine_hcs_13TeV_"+ch_hist+"_3sigma.AsymptoticLimits.mH160."+random_index+".root"};
+  //   "higgsCombineTest.AsymptoticLimits.mH40.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH50.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH60.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH70.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH80.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH90.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH100.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH110.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH120.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH130.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH140.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH150.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH155.root",
+  //   "higgsCombineTest.AsymptoticLimits.mH160.root"
+  // };
   
-  //higgsCombine_hcs_13TeV_mu_Cat1_Inc.AsymptoticLimits.mH80.root
-  
-  double maxY = 1.0;
-  //TString year_dir = "";
-  //TString year_dir = "MC-GenPOG/Nom1_5GeV_allFSRsyst_trimhisto/";
-  //TString year_dir = "MC-GenPOG/Nom1_5GeV_allexceptFSRsyst_trimhisto/";
-  //TString year_dir = "MC-GenPOG/Nom1FSRDo_5GeV_allexceptFSRsyst_trimhisto/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR_logN/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/2018/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_logNShapeMixed/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_pujetidprefireLogN/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_RBIPAGAug4FB/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FB/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FBLn-noBCStat/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2GeV/Run2_RBIPAGAug4FB-Ln/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_singles_nobcstat/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_conservative/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_optimum/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_miniaodEqv/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/2p5GeV/Run2_miniaodEqv/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/muFmuR/5GeV/Run2_AllShapeAbsolute/2016/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/PAG/2018/ExcT/";
-  //TString year_dir = "Higgs-Exo-2022-08-15/PAG/Run2/";
-  //TString year_dir = "B2G-Reso-2022-11-25/03_elereliso-CombHist/2016/Comb/";
-  //TString year_dir = "B2G-Reso-2022-11-25/01_elemva80-CombHist/2017/Comb/";
-  ;
-  
+  double maxY = 1.0;  
   for(int i = 0 ; i < nMassPoints; i++){
-    //TFile f("limit/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
-    //TFile f("local/"+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
-    TFile f("local/"+year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ"); 
+    //TFile f("local/"+year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ");
+    TFile f(year_dir+CHANNEL+"/"+CAT+"/"+massFiles[i],"READ");
+    //TFile f(year_dir+CHANNEL+"/"+massFiles[i],"READ");
+    //TFile f(year_dir+"/"+massFiles[i],"READ"); 
     if(f.IsZombie()){
       cout << "Cannot open file "<< f.GetName() <<" for " << string(CHANNEL.Data()) << " and mass " << X[i] << endl;
       continue;
     }
+    //cout << "Opened file : " << f.GetName() << endl;
     Double_t r;
     TTree* limit = (TTree*)f.Get("limit");
     limit->SetBranchAddress("limit",&r);
@@ -149,40 +135,65 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
       // if(k==3) expY1sH_[i] = r;
       // if(k==4) expY2sH[i] = r;
       // if(k==5) obsY[i]    = r;
-      if(k==0) expY2sL[i] = 100.*r;
-      if(k==1) expY1sL[i] = 100.*r;
-      if(k==1) expY1sL_[i] = 100.*r;
-      if(k==2) expY[i]    = 100.*r;
-      if(k==3) expY1sH[i] = 100.*r;
-      if(k==3) expY1sH_[i] = 100.*r;
-      if(k==4) expY2sH[i] = 100.*r;
-      if(k==5) obsY[i]    = 100.*r;
+
+      // if(k==0) expY2sL[i] = 100.*r;
+      // if(k==0) expY2sL_[i] = 100.*r;
+      // if(k==1) expY1sL[i] = 100.*r;
+      // if(k==1) expY1sL_[i] = 100.*r;
+      // if(k==2) expY[i]    = 100.*r;
+      // if(k==3) expY1sH[i] = 100.*r;
+      // if(k==3) expY1sH_[i] = 100.*r;
+      // if(k==4) expY2sH[i] = 100.*r;
+      // if(k==4) expY2sH_[i] = 100.*r;
+      // if(k==5) obsY[i]    = 100.*r;
+
+      if(k==0) expY3sL[i] = 100.*r;
+      if(k==0) expY3sL_[i] = 100.*r;
+      if(k==1) expY2sL[i] = 100.*r;
+      if(k==1) expY2sL_[i] = 100.*r;
+      if(k==2) expY1sL[i] = 100.*r;
+      if(k==2) expY1sL_[i] = 100.*r;
+      if(k==3) expY[i]    = 100.*r;
+      if(k==4) expY1sH[i] = 100.*r;
+      if(k==4) expY1sH_[i] = 100.*r;
+      if(k==5) expY2sH[i] = 100.*r;
+      if(k==5) expY2sH_[i] = 100.*r;
+      if(k==6) expY3sH[i] = 100.*r;
+      if(k==6) expY3sH_[i] = 100.*r;
+      if(k==7) obsY[i]    = 100.*r;
+
+      //std::cout << "k: " << k << ", r: " << r << endl;
     }
     //if(massFiles[i].Contains("80")) maxY = expY2sH[i];
     if(massFiles[i].Contains("80")) maxY = 0.38;
   }
+
+  
   // for(int i = 0 ; i < nMassPoints; i++){
   //   cout << "obsY[i] " << obsY[i] << endl;
   // }
   //cout<<std::setprecision(4)<<endl;
-  // cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
+  //cout<<"Mass:"<<setw(15)<<"base value"<<setw(15)<<"-2 #sigma"<<setw(15)<<"-1 #sigma"<<setw(15)<<"+1 #sigma"<<setw(15)<<"+2 #sigma"<<endl; 
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
     //cout<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
     expY1sH[i1] = TMath::Abs(expY1sH[i1]-expY[i1]);
     expY1sL[i1] = TMath::Abs(expY1sL[i1]-expY[i1]);
     expY2sH[i1] = TMath::Abs(expY2sH[i1]-expY[i1]);
     expY2sL[i1] = TMath::Abs(expY2sL[i1]-expY[i1]);
-  //cout<<setw(10)<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
+    expY3sH[i1] = TMath::Abs(expY3sH[i1]-expY[i1]);
+    expY3sL[i1] = TMath::Abs(expY3sL[i1]-expY[i1]);
+    //cout<<setw(10)<<X[i1]<<setw(15)<<expY[i1]<<setw(15)<<expY2sL[i1]<<setw(15)<< expY1sL[i1]<<setw(15)<<expY1sH[i1]<<setw(15)<<expY2sH[i1]<<endl; 
   }
   FILE *fout = fopen(Form("/tmp/nano_def_%s.txt",CHANNEL.Data()),"w");
   for(int i1 = 0 ; i1 < nMassPoints ; i1++){
-    expY1sH_[i1] = TMath::Abs(expY1sH_[i1]-expY[i1]);
-    expY1sL_[i1] = TMath::Abs(expY1sL_[i1]-expY[i1]);
+    // expY1sH_[i1] = TMath::Abs(expY1sH_[i1]-expY[i1]);
+    // expY1sL_[i1] = TMath::Abs(expY1sL_[i1]-expY[i1]);
     // cout<<"$"<<std::setprecision(2)<<100*expY[i1]<<"^{+"<<expY1sH_[i1]<<"}"<<"_"<<"{-"<< expY1sL_[i1]<<"}"<<"$"<<endl;
     //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$\n",expY[i1],expY1sH_[i1],expY1sL_[i1]);
     if(obs){
       //printf("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
-      fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      //fprintf(fout,"& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$\n",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
+      fprintf(fout,"%7.5f | %7.5f : %7.5f : %7.5f | %7.5f | %7.5f : %7.5f : %7.5f | %7.5f\n",X[i1], expY3sL_[i1], expY2sL_[i1], expY1sL_[i1], expY[i1], expY1sH_[i1] , expY2sH_[i1] , expY3sH_[i1] , obsY[i1]);
       string res = Form("& $%3.2f^{+%3.2f}_{-%3.2f}$ & $%3.2f$",expY[i1],expY1sH_[i1],expY1sL_[i1], obsY[i1]);
       Val.push_back(res);
     }else{
@@ -198,9 +209,9 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   TMultiGraph *mg = new TMultiGraph();
   TString ch_name = "ch";
   //cout<<CHANNEL<<endl;
-  if(CHANNEL=="mu") ch_name = "#mu";
+  if(CHANNEL=="mu" or CHANNEL=="muon") ch_name = "#mu";
   if(CHANNEL=="ele") ch_name = "e";
-  if(CHANNEL=="mu_ele") ch_name = "lep";
+  if(CHANNEL=="mu_ele" or CHANNEL=="lep") ch_name = "lep";
   //mg->SetMaximum(1.02*maxY);
   mg->SetMaximum(50.);
   mg->SetMinimum(0.06);
@@ -208,8 +219,9 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   TGraphAsymmErrors* expected = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL ,expX1sL , expX1sL, expX1sL);
   TGraphAsymmErrors* oneSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX1sL, expX1sL,  expY1sL, expY1sH);
   TGraphAsymmErrors* twoSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX2sL, expX2sL,  expY2sL, expY2sH);
+  TGraphAsymmErrors* threeSigma = new TGraphAsymmErrors(nMassPoints, X, expY, expX3sL, expX3sL,  expY3sL, expY3sH);
   TGraphAsymmErrors* observed = new TGraphAsymmErrors(nMassPoints, X, obsY, expX1sL ,expX1sL , expX1sL, expX1sL);
- 
+
   //oneSigma->SetMarkerColor(kBlack);
   //oneSigma->SetMarkerStyle(kFullCircle);
   oneSigma->SetFillColor(kGreen+1);
@@ -221,6 +233,9 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   twoSigma->SetFillColor(kOrange-2);
   twoSigma->SetFillStyle(1001);
 
+  threeSigma->SetFillColor(kYellow-7);
+  threeSigma->SetFillStyle(1001);
+  
   //expected->SetMarkerColor(kBlack);
   //expected->SetMarkerStyle(kFullCircle);
   //expected->SetMarkerSize(0.0);
@@ -234,16 +249,20 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   observed->SetLineStyle(1);
   observed->SetLineWidth(4);
 
-  mg->Add(twoSigma);
-  mg->Add(oneSigma);
+  mg->Add(threeSigma,"3");
+  mg->Add(twoSigma,"3");
+  mg->Add(oneSigma,"3");
   mg->Add(expected);
-  mg->Draw("ALP3");
+  mg->Draw("AL");
+
   if(obs) mg->Add(observed);
 
   gPad->Modified();
   gPad->SetBottomMargin(0.18);
   gPad->SetLeftMargin(0.18);
   //gPad->SetGridy();
+  gPad->SetGridx();
+  gPad->SetGridy();
   gPad->SetRightMargin(0.05);
   gStyle->SetFrameLineWidth(3);
   mg->GetXaxis()->SetLimits(35,165);
@@ -251,10 +270,12 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   mg->GetYaxis()->SetMoreLogLabels();
   mg->GetYaxis()->SetNdivisions(6);
   mg->GetXaxis()->SetTitleOffset(1.00);
-  mg->SetMinimum(0.04);
-  mg->SetMaximum(10.0);
+  mg->SetMinimum(0.02);
+  //mg->SetMaximum(30.0);
+  mg->SetMaximum(300.0);
   mg->GetXaxis()->SetTitle("m_{H^{#pm}} (GeV)");
-  mg->GetYaxis()->SetTitle("B(t #rightarrow H^{#pm}b) (%)"); 
+  mg->GetYaxis()->SetTitle("B(t #rightarrow H^{#pm}b) (%)");
+  mg->GetYaxis()->SetTitleOffset(2);
   mg->GetYaxis()->SetTitleSize(0.04);   
   mg->GetXaxis()->SetTitleSize(0.04);
   mg->GetXaxis()->SetLabelSize(0.04);   
@@ -264,13 +285,14 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
 
   //leg->SetHeader(Form("#splitline{CMS Preliminary #sqrt{s}=13 TeV}{ LUMI fb^{-1}, %s}",CHANNEL.Data()));
 
-  leg->SetHeader("95% CL upper limits");
+  leg->SetHeader("CL_{S} upper limits");
   leg->AddEntry(expected,"Median Expected","L");
   if(obs) leg->AddEntry(observed,"Observed","LP");
   leg->AddEntry(oneSigma, "68% expected","F");
   leg->AddEntry(twoSigma, "95% expected","F");
+  leg->AddEntry(threeSigma, "99.7% expected","F");
   leg->Draw();
-
+  
   TPaveText *pl2 = new TPaveText(0.22,0.79,0.57,0.87, "brNDC");
   pl2->SetTextSize(0.026);
   pl2->SetFillColor(0);
@@ -322,9 +344,9 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
   ch->SetLineColor(0);
   ch->SetTextSize(0.026);
   ch->SetBorderSize(0);
-  if(CHANNEL=="mu")ch->AddText("#mu + jets");
+  if(CHANNEL=="mu"  or CHANNEL=="muon")ch->AddText("#mu + jets");
   if(CHANNEL=="ele") ch->AddText("#it{e} + jets");
-  if(CHANNEL=="mu_ele") ch->AddText("#it{l} + jets");
+  if(CHANNEL=="mu_ele" or CHANNEL=="lep") ch->AddText("#it{l} + jets");
   pl2->Draw("SAME");
   pt->Draw("SAME");
   pt1->Draw("SAME");
@@ -352,19 +374,66 @@ void LimitPlotter(TString year_dir = "", vector<string>& Val=dummy, TString CHAN
     observed->Write("observed");
     oneSigma->Write("oneSigma");
     twoSigma->Write("twoSigma");
+    threeSigma->Write("threeSigma");
     fout->Close();
   }
+  return true;
 }
 
-void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/87_jecsyst_bld/Run2/Comb/"){
+
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/54_unblinded_MVA_lnNfixed_qcdrange0to100_qcddd6_bc3_uncorr_symm_10GeV/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/53_unblinded_MVA_lnNfixed_qcdrange0to50_qcddd3_bc3_uncorr_symm_5GeV/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/53_unblinded_MVA_lnNfixed_qcdrange0to50_qcddd3_bc3_uncorr_symm_10GeV/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/50_unblinded_MVA_lnNfixed_qcdrange0to50_qcddd6_bc3_uncorr_symm_5GeV/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/52_unblinded_MVA_lnNfixed_qcdrangepm100_qcddd3_bc3_uncorr_symm_10GeV/Run2/Comb/"){
+  //int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/51_unblinded_MVA_lnNfixed_qcdrangepm100_qcddd6_bc3_uncorr_symm_10GeV/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/50_unblinded_MVA_lnNfixed_qcdrange0to50_qcddd6_bc3_uncorr_symm_10GeV/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/49_unblinded_MVA_lnNfixed_qcdrangepm50_qcddd6_bc3_uncorr_symm_10GeV/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_impact-data/local/mu_ele_Run2_impact_qcdrange50_qcddd6_bc3_uncorr_brpm2_x0p02_5GeV_iter130/local/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/lx04_impact-data/local/mu_ele_Run2_impact_qcdrange50_qcddd6_bc3_uncorr_brpm2_x0p02_10GeV_iter128/local/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrangepm50_qcddd6_bc3_uncorr_brpm0p5_sym_10GeV_iter1/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_iter2/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_nofsr_iter3/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_noisr_iter4/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_notopPt_iter5/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_notopMass_iter6/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_nobclhemurExcT2018_iter7/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_noqcdddmuExcT2018_iter8/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc6_uncorr_br0to0p1_sym_10GeV_rabsacc1em7_iter9/2016/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc3_uncorr_br0to0p1_sym_10GeV_iter10/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_limitedqcdrange_qcddd6_bc3_uncorr_br0to0p5_sym_10GeV_iter16/Run2/ExcM/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_fixqcdrange10GeV_qcddd6_bc3_uncorr_br0to0p5_sym_10GeV_iter17/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_fixqcdrange10GeV_qcddd6_bc3_uncorr_br0to0p1_sym_10GeV_iter18/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_fixqcdrange10GeV_qcddd6_bc3_uncorr_br0to1_sym_10GeV_iter19/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_fixqcdrange10GeV_qcddd6_bc3_uncorr_brpm2_sym_10GeV_iter20/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_limited3wqcdrange10GeV_qcddd6_bc3_uncorr_br0to0p5_sym_10GeV_iter21/2016/ExcT/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_fixqcdrange10GeV_qcddd6_bc3_uncorr_br0p001to0p03_sym_10GeV_iter22/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_limited3wqcdrange10GeV_qcddd6_bc3_uncorr_br0to1_sym_10GeV_iter23/2016/ExcT/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_limited1wqcdrange10GeV_qcddd6_bc3_uncorr_br0to1_sym_10GeV_iter24/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_limited2wqcdrange10GeV_qcddd6_bc3_uncorr_br0to1_sym_10GeV_iter25/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_limited4wqcdrange10GeV_qcddd6_bc3_uncorr_br0to1_sym_10GeV_iter26/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc3_uncorr_br0to0p1_sym_nzlbin_10GeV_iter27/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_fixedqcdrange_qcddd6_bc3_uncorr_br0to0p1_sym_nzlbin_10GeV_iter28/Run2/Comb/"){  
+//int LoopLimitPlotsNano(TString year_dir = "Imperial-PA-2024-10-08/38_unblinded_MVA_lnNfixed_qcdddfulluncorr_symm_10GeVbin/Run2/Comb/"){
+//int LoopLimitPlotsNano(TString year_dir = "savarghe/HplusDatacardsNew/FullRun2/"){
+int LoopLimitPlotsNano(TString year_dir = "/home/hep/idas/CMS-Analysis/NanoAOD-Analysis/SkimAna/limit_lx04/local/limit_qcdrange0to50_qcddd6_bc3_uncorr_br0to0p1_sym_nzlbin_10GeV_iter45/Run2/Comb/"){
   
   vector<string> muVal, eleVal, mueleVal;
   float X[]        = {40, 50, 60, 70, 80, 90, 100,110, 120, 130, 140, 150, 155, 160};
-    
-  LimitPlotter(year_dir, muVal, "mu", "Cat1_Inc", false, true );
-  LimitPlotter(year_dir, eleVal, "ele", "Cat1_Inc", false, true );
-  LimitPlotter(year_dir, mueleVal, "mu_ele", "Cat1_Inc", false, true );
 
+  //CBA
+  LimitPlotter(year_dir, muVal, "mu", "Cat1_Inc", true, true );
+  LimitPlotter(year_dir, eleVal, "ele", "Cat1_Inc", true, true );
+  LimitPlotter(year_dir, mueleVal, "mu_ele", "Cat1_Inc", true, true );
+  // //CBA
+  // LimitPlotter(year_dir, muVal, "mu", "", true, true );
+  // LimitPlotter(year_dir, eleVal, "ele", "", true, true );
+  // LimitPlotter(year_dir, mueleVal, "mu_ele", "", true, true );
+  // //for MVA
+  // LimitPlotter(year_dir, muVal, "muon", "", false, true );
+  // LimitPlotter(year_dir, eleVal, "ele", "", false, true );
+  // LimitPlotter(year_dir, mueleVal, "lep", "", false, true );
+  
   string table_name = "";
   if(year_dir.Contains("Exc")){
     if(year_dir.Contains("ExcL"))
@@ -396,4 +465,6 @@ void LoopLimitPlotsNano(TString year_dir = "TIFRAPAR-2023-01-15/87_jecsyst_bld/R
   }
   fout<<"\\end{tabular}"<<endl;
   fout.close();
+
+  return true;
 }
