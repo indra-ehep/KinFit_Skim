@@ -7,7 +7,8 @@ The NanoAOD files of Ultra-Legacy (UL) campaign are used for this purpose.
 A brief discussion of the main folders is provided below.
 
 - **Skim_NanoAOD** : In current study we filter out a subset of the full Run2 data relevant for out analysis. This process is generally called as skimming and files are therefore known as Skim files. The codes of this folder is dedicated for skimming the data.
-- **CBA_Skim** : In next step, we process the Skim files and apply various corrections and scale factors. This finally produce the output histograms and trees for the calculation of upper limit. **Important** This is our main analysis step, please find a detail readme inside folder `CBA_Skim`.
+- **CBA_Skim** : In next step, we process the Skim files and apply various corrections and scale factors. This finally produce the output histograms and trees for the calculation of upper limit. 
+  **Important** This is our main analysis step, please find a detail readme inside folder `CBA_Skim`.
 - **Limit** : The codes for limit calculation can be found in this folder.
 
 ```mermaid
